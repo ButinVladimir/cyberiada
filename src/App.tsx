@@ -1,9 +1,9 @@
+import { ExpTest } from '@components/ExpTest';
+
 function App() {
   return (
-    <>
-      123
-    </>
-  )
+    <ExpTest />
+  );
 }
 
 export default App;
