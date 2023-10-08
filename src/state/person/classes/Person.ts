@@ -1,4 +1,3 @@
-import { makeObservable, observable } from 'mobx';
 import { IPerson } from '../interfaces';
 import { EXP_REQUIREMENT_BASE, EXP_REQUIREMENT_FACTOR } from '../constants';
 import { Attributes } from './Attributes';
@@ -18,19 +17,6 @@ export class Person implements IPerson {
   attributes = new Attributes();
   skills = new Skills();
   stats = new Stats();
-
-  constructor() {
-    makeObservable(this, {
-      id: observable,
-      name: observable,
-      exp: observable,
-      level: observable,
-      hp: observable,
-      loyalty: observable,
-      attributePoints: observable,
-      skillPoints: observable,
-    });
-  }
 
   calculateExpToLevelUp = (levelUps: number) => {
     return (2 * EXP_REQUIREMENT_BASE + (2 * this.level + levelUps - 1) * EXP_REQUIREMENT_FACTOR) * levelUps / 2;    

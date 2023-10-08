@@ -11,3 +11,7 @@ export enum Stat {
   Driving = 'driving',
   MaxHp = 'maxHp',
 }
+
+export enum Events {
+  GlobalStateUpdated = 'globalStateUpdated',
+}

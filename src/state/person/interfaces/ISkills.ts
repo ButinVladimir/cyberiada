@@ -1,8 +1,7 @@
 export interface ISkills {
-  meleeCombat: number;
+  closeCombat: number;
   rangedCombat: number;
   stealth: number;
-  security: number;
   infoGathering: number;
   persuasion: number;
   hacking: number;

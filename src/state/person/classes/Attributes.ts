@@ -1,4 +1,3 @@
-import { makeObservable, observable } from 'mobx';
 import { IAttributes } from '../interfaces';
 
 export class Attributes implements IAttributes {
@@ -8,15 +7,4 @@ export class Attributes implements IAttributes {
   perception = 0;
   intellect = 0;
   charisma = 0;
-
-  constructor() {
-    makeObservable(this, {
-      strength: observable,
-      endurance: observable,
-      agility: observable,
-      perception: observable,
-      intellect: observable,
-      charisma: observable,
-    });
-  }
 }
