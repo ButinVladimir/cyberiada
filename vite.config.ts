@@ -10,6 +10,8 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
       '@state': path.resolve(__dirname, './src/state'),
       '@components': path.resolve(__dirname, './src/components'),
+      '@helpers': path.resolve(__dirname, './src/helpers'),
+      '@hooks': path.resolve(__dirname, './src/hooks'),
     }
   }
 });

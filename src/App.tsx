@@ -1,6 +1,6 @@
 import { wrap } from 'comlink';
-import { StateTest } from '@components/StateTest';
 import { StateContext } from '@components/StateContext';
+import { MainPage } from '@components/MainPage';
 import { GameStateManager } from '@state/gameStateManager';
 import './transfer-handlers';
 
@@ -15,7 +15,7 @@ const gameStateManager = await new workerClass();
 function App() {
   return (
     <StateContext.Provider value={gameStateManager}>
-      <StateTest />
+      <MainPage />
     </StateContext.Provider>
   );
 }

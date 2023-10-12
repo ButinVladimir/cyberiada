@@ -15,3 +15,5 @@ export enum Stat {
 export enum Events {
   GlobalStateUpdated = 'globalStateUpdated',
 }
+
+export type StateName = 'globalState';

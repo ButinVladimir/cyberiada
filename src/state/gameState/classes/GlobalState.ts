@@ -1,7 +1,7 @@
 import { IGlobalState, ISerializedGlobalState } from '../interfaces';
 
 export class GlobalState implements IGlobalState {
-  time = 1;
+  time = 0;
   speed = 1;
 
   changeSpeed = (newSpeed: number): void => {
@@ -9,7 +9,7 @@ export class GlobalState implements IGlobalState {
   };
 
   updateTime = (): void => {
-    this.time += this.speed;
+    this.time += this.speed * 1000;
   };
 
   serialize = (): ISerializedGlobalState => {
