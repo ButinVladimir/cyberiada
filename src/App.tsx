@@ -1,6 +1,6 @@
 import { wrap } from 'comlink';
-import { StateContext } from '@components/StateContext';
-import { MainPage } from '@components/MainPage';
+import { StateContext } from '@/contexts';
+import MainPage from '@components/MainPage';
 import { GameStateManager } from '@state/gameStateManager';
 import './transfer-handlers';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { proxy } from 'comlink';
-import { StateContext } from '@components/StateContext'
+import { StateContext } from '@/contexts/';
 import { Events } from '@state/common';
 import { IGameStateManager } from '@/state/gameStateManager';
 
@@ -35,7 +35,7 @@ export function useRemoteState<T>(stateKey: StateName): T | null {
     return () => {
       gameStateManager.off(event, globalStateUpdatedCb);
     };
-  }, [gameStateManager, stateKey]);
+  }, [gameStateManager, stateKey, event]);
 
   return state;
 }

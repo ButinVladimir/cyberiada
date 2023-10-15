@@ -8,7 +8,6 @@ export enum Stat {
   RangedScore = 'rangedScore',
   Defense = 'defense',
   Speed = 'speed',
-  Driving = 'driving',
   MaxHp = 'maxHp',
 }
 
@@ -17,3 +16,8 @@ export enum Events {
 }
 
 export type StateName = 'globalState';
+
+export enum MenuPages {
+  Crew = 'crew',
+  CrewEditor = 'crewEditor',
+}
