@@ -8,6 +8,7 @@ import { MenuItems } from './types';
 import { SIDE_MENU_WIDTH } from './constants';
 
 interface ISideMenuProps {
+  opened: boolean;
   selectedMenuPage: MenuPages;
   onSelectMenuPage: (menuPage: MenuPages) => void;
 }
@@ -15,6 +16,7 @@ interface ISideMenuProps {
 const Menus: MenuItems = {
   items: [
     {
+      key: 0,
       items: [
         {
           icon: PersonIcon,
@@ -30,6 +32,7 @@ const Menus: MenuItems = {
 
     },
     {
+      key: 1,
       divider: true,
     }
   ]
@@ -37,6 +40,7 @@ const Menus: MenuItems = {
 
 export default function SideMenu(props: ISideMenuProps) {
   const {
+    opened,
     selectedMenuPage,
     onSelectMenuPage,
   } = props;
@@ -44,7 +48,8 @@ export default function SideMenu(props: ISideMenuProps) {
   return (
     <Drawer
       anchor="left"
-      variant="permanent"
+      open={opened}
+      variant="persistent"
       sx={{
         width: SIDE_MENU_WIDTH,
         flexShrink: 0,
@@ -57,9 +62,10 @@ export default function SideMenu(props: ISideMenuProps) {
       <Toolbar />
       <Divider />
       {Menus.items.map(menuItem => menuItem.divider
-        ? <Divider />
+        ? <Divider key={menuItem.key} />
         : (
           <SideSubMenu
+            key={menuItem.key}
             items={menuItem.items!}
             selectedMenuPage={selectedMenuPage}
             onSelectMenuPage={onSelectMenuPage}

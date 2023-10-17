@@ -11,6 +11,7 @@ export interface SubMenuItem {
 export interface MenuItem {
   divider?: boolean;
   items?: SubMenuItem[];
+  key: number;
 }
 
 export interface MenuItems {

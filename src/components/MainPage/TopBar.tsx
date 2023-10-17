@@ -1,14 +1,17 @@
 import React from 'react';
+import { useTheme } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Slider from '@mui/material/Slider';
 import Box from '@mui/material/Box';
+import Container from '@mui/material/Container'
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
 import { StateContext } from '@/contexts'
 import { GlobalState } from '@state/gameState';
 import { formatTimeShort } from '@/helpers';
 import { useRemoteState } from '@/hooks';
-import { SIDE_MENU_WIDTH } from './constants';
 
 const speedSliderMarks = [
   {
@@ -21,7 +24,15 @@ const speedSliderMarks = [
   }
 ];
 
-export default function TopBar() {
+interface ITopBarProps {
+  onToggleSideMenu: () => void;
+}
+
+export default function TopBar(props: ITopBarProps) {
+  const {
+    onToggleSideMenu,
+  } = props;
+  const theme = useTheme();
   const gameStateManager = React.useContext(StateContext);
   const globalState = useRemoteState<GlobalState>('globalState');
   const [hasInited, setHasInited] = React.useState<boolean>(false);
@@ -50,35 +61,46 @@ export default function TopBar() {
 
   return (
     <AppBar
-      position="sticky"
+      position="fixed"
       sx={{
-        width: `calc(100% - ${SIDE_MENU_WIDTH}px)`,
-        marginLeft: `${SIDE_MENU_WIDTH}px`,
+        zIndex: theme.zIndex.drawer + 1,
       }}
     >
-      <Toolbar>
-        <Typography
-          variant="body1"
-          noWrap
-          component="div"
-        >
-          Passed time: {formattedTime}
-        </Typography>
+      <Container>
+        <Toolbar disableGutters>
+          <IconButton
+            color="inherit"
+            onClick={onToggleSideMenu}
+            size="large"
+            edge="start"
+            sx={{ marginRight: 1 }}
+          >
+            <MenuIcon />
+          </IconButton>
+        
+          <Typography
+            variant="body1"
+            noWrap
+            component="div"
+          >
+            Passed time: {formattedTime}
+          </Typography>
 
-        <Box sx={{ width: 200, ml: 6 }}>
-          <Slider
-            aria-label="Bonus time speed"
-            step={1}
-            min={1}
-            max={16}
-            marks={speedSliderMarks}
-            color="secondary"
-            value={newSpeed}
-            onChange={handleChangeSpeed}
-            onChangeCommitted={handleApplySpeed}
-          />
-        </Box>
-      </Toolbar>
+          <Box sx={{ width: 200, ml: 6 }}>
+            <Slider
+              aria-label="Bonus time speed"
+              step={1}
+              min={1}
+              max={16}
+              marks={speedSliderMarks}
+              color="secondary"
+              value={newSpeed}
+              onChange={handleChangeSpeed}
+              onChangeCommitted={handleApplySpeed}
+              />
+          </Box>
+        </Toolbar>
+      </Container>
     </AppBar>
   )
 }

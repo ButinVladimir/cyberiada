@@ -4,32 +4,37 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { MenuPages } from '@state/common';
 import TopBar from './TopBar';
 import SideMenu from './SideMenu';
-import { SIDE_MENU_WIDTH } from './constants';
 
 export default function MainPage() {
+  const [sideMenuOpened, setSideMenuOpened] = React.useState<boolean>(true);
   const [selectedMenuPage, setSelectedMenuPage] = React.useState<MenuPages>(MenuPages.Crew);
 
   const handleSelectMenuPage = (menuPage: MenuPages) => {
     setSelectedMenuPage(menuPage);
   };
 
+  const handleToggleSideMenu = () => {
+    setSideMenuOpened(prevValue => !prevValue);
+  };
+
   return (
     <>
+      <Container
+        component="main"
+        sx={{
+          paddingTop: 10,
+        }}
+      >
       <CssBaseline />
-      <TopBar />
+      <TopBar
+        onToggleSideMenu={handleToggleSideMenu}
+      />
       <SideMenu
+        opened={sideMenuOpened}
         selectedMenuPage={selectedMenuPage}
         onSelectMenuPage={handleSelectMenuPage}
       />
-      <Container
-        component="main"
-        maxWidth={false}
-        sx={{
-          marginLeft: `${SIDE_MENU_WIDTH}px`,
-          width: `calc(100% - ${SIDE_MENU_WIDTH}px)`,
-          paddingTop: 2,
-        }}
-      >
+
         Content
       </Container>
     </>
