@@ -1,4 +1,5 @@
 import React from 'react';
+import {observer} from 'mobx-react-lite'
 import { useTheme } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar';
@@ -9,9 +10,7 @@ import Container from '@mui/material/Container'
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import { StateContext } from '@/contexts'
-import { GlobalState } from '@state/gameState';
 import { formatTimeShort } from '@/helpers';
-import { useRemoteState } from '@/hooks';
 
 const speedSliderMarks = [
   {
@@ -28,35 +27,26 @@ interface ITopBarProps {
   onToggleSideMenu: () => void;
 }
 
-export default function TopBar(props: ITopBarProps) {
+const TopBar = observer((props: ITopBarProps) => {
   const {
     onToggleSideMenu,
   } = props;
   const theme = useTheme();
   const gameStateManager = React.useContext(StateContext);
-  const globalState = useRemoteState<GlobalState>('globalState');
-  const [hasInited, setHasInited] = React.useState<boolean>(false);
   const [newSpeed, setNewSpeed] = React.useState<number>(1);
 
-  React.useEffect(() => {
-    if (globalState && !hasInited) {
-      setNewSpeed(globalState.speed);
-      setHasInited(true);
-    }
-  }, [globalState, hasInited]);
-
-  if (!globalState) {
+  if (!gameStateManager) {
     return null;
   }
 
-  const formattedTime = formatTimeShort(globalState.time);
+  const formattedTime = formatTimeShort(gameStateManager.globalState.time);
 
   const handleChangeSpeed = (event: Event, value: number | number[]) => {
     setNewSpeed(value as number);
   };
 
   const handleApplySpeed = () => {
-    gameStateManager?.changeSpeed(newSpeed);
+    gameStateManager.globalState.changeSpeed(newSpeed);
   };
 
   return (
@@ -103,4 +93,6 @@ export default function TopBar(props: ITopBarProps) {
       </Container>
     </AppBar>
   )
-}
+});
+
+export default TopBar;

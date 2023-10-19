@@ -16,7 +16,6 @@
     "@mui/icons-material": "^5.14.9",
     "@mui/material": "^5.14.10",
     "@types/node": "^20.7.0",
-    "comlink": "^4.4.1",
     "mobx": "^6.10.2",
     "mobx-react-lite": "^4.0.5",
     "react": "^18.2.0",

@@ -11,10 +11,6 @@ export enum Stat {
   MaxHp = 'maxHp',
 }
 
-export enum Events {
-  GlobalStateUpdated = 'globalStateUpdated',
-}
-
 export type StateName = 'globalState';
 
 export enum MenuPages {
