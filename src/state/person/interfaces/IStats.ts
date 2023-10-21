@@ -1,8 +1,7 @@
 export interface IStats {
-  meleeScore: number;
-  rangedScore: number;
+  closeCombatScore: number;
+  rangedCombatScore: number;
   defense: number;
   speed: number;
-  driving: number;
   maxHp: number;
 }

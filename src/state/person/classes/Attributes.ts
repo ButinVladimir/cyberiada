@@ -1,3 +1,4 @@
+import { makeAutoObservable } from 'mobx';
 import { IAttributes } from '../interfaces';
 
 export class Attributes implements IAttributes {
@@ -7,4 +8,8 @@ export class Attributes implements IAttributes {
   perception = 0;
   intellect = 0;
   charisma = 0;
+
+  constructor() {
+    makeAutoObservable(this);
+  }
 }

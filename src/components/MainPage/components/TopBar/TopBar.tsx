@@ -1,5 +1,5 @@
 import React from 'react';
-import {observer} from 'mobx-react-lite'
+import { observer } from 'mobx-react-lite'
 import { useTheme } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar';
@@ -9,7 +9,7 @@ import Box from '@mui/material/Box';
 import Container from '@mui/material/Container'
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import { StateContext } from '@/contexts'
+import { stateContext } from '@/contexts'
 import { formatTimeShort } from '@/helpers';
 
 const speedSliderMarks = [
@@ -32,7 +32,7 @@ const TopBar = observer((props: ITopBarProps) => {
     onToggleSideMenu,
   } = props;
   const theme = useTheme();
-  const gameStateManager = React.useContext(StateContext);
+  const gameStateManager = React.useContext(stateContext);
   const [newSpeed, setNewSpeed] = React.useState<number>(1);
 
   if (!gameStateManager) {
@@ -67,7 +67,7 @@ const TopBar = observer((props: ITopBarProps) => {
           >
             <MenuIcon />
           </IconButton>
-        
+
           <Typography
             variant="body1"
             noWrap
@@ -87,7 +87,7 @@ const TopBar = observer((props: ITopBarProps) => {
               value={newSpeed}
               onChange={handleChangeSpeed}
               onChangeCommitted={handleApplySpeed}
-              />
+            />
           </Box>
         </Toolbar>
       </Container>

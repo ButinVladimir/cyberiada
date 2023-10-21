@@ -17,4 +17,5 @@ export interface IPerson {
 
   calculateExpToLevelUp(levelUps: number): number;
   calculateLevelUpsFromExp(): number;
+  update(person: IPerson): void;
 }

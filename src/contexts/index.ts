@@ -1,1 +1,1 @@
-export * from './StateContext';
+export * from './stateContext';

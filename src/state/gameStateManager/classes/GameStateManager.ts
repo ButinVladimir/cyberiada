@@ -1,9 +1,11 @@
 import { makeAutoObservable } from 'mobx';
-import { GlobalState } from '@/state/gameState';
+import { GlobalState, CrewState } from '@/state/gameState';
 import { IGameStateManager } from '../interfaces';
 
 export class GameStateManager implements IGameStateManager {
   globalState = new GlobalState();
+  crewState = new CrewState();
+
   timer: NodeJS.Timeout | null = null;
 
   constructor() {

@@ -1,3 +1,4 @@
+import { makeAutoObservable } from 'mobx';
 import { ISkills } from '../interfaces';
 
 export class Skills implements ISkills {
@@ -9,4 +10,8 @@ export class Skills implements ISkills {
   hacking = 0;
   engineering = 0;
   chemistry = 0;
+
+  constructor() {
+    makeAutoObservable(this);
+  }
 }
