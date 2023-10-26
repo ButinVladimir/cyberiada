@@ -3,7 +3,7 @@ import { SvgIconTypeMap } from '@mui/material/SvgIcon/SvgIcon';
 import { MenuPages } from '@state/common';
 
 export interface SubMenuItem {
-  icon: OverridableComponent<SvgIconTypeMap<unknown, "svg">> & { muiName: string; };
+  icon: OverridableComponent<SvgIconTypeMap<unknown>> & { muiName: string; };
   text: string;
   value: MenuPages;
 }

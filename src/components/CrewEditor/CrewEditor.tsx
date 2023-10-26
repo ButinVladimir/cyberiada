@@ -1,18 +1,48 @@
 import React from 'react';
-import { IPerson } from '@/state/person';
+import { IPerson, Person } from '@/state/person';
 import CrewOverview from './components/CrewOverview';
-import { selectMemberContext } from './selectMemberContext';
+import CrewMemberEditor from './components/CrewMemberEditor';
+import { crewEditorCallbacksContext } from './crewEditorCallbacksContext';
+
+interface IMainPageState {
+  action: 'list' | 'create' | 'edit';
+  person?: IPerson;
+}
 
 export default function MainPage() {
-  const [selectedMember, setSelectedMember] = React.useState<IPerson | null>(null);
+  const [mainPageState, setMainPageState] = React.useState<IMainPageState>({
+    action: 'list',
+  });
 
-  const handleSelectMember = (person: IPerson) => {
-    setSelectedMember(person);
-  };
+  const crewEditorCallbacks = React.useMemo(() => ({
+    startCreatingMember: () => {
+      setMainPageState({
+        action: 'create',
+      });
+    },
+    startEditingMember: (person: IPerson) => {
+      setMainPageState({
+        action: 'edit',
+        person: Person.copy(person),
+      });
+    },
+    listMembers: () => {
+      setMainPageState({
+        action: 'list',
+      });
+    },
+  }), []);
 
   return (
-    <selectMemberContext.Provider value={handleSelectMember}>
-      {selectedMember === null ? <CrewOverview /> : null}
-    </selectMemberContext.Provider>
+    <crewEditorCallbacksContext.Provider value={crewEditorCallbacks}>
+      {mainPageState.action === 'list'
+        ? <CrewOverview />
+        : (
+          <CrewMemberEditor
+            action={mainPageState.action}
+            person={mainPageState.person}
+          />
+        )}
+    </crewEditorCallbacksContext.Provider>
   );
 }

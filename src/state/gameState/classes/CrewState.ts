@@ -11,16 +11,17 @@ export class CrewState implements ICrewState {
     makeAutoObservable(this);
   }
 
-  addCrewMember = (): void => {
-    const newMember = new Person(uuid());
-
+  addCrewMember = (): IPerson => {
+    const newMember = new Person(uuid());   
     this.crew.push(newMember);
+    
+    return newMember;
   };
 
-  updateCrewMember = (person: IPerson): void => {
-    const existingMember = this.crew.find(p => p.id === person.id);
+  updateCrewMember = (id: string, person: IPerson): void => {
+    const existingMember = this.crew.find(p => p.id === id);
     if (!existingMember) {
-      throw new Error(`Person with id ${person.id} does not exist`);
+      throw new Error(`Person with id ${id} does not exist`);
     }
 
     existingMember.update(person);

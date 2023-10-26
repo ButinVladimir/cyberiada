@@ -11,7 +11,7 @@ import Button from '@mui/material/Button';
 import { stateContext } from '@/contexts';
 import { IPerson } from '@/state/person';
 import { ValueDisplayer } from '@components/common';
-import { selectMemberContext } from '../../selectMemberContext';
+import { crewEditorCallbacksContext } from '../../crewEditorCallbacksContext';
 
 interface IPropertyDisplayer {
   title: string;
@@ -83,14 +83,14 @@ const CrewMember = observer((props: ICrewMemberProps) => {
     person,
   } = props;
   const gameStateManager = React.useContext(stateContext);
-  const selectMemberCallback = React.useContext(selectMemberContext);
+  const { startEditingMember } = React.useContext(crewEditorCallbacksContext);
 
   if (!gameStateManager) {
     return;
   }
 
   const handleStartEditingMember = () => {
-    selectMemberCallback(person);
+    startEditingMember(person);
   };
 
   const handleDeleteMember = () => {
@@ -106,14 +106,16 @@ const CrewMember = observer((props: ICrewMemberProps) => {
         />
 
         <CardContent>
-          <Grid container columnSpacing={4} rowSpacing={1}>
+          <Grid container columnSpacing={4} rowGap={1}>
             <PropertySectionDisplayer
               title="General"
               properties={[
-                { key: 1, title: 'HP', getValue: () => person.hp },
-                { key: 2, title: 'Loyalty', getValue: () => person.loyalty },
-                { key: 3, title: 'Attribute points', getValue: () => person.attributePoints },
-                { key: 4, title: 'Skill points', getValue: () => person.skillPoints },
+                { key: 1, title: 'Level', getValue: () => person.level },
+                { key: 2, title: 'Exp', getValue: () => person.exp },
+                { key: 3, title: 'HP', getValue: () => person.hp },
+                { key: 4, title: 'Loyalty', getValue: () => person.loyalty },
+                { key: 5, title: 'Attribute points', getValue: () => person.attributePoints },
+                { key: 6, title: 'Skill points', getValue: () => person.skillPoints },
               ]}
             />
 

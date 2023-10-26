@@ -1,18 +1,13 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Button from '@mui/material/Button';
-import { stateContext } from '@/contexts';
+import { crewEditorCallbacksContext } from '../../crewEditorCallbacksContext';
 
-const TopPanel = observer(() => {
-  const gameStateManager = React.useContext(stateContext);
+export default function TopPanel() {
+  const { startCreatingMember } = React.useContext(crewEditorCallbacksContext);
 
-  if (!gameStateManager) {
-    return;
-  }
-
-  const handleAddCrewMember = () => {
-    gameStateManager.crewState.addCrewMember();
+  const handleStartCreatingMember = () => {
+    startCreatingMember();
   };
   
   return (
@@ -20,12 +15,10 @@ const TopPanel = observer(() => {
       <Button
         type="button"
         variant="contained"
-        onClick={handleAddCrewMember}
+        onClick={handleStartCreatingMember}
       >
         Create crew member
       </Button>
     </ButtonGroup>
   );
-});
-
-export default TopPanel;
+}

@@ -1,6 +1,6 @@
 import { EXP_REQUIREMENT_BASE, EXP_REQUIREMENT_FACTOR } from './constants';
 
-export function calculateExpToLevelUp(baseLevel: number, levelUps: number = 1): number {
+export function calculateExpToLevelUp(baseLevel: number, levelUps = 1): number {
   return (2 * EXP_REQUIREMENT_BASE + (2 * baseLevel + levelUps - 1) * EXP_REQUIREMENT_FACTOR) * levelUps / 2;
 }
 

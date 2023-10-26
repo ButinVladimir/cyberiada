@@ -25,6 +25,13 @@ export class Person implements IPerson {
     makeAutoObservable(this);
   }
 
+  static copy(person: IPerson): IPerson {
+    const personCopy = new Person(person.id);
+    personCopy.update(person);
+    
+    return personCopy;
+  }
+
   calculateExpToLevelUp = (levelUps: number) => {
     return (2 * EXP_REQUIREMENT_BASE + (2 * this.level + levelUps - 1) * EXP_REQUIREMENT_FACTOR) * levelUps / 2;    
   };
@@ -49,6 +56,7 @@ export class Person implements IPerson {
   };
 
   update = (person: IPerson) => {
+    this.name = person.name;
     this.exp = person.exp;
     this.level = person.level;
     this.attributePoints = person.attributePoints;
