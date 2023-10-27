@@ -1,7 +1,6 @@
 import { makeAutoObservable } from 'mobx';
-import { v4 as uuid } from 'uuid';
 import { ICrewState } from '../interfaces';
-import { IPerson, Person } from '@/state/person';
+import { IPerson } from '@/state/person';
 
 export class CrewState implements ICrewState {
   crew: IPerson[] = [];
@@ -11,11 +10,8 @@ export class CrewState implements ICrewState {
     makeAutoObservable(this);
   }
 
-  addCrewMember = (): IPerson => {
-    const newMember = new Person(uuid());   
-    this.crew.push(newMember);
-    
-    return newMember;
+  addCrewMember = (person: IPerson): void => {
+    this.crew.push(person);
   };
 
   updateCrewMember = (id: string, person: IPerson): void => {
