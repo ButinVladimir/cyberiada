@@ -1,3 +1,4 @@
+import i18n from 'i18next';
 import React from 'react';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Button from '@mui/material/Button';
@@ -17,7 +18,7 @@ export default function TopPanel() {
         variant="contained"
         onClick={handleStartCreatingMember}
       >
-        Create crew member
+        {i18n.t('crewEditor.createCrewMember', { ns: 'ui' })}
       </Button>
     </ButtonGroup>
   );

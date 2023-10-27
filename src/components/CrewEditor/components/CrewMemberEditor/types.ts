@@ -1,4 +1,4 @@
-export interface ICommonParamsState {
+export interface IGeneralState {
   name: string;
   level: number;
   exp: number;

@@ -1,3 +1,4 @@
+import i18n from 'i18next';
 import React from 'react';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
@@ -8,9 +9,9 @@ import { v4 as uuid } from 'uuid';
 import { stateContext } from '@/contexts';
 import { IPerson, IAttributes, ISkills, Person } from '@/state/person';
 import { crewEditorCallbacksContext } from '../../crewEditorCallbacksContext';
-import { ICommonParamsState } from './types';
+import { IGeneralState } from './types';
 import NameInput from './NameInput';
-import CommonParamInputs from './CommonParamInputs';
+import GeneralInputs from './GeneralInputs';
 import AttributeInputs from './AttributeInputs';
 import SkillInputs from './SkillInputs';
 
@@ -27,7 +28,7 @@ export default function CrewMemberEditor(props: ICrewMemberEditorProps) {
   const gameStateManager = React.useContext(stateContext);
   const { listMembers } = React.useContext(crewEditorCallbacksContext);
 
-  const [commonParamsState, setCommonParamsState] = React.useState<ICommonParamsState>(() => {
+  const [generalState, setGeneralState] = React.useState<IGeneralState>(() => {
     if (!person) {
       return {
         name: '',
@@ -75,12 +76,14 @@ export default function CrewMemberEditor(props: ICrewMemberEditorProps) {
     return { ...person.skills };
   });
 
-  const handleSubmit = () => {
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = (event) => {
+    event.preventDefault();
+
     const newPerson = new Person(
       person ? person.id : uuid()
     );
 
-    Object.assign(newPerson, commonParamsState);
+    Object.assign(newPerson, generalState);
     Object.assign(newPerson.attributes, attributesState);
     Object.assign(newPerson.skills, skillsState);
 
@@ -93,6 +96,9 @@ export default function CrewMemberEditor(props: ICrewMemberEditorProps) {
     listMembers();
   };
 
+  const titleKey = action === 'create' ? 'creatingCrewMember' : 'updatingCrewMember';
+  const submitButtonTextKey = action === 'create' ? 'create' : 'update';
+
   return (
     <form
       id="editCrewMember"
@@ -102,18 +108,18 @@ export default function CrewMemberEditor(props: ICrewMemberEditorProps) {
       <Grid container rowGap={2} columnSpacing={2}>
         <Grid item xs={12}>
           <Typography variant="h3">
-            {action === 'create' ? 'Creating crew member' : 'Editing crew member'}
+            {i18n.t(`crewEditor.${titleKey}`, { ns: 'ui'})}
           </Typography>
         </Grid>
 
         <NameInput
-          commonParamsState={commonParamsState}
-          setCommonParamsState={setCommonParamsState}
+          generalState={generalState}
+          setGeneralState={setGeneralState}
         />
 
-        <CommonParamInputs
-          commonParamsState={commonParamsState}
-          setCommonParamsState={setCommonParamsState}
+        <GeneralInputs
+          generalState={generalState}
+          setGeneralState={setGeneralState}
         />
 
         <AttributeInputs
@@ -140,14 +146,14 @@ export default function CrewMemberEditor(props: ICrewMemberEditorProps) {
               variant="outlined"
               onClick={listMembers}
             >
-              Cancel
+              {i18n.t('common.cancel', { ns: 'ui'})}
             </Button>
 
             <Button
               type="submit"
               variant="contained"
             >
-              {action === 'create' ? 'Create' : 'Update'}
+              {i18n.t(`common.${submitButtonTextKey}`, { ns: 'ui'})}
             </Button>
           </ButtonGroup>
         </Grid>

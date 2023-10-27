@@ -1,0 +1,35 @@
+sections:
+  general: Общее
+  skills: Навыки
+  attributes: Атрибуты
+  stats: Статы
+general:
+  name: Имя
+  level: Уровень
+  exp: Опыт
+  hp: Здоровье
+  loyalty: Лояльность
+  attributePoints: Очки аттрибутов
+  skillPoints: Очки навыков
+attributes:
+  strength: Сила
+  endurance: Выносливость
+  agility: Ловкость
+  perception: Восприятие
+  intellect: Интеллект
+  charisma: Харизма
+skills:
+  closeCombat: Ближний бой
+  rangedCombat: Дальний бой
+  stealth: Скрытность
+  infoGathering: Сбор информации
+  persuasion: Убеждение
+  hacking: Хакинг
+  engineering: Инженерия
+  chemistry: Химия
+stats:
+  closeCombatScore: Очки ББ
+  rangedCombatScore: Очки ДБ
+  defense: Защита
+  speed: Скорость
+  maxHp: Макс. здоровье

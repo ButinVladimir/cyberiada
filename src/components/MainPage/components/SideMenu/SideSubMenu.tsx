@@ -1,3 +1,4 @@
+import i18n from 'i18next'
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -34,7 +35,7 @@ export default function SideSubMenu(props: ISideMenuProps) {
             <ListItemIcon>
               <item.icon />
             </ListItemIcon>
-            <ListItemText primary={item.text} />
+            <ListItemText primary={i18n.t(`sideMenu.${item.value}`, { ns: 'ui' })} />
           </ListItemButton>
         </ListItem>  
       ))}

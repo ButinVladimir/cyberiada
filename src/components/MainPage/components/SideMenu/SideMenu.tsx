@@ -20,12 +20,10 @@ const Menus: MenuItems = {
       items: [
         {
           icon: PersonIcon,
-          text: 'Crew',
           value: MenuPages.Crew,
         },
         {
           icon: PersonIcon,
-          text: 'Crew editor',
           value: MenuPages.CrewEditor,
         },    
       ],

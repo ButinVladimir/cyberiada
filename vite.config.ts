@@ -1,10 +1,17 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import i18nextLoader from 'vite-plugin-i18next-loader'
 import path from 'path';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    i18nextLoader({
+      paths: ['./locales'],
+      namespaceResolution: 'relativePath',
+    })
+  ],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),

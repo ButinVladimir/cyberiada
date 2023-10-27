@@ -1,0 +1,12 @@
+common:
+  cancel: Cancel
+  create: Create
+  update: Update
+sideMenu:
+  crew: Crew
+  crewEditor: Crew editor
+crewEditor:
+  createCrewMember: Create crew member
+  creatingCrewMember: Creating crew member
+  updatingCrewMember: Updating crew member
+  deleteCrewMember: Delete crew member

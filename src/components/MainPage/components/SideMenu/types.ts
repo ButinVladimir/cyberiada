@@ -4,7 +4,6 @@ import { MenuPages } from '@state/common';
 
 export interface SubMenuItem {
   icon: OverridableComponent<SvgIconTypeMap<unknown>> & { muiName: string; };
-  text: string;
   value: MenuPages;
 }
 

@@ -1,0 +1,35 @@
+sections:
+  general: General
+  skills: Skills
+  attributes: Attributes
+  stats: Stats
+general:
+  name: Name
+  level: Level
+  exp: Experience
+  hp: HP
+  loyalty: Loyalty
+  attributePoints: Attribute points
+  skillPoints: Skill points
+attributes:
+  strength: Strength
+  endurance: Endurance
+  agility: Agility
+  perception: Perception
+  intellect: Intellect
+  charisma: Charisma
+skills:
+  closeCombat: Close combat
+  rangedCombat: Ranged combat
+  stealth: Stealth
+  infoGathering: Info gathering
+  persuasion: Persuasion
+  hacking: Hacking
+  engineering: Engineering
+  chemistry: Chemistry
+stats:
+  closeCombatScore: MC score
+  rangedCombatScore: RC score
+  defense: Defense
+  speed: Speed
+  maxHp: Max HP

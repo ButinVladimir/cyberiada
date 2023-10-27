@@ -1,3 +1,4 @@
+import i18n from 'i18next';
 import React from 'react';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
@@ -9,14 +10,14 @@ interface IAttributeInputsProps {
   setAttributesState: React.Dispatch<React.SetStateAction<IAttributes>>;
 }
 
-const attributesLabelMap: Record<keyof IAttributes, string> = {
-  strength: 'Strength',
-  endurance: 'Endurance',
-  agility: 'Agility',
-  perception: 'Perception',
-  intellect: 'Intellect',
-  charisma: 'Charisma',
-};
+const params: (keyof IAttributes)[] = [
+  'strength',
+  'endurance',
+  'agility',
+  'perception',
+  'intellect',
+  'charisma',
+];
 
 export default function AttributeInputs(props: IAttributeInputsProps) {
   const {
@@ -37,18 +38,18 @@ export default function AttributeInputs(props: IAttributeInputsProps) {
     <>
       <Grid item xs={12}>
         <Typography variant="h4">
-          Attributes
+          {i18n.t('sections.attributes', { ns: 'common' })}
         </Typography>
       </Grid>
 
-      {Object.entries(attributesLabelMap).map(([name, label]) => (
+      {params.map((name) => (
         <Grid key={name} item xs={12} md={6} lg={4}>
           <TextField
             type="number"
             name={name}
-            label={label}
+            label={i18n.t(`attributes.${name}`, { ns: 'common' })}
             fullWidth
-            value={attributesState[name as keyof IAttributes]}
+            value={attributesState[name]}
             onChange={handleAttributeChange}
           />
         </Grid>

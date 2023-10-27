@@ -1,35 +1,36 @@
+import i18n from 'i18next';
 import React from 'react';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
-import { ICommonParamsState } from './types';
+import { IGeneralState } from './types';
 
 interface INameInputProps {
-  commonParamsState: ICommonParamsState;
-  setCommonParamsState: React.Dispatch<React.SetStateAction<ICommonParamsState>>;
+  generalState: IGeneralState;
+  setGeneralState: React.Dispatch<React.SetStateAction<IGeneralState>>;
 }
 
 export default function NameInput(props: INameInputProps) {
   const {
-    commonParamsState,
-    setCommonParamsState,
+    generalState,
+    setGeneralState,
   } = props;
 
   const handleNameChange: React.ChangeEventHandler<HTMLInputElement> = React.useCallback((event) => {
     const { value } = event.target;
 
-    setCommonParamsState((prevState: ICommonParamsState) => ({
+    setGeneralState((prevState: IGeneralState) => ({
       ...prevState,
       name: value,
     }));
-  }, [setCommonParamsState]);
+  }, [setGeneralState]);
 
   return (
     <Grid item xs={12}>
       <TextField
         name="name"
-        label="Name"
+        label={i18n.t('general.name', { ns: 'common' })}
         fullWidth
-        value={commonParamsState.name}
+        value={generalState.name}
         onChange={handleNameChange}
       />
     </Grid>

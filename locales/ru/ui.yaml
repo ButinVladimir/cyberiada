@@ -1,0 +1,12 @@
+common:
+  cancel: Отмена
+  create: Создать
+  update: Обновить
+sideMenu:
+  crew: Команда
+  crewEditor: Редактор команды
+crewEditor:
+  createCrewMember: Создать члена команды
+  creatingCrewMember: Создание члена команды
+  updatingCrewMember: Обновление члена команды
+  deleteCrewMember: Удалить члена команды

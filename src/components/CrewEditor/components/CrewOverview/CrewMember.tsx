@@ -1,3 +1,4 @@
+import i18n from 'i18next';
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import Card from '@mui/material/Card';
@@ -14,15 +15,16 @@ import { ValueDisplayer } from '@components/common';
 import { crewEditorCallbacksContext } from '../../crewEditorCallbacksContext';
 
 interface IPropertyDisplayer {
-  title: string;
+  sectionKey: string;
+  paramKey: string;
   getValue: () => number;
 }
 
 interface IPropertySectionDisplayer {
-  title: string;
+  sectionKey: string;
   properties: {
     key: number;
-    title: string;
+    paramKey: string;
     getValue: () => number;
   }[];
 }
@@ -33,7 +35,8 @@ interface ICrewMemberProps {
 
 const PropertyDisplayer = observer((props: IPropertyDisplayer) => {
   const {
-    title,
+    sectionKey,
+    paramKey,
     getValue,
   } = props;
 
@@ -41,7 +44,7 @@ const PropertyDisplayer = observer((props: IPropertyDisplayer) => {
     <>
       <Grid item xs={6}>
         <Typography>
-          {title}
+          {i18n.t(`${sectionKey}.${paramKey}`, { ns: 'common' })}
         </Typography>
       </Grid>
       <Grid item xs={6} sx={{ textAlign: "right" }}>
@@ -53,7 +56,7 @@ const PropertyDisplayer = observer((props: IPropertyDisplayer) => {
 
 const PropertySectionDisplayer = observer((props: IPropertySectionDisplayer) => {
   const {
-    title,
+    sectionKey,
     properties,
   } = props;
 
@@ -62,14 +65,15 @@ const PropertySectionDisplayer = observer((props: IPropertySectionDisplayer) => 
       <Grid container>
         <Grid item xs={12}>
           <Typography variant="h6">
-            {title}
+            {i18n.t(`sections.${sectionKey}`, { ns: 'common' })}
           </Typography>
         </Grid>
 
-        {properties.map(({ key, title: propertyTitle, getValue }) => (
+        {properties.map(({ key, paramKey, getValue }) => (
           <PropertyDisplayer
             key={key}
-            title={propertyTitle}
+            sectionKey={sectionKey}
+            paramKey={paramKey}
             getValue={getValue}
           />
         ))}
@@ -108,51 +112,51 @@ const CrewMember = observer((props: ICrewMemberProps) => {
         <CardContent>
           <Grid container columnSpacing={4} rowGap={1}>
             <PropertySectionDisplayer
-              title="General"
+              sectionKey="general"
               properties={[
-                { key: 1, title: 'Level', getValue: () => person.level },
-                { key: 2, title: 'Exp', getValue: () => person.exp },
-                { key: 3, title: 'HP', getValue: () => person.hp },
-                { key: 4, title: 'Loyalty', getValue: () => person.loyalty },
-                { key: 5, title: 'Attribute points', getValue: () => person.attributePoints },
-                { key: 6, title: 'Skill points', getValue: () => person.skillPoints },
+                { key: 1, paramKey: 'level', getValue: () => person.level },
+                { key: 2, paramKey: 'exp', getValue: () => person.exp },
+                { key: 3, paramKey: 'hp', getValue: () => person.hp },
+                { key: 4, paramKey: 'loyalty', getValue: () => person.loyalty },
+                { key: 5, paramKey: 'attributePoints', getValue: () => person.attributePoints },
+                { key: 6, paramKey: 'skillPoints', getValue: () => person.skillPoints },
               ]}
             />
 
             <PropertySectionDisplayer
-              title="Attributes"
+              sectionKey="attributes"
               properties={[
-                { key: 1, title: 'Strength', getValue: () => person.attributes.strength },
-                { key: 2, title: 'Endurance', getValue: () => person.attributes.endurance },
-                { key: 3, title: 'Agility', getValue: () => person.attributes.agility },
-                { key: 4, title: 'Perception', getValue: () => person.attributes.perception },
-                { key: 5, title: 'Intellect', getValue: () => person.attributes.intellect },
-                { key: 6, title: 'Charisma', getValue: () => person.attributes.charisma },
+                { key: 1, paramKey: 'strength', getValue: () => person.attributes.strength },
+                { key: 2, paramKey: 'endurance', getValue: () => person.attributes.endurance },
+                { key: 3, paramKey: 'agility', getValue: () => person.attributes.agility },
+                { key: 4, paramKey: 'perception', getValue: () => person.attributes.perception },
+                { key: 5, paramKey: 'intellect', getValue: () => person.attributes.intellect },
+                { key: 6, paramKey: 'charisma', getValue: () => person.attributes.charisma },
               ]}
             />
 
             <PropertySectionDisplayer
-              title="Skills"
+              sectionKey="skills"
               properties={[
-                { key: 1, title: 'Close combat', getValue: () => person.skills.closeCombat },
-                { key: 2, title: 'Ranged combat', getValue: () => person.skills.rangedCombat },
-                { key: 3, title: 'Stealth', getValue: () => person.skills.stealth },
-                { key: 4, title: 'Info gathering', getValue: () => person.skills.infoGathering },
-                { key: 5, title: 'Persuasion', getValue: () => person.skills.persuasion },
-                { key: 6, title: 'Hacking', getValue: () => person.skills.hacking },
-                { key: 7, title: 'Engineering', getValue: () => person.skills.engineering },
-                { key: 8, title: 'Chemistry', getValue: () => person.skills.chemistry },
+                { key: 1, paramKey: 'closeCombat', getValue: () => person.skills.closeCombat },
+                { key: 2, paramKey: 'rangedCombat', getValue: () => person.skills.rangedCombat },
+                { key: 3, paramKey: 'stealth', getValue: () => person.skills.stealth },
+                { key: 4, paramKey: 'infoGathering', getValue: () => person.skills.infoGathering },
+                { key: 5, paramKey: 'persuasion', getValue: () => person.skills.persuasion },
+                { key: 6, paramKey: 'hacking', getValue: () => person.skills.hacking },
+                { key: 7, paramKey: 'engineering', getValue: () => person.skills.engineering },
+                { key: 8, paramKey: 'chemistry', getValue: () => person.skills.chemistry },
               ]}
             />
 
             <PropertySectionDisplayer
-              title="Stats"
+              sectionKey="stats"
               properties={[
-                { key: 1, title: 'MC score', getValue: () => person.stats.closeCombatScore },
-                { key: 2, title: 'RC score', getValue: () => person.stats.rangedCombatScore },
-                { key: 3, title: 'Defense', getValue: () => person.stats.defense },
-                { key: 4, title: 'Speed', getValue: () => person.stats.speed },
-                { key: 5, title: 'Max HP', getValue: () => person.stats.maxHp },
+                { key: 1, paramKey: 'closeCombatScore', getValue: () => person.stats.closeCombatScore },
+                { key: 2, paramKey: 'rangedCombatScore', getValue: () => person.stats.rangedCombatScore },
+                { key: 3, paramKey: 'defense', getValue: () => person.stats.defense },
+                { key: 4, paramKey: 'speed', getValue: () => person.stats.speed },
+                { key: 5, paramKey: 'maxHp', getValue: () => person.stats.maxHp },
               ]}
             />
           </Grid>
@@ -160,7 +164,9 @@ const CrewMember = observer((props: ICrewMemberProps) => {
       </CardActionArea>
 
       <CardActions>
-        <Button onClick={handleDeleteMember}>Delete member</Button>
+        <Button onClick={handleDeleteMember}>
+          {i18n.t('crewEditor.deleteCrewMember', { ns: 'ui' })}
+        </Button>
       </CardActions>
     </Card>
   );

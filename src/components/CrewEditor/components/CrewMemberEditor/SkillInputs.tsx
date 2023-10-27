@@ -1,3 +1,4 @@
+import i18n from 'i18next';
 import React from 'react';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
@@ -9,16 +10,16 @@ interface ISkillInputsProps {
   setSkillsState: React.Dispatch<React.SetStateAction<ISkills>>;
 }
 
-const skillsLabelMap: Record<keyof ISkills, string> = {
-  closeCombat: 'Close combat',
-  rangedCombat: 'Ranged combat',
-  stealth: 'Stealth',
-  infoGathering: 'Info gathering',
-  persuasion: 'Persuasion',
-  hacking: 'Hacking',
-  engineering: 'Engineering',
-  chemistry: 'Chemistry',
-};
+const params: (keyof ISkills)[] = [
+  'closeCombat',
+  'rangedCombat',
+  'stealth',
+  'infoGathering',
+  'persuasion',
+  'hacking',
+  'engineering',
+  'chemistry',
+];
 
 export default function SkillInputs(props: ISkillInputsProps) {
   const {
@@ -39,18 +40,18 @@ export default function SkillInputs(props: ISkillInputsProps) {
     <>
       <Grid item xs={12}>
         <Typography variant="h4">
-          Skills
+          {i18n.t('sections.skills', { ns: 'common' })}
         </Typography>
       </Grid>
 
-      {Object.entries(skillsLabelMap).map(([name, label]) => (
+      {params.map((name) => (
         <Grid key={name} item xs={12} md={6} lg={4}>
           <TextField
             type="number"
             name={name}
-            label={label}
+            label={i18n.t(`skills.${name}`, { ns: 'common' })}
             fullWidth
-            value={skillsState[name as keyof ISkills]}
+            value={skillsState[name]}
             onChange={handleSkillChange}
           />
         </Grid>
