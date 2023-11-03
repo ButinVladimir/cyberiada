@@ -1,9 +1,7 @@
 import { makeAutoObservable } from 'mobx';
 import { IPerson } from '../interfaces';
 import { EXP_REQUIREMENT_BASE, EXP_REQUIREMENT_FACTOR } from '../constants';
-import { Attributes } from './Attributes';
-import { Skills } from './Skills';
-import { Stats } from './Stats'; 
+import { Attributes, Skills, PersonStats } from '@state/common';
 
 export class Person implements IPerson {
   readonly id;
@@ -17,7 +15,7 @@ export class Person implements IPerson {
 
   attributes = new Attributes();
   skills = new Skills();
-  stats = new Stats();
+  personStats = new PersonStats();
 
   constructor(id: string) {
     this.id = id;

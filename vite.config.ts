@@ -20,6 +20,7 @@ export default defineConfig({
       '@helpers': path.resolve(__dirname, './src/helpers'),
       '@hooks': path.resolve(__dirname, './src/hooks'),
       '@contexts': path.resolve(__dirname, './src/contexts'),
+      '@templates': path.resolve(__dirname, './src/templates'),
     }
   }
 });

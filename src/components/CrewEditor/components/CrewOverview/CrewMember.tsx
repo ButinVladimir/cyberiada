@@ -152,11 +152,10 @@ const CrewMember = observer((props: ICrewMemberProps) => {
             <PropertySectionDisplayer
               sectionKey="stats"
               properties={[
-                { key: 1, paramKey: 'closeCombatScore', getValue: () => person.stats.closeCombatScore },
-                { key: 2, paramKey: 'rangedCombatScore', getValue: () => person.stats.rangedCombatScore },
-                { key: 3, paramKey: 'defense', getValue: () => person.stats.defense },
-                { key: 4, paramKey: 'speed', getValue: () => person.stats.speed },
-                { key: 5, paramKey: 'maxHp', getValue: () => person.stats.maxHp },
+                { key: 1, paramKey: 'closeCombatScore', getValue: () => person.personStats.closeCombatScore },
+                { key: 2, paramKey: 'rangedCombatScore', getValue: () => person.personStats.rangedCombatScore },
+                { key: 3, paramKey: 'defense', getValue: () => person.personStats.defense },
+                { key: 4, paramKey: 'maxHp', getValue: () => person.personStats.maxHp },
               ]}
             />
           </Grid>

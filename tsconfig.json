@@ -20,7 +20,8 @@
       "@components/*": ["./src/components/*"],
       "@helpers/*": ["./src/helpers/*"],
       "@hooks/*": ["./src/hooks/*"],
-      "@contexts/*": ["./src/contexts/*"]
+      "@contexts/*": ["./src/contexts/*"],
+      "@templates/*": ["./src/templates/*"]
     },
 
     /* Linting */

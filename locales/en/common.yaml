@@ -31,5 +31,4 @@ stats:
   closeCombatScore: MC score
   rangedCombatScore: RC score
   defense: Defense
-  speed: Speed
   maxHp: Max HP

@@ -1,6 +1,4 @@
-import { IAttributes } from './IAttributes';
-import { ISkills } from './ISkills';
-import { IStats } from './IStats';
+import { IAttributes, ISkills, IPersonStats } from '@state/common';
 
 export interface IPerson {
   id: string;
@@ -13,7 +11,7 @@ export interface IPerson {
   skillPoints: number;
   attributes: IAttributes;
   skills: ISkills;
-  stats: IStats;
+  personStats: IPersonStats;
 
   calculateExpToLevelUp(levelUps: number): number;
   calculateLevelUpsFromExp(): number;

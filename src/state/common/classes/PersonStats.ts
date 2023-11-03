@@ -1,11 +1,10 @@
 import { makeAutoObservable } from 'mobx';
-import { IStats } from '../interfaces';
+import { IPersonStats } from '../interfaces';
 
-export class Stats implements IStats {
+export class PersonStats implements IPersonStats {
   closeCombatScore = 0;
   rangedCombatScore = 0;
   defense = 0;
-  speed = 0;
   maxHp = 0;
 
   constructor() {
