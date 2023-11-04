@@ -3,21 +3,12 @@ import React from 'react';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import { IAttributes } from '@state/common';
+import { IAttributes, ATTRIBUTE_FIELDS } from '@state/common';
 
 interface IAttributeInputsProps {
   attributesState: IAttributes;
   setAttributesState: React.Dispatch<React.SetStateAction<IAttributes>>;
 }
-
-const params: (keyof IAttributes)[] = [
-  'strength',
-  'endurance',
-  'agility',
-  'perception',
-  'intellect',
-  'charisma',
-];
 
 export default function AttributeInputs(props: IAttributeInputsProps) {
   const {
@@ -42,7 +33,7 @@ export default function AttributeInputs(props: IAttributeInputsProps) {
         </Typography>
       </Grid>
 
-      {params.map((name) => (
+      {ATTRIBUTE_FIELDS.map((name) => (
         <Grid key={name} item xs={12} md={6} lg={4}>
           <TextField
             type="number"

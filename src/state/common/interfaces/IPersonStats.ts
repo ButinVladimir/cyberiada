@@ -1,6 +1,5 @@
 export interface IPersonStats {
-  closeCombatScore: number;
-  rangedCombatScore: number;
+  damage: number;
   defense: number;
   maxHp: number;
 }

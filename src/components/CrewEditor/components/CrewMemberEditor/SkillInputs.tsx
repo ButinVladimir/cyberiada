@@ -3,23 +3,12 @@ import React from 'react';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import { ISkills } from '@state/common';
+import { ISkills, SKILL_FIELDS } from '@state/common';
 
 interface ISkillInputsProps {
   skillsState: ISkills;
   setSkillsState: React.Dispatch<React.SetStateAction<ISkills>>;
 }
-
-const params: (keyof ISkills)[] = [
-  'closeCombat',
-  'rangedCombat',
-  'stealth',
-  'infoGathering',
-  'persuasion',
-  'hacking',
-  'engineering',
-  'chemistry',
-];
 
 export default function SkillInputs(props: ISkillInputsProps) {
   const {
@@ -44,7 +33,7 @@ export default function SkillInputs(props: ISkillInputsProps) {
         </Typography>
       </Grid>
 
-      {params.map((name) => (
+      {SKILL_FIELDS.map((name) => (
         <Grid key={name} item xs={12} md={6} lg={4}>
           <TextField
             type="number"

@@ -5,6 +5,7 @@ import { MenuPages } from '@state/common';
 import TopBar from './components/TopBar';
 import SideMenu from './components/SideMenu';
 import CrewEditor from '@components/CrewEditor';
+import Jobs from '@components/Jobs';
 
 export default function MainPage() {
   const [sideMenuOpened, setSideMenuOpened] = React.useState<boolean>(true);
@@ -22,6 +23,8 @@ export default function MainPage() {
     switch (selectedMenuPage) {
       case MenuPages.CrewEditor:
         return <CrewEditor />;
+      case MenuPages.Jobs:
+        return <Jobs />;
       default: 
         return null;
     }

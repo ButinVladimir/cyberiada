@@ -9,7 +9,7 @@ interface IMainPageState {
   person?: IPerson;
 }
 
-export default function MainPage() {
+export default function CrewEditor() {
   const [mainPageState, setMainPageState] = React.useState<IMainPageState>({
     action: 'list',
   });

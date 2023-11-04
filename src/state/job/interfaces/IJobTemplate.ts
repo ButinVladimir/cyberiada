@@ -7,7 +7,7 @@ export interface IJobTemplate {
     personStats: Partial<IPersonStats>;
   }
 
-  moneyModifiers: {
+  bonusModifiers: {
     attributes: Partial<IAttributes>;
     skills: Partial<ISkills>;
     personStats: Partial<IPersonStats>;

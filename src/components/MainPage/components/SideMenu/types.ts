@@ -13,6 +13,4 @@ export interface MenuItem {
   key: number;
 }
 
-export interface MenuItems {
-  items: MenuItem[];
-}
+export type MenuItems = MenuItem[];

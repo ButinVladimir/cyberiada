@@ -1,14 +1,15 @@
 export enum MenuPages {
   Crew = 'crew',
   CrewEditor = 'crewEditor',
+  Jobs = 'jobs',
 }
 
 export enum Quality {
-  Abysmal = -1,
-  Bad = -0.5,
-  Mediocre = -0.25,
-  Average = 0,
-  Cool = 0.25,
-  Good = 0.5,
-  Excellent = 1,
+  Abysmal = 'abysmal',
+  Bad = 'bad',
+  Mediocre = 'mediocre',
+  Average = 'average',
+  Cool = 'cool',
+  Good = 'good',
+  Excellent = 'excellent',
 }

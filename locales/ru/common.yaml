@@ -11,6 +11,8 @@ general:
   loyalty: Лояльность
   attributePoints: Очки аттрибутов
   skillPoints: Очки навыков
+  quality: Качество
+  template: Шаблон
 attributes:
   strength: Сила
   endurance: Выносливость
@@ -28,7 +30,14 @@ skills:
   engineering: Инженерия
   chemistry: Химия
 stats:
-  closeCombatScore: Очки ББ
-  rangedCombatScore: Очки ДБ
+  damage: Урон
   defense: Защита
   maxHp: Макс. здоровье
+quality:
+  abysmal: Ужасное
+  bad: Плохое
+  mediocre: Посредственное
+  average: Среднее
+  cool: Неплохое
+  good: Хорошее
+  excellent: Отличное

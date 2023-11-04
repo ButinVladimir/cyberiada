@@ -1,6 +1,9 @@
+fullTemplate:
+  title: Образец работы
+  description: Только для разработки
 oddjobs:
   title: Подработки
-  description: Различные низкооплачиваемые работы без особых требований.
-writing_simple_scripts:
+  description: Различные низкооплачиваемые работы без особых требований
+writeSimpleScripts:
   title: Написание простых скриптов
-  description: Написание простых скриптов и програм.
+  description: Написание простых скриптов и програм

@@ -5,8 +5,13 @@ common:
 sideMenu:
   crew: Команда
   crewEditor: Редактор команды
+  jobs: Работа
 crewEditor:
   createCrewMember: Создать члена команды
   creatingCrewMember: Создание члена команды
   updatingCrewMember: Обновление члена команды
   deleteCrewMember: Удалить члена команды
+jobs:
+  createNewJob: Создать новую работу
+  deleteJob: Удалить работу
+  newJob: Новая работа

@@ -1,7 +1,7 @@
 import { Person } from '@/state/person';
 import React from 'react';
 
-interface CrewEditorCallbacks {
+export interface CrewEditorCallbacks {
   startCreatingMember: () => void;
   startEditingMember: (person: Person) => void;
   listMembers: () => void;

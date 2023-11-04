@@ -1,18 +1,24 @@
-import { IAttributes, ISkills, IPersonStats } from '@state/common';
+import { IAttributes, ISkills, IPersonStats, Quality } from '@state/common';
+import { IJobTemplate } from './IJobTemplate';
 
 export interface IJob {
   id: string;
   templateName: string;
+  template: IJobTemplate | null;
+  level: number;
+  quality: Quality;
+  
   requirements: {
     attributes: IAttributes;
     skills: ISkills;
     personStats: IPersonStats;
   }
-  moneyModifiers: {
+  bonusModifiers: {
     attributes: IAttributes;
     skills: ISkills;
     personStats: IPersonStats;
   }
+
   money: number;
   exp: number;
   timeAvailable: number;

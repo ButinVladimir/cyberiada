@@ -20,13 +20,12 @@
         "chemistry": 0
       },
       "personStats": {
-        "closeCombatScore": 0,
-        "rangedCombatScore": 0,
+        "damage": 0,
         "defense": 0,
         "maxHp": 0
       }
     },
-    "moneyModifiers": {
+    "bonusModifiers": {
       "attributes": {
         "strength": 0,
         "endurance": 0,
@@ -46,8 +45,7 @@
         "chemistry": 0
       },
       "personStats": {
-        "closeCombatScore": 0,
-        "rangedCombatScore": 0,
+        "damage": 0,
         "defense": 0,
         "maxHp": 0
       }
@@ -62,7 +60,7 @@
       "skills": {},
       "personStats": {}
     },
-    "moneyModifiers": {
+    "bonusModifiers": {
       "attributes": {
         "endurance": 0.01,
         "charisma": 0.01
@@ -76,7 +74,7 @@
     "baseExp": 100,
     "timeToDo": 60000
   },
-  "write_simple_scripts": {
+  "writeSimpleScripts": {
     "requirements": {
       "attributes": {
         "intellect": 0.05
@@ -88,7 +86,7 @@
       },
       "personStats": {}
     },
-    "moneyModifiers": {
+    "bonusModifiers": {
       "attributes": {
         "endurance": 0.01,
         "intellect": 0.01,

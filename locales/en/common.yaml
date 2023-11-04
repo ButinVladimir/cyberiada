@@ -11,6 +11,8 @@ general:
   loyalty: Loyalty
   attributePoints: Attribute points
   skillPoints: Skill points
+  quality: Quality
+  template: Template
 attributes:
   strength: Strength
   endurance: Endurance
@@ -28,7 +30,14 @@ skills:
   engineering: Engineering
   chemistry: Chemistry
 stats:
-  closeCombatScore: MC score
-  rangedCombatScore: RC score
+  damage: Damage
   defense: Defense
   maxHp: Max HP
+quality:
+  abysmal: Abysmal
+  bad: Bad
+  mediocre: Mediocre
+  average: Average
+  cool: Cool
+  good: Good
+  excellent: Excellent

@@ -10,24 +10,10 @@ import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import { stateContext } from '@/contexts';
-import { IPerson } from '@/state/person';
-import { ValueDisplayer } from '@components/common';
+import { ATTRIBUTE_FIELDS, SKILL_FIELDS, PERSON_STAT_FIELDS } from '@state/common'
+import { IPerson } from '@state/person';
+import { ValueDisplayer, IPropertyDisplayer, IPropertySectionDisplayer } from '@components/common';
 import { crewEditorCallbacksContext } from '../../crewEditorCallbacksContext';
-
-interface IPropertyDisplayer {
-  sectionKey: string;
-  paramKey: string;
-  getValue: () => number;
-}
-
-interface IPropertySectionDisplayer {
-  sectionKey: string;
-  properties: {
-    key: number;
-    paramKey: string;
-    getValue: () => number;
-  }[];
-}
 
 interface ICrewMemberProps {
   person: IPerson;
@@ -69,9 +55,9 @@ const PropertySectionDisplayer = observer((props: IPropertySectionDisplayer) => 
           </Typography>
         </Grid>
 
-        {properties.map(({ key, paramKey, getValue }) => (
+        {properties.map(({ paramKey, getValue }) => (
           <PropertyDisplayer
-            key={key}
+            key={paramKey}
             sectionKey={sectionKey}
             paramKey={paramKey}
             getValue={getValue}
@@ -114,49 +100,37 @@ const CrewMember = observer((props: ICrewMemberProps) => {
             <PropertySectionDisplayer
               sectionKey="general"
               properties={[
-                { key: 1, paramKey: 'level', getValue: () => person.level },
-                { key: 2, paramKey: 'exp', getValue: () => person.exp },
-                { key: 3, paramKey: 'hp', getValue: () => person.hp },
-                { key: 4, paramKey: 'loyalty', getValue: () => person.loyalty },
-                { key: 5, paramKey: 'attributePoints', getValue: () => person.attributePoints },
-                { key: 6, paramKey: 'skillPoints', getValue: () => person.skillPoints },
+                { paramKey: 'level', getValue: () => person.level },
+                { paramKey: 'exp', getValue: () => person.exp },
+                { paramKey: 'hp', getValue: () => person.hp },
+                { paramKey: 'loyalty', getValue: () => person.loyalty },
+                { paramKey: 'attributePoints', getValue: () => person.attributePoints },
+                { paramKey: 'skillPoints', getValue: () => person.skillPoints },
               ]}
             />
 
             <PropertySectionDisplayer
               sectionKey="attributes"
-              properties={[
-                { key: 1, paramKey: 'strength', getValue: () => person.attributes.strength },
-                { key: 2, paramKey: 'endurance', getValue: () => person.attributes.endurance },
-                { key: 3, paramKey: 'agility', getValue: () => person.attributes.agility },
-                { key: 4, paramKey: 'perception', getValue: () => person.attributes.perception },
-                { key: 5, paramKey: 'intellect', getValue: () => person.attributes.intellect },
-                { key: 6, paramKey: 'charisma', getValue: () => person.attributes.charisma },
-              ]}
+              properties={ATTRIBUTE_FIELDS.map(field => ({
+                paramKey: field,
+                getValue: () => person.attributes[field],
+              }))}
             />
 
             <PropertySectionDisplayer
               sectionKey="skills"
-              properties={[
-                { key: 1, paramKey: 'closeCombat', getValue: () => person.skills.closeCombat },
-                { key: 2, paramKey: 'rangedCombat', getValue: () => person.skills.rangedCombat },
-                { key: 3, paramKey: 'stealth', getValue: () => person.skills.stealth },
-                { key: 4, paramKey: 'infoGathering', getValue: () => person.skills.infoGathering },
-                { key: 5, paramKey: 'persuasion', getValue: () => person.skills.persuasion },
-                { key: 6, paramKey: 'hacking', getValue: () => person.skills.hacking },
-                { key: 7, paramKey: 'engineering', getValue: () => person.skills.engineering },
-                { key: 8, paramKey: 'chemistry', getValue: () => person.skills.chemistry },
-              ]}
+              properties={SKILL_FIELDS.map(field => ({
+                paramKey: field,
+                getValue: () => person.skills[field],
+              }))}
             />
 
             <PropertySectionDisplayer
               sectionKey="stats"
-              properties={[
-                { key: 1, paramKey: 'closeCombatScore', getValue: () => person.personStats.closeCombatScore },
-                { key: 2, paramKey: 'rangedCombatScore', getValue: () => person.personStats.rangedCombatScore },
-                { key: 3, paramKey: 'defense', getValue: () => person.personStats.defense },
-                { key: 4, paramKey: 'maxHp', getValue: () => person.personStats.maxHp },
-              ]}
+              properties={PERSON_STAT_FIELDS.map(field => ({
+                paramKey: field,
+                getValue: () => person.personStats[field],
+              }))}
             />
           </Grid>
         </CardContent>

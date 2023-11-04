@@ -5,8 +5,13 @@ common:
 sideMenu:
   crew: Crew
   crewEditor: Crew editor
+  jobs: Jobs
 crewEditor:
   createCrewMember: Create crew member
   creatingCrewMember: Creating crew member
   updatingCrewMember: Updating crew member
   deleteCrewMember: Delete crew member
+jobs:
+  createNewJob: Create new job 
+  deleteJob: Delete job
+  newJob: New job

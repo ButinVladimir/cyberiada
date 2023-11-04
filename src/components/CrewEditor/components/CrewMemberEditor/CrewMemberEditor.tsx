@@ -102,7 +102,7 @@ export default function CrewMemberEditor(props: ICrewMemberEditorProps) {
 
   return (
     <form
-      id="editCrewMember"
+      id="edit-crew-member-form"
       autoComplete="off"
       onSubmit={handleSubmit}
     >

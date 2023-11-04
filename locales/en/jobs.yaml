@@ -1,6 +1,9 @@
+fullTemplate:
+  title: Job template
+  description: Only for development
 oddjobs:
   title: Odd jobs
-  description: Low end jobs with minimum wage. Available for everyone.
-writing_simple_scripts:
+  description: Low end jobs with minimum wage. Available for everyone
+writeSimpleScripts:
   title: Write simple scripts
-  description: Write simple scripts and programs.
+  description: Write simple scripts and programs

@@ -2,6 +2,7 @@ import Drawer from '@mui/material/Drawer';
 import Divider from '@mui/material/Divider';
 import Toolbar from '@mui/material/Toolbar';
 import PersonIcon from '@mui/icons-material/Person';
+import WorkIcon from '@mui/icons-material/Work';
 import SideSubMenu from './SideSubMenu';
 import { MenuPages } from '@state/common';
 import { MenuItems } from './types';
@@ -13,28 +14,34 @@ interface ISideMenuProps {
   onSelectMenuPage: (menuPage: MenuPages) => void;
 }
 
-const Menus: MenuItems = {
-  items: [
-    {
-      key: 0,
-      items: [
-        {
-          icon: PersonIcon,
-          value: MenuPages.Crew,
-        },
-        {
-          icon: PersonIcon,
-          value: MenuPages.CrewEditor,
-        },    
-      ],
-
-    },
-    {
-      key: 1,
-      divider: true,
-    }
-  ]
-};
+const MENUS: MenuItems = [
+  {
+    key: 0,
+    items: [
+      {
+        icon: PersonIcon,
+        value: MenuPages.Crew,
+      },
+      {
+        icon: PersonIcon,
+        value: MenuPages.CrewEditor,
+      },    
+    ],
+  },
+  {
+    key: 1,
+    divider: true,
+  },
+  {
+    key: 2,
+    items: [
+      {
+        icon: WorkIcon,
+        value: MenuPages.Jobs,
+      },
+    ],
+  },
+];
 
 export default function SideMenu(props: ISideMenuProps) {
   const {
@@ -59,7 +66,7 @@ export default function SideMenu(props: ISideMenuProps) {
     >
       <Toolbar />
       <Divider />
-      {Menus.items.map(menuItem => menuItem.divider
+      {MENUS.map(menuItem => menuItem.divider
         ? <Divider key={menuItem.key} />
         : (
           <SideSubMenu
