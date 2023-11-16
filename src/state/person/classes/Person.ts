@@ -1,22 +1,38 @@
+import { makeAutoObservable } from 'mobx';
 import { IPerson } from '../interfaces';
 import { EXP_REQUIREMENT_BASE, EXP_REQUIREMENT_FACTOR } from '../constants';
-import { Attributes } from './Attributes';
-import { Skills } from './Skills';
-import { Stats } from './Stats'; 
+import { Attributes, Skills, PersonStats } from '@state/common';
 
 export class Person implements IPerson {
-  id = '';
+  readonly id;
   name = '';
   exp = 0;
   level = 0;
-  hp = 0;
+  hpRatio = 1;
   loyalty = 0;
   attributePoints = 0;
   skillPoints = 0;
 
   attributes = new Attributes();
   skills = new Skills();
-  stats = new Stats();
+  personStats = new PersonStats();
+
+  sectionsOpened = {
+    parameters: false,
+  };
+
+  constructor(id: string) {
+    this.id = id;
+
+    makeAutoObservable(this);
+  }
+
+  static copy(person: IPerson): IPerson {
+    const personCopy = new Person(person.id);
+    personCopy.update(person);
+    
+    return personCopy;
+  }
 
   calculateExpToLevelUp = (levelUps: number) => {
     return (2 * EXP_REQUIREMENT_BASE + (2 * this.level + levelUps - 1) * EXP_REQUIREMENT_FACTOR) * levelUps / 2;    
@@ -40,4 +56,24 @@ export class Person implements IPerson {
   
     return levelUps;  
   };
+
+  update = (person: IPerson) => {
+    this.name = person.name;
+    this.exp = person.exp;
+    this.level = person.level;
+    this.attributePoints = person.attributePoints;
+    this.skillPoints = person.skillPoints;
+    this.loyalty = person.loyalty;
+
+    this.attributes = { ...person.attributes };
+    this.skills = { ...person.skills };
+  };
+
+  toggleParameters = () => {
+    this.sectionsOpened.parameters = !this.sectionsOpened.parameters;
+  };
+
+  get hp() {
+    return this.personStats.maxHp * this.hpRatio;
+  }
 }

@@ -1,15 +1,10 @@
-import { IGlobalState } from '@state/gameState';
-import { Events } from '@state/common';
-import { Callback } from '../types';
+import { IGlobalState, ICrewState, IJobState } from '@state/gameState';
 
 export interface IGameStateManager {
   globalState: IGlobalState;
-  timer: NodeJS.Timeout | null;
-  callbacks: Map<string, Set<Callback>>;
+  crewState: ICrewState;
+  jobState: IJobState;
 
-  tick: () => Promise<void>;
-  changeSpeed: (newSpeed: number) => Promise<void>;
-  on: (eventName: Events, callback: Callback) => void;
-  off: (eventName: Events, callback: Callback) => void;
-  emit: (eventName: Events) => Promise<void>;
+  timer: NodeJS.Timeout | null;
+  tick: () => void;
 }

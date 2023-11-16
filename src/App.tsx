@@ -1,22 +1,23 @@
-import { wrap } from 'comlink';
-import { StateTest } from '@components/StateTest';
-import { StateContext } from '@components/StateContext';
+import { stateContext } from '@/contexts';
+import MainPage from '@components/MainPage';
 import { GameStateManager } from '@state/gameStateManager';
-import './transfer-handlers';
+import i18n from 'i18next'
+import resources from 'virtual:i18next-loader'
 
-const workerClass = wrap<typeof GameStateManager>(
-  new Worker(new URL('./worker', import.meta.url), {
-    type: 'module',
-  })
-);
+const gameStateManager = new GameStateManager();
 
-const gameStateManager = await new workerClass();
+await i18n.init({
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  resources,
+  fallbackLng: 'en',
+  debug: true,
+});
 
 function App() {
   return (
-    <StateContext.Provider value={gameStateManager}>
-      <StateTest />
-    </StateContext.Provider>
+    <stateContext.Provider value={gameStateManager}>
+      <MainPage />
+    </stateContext.Provider>
   );
 }
 
