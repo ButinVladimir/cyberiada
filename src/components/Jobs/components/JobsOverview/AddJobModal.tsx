@@ -138,8 +138,12 @@ const AddJobModal = observer((props: IAddJobModalProps) => {
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={onCloseModal}>Cancel</Button>
-          <Button type="submit">Generate</Button>
+          <Button onClick={onCloseModal}>
+            {i18n.t('common.cancel', { ns: 'ui' })}
+          </Button>
+          <Button type="submit">
+            {i18n.t('common.create', { ns: 'ui' })}
+          </Button>
         </DialogActions>
       </form>
     </Dialog>

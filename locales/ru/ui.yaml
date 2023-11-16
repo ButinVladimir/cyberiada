@@ -9,7 +9,8 @@ sideMenu:
 crewEditor:
   createCrewMember: Создать члена команды
   creatingCrewMember: Создание члена команды
-  updatingCrewMember: Обновление члена команды
+  editCrewMember: Редактировать члена команды
+  editingCrewMember: Редактирование члена команды
   deleteCrewMember: Удалить члена команды
 jobs:
   createNewJob: Создать новую работу

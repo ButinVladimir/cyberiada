@@ -1,13 +1,17 @@
 sections:
   general: General
+  parameters: Parameters
   skills: Skills
   attributes: Attributes
   stats: Stats
+  requirements: Requirements
+  bonusModifiers: Bonus modifiers
 general:
   name: Name
   level: Level
   exp: Experience
   hp: HP
+  hpRatio: HP ratio
   loyalty: Loyalty
   attributePoints: Attribute points
   skillPoints: Skill points

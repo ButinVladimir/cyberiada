@@ -13,7 +13,7 @@ interface IGeneralInputsProps {
 const params: Exclude<keyof IGeneralState, 'name'>[] = [
   'level',
   'exp',
-  'hp',
+  'hpRatio',
   'loyalty',
   'attributePoints',
   'skillPoints',

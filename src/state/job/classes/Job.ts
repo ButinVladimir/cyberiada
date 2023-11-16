@@ -22,6 +22,11 @@ export class Job implements IJob {
   timeAvailable = 0;
   timeToDo = 0;
 
+  sectionsOpened = {
+    requirements: false,
+    bonusModifiers: false,
+  };
+
   constructor(id: string) {
     this.id = id;
 
@@ -97,5 +102,13 @@ export class Job implements IJob {
     job.timeAvailable = JOB_TIME_AVAILABLE;
 
     return job;
+  };
+
+  toggleRequirements = () => {
+    this.sectionsOpened.requirements = !this.sectionsOpened.requirements;
+  };
+
+  toggleBonusModifiers = () => {
+    this.sectionsOpened.bonusModifiers = !this.sectionsOpened.bonusModifiers;    
   };
 }

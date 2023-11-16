@@ -1,13 +1,17 @@
 sections:
   general: Общее
+  parameters: Параметры
   skills: Навыки
   attributes: Атрибуты
   stats: Статы
+  requirements: Требования
+  bonusModifiers: Модификаторы бонуса
 general:
   name: Имя
   level: Уровень
   exp: Опыт
   hp: Здоровье
+  hpRatio: Уровень здоровья
   loyalty: Лояльность
   attributePoints: Очки аттрибутов
   skillPoints: Очки навыков

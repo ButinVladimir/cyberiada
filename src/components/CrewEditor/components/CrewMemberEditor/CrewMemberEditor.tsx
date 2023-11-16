@@ -35,14 +35,14 @@ export default function CrewMemberEditor(props: ICrewMemberEditorProps) {
         name: '',
         level: 0,
         exp: 0,
-        hp: 0,
+        hpRatio: 0,
         loyalty: 0,
         attributePoints: 0,
         skillPoints: 0,
       };
     }
 
-    return pick(person, ['name', 'level', 'exp', 'hp', 'loyalty', 'attributePoints', 'skillPoints']);
+    return pick(person, ['name', 'level', 'exp', 'hpRatio', 'loyalty', 'attributePoints', 'skillPoints']);
   });
 
   const [attributesState, setAttributesState] = React.useState<IAttributes>(() => {
@@ -97,7 +97,7 @@ export default function CrewMemberEditor(props: ICrewMemberEditorProps) {
     listMembers();
   };
 
-  const titleKey = action === 'create' ? 'creatingCrewMember' : 'updatingCrewMember';
+  const titleKey = action === 'create' ? 'creatingCrewMember' : 'editingCrewMember';
   const submitButtonTextKey = action === 'create' ? 'create' : 'update';
 
   return (

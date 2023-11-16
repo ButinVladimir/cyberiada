@@ -10,7 +10,7 @@ export class JobState implements IJobState {
 
   constructor() {
     makeAutoObservable(this);
-  
+
     for (const [templateName, template] of Object.entries(jobTemplates as Record<string, IJobTemplate>)) {
       this.jobTemplates.set(templateName, template);
     }
@@ -29,7 +29,7 @@ export class JobState implements IJobState {
 
     const job = Job.createJob(template, createArguments);
 
-    this.jobs.push(job);
+    this.jobs = [...this.jobs, job];
   };
 
   deleteJob = (id: string): void => {

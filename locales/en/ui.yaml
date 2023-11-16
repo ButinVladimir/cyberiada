@@ -9,7 +9,8 @@ sideMenu:
 crewEditor:
   createCrewMember: Create crew member
   creatingCrewMember: Creating crew member
-  updatingCrewMember: Updating crew member
+  editCrewMember: Edit crew member
+  editingCrewMember: Editing crew member
   deleteCrewMember: Delete crew member
 jobs:
   createNewJob: Create new job 

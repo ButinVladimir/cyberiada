@@ -5,6 +5,7 @@ export interface IPerson {
   name: string;
   exp: number;
   level: number;
+  hpRatio: number;
   hp: number;
   loyalty: number;
   attributePoints: number;
@@ -12,8 +13,12 @@ export interface IPerson {
   attributes: IAttributes;
   skills: ISkills;
   personStats: IPersonStats;
+  sectionsOpened: {
+    parameters: boolean;
+  }
 
   calculateExpToLevelUp(levelUps: number): number;
   calculateLevelUpsFromExp(): number;
   update(person: IPerson): void;
+  toggleParameters(): void;
 }

@@ -5,68 +5,18 @@ import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import { stateContext } from '@/contexts';
-import { ATTRIBUTE_FIELDS, SKILL_FIELDS, PERSON_STAT_FIELDS } from '@state/common'
 import { IJob } from '@state/job';
-import { ValueDisplayer, IPropertyDisplayer, IPropertySectionDisplayer } from '@components/common';
+import { ValueDisplayer } from '@components/common';
+import JobRequirements from './JobRequirements';
+import JobBonusModifiers from './JobBonusModifiers';
 
 interface IJobProps {
   job: IJob;
 }
 
-const PropertyDisplayer = observer((props: IPropertyDisplayer) => {
-  const {
-    sectionKey,
-    paramKey,
-    getValue,
-  } = props;
-
-  return (
-    <>
-      <Grid item xs={6}>
-        <Typography>
-          {i18n.t(`${sectionKey}.${paramKey}`, { ns: 'common' })}
-        </Typography>
-      </Grid>
-      <Grid item xs={6} sx={{ textAlign: "right" }}>
-        <b>{<ValueDisplayer getValue={getValue} />}</b>
-      </Grid>
-    </>
-  );
-});
-
-const PropertySectionDisplayer = observer((props: IPropertySectionDisplayer) => {
-  const {
-    sectionKey,
-    properties,
-  } = props;
-
-  return (
-    <Grid item xs={12} sm={6} md={4}>
-      <Grid container>
-        <Grid item xs={12}>
-          <Typography variant="h6">
-            {i18n.t(`sections.${sectionKey}`, { ns: 'common' })}
-          </Typography>
-        </Grid>
-
-        {properties.map(({ paramKey, getValue }) => (
-          <PropertyDisplayer
-            key={paramKey}
-            sectionKey={sectionKey}
-            paramKey={paramKey}
-            getValue={getValue}
-          />
-        ))}
-      </Grid>
-    </Grid>
-  );
-});
-
-const CrewMember = observer((props: IJobProps) => {
+const Job = observer((props: IJobProps) => {
   const {
     job,
   } = props;
@@ -88,34 +38,11 @@ const CrewMember = observer((props: IJobProps) => {
       />
 
       <CardContent>
-        <Grid container columnSpacing={4} rowGap={1}>
-          <PropertySectionDisplayer
-            sectionKey="attributes"
-            properties={ATTRIBUTE_FIELDS.map(field => ({
-              paramKey: field,
-              getValue: () => job.requirements.attributes[field],
-            }))}
-          />
-
-          <PropertySectionDisplayer
-            sectionKey="skills"
-            properties={SKILL_FIELDS.map(field => ({
-              paramKey: field,
-              getValue: () => job.requirements.skills[field],
-            }))}
-          />
-
-          <PropertySectionDisplayer
-            sectionKey="stats"
-            properties={PERSON_STAT_FIELDS.map(field => ({
-              paramKey: field,
-              getValue: () => job.requirements.personStats[field],
-            }))}
-          />
-        </Grid>
+        <JobRequirements job={job} />
+        <JobBonusModifiers job={job} />
       </CardContent>
 
-      <CardActions>
+      <CardActions sx={{ justifyContent: 'end' }}>
         <Button onClick={handleDeleteJob}>
           {i18n.t('jobs.deleteJob', { ns: 'ui' })}
         </Button>
@@ -124,4 +51,4 @@ const CrewMember = observer((props: IJobProps) => {
   );
 });
 
-export default CrewMember;
+export default Job;

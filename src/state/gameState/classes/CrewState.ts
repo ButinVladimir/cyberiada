@@ -11,7 +11,7 @@ export class CrewState implements ICrewState {
   }
 
   addCrewMember = (person: IPerson): void => {
-    this.crew.push(person);
+    this.crew = [...this.crew, person];
   };
 
   updateCrewMember = (id: string, person: IPerson): void => {

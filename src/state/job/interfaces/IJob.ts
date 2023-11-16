@@ -23,4 +23,12 @@ export interface IJob {
   exp: number;
   timeAvailable: number;
   timeToDo: number;
+
+  sectionsOpened: {
+    requirements: boolean;
+    bonusModifiers: boolean;
+  }
+
+  toggleRequirements(): void;
+  toggleBonusModifiers(): void;
 }

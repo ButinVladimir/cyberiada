@@ -80,9 +80,7 @@
         "intellect": 0.05
       },
       "skills": {
-        "hacking": 0.25,
-        "engineering": 0,
-        "chemistry": 0
+        "hacking": 0.25
       },
       "personStats": {}
     },
@@ -90,7 +88,8 @@
       "attributes": {
         "endurance": 0.01,
         "intellect": 0.01,
-        "charisma": 0.01
+        "charisma": 0.01,
+        "persuasion": 0.01
       },
       "skills": {
         "hacking": 0.05

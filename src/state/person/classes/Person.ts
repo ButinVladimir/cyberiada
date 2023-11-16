@@ -8,7 +8,7 @@ export class Person implements IPerson {
   name = '';
   exp = 0;
   level = 0;
-  hp = 0;
+  hpRatio = 1;
   loyalty = 0;
   attributePoints = 0;
   skillPoints = 0;
@@ -16,6 +16,10 @@ export class Person implements IPerson {
   attributes = new Attributes();
   skills = new Skills();
   personStats = new PersonStats();
+
+  sectionsOpened = {
+    parameters: false,
+  };
 
   constructor(id: string) {
     this.id = id;
@@ -64,4 +68,12 @@ export class Person implements IPerson {
     this.attributes = { ...person.attributes };
     this.skills = { ...person.skills };
   };
+
+  toggleParameters = () => {
+    this.sectionsOpened.parameters = !this.sectionsOpened.parameters;
+  };
+
+  get hp() {
+    return this.personStats.maxHp * this.hpRatio;
+  }
 }
