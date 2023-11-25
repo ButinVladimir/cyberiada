@@ -35,7 +35,7 @@ export default function SideSubMenu(props: ISideMenuProps) {
             <ListItemIcon>
               <item.icon />
             </ListItemIcon>
-            <ListItemText primary={i18n.t(`sideMenu.${item.value}`, { ns: 'ui' })} />
+            <ListItemText primary={i18n.t(`pages.${item.value}`, { ns: 'ui' })} />
           </ListItemButton>
         </ListItem>  
       ))}

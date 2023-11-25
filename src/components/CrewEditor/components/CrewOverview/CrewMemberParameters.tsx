@@ -7,18 +7,19 @@ import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { ValueDisplayer, IPropertyDisplayer, IPropertySectionDisplayer } from '@components/common';
+import { ValueDisplayer, IPropertyDisplayerProps, IPropertySectionDisplayerProps } from '@components/common';
 import { ATTRIBUTE_FIELDS, SKILL_FIELDS } from '@state/common';
 import { IPerson } from '@state/person';
+import { floatFormatter } from '@helpers/formatters';
 
 interface ICrewMemberParametersProps {
   person: IPerson;
 }
 
-const PropertyDisplayer = observer((props: IPropertyDisplayer) => {
+const PropertyDisplayer = observer((props: IPropertyDisplayerProps) => {
   const {
     sectionKey,
-    paramKey,
+    property: paramKey,
     getValue,
   } = props;
 
@@ -36,7 +37,7 @@ const PropertyDisplayer = observer((props: IPropertyDisplayer) => {
   );
 });
 
-const PropertySectionDisplayer = observer((props: IPropertySectionDisplayer) => {
+const PropertySectionDisplayer = observer((props: IPropertySectionDisplayerProps) => {
   const {
     sectionKey,
     properties,
@@ -51,11 +52,11 @@ const PropertySectionDisplayer = observer((props: IPropertySectionDisplayer) => 
           </Typography>
         </Grid>
 
-        {properties.map(({ paramKey, getValue }) => (
+        {properties.map(({ property, getValue }) => (
           <PropertyDisplayer
-            key={paramKey}
+            key={property}
             sectionKey={sectionKey}
-            paramKey={paramKey}
+            property={property}
             getValue={getValue}
           />
         ))}
@@ -86,16 +87,16 @@ const CrewMemberParameters = observer((props: ICrewMemberParametersProps) => {
           <PropertySectionDisplayer
             sectionKey="attributes"
             properties={ATTRIBUTE_FIELDS.map(field => ({
-              paramKey: field,
-              getValue: () => person.attributes[field],
+              property: field,
+              getValue: () => floatFormatter.format(person.attributes[field]),
             }))}
           />
 
           <PropertySectionDisplayer
             sectionKey="skills"
             properties={SKILL_FIELDS.map(field => ({
-              paramKey: field,
-              getValue: () => person.skills[field],
+              property: field,
+              getValue: () => floatFormatter.format(person.skills[field]),
             }))}
           />
         </Grid>

@@ -2,7 +2,7 @@ common:
   cancel: Cancel
   create: Create
   update: Update
-sideMenu:
+pages:
   crew: Crew
   crewEditor: Crew editor
   jobs: Jobs
@@ -16,3 +16,9 @@ jobs:
   createNewJob: Create new job 
   deleteJob: Delete job
   newJob: New job
+topBar:
+  bonusTime: Bonus time
+  pause: Pause
+  play: Play without bonus time
+  fastForward: Play with bonus time
+  menu: Menu

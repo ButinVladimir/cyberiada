@@ -1,13 +1,13 @@
-export interface IPropertyDisplayer {
+export interface IPropertyDisplayerProps {
   sectionKey: string;
-  paramKey: string;
-  getValue: () => number;
+  property: string;
+  getValue: () => string;
 }
 
-export interface IPropertySectionDisplayer {
+export interface IPropertySectionDisplayerProps {
   sectionKey: string;
   properties: {
-    paramKey: string;
-    getValue: () => number;
+    property: string;
+    getValue: () => string;
   }[];
 }

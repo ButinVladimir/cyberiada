@@ -2,7 +2,7 @@ common:
   cancel: Отмена
   create: Создать
   update: Обновить
-sideMenu:
+pages:
   crew: Команда
   crewEditor: Редактор команды
   jobs: Работа
@@ -16,3 +16,9 @@ jobs:
   createNewJob: Создать новую работу
   deleteJob: Удалить работу
   newJob: Новая работа
+topBar:
+  bonusTime: Бонусное время
+  pause: Пауза
+  play: Играть без бонусного времени
+  fastForward: Играть, используя бонусное время
+  menu: Меню

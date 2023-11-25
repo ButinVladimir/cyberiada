@@ -1,6 +1,6 @@
 import { makeAutoObservable } from 'mobx';
 import { IJobState } from '../interfaces';
-import { Job, IJobCreateArguments, IJobTemplate } from '@/state/job';
+import { Job, IJobCreateArguments, IJobTemplate } from '@state/job';
 import { MAX_JOBS } from '../constants';
 import jobTemplates from '@templates/jobs.json';
 

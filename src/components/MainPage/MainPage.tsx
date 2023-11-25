@@ -36,7 +36,7 @@ export default function MainPage() {
       <Container
         component="main"
         sx={{
-          paddingTop: 10,
+          paddingTop: 8,
         }}
       >
         <TopBar

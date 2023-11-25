@@ -64,7 +64,7 @@ export default function SideMenu(props: ISideMenuProps) {
         },
       }}
     >
-      <Toolbar />
+      <Toolbar variant="dense" />
       <Divider />
       {MENUS.map(menuItem => menuItem.divider
         ? <Divider key={menuItem.key} />

@@ -9,7 +9,7 @@ const gameStateManager = new GameStateManager();
 await i18n.init({
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   resources,
-  fallbackLng: 'en',
+  fallbackLng: 'en-US',
   debug: true,
 });
 

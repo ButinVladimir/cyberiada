@@ -1,6 +1,6 @@
 import { makeAutoObservable } from 'mobx';
 import { ICrewState } from '../interfaces';
-import { IPerson } from '@/state/person';
+import { IPerson } from '@state/person';
 
 export class CrewState implements ICrewState {
   crew: IPerson[] = [];

@@ -9,16 +9,17 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { ATTRIBUTE_FIELDS, SKILL_FIELDS, PERSON_STAT_FIELDS } from '@state/common'
 import { IJob } from '@state/job';
-import { ValueDisplayer, IPropertyDisplayer, IPropertySectionDisplayer } from '@components/common';
+import { ValueDisplayer, IPropertyDisplayerProps, IPropertySectionDisplayerProps } from '@components/common';
+import { floatFormatter } from '@helpers/formatters';
 
 interface IJobRequirementsProps {
   job: IJob;
 }
 
-const PropertyDisplayer = observer((props: IPropertyDisplayer) => {
+const PropertyDisplayer = observer((props: IPropertyDisplayerProps) => {
   const {
     sectionKey,
-    paramKey,
+    property: paramKey,
     getValue,
   } = props;
 
@@ -36,7 +37,7 @@ const PropertyDisplayer = observer((props: IPropertyDisplayer) => {
   );
 });
 
-const PropertySectionDisplayer = observer((props: IPropertySectionDisplayer) => {
+const PropertySectionDisplayer = observer((props: IPropertySectionDisplayerProps) => {
   const {
     sectionKey,
     properties,
@@ -51,11 +52,11 @@ const PropertySectionDisplayer = observer((props: IPropertySectionDisplayer) => 
           </Typography>
         </Grid>
 
-        {properties.map(({ paramKey, getValue }) => (
+        {properties.map(({ property, getValue }) => (
           <PropertyDisplayer
-            key={paramKey}
+            key={property}
             sectionKey={sectionKey}
-            paramKey={paramKey}
+            property={property}
             getValue={getValue}
           />
         ))}
@@ -86,24 +87,24 @@ const JobRequirements = observer((props: IJobRequirementsProps) => {
           <PropertySectionDisplayer
             sectionKey="attributes"
             properties={ATTRIBUTE_FIELDS.map(field => ({
-              paramKey: field,
-              getValue: () => job.requirements.attributes[field],
+              property: field,
+              getValue: () => floatFormatter.format(job.requirements.attributes[field]),
             }))}
           />
 
           <PropertySectionDisplayer
             sectionKey="skills"
             properties={SKILL_FIELDS.map(field => ({
-              paramKey: field,
-              getValue: () => job.requirements.skills[field],
+              property: field,
+              getValue: () => floatFormatter.format(job.requirements.skills[field]),
             }))}
           />
 
           <PropertySectionDisplayer
             sectionKey="stats"
             properties={PERSON_STAT_FIELDS.map(field => ({
-              paramKey: field,
-              getValue: () => job.requirements.personStats[field],
+              property: field,
+              getValue: () => floatFormatter.format(job.requirements.personStats[field]),
             }))}
           />
         </Grid>
