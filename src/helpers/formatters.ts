@@ -59,5 +59,5 @@ export function formatTimeShort(passedTime: number): string {
 
 const locale = navigator.language;
 export const moneyFormatter = Intl.NumberFormat(locale, { style: 'currency', currency: 'USD', maximumFractionDigits: 2 });
-export const floatFormatter = Intl.NumberFormat(locale, { minimumFractionDigits: 2 });
+export const floatFormatter = Intl.NumberFormat(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 export const decimalFormatter = Intl.NumberFormat(locale, { maximumFractionDigits: 0 });

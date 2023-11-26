@@ -1,4 +1,4 @@
-import i18n from 'i18next';
+import { useTranslation } from 'react-i18next';
 import React from 'react';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
@@ -28,6 +28,7 @@ export default function CrewMemberEditor(props: ICrewMemberEditorProps) {
   } = props;
   const gameStateManager = React.useContext(stateContext);
   const { listMembers } = React.useContext(crewEditorCallbacksContext);
+  const { t } = useTranslation();
 
   const [generalState, setGeneralState] = React.useState<IGeneralState>(() => {
     if (!person) {
@@ -109,7 +110,7 @@ export default function CrewMemberEditor(props: ICrewMemberEditorProps) {
       <Grid container rowGap={2} columnSpacing={2}>
         <Grid item xs={12}>
           <Typography variant="h3">
-            {i18n.t(`crewEditor.${titleKey}`, { ns: 'ui'})}
+            {t(`crewEditor.${titleKey}`, { ns: 'ui'})}
           </Typography>
         </Grid>
 
@@ -147,14 +148,14 @@ export default function CrewMemberEditor(props: ICrewMemberEditorProps) {
               variant="outlined"
               onClick={listMembers}
             >
-              {i18n.t('common.cancel', { ns: 'ui'})}
+              {t('common.cancel', { ns: 'ui'})}
             </Button>
 
             <Button
               type="submit"
               variant="contained"
             >
-              {i18n.t(`common.${submitButtonTextKey}`, { ns: 'ui'})}
+              {t(`common.${submitButtonTextKey}`, { ns: 'ui'})}
             </Button>
           </ButtonGroup>
         </Grid>

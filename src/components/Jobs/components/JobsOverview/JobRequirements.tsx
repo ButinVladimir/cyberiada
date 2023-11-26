@@ -1,4 +1,4 @@
-import i18n from 'i18next';
+import { useTranslation } from 'react-i18next';
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import Typography from '@mui/material/Typography';
@@ -22,12 +22,13 @@ const PropertyDisplayer = observer((props: IPropertyDisplayerProps) => {
     property: paramKey,
     getValue,
   } = props;
+  const { t } = useTranslation();
 
   return (
     <>
       <Grid item xs={6}>
         <Typography>
-          {i18n.t(`${sectionKey}.${paramKey}`, { ns: 'common' })}
+          {t(`${sectionKey}.${paramKey}`, { ns: 'common' })}
         </Typography>
       </Grid>
       <Grid item xs={6} sx={{ textAlign: "right" }}>
@@ -42,13 +43,14 @@ const PropertySectionDisplayer = observer((props: IPropertySectionDisplayerProps
     sectionKey,
     properties,
   } = props;
+  const { t } = useTranslation();
 
   return (
     <Grid item xs={12} sm={6} md={4}>
       <Grid container>
         <Grid item xs={12}>
           <Typography variant="h6">
-            {i18n.t(`sections.${sectionKey}`, { ns: 'common' })}
+            {t(`sections.${sectionKey}`, { ns: 'common' })}
           </Typography>
         </Grid>
 
@@ -70,6 +72,8 @@ const JobRequirements = observer((props: IJobRequirementsProps) => {
     job,
   } = props;
 
+  const { t } = useTranslation();
+
   const handleChangeAccordion  = React.useCallback(() => {
     job.toggleRequirements();
   }, [job]);
@@ -78,7 +82,7 @@ const JobRequirements = observer((props: IJobRequirementsProps) => {
     <Accordion expanded={job.sectionsOpened.requirements} onChange={handleChangeAccordion}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         <Typography variant="h5">
-          {i18n.t('sections.requirements', { ns: 'common' })}
+          {t('sections.requirements', { ns: 'common' })}
         </Typography>
       </AccordionSummary>
     

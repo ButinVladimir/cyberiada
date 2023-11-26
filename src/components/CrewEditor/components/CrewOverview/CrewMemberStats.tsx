@@ -1,4 +1,4 @@
-import i18n from 'i18next';
+import { useTranslation } from 'react-i18next';
 import { observer } from 'mobx-react-lite';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
@@ -15,6 +15,7 @@ const CrewMemberStats = observer((props: ICrewMemberStatsProps) => {
   const {
     person,
   } = props;
+  const { t } = useTranslation();
 
   return (
     <Stack
@@ -26,35 +27,35 @@ const CrewMemberStats = observer((props: ICrewMemberStatsProps) => {
       sx={{ marginBottom: 1 }}
     >
       <Typography>
-        {i18n.t('general.level', { ns: 'common' })} <b><ValueDisplayer getValue={() => decimalFormatter.format(person.level)} /></b>
+        {t('general.level', { ns: 'common' })} <b><ValueDisplayer getValue={() => decimalFormatter.format(person.level)} /></b>
       </Typography>
 
       <Typography>
-        {i18n.t('general.exp', { ns: 'common' })} <b><ValueDisplayer getValue={() => floatFormatter.format(person.exp)} /></b>
+        {t('general.exp', { ns: 'common' })} <b><ValueDisplayer getValue={() => floatFormatter.format(person.exp)} /></b>
       </Typography>
 
       <Typography>
-        {i18n.t('general.hp', { ns: 'common' })} <b><ValueDisplayer getValue={() => `${floatFormatter.format(person.hp)}/${floatFormatter.format(person.personStats.maxHp)}`} /></b>
+        {t('general.hp', { ns: 'common' })} <b><ValueDisplayer getValue={() => `${floatFormatter.format(person.hp)}/${floatFormatter.format(person.personStats.maxHp)}`} /></b>
       </Typography>
 
       <Typography>
-        {i18n.t('stats.damage', { ns: 'common' })} <b><ValueDisplayer getValue={() => floatFormatter.format(person.personStats.damage)} /></b>
+        {t('stats.damage', { ns: 'common' })} <b><ValueDisplayer getValue={() => floatFormatter.format(person.personStats.damage)} /></b>
       </Typography>
 
       <Typography>
-        {i18n.t('stats.defense', { ns: 'common' })} <b><ValueDisplayer getValue={() => floatFormatter.format(person.personStats.defense)} /></b>
+        {t('stats.defense', { ns: 'common' })} <b><ValueDisplayer getValue={() => floatFormatter.format(person.personStats.defense)} /></b>
       </Typography>
 
       <Typography>
-        {i18n.t('general.attributePoints', { ns: 'common' })} <b><ValueDisplayer getValue={() => decimalFormatter.format(person.attributePoints)} /></b>
+        {t('general.attributePoints', { ns: 'common' })} <b><ValueDisplayer getValue={() => decimalFormatter.format(person.attributePoints)} /></b>
       </Typography>
 
       <Typography>
-        {i18n.t('general.skillPoints', { ns: 'common' })} <b><ValueDisplayer getValue={() => decimalFormatter.format(person.skillPoints)} /></b>
+        {t('general.skillPoints', { ns: 'common' })} <b><ValueDisplayer getValue={() => decimalFormatter.format(person.skillPoints)} /></b>
       </Typography>
 
       <Typography>
-        {i18n.t('general.loyalty', { ns: 'common' })} <b><ValueDisplayer getValue={() => floatFormatter.format(person.loyalty)} /></b>
+        {t('general.loyalty', { ns: 'common' })} <b><ValueDisplayer getValue={() => floatFormatter.format(person.loyalty)} /></b>
       </Typography>
     </Stack>
   );

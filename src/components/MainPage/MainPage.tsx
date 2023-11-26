@@ -6,6 +6,7 @@ import TopBar from './components/TopBar';
 import SideMenu from './components/SideMenu';
 import CrewEditor from '@components/CrewEditor';
 import Jobs from '@components/Jobs';
+import Settings from '@components/Settings';
 
 export default function MainPage() {
   const [sideMenuOpened, setSideMenuOpened] = React.useState<boolean>(true);
@@ -25,6 +26,8 @@ export default function MainPage() {
         return <CrewEditor />;
       case MenuPages.Jobs:
         return <Jobs />;
+      case MenuPages.Settings:
+        return <Settings />;
       default: 
         return null;
     }

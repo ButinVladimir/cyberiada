@@ -6,6 +6,7 @@ pages:
   crew: Crew
   crewEditor: Crew editor
   jobs: Jobs
+  settings: Settings
 crewEditor:
   createCrewMember: Create crew member
   creatingCrewMember: Creating crew member
@@ -22,3 +23,8 @@ topBar:
   play: Play without bonus time
   fastForward: Play with bonus time
   menu: Menu
+settings:
+  language: Language
+  gameUpdateInterval: Game update interval (ms)
+  bonusTimeSpeed: Bonus time speed
+  developerModeEnabled: Enable developer mode

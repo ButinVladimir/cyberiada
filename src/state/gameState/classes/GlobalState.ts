@@ -1,6 +1,6 @@
 import { makeAutoObservable } from 'mobx';
 import { IGlobalState } from '../interfaces';
-import { GameSpeedState } from '../types';
+import { GameSpeedState } from '@state/common';
 
 export class GlobalState implements IGlobalState {
   money = 0;

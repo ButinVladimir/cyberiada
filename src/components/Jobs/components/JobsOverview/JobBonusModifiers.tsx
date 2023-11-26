@@ -1,4 +1,4 @@
-import i18n from 'i18next';
+import { useTranslation } from 'react-i18next';
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import Typography from '@mui/material/Typography';
@@ -20,6 +20,8 @@ const JobRequirements = observer((props: IJobBonusModifiersProps) => {
     job,
   } = props;
 
+  const { t } = useTranslation();
+
   const handleChangeAccordion = React.useCallback(() => {
     job.toggleBonusModifiers();
   }, [job]);
@@ -28,7 +30,7 @@ const JobRequirements = observer((props: IJobBonusModifiersProps) => {
     <Accordion expanded={job.sectionsOpened.bonusModifiers} onChange={handleChangeAccordion}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         <Typography variant="h5">
-          {i18n.t('sections.bonusModifiers', { ns: 'common' })}
+          {t('sections.bonusModifiers', { ns: 'common' })}
         </Typography>
       </AccordionSummary>
 
@@ -42,15 +44,15 @@ const JobRequirements = observer((props: IJobBonusModifiersProps) => {
           sx={{ marginBottom: 1 }}
         >
           {ATTRIBUTE_FIELDS.map((attribute) => job.bonusModifiers.attributes[attribute]
-            ? i18n.t(`attributes.${attribute}`, { ns: 'common' })
+            ? t(`attributes.${attribute}`, { ns: 'common' })
             : null
           )}
           {SKILL_FIELDS.map((skill) => job.bonusModifiers.skills[skill]
-            ? i18n.t(`skills.${skill}`, { ns: 'common' })
+            ? t(`skills.${skill}`, { ns: 'common' })
             : null
           )}
           {PERSON_STAT_FIELDS.map((stat) => job.bonusModifiers.personStats[stat]
-            ? i18n.t(`stats.${stat}`, { ns: 'common' })
+            ? t(`stats.${stat}`, { ns: 'common' })
             : null
           )}
         </Stack>

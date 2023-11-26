@@ -1,4 +1,4 @@
-import { makeAutoObservable } from 'mobx';
+import { makeAutoObservable, reaction } from 'mobx';
 import {
   GlobalState,
   CrewState,
@@ -13,19 +13,29 @@ export class GameStateManager implements IGameStateManager {
   jobState = new JobState();
   settingsState = new SettingsState();
 
-  private timer: NodeJS.Timeout | null = null;
-  private lastTimeUpdate = 0;
+  timer: NodeJS.Timeout | null = null;
+  lastTimeUpdate = 0;
 
   constructor() {
     makeAutoObservable(this);
 
-    this.timer = setInterval(this.processTick, this.settingsState.updateIntervalTime);
     this.lastTimeUpdate = performance.now();
+
+    reaction(
+      () => this.settingsState.gameUpdateInterval,
+      (gameUpdateInterval) => {
+        if (this.timer) {
+          clearInterval(this.timer);
+        }
+
+        this.timer = setInterval(this.processTick, gameUpdateInterval);
+      },
+    );
   }
 
   private processTick = () => {
     const currentTime = performance.now();
-    const timeDelta = currentTime - this.lastTimeUpdate;
+    const timeDelta = Math.max(currentTime - this.lastTimeUpdate, 0);
     this.lastTimeUpdate = currentTime;
 
     this.globalState.changeBonusTime(timeDelta);
@@ -39,7 +49,7 @@ export class GameStateManager implements IGameStateManager {
 
     maxTicks = Math.min(
       maxTicks,
-      Math.floor(this.globalState.bonusTime / this.settingsState.updateIntervalTime),
+      Math.floor(this.globalState.bonusTime / this.settingsState.gameUpdateInterval),
     );
 
     for (let tick = 0; tick < maxTicks; tick++) {
@@ -48,8 +58,8 @@ export class GameStateManager implements IGameStateManager {
   };
 
   private processSingleTick = () => {
-    this.globalState.changeBonusTime(-this.settingsState.updateIntervalTime);
-    this.globalState.changeMoney(this.settingsState.updateIntervalTime);
-    this.globalState.changeCredibility(this.settingsState.updateIntervalTime);
+    this.globalState.changeBonusTime(-this.settingsState.gameUpdateInterval);
+    this.globalState.changeMoney(this.settingsState.gameUpdateInterval);
+    this.globalState.changeCredibility(this.settingsState.gameUpdateInterval);
   };
 }

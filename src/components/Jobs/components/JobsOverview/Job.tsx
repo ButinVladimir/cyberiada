@@ -1,4 +1,4 @@
-import i18n from 'i18next';
+import { useTranslation } from 'react-i18next';
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import Card from '@mui/material/Card';
@@ -21,6 +21,7 @@ const Job = observer((props: IJobProps) => {
     job,
   } = props;
   const gameStateManager = React.useContext(stateContext);
+  const { t } = useTranslation();
 
   if (!gameStateManager) {
     return;
@@ -33,8 +34,8 @@ const Job = observer((props: IJobProps) => {
   return (
     <Card variant="outlined">
       <CardHeader
-        title={<ValueDisplayer getValue={() => i18n.t(`${job.templateName}.title`, { ns: 'jobs' })} />}
-        subheader={<ValueDisplayer getValue={() => i18n.t(`${job.templateName}.description`, { ns: 'jobs' })} />}
+        title={<ValueDisplayer getValue={() => t(`${job.templateName}.title`, { ns: 'jobs' })} />}
+        subheader={<ValueDisplayer getValue={() => t(`${job.templateName}.description`, { ns: 'jobs' })} />}
       />
 
       <CardContent>
@@ -44,7 +45,7 @@ const Job = observer((props: IJobProps) => {
 
       <CardActions sx={{ justifyContent: 'end' }}>
         <Button onClick={handleDeleteJob}>
-          {i18n.t('jobs.deleteJob', { ns: 'ui' })}
+          {t('jobs.deleteJob', { ns: 'ui' })}
         </Button>
       </CardActions>
     </Card>

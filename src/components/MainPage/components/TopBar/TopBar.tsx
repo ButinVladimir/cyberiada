@@ -1,4 +1,4 @@
-import i18n from 'i18next';
+import { useTranslation } from 'react-i18next';
 import React from 'react';
 import { observer } from 'mobx-react-lite'
 import { useTheme } from '@mui/material/styles';
@@ -24,6 +24,7 @@ const TopBar = observer((props: ITopBarProps) => {
   } = props;
   const theme = useTheme();
   const gameStateManager = React.useContext(stateContext);
+  const { t } = useTranslation();
 
   if (!gameStateManager) {
     return null;
@@ -38,7 +39,7 @@ const TopBar = observer((props: ITopBarProps) => {
     >
       <Container>
         <Toolbar disableGutters variant="dense">
-          <Tooltip title={i18n.t('topBar.menu', { ns: 'ui' })} arrow>
+          <Tooltip title={t('topBar.menu', { ns: 'ui' })} arrow>
             <IconButton
               color="inherit"
               onClick={onToggleSideMenu}

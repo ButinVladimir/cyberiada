@@ -1,4 +1,4 @@
-import i18n from 'i18next';
+import { useTranslation } from 'react-i18next';
 import React from 'react';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
@@ -15,6 +15,7 @@ export default function SkillInputs(props: ISkillInputsProps) {
     skillsState,
     setSkillsState,
   } = props;
+  const { t } = useTranslation();
 
   const handleSkillChange: React.ChangeEventHandler<HTMLInputElement> = React.useCallback((event) => {
     const { name, value } = event.target;
@@ -29,7 +30,7 @@ export default function SkillInputs(props: ISkillInputsProps) {
     <>
       <Grid item xs={12}>
         <Typography variant="h4">
-          {i18n.t('sections.skills', { ns: 'common' })}
+          {t('sections.skills', { ns: 'common' })}
         </Typography>
       </Grid>
 
@@ -38,7 +39,7 @@ export default function SkillInputs(props: ISkillInputsProps) {
           <TextField
             type="number"
             name={name}
-            label={i18n.t(`skills.${name}`, { ns: 'common' })}
+            label={t(`skills.${name}`, { ns: 'common' })}
             fullWidth
             value={skillsState[name]}
             onChange={handleSkillChange}

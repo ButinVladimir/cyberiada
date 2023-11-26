@@ -1,4 +1,4 @@
-import i18n from 'i18next';
+import { useTranslation } from 'react-i18next';
 import React from 'react';
 import { observer } from 'mobx-react-lite'
 import Typography from '@mui/material/Typography';
@@ -9,6 +9,7 @@ import { decimalFormatter } from '@helpers/formatters';
 
 const CredibilityDisplayer = observer(() => {
   const gameStateManager = React.useContext(stateContext);
+  const { t } = useTranslation();
 
   if (!gameStateManager) {
     return null;
@@ -16,7 +17,7 @@ const CredibilityDisplayer = observer(() => {
 
   return (
     <Tooltip
-      title={i18n.t('general.credibility', { ns: 'common' })}
+      title={t('general.credibility', { ns: 'common' })}
       arrow
     >
       <Typography

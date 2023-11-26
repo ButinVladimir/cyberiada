@@ -6,6 +6,7 @@ pages:
   crew: Команда
   crewEditor: Редактор команды
   jobs: Работа
+  settings: Настройки
 crewEditor:
   createCrewMember: Создать члена команды
   creatingCrewMember: Создание члена команды
@@ -22,3 +23,8 @@ topBar:
   play: Играть без бонусного времени
   fastForward: Играть, используя бонусное время
   menu: Меню
+settings:
+  language: Язык
+  gameUpdateInterval: Время между обновлением игры (мс)
+  bonusTimeSpeed: Скорость игры с бонусным временем
+  developerModeEnabled: Включить режим разработчика

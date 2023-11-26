@@ -1,4 +1,4 @@
-import i18n from 'i18next';
+import { useTranslation } from 'react-i18next';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
@@ -10,11 +10,12 @@ interface TopPanelProps {
 
 export default function TopPanel(props: TopPanelProps) {
   const { onOpenJobModal } = props;
-  
+  const { t } = useTranslation();
+
   return (
     <Box sx={{ marginBottom: 2 }}>
-      <Typography variant="h3" sx={{ marginBottom: 2 }}>
-        {i18n.t(`pages.jobs`, { ns: 'ui'})}
+      <Typography variant="h3" gutterBottom>
+        {t(`pages.jobs`, { ns: 'ui'})}
       </Typography>
 
       <ButtonGroup>
@@ -23,7 +24,7 @@ export default function TopPanel(props: TopPanelProps) {
           variant="contained"
           onClick={onOpenJobModal}
         >
-          {i18n.t('jobs.createNewJob', { ns: 'ui' })}
+          {t('jobs.createNewJob', { ns: 'ui' })}
         </Button>
       </ButtonGroup>
     </Box>

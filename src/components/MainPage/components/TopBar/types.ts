@@ -1,6 +1,6 @@
 import { OverridableComponent } from '@mui/material/OverridableComponent';
 import { SvgIconTypeMap } from '@mui/material/SvgIcon/SvgIcon';
-import { GameSpeedState } from '@state/gameState';
+import { GameSpeedState } from '@state/common';
 
 export interface GameStateButton {
   state: GameSpeedState;

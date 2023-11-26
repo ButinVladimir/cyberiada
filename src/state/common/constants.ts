@@ -1,5 +1,5 @@
 import { IAttributes, ISkills, IPersonStats } from './interfaces';
-import { Quality } from './types';
+import { Language, Quality } from './types';
 
 export const ATTRIBUTE_FIELDS: (keyof IAttributes)[] = [
   'strength',
@@ -36,3 +36,5 @@ export const QUALITY_POWERS = {
   [Quality.Good]: 0.5,
   [Quality.Excellent]: 1,
 }
+
+export const DEFAULT_LANGUAGE: Language = 'en-US';

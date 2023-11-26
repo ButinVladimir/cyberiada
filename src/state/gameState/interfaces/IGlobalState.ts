@@ -1,4 +1,4 @@
-import { GameSpeedState } from '../types';
+import { GameSpeedState } from '@state/common';
 
 export interface IGlobalState {
   money: number;
