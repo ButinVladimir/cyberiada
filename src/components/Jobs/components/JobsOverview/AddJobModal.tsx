@@ -1,4 +1,4 @@
-import i18n from 'i18next';
+import { useTranslation } from 'react-i18next';
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import Dialog from '@mui/material/Dialog';
@@ -29,6 +29,7 @@ const AddJobModal = observer((props: IAddJobModalProps) => {
   } = props;
 
   const gameStateManager = React.useContext(stateContext);
+  const { t } = useTranslation();
 
   const [templateName, setTemplateName] = React.useState<string>("");
   const [level, setLevel] = React.useState<number>(0);
@@ -73,6 +74,10 @@ const AddJobModal = observer((props: IAddJobModalProps) => {
     onCloseModal();
   };
 
+  if (!gameStateManager) {
+    return null;
+  }
+
   return (
     <Dialog
       maxWidth="xl"
@@ -80,7 +85,7 @@ const AddJobModal = observer((props: IAddJobModalProps) => {
       onClose={onCloseModal}
     >
       <form id="generate-new-job-form" onSubmit={handleSubmit}>
-        <DialogTitle>{i18n.t('jobs.newJob', { ns: 'ui' })}</DialogTitle>
+        <DialogTitle>{t('jobs.newJob', { ns: 'ui' })}</DialogTitle>
         <DialogContent>
           <Stack
             spacing={2}
@@ -90,18 +95,18 @@ const AddJobModal = observer((props: IAddJobModalProps) => {
           >
             <FormControl fullWidth>
               <InputLabel id="select-template-label">
-                {i18n.t('general.template', { ns: 'common' })}
+                {t('general.template', { ns: 'common' })}
               </InputLabel>
               <Select
                 labelId="select-template-label"
                 id="select-template-input"
                 value={templateName}
                 onChange={handleChangeTemplate}
-                label={i18n.t('general.template', { ns: 'common' })}
+                label={t('general.template', { ns: 'common' })}
               >
                 {templates.map((template) => (
                   <MenuItem key={template} value={template}>
-                    {i18n.t(`${template}.title`, { ns: 'jobs' })}
+                    {t(`${template}.title`, { ns: 'jobs' })}
                   </MenuItem>
                 ))}
               </Select>
@@ -110,7 +115,7 @@ const AddJobModal = observer((props: IAddJobModalProps) => {
             <TextField
               type="number"
               name="level"
-              label={i18n.t('general.level', { ns: 'common' })}
+              label={t('general.level', { ns: 'common' })}
               fullWidth
               value={level}
               onChange={handleChangeLevel}
@@ -118,18 +123,18 @@ const AddJobModal = observer((props: IAddJobModalProps) => {
 
             <FormControl fullWidth>
               <InputLabel id="select-quality-label">
-                {i18n.t('general.quality', { ns: 'common' })}
+                {t('general.quality', { ns: 'common' })}
               </InputLabel>
               <Select
                 labelId="select-quality-label"
                 id="select-quality-input"
                 value={quality}
                 onChange={handleChangeQuality}
-                label={i18n.t('general.quality', { ns: 'common' })}
+                label={t('general.quality', { ns: 'common' })}
               >
                 {Object.values(Quality).map((quality) => (
                   <MenuItem key={quality} value={quality}>
-                    {i18n.t(`quality.${quality}`, { ns: 'common' })}
+                    {t(`quality.${quality}`, { ns: 'common' })}
                   </MenuItem>
                 ))}
               </Select>
@@ -139,10 +144,10 @@ const AddJobModal = observer((props: IAddJobModalProps) => {
 
         <DialogActions>
           <Button onClick={onCloseModal}>
-            {i18n.t('common.cancel', { ns: 'ui' })}
+            {t('common.cancel', { ns: 'ui' })}
           </Button>
           <Button type="submit">
-            {i18n.t('common.create', { ns: 'ui' })}
+            {t('common.create', { ns: 'ui' })}
           </Button>
         </DialogActions>
       </form>

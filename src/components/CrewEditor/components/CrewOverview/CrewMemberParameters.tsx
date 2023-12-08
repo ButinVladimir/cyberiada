@@ -1,4 +1,4 @@
-import i18n from 'i18next';
+import { useTranslation } from 'react-i18next';
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import Typography from '@mui/material/Typography';
@@ -7,26 +7,28 @@ import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { ValueDisplayer, IPropertyDisplayer, IPropertySectionDisplayer } from '@components/common';
+import { ValueDisplayer, IPropertyDisplayerProps, IPropertySectionDisplayerProps } from '@components/common';
 import { ATTRIBUTE_FIELDS, SKILL_FIELDS } from '@state/common';
 import { IPerson } from '@state/person';
+import { floatFormatter } from '@helpers/formatters';
 
 interface ICrewMemberParametersProps {
   person: IPerson;
 }
 
-const PropertyDisplayer = observer((props: IPropertyDisplayer) => {
+const PropertyDisplayer = observer((props: IPropertyDisplayerProps) => {
   const {
     sectionKey,
-    paramKey,
+    property: paramKey,
     getValue,
   } = props;
+  const { t } = useTranslation();
 
   return (
     <>
       <Grid item xs={6}>
         <Typography>
-          {i18n.t(`${sectionKey}.${paramKey}`, { ns: 'common' })}
+          {t(`${sectionKey}.${paramKey}`, { ns: 'common' })}
         </Typography>
       </Grid>
       <Grid item xs={6} sx={{ textAlign: "right" }}>
@@ -36,26 +38,27 @@ const PropertyDisplayer = observer((props: IPropertyDisplayer) => {
   );
 });
 
-const PropertySectionDisplayer = observer((props: IPropertySectionDisplayer) => {
+const PropertySectionDisplayer = observer((props: IPropertySectionDisplayerProps) => {
   const {
     sectionKey,
     properties,
   } = props;
+  const { t } = useTranslation();
 
   return (
     <Grid item xs={12} sm={6}>
       <Grid container>
         <Grid item xs={12}>
           <Typography variant="h6">
-            {i18n.t(`sections.${sectionKey}`, { ns: 'common' })}
+            {t(`sections.${sectionKey}`, { ns: 'common' })}
           </Typography>
         </Grid>
 
-        {properties.map(({ paramKey, getValue }) => (
+        {properties.map(({ property, getValue }) => (
           <PropertyDisplayer
-            key={paramKey}
+            key={property}
             sectionKey={sectionKey}
-            paramKey={paramKey}
+            property={property}
             getValue={getValue}
           />
         ))}
@@ -68,6 +71,7 @@ const CrewMemberParameters = observer((props: ICrewMemberParametersProps) => {
   const {
     person,
   } = props;
+  const { t } = useTranslation();
 
   const handleChangeAccordion  = React.useCallback(() => {
     person.toggleParameters();
@@ -77,7 +81,7 @@ const CrewMemberParameters = observer((props: ICrewMemberParametersProps) => {
     <Accordion expanded={person.sectionsOpened.parameters} onChange={handleChangeAccordion}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         <Typography variant="h5">
-          {i18n.t('sections.parameters', { ns: 'common' })}
+          {t('sections.parameters', { ns: 'common' })}
         </Typography>
       </AccordionSummary>
     
@@ -86,16 +90,16 @@ const CrewMemberParameters = observer((props: ICrewMemberParametersProps) => {
           <PropertySectionDisplayer
             sectionKey="attributes"
             properties={ATTRIBUTE_FIELDS.map(field => ({
-              paramKey: field,
-              getValue: () => person.attributes[field],
+              property: field,
+              getValue: () => floatFormatter.format(person.attributes[field]),
             }))}
           />
 
           <PropertySectionDisplayer
             sectionKey="skills"
             properties={SKILL_FIELDS.map(field => ({
-              paramKey: field,
-              getValue: () => person.skills[field],
+              property: field,
+              getValue: () => floatFormatter.format(person.skills[field]),
             }))}
           />
         </Grid>

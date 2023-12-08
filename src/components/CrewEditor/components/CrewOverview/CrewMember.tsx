@@ -1,4 +1,4 @@
-import i18n from 'i18next';
+import { useTranslation } from 'react-i18next';
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import Card from '@mui/material/Card';
@@ -23,6 +23,7 @@ const CrewMember = observer((props: ICrewMemberProps) => {
   } = props;
   const gameStateManager = React.useContext(stateContext);
   const { startEditingMember } = React.useContext(crewEditorCallbacksContext);
+  const { t } = useTranslation();
 
   const handleStartEditingMember = React.useCallback(() => {
     startEditingMember(person);
@@ -50,10 +51,10 @@ const CrewMember = observer((props: ICrewMemberProps) => {
 
       <CardActions sx={{ justifyContent: 'end' }}>
         <Button onClick={handleStartEditingMember}>
-          {i18n.t('crewEditor.editCrewMember', { ns: 'ui' })}
+          {t('crewEditor.editCrewMember', { ns: 'ui' })}
         </Button>
         <Button onClick={handleDeleteMember}>
-          {i18n.t('crewEditor.deleteCrewMember', { ns: 'ui' })}
+          {t('crewEditor.deleteCrewMember', { ns: 'ui' })}
         </Button>
       </CardActions>
     </Card>

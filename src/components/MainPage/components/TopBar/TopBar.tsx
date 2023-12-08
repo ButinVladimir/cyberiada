@@ -1,27 +1,18 @@
+import { useTranslation } from 'react-i18next';
 import React from 'react';
 import { observer } from 'mobx-react-lite'
 import { useTheme } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Slider from '@mui/material/Slider';
-import Box from '@mui/material/Box';
 import Container from '@mui/material/Container'
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import { stateContext } from '@/contexts'
-import { formatTimeShort } from '@/helpers';
-
-const speedSliderMarks = [
-  {
-    value: 1,
-    label: 'x1',
-  },
-  {
-    value: 16,
-    label: 'x16'
-  }
-];
+import Tooltip from '@mui/material/Tooltip';
+import GameStateToggler from './GameStateToggler';
+import BonusTimeDisplayer from './BonusTimeDisplayer';
+import MoneyDisplayer from './MoneyDisplayer';
+import CredibilityDisplayer from './CredibilityDisplayer';
+import { stateContext } from '@contexts/index'
 
 interface ITopBarProps {
   onToggleSideMenu: () => void;
@@ -33,21 +24,11 @@ const TopBar = observer((props: ITopBarProps) => {
   } = props;
   const theme = useTheme();
   const gameStateManager = React.useContext(stateContext);
-  const [newSpeed, setNewSpeed] = React.useState<number>(1);
+  const { t } = useTranslation();
 
   if (!gameStateManager) {
     return null;
   }
-
-  const formattedTime = formatTimeShort(gameStateManager.globalState.time);
-
-  const handleChangeSpeed = (event: Event, value: number | number[]) => {
-    setNewSpeed(value as number);
-  };
-
-  const handleApplySpeed = () => {
-    gameStateManager.globalState.changeSpeed(newSpeed);
-  };
 
   return (
     <AppBar
@@ -57,42 +38,29 @@ const TopBar = observer((props: ITopBarProps) => {
       }}
     >
       <Container>
-        <Toolbar disableGutters>
-          <IconButton
-            color="inherit"
-            onClick={onToggleSideMenu}
-            size="large"
-            edge="start"
-            sx={{ marginRight: 1 }}
-          >
-            <MenuIcon />
-          </IconButton>
+        <Toolbar disableGutters variant="dense">
+          <Tooltip title={t('topBar.menu', { ns: 'ui' })} arrow>
+            <IconButton
+              color="inherit"
+              onClick={onToggleSideMenu}
+              size="small"
+              sx={{ marginRight: 3 }}
+            >
+              <MenuIcon />
+            </IconButton>
+          </Tooltip>
 
-          <Typography
-            variant="body1"
-            noWrap
-            component="div"
-          >
-            Passed time: {formattedTime}
-          </Typography>
+          <GameStateToggler />
 
-          <Box sx={{ width: 200, ml: 6 }}>
-            <Slider
-              aria-label="Bonus time speed"
-              step={1}
-              min={1}
-              max={16}
-              marks={speedSliderMarks}
-              color="secondary"
-              value={newSpeed}
-              onChange={handleChangeSpeed}
-              onChangeCommitted={handleApplySpeed}
-            />
-          </Box>
+          <BonusTimeDisplayer />
+
+          <MoneyDisplayer />
+
+          <CredibilityDisplayer />
         </Toolbar>
       </Container>
     </AppBar>
-  )
+  );
 });
 
 export default TopBar;

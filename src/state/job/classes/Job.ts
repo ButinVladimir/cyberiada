@@ -9,7 +9,7 @@ import {
 import { JOB_QUALITY_BASE, JOB_TIME_AVAILABLE } from '../constants';
 
 function applyModifier(value: number | undefined, modifier: number): number {
-  return Math.floor((value ?? 0) * modifier);
+  return (value ?? 0) * modifier;
 }
 
 export class Job implements IJob {

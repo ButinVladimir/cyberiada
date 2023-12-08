@@ -17,6 +17,8 @@ general:
   skillPoints: Очки навыков
   quality: Качество
   template: Шаблон
+  money: Деньги
+  credibility: Авторитет
 attributes:
   strength: Сила
   endurance: Выносливость

@@ -1,6 +1,6 @@
 import JobsOverview from './components/JobsOverview';
 
-export default function MainPage() {
+export default function Jobs() {
   return (
     <JobsOverview />
   );

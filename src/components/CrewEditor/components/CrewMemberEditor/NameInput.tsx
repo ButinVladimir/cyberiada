@@ -1,4 +1,4 @@
-import i18n from 'i18next';
+import { useTranslation } from 'react-i18next';
 import React from 'react';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
@@ -14,6 +14,7 @@ export default function NameInput(props: INameInputProps) {
     generalState,
     setGeneralState,
   } = props;
+  const { t } = useTranslation();
 
   const handleNameChange: React.ChangeEventHandler<HTMLInputElement> = React.useCallback((event) => {
     const { value } = event.target;
@@ -28,7 +29,7 @@ export default function NameInput(props: INameInputProps) {
     <Grid item xs={12}>
       <TextField
         name="name"
-        label={i18n.t('general.name', { ns: 'common' })}
+        label={t('general.name', { ns: 'common' })}
         fullWidth
         value={generalState.name}
         onChange={handleNameChange}

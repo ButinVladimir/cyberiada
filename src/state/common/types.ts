@@ -2,6 +2,7 @@ export enum MenuPages {
   Crew = 'crew',
   CrewEditor = 'crewEditor',
   Jobs = 'jobs',
+  Settings = 'settings',
 }
 
 export enum Quality {
@@ -13,3 +14,7 @@ export enum Quality {
   Good = 'good',
   Excellent = 'excellent',
 }
+
+export type Language = 'en-US' | 'ru-RU';
+
+export type GameSpeedState = 'paused' | 'withoutBonusTime' |'withBonusTime';

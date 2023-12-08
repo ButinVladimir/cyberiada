@@ -17,6 +17,8 @@ general:
   skillPoints: Skill points
   quality: Quality
   template: Template
+  money: Money
+  credibility: Credibility
 attributes:
   strength: Strength
   endurance: Endurance

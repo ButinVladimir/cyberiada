@@ -2,10 +2,11 @@ common:
   cancel: Отмена
   create: Создать
   update: Обновить
-sideMenu:
+pages:
   crew: Команда
   crewEditor: Редактор команды
   jobs: Работа
+  settings: Настройки
 crewEditor:
   createCrewMember: Создать члена команды
   creatingCrewMember: Создание члена команды
@@ -16,3 +17,14 @@ jobs:
   createNewJob: Создать новую работу
   deleteJob: Удалить работу
   newJob: Новая работа
+topBar:
+  bonusTime: Бонусное время
+  pause: Пауза
+  play: Играть без бонусного времени
+  fastForward: Играть, используя бонусное время
+  menu: Меню
+settings:
+  language: Язык
+  gameUpdateInterval: Время между обновлением игры (мс)
+  bonusTimeSpeed: Скорость игры с бонусным временем
+  developerModeEnabled: Включить режим разработчика

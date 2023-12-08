@@ -1,4 +1,4 @@
-import i18n from 'i18next';
+import { useTranslation } from 'react-i18next';
 import React from 'react';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
@@ -24,6 +24,7 @@ export default function GeneralInputs(props: IGeneralInputsProps) {
     generalState,
     setGeneralState,
   } = props;
+  const { t } = useTranslation();
 
   const handleGeneralChange: React.ChangeEventHandler<HTMLInputElement> = React.useCallback((event) => {
     const { name, value } = event.target;
@@ -38,7 +39,7 @@ export default function GeneralInputs(props: IGeneralInputsProps) {
     <>
       <Grid item xs={12}>
         <Typography variant="h4">
-          {i18n.t('sections.general', { ns: 'common' })}
+          {t('sections.general', { ns: 'common' })}
         </Typography>
       </Grid>
 
@@ -47,7 +48,7 @@ export default function GeneralInputs(props: IGeneralInputsProps) {
           <TextField
             type="number"
             name={name}
-            label={i18n.t(`general.${name}`, { ns: 'common' })}
+            label={t(`general.${name}`, { ns: 'common' })}
             fullWidth
             value={generalState[name]}
             onChange={handleGeneralChange}

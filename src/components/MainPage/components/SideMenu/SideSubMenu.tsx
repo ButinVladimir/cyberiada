@@ -1,4 +1,4 @@
-import i18n from 'i18next'
+import { useTranslation } from 'react-i18next';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -19,6 +19,7 @@ export default function SideSubMenu(props: ISideMenuProps) {
     selectedMenuPage,
     onSelectMenuPage,
   } = props;
+  const { t } = useTranslation();
 
   const handleSelectMenuPage = (menuPage: MenuPages) => () => {
     onSelectMenuPage(menuPage);
@@ -35,7 +36,7 @@ export default function SideSubMenu(props: ISideMenuProps) {
             <ListItemIcon>
               <item.icon />
             </ListItemIcon>
-            <ListItemText primary={i18n.t(`sideMenu.${item.value}`, { ns: 'ui' })} />
+            <ListItemText primary={t(`pages.${item.value}`, { ns: 'ui' })} />
           </ListItemButton>
         </ListItem>  
       ))}
