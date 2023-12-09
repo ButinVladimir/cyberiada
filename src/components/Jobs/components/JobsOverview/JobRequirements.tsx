@@ -8,12 +8,12 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { ATTRIBUTE_FIELDS, SKILL_FIELDS, PERSON_STAT_FIELDS } from '@state/common'
-import { IJob } from '@state/job';
+import { ISideJob } from '@/state/sideJobs';
 import { ValueDisplayer, IPropertyDisplayerProps, IPropertySectionDisplayerProps } from '@components/common';
 import { floatFormatter } from '@helpers/formatters';
 
 interface IJobRequirementsProps {
-  job: IJob;
+  job: ISideJob;
 }
 
 const PropertyDisplayer = observer((props: IPropertyDisplayerProps) => {

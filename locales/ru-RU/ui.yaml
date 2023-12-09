@@ -2,21 +2,19 @@ common:
   cancel: Отмена
   create: Создать
   update: Обновить
+  edit: Редактировать
+  delete: Удалить
 pages:
   crew: Команда
   crewEditor: Редактор команды
-  jobs: Работа
+  sideJobs: Подработки
   settings: Настройки
 crewEditor:
   createCrewMember: Создать члена команды
   creatingCrewMember: Создание члена команды
-  editCrewMember: Редактировать члена команды
   editingCrewMember: Редактирование члена команды
-  deleteCrewMember: Удалить члена команды
-jobs:
-  createNewJob: Создать новую работу
-  deleteJob: Удалить работу
-  newJob: Новая работа
+sideJobs:
+  findSideJob: Найти подработки
 topBar:
   bonusTime: Бонусное время
   pause: Пауза

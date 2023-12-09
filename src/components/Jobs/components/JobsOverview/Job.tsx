@@ -7,13 +7,13 @@ import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import Button from '@mui/material/Button';
 import { stateContext } from '@/contexts';
-import { IJob } from '@state/job';
+import { ISideJob } from '@/state/sideJobs';
 import { ValueDisplayer } from '@components/common';
 import JobRequirements from './JobRequirements';
 import JobBonusModifiers from './JobBonusModifiers';
 
 interface IJobProps {
-  job: IJob;
+  job: ISideJob;
 }
 
 const Job = observer((props: IJobProps) => {

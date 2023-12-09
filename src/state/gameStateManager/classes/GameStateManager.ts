@@ -2,7 +2,7 @@ import { makeAutoObservable, reaction } from 'mobx';
 import {
   GlobalState,
   CrewState,
-  JobState,
+  SideJobState,
   SettingsState,
 } from '@/state/gameState';
 import { IGameStateManager } from '../interfaces';
@@ -10,8 +10,9 @@ import { IGameStateManager } from '../interfaces';
 export class GameStateManager implements IGameStateManager {
   globalState = new GlobalState();
   crewState = new CrewState();
-  jobState = new JobState();
+  sideJobState = new SideJobState();
   settingsState = new SettingsState();
+  needsActivityReassignment = true;
 
   timer: NodeJS.Timeout | null = null;
   lastTimeUpdate = 0;

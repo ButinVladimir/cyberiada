@@ -3,24 +3,18 @@ import { useTranslation } from 'react-i18next';
 import { observer } from 'mobx-react-lite';
 import Grid from '@mui/material/Grid';
 import Slider from '@mui/material/Slider';
-import { stateContext } from '@/contexts';
+import { getGameStateManagerInstance } from '@state/gameStateManager';
 import { Typography } from '@mui/material';
 
 type ChangeEventHandler = (event: Event, value: number | number[]) => void;
 
 const BonusTimeSpeedInput = observer(() => {
-  const gameStateManager = React.useContext(stateContext);
+  const gameStateManager = getGameStateManagerInstance();
   const { t } = useTranslation();
 
   const handleChangeBonusTimeSpeed = React.useCallback<ChangeEventHandler>((event, value) => {
-    if (gameStateManager) {
-      gameStateManager.settingsState.setBonusTimeSpeed(value as number);
-    }
+    gameStateManager.settingsState.setBonusTimeSpeed(value as number);
   }, [gameStateManager]);
-
-  if (!gameStateManager) {
-    return;
-  }
 
   const { bonusTimeSpeed }= gameStateManager.settingsState;
 

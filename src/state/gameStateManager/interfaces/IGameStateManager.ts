@@ -1,13 +1,14 @@
 import {
   IGlobalState,
   ICrewState,
-  IJobState,
+  ISideJobState,
   ISettingsState,
 } from '@state/gameState';
 
 export interface IGameStateManager {
   globalState: IGlobalState;
   crewState: ICrewState;
-  jobState: IJobState;
+  sideJobState: ISideJobState;
   settingsState: ISettingsState;
+  needsActivityReassignment: boolean;
 }

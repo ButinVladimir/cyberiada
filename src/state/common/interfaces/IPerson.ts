@@ -1,4 +1,6 @@
-import { IAttributes, ISkills, IPersonStats } from '@state/common';
+import { IAttributes } from './IAttributes';
+import { ISkills } from './ISkills';
+import { IPersonStats } from './IPersonStats';
 
 export interface IPerson {
   id: string;

@@ -1,0 +1,12 @@
+activities:
+  fullTemplate:
+    title: Side job template
+    description: Only for development
+  oddjobs:
+    title: Odd jobs
+    description: Low end side jobs with minimum wage. Available for everyone
+  writeSimpleScripts:
+    title: Write simple scripts
+    description: Write simple scripts and programs
+groups:
+  basic: Basic

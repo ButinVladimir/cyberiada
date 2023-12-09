@@ -9,10 +9,10 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { ATTRIBUTE_FIELDS, SKILL_FIELDS, PERSON_STAT_FIELDS } from '@state/common'
-import { IJob } from '@state/job';
+import { ISideJob } from '@/state/sideJobs';
 
 interface IJobBonusModifiersProps {
-  job: IJob;
+  job: ISideJob;
 }
 
 const JobRequirements = observer((props: IJobBonusModifiersProps) => {

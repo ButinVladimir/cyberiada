@@ -1,4 +1,4 @@
 export * from './GlobalState';
 export * from './CrewState';
-export * from './JobState';
+export * from './SideJobState';
 export * from './SettingsState';

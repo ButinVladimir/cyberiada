@@ -1,7 +1,9 @@
 import { makeAutoObservable } from 'mobx';
 import { IPerson } from '../interfaces';
 import { EXP_REQUIREMENT_BASE, EXP_REQUIREMENT_FACTOR } from '../constants';
-import { Attributes, Skills, PersonStats } from '@state/common';
+import { Attributes } from './Attributes';
+import { Skills } from './Skills';
+import { PersonStats } from './PersonStats';
 
 export class Person implements IPerson {
   readonly id;
