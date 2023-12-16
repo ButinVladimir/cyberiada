@@ -1,2 +1,4 @@
-export const BASE_SEARCH_TIME = 10 * 1000;
 export const SEARCH_TIME_FACTOR = 3;
+export const SEARCH_COST_FACTOR = 2;
+export const SEARCH_INFO_GATHERING_FACTOR = 0.1;
+export const SEARCH_INTELLECT_FACTOR = 0.05;

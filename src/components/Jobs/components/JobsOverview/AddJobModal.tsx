@@ -13,7 +13,7 @@ import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import { Quality } from '@state/common';
-import { stateContext } from '@/contexts';
+import { getGameStateManagerInstance } from '@state/gameStateManager';
 
 interface IAddJobModalProps {
   opened: boolean;
@@ -28,7 +28,7 @@ const AddJobModal = observer((props: IAddJobModalProps) => {
     onCloseModal,
   } = props;
 
-  const gameStateManager = React.useContext(stateContext);
+  const gameStateManager = getGameStateManagerInstance();
   const { t } = useTranslation();
 
   const [templateName, setTemplateName] = React.useState<string>("");
@@ -36,9 +36,9 @@ const AddJobModal = observer((props: IAddJobModalProps) => {
   const [quality, setQuality] = React.useState<Quality>(Quality.Average);
 
   const templates = React.useMemo(() =>
-    gameStateManager
-      ? Array.from(gameStateManager.jobState.jobTemplates.keys())
-      : [],
+    Array.from(
+      gameStateManager.sideJobState.sideJobTemplates.keys()
+    ),
     [gameStateManager],
   );
 
@@ -62,29 +62,13 @@ const AddJobModal = observer((props: IAddJobModalProps) => {
     [],
   );
 
-  const handleSubmit: React.FormEventHandler<HTMLFormElement> = (event) => {
-    event.preventDefault();
-
-    gameStateManager?.jobState.generateJob({
-      level,
-      quality,
-      templateName,
-    });
-
-    onCloseModal();
-  };
-
-  if (!gameStateManager) {
-    return null;
-  }
-
   return (
     <Dialog
       maxWidth="xl"
       open={opened}
       onClose={onCloseModal}
     >
-      <form id="generate-new-job-form" onSubmit={handleSubmit}>
+      <form id="generate-new-job-form">
         <DialogTitle>{t('jobs.newJob', { ns: 'ui' })}</DialogTitle>
         <DialogContent>
           <Stack

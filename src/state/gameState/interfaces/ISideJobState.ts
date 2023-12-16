@@ -1,11 +1,15 @@
-import { ISideJob, ISideJobTemplate, IJobCreateArguments } from '@/state/sideJobs';
+import {
+  ISideJob, ISideJobSearch, ISideJobTemplate, IJobCreateArguments,
+} from '@/state/sideJobs';
 
 export interface ISideJobState {
   sideJobs: ISideJob[];
+  sideJobSearches: ISideJobSearch[];
   sideJobTemplates: Map<string, ISideJobTemplate>;
 
-  createSideJobSearch(createArguments: IJobCreateArguments): boolean;
-  deleteSideJobSearch(id: string): void;
+  startSideJobSearch(createArguments: IJobCreateArguments): boolean;
+  deleteSideJobSearch(sideJobSearch: ISideJobSearch): void;
   startSideJob(createArguments: IJobCreateArguments): boolean;
-  deleteSideJob(id: string): void;
+  deleteSideJob(sideJob: ISideJob): void;
+  filterActivities(filteredActivityIds: Set<string>): void;
 }

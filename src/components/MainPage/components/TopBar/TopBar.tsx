@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next';
-import React from 'react';
 import { observer } from 'mobx-react-lite'
 import { useTheme } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar'
@@ -12,7 +11,6 @@ import GameStateToggler from './GameStateToggler';
 import BonusTimeDisplayer from './BonusTimeDisplayer';
 import MoneyDisplayer from './MoneyDisplayer';
 import CredibilityDisplayer from './CredibilityDisplayer';
-import { stateContext } from '@contexts/index'
 
 interface ITopBarProps {
   onToggleSideMenu: () => void;
@@ -23,12 +21,7 @@ const TopBar = observer((props: ITopBarProps) => {
     onToggleSideMenu,
   } = props;
   const theme = useTheme();
-  const gameStateManager = React.useContext(stateContext);
   const { t } = useTranslation();
-
-  if (!gameStateManager) {
-    return null;
-  }
 
   return (
     <AppBar

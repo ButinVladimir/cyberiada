@@ -7,4 +7,6 @@ export interface ISideJobTemplate {
   baseCredibility: number;
   baseMoney: number;
   baseExp: number;
+  baseTime: number;
+  baseCost: number;
 }

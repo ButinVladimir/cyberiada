@@ -1,4 +1,4 @@
-import { Person } from '@/state/person';
+import { Person } from '@state/common';
 import React from 'react';
 
 export interface CrewEditorCallbacks {

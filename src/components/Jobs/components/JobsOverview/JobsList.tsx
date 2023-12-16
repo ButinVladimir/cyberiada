@@ -1,21 +1,16 @@
-import React from 'react';
 import { observer } from 'mobx-react-lite';
 import Stack from '@mui/material/Stack';
-import { stateContext } from '@/contexts';
+import { getGameStateManagerInstance } from '@state/gameStateManager';
 import Job from './Job';
 
 const JobsList = observer(() => {
-  const gameStateManager = React.useContext(stateContext);
+  const gameStateManager = getGameStateManagerInstance();
 
-  if (!gameStateManager) {
-    return;
-  }
-
-  const jobs = gameStateManager.jobState.jobs;
+  const sideJobs = gameStateManager.sideJobState.sideJobs;
   
   return (
     <Stack spacing={2}>
-      {jobs.map((job) => <Job key={job.id} job={job} />)}
+      {sideJobs.map((sideJob) => <Job key={sideJob.id} job={sideJob} />)}
     </Stack>
   );
 });

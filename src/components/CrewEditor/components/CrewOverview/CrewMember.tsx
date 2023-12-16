@@ -6,8 +6,8 @@ import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import Button from '@mui/material/Button';
-import { stateContext } from '@/contexts';
-import { IPerson } from '@state/person';
+import { getGameStateManagerInstance } from '@state/gameStateManager';
+import { IPerson } from '@state/common';
 import { ValueDisplayer } from '@components/common';
 import { crewEditorCallbacksContext } from '../../crewEditorCallbacksContext';
 import CrewMemberStats from './CrewMemberStats';
@@ -21,7 +21,7 @@ const CrewMember = observer((props: ICrewMemberProps) => {
   const {
     person,
   } = props;
-  const gameStateManager = React.useContext(stateContext);
+  const gameStateManager = getGameStateManagerInstance();
   const { startEditingMember } = React.useContext(crewEditorCallbacksContext);
   const { t } = useTranslation();
 
@@ -30,12 +30,8 @@ const CrewMember = observer((props: ICrewMemberProps) => {
   }, [startEditingMember, person]);
 
   const handleDeleteMember = React.useCallback(() => {
-    gameStateManager?.crewState.deleteCrewMember(person.id);
-  }, [gameStateManager?.crewState, person]);
-
-  if (!gameStateManager) {
-    return;
-  }
+    gameStateManager.crewState.deleteCrewMember(person.id);
+  }, [gameStateManager.crewState, person]);
 
   return (
     <Card variant="outlined">
@@ -51,10 +47,10 @@ const CrewMember = observer((props: ICrewMemberProps) => {
 
       <CardActions sx={{ justifyContent: 'end' }}>
         <Button onClick={handleStartEditingMember}>
-          {t('crewEditor.editCrewMember', { ns: 'ui' })}
+          {t('common.edit', { ns: 'ui' })}
         </Button>
         <Button onClick={handleDeleteMember}>
-          {t('crewEditor.deleteCrewMember', { ns: 'ui' })}
+          {t('common.delete', { ns: 'ui' })}
         </Button>
       </CardActions>
     </Card>

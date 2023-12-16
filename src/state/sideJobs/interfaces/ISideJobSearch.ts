@@ -1,21 +1,6 @@
-import { Quality, IActivity, IActivityRequirements } from '@state/common';
-import { ISideJobTemplate } from './ISideJobTemplate';
+import { ISideJob } from './ISideJob';
 
-export interface ISideJobSearch extends IActivity {
-  id: string;
-  templateName: string;
-  template: ISideJobTemplate;
-  level: number;
-  quality: Quality;
+export interface ISideJobSearch extends ISideJob {
   performingPersonId: string;
-  
-  requirements: IActivityRequirements;
-  bonusModifier: number;
-
-  credibility: number;
-  money: number;
-  exp: number;
-
-  attemptsLeft: number;
-  timeLeft: number;
+  isComplete: boolean;
 }

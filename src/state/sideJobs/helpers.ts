@@ -2,7 +2,11 @@ import {
   ATTRIBUTE_FIELDS, SKILL_FIELDS, PERSON_STAT_FIELDS,
   IPerson, IActivityRequirements, Quality, QUALITY_STEPS,
 } from '@state/common';
-import { BASE_SEARCH_TIME, SEARCH_TIME_FACTOR } from './constants';
+import {
+  SEARCH_TIME_FACTOR, SEARCH_COST_FACTOR,
+  SEARCH_INFO_GATHERING_FACTOR, SEARCH_INTELLECT_FACTOR,
+} from './constants';
+import { ISideJobTemplate } from './interfaces/ISideJobTemplate';
 
 export function checkSidejobIsApplicable(assignedPersons: IPerson[], requirements: IActivityRequirements): boolean {
   if (assignedPersons.length > 1) {
@@ -30,6 +34,24 @@ export function checkSidejobIsApplicable(assignedPersons: IPerson[], requirement
   return false;
 }
 
-export function getSearchCompleteTime(quality: Quality) {
-  return BASE_SEARCH_TIME * (SEARCH_TIME_FACTOR ** QUALITY_STEPS[quality]);
+export function getSearchCompleteTime(person: IPerson, template: ISideJobTemplate, quality: Quality) {
+  const factor = Math.max(
+    1,
+    SEARCH_TIME_FACTOR
+      - SEARCH_INFO_GATHERING_FACTOR * person.skills.infoGathering
+      - SEARCH_INTELLECT_FACTOR * person.attributes.intellect,
+  );
+
+  return template.baseTime * (factor ** QUALITY_STEPS[quality]);
+}
+
+export function getSearchCost(person: IPerson, template: ISideJobTemplate, quality: Quality) {
+  const factor = Math.max(
+    1,
+    SEARCH_COST_FACTOR
+      - SEARCH_INFO_GATHERING_FACTOR * person.skills.infoGathering
+      - SEARCH_INTELLECT_FACTOR * person.attributes.intellect,
+  );
+
+  return template.baseTime * (factor ** QUALITY_STEPS[quality]);
 }

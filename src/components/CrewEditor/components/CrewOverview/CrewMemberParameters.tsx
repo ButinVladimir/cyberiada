@@ -8,8 +8,7 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { ValueDisplayer, IPropertyDisplayerProps, IPropertySectionDisplayerProps } from '@components/common';
-import { ATTRIBUTE_FIELDS, SKILL_FIELDS } from '@state/common';
-import { IPerson } from '@state/person';
+import { ATTRIBUTE_FIELDS, SKILL_FIELDS, IPerson } from '@state/common';
 import { floatFormatter } from '@helpers/formatters';
 
 interface ICrewMemberParametersProps {

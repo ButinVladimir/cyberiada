@@ -24,7 +24,7 @@ export default function MainPage() {
     switch (selectedMenuPage) {
       case MenuPages.CrewEditor:
         return <CrewEditor />;
-      case MenuPages.Jobs:
+      case MenuPages.SideJobs:
         return <Jobs />;
       case MenuPages.Settings:
         return <Settings />;

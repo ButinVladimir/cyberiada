@@ -52,9 +52,11 @@
           "maxHp": 0
         }
       },
-      "baseCredibility": 1,
+      "baseCredibility": 0,
       "baseMoney": 1,
-      "baseExp": 1
+      "baseExp": 1,
+      "baseTime": 60000,
+      "baseCost": 1000
     },
     "oddjobs": {
       "requirements": {
@@ -75,7 +77,9 @@
       },
       "baseCredibility": 1,
       "baseMoney": 10,
-      "baseExp": 100
+      "baseExp": 100,
+      "baseTime": 60000,
+      "baseCost": 1000
     },
     "writeSimpleScripts": {
       "requirements": {
@@ -102,7 +106,9 @@
       },
       "baseCredibility": 2,
       "baseMoney": 20,
-      "baseExp": 200
+      "baseExp": 200,
+      "baseTime": 120000,
+      "baseCost": 2000
     }
   },
   "groups": {

@@ -1,19 +1,14 @@
 import { useTranslation } from 'react-i18next';
-import React from 'react';
 import { observer } from 'mobx-react-lite'
 import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
 import { ValueDisplayer } from '@components/common';
-import { stateContext } from '@contexts/index';
+import { getGameStateManagerInstance } from '@state/gameStateManager';
 import { moneyFormatter } from '@helpers/formatters';
 
 const MoneyDisplayer = observer(() => {
-  const gameStateManager = React.useContext(stateContext);
+  const gameStateManager = getGameStateManagerInstance();
   const { t } = useTranslation();
-
-  if (!gameStateManager) {
-    return null;
-  }
 
   return (
     <Tooltip

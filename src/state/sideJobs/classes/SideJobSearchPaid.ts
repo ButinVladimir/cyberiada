@@ -4,25 +4,28 @@ import {
   getCredibilityGain, getExpGain, getMoneyGain,
 } from '@state/common';
 import { getGameStateManagerInstance } from '@state/gameStateManager';
-import { ISideJob, ISideJobTemplate, IJobCreateArguments } from '../interfaces';
-import { checkSidejobIsApplicable } from '../helpers';
+import { ISideJobSearchPaid, ISideJobTemplate, IJobCreateArguments } from '../interfaces';
+import { checkSidejobIsApplicable, getSearchCost } from '../helpers';
 
-export class SideJob implements ISideJob {
+export class SideJobSearchPaid implements ISideJobSearchPaid {
   readonly id;
   templateName = '';
   template: ISideJobTemplate;
   level = 0;
   quality = Quality.Abysmal;
   assignedPersons: IPerson[] = [];
+  isComplete = false;
+  performingPersonId = '';
 
-  constructor(id: string, template: ISideJobTemplate, createArguments: IJobCreateArguments, performingPerson: IPerson) {
+  constructor(id: string, template: ISideJobTemplate, createArguments: IJobCreateArguments, searchPerson: IPerson) {
     this.id = id;
 
     this.templateName = createArguments.templateName;
     this.template = template;
     this.level = createArguments.level;
     this.quality = createArguments.quality;
-    this.assignedPersons = [performingPerson];
+    this.assignedPersons = [searchPerson];
+    this.performingPersonId = createArguments.performingPersonId;
 
     makeAutoObservable(this);
   }
@@ -55,11 +58,28 @@ export class SideJob implements ISideJob {
     return getMoneyGain(this.template.baseMoney, this.quality, this.bonusModifier);
   }
 
-  processTick = (tickTime: number): void => {
+  get cost() {
+    return getSearchCost(this.assignedPersons[0], this.template, this.quality);
+  }
+
+  processTick = (): void => {
     const gameStateManager = getGameStateManagerInstance();
 
-    gameStateManager.globalState.changeCredibility(this.credibility * tickTime);
-    gameStateManager.globalState.changeMoney(this.money * tickTime);
+    if (!this.isComplete && gameStateManager.globalState.money >= this.cost) {
+      const sideJobCreated = gameStateManager.sideJobState.startSideJob({
+        level: this.level,
+        quality: this.quality,
+        templateName: this.templateName,
+        performingPersonId: this.performingPersonId,
+        searchPersonId: this.assignedPersons[0].id,
+        isPaid: true,
+      });
+
+      if (sideJobCreated) {
+        this.isComplete = true;
+        gameStateManager.globalState.changeMoney(-this.cost);
+      }
+    }
   };
 
   checkIsApplicable = (): boolean => {
@@ -67,7 +87,7 @@ export class SideJob implements ISideJob {
   }
 
   checkIsFinished = (): boolean => {
-    return false;
+    return this.isComplete;
   };
 
   processFinish = (): void => {};

@@ -15,7 +15,7 @@ export default function TopPanel(props: TopPanelProps) {
   return (
     <Box sx={{ marginBottom: 2 }}>
       <Typography variant="h3" gutterBottom>
-        {t(`pages.jobs`, { ns: 'ui'})}
+        {t(`pages.sideJobs`, { ns: 'ui'})}
       </Typography>
 
       <ButtonGroup>

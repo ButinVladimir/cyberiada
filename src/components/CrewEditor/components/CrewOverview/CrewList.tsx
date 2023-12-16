@@ -1,15 +1,10 @@
-import React from 'react';
 import { observer } from 'mobx-react-lite';
 import Stack from '@mui/material/Stack';
-import { stateContext } from '@/contexts';
+import { getGameStateManagerInstance } from '@state/gameStateManager';
 import CrewMember from './CrewMember';
 
 const CrewList = observer(() => {
-  const gameStateManager = React.useContext(stateContext);
-
-  if (!gameStateManager) {
-    return;
-  }
+  const gameStateManager = getGameStateManagerInstance();
 
   const crew = gameStateManager.crewState.crew;
   

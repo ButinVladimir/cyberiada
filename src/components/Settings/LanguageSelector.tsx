@@ -6,24 +6,18 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
-import { stateContext } from '@/contexts';
+import { getGameStateManagerInstance } from '@state/gameStateManager';
 import { Language } from '@/state/common';
 
 type LanguageChangeEventHandler = (event: SelectChangeEvent<Language>) => void;
 
 const LanguageSelector = observer(() => {
-  const gameStateManager = React.useContext(stateContext);
+  const gameStateManager = getGameStateManagerInstance();
   const { t } = useTranslation();
 
   const handleChangeLanguage = React.useCallback<LanguageChangeEventHandler>((event) => {
-    if (gameStateManager) {
-      void gameStateManager.settingsState.setLanguage(event.target.value as Language);
-    }
+    void gameStateManager.settingsState.setLanguage(event.target.value as Language);
   }, [gameStateManager]);
-
-  if (!gameStateManager) {
-    return;
-  }
 
   const { language }= gameStateManager.settingsState;
 

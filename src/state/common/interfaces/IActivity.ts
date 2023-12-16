@@ -1,10 +1,11 @@
 import { IPerson } from './IPerson';
 
 export interface IActivity {
-  isActive: boolean;
+  id: string;
   assignedPersons: IPerson[];
 
   processTick(tickTime: number): void;
   processFinish(): void;
   checkIsFinished(): boolean;
+  checkIsApplicable(): boolean;
 }
