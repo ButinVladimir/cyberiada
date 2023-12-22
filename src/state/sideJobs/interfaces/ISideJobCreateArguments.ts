@@ -1,10 +1,9 @@
-import { Quality } from '@state/common';
+import { IPerson, Quality } from '@state/common';
 
-export interface IJobCreateArguments {
+export interface ISideJobCreateArguments {
   templateName: string;
   level: number;
   quality: Quality;
-  searchPersonId: string;
-  performingPersonId: string;
-  isPaid: boolean;
+  searchPerson: IPerson;
+  performingPerson: IPerson;
 }

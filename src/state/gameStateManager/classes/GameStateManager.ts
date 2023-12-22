@@ -6,7 +6,7 @@ import {
   SettingsState,
 } from '@state/gameState';
 import { IActivity, IPerson } from '@state/common';
-import { SideJob, SideJobSearchFree, SideJobSearchPaid } from '@state/sideJobs';
+import { SideJob, SideJobSearch } from '@state/sideJobs';
 import { IGameStateManager } from '../interfaces';
 
 export class GameStateManager implements IGameStateManager {
@@ -20,6 +20,8 @@ export class GameStateManager implements IGameStateManager {
 
   timer: NodeJS.Timeout | null = null;
   lastTimeUpdate = 0;
+
+  private filteredActivityIds = new Set<string>();
 
   constructor() {
     makeAutoObservable(this);
@@ -50,7 +52,7 @@ export class GameStateManager implements IGameStateManager {
   deleteActivity = (activity: IActivity): void => {
     this.activitiesInProcess = this.activitiesInProcess.filter(a => a.id !== activity.id);
 
-    if (activity instanceof SideJobSearchFree || activity instanceof SideJobSearchPaid) {
+    if (activity instanceof SideJobSearch) {
       this.sideJobState.deleteSideJobSearch(activity);
     }
 
@@ -89,10 +91,6 @@ export class GameStateManager implements IGameStateManager {
     this.globalState.changeBonusTime(-this.settingsState.gameUpdateInterval);
 
     this.activitiesInProcess.forEach((activity) => {
-      if (!activity.checkIsApplicable()) {
-        this.requestActivityReassignment();
-      }
-
       if (activity.checkIsFinished()) {
         activity.processFinish();
         this.requestActivityReassignment();
@@ -117,10 +115,10 @@ export class GameStateManager implements IGameStateManager {
     this.activitiesInProcess.push(activity);
   }
 
-  private iterateActivitiesForAssignemnt = (activities: IActivity[], filteredActivityIds: Set<string>): void => {
+  private iterateActivitiesForAssignment = (activities: IActivity[]): void => {
     activities.forEach((activity) => {
-      if (!activity.checkIsApplicable()) {
-        filteredActivityIds.add(activity.id);
+      if (activity.attemptsLeft <= 0) {
+        this.filteredActivityIds.add(activity.id);
 
         return;
       }
@@ -132,10 +130,11 @@ export class GameStateManager implements IGameStateManager {
   private reassignActivity = () => {
     this.activitiesInProcess = [];
     this.personActivityMap.clear();
-    const filteredActivityIds = new Set<string>();
+    this.filteredActivityIds.clear();
 
-    this.iterateActivitiesForAssignemnt(this.sideJobState.sideJobSearches, filteredActivityIds);
+    this.iterateActivitiesForAssignment(this.sideJobState.sideJobSearches);
+    this.iterateActivitiesForAssignment(this.sideJobState.sideJobs);
 
-    this.sideJobState.filterActivities(filteredActivityIds);
+    this.sideJobState.filterActivities(this.filteredActivityIds);
   };
 }

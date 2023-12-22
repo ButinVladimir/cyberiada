@@ -4,16 +4,19 @@ import {
   getCredibilityGain, getExpGain, getMoneyGain, IActivityRequirements,
 } from '@state/common';
 import { getGameStateManagerInstance } from '@state/gameStateManager';
-import { ISideJob, ISideJobTemplate, ISideJobCreateArguments } from '../interfaces';
-import { checkSidejobIsApplicable } from '../helpers';
+import { MAX_SIDE_JOBS } from '@state/gameState/constants';
+import { ISideJobSearch, ISideJobTemplate, ISideJobCreateArguments } from '../interfaces';
+import { getSearchCompleteTime, getSearchCost } from '../helpers';
 
-export class SideJob implements ISideJob {
+export class SideJobSearch implements ISideJobSearch {
   readonly id;
   templateName = '';
   template: ISideJobTemplate;
   level = 0;
   quality = Quality.Abysmal;
   assignedPersons: IPerson[] = [];
+  performingPersons: IPerson[] = [];
+  timeLeft = 0;
   attemptsLeft = 1;
 
   sectionsOpened = {
@@ -28,7 +31,9 @@ export class SideJob implements ISideJob {
     this.template = template;
     this.level = createArguments.level;
     this.quality = createArguments.quality;
-    this.assignedPersons = [createArguments.performingPerson];
+    this.assignedPersons = [createArguments.searchPerson];
+    this.performingPersons = [createArguments.performingPerson];
+    this.timeLeft = this.timeToFinish;
 
     makeAutoObservable(this);
   }
@@ -45,7 +50,7 @@ export class SideJob implements ISideJob {
 
   get bonusModifier(): number {
     return getBonusModifier({
-      assignedPersons: this.assignedPersons,
+      assignedPersons: this.performingPersons,
       quality: this.quality,
       bonusModifiers: this.template.bonusModifiers,
     })
@@ -63,22 +68,61 @@ export class SideJob implements ISideJob {
     return getMoneyGain(this.template.baseMoney, this.quality, this.bonusModifier);
   }
 
-  processTick = (tickTime: number): void => {
+  get timeToFinish(): number {
+    return getSearchCompleteTime(this);
+  }
+
+  get cost(): number {
+    return getSearchCost(this);
+  }
+
+  get canBePaid(): boolean {
+    if (this.attemptsLeft <= 0) {
+      return false;
+    }
+
+    if (!this.checkIsApplicable()) {
+      return false;
+    }
+
     const gameStateManager = getGameStateManagerInstance();
 
-    gameStateManager.globalState.changeCredibility(this.credibility * tickTime);
-    gameStateManager.globalState.changeMoney(this.money * tickTime);
+    return gameStateManager.globalState.money >= this.cost;
+  }
+
+  processTick = (tickTime: number): void => {
+    if (this.timeLeft > 0) {
+      this.timeLeft -= tickTime;
+    }
   };
 
   checkIsApplicable = (): boolean => {
-    return checkSidejobIsApplicable(this);
+    const gameStateManager = getGameStateManagerInstance();
+
+    return gameStateManager.sideJobState.sideJobs.length < MAX_SIDE_JOBS;
   }
 
   checkIsFinished = (): boolean => {
-    return false;
+    if (!this.checkIsApplicable()) {
+      return false;
+    }
+
+    return this.attemptsLeft > 0 && this.timeLeft <= 0;
   };
 
-  processFinish = (): void => {};
+  processFinish = (): void => {
+    const gameStateManager = getGameStateManagerInstance();
+
+    gameStateManager.sideJobState.startSideJob({
+      level: this.level,
+      quality: this.quality,
+      templateName: this.templateName,
+      performingPerson: this.performingPersons[0],
+      searchPerson: this.assignedPersons[0],
+    });
+
+    this.attemptsLeft = 0;
+  };
 
   toggleRequirements = (): void => {
     this.sectionsOpened.requirements = !this.sectionsOpened.requirements;
@@ -86,5 +130,19 @@ export class SideJob implements ISideJob {
 
   toggleBonusModifiers = (): void => {
     this.sectionsOpened.bonusModifiers = !this.sectionsOpened.bonusModifiers;
+  };
+
+  buyOut = (): void => {
+    if (!this.canBePaid) {
+      return;
+    }
+
+    const gameStateManager = getGameStateManagerInstance();
+
+    if (this.attemptsLeft > 0) {
+      gameStateManager.globalState.changeMoney(-this.cost);
+      this.processFinish();
+      gameStateManager.requestActivityReassignment();
+    }
   };
 }

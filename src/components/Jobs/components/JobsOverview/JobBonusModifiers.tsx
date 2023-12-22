@@ -43,15 +43,15 @@ const JobRequirements = observer((props: IJobBonusModifiersProps) => {
           flexWrap="wrap"
           sx={{ marginBottom: 1 }}
         >
-          {ATTRIBUTE_FIELDS.map((attribute) => job.bonusModifiers.attributes[attribute]
+          {ATTRIBUTE_FIELDS.map((attribute) => job.template.bonusModifiers.attributes[attribute]
             ? t(`attributes.${attribute}`, { ns: 'common' })
             : null
           )}
-          {SKILL_FIELDS.map((skill) => job.bonusModifiers.skills[skill]
+          {SKILL_FIELDS.map((skill) => job.template.bonusModifiers.skills[skill]
             ? t(`skills.${skill}`, { ns: 'common' })
             : null
           )}
-          {PERSON_STAT_FIELDS.map((stat) => job.bonusModifiers.personStats[stat]
+          {PERSON_STAT_FIELDS.map((stat) => job.template.bonusModifiers.personStats[stat]
             ? t(`stats.${stat}`, { ns: 'common' })
             : null
           )}

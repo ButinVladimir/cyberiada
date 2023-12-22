@@ -1,3 +1,2 @@
 export * from './SideJob';
-export * from './SideJobSearchFree';
-export * from './SideJobSearchPaid';
+export * from './SideJobSearch';

@@ -13,4 +13,12 @@ export interface ISideJob extends IActivity {
   credibility: number;
   money: number;
   exp: number;
+
+  sectionsOpened: {
+    requirements: boolean;
+    bonusModifiers: boolean;
+  }
+
+  toggleRequirements: () => void;
+  toggleBonusModifiers: () => void;
 }

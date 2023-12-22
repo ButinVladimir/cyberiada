@@ -7,6 +7,7 @@ export class GlobalState implements IGlobalState {
   credibility = 0;
   bonusTime = 0;
   gameSpeedState: GameSpeedState = 'withoutBonusTime';
+  level = 1;
 
   constructor() {
     makeAutoObservable(this);
@@ -26,5 +27,9 @@ export class GlobalState implements IGlobalState {
 
   changeGameSpeedState = (state: GameSpeedState): void => {
     this.gameSpeedState = state;
+  };
+
+  changeLevel = (newLevel: number): void => {
+    this.level = newLevel;
   };
 }
