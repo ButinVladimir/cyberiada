@@ -5,12 +5,12 @@ import Grid from '@mui/material/Grid';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import { getGameStateManagerInstance } from '@state/gameStateManager';
+import { IComponentWithGameStateManagerProps } from '@components/common';
 
 type ChangeEventHandler = (event: ChangeEvent<HTMLInputElement>, checked: boolean) => void;
 
-const DeveloperModeToggle = observer(() => {
-  const gameStateManager = getGameStateManagerInstance();
+const DeveloperModeToggle = observer((props: IComponentWithGameStateManagerProps) => {
+  const { gameStateManager } = props;
   const { t } = useTranslation();
 
   const handleToggleDevMode = React.useCallback<ChangeEventHandler>((event, checked) => {

@@ -14,7 +14,9 @@ crewEditor:
   creatingCrewMember: Creating crew member
   editingCrewMember: Editing crew member
 sideJobs:
-  findSideJob: Find side jobs
+  findSideJob: Find side job
+  sideJobSearches: Side jobs searches ({{active}}/{{total}})
+  foundSideJobs: Found side jobs ({{active}}/{{total}})
 topBar:
   bonusTime: Bonus time
   pause: Pause

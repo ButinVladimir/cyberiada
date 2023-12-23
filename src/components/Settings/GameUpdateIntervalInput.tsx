@@ -3,13 +3,13 @@ import { useTranslation } from 'react-i18next';
 import { observer } from 'mobx-react-lite';
 import Grid from '@mui/material/Grid';
 import Slider from '@mui/material/Slider';
-import { getGameStateManagerInstance } from '@state/gameStateManager';
 import { Typography } from '@mui/material';
+import { IComponentWithGameStateManagerProps } from '@components/common';
 
 type ChangeEventHandler = (event: Event, value: number | number[]) => void;
 
-const GameUpdateIntervalInput = observer(() => {
-  const gameStateManager = getGameStateManagerInstance();
+const GameUpdateIntervalInput = observer((props: IComponentWithGameStateManagerProps) => {
+  const { gameStateManager } = props;
   const { t } = useTranslation();
 
   const handleChangeGameUpdateInterval = React.useCallback<ChangeEventHandler>((event, value) => {

@@ -51,7 +51,7 @@ export function getSearchCost(sideJobSearch: ISideJobSearch): number {
       - SEARCH_INFO_GATHERING_FACTOR * sideJobSearch.assignedPersons[0].skills.infoGathering
       - SEARCH_INTELLECT_FACTOR * sideJobSearch.assignedPersons[0].attributes.intellect,
   );
-  const ratio = sideJobSearch.timeLeft / sideJobSearch.timeToFinish;
+  const ratio = sideJobSearch.completion / sideJobSearch.timeToFinish;
 
   return ratio * sideJobSearch.template.baseTime * (factor ** QUALITY_STEPS[sideJobSearch.quality]);
 }

@@ -11,7 +11,6 @@ export class SideJob implements ISideJob {
   readonly id;
   templateName = '';
   template: ISideJobTemplate;
-  level = 0;
   quality = Quality.Abysmal;
   assignedPersons: IPerson[] = [];
   attemptsLeft = 1;
@@ -26,7 +25,6 @@ export class SideJob implements ISideJob {
 
     this.templateName = createArguments.templateName;
     this.template = template;
-    this.level = createArguments.level;
     this.quality = createArguments.quality;
     this.assignedPersons = [createArguments.performingPerson];
 
@@ -56,7 +54,9 @@ export class SideJob implements ISideJob {
   }
 
   get exp(): number {
-    return getExpGain(this.template.baseExp, this.quality, this.level);
+    const gameStateManager = getGameStateManagerInstance();
+
+    return getExpGain(this.template.baseExp, this.quality, gameStateManager.globalState.level);
   }
 
   get money(): number {

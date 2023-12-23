@@ -3,6 +3,7 @@ import { observer } from 'mobx-react-lite';
 import Grid from '@mui/material/Grid';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
+import { getGameStateManagerInstance } from '@state/gameStateManager';
 import LanguageSelector from './LanguageSelector';
 import GameUpdateIntervalInput from './GameUpdateIntervalInput';
 import BonusTimeSpeedInput from './BonusTimeSpeedInput';
@@ -10,6 +11,8 @@ import DeveloperModeToggle from './DeveloperModeToggle';
 
 const Settings = observer(() => {
   const { t } = useTranslation();
+
+  const gameStateManager = getGameStateManagerInstance();
 
   return (
     <Grid container rowSpacing={2} columnSpacing={4}>
@@ -19,20 +22,20 @@ const Settings = observer(() => {
         </Typography>
       </Grid>
 
-      <LanguageSelector />
+      <LanguageSelector gameStateManager={gameStateManager} />
 
       <Grid item xs={12}>
         <Divider />
       </Grid>
 
-      <GameUpdateIntervalInput />
-      <BonusTimeSpeedInput />
+      <GameUpdateIntervalInput gameStateManager={gameStateManager} />
+      <BonusTimeSpeedInput gameStateManager={gameStateManager} />
 
       <Grid item xs={12}>
         <Divider />
       </Grid>
 
-      <DeveloperModeToggle />
+      <DeveloperModeToggle gameStateManager={gameStateManager} />
     </Grid>
   );
 });

@@ -5,11 +5,11 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
 interface TopPanelProps {
-  onOpenJobModal: () => void;
+  onOpenCreateSideJobModal: () => void;
 }
 
 export default function TopPanel(props: TopPanelProps) {
-  const { onOpenJobModal } = props;
+  const { onOpenCreateSideJobModal } = props;
   const { t } = useTranslation();
 
   return (
@@ -22,9 +22,9 @@ export default function TopPanel(props: TopPanelProps) {
         <Button
           type="button"
           variant="contained"
-          onClick={onOpenJobModal}
+          onClick={onOpenCreateSideJobModal}
         >
-          {t('jobs.createNewJob', { ns: 'ui' })}
+          {t('sideJobs.findSideJob', { ns: 'ui' })}
         </Button>
       </ButtonGroup>
     </Box>

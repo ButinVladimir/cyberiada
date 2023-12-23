@@ -2,15 +2,12 @@ import { useTranslation } from 'react-i18next';
 import { observer } from 'mobx-react-lite'
 import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
-import { ValueDisplayer } from '@components/common';
-import { getGameStateManagerInstance } from '@state/gameStateManager';
+import { IComponentWithGameStateManagerProps } from '@components/common';
 import { formatTimeShort } from '@helpers/formatters';
 
-const BonusTimeDisplayer = observer(() => {
-  const gameStateManager = getGameStateManagerInstance();
+const BonusTimeDisplayer = observer((props: IComponentWithGameStateManagerProps) => {
+  const { gameStateManager } = props;
   const { t } = useTranslation();
-
-  const getFormattedBonusTime = () => formatTimeShort(gameStateManager.globalState.bonusTime);
 
   return (
     <Tooltip
@@ -23,7 +20,7 @@ const BonusTimeDisplayer = observer(() => {
         component="div"
         sx={{ marginRight: 3 }}
       >
-        <ValueDisplayer getValue={getFormattedBonusTime} />
+        {formatTimeShort(gameStateManager.globalState.bonusTime)}
       </Typography>
     </Tooltip>
   );

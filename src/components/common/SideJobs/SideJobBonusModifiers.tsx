@@ -11,23 +11,23 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { ATTRIBUTE_FIELDS, SKILL_FIELDS, PERSON_STAT_FIELDS } from '@state/common'
 import { ISideJob } from '@/state/sideJobs';
 
-interface IJobBonusModifiersProps {
-  job: ISideJob;
+interface ISideJobBonusModifiersProps {
+  sideJob: ISideJob;
 }
 
-const JobRequirements = observer((props: IJobBonusModifiersProps) => {
+const SideJobRequirements = observer((props: ISideJobBonusModifiersProps) => {
   const {
-    job,
+    sideJob,
   } = props;
 
   const { t } = useTranslation();
 
   const handleChangeAccordion = React.useCallback(() => {
-    job.toggleBonusModifiers();
-  }, [job]);
+    sideJob.toggleBonusModifiers();
+  }, [sideJob]);
 
   return (
-    <Accordion expanded={job.sectionsOpened.bonusModifiers} onChange={handleChangeAccordion}>
+    <Accordion expanded={sideJob.sectionsOpened.bonusModifiers} onChange={handleChangeAccordion}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         <Typography variant="h5">
           {t('sections.bonusModifiers', { ns: 'common' })}
@@ -43,15 +43,15 @@ const JobRequirements = observer((props: IJobBonusModifiersProps) => {
           flexWrap="wrap"
           sx={{ marginBottom: 1 }}
         >
-          {ATTRIBUTE_FIELDS.map((attribute) => job.template.bonusModifiers.attributes[attribute]
+          {ATTRIBUTE_FIELDS.map((attribute) => sideJob.template.bonusModifiers.attributes[attribute]
             ? t(`attributes.${attribute}`, { ns: 'common' })
             : null
           )}
-          {SKILL_FIELDS.map((skill) => job.template.bonusModifiers.skills[skill]
+          {SKILL_FIELDS.map((skill) => sideJob.template.bonusModifiers.skills[skill]
             ? t(`skills.${skill}`, { ns: 'common' })
             : null
           )}
-          {PERSON_STAT_FIELDS.map((stat) => job.template.bonusModifiers.personStats[stat]
+          {PERSON_STAT_FIELDS.map((stat) => sideJob.template.bonusModifiers.personStats[stat]
             ? t(`stats.${stat}`, { ns: 'common' })
             : null
           )}
@@ -61,4 +61,4 @@ const JobRequirements = observer((props: IJobBonusModifiersProps) => {
   );
 });
 
-export default JobRequirements;
+export default SideJobRequirements;

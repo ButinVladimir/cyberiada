@@ -12,8 +12,8 @@ import { ISideJob } from '@/state/sideJobs';
 import { ValueDisplayer, IPropertyDisplayerProps, IPropertySectionDisplayerProps } from '@components/common';
 import { floatFormatter } from '@helpers/formatters';
 
-interface IJobRequirementsProps {
-  job: ISideJob;
+interface ISideJobRequirementsProps {
+  sideJob: ISideJob;
 }
 
 const PropertyDisplayer = observer((props: IPropertyDisplayerProps) => {
@@ -67,19 +67,19 @@ const PropertySectionDisplayer = observer((props: IPropertySectionDisplayerProps
   );
 });
 
-const JobRequirements = observer((props: IJobRequirementsProps) => {
+const SideJobRequirements = observer((props: ISideJobRequirementsProps) => {
   const {
-    job,
+    sideJob,
   } = props;
 
   const { t } = useTranslation();
 
   const handleChangeAccordion  = React.useCallback(() => {
-    job.toggleRequirements();
-  }, [job]);
+    sideJob.toggleRequirements();
+  }, [sideJob]);
 
   return (
-    <Accordion expanded={job.sectionsOpened.requirements} onChange={handleChangeAccordion}>
+    <Accordion expanded={sideJob.sectionsOpened.requirements} onChange={handleChangeAccordion}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         <Typography variant="h5">
           {t('sections.requirements', { ns: 'common' })}
@@ -92,7 +92,7 @@ const JobRequirements = observer((props: IJobRequirementsProps) => {
             sectionKey="attributes"
             properties={ATTRIBUTE_FIELDS.map(field => ({
               property: field,
-              getValue: () => floatFormatter.format(job.requirements.attributes[field]),
+              getValue: () => floatFormatter.format(sideJob.requirements.attributes[field]),
             }))}
           />
 
@@ -100,7 +100,7 @@ const JobRequirements = observer((props: IJobRequirementsProps) => {
             sectionKey="skills"
             properties={SKILL_FIELDS.map(field => ({
               property: field,
-              getValue: () => floatFormatter.format(job.requirements.skills[field]),
+              getValue: () => floatFormatter.format(sideJob.requirements.skills[field]),
             }))}
           />
 
@@ -108,7 +108,7 @@ const JobRequirements = observer((props: IJobRequirementsProps) => {
             sectionKey="stats"
             properties={PERSON_STAT_FIELDS.map(field => ({
               property: field,
-              getValue: () => floatFormatter.format(job.requirements.personStats[field]),
+              getValue: () => floatFormatter.format(sideJob.requirements.personStats[field]),
             }))}
           />
         </Grid>
@@ -117,4 +117,4 @@ const JobRequirements = observer((props: IJobRequirementsProps) => {
   );
 });
 
-export default JobRequirements;
+export default SideJobRequirements;

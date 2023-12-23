@@ -16,7 +16,7 @@ export class SideJobSearch implements ISideJobSearch {
   quality = Quality.Abysmal;
   assignedPersons: IPerson[] = [];
   performingPersons: IPerson[] = [];
-  timeLeft = 0;
+  completion = 0;
   attemptsLeft = 1;
 
   sectionsOpened = {
@@ -29,11 +29,10 @@ export class SideJobSearch implements ISideJobSearch {
 
     this.templateName = createArguments.templateName;
     this.template = template;
-    this.level = createArguments.level;
     this.quality = createArguments.quality;
     this.assignedPersons = [createArguments.searchPerson];
     this.performingPersons = [createArguments.performingPerson];
-    this.timeLeft = this.timeToFinish;
+    this.completion = 0;
 
     makeAutoObservable(this);
   }
@@ -91,8 +90,8 @@ export class SideJobSearch implements ISideJobSearch {
   }
 
   processTick = (tickTime: number): void => {
-    if (this.timeLeft > 0) {
-      this.timeLeft -= tickTime;
+    if (this.completion < 1) {
+      this.completion += tickTime / this.timeToFinish;
     }
   };
 
@@ -107,14 +106,13 @@ export class SideJobSearch implements ISideJobSearch {
       return false;
     }
 
-    return this.attemptsLeft > 0 && this.timeLeft <= 0;
+    return this.attemptsLeft > 0 && this.completion >= 1;
   };
 
   processFinish = (): void => {
     const gameStateManager = getGameStateManagerInstance();
 
     gameStateManager.sideJobState.startSideJob({
-      level: this.level,
       quality: this.quality,
       templateName: this.templateName,
       performingPerson: this.performingPersons[0],
@@ -142,7 +140,7 @@ export class SideJobSearch implements ISideJobSearch {
     if (this.attemptsLeft > 0) {
       gameStateManager.globalState.changeMoney(-this.cost);
       this.processFinish();
-      gameStateManager.requestActivityReassignment();
+      gameStateManager.crewState.requestActivityReassignment();
     }
   };
 }

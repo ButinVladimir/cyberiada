@@ -5,7 +5,7 @@ import {
   SideJobState,
   SettingsState,
 } from '@state/gameState';
-import { IActivity, IPerson } from '@state/common';
+import { IActivity } from '@state/common';
 import { SideJob, SideJobSearch } from '@state/sideJobs';
 import { IGameStateManager } from '../interfaces';
 
@@ -14,9 +14,6 @@ export class GameStateManager implements IGameStateManager {
   crewState = new CrewState();
   sideJobState = new SideJobState();
   settingsState = new SettingsState();
-  activitiesInProcess: IActivity[] = [];
-  personActivityMap = new Map<IPerson, IActivity>();
-  needsActivityReassignment = true;
 
   timer: NodeJS.Timeout | null = null;
   lastTimeUpdate = 0;
@@ -45,12 +42,8 @@ export class GameStateManager implements IGameStateManager {
     );
   }
 
-  requestActivityReassignment = (): void => {
-    this.needsActivityReassignment = true;
-  };
-
   deleteActivity = (activity: IActivity): void => {
-    this.activitiesInProcess = this.activitiesInProcess.filter(a => a.id !== activity.id);
+    this.crewState.activitiesInProcess = this.crewState.activitiesInProcess.filter(a => a.id !== activity.id);
 
     if (activity instanceof SideJobSearch) {
       this.sideJobState.deleteSideJobSearch(activity);
@@ -60,7 +53,7 @@ export class GameStateManager implements IGameStateManager {
       this.sideJobState.deleteSideJob(activity);
     }
 
-    this.requestActivityReassignment();
+    this.crewState.requestActivityReassignment();
   };
 
   private processTick = () => {
@@ -90,29 +83,29 @@ export class GameStateManager implements IGameStateManager {
   private processSingleTick = () => {
     this.globalState.changeBonusTime(-this.settingsState.gameUpdateInterval);
 
-    this.activitiesInProcess.forEach((activity) => {
+    this.crewState.activitiesInProcess.forEach((activity) => {
       if (activity.checkIsFinished()) {
         activity.processFinish();
-        this.requestActivityReassignment();
+        this.crewState.requestActivityReassignment();
       }
     });
 
-    if (this.needsActivityReassignment) {
+    if (this.crewState.needsActivityReassignment) {
       this.reassignActivity();
     }
 
-    this.activitiesInProcess.forEach((activity) => {
+    this.crewState.activitiesInProcess.forEach((activity) => {
       activity.processTick(this.settingsState.gameUpdateInterval);
     });
   };
 
   private tryAssignActivity = (activity: IActivity): void => {
-    if (!activity.assignedPersons.every(p => !this.personActivityMap.has(p))) {
+    if (!activity.assignedPersons.every(p => !this.crewState.personActivityMap.has(p))) {
       return;
     }
 
-    activity.assignedPersons.forEach(p => this.personActivityMap.set(p, activity));
-    this.activitiesInProcess.push(activity);
+    activity.assignedPersons.forEach(p => this.crewState.personActivityMap.set(p, activity));
+    this.crewState.activitiesInProcess.push(activity);
   }
 
   private iterateActivitiesForAssignment = (activities: IActivity[]): void => {
@@ -128,8 +121,8 @@ export class GameStateManager implements IGameStateManager {
   };
 
   private reassignActivity = () => {
-    this.activitiesInProcess = [];
-    this.personActivityMap.clear();
+    this.crewState.activitiesInProcess = [];
+    this.crewState.personActivityMap.clear();
     this.filteredActivityIds.clear();
 
     this.iterateActivitiesForAssignment(this.sideJobState.sideJobSearches);

@@ -7,6 +7,7 @@ import Container from '@mui/material/Container'
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import Tooltip from '@mui/material/Tooltip';
+import { getGameStateManagerInstance } from '@state/gameStateManager';
 import GameStateToggler from './GameStateToggler';
 import BonusTimeDisplayer from './BonusTimeDisplayer';
 import MoneyDisplayer from './MoneyDisplayer';
@@ -22,6 +23,8 @@ const TopBar = observer((props: ITopBarProps) => {
   } = props;
   const theme = useTheme();
   const { t } = useTranslation();
+
+  const gameStateManager = getGameStateManagerInstance();
 
   return (
     <AppBar
@@ -43,13 +46,13 @@ const TopBar = observer((props: ITopBarProps) => {
             </IconButton>
           </Tooltip>
 
-          <GameStateToggler />
+          <GameStateToggler gameStateManager={gameStateManager} />
 
-          <BonusTimeDisplayer />
+          <BonusTimeDisplayer gameStateManager={gameStateManager} />
 
-          <MoneyDisplayer />
+          <MoneyDisplayer gameStateManager={gameStateManager} />
 
-          <CredibilityDisplayer />
+          <CredibilityDisplayer gameStateManager={gameStateManager} />
         </Toolbar>
       </Container>
     </AppBar>

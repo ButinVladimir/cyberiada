@@ -4,7 +4,6 @@ import { ISideJobTemplate } from './ISideJobTemplate';
 export interface ISideJob extends IActivity {
   templateName: string;
   template: ISideJobTemplate;
-  level: number;
   quality: Quality;
   
   requirements: IActivityRequirements;

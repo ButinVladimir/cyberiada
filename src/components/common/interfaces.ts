@@ -1,3 +1,5 @@
+import { GameStateManager } from "@/state/gameStateManager";
+
 export interface IPropertyDisplayerProps {
   sectionKey: string;
   property: string;
@@ -10,4 +12,8 @@ export interface IPropertySectionDisplayerProps {
     property: string;
     getValue: () => string;
   }[];
+}
+
+export interface IComponentWithGameStateManagerProps {
+  gameStateManager: GameStateManager;
 }

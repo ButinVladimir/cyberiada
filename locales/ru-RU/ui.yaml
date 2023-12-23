@@ -14,7 +14,9 @@ crewEditor:
   creatingCrewMember: Создание члена команды
   editingCrewMember: Редактирование члена команды
 sideJobs:
-  findSideJob: Найти подработки
+  findSideJob: Найти подработку
+  sideJobSearches: Задания на поиск подработок ({{active}}/{{total}})
+  foundSideJobs: Найденные подработки ({{active}}/{{total}})
 topBar:
   bonusTime: Бонусное время
   pause: Пауза

@@ -10,19 +10,18 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
-import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import { Quality } from '@state/common';
 import { getGameStateManagerInstance } from '@state/gameStateManager';
 
-interface IAddJobModalProps {
+interface IAddSideJobModalProps {
   opened: boolean;
   onCloseModal: () => void;
 }
 
 type SelectCallback = (event: SelectChangeEvent) => void;
 
-const AddJobModal = observer((props: IAddJobModalProps) => {
+const AddSideJobModal = observer((props: IAddSideJobModalProps) => {
   const {
     opened,
     onCloseModal,
@@ -32,7 +31,6 @@ const AddJobModal = observer((props: IAddJobModalProps) => {
   const { t } = useTranslation();
 
   const [templateName, setTemplateName] = React.useState<string>("");
-  const [level, setLevel] = React.useState<number>(0);
   const [quality, setQuality] = React.useState<Quality>(Quality.Average);
 
   const templates = React.useMemo(() =>
@@ -47,13 +45,6 @@ const AddJobModal = observer((props: IAddJobModalProps) => {
       setTemplateName(event.target.value);
     },
     [],);
-
-  const handleChangeLevel = React.useCallback<React.ChangeEventHandler<HTMLInputElement>>(
-    (event) => {
-      setLevel(+event.target.value);
-    },
-    [],
-  );
 
   const handleChangeQuality = React.useCallback<SelectCallback>(
     (event) => {
@@ -96,15 +87,6 @@ const AddJobModal = observer((props: IAddJobModalProps) => {
               </Select>
             </FormControl>
 
-            <TextField
-              type="number"
-              name="level"
-              label={t('general.level', { ns: 'common' })}
-              fullWidth
-              value={level}
-              onChange={handleChangeLevel}
-            />
-
             <FormControl fullWidth>
               <InputLabel id="select-quality-label">
                 {t('general.quality', { ns: 'common' })}
@@ -139,4 +121,4 @@ const AddJobModal = observer((props: IAddJobModalProps) => {
   );
 });
 
-export default AddJobModal;
+export default AddSideJobModal;
