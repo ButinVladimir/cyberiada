@@ -13,7 +13,7 @@ const GameUpdateIntervalInput = observer((props: IComponentWithGameStateManagerP
   const { t } = useTranslation();
 
   const handleChangeGameUpdateInterval = React.useCallback<ChangeEventHandler>((event, value) => {
-    gameStateManager.settingsState.setGameUpdateInterval(value as number);
+    gameStateManager.settingsState.gameUpdateInterval = value as number;
   }, [gameStateManager]);
 
   const { gameUpdateInterval }= gameStateManager.settingsState;

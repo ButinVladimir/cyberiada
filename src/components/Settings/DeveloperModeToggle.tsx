@@ -14,7 +14,7 @@ const DeveloperModeToggle = observer((props: IComponentWithGameStateManagerProps
   const { t } = useTranslation();
 
   const handleToggleDevMode = React.useCallback<ChangeEventHandler>((event, checked) => {
-    gameStateManager.settingsState.toggleDeveloperMode(checked);
+    gameStateManager.settingsState.developerModeEnabled = checked;
   }, [gameStateManager]);
 
   const { developerModeEnabled }= gameStateManager.settingsState;

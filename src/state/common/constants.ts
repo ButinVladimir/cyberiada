@@ -49,7 +49,7 @@ export const QUALITY_STEPS = {
 
 export const DEFAULT_LANGUAGE: Language = 'en-US';
 
-export const ACTIVITY_QUALITY_BASE = 4;
+export const ACTIVITY_QUALITY_BASE = 10;
 
 export const EXP_REQUIREMENT_BASE = 1;
 export const EXP_REQUIREMENT_FACTOR = 1;

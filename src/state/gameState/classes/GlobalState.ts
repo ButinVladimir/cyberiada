@@ -12,24 +12,4 @@ export class GlobalState implements IGlobalState {
   constructor() {
     makeAutoObservable(this);
   }
-
-  changeMoney = (delta: number): void => {
-    this.money += delta;
-  };
-
-  changeCredibility = (delta: number): void => {
-    this.credibility += delta;
-  };
-
-  changeBonusTime = (delta: number): void => {
-    this.bonusTime += delta;
-  };
-
-  changeGameSpeedState = (state: GameSpeedState): void => {
-    this.gameSpeedState = state;
-  };
-
-  changeLevel = (newLevel: number): void => {
-    this.level = newLevel;
-  };
 }

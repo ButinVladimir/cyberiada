@@ -8,7 +8,7 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { ATTRIBUTE_FIELDS, SKILL_FIELDS, PERSON_STAT_FIELDS } from '@state/common'
-import { ISideJob } from '@/state/sideJobs';
+import { ISideJob } from '@state/sideJobs';
 import { ValueDisplayer, IPropertyDisplayerProps, IPropertySectionDisplayerProps } from '@components/common';
 import { floatFormatter } from '@helpers/formatters';
 
@@ -81,7 +81,7 @@ const SideJobRequirements = observer((props: ISideJobRequirementsProps) => {
   return (
     <Accordion expanded={sideJob.sectionsOpened.requirements} onChange={handleChangeAccordion}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-        <Typography variant="h5">
+        <Typography variant="h6">
           {t('sections.requirements', { ns: 'common' })}
         </Typography>
       </AccordionSummary>

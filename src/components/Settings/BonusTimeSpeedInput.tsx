@@ -13,7 +13,7 @@ const BonusTimeSpeedInput = observer((props: IComponentWithGameStateManagerProps
   const { t } = useTranslation();
 
   const handleChangeBonusTimeSpeed = React.useCallback<ChangeEventHandler>((event, value) => {
-    gameStateManager.settingsState.setBonusTimeSpeed(value as number);
+    gameStateManager.settingsState.bonusTimeSpeed = value as number;
   }, [gameStateManager]);
 
   const { bonusTimeSpeed }= gameStateManager.settingsState;

@@ -4,6 +4,17 @@ common:
   update: Update
   edit: Edit
   delete: Delete
+  total: Total
+activity:
+  assignedTo: Assigned to {{crewMembers}}
+  types:
+    sideJobSearch: Side job search
+    sideJob: Side job
+  activityStatus:
+    inProgress: In progress
+    onHold: On hold
+  timeUntilComplete: Time until complete
+  redeemFor: Redeem for {{cost}}
 pages:
   crew: Crew
   crewEditor: Crew editor

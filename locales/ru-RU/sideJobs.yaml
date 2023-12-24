@@ -2,9 +2,9 @@ activities:
   fullTemplate:
     title: Образец подработки
     description: Только для разработки
-  oddjobs:
-    title: Мелкие подработки
-    description: Различные низкооплачиваемые подработки без особых требований
+  oddjob:
+    title: Мелкая подработка
+    description: Низкооплачиваемая подработка без особых требований
   writeSimpleScripts:
     title: Написание простых скриптов
     description: Написание простых скриптов и програм

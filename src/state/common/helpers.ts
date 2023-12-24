@@ -29,7 +29,7 @@ export function getQualityModifier(quality: Quality): number {
 }
 
 export function getQualityLevelModifier(quality: Quality, level: number): number {
-  return (ACTIVITY_QUALITY_BASE ** QUALITY_POWERS[quality]) * level;
+  return getQualityModifier(quality) * level;
 }
 
 export function getRequirements(params: GetRequirementsParams): IActivityRequirements {
@@ -87,16 +87,16 @@ export function getBonusModifier(params: GetBonusModifierParams): number {
   return modifier;
 }
 
-export function getCredibilityGain(baseCredibility: number, quality: Quality, bonusModifier: number) {
-  return baseCredibility * getQualityModifier(quality) * bonusModifier;
+export function getCredibilityGain(baseCredibility: number, bonusModifier: number) {
+  return baseCredibility * bonusModifier;
 }
 
 export function getExpGain(baseExp: number, quality: Quality, level: number) {
   return baseExp * getQualityLevelModifier(quality, level);
 }
 
-export function getMoneyGain(baseMoney: number, quality: Quality, bonusModifier: number) {
-  return baseMoney * getQualityModifier(quality) * bonusModifier;
+export function getMoneyGain(baseMoney: number, bonusModifier: number) {
+  return baseMoney * bonusModifier;
 }
 
 export function calculateExpToLevelUp(baseLevel: number, levelUps = 1): number {

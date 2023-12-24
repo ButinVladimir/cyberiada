@@ -5,7 +5,7 @@ import { MenuPages } from '@state/common';
 import TopBar from './components/TopBar';
 import SideMenu from './components/SideMenu';
 import CrewEditor from '@components/CrewEditor';
-import SideJobs from '@/components/SideJobs';
+import SideJobs from '@components/SideJobs';
 import Settings from '@components/Settings';
 
 export default function MainPage() {

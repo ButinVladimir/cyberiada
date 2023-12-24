@@ -13,7 +13,7 @@ const GameStateToggler = observer((props: IComponentWithGameStateManagerProps) =
   const { t } = useTranslation();
 
   const handleChangeState = React.useCallback((state: GameSpeedState) => {
-    gameStateManager.globalState.changeGameSpeedState(state);
+    gameStateManager.globalState.gameSpeedState = state;
   }, [gameStateManager]);
 
   return (

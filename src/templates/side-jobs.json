@@ -58,7 +58,7 @@
       "baseTime": 60000,
       "baseCost": 1000
     },
-    "oddjobs": {
+    "oddjob": {
       "requirements": {
         "attributes": {},
         "skills": {},

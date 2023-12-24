@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import { SideJob, SideJobSearch } from '@state/sideJobs';
 import { IComponentWithGameStateManagerProps } from '@components/common';
 import { SideJobTabs, TabsChangeCallback } from './types';
 
@@ -18,16 +17,16 @@ const SideJobsTabsContainer = observer((props: ISideJobsTabs) => {
   const { t } = useTranslation();
 
   const activeSideJobSearchesCount = React.useMemo<number>(() => {
-    return gameStateManager.crewState.activitiesInProcess.reduce((count, activity) => {
-      return activity instanceof SideJobSearch ? count + 1 : count;
+    return gameStateManager.sideJobState.sideJobSearches.reduce((count, sideJobSearch) => {
+      return sideJobSearch.isActive ? count + 1 : count;
     }, 0);
-  }, [gameStateManager.crewState.activitiesInProcess]);
+  }, [gameStateManager.sideJobState.sideJobSearches]);
 
   const activeSideJobsCount = React.useMemo<number>(() => {
-    return gameStateManager.crewState.activitiesInProcess.reduce((count, activity) => {
-      return activity instanceof SideJob ? count + 1 : count;
+    return gameStateManager.sideJobState.sideJobs.reduce((count, sideJob) => {
+      return sideJob.isActive ? count + 1 : count;
     }, 0);
-  }, [gameStateManager.crewState.activitiesInProcess]);
+  }, [gameStateManager.sideJobState.sideJobs]);
 
   return (
     <Box

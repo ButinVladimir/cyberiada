@@ -1,6 +1,6 @@
 import {
   ISideJob, ISideJobSearch, ISideJobTemplate, ISideJobCreateArguments,
-} from '@/state/sideJobs';
+} from '@state/sideJobs';
 
 export interface ISideJobState {
   sideJobs: ISideJob[];

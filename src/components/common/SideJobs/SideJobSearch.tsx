@@ -1,12 +1,8 @@
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { observer } from 'mobx-react-lite';
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
-import Button from '@mui/material/Button';
-import { ISideJobSearch } from '@/state/sideJobs';
-import ValueDisplayer from '../ValueDisplayer';
+import { ISideJobSearch } from '@state/sideJobs';
+import { Activity } from '../Activity'; 
 import { IComponentWithGameStateManagerProps } from '../interfaces';
 import SideJobRequirements from './SideJobRequirements';
 import SideJobBonusModifiers from './SideJobBonusModifiers';
@@ -23,29 +19,23 @@ const SideJobSearch = observer((props: ISideJobSearchProps) => {
   } = props;
   const { t } = useTranslation();
 
-  const handleDeleteSideJob = () => {
-    gameStateManager.deleteActivity(sideJobSearch);
-  };
+  const title = React.useMemo<string>(() => {
+    const type = t('activity.types.sideJobSearch', { ns: 'ui' });
+    const template = t(`activities.${sideJobSearch.templateName}.title`, { ns: 'sideJobs' });
+
+    return `${type}: ${template}`;
+  }, [sideJobSearch.templateName, t]);
 
   return (
-    <Card variant="outlined">
-      <CardHeader
-        title={<ValueDisplayer getValue={() => t(`activities.${sideJobSearch.templateName}.title`, { ns: 'sideJobs' })} />}
-        subheader={<ValueDisplayer getValue={() => sideJobSearch.assignedPersons[0].name}/>}
-      />
-
-      <CardContent>
-        <SideJobSearchProgress sideJobSearch={sideJobSearch} />
-        <SideJobRequirements sideJob={sideJobSearch} />
-        <SideJobBonusModifiers sideJob={sideJobSearch} />
-      </CardContent>
-
-      <CardActions sx={{ justifyContent: 'end' }}>
-        <Button onClick={handleDeleteSideJob}>
-          {t('common.delete', { ns: 'ui' })}
-        </Button>
-      </CardActions>
-    </Card>
+    <Activity
+      activity={sideJobSearch}
+      title={title}
+      gameStateManager={gameStateManager}
+    >
+      <SideJobSearchProgress sideJobSearch={sideJobSearch} />
+      <SideJobRequirements sideJob={sideJobSearch} />
+      <SideJobBonusModifiers sideJob={sideJobSearch} />
+    </Activity>
   );
 });
 

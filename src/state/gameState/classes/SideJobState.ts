@@ -4,7 +4,7 @@ import {
   SideJob, SideJobSearch,
   ISideJobCreateArguments, ISideJobTemplate,
   ISideJob, ISideJobSearch,
-} from '@/state/sideJobs';
+} from '@state/sideJobs';
 import { ISideJobState } from '../interfaces';
 import { MAX_SIDE_JOBS, MAX_SIDE_JOBS_SEARCHES } from '../constants';
 import jobTemplates from '@templates/side-jobs.json';

@@ -28,8 +28,6 @@ export class GameStateManager implements IGameStateManager {
     reaction(
       () => this.settingsState.gameUpdateInterval,
       (gameUpdateInterval) => {
-        console.log(gameUpdateInterval);
-
         if (this.timer) {
           clearInterval(this.timer);
         }
@@ -61,7 +59,7 @@ export class GameStateManager implements IGameStateManager {
     const timeDelta = Math.max(currentTime - this.lastTimeUpdate, 0);
     this.lastTimeUpdate = currentTime;
 
-    this.globalState.changeBonusTime(timeDelta);
+    this.globalState.bonusTime += timeDelta;
     let maxTicks = 0;
 
     switch (this.globalState.gameSpeedState) {
@@ -81,7 +79,7 @@ export class GameStateManager implements IGameStateManager {
   };
 
   private processSingleTick = () => {
-    this.globalState.changeBonusTime(-this.settingsState.gameUpdateInterval);
+    this.globalState.bonusTime -= this.settingsState.gameUpdateInterval;
 
     this.crewState.activitiesInProcess.forEach((activity) => {
       if (activity.checkIsFinished()) {
@@ -100,11 +98,13 @@ export class GameStateManager implements IGameStateManager {
   };
 
   private tryAssignActivity = (activity: IActivity): void => {
+    activity.isActive = false;
     if (!activity.assignedPersons.every(p => !this.crewState.personActivityMap.has(p))) {
       return;
     }
 
     activity.assignedPersons.forEach(p => this.crewState.personActivityMap.set(p, activity));
+    activity.isActive = true;
     this.crewState.activitiesInProcess.push(activity);
   }
 

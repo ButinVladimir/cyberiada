@@ -14,6 +14,8 @@ const SideJobsOverview = observer(() => {
     setSelectedTab(value);
   }, []);
 
+  console.log('Render overview', Math.random() * 100);
+
   return (
     <>
       <SideJobsTabsContainer 

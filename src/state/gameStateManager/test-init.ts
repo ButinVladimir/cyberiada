@@ -17,26 +17,26 @@ export function initTestData() {
     performingPerson: crewMember1,
     searchPerson: crewMember1,
     quality: Quality.Excellent,
-    templateName: 'oddjobs',
+    templateName: 'oddjob',
   });
   gameStateManager.sideJobState.startSideJobSearch({
     performingPerson: crewMember1,
     searchPerson: crewMember1,
     quality: Quality.Excellent,
-    templateName: 'oddjobs',
+    templateName: 'oddjob',
   });
 
   gameStateManager.sideJobState.startSideJob({
     performingPerson: crewMember2,
     searchPerson: crewMember2,
     quality: Quality.Abysmal,
-    templateName: 'oddjobs',
+    templateName: 'oddjob',
   });
   gameStateManager.sideJobState.startSideJob({
     performingPerson: crewMember2,
     searchPerson: crewMember2,
     quality: Quality.Abysmal,
-    templateName: 'oddjobs',
+    templateName: 'oddjob',
   });
 
 }

@@ -6,7 +6,7 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
-import { Language } from '@/state/common';
+import { Language } from '@state/common';
 import { IComponentWithGameStateManagerProps } from '@components/common';
 
 type LanguageChangeEventHandler = (event: SelectChangeEvent<Language>) => void;

@@ -14,6 +14,7 @@ export class SideJob implements ISideJob {
   quality = Quality.Abysmal;
   assignedPersons: IPerson[] = [];
   attemptsLeft = 1;
+  isActive = false;
 
   sectionsOpened = {
     requirements: false,
@@ -50,7 +51,7 @@ export class SideJob implements ISideJob {
   }
 
   get credibility(): number {
-    return getCredibilityGain(this.template.baseCredibility, this.quality, this.bonusModifier);
+    return getCredibilityGain(this.template.baseCredibility, this.bonusModifier);
   }
 
   get exp(): number {
@@ -60,14 +61,14 @@ export class SideJob implements ISideJob {
   }
 
   get money(): number {
-    return getMoneyGain(this.template.baseMoney, this.quality, this.bonusModifier);
+    return getMoneyGain(this.template.baseMoney, this.bonusModifier);
   }
 
   processTick = (tickTime: number): void => {
     const gameStateManager = getGameStateManagerInstance();
 
-    gameStateManager.globalState.changeCredibility(this.credibility * tickTime);
-    gameStateManager.globalState.changeMoney(this.money * tickTime);
+    gameStateManager.globalState.credibility += this.credibility * tickTime;
+    gameStateManager.globalState.money += this.money * tickTime;
   };
 
   checkIsApplicable = (): boolean => {

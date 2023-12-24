@@ -7,5 +7,5 @@ export interface ISideJobSearch extends ISideJob {
   completion: number;
   cost: number;
   canBePaid: boolean;
-  buyOut: () => void;
+  redeem: () => void;
 }

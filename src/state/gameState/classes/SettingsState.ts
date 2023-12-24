@@ -13,18 +13,6 @@ export class SettingsState implements ISettingsState {
     makeAutoObservable(this);
   }
 
-  setGameUpdateInterval = (interval: number): void => {
-    this.gameUpdateInterval = interval;
-  };
-
-  setBonusTimeSpeed = (speed: number): void => {
-    this.bonusTimeSpeed = speed;
-  };
-
-  toggleDeveloperMode = (value: boolean): void => {
-    this.developerModeEnabled = value;
-  };
-
   setLanguage = async (language: Language): Promise<void> => {
     this.language = language;
     await i18n.changeLanguage(language);

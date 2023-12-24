@@ -1,4 +1,4 @@
-import { GameStateManager } from "@/state/gameStateManager";
+import { GameStateManager } from "@state/gameStateManager";
 
 export interface IPropertyDisplayerProps {
   sectionKey: string;

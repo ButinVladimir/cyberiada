@@ -4,6 +4,17 @@ common:
   update: Обновить
   edit: Редактировать
   delete: Удалить
+  total: Итого
+activity:
+  assignedTo: Назначено на {{crewMembers}}
+  types:
+    sideJobSearch: Поиск подработки
+    sideJob: Подработка
+  activityStatus:
+    inProgress: В процессе
+    onHold: На паузе
+  timeUntilComplete: Время до завершения
+  redeemFor: Выкупить за {{cost}}
 pages:
   crew: Команда
   crewEditor: Редактор команды

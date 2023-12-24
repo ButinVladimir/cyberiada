@@ -18,6 +18,7 @@ export class SideJobSearch implements ISideJobSearch {
   performingPersons: IPerson[] = [];
   completion = 0;
   attemptsLeft = 1;
+  isActive = false;
 
   sectionsOpened = {
     requirements: false,
@@ -56,7 +57,7 @@ export class SideJobSearch implements ISideJobSearch {
   }
 
   get credibility(): number {
-    return getCredibilityGain(this.template.baseCredibility, this.quality, this.bonusModifier);
+    return getCredibilityGain(this.template.baseCredibility, this.bonusModifier);
   }
 
   get exp(): number {
@@ -64,7 +65,7 @@ export class SideJobSearch implements ISideJobSearch {
   }
 
   get money(): number {
-    return getMoneyGain(this.template.baseMoney, this.quality, this.bonusModifier);
+    return getMoneyGain(this.template.baseMoney, this.bonusModifier);
   }
 
   get timeToFinish(): number {
@@ -130,7 +131,7 @@ export class SideJobSearch implements ISideJobSearch {
     this.sectionsOpened.bonusModifiers = !this.sectionsOpened.bonusModifiers;
   };
 
-  buyOut = (): void => {
+  redeem = (): void => {
     if (!this.canBePaid) {
       return;
     }
@@ -138,7 +139,7 @@ export class SideJobSearch implements ISideJobSearch {
     const gameStateManager = getGameStateManagerInstance();
 
     if (this.attemptsLeft > 0) {
-      gameStateManager.globalState.changeMoney(-this.cost);
+      gameStateManager.globalState.money -= this.cost;
       this.processFinish();
       gameStateManager.crewState.requestActivityReassignment();
     }
