@@ -53,5 +53,5 @@ export function getSearchCost(sideJobSearch: ISideJobSearch): number {
   );
   const ratio = 1 - sideJobSearch.completion;
 
-  return ratio * sideJobSearch.template.baseTime * (factor ** QUALITY_STEPS[sideJobSearch.quality]);
+  return ratio * sideJobSearch.template.baseCost * (factor ** QUALITY_STEPS[sideJobSearch.quality]);
 }

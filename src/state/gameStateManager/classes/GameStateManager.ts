@@ -25,19 +25,19 @@ export class GameStateManager implements IGameStateManager {
 
     this.lastTimeUpdate = performance.now();
 
-    reaction(
-      () => this.settingsState.gameUpdateInterval,
-      (gameUpdateInterval) => {
-        if (this.timer) {
-          clearInterval(this.timer);
-        }
+    // reaction(
+    //   () => this.settingsState.gameUpdateInterval,
+    //   (gameUpdateInterval) => {
+    //     if (this.timer) {
+    //       clearInterval(this.timer);
+    //     }
 
-        this.timer = setInterval(this.processTick, gameUpdateInterval);
-      },
-      {
-        fireImmediately: true,
-      },
-    );
+    //     this.timer = setInterval(this.processTick, gameUpdateInterval);
+    //   },
+    //   {
+    //     fireImmediately: true,
+    //   },
+    // );
   }
 
   deleteActivity = (activity: IActivity): void => {
