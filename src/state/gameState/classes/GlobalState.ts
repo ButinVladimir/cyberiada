@@ -1,29 +1,15 @@
-import { IGlobalState, ISerializedGlobalState } from '../interfaces';
+import { makeAutoObservable } from 'mobx';
+import { IGlobalState } from '../interfaces';
+import { GameSpeedState } from '@state/common';
 
 export class GlobalState implements IGlobalState {
-  time = 1;
-  speed = 1;
+  money = 0;
+  credibility = 0;
+  bonusTime = 0;
+  gameSpeedState: GameSpeedState = 'withoutBonusTime';
+  level = 1;
 
-  changeSpeed = (newSpeed: number): void => {
-    this.speed = newSpeed;
-  };
-
-  updateTime = (): void => {
-    this.time += this.speed;
-  };
-
-  serialize = (): ISerializedGlobalState => {
-    return {
-      time: this.time,
-      speed: this.speed,
-    };
-  };
-
-  static deserialize = (obj: ISerializedGlobalState): IGlobalState => {
-    const gameState = new GlobalState();
-    gameState.time = obj.time;
-    gameState.speed = obj.speed;
-
-    return gameState;
-  };
+  constructor() {
+    makeAutoObservable(this);
+  }
 }

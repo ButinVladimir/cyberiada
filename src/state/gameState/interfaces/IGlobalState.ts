@@ -1,13 +1,9 @@
+import { GameSpeedState } from '@state/common';
+
 export interface IGlobalState {
-  time: number;
-  speed: number;
-
-  updateTime: () => void;
-  changeSpeed: (newSpeed: number) => void;
-  serialize: () => ISerializedGlobalState;
-}
-
-export interface ISerializedGlobalState {
-  time: number;
-  speed: number;
+  money: number;
+  credibility: number;
+  bonusTime: number;
+  gameSpeedState: GameSpeedState;
+  level: number;
 }
