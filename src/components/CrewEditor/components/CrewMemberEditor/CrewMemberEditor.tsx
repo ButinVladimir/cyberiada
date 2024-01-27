@@ -6,9 +6,8 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import Button from '@mui/material/Button';
 import pick from 'lodash/pick';
 import { v4 as uuid } from 'uuid';
-import { stateContext } from '@/contexts';
-import { IAttributes, ISkills } from '@state/common';
-import { IPerson, Person } from '@state/person';
+import { IAttributes, ISkills, IPerson, Person } from '@state/common';
+import { getGameStateManagerInstance } from '@state/gameStateManager';
 import { crewEditorCallbacksContext } from '../../crewEditorCallbacksContext';
 import { IGeneralState } from './types';
 import NameInput from './NameInput';
@@ -26,7 +25,7 @@ export default function CrewMemberEditor(props: ICrewMemberEditorProps) {
     action,
     person,
   } = props;
-  const gameStateManager = React.useContext(stateContext);
+  const gameStateManager = getGameStateManagerInstance();
   const { listMembers } = React.useContext(crewEditorCallbacksContext);
   const { t } = useTranslation();
 
@@ -90,9 +89,9 @@ export default function CrewMemberEditor(props: ICrewMemberEditorProps) {
     Object.assign(newPerson.skills, skillsState);
 
     if (person) {
-      gameStateManager?.crewState.updateCrewMember(person.id, newPerson);
+      gameStateManager.crewState.updateCrewMember(person.id, newPerson);
     } else {
-      gameStateManager?.crewState.addCrewMember(newPerson);
+      gameStateManager.crewState.addCrewMember(newPerson);
     }
 
     listMembers();

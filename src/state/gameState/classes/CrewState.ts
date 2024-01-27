@@ -1,10 +1,13 @@
 import { makeAutoObservable } from 'mobx';
 import { ICrewState } from '../interfaces';
-import { IPerson } from '@state/person';
+import { IPerson, IActivity } from '@state/common';
 
 export class CrewState implements ICrewState {
   crew: IPerson[] = [];
   incomingRequests: IPerson[] = [];
+  activitiesInProcess: IActivity[] = [];
+  personActivityMap = new Map<IPerson, IActivity>();
+  needsActivityReassignment = true;
 
   constructor() {
     makeAutoObservable(this);
@@ -12,6 +15,15 @@ export class CrewState implements ICrewState {
 
   addCrewMember = (person: IPerson): void => {
     this.crew = [...this.crew, person];
+  };
+
+  getCrewMember = (id: string): IPerson => {
+    const member = this.crew.find(p => p.id === id);
+    if (!member) {
+      throw new Error(`Person with id ${id} does not exist`);
+    }
+
+    return member;
   };
 
   updateCrewMember = (id: string, person: IPerson): void => {
@@ -25,5 +37,9 @@ export class CrewState implements ICrewState {
 
   deleteCrewMember = (id: string): void => {
     this.crew = this.crew.filter(p => p.id !== id);
+  };
+
+  requestActivityReassignment = (): void => {
+    this.needsActivityReassignment = true;
   };
 }

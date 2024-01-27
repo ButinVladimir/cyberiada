@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
 import { ValueDisplayer } from '@components/common';
-import { IPerson } from '@state/person';
+import { IPerson } from '@state/common';
 import { floatFormatter, decimalFormatter } from '@helpers/formatters';
 
 interface ICrewMemberStatsProps {

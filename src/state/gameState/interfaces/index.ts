@@ -1,4 +1,4 @@
 export * from './IGlobalState';
 export * from './ICrewState';
-export * from './IJobState';
+export * from './ISideJobState';
 export * from './ISettingsState';

@@ -4,23 +4,17 @@ import { observer } from 'mobx-react-lite'
 import IconButton from '@mui/material/IconButton';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Tooltip from '@mui/material/Tooltip';
-import { stateContext } from '@contexts/index';
-import { COLOR_NOT_SELECTED, COLOR_SELECTED, GAME_STATE_BUTTONS } from './constants';
+import { IComponentWithGameStateManagerProps } from '@components/common';
 import { GameSpeedState } from '@state/common';
+import { COLOR_NOT_SELECTED, COLOR_SELECTED, GAME_STATE_BUTTONS } from './constants';
 
-const GameStateToggler = observer(() => {
-  const gameStateManager = React.useContext(stateContext);
+const GameStateToggler = observer((props: IComponentWithGameStateManagerProps) => { 
+  const { gameStateManager } = props;
   const { t } = useTranslation();
 
   const handleChangeState = React.useCallback((state: GameSpeedState) => {
-    if (gameStateManager) {
-      gameStateManager.globalState.changeGameSpeedState(state);
-    }
+    gameStateManager.globalState.gameSpeedState = state;
   }, [gameStateManager]);
-
-  if (!gameStateManager) {
-    return null;
-  }
 
   return (
     <ButtonGroup sx={{ marginRight: 3 }}>

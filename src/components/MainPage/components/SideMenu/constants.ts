@@ -29,7 +29,7 @@ export const MENUS: MenuItems = [
     items: [
       {
         icon: WorkIcon,
-        value: MenuPages.Jobs,
+        value: MenuPages.SideJobs,
       },
     ],
   },

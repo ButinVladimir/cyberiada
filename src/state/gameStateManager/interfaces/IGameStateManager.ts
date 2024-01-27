@@ -1,13 +1,16 @@
 import {
   IGlobalState,
   ICrewState,
-  IJobState,
+  ISideJobState,
   ISettingsState,
 } from '@state/gameState';
+import { IActivity } from '@state/common';
 
 export interface IGameStateManager {
   globalState: IGlobalState;
   crewState: ICrewState;
-  jobState: IJobState;
+  sideJobState: ISideJobState;
   settingsState: ISettingsState;
+
+  deleteActivity: (activity: IActivity) => void;
 }

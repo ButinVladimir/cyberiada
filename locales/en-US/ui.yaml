@@ -2,21 +2,32 @@ common:
   cancel: Cancel
   create: Create
   update: Update
+  edit: Edit
+  delete: Delete
+  total: Total
+activity:
+  assignedTo: Assigned to {{crewMembers}}
+  types:
+    sideJobSearch: Side job search
+    sideJob: Side job
+  activityStatus:
+    inProgress: In progress
+    onHold: On hold
+  timeUntilComplete: Time until complete
+  redeemFor: Redeem for {{cost}}
 pages:
   crew: Crew
   crewEditor: Crew editor
-  jobs: Jobs
+  sideJobs: Side jobs
   settings: Settings
 crewEditor:
   createCrewMember: Create crew member
   creatingCrewMember: Creating crew member
-  editCrewMember: Edit crew member
   editingCrewMember: Editing crew member
-  deleteCrewMember: Delete crew member
-jobs:
-  createNewJob: Create new job 
-  deleteJob: Delete job
-  newJob: New job
+sideJobs:
+  findSideJob: Find side job
+  sideJobSearches: Side jobs searches ({{active}}/{{total}})
+  foundSideJobs: Found side jobs ({{active}}/{{total}})
 topBar:
   bonusTime: Bonus time
   pause: Pause

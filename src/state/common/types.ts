@@ -1,7 +1,7 @@
 export enum MenuPages {
   Crew = 'crew',
   CrewEditor = 'crewEditor',
-  Jobs = 'jobs',
+  SideJobs = 'sideJobs',
   Settings = 'settings',
 }
 

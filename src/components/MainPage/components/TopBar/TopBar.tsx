@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next';
-import React from 'react';
 import { observer } from 'mobx-react-lite'
 import { useTheme } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar'
@@ -8,11 +7,11 @@ import Container from '@mui/material/Container'
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import Tooltip from '@mui/material/Tooltip';
+import { getGameStateManagerInstance } from '@state/gameStateManager';
 import GameStateToggler from './GameStateToggler';
 import BonusTimeDisplayer from './BonusTimeDisplayer';
 import MoneyDisplayer from './MoneyDisplayer';
 import CredibilityDisplayer from './CredibilityDisplayer';
-import { stateContext } from '@contexts/index'
 
 interface ITopBarProps {
   onToggleSideMenu: () => void;
@@ -23,12 +22,9 @@ const TopBar = observer((props: ITopBarProps) => {
     onToggleSideMenu,
   } = props;
   const theme = useTheme();
-  const gameStateManager = React.useContext(stateContext);
   const { t } = useTranslation();
 
-  if (!gameStateManager) {
-    return null;
-  }
+  const gameStateManager = getGameStateManagerInstance();
 
   return (
     <AppBar
@@ -50,13 +46,13 @@ const TopBar = observer((props: ITopBarProps) => {
             </IconButton>
           </Tooltip>
 
-          <GameStateToggler />
+          <GameStateToggler gameStateManager={gameStateManager} />
 
-          <BonusTimeDisplayer />
+          <BonusTimeDisplayer gameStateManager={gameStateManager} />
 
-          <MoneyDisplayer />
+          <MoneyDisplayer gameStateManager={gameStateManager} />
 
-          <CredibilityDisplayer />
+          <CredibilityDisplayer gameStateManager={gameStateManager} />
         </Toolbar>
       </Container>
     </AppBar>

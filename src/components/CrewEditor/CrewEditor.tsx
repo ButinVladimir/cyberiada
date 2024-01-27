@@ -1,5 +1,5 @@
 import React from 'react';
-import { IPerson, Person } from '@/state/person';
+import { IPerson, Person } from '@state/common';
 import CrewOverview from './components/CrewOverview';
 import CrewMemberEditor from './components/CrewMemberEditor';
 import { crewEditorCallbacksContext } from './crewEditorCallbacksContext';

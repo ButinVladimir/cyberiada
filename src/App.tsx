@@ -1,12 +1,12 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import resources from 'virtual:i18next-loader'
-import { stateContext } from '@/contexts';
 import MainPage from '@components/MainPage';
-import { GameStateManager } from '@state/gameStateManager';
+import { getGameStateManagerInstance, initTestData } from '@state/gameStateManager';
 import { DEFAULT_LANGUAGE } from '@state/common'; 
 
-const gameStateManager = new GameStateManager();
+getGameStateManagerInstance();
+initTestData();
 
 await i18n
   .use(initReactI18next)
@@ -19,9 +19,7 @@ await i18n
 
 function App() {
   return (
-    <stateContext.Provider value={gameStateManager}>
-      <MainPage />
-    </stateContext.Provider>
+    <MainPage />
   );
 }
 

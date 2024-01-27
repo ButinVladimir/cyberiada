@@ -5,7 +5,7 @@ import { MenuPages } from '@state/common';
 import TopBar from './components/TopBar';
 import SideMenu from './components/SideMenu';
 import CrewEditor from '@components/CrewEditor';
-import Jobs from '@components/Jobs';
+import SideJobs from '@components/SideJobs';
 import Settings from '@components/Settings';
 
 export default function MainPage() {
@@ -24,8 +24,8 @@ export default function MainPage() {
     switch (selectedMenuPage) {
       case MenuPages.CrewEditor:
         return <CrewEditor />;
-      case MenuPages.Jobs:
-        return <Jobs />;
+      case MenuPages.SideJobs:
+        return <SideJobs />;
       case MenuPages.Settings:
         return <Settings />;
       default: 
