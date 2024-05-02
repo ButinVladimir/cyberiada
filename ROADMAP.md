@@ -43,7 +43,7 @@ Game revolves around managing crew. Crew members is managed by giving them order
 
 Moving to another city will result in losing current crew but certain favors allow to retain crew members.
 
-If all crew members are lost, crew will restart in same city but previously unlocked features will remain unlocked, most of inventory lost and respect level reset.
+If all crew members are lost, game will restart in same city but previously unlocked features will remain unlocked, most of inventory lost and respect level reset.
 
 ## Crew member
 
@@ -103,6 +103,10 @@ This parameters affects how fast crew member HP will regenerate.
 
 This parameter affects how fast crew member gets experience.
 
+### Initiative
+
+This parameter affects how soon crew member can have their turn in combat.
+
 ## Attributes
 
 ### Strength
@@ -145,11 +149,11 @@ Stealth is used for dodging attacks.
 
 ### Hacking
 
-Hacking is used for hacking and using smart weapons such as mechs and combat drones.
+Hacking is used for hacking and using smart weapons such as combat drones.
 
 ### Crafting
 
-Crafting is used for crafting and using complex equipment such as power armor and mechs.
+Crafting is used for crafting and using complex equipment such as power armor.
 
 ### Persuasion
 
@@ -202,35 +206,37 @@ Crafting rectipes are unlocked in specific city by repeated runs.
 
 ## City
 
-Each city is described as square map of 100x100 cells. City is divided into districts. Each district may have it's own one main facility: weapon shop, pharmacy, hospital, faction HQ, player HQ, training facility or hacking shop. Each district also can have own set of equipments available for purchase. In addition, each district has it's own multipliers to requirements and gain multipliers.
+Each city is described as square map of 100x100 cells. City is divided into districts. Each district can have own set of equipments available for purchase. In addition, each district has it's own set of multipliers, depending on district template and scenario multipliers. Some districts may contrain player or faction HQs.
 
-Each city has it's own line of rewards, each reward requires increasing amount of respect. Player can achieve multiple rewards in same run.
+Each city has it's own line of rewards, each reward requires increasing difficulty level. Player can achieve multiple rewards in same run.
 
-Each city district has it's own set of order and hire counters.
+Each city district has it's own set of contract and hire counters.
 
 ### Facilities
 
-Weapon shop, pharmacy, hospitals, training facilities and hacking shops have quality. Shops can sell items limited by quality. Training facilities can increase skill or attribute to level depending on difficulty level and quality. Quality can be increased by increasing respect.
+Each faction in scenario has it's own line of facilities. Capturing more districts in the city will lead to increasing amount of available facilities or items. For example, capturing 3 districts means first 3 rewards are available. These facilities can be: Weapon shop, pharmacy, hospitals, training facilities, hacking shops and probably more. Rewarded items depend on faction.
 
-Training facilities can increase only one selected attribute or skill. Skill or attribute for training facilities and faction items for other facilities depend on faction. Each faction has it's own list of rewards for capturing territories with facilities, facilities will be tied to randomized items during map generation. Item facilities can provide only 1 item.
+Weapon shop, pharmacy, hospitals, training facilities and hacking shops have quality. Shops can sell items limited by quality. Training facilities can increase skill or attribute to level depending on difficulty level and quality. Quality can be increased by purchasing certain faction favor.
+
+Training facilities can increase only one selected attribute or skill. Skill or attribute for training facilities and faction items for other facilities depend on faction.
 
 In addition, districts also reward specific neutral items after capturing it. Rewards are randomized during map generation. Each district can have maximum one of such item.
 
 ### Districts
 
-Each district has it's own set of multipliers. These multipliers increase chance of getting contract or side job, increase change of getting mercenary available, increase reputation and money rewards. These multipliers can be increased by specific side jobs and are retained. However, spending more on these multipliers will result in diminishing returns.
+Each district has it's own set of multipliers. These multipliers increase chance of getting contract, increase change of getting mercenary available, increase reputation and money rewards. These multipliers can be increased by specific side jobs and are retained. However, spending more on these multipliers will result in diminishing returns.
 
-When district is captured, it will receive 1 side job for each side job type of lowest quality. Player HQ district have 1 of each side job from the start of the game.
+When district is captured, it will receive maximal amount of contracts for each contract type and each quality. However, initial chances to get new mercenary or contract are 0. Player must perform specific actions to increase these chances.
 
-When district is captured, it will receive maximal amount of contracts for each contract type of lowest quality. Player HQ district have maximal amount of contracts from the start of the game.
+After generating city, for each district will be assigned faction for combat. If it's same as player faction, neutral faction will be used.
 
 ### Factions
 
-Each city has it's own set factions that try to claim city for themself. Player can join one faction if respect requirements are met. Once faction is joined, player cannot leave it unless they relocate.
+Each city has it's own set factions that try to claim city for themself. Player can join one faction if difficulty level requirements are met. Once faction is joined, player cannot leave it unless they relocate.
 
 Each factions has it's own predetermined power level speed, affecting power level of joined faction.
 
-Faction specific equipment, boosters and augmentations can be by capturing districts, getting blueprints or performing contracts and missions. Each faction have one or more perks which can be purchased by favors.
+Faction specific equipment, boosters and augmentations can be obtained by capturing districts, getting blueprints or performing contracts and missions. Each faction have one or more perks which can be purchased by favors.
 
 Each faction has it's own set of requirement modifiers, affecting missions and related side jobs and contracts. 
 
@@ -238,17 +244,15 @@ Each faction has it's own set of requirement modifiers, affecting missions and r
 
 Turf war allows factions capture districts depending on faction power level. Depending on what has been captured, faction will receive different bonuses:
 
-- Capturing weapon shops, pharmacies and hospitals unlocks faction specific item for purchase
-- Capturing training facilities gives ability to train one skill or attribute
 - Capturing opposing faction HQ unlocks missions to raid it
 - Capturing player HQ gives ability to instantly perform mercenary search by spending money
 - Capturing faction HQ gives ability to instantly perform contracts and sidejob search by spending money
 
+Each faction has it's own line of training programs, equipments and augmentations. When game starts, this line is randomized. Capturing districts will make more rewards from this line available.
+
 Capturing districts allows crew to perform activities here, buy mercenaries from here and will affect speed of changing power level.
 
 Requirements to capture will increase with each owned distict. Player can assist their selected faction by increase it's power level.
-
-Player can use district facility only if it's under the same faction as player. Player can perform actions only in their faction disticts, in district with player HQ or captured districts.
 
 When map is generated, district are split between neutral forces and factions. After joining faction, it's power level starts to change. All conquered districts will increase power level speed. Player can perform certain orders to increase faction power level.
 
@@ -280,7 +284,7 @@ Side jobs, contracts and missions are capped for each district, type and quality
 
 ### Side jobs
 
-Side jobs are basic orders. Each district has it's own set of counters for each side job of each quality. Each minute districts can receive new random side jobs. If district has side job available, player can assign one crew member to perform it. Side jobs have minimal and maximal caps. Some side jobs can provide side effects, such as: increasing probabilty of getting new side jobs and contracts in region, increasing probability of getting new mercenaries in region, increasing reputation and money rewards.
+Side jobs are basic orders. There are no limits on available side jobs for any district. Player can assign one crew member to perform it. Some side jobs can provide side effects, such as: increasing probabilty of getting new side jobs and contracts in region, increasing probability of getting new mercenaries in region, increasing reputation and money rewards.
 
 Side jobs don't have time limit, always depend on one performer, have lowest requirements and will give rewards immediately, without time walling. They may have useful side effects. On other hand, side jobs have weakest multipliers. They are useful mostly in the beginning of game and as a support.
 
@@ -301,7 +305,7 @@ Missions are issued to you by joined faction, can affect global state and can re
 Quality increases gains and requirements. Total amount of missions available at same time is capped. Some actions can make missions disappear. Faction and, if assigned, enemy faction will apply both their respective multipliers to requirements. Missions usually can be done in multiple ways.
 
 Missions allow feats such as:
-- Retaliations. Won't give favors.
+- Retaliations. Won't give favors
 - Raid enemy territory. Will not capture it, but will increase power level and resources. If it's captured before mission is finished, mission will be cancelled. Will give favors
 - Capturing enemy territory with assist of player. Same as above, but will capture territory and will give favors
 - Raiding enemy faction HQ for money, items, favors and blueprints. Only one mission can be succeeded for each quality level and for each enemy faction HQ. Possibly not time-gated and completing one will lead to another for same enemy HQ with higher quality. Will give favors
@@ -361,7 +365,7 @@ Applying booster will apply booster for selected crew member. It will add them s
 
 ### Training
 
-Training will increase skill or attribute by one depending on which facility is used for selected crew member. For each increase, price will increase exponentially. Training won't be started unless it can be paid fully. In addition, each increase require small amount of time. Depending on facility quality, limit for training can be increased.
+Training will increase skill or attribute by one depending on which training program is used for selected crew member. For each increase, price will increase exponentially. Training won't be started unless it can be paid fully. In addition, each increase require small amount of time. Depending on facility quality, limit for training can be increased.
 
 ### Writing program
 
@@ -369,17 +373,21 @@ Writing program will create program with selected quality. Time to create progra
 
 ## Combat
 
-Specific orders require combat to finish. These orders have bosses with combat stats. Each second turn occurs, during which remaining team members and boss will exchange hits. Team members will attack first. Once boss HP is equal or lower than 0, combat is passed. After that, order will checked if it's requirements are still passable. If yes, then order is completed. Combat allows finishing orders faster at cost of potential crew loss. Crew members and bosses both can use debuffs before combat or heal during it by using items in utility slots, if they allow it. Different factions have different debuffs. Bosses will use debuffs only during missions.
+Specific orders require combat to finish. These orders have selected crew members opposing randomly generated mercenaries. Each second turn occurs, during which next person will perform their turn. Order of persons performing depends on their initiative. Once all enemy mercenaries have their HP 0 or lower, combat is passed. After that, order will checked if it's requirements are still passable. If yes, then order is completed. Combat allows finishing orders faster at cost of potential crew loss. Crew members and enemiees both can use debuffs on their first respective turn or heal once by using items in utility slots.
+
+Composition of enemy team depends on faction district. Combat in missions will have increased amount of faction specific mercenaries.
+
+Combat is performed automatically. When each person has it's turn, they will attack their selected enemy. If there is no selected enemy or they died already, they will select new one randomly.
 
 To prevent combat from dragging, it also has time limit.
 
-Combat is unlocked at some point. Combat contracts and missions can be cancelled. Cancelling or failing combat can trigger retaliation mission.
+Combat is unlocked at some point. Combat contracts and missions can be cancelled. Cancelling or failing combat can result in damaging assigned crew members, damage will ignore armor and depends on quality.
 
 ### Debuffs
 
 #### Explosive
 
-Deals damage before combat starts. Affected by defense. Stacks additively.
+Deals damage. Affected by defense. May hit multiple times.
 
 #### Flashbang/smoke grenade
 
@@ -391,11 +399,11 @@ Reduces regeneration and defense.
 
 ### Healing
 
-If crew member has medkit, they can heal themselves and other during ther turn. Medkit has limited amount of HP to recover.
+If crew member has medkit, they can heal themselves during ther turn. Medkit will give fixed amount of HP depending on quality.
 
 ### Shield
 
-If crew member has shield, they have chance to draw enemy fire on themselves per turn.
+If crew member has shield, they have chance to draw enemy fire on themselves during enemy selection.
 
 ## Server
 
@@ -417,7 +425,7 @@ To prevent wasting resources, special program can be purchased/made to generate 
 
 Examples of programs:
 - Spoofing programs, for passive money generation. Will use unused RAM and cores. Server level will increase rewards
-- Side job/contract searching programs, for increasing search multiplier in particular district
+- Side contract searching programs, for increasing search multiplier in particular district
 - Crew member searching programs, for increasing search multiplier in particular district
 - Retaliation prevention programs, for automatically discovering type of retaliation
 - Automatic contract assignment, for specified team of crew members, district and selected contract types and qualities. Each selected contract type and quality will require more cores
@@ -427,7 +435,7 @@ Examples of programs:
 
 ## Hacking
 
-Specific orders require hacking to finish. Hacking requires filling specific scale within time limit while hacking program is active. After that, order will continue as usual.
+Specific orders require hacking to finish. Hacking requires filling completion scale within time limit and avoid filling alert scale while hacking program is active.
 
 Hacking is unavailable initially, unlocking it requires finishing respect milestone in specific city. Failing or cancelling hacking mission may trigger retaliation.
 
@@ -442,16 +450,12 @@ Cities have upper limit on difficulty level unless noted. Each city also has dif
 Starting city has only one faction - **Vigil**. Player begins here after starting the game. Has small size and designed to learn how to use basic mechanics.
 
 Has following unlocks:
-- Training
 - Contracts
-- Weapon shops and combat
-- Pharmacy
-- Augmentations
 - Relocation
 
 ### Proving grounds
 
-Proving grounds has 4-6 random factions and a lot of regions. Unlike most other cities, City of Dreams has no cap on difficulty level and saves highest achieved difficulty level here. Entering Proving Grounds again will automatically level up crew members to this level.
+Proving grounds has 4 random factions and a lot of regions. Unlike most other cities, City of Dreams has no cap on difficulty level and saves highest achieved difficulty level here. Entering Proving Grounds again will automatically level up crew members to this level.
 
 ### Science city
 
@@ -463,13 +467,13 @@ Completing science city will reward player with higher starting quality of train
 
 Smuggler's city has two factions: **placeholder** and random. Crew members here can be hired with equipment of max quality and arms shops are available immediately with max quality.
 
-Completing smuggler's city will reward player with ability to hire crew members with higher quality of equipment and increase starting quality cap of equipment to purchase. Maximum 6 levels are available.
+Completing smuggler's city will increase starting quality cap of equipment to purchase. Maximum 6 levels are available.
 
 ### Cyborg city
 
 Cyborg city has two factions: **placeholder** and random. Crew members here can be hired with augmentations of max quality and hospitals are available immediately with max quality.
 
-Completing cyborg city will reward player with ability to hire crew members with higher quality of augmentations and increase starting quality of hospitals. Maximum 6 levels are available.
+Completing cyborg city will increase starting quality of hospitals. Maximum 6 levels are available.
 
 ### Junkie's city
 
@@ -479,9 +483,10 @@ Completin junkie's city will reward player with ability to use more side effects
 
 ### Combat zone
 
-Combat zone has three-four factions - **Vigil**, **Anarks** and **placeholder**. Size is medium. Designed to be a tutorial for advanced mechanics.
+Combat zone has three-four factions - **Vigil**, **Mongrels** and **placeholder**. Size is medium. Designed to be a tutorial for advanced mechanics.
 
 Has following unlocks:
+- Combat
 - Wanted level and crimes
 - Missions and retailations
 
@@ -507,18 +512,8 @@ Shield
 
 #### Favors
 
-Vigil can increase default defense
+Vigil can make every search result in guaranteed success. That means for specific favor quality each time search occurs, it will result in generating contrats and mercenaries with same or below quality with 100% chance.
 
 #### Mercenaries
 
 Defense oriented, with ranged weapons
-
-### Spies
-
-#### Favors
-
-Spies can make every search result in guaranteed success. That means for specific favor quality each time search occurs, it will result in generating side jobs and contrats with same or below quality with 100% chance.
-
-#### Mercenaries
-
-Support based
