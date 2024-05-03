@@ -5,6 +5,7 @@ common:
   edit: Редактировать
   delete: Удалить
   total: Итого
+  loading: Загрузка...
 activity:
   assignedTo: Назначено на {{crewMembers}}
   types:

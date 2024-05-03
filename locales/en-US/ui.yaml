@@ -5,6 +5,7 @@ common:
   edit: Edit
   delete: Delete
   total: Total
+  loading: Loading...
 activity:
   assignedTo: Assigned to {{crewMembers}}
   types:
