@@ -1,6 +1,4 @@
-import { withTwind } from '@components/with-twind';
-
-export class MainPage extends withTwind(HTMLElement) {
+export class MainPage extends HTMLElement {
   constructor() {
     super();
     

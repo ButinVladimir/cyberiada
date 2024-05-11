@@ -1,10 +1,9 @@
-import { withTwind } from '@components/with-twind';
 import templateContentRaw from './templates/loading-screen.html?raw';
 
 const template = document.createElement('template');
 template.innerHTML = templateContentRaw;
 
-export class LoadingScreen extends withTwind(HTMLElement) {
+export class LoadingScreen extends HTMLElement {
   constructor() {
     super();
     

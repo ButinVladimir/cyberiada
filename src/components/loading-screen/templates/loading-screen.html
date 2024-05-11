@@ -1,5 +1,24 @@
-<div class="w-screen h-screen flex flex-auto justify-center items-center">
-  <span class="font-sans text-6xl">
+<style>
+  .screen {
+    width: 100wh;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--sl-color-neutral-50);
+    color: var(--sl-color-neutral-950);
+  }
+
+  .text {
+    font-family: var(--sl-font-sans);
+    font-size: var(--sl-font-size-3x-large);
+    font-weight: var(--sl-font-weight-semibold);
+    letter-spacing: var(--sl-letter-spacing-loose);
+  }
+</style>
+
+<div class="screen">
+  <span class="text">
     <intl-message label="ui:common:loading">
       Loading...
     </intl-message>
