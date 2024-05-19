@@ -1,24 +1,24 @@
-import templateContentRaw from './template.html?raw';
+import { LitElement, html, css } from 'lit';
+import { customElement } from 'lit/decorators.js';
 
-const template = document.createElement('template');
-template.innerHTML = templateContentRaw;
+@customElement('top-bar')
+export class TopBar extends LitElement {
+  static styles = css`
+    :host {
+      width: 100vw;
+      display: flex;
+      background-color: var(--sl-panel-background-color);
+      border-bottom: var(--sl-panel-border-width) solid var(--sl-panel-border-color);
+      padding: var(--sl-spacing-medium);
+      box-shadow: var(--sl-shadow-small);
+    }
+  `;
 
-/**
- * Top bar
- * 
- * @element top-bar
- */
-export class TopBar extends HTMLElement {
-  constructor() {
-    super();
-    
-    const shadowRoot = this.attachShadow({ mode: 'open' });
-    const templateContent = template.content.cloneNode(true);
-    shadowRoot.appendChild(templateContent);
+  render() {
+    return html`
+      <div>
+        Content goes here
+      </div>  
+    `;
   }
 }
-
-customElements.define(
-  'top-bar',
-  TopBar,
-);

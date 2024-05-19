@@ -1,24 +1,36 @@
-import templateContentRaw from './template.html?raw';
+import { LitElement, html, css } from 'lit';
+import { customElement } from 'lit/decorators.js';
 
-const template = document.createElement('template');
-template.innerHTML = templateContentRaw;
+@customElement('loading-screen')
+export class GameScreen extends LitElement {
+  static styles = css`
+    :host {
+      width: 100wh;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--sl-color-neutral-50);
+      color: var(--sl-color-neutral-950);
+    }
 
-/**
- * Loading screen
- * 
- * @element loading-screen
- */
-export class LoadingScreen extends HTMLElement {
-  constructor() {
-    super();
-    
-    const shadowRoot = this.attachShadow({ mode: 'open' });
-    const templateContent = template.content.cloneNode(true);
-    shadowRoot.appendChild(templateContent);
+    :host span {
+      font-family: var(--sl-font-sans);
+      font-size: var(--sl-font-size-3x-large);
+      font-weight: var(--sl-font-weight-semibold);
+      letter-spacing: var(--sl-letter-spacing-loose);
+    }
+  `;
+
+  render() {
+    return html`
+      <div>
+        <span>
+          <intl-message label="ui:common:loading">
+            Loading...
+          </intl-message>
+        </span>
+      </div>
+    `;
   }
 }
-
-customElements.define(
-  'loading-screen',
-  LoadingScreen,
-);

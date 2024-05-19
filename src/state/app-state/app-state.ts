@@ -1,8 +1,10 @@
-import { EventEmitter } from 'eventemitter3'
+import { EventEmitter } from 'eventemitter3';
+import { injectable } from 'inversify';
 import { IAppState } from "./interfaces";
 import { AppStateValue } from './types';
 import { events } from './constants';
 
+@injectable()
 export class AppState implements IAppState {
   private _currentState: AppStateValue;
   public readonly eventEmitter: EventEmitter;

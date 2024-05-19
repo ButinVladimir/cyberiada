@@ -5,6 +5,8 @@ module.exports = {
     'eslint:recommended',
     'plugin:@typescript-eslint/strict-type-checked',
     'plugin:@typescript-eslint/stylistic-type-checked',
+    "plugin:wc/recommended",
+    "plugin:lit/recommended",
   ],
   ignorePatterns: [
     'dist',
@@ -12,8 +14,6 @@ module.exports = {
     'vite.config.ts',
     '*.d.ts',
     'postcss.config.js',
-    'tailwind.config.js',
-    'twind.config.js'
   ],
   parser: '@typescript-eslint/parser',
   plugins: ["@typescript-eslint"],

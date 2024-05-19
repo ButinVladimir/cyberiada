@@ -1,24 +1,11 @@
-import templateContentRaw from './template.html?raw';
+import { LitElement, html } from 'lit';
+import { customElement } from 'lit/decorators.js';
 
-const template = document.createElement('template');
-template.innerHTML = templateContentRaw;
-
-/**
- * Game screen
- * 
- * @element game-screen
- */
-export class GameScreen extends HTMLElement {
-  constructor() {
-    super();
-    
-    const shadowRoot = this.attachShadow({ mode: 'open' });
-    const templateContent = template.content.cloneNode(true);
-    shadowRoot.appendChild(templateContent);
+@customElement('game-screen')
+export class GameScreen extends LitElement {
+  render() {
+    return html`
+      <top-bar></top-bar>
+    `;
   }
 }
-
-customElements.define(
-  'game-screen',
-  GameScreen,
-);

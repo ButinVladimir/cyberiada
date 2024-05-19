@@ -3,22 +3,21 @@
   "tags": [
     {
       "name": "app-root",
-      "description": "Application root\n\nProperties:\n\n  * `clearScreen` - Clears screen\n\n  * `renderLoadingScreen` - Renders loading screen\n\n  * `handleLoadedCallback` - Handles loaded event and renders game screen\n\n  * `appState` - Application state instance",
+      "description": "Properties:\n\n  * `appRootController` {`AppRootController`} - ",
       "attributes": []
     },
     {
       "name": "game-screen",
-      "description": "Game screen\n\n",
       "attributes": []
     },
     {
       "name": "top-bar",
-      "description": "Top bar\n\n",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - ",
       "attributes": []
     },
     {
       "name": "loading-screen",
-      "description": "Loading screen\n\n",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - ",
       "attributes": []
     }
   ],
