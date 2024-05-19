@@ -4,11 +4,11 @@ const template = document.createElement('template');
 template.innerHTML = templateContentRaw;
 
 /**
- * Loading screen
+ * Top bar
  * 
- * @element loading-screen
+ * @element top-bar
  */
-export class LoadingScreen extends HTMLElement {
+export class TopBar extends HTMLElement {
   constructor() {
     super();
     
@@ -19,6 +19,6 @@ export class LoadingScreen extends HTMLElement {
 }
 
 customElements.define(
-  'loading-screen',
-  LoadingScreen,
+  'top-bar',
+  TopBar,
 );

@@ -15,8 +15,8 @@ i18n.init({
   fallbackLng: 'en-US',
   debug: true,
 }).then(() => {
-  const mainPageElement = document.createElement('main-page');
-  document.getElementById('root')!.append(mainPageElement);
+  const appRootElement = document.createElement('app-root');
+  document.getElementById('root')!.append(appRootElement);
 }).catch((e) => {
   console.error(e);
 });

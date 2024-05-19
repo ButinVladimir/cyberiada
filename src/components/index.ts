@@ -1,2 +1,3 @@
 import './loading-screen';
-import './main-page';
+import './game-screen';
+import './app-root';

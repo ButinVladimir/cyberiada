@@ -4,11 +4,11 @@ const template = document.createElement('template');
 template.innerHTML = templateContentRaw;
 
 /**
- * Loading screen
+ * Game screen
  * 
- * @element loading-screen
+ * @element game-screen
  */
-export class LoadingScreen extends HTMLElement {
+export class GameScreen extends HTMLElement {
   constructor() {
     super();
     
@@ -19,6 +19,6 @@ export class LoadingScreen extends HTMLElement {
 }
 
 customElements.define(
-  'loading-screen',
-  LoadingScreen,
+  'game-screen',
+  GameScreen,
 );

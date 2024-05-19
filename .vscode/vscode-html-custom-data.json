@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "tags": [
+    {
+      "name": "app-root",
+      "description": "Application root\n\nProperties:\n\n  * `clearScreen` - Clears screen\n\n  * `renderLoadingScreen` - Renders loading screen\n\n  * `handleLoadedCallback` - Handles loaded event and renders game screen\n\n  * `appState` - Application state instance",
+      "attributes": []
+    },
+    {
+      "name": "game-screen",
+      "description": "Game screen\n\n",
+      "attributes": []
+    },
+    {
+      "name": "top-bar",
+      "description": "Top bar\n\n",
+      "attributes": []
+    },
+    {
+      "name": "loading-screen",
+      "description": "Loading screen\n\n",
+      "attributes": []
+    }
+  ],
+  "globalAttributes": [],
+  "valueSets": []
+}

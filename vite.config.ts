@@ -36,6 +36,10 @@ export default defineConfig({
         replacement: path.resolve(__dirname, './src/helpers'),
       },
       {
+        find: '@state',
+        replacement: path.resolve(__dirname, './src/state'),
+      },
+      {
         find: /\/assets\/icons\/(.+)/,
         replacement: `${iconsPath}/$1`,
       }
