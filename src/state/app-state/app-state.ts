@@ -22,6 +22,6 @@ export class AppState implements IAppState {
     setTimeout(() => {
       this._currentState = AppStateValue.running;
       this.eventEmitter.emit(events.loaded);
-    }, 10000);
+    }, 1000);
   }
 }

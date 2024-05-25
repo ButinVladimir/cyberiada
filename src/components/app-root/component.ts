@@ -2,7 +2,7 @@ import { LitElement, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { AppRootController } from './controller';
 
-@customElement('app-root')
+@customElement('ca-app-root')
 export class AppRoot extends LitElement {
   private appRootController: AppRootController;
 
@@ -15,12 +15,12 @@ export class AppRoot extends LitElement {
   render() {
     if (!this.appRootController.isLoaded) {
       return html`
-        <loading-screen></loading-screen>
+        <ca-loading-screen></ca-loading-screen>
       `;
     }
 
     return html`
-      <game-screen></game-screen>
+      <ca-game-screen></ca-game-screen>
     `;
   }
 }

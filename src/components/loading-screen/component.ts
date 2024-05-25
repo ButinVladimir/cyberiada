@@ -1,7 +1,7 @@
 import { LitElement, html, css } from 'lit';
 import { customElement } from 'lit/decorators.js';
 
-@customElement('loading-screen')
+@customElement('ca-loading-screen')
 export class GameScreen extends LitElement {
   static styles = css`
     :host {

@@ -16,7 +16,7 @@ i18n.init({
   fallbackLng: 'en-US',
   debug: true,
 }).then(() => {
-  const appRootElement = document.createElement('app-root');
+  const appRootElement = document.createElement('ca-app-root');
   document.getElementById('root')!.append(appRootElement);
 }).catch((e) => {
   console.error(e);
