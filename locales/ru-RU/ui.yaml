@@ -35,6 +35,7 @@ topBar:
   play: Играть без бонусного времени
   fastForward: Играть, используя бонусное время
   menu: Меню
+  logs: Логи
 settings:
   language: Язык
   gameUpdateInterval: Время между обновлением игры (мс)

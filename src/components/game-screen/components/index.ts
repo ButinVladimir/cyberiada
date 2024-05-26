@@ -1,3 +1,4 @@
 import './top-bar';
-import './side-bar';
+import './menu-bar';
 import './viewport';
+import './logs-bar';
