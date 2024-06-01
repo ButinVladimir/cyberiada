@@ -1,7 +1,7 @@
 import { t} from 'i18next';
 import { LitElement, html, css } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import { events } from './constants';
+import { MenuToggledEvent, LogsToggledEvent } from './events';
 
 @customElement('ca-top-bar')
 export class TopBar extends LitElement {
@@ -9,7 +9,6 @@ export class TopBar extends LitElement {
     :host {
       display: flex;
       box-sizing: border-box;
-      color: var(--sl-color-neutral-950);
       width: 100%;
     }
 
@@ -28,12 +27,12 @@ export class TopBar extends LitElement {
     return html`
       <div class="icons-group">
         <sl-tooltip
-          content="${t('topBar.menu', { ns: 'ui' })}"
+          content=${t('topBar.menu', { ns: 'ui' })}
           @click=${this.handleMenuClick}
         >
           <sl-icon-button
             name="list"
-            label="${t('topBar.menu', { ns: 'ui' })}"
+            label=${t('topBar.menu', { ns: 'ui' })}
           >
           </sl-icon-button>
         </sl-tooltip>
@@ -43,12 +42,12 @@ export class TopBar extends LitElement {
 
       <div class="icons-group">
         <sl-tooltip
-          content="${t('topBar.logs', { ns: 'ui' })}"
+          content=${t('topBar.logs', { ns: 'ui' })}
           @click=${this.handleLogsClick}
         >
           <sl-icon-button
             name="chat-left-dots"
-            label="${t('topBar.logs', { ns: 'ui' })}"
+            label=${t('topBar.logs', { ns: 'ui' })}
           >
           </sl-icon-button>
         </sl-tooltip>
@@ -57,26 +56,10 @@ export class TopBar extends LitElement {
   }
 
   private handleMenuClick = () => {
-    const event = new CustomEvent(
-      events.menuToggled,
-      {
-        bubbles: true,
-        composed: true,
-      },
-    );
-
-    this.dispatchEvent(event);
+    this.dispatchEvent(new MenuToggledEvent());
   };
 
   private handleLogsClick = () => {
-    const event = new CustomEvent(
-      events.logsToggled,
-      {
-        bubbles: true,
-        composed: true,
-      },
-    );
-
-    this.dispatchEvent(event);
+    this.dispatchEvent(new LogsToggledEvent());
   };
 }

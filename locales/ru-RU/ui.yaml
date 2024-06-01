@@ -17,8 +17,8 @@ activity:
   timeUntilComplete: Время до завершения
   redeemFor: Выкупить за {{cost}}
 pages:
-  crew: Команда
-  crewEditor: Редактор команды
+  cityOverview: Обзор города
+  companyMembers: Члены компании
   sideJobs: Подработки
   settings: Настройки
 crewEditor:

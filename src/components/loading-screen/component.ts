@@ -11,7 +11,6 @@ export class GameScreen extends LitElement {
       align-items: center;
       justify-content: center;
       background-color: var(--sl-color-neutral-50);
-      color: var(--sl-color-neutral-950);
     }
 
     :host span {

@@ -1,7 +1,8 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { events as topBarEvents } from './components/top-bar/constants';
+import { LogsToggledEvent, MenuToggledEvent } from './components/top-bar/events';
+import { MenuItemSelectedEvent } from './components/menu-bar/events';
 
 @customElement('ca-game-screen')
 export class GameScreen extends LitElement {
@@ -90,11 +91,15 @@ export class GameScreen extends LitElement {
   @state()
   private logsOpened = true;
 
+  @state()
+  private selectedMenuItem = '';
+
   constructor() {
     super();
 
-    this.addEventListener(topBarEvents.menuToggled, this.handleMenuToggle);
-    this.addEventListener(topBarEvents.logsToggled, this.handleLogsToggle);
+    this.addEventListener(MenuToggledEvent.type, this.handleMenuToggle);
+    this.addEventListener(LogsToggledEvent.type, this.handleLogsToggle);
+    this.addEventListener(MenuItemSelectedEvent.type, this.handleMenuItemSelect);
   }
 
   render() {
@@ -120,15 +125,15 @@ export class GameScreen extends LitElement {
 
       <div class="content-outer-container">
         <div class="content-inner-container">
-          <div class="${menuClasses}">
-            <ca-menu-bar></ca-menu-bar>
+          <div class=${menuClasses}>
+            <ca-menu-bar selectedMenuItem=${this.selectedMenuItem}></ca-menu-bar>
           </div>
 
           <div class="viewport-container">
             <ca-viewport></ca-viewport>
           </div>
 
-          <div class="${logsClasses}">
+          <div class=${logsClasses}>
             <ca-logs-bar></ca-logs-bar>
           </div>
         </div>
@@ -138,9 +143,15 @@ export class GameScreen extends LitElement {
 
   private handleMenuToggle = () => {
     this.menuOpened = !this.menuOpened;
-  }
+  };
 
   private handleLogsToggle = () => {
     this.logsOpened = !this.logsOpened;
-  }
+  };
+
+  private handleMenuItemSelect = (event: Event) => {
+    const menuItemSelectEvent = event as MenuItemSelectedEvent;
+
+    this.selectedMenuItem = menuItemSelectEvent.menuItem;
+  };
 }
