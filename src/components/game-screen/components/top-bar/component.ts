@@ -25,33 +25,35 @@ export class TopBar extends LitElement {
 
   render() {
     return html`
-      <div class="icons-group">
-        <sl-tooltip
-          content=${t('topBar.menu', { ns: 'ui' })}
-          @click=${this.handleMenuClick}
-        >
+      <span class="icons-group">
+        <sl-tooltip @click=${this.handleMenuClick}>
+          <intl-message slot="content" label="ui:topBar:menu">
+            Menu
+          </intl-message>
+
           <sl-icon-button
             name="list"
             label=${t('topBar.menu', { ns: 'ui' })}
           >
           </sl-icon-button>
         </sl-tooltip>
-      </div>
+      </span>
 
-      <div class="gutter"></div>
+      <span class="gutter"></span>
 
-      <div class="icons-group">
-        <sl-tooltip
-          content=${t('topBar.logs', { ns: 'ui' })}
-          @click=${this.handleLogsClick}
-        >
+      <span class="icons-group">
+        <sl-tooltip @click=${this.handleLogsClick}>
+          <intl-message slot="content" label="ui:topBar:logs">
+            Logs
+          </intl-message>
+
           <sl-icon-button
             name="chat-left-dots"
             label=${t('topBar.logs', { ns: 'ui' })}
           >
           </sl-icon-button>
         </sl-tooltip>
-      </div>
+      </span>
     `;
   }
 

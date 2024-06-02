@@ -40,6 +40,10 @@ export default defineConfig({
         replacement: path.resolve(__dirname, './src/state'),
       },
       {
+        find: '@shared',
+        replacement: path.resolve(__dirname, './src/shared'),
+      },
+      {
         find: /\/assets\/icons\/(.+)/,
         replacement: `${iconsPath}/$1`,
       }

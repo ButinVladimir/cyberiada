@@ -8,3 +8,8 @@ body {
   line-height: var(--sl-line-height-normal);
   color: var(--sl-color-neutral-950);
 }
+
+:root {
+  --ca-max-width: 1920px;
+  --ca-select-transition: 100ms ease;
+}

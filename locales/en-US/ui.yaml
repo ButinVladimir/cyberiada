@@ -1,43 +1,21 @@
 common:
-  cancel: Cancel
-  create: Create
-  update: Update
-  edit: Edit
-  delete: Delete
-  total: Total
+  save: Save
   loading: Loading...
-activity:
-  assignedTo: Assigned to {{crewMembers}}
-  types:
-    sideJobSearch: Side job search
-    sideJob: Side job
-  activityStatus:
-    inProgress: In progress
-    onHold: On hold
-  timeUntilComplete: Time until complete
-  redeemFor: Redeem for {{cost}}
 pages:
   cityOverview: City overview
   companyMembers: Company members
-  sideJobs: Side jobs
+  activity: Activity
   settings: Settings
-crewEditor:
-  createCrewMember: Create crew member
-  creatingCrewMember: Creating crew member
-  editingCrewMember: Editing crew member
-sideJobs:
-  findSideJob: Find side job
-  sideJobSearches: Side jobs searches ({{active}}/{{total}})
-  foundSideJobs: Found side jobs ({{active}}/{{total}})
 topBar:
-  bonusTime: Bonus time
-  pause: Pause
-  play: Play without bonus time
-  fastForward: Play with bonus time
   menu: Menu
   logs: Logs
 settings:
+  settings: Settings
   language: Language
-  gameUpdateInterval: Game update interval (ms)
-  bonusTimeSpeed: Bonus time speed
-  developerModeEnabled: Enable developer mode
+  theme: Theme
+  languages:
+    en-US: English (US)
+    ru-RU: Russian
+  themes:
+    light: Light
+    dark: Dark

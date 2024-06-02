@@ -2,21 +2,66 @@
   "version": 1,
   "tags": [
     {
-      "name": "app-root",
+      "name": "ca-app-root",
       "description": "Properties:\n\n  * `appRootController` {`AppRootController`} - ",
       "attributes": []
     },
     {
-      "name": "game-screen",
+      "name": "ca-game-screen",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `menuOpened` {`boolean`} - \n\n  * `logsOpened` {`boolean`} - \n\n  * `selectedMenuItem` - \n\n  * `handleMenuToggle` - \n\n  * `handleLogsToggle` - \n\n  * `handleMenuItemSelect` - ",
       "attributes": []
     },
     {
-      "name": "top-bar",
+      "name": "ca-logs-bar",
+      "attributes": []
+    },
+    {
+      "name": "ca-menu-bar",
+      "description": "Attributes:\n\n  * `selectedMenuItem` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `selectedMenuItem` {`string`} - \n\n  * `renderMenuItem` - \n\n  * `handleMenuItemClick` - ",
+      "attributes": [
+        {
+          "name": "selectedMenuItem",
+          "description": "`selectedMenuItem` {`string`} - \n\nProperty: selectedMenuItem\n\nDefault: "
+        }
+      ]
+    },
+    {
+      "name": "ca-menu-item",
+      "description": "Attributes:\n\n  * `name` {`string`} - \n\n  * `selected` {`boolean`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `name` {`string`} - \n\n  * `selected` {`boolean`} - ",
+      "attributes": [
+        {
+          "name": "name",
+          "description": "`name` {`string`} - \n\nProperty: name\n\nDefault: "
+        },
+        {
+          "name": "selected",
+          "description": "`selected` {`boolean`} - \n\nProperty: selected\n\nDefault: false",
+          "valueSet": "v"
+        }
+      ]
+    },
+    {
+      "name": "ca-top-bar",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `handleMenuClick` - \n\n  * `handleLogsClick` - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-viewport",
+      "description": "Attributes:\n\n  * `selectedMenuItem` {`string`} - \n\nProperties:\n\n  * `selectedMenuItem` {`string`} - ",
+      "attributes": [
+        {
+          "name": "selectedMenuItem",
+          "description": "`selectedMenuItem` {`string`} - \n\nProperty: selectedMenuItem\n\nDefault: "
+        }
+      ]
+    },
+    {
+      "name": "ca-loading-screen",
       "description": "Properties:\n\n  * `styles` {`CSSResult`} - ",
       "attributes": []
     },
     {
-      "name": "loading-screen",
+      "name": "ca-settings-page",
       "description": "Properties:\n\n  * `styles` {`CSSResult`} - ",
       "attributes": []
     }

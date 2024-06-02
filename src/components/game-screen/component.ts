@@ -1,6 +1,7 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { OverviewMenuItem } from '@shared/constants';
 import { LogsToggledEvent, MenuToggledEvent } from './components/top-bar/events';
 import { MenuItemSelectedEvent } from './components/menu-bar/events';
 
@@ -14,7 +15,6 @@ export class GameScreen extends LitElement {
         flex-direction: column;
         align-items: stretch;
         justify-content: start;
-        --ca-max-width: 1920px;
         background-color: var(--sl-color-neutral-100);
       }
 
@@ -74,7 +74,7 @@ export class GameScreen extends LitElement {
         flex: 1 1 auto;
         overflow: auto;
         scrollbar-width: thin;
-        padding: var(--sl-spacing-small);
+        padding: var(--sl-spacing-small) var(--sl-spacing-medium);
       }
 
       .logs-bar-container {
@@ -92,7 +92,7 @@ export class GameScreen extends LitElement {
   private logsOpened = true;
 
   @state()
-  private selectedMenuItem = '';
+  private selectedMenuItem = OverviewMenuItem.cityOverview;
 
   constructor() {
     super();
@@ -116,28 +116,28 @@ export class GameScreen extends LitElement {
     });
 
     return html`
-      <div class="top-bar-outer-container">
-        <div class="top-bar-inner-container">
+      <span class="top-bar-outer-container">
+        <span class="top-bar-inner-container">
           <ca-top-bar>
           </ca-top-bar>
-        </div>
-      </div>
+        </span>
+      </span>
 
-      <div class="content-outer-container">
-        <div class="content-inner-container">
-          <div class=${menuClasses}>
+      <span class="content-outer-container">
+        <span class="content-inner-container">
+          <span class=${menuClasses}>
             <ca-menu-bar selectedMenuItem=${this.selectedMenuItem}></ca-menu-bar>
-          </div>
+          </span>
 
-          <div class="viewport-container">
-            <ca-viewport></ca-viewport>
-          </div>
+          <span class="viewport-container">
+            <ca-viewport selectedMenuItem=${this.selectedMenuItem}></ca-viewport>
+          </span>
 
-          <div class=${logsClasses}>
+          <span class=${logsClasses}>
             <ca-logs-bar></ca-logs-bar>
-          </div>
-        </div>
-      </div>
+          </span>
+        </span>
+      </span>
     `;
   }
 

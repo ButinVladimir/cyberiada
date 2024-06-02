@@ -23,13 +23,13 @@ export class GameScreen extends LitElement {
 
   render() {
     return html`
-      <div>
+      <span>
         <span>
           <intl-message label="ui:common:loading">
             Loading...
           </intl-message>
         </span>
-      </div>
+      </span>
     `;
   }
 }

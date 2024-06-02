@@ -1,5 +1,6 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { overviewMenuItems, miscMenuItems } from '@shared/constants';
 import { MenuItem } from './components/menu-item/component';
 import { MenuItemSelectedEvent } from './events/menu-item-selected-event';
 
@@ -24,34 +25,17 @@ export class MenuBar extends LitElement {
     }
   `;
 
-  private static readonly overviewItems: string[] = [
-    'cityOverview',
-    'companyMembers',
-  ];
-
-  private static readonly actionItems: string[] = [
-    'sideJobs',
-  ];
-
-  private static readonly miscItems: string[] = [
-    'settings'
-  ];
-
   @property({ attribute: true, type: String })
   selectedMenuItem = '';
 
   render() {
     return html`
       <nav>
-        ${MenuBar.overviewItems.map(this.renderMenuItem)}
+        ${overviewMenuItems.map(this.renderMenuItem)}
 
         <sl-divider></sl-divider>
 
-        ${MenuBar.actionItems.map(this.renderMenuItem)}
-
-        <sl-divider></sl-divider>
-
-        ${MenuBar.miscItems.map(this.renderMenuItem)}
+        ${miscMenuItems.map(this.renderMenuItem)}
       </nav>
     `;
   }

@@ -1,7 +1,6 @@
 import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { t } from 'i18next';
 
 @customElement('ca-menu-item')
 export class MenuItem extends LitElement {
@@ -15,13 +14,17 @@ export class MenuItem extends LitElement {
       padding: var(--sl-spacing-small);
       width: 100%;
       background: none;
-      border: none;
+      border: 0 solid var(--sl-color-primary-600);
       font: var(--sl-font-sans);
       font-size: var(--sl-font-size-large);
       font-weight: var(--sl-font-weight-semibold);
       letter-spacing: var(--sl-letter-spacing-normal);    
       color: var(--sl-color-neutral-950);
       white-space: nowrap;
+
+      transition: 
+        border-left-width var(--ca-select-transition),
+        background-color var(--ca-select-transition);
     }
 
     button:hover {
@@ -30,7 +33,7 @@ export class MenuItem extends LitElement {
     }
 
     button.selected {
-      border-left: var(--sl-spacing-2x-small) solid var(--sl-color-primary-600);
+      border-left-width: var(--sl-spacing-2x-small);
       font-weight: var(--sl-font-weight-bold);
     }
   `;
@@ -48,15 +51,15 @@ export class MenuItem extends LitElement {
   selected = false;
 
   render() {
-    const translatedName = t(`pages.${this.name}`, { ns: 'ui' });
-
     const classes = classMap({
       selected: this.selected,
     });
 
     return html`
       <button type="button" class=${classes}>
-        ${translatedName}
+        <intl-message label="ui:pages:${this.name}">
+          ${this.name}
+        </intl-message>
       </button>
     `;
   }
