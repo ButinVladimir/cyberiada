@@ -17,5 +17,5 @@ settings:
     en-US: Английский (US)
     ru-RU: Русский
   themes:
-    light: Дневная
-    dark: Ночная
+    light: Светлая
+    dark: Темная

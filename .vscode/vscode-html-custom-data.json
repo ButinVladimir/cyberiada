@@ -3,12 +3,12 @@
   "tags": [
     {
       "name": "ca-app-root",
-      "description": "Properties:\n\n  * `appRootController` {`AppRootController`} - ",
+      "description": "Properties:\n\n  * `_appRootController` {`AppRootController`} - ",
       "attributes": []
     },
     {
       "name": "ca-game-screen",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `menuOpened` {`boolean`} - \n\n  * `logsOpened` {`boolean`} - \n\n  * `selectedMenuItem` - \n\n  * `handleMenuToggle` - \n\n  * `handleLogsToggle` - \n\n  * `handleMenuItemSelect` - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_menuOpened` {`boolean`} - \n\n  * `_logsOpened` {`boolean`} - \n\n  * `_selectedMenuItem` - \n\n  * `handleMenuToggle` - \n\n  * `handleLogsToggle` - \n\n  * `handleMenuItemSelect` - ",
       "attributes": []
     },
     {
@@ -62,7 +62,7 @@
     },
     {
       "name": "ca-settings-page",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `handleSubmit` - \n\n  * `_settingsPageController` {`SettingsPageController`} - ",
       "attributes": []
     }
   ],

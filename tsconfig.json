@@ -21,6 +21,7 @@
       "@helpers/*": ["./src/helpers/*"],
       "@state/*": ["./src/state/*"],
       "@shared/*": ["./src/shared/*"],
+      "@configs/*": ["./src/configs/*"],
     },
 
     /* Linting */

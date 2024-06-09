@@ -1,8 +1,9 @@
+import 'reflect-metadata';
 import { EventEmitter } from 'eventemitter3';
 import { injectable } from 'inversify';
 import { IAppState } from "./interfaces";
 import { AppStateValue } from './types';
-import { events } from './constants';
+import { APP_EVENTS } from './constants';
 
 @injectable()
 export class AppState implements IAppState {
@@ -21,7 +22,7 @@ export class AppState implements IAppState {
   startGame(): void {
     setTimeout(() => {
       this._currentState = AppStateValue.running;
-      this.eventEmitter.emit(events.loaded);
+      this.eventEmitter.emit(APP_EVENTS.loaded);
     }, 1000);
   }
 }

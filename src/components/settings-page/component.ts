@@ -1,6 +1,8 @@
 import { LitElement, html, css } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import { languages, themes } from '@shared/constants';
+import { Language, Theme, languages, themes } from '@shared/constants';
+import { SettingsPageController } from './controller';
+import { ISettingsFormValues } from '@state/settings-state';
 
 @customElement('ca-settings-page')
 export class SettingsPage extends LitElement {
@@ -45,17 +47,25 @@ export class SettingsPage extends LitElement {
     }
   `;
 
+  private _settingsPageController: SettingsPageController;
+
+  constructor() {
+    super();
+
+    this._settingsPageController = new SettingsPageController(this);
+  }
+
   render() {
     return html`
       <h3 class="title">
         <intl-message label="ui:settings:settings">Settings</intl-message>
       </h3>
 
-      <form id="settings">
+      <form id="settings" @submit=${this.handleSubmit}>
         <div class="form-container">
           <div class="form-row">
             <div class="form-element">
-              <sl-select name="language">
+              <sl-select name="language" value=${this._settingsPageController.language}>
                 <span class="select-label" slot="label">
                   <intl-message label="ui:settings:language">Language</intl-message>
                 </span>
@@ -71,7 +81,7 @@ export class SettingsPage extends LitElement {
             </div>
 
             <div class="form-element">
-              <sl-select name="theme">
+              <sl-select name="theme" value=${this._settingsPageController.theme}>
                 <span class="select-label" slot="label">
                   <intl-message label="ui:settings:theme">Theme</intl-message>
                 </span>
@@ -97,5 +107,20 @@ export class SettingsPage extends LitElement {
         </div>
       </form>
     `;
+  }
+
+  private handleSubmit = (event: Event): void => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const form = event.target as HTMLFormElement;
+    const formData = new FormData(form);
+
+    const settingsStateFormValues: ISettingsFormValues = {
+      language: formData.get('language') as Language,
+      theme: formData.get('theme') as Theme,
+    };
+
+    this._settingsPageController.applyFormValues(settingsStateFormValues);
   }
 }

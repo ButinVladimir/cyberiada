@@ -60,7 +60,7 @@ export class GameScreen extends LitElement {
         overflow: auto;
         scrollbar-width: thin;
         box-sizing: border-box;
-        transition: width 500ms ease-in-out;
+        transition: width var(--sl-transition-slow) ease-in-out;
       }
 
       .menu-bar-container {
@@ -86,13 +86,13 @@ export class GameScreen extends LitElement {
     `;
 
   @state()
-  private menuOpened = true;
+  private _menuOpened = true;
 
   @state()
-  private logsOpened = true;
+  private _logsOpened = true;
 
   @state()
-  private selectedMenuItem = OverviewMenuItem.cityOverview;
+  private _selectedMenuItem = OverviewMenuItem.cityOverview;
 
   constructor() {
     super();
@@ -106,52 +106,52 @@ export class GameScreen extends LitElement {
     const menuClasses = classMap({
       "side-bar-container": true,
       "menu-bar-container": true,
-      opened: this.menuOpened,
+      opened: this._menuOpened,
     });
 
     const logsClasses = classMap({
       "side-bar-container": true,
       "logs-bar-container": true,
-      opened: this.logsOpened,
+      opened: this._logsOpened,
     });
 
     return html`
-      <span class="top-bar-outer-container">
-        <span class="top-bar-inner-container">
+      <div class="top-bar-outer-container">
+        <div class="top-bar-inner-container">
           <ca-top-bar>
           </ca-top-bar>
-        </span>
-      </span>
+        </div>
+      </div>
 
-      <span class="content-outer-container">
-        <span class="content-inner-container">
-          <span class=${menuClasses}>
-            <ca-menu-bar selectedMenuItem=${this.selectedMenuItem}></ca-menu-bar>
-          </span>
+      <div class="content-outer-container">
+        <div class="content-inner-container">
+          <div class=${menuClasses}>
+            <ca-menu-bar selectedMenuItem=${this._selectedMenuItem}></ca-menu-bar>
+          </div>
 
-          <span class="viewport-container">
-            <ca-viewport selectedMenuItem=${this.selectedMenuItem}></ca-viewport>
-          </span>
+          <div class="viewport-container">
+            <ca-viewport selectedMenuItem=${this._selectedMenuItem}></ca-viewport>
+          </div>
 
-          <span class=${logsClasses}>
+          <div class=${logsClasses}>
             <ca-logs-bar></ca-logs-bar>
-          </span>
-        </span>
-      </span>
+          </div>
+        </div>
+      </div>
     `;
   }
 
   private handleMenuToggle = () => {
-    this.menuOpened = !this.menuOpened;
+    this._menuOpened = !this._menuOpened;
   };
 
   private handleLogsToggle = () => {
-    this.logsOpened = !this.logsOpened;
+    this._logsOpened = !this._logsOpened;
   };
 
   private handleMenuItemSelect = (event: Event) => {
     const menuItemSelectEvent = event as MenuItemSelectedEvent;
 
-    this.selectedMenuItem = menuItemSelectEvent.menuItem;
+    this._selectedMenuItem = menuItemSelectEvent.menuItem as OverviewMenuItem;
   };
 }

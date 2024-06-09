@@ -23,8 +23,8 @@ export class MenuItem extends LitElement {
       white-space: nowrap;
 
       transition: 
-        border-left-width var(--ca-select-transition),
-        background-color var(--ca-select-transition);
+        border-left-width var(--sl-transition-fast) ease,
+        background-color var(--sl-transition-fast) ease;
     }
 
     button:hover {
