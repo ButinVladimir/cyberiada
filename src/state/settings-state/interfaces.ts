@@ -1,4 +1,3 @@
-import { EventEmitter } from 'eventemitter3';
 import { Language, Theme } from '@shared/constants';
 
 export interface ISettingsFormValues {
@@ -7,8 +6,15 @@ export interface ISettingsFormValues {
 }
 
 export interface ISettingsState {
-  eventEmitter: EventEmitter;
   language: Language;
   theme: Theme;
-  applyFormValues(values: ISettingsFormValues): void;
+  applyFormValues(values: ISettingsFormValues): Promise<void>;
+  startNewState(): Promise<void>;
+  loadState(savedState: ISettingsStoredState): Promise<void>;
+  buildSaveState(): ISettingsStoredState;
+}
+
+export interface ISettingsStoredState {
+  language: Language;
+  theme: Theme;
 }

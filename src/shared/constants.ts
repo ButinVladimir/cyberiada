@@ -1,6 +1,6 @@
 export enum Language {
-  enUS = 'en-US',
-  ruRU = 'ru-RU',
+  en = 'en',
+  ru = 'ru',
 }
 export const languages: string[] = Object.values(Language);
 
@@ -12,7 +12,7 @@ export const themes: string[] = Object.values(Theme);
 
 export enum OverviewMenuItem {
   cityOverview = 'cityOverview',
-  companyMembers = 'companyMembers',
+  company = 'company',
   activity = 'activity',
 }
 export const overviewMenuItems: string[] = Object.values(OverviewMenuItem);

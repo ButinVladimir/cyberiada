@@ -1,28 +1,76 @@
-import 'reflect-metadata';
 import { EventEmitter } from 'eventemitter3';
-import { injectable } from 'inversify';
-import { IAppState } from "./interfaces";
-import { AppStateValue } from './types';
-import { APP_EVENTS } from './constants';
+import { GeneralState } from '@state/general-state/general-state';
+import { SettingsState } from '@state/settings-state/settings-state';
+import { IAppState, IStoredState } from "./interfaces";
+import { LOCAL_STORAGE_KEY, LOADING_TIME } from './constants';
 
-@injectable()
 export class AppState implements IAppState {
-  private _currentState: AppStateValue;
+  private static _instance: AppState | undefined = undefined;
+
+  private _generalState: GeneralState;
+  private _settingsState: SettingsState;
   public readonly eventEmitter: EventEmitter;
 
-  constructor() {
-    this._currentState = AppStateValue.loading;
+  static get instance(): AppState {
+    if (!AppState._instance) {
+      AppState._instance = new AppState();
+    }
+
+    return AppState._instance;
+  }
+
+  private constructor() {
     this.eventEmitter = new EventEmitter();
+
+    this._generalState = new GeneralState(this);
+    this._settingsState = new SettingsState(this);
   }
 
-  get currentState() {
-    return this._currentState;
+  get generalState(): GeneralState {
+    return this._generalState;
   }
 
-  startGame(): void {
-    setTimeout(() => {
-      this._currentState = AppStateValue.running;
-      this.eventEmitter.emit(APP_EVENTS.loaded);
-    }, 1000);
+  get settingsState(): SettingsState {
+    return this._settingsState;
+  }
+
+  async startGame(): Promise<void> {
+    const saveData = localStorage.getItem(LOCAL_STORAGE_KEY);
+
+    if (saveData) {
+      try {
+        const parsedSaveData = JSON.parse(atob(saveData)) as IStoredState;
+
+        await this.loadState(parsedSaveData);
+      } catch(e) {
+        console.error(e);
+        await this.startNewState();
+      }
+    } else {
+      await this.startNewState();
+    }
+
+    setTimeout(this.generalState.startRunningGame, LOADING_TIME);
+  }
+
+  saveGame(): void {
+    const saveData: IStoredState = this.buildSaveState();
+
+    const encodedSaveData = btoa(JSON.stringify(saveData));
+    localStorage.setItem(LOCAL_STORAGE_KEY, encodedSaveData);
+  }
+
+  private buildSaveState(): IStoredState {
+    return {
+      settings: this.settingsState.buildSaveState(),
+    };
+  }
+
+  private async loadState(saveData: IStoredState): Promise<void> {
+    await this.settingsState.loadState(saveData.settings);
+  }
+
+  private async startNewState(): Promise<void> {
+    await this.settingsState.startNewState();
   }
 }

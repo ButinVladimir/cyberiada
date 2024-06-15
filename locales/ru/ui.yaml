@@ -3,7 +3,7 @@ common:
   loading: Загрузка...
 pages:
   cityOverview: Обзор города
-  companyMembers: Члены компании
+  company: Компания
   activity: Активность
   settings: Настройки
 topBar:
@@ -14,8 +14,8 @@ settings:
   language: Язык
   theme: Тема
   languages:
-    en-US: Английский (US)
-    ru-RU: Русский
+    en: Английский
+    ru: Русский
   themes:
     light: Светлая
     dark: Темная

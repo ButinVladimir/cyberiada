@@ -3,7 +3,7 @@ common:
   loading: Loading...
 pages:
   cityOverview: City overview
-  companyMembers: Company members
+  company: Company
   activity: Activity
   settings: Settings
 topBar:
@@ -14,8 +14,8 @@ settings:
   language: Language
   theme: Theme
   languages:
-    en-US: English (US)
-    ru-RU: Russian
+    en: English
+    ru: Russian
   themes:
     light: Light
     dark: Dark

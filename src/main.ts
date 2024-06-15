@@ -1,4 +1,3 @@
-import 'reflect-metadata';
 import i18n from 'i18next';
 import resources from 'virtual:i18next-loader';
 import 'i18next-wc';
@@ -14,7 +13,7 @@ window.i18next = i18n;
 i18n.init({
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   resources,
-  fallbackLng: 'en-US',
+  fallbackLng: 'en',
   debug: true,
 }).then(() => {
   const appRootElement = document.createElement('ca-app-root');

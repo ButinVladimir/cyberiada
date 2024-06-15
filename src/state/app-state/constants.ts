@@ -1,3 +1,7 @@
 export const APP_EVENTS = {
-  loaded: Symbol('loaded'),
+  startedRunning: Symbol('startedRunning'),
 };
+
+export const LOCAL_STORAGE_KEY = 'ca-save';
+
+export const LOADING_TIME = 500;

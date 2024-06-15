@@ -1,9 +1,7 @@
 import { ReactiveController, ReactiveControllerHost } from 'lit';
-import { IAppState, APP_EVENTS } from '@state/app-state';
-import { container, TYPES } from '@state/container';
+import { AppState, APP_EVENTS } from '@state/app-state';
 
 export class AppRootController implements ReactiveController {
-  private _appState: IAppState;
   private _host: ReactiveControllerHost;
   private _isLoaded = false;
 
@@ -14,16 +12,17 @@ export class AppRootController implements ReactiveController {
   constructor(host: ReactiveControllerHost) {
     this._host = host;
     host.addController(this);
-    this._appState = container.get<IAppState>(TYPES.appState);
   }
 
   hostConnected() {
-    this._appState.eventEmitter.on(APP_EVENTS.loaded, this.handleLoadedCallback);
-    this._appState.startGame();   
+    AppState.instance.eventEmitter.on(APP_EVENTS.startedRunning, this.handleLoadedCallback);
+    AppState.instance.startGame().catch(e => {
+      console.error(e);
+    });
   }
 
   hostDisconnected() {
-    this._appState.eventEmitter.off(APP_EVENTS.loaded, this.handleLoadedCallback);
+    AppState.instance.eventEmitter.off(APP_EVENTS.startedRunning, this.handleLoadedCallback);
   }
 
   private handleLoadedCallback = () => {
