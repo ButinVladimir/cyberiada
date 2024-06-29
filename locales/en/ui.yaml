@@ -1,5 +1,7 @@
 common:
+  cancel: Cancel
   save: Save
+  delete: Delete
   loading: Loading...
 pages:
   cityOverview: City overview
@@ -19,3 +21,7 @@ settings:
   themes:
     light: Light
     dark: Dark
+  importSavefile: Import savefile
+  exportSavefile: Export savefile
+  deleteSaveData: Delete save data
+  deleteSaveDataAlert: Are you sure want to delete save data? You cannot revert this operation unless you exported a backup savefile.

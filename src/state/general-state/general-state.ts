@@ -1,7 +1,6 @@
 import { IAppState } from "@state/app-state/interfaces";
 import { IGeneralState } from "./interfaces";
 import { AppStateValue } from './types';
-import { APP_EVENTS } from '@state/app-state/constants';
 
 export class GeneralState implements IGeneralState {
   private _appState: IAppState;
@@ -16,8 +15,11 @@ export class GeneralState implements IGeneralState {
     return this._currentState;
   }
 
+  startLoadingGame = (): void => {
+    this._currentState = AppStateValue.loading;
+  }
+
   startRunningGame = (): void => {
     this._currentState = AppStateValue.running;
-    this._appState.eventEmitter.emit(APP_EVENTS.startedRunning);
   }
 }

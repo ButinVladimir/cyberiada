@@ -1,6 +1,6 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { overviewMenuItems, miscMenuItems } from '@shared/constants';
+import { OVERVIEW_MENU_ITEMS, MISC_MENU_ITEMS } from '@shared/constants';
 import { MenuItem } from './components/menu-item/component';
 import { MenuItemSelectedEvent } from './events/menu-item-selected-event';
 
@@ -31,11 +31,11 @@ export class MenuBar extends LitElement {
   render() {
     return html`
       <nav>
-        ${overviewMenuItems.map(this.renderMenuItem)}
+        ${OVERVIEW_MENU_ITEMS.map(this.renderMenuItem)}
 
         <sl-divider></sl-divider>
 
-        ${miscMenuItems.map(this.renderMenuItem)}
+        ${MISC_MENU_ITEMS.map(this.renderMenuItem)}
       </nav>
     `;
   }

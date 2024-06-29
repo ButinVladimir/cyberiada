@@ -1,5 +1,5 @@
 export const APP_EVENTS = {
-  startedRunning: Symbol('startedRunning'),
+  CHANGED_GAME_STATE: Symbol('CHANGED_GAME_STATE'),
 };
 
 export const LOCAL_STORAGE_KEY = 'ca-save';

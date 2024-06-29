@@ -3,7 +3,7 @@ import { AppState } from '@state/app-state';
 import { ISettingsFormValues } from '@state/settings-state';
 import { Language, Theme } from '@shared/constants';
 
-export class SettingsPageController implements ReactiveController {
+export class SettingsFormController implements ReactiveController {
   private _host: ReactiveControllerHost;
 
   constructor(host: ReactiveControllerHost) {

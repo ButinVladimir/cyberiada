@@ -11,11 +11,6 @@ export class SettingsState implements ISettingsState {
 
   constructor(appState: IAppState) {
     this._appState = appState;
-
-    this._language = i18n.resolvedLanguage! as Language;
-    this._theme = window.matchMedia('(prefers-color-scheme:dark)').matches 
-      ? Theme.dark
-      : Theme.light;
   }
 
   get language() {
@@ -36,6 +31,13 @@ export class SettingsState implements ISettingsState {
   }
 
   async startNewState(): Promise<void> {
+    await i18n.changeLanguage();
+
+    this._language = i18n.resolvedLanguage! as Language;
+    this._theme = window.matchMedia('(prefers-color-scheme:dark)').matches 
+      ? Theme.dark
+      : Theme.light;
+
     await this._updateBrowserSettings();
   }
 

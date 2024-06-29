@@ -1,5 +1,7 @@
 common:
+  cancel: Отмена
   save: Сохранить
+  delete: Удалить
   loading: Загрузка...
 pages:
   cityOverview: Обзор города
@@ -19,3 +21,7 @@ settings:
   themes:
     light: Светлая
     dark: Темная
+  importSavefile: Импорт сохранения
+  exportSavefile: Экспорт сохранения
+  deleteSaveData: Удалить сохраненные данные
+  deleteSaveDataAlert: Вы уверены, что хотите удалить сохраненные данные? Вы не сможете отменить эту операцию в дальнейшем без экспорта сохранения.
