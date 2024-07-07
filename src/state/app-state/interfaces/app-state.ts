@@ -1,9 +1,11 @@
+import { ICityState } from '@/state/city-state';
 import { IGeneralState } from '@state/general-state/interfaces';
-import { ISettingsState, ISettingsStoredState } from '@state/settings-state/interfaces';
+import { ISettingsState } from '@state/settings-state/interfaces';
 
 export interface IAppState {
   generalState: IGeneralState;
   settingsState: ISettingsState;
+  cityState: ICityState;
   startUp(): Promise<void>;
   saveGame(): void;
   /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -13,8 +15,4 @@ export interface IAppState {
   importSavefile(file: File): void;
   exportSavefile(): void;
   deleteSaveData(): void;
-}
-
-export interface IStoredState {
-  settings: ISettingsStoredState;
 }

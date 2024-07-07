@@ -1,7 +1,7 @@
 import i18n from 'i18next';
-import { IAppState } from "@state/app-state/interfaces";
+import { IAppState } from '@state/app-state/interfaces';
 import { Language, Theme } from '@shared/constants';
-import { ISettingsFormValues, ISettingsState, ISettingsStoredState } from "./interfaces";
+import { ISettingsFormValues, ISettingsState, ISettingsSerializedState } from './interfaces';
 import themes from '@configs/themes.json';
 
 export class SettingsState implements ISettingsState {
@@ -41,14 +41,14 @@ export class SettingsState implements ISettingsState {
     await this._updateBrowserSettings();
   }
 
-  async loadState(savedState: ISettingsStoredState): Promise<void> {
-    this._language = savedState.language;
-    this._theme = savedState.theme;
+  async deserialize(serializedState: ISettingsSerializedState): Promise<void> {
+    this._language = serializedState.language;
+    this._theme = serializedState.theme;
     
     await this._updateBrowserSettings();
   }
 
-  buildSaveState(): ISettingsStoredState {
+  serialize(): ISettingsSerializedState {
     return {
       language: this.language,
       theme: this.theme,

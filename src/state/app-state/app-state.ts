@@ -1,7 +1,8 @@
 import { EventEmitter } from 'eventemitter3';
 import { GeneralState } from '@state/general-state/general-state';
 import { SettingsState } from '@state/settings-state/settings-state';
-import { IAppState, IStoredState } from "./interfaces";
+import { CityState } from '@state/city-state/city-state';
+import { IAppState, ISerializedState } from './interfaces';
 import { LOCAL_STORAGE_KEY, LOADING_TIME, APP_EVENTS } from './constants';
 
 export class AppState implements IAppState {
@@ -9,6 +10,7 @@ export class AppState implements IAppState {
 
   private _generalState: GeneralState;
   private _settingsState: SettingsState;
+  private _cityState: CityState;
   private readonly _eventEmitter: EventEmitter;
 
   static get instance(): IAppState {
@@ -24,6 +26,7 @@ export class AppState implements IAppState {
 
     this._generalState = new GeneralState(this);
     this._settingsState = new SettingsState(this);
+    this._cityState = new CityState(this);
   }
 
   get generalState(): GeneralState {
@@ -34,12 +37,16 @@ export class AppState implements IAppState {
     return this._settingsState;
   }
 
+  get cityState(): CityState {
+    return this._cityState;
+  }
+
   async startUp(): Promise<void> {
     const saveData = localStorage.getItem(LOCAL_STORAGE_KEY);
 
     if (saveData) {
       try {
-        const parsedSaveData = JSON.parse(atob(saveData)) as IStoredState;
+        const parsedSaveData = JSON.parse(atob(saveData)) as ISerializedState;
 
         await this.loadState(parsedSaveData);
       } catch(e) {
@@ -108,8 +115,10 @@ export class AppState implements IAppState {
   }
 
   private buildSaveData(): string {
-    const saveState: IStoredState = {
-      settings: this.settingsState.buildSaveState(),
+    const saveState: ISerializedState = {
+      general: this.generalState.serialize(),
+      settings: this.settingsState.serialize(),
+      city: this.cityState.serialize(),
     };
 
     const encodedSaveState = btoa(JSON.stringify(saveState));
@@ -118,11 +127,15 @@ export class AppState implements IAppState {
   }
 
   private async startNewState(): Promise<void> {
+    this.generalState.startNewState();
     await this.settingsState.startNewState();
+    await this.cityState.startNewState();
   }
 
-  private async loadState(saveData: IStoredState): Promise<void> {
-    await this.settingsState.loadState(saveData.settings);
+  private async loadState(saveData: ISerializedState): Promise<void> {
+    this.generalState.deserialize(saveData.general);
+    await this.settingsState.deserialize(saveData.settings);
+    this.cityState.deserialize(saveData.city);
   }
 
   private startLoadingGame = (): void => {

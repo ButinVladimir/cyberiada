@@ -21,3 +21,6 @@ export enum MiscMenuItem {
   settings = 'settings',
 }
 export const MISC_MENU_ITEMS: string[] = Object.values(MiscMenuItem);
+
+export const MAP_WIDTH = 100;
+export const MAP_HEIGHT = 100;
