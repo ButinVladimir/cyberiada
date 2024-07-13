@@ -62,7 +62,17 @@
     },
     {
       "name": "ca-settings-page",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `handleSubmit` - \n\n  * `_settingsPageController` {`SettingsPageController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-savefile-panel",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_importInput` {`HTMLInputElement`} - \n\n  * `_deleteSaveDataDialog` {`SlDialog`} - \n\n  * `handleImportSavefile` - \n\n  * `handleChangeImportSavefile` - \n\n  * `handleExportSavefile` - \n\n  * `handleOpenDeleteSaveDataDialog` - \n\n  * `handleCloseDeleteSaveDataDialog` - \n\n  * `handleDeleteSaveData` - \n\n  * `_savefilePanelController` {`SavefilePanelController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-settings-form",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_form` {`HTMLFormElement`} - \n\n  * `_isSaving` {`boolean`} - \n\n  * `handleSubmit` - \n\n  * `stopSaving` - \n\n  * `_settingsFormController` {`SettingsFormController`} - ",
       "attributes": []
     }
   ],

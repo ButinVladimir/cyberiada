@@ -1,4 +1,4 @@
-import { t} from 'i18next';
+import { t } from 'i18next';
 import { LitElement, html, css } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { MenuToggledEvent, LogsToggledEvent } from './events';
@@ -12,7 +12,7 @@ export class TopBar extends LitElement {
       width: 100%;
     }
 
-    .icons-group { 
+    .icons-group {
       flex: 0 0 auto;
       margin-right: var(--sl-spacing-medium);
       font-size: var(--sl-font-size-large);
@@ -31,10 +31,7 @@ export class TopBar extends LitElement {
             Menu
           </intl-message>
 
-          <sl-icon-button
-            name="list"
-            label=${t('topBar.menu', { ns: 'ui' })}
-          >
+          <sl-icon-button name="list" label=${t('topBar.menu', { ns: 'ui' })}>
           </sl-icon-button>
         </sl-tooltip>
       </span>

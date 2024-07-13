@@ -3,7 +3,7 @@ import { GeneralState } from '@state/general-state/general-state';
 import { SettingsState } from '@state/settings-state/settings-state';
 import { CityState } from '@state/city-state/city-state';
 import { IAppState, ISerializedState } from './interfaces';
-import { LOCAL_STORAGE_KEY, LOADING_TIME, APP_EVENTS } from './constants';
+import { LOCAL_STORAGE_KEY, APP_EVENTS } from './constants';
 
 export class AppState implements IAppState {
   private static _instance: AppState | undefined = undefined;
@@ -49,7 +49,7 @@ export class AppState implements IAppState {
         const parsedSaveData = JSON.parse(atob(saveData)) as ISerializedState;
 
         await this.loadState(parsedSaveData);
-      } catch(e) {
+      } catch (e) {
         console.error(e);
         await this.startNewState();
       }
@@ -78,13 +78,15 @@ export class AppState implements IAppState {
 
     const fileReader = new FileReader();
 
-    fileReader.addEventListener("load", () => {
+    fileReader.addEventListener('load', () => {
       localStorage.setItem(LOCAL_STORAGE_KEY, fileReader.result as string);
-      this.startUp().catch((e) => { console.error(e); });
+      this.startUp().catch((e) => {
+        console.error(e);
+      });
     });
 
-    fileReader.addEventListener("error", () => {
-      console.log(`An event occurred during importing file ${file.name}`);
+    fileReader.addEventListener('error', () => {
+      console.error(`An error occurred during importing file ${file.name}`);
       this.startRunningGame();
     });
 
@@ -93,13 +95,9 @@ export class AppState implements IAppState {
 
   exportSavefile(): void {
     const saveData = this.buildSaveData();
-    const savefileName = `cyberiada-savefile-${(new Date().toLocaleString())}.txt`;
+    const savefileName = `cyberiada-savefile-${new Date().toLocaleString()}.txt`;
 
-    const file = new File(
-      [saveData],
-      savefileName,
-      { endings: 'transparent' },
-    );
+    const file = new File([saveData], savefileName, { endings: 'transparent' });
 
     const linkElement = document.createElement('a');
     linkElement.download = savefileName;
@@ -111,7 +109,9 @@ export class AppState implements IAppState {
   deleteSaveData(): void {
     this.startLoadingGame();
     localStorage.removeItem(LOCAL_STORAGE_KEY);
-    this.startUp().catch((e) => { console.error(e); });
+    this.startUp().catch((e) => {
+      console.error(e);
+    });
   }
 
   private buildSaveData(): string {
@@ -130,6 +130,7 @@ export class AppState implements IAppState {
     this.generalState.startNewState();
     await this.settingsState.startNewState();
     await this.cityState.startNewState();
+    this.saveGame();
   }
 
   private async loadState(saveData: ISerializedState): Promise<void> {
@@ -144,9 +145,7 @@ export class AppState implements IAppState {
   };
 
   private startRunningGame = (): void => {
-    setTimeout(() => {
-      this.generalState.startRunningGame();
-      this._eventEmitter.emit(APP_EVENTS.CHANGED_GAME_STATE); 
-    }, LOADING_TIME);
+    this.generalState.startRunningGame();
+    this._eventEmitter.emit(APP_EVENTS.CHANGED_GAME_STATE);
   };
 }

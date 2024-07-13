@@ -8,6 +8,7 @@
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "lint-fix": "eslint . --ext ts,tsx --fix",
+    "prettier": "prettier . --write",
     "preview": "vite preview",
     "wca": "wca analyze --format vscode --outFile ./.vscode/vscode-html-custom-data.json"
   },
@@ -20,8 +21,7 @@
     "i18next-wc": "^1.1.2",
     "lit": "^3.1.3",
     "lodash": "^4.17.21",
-    "random": "^4.1.0",
-    "seedrandom": "^3.0.5",
+    "random-seedable": "^1.0.8",
     "uuid": "^9.0.1",
     "web-component-analyzer": "^2.0.0"
   },
@@ -33,8 +33,10 @@
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "eslint": "^8.52.0",
+    "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-lit": "^1.13.0",
     "eslint-plugin-wc": "^2.1.0",
+    "prettier": "^3.3.3",
     "typescript": "5.2.2",
     "vite": "^5.0.0",
     "vite-plugin-i18next-loader": "^2.0.4",

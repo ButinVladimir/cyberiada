@@ -4,8 +4,6 @@ import { customElement } from 'lit/decorators.js';
 @customElement('ca-logs-bar')
 export class LogsBar extends LitElement {
   render() {
-    return html`
-      Logs
-    `;
+    return html` Logs `;
   }
 }

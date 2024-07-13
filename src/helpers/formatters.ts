@@ -47,7 +47,7 @@ export function formatTimeShort(passedTime: number): string {
   let remainingTime = passedTime;
   const result = [];
 
-  for (const { units} of TIME_PARTS) {
+  for (const { units } of TIME_PARTS) {
     const value = Math.floor(remainingTime / units);
     remainingTime = remainingTime - value * units;
 
@@ -58,6 +58,15 @@ export function formatTimeShort(passedTime: number): string {
 }
 
 const locale = navigator.language;
-export const moneyFormatter = Intl.NumberFormat(locale, { style: 'currency', currency: 'USD', maximumFractionDigits: 2 });
-export const floatFormatter = Intl.NumberFormat(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-export const decimalFormatter = Intl.NumberFormat(locale, { maximumFractionDigits: 0 });
+export const moneyFormatter = Intl.NumberFormat(locale, {
+  style: 'currency',
+  currency: 'USD',
+  maximumFractionDigits: 2,
+});
+export const floatFormatter = Intl.NumberFormat(locale, {
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
+export const decimalFormatter = Intl.NumberFormat(locale, {
+  maximumFractionDigits: 0,
+});

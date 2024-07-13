@@ -15,14 +15,10 @@ export class AppRoot extends LitElement {
 
   render() {
     switch (this._appRootController.gameState) {
-      case AppStateValue.loading: 
-        return html`
-          <ca-loading-screen></ca-loading-screen>
-        `;
+      case AppStateValue.loading:
+        return html` <ca-loading-screen></ca-loading-screen> `;
       case AppStateValue.running:
-        return html`
-          <ca-game-screen></ca-game-screen>
-        `;
+        return html` <ca-game-screen></ca-game-screen> `;
       default:
         return null;
     }

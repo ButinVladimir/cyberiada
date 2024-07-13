@@ -57,8 +57,12 @@ export class SavefilePanel extends LitElement {
 
   render() {
     return html`
-      <input type="file" id="import-file" @change=${this.handleChangeImportSavefile} />
-      
+      <input
+        type="file"
+        id="import-file"
+        @change=${this.handleChangeImportSavefile}
+      />
+
       <sl-button
         variant="default"
         type="button"
@@ -94,9 +98,10 @@ export class SavefilePanel extends LitElement {
         </intl-message>
       </sl-button>
 
-      <sl-dialog no-header class="delete-save-data-dialog"> 
+      <sl-dialog no-header class="delete-save-data-dialog">
         <intl-message label="ui:settings:deleteSaveDataAlert">
-          Are you sure want to delete save data? You cannot revert this operation unless you exported a backup savefile.
+          Are you sure want to delete save data? You cannot revert this
+          operation unless you exported a backup savefile.
         </intl-message>
         <div slot="footer" class="footer">
           <sl-button
@@ -105,22 +110,18 @@ export class SavefilePanel extends LitElement {
             outline
             @click=${this.handleCloseDeleteSaveDataDialog}
           >
-            <intl-message label="ui:common:cancel">
-              Cancel
-            </intl-message>
+            <intl-message label="ui:common:cancel"> Cancel </intl-message>
           </sl-button>
           <sl-button
             size="medium"
             variant="danger"
             @click=${this.handleDeleteSaveData}
           >
-            <intl-message label="ui:common:delete">
-              Delete
-            </intl-message>
+            <intl-message label="ui:common:delete"> Delete </intl-message>
           </sl-button>
         </div>
       </sl-dialog>
-    `
+    `;
   }
 
   private handleImportSavefile = (event: Event) => {
@@ -148,18 +149,22 @@ export class SavefilePanel extends LitElement {
   private handleOpenDeleteSaveDataDialog = (event: Event) => {
     event.stopPropagation();
 
-    this._deleteSaveDataDialog.show();    
-  }
+    this._deleteSaveDataDialog.show().catch((e) => {
+      console.error(e);
+    });
+  };
 
   private handleCloseDeleteSaveDataDialog = (event: Event) => {
     event.stopPropagation();
 
-    this._deleteSaveDataDialog.hide();    
-  }
+    this._deleteSaveDataDialog.hide().catch((e) => {
+      console.error(e);
+    });
+  };
 
   private handleDeleteSaveData = (event: Event) => {
     event.stopPropagation();
 
     this._savefilePanelController.deleteSaveData();
-  }
+  };
 }

@@ -17,11 +17,11 @@ export class MenuItem extends LitElement {
       border: 0 solid var(--sl-color-primary-600);
       font-family: var(--sl-font-sans);
       font-size: var(--sl-font-size-medium);
-      letter-spacing: var(--sl-letter-spacing-normal);    
+      letter-spacing: var(--sl-letter-spacing-normal);
       color: var(--sl-color-neutral-950);
       white-space: nowrap;
 
-      transition: 
+      transition:
         border-left-width var(--sl-transition-x-fast) ease,
         background-color var(--sl-transition-x-fast) ease;
     }

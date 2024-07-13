@@ -5,8 +5,9 @@ module.exports = {
     'eslint:recommended',
     'plugin:@typescript-eslint/strict-type-checked',
     'plugin:@typescript-eslint/stylistic-type-checked',
-    "plugin:wc/recommended",
-    "plugin:lit/recommended",
+    'plugin:wc/recommended',
+    'plugin:lit/recommended',
+    'prettier'
   ],
   ignorePatterns: [
     'dist',
@@ -16,7 +17,7 @@ module.exports = {
     'postcss.config.js',
   ],
   parser: '@typescript-eslint/parser',
-  plugins: ["@typescript-eslint"],
+  plugins: ['@typescript-eslint'],
   rules: {
     'semi-style': ['error', 'last'],
     '@typescript-eslint/no-non-null-assertion': 'off',

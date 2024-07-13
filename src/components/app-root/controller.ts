@@ -11,12 +11,20 @@ export class AppRootController implements ReactiveController {
   }
 
   hostConnected() {
-    AppState.instance.on(APP_EVENTS.CHANGED_GAME_STATE, this.handleChangeGameStateCallback);
-    AppState.instance.startUp().catch(e => { console.error(e); });
+    AppState.instance.on(
+      APP_EVENTS.CHANGED_GAME_STATE,
+      this.handleChangeGameStateCallback,
+    );
+    AppState.instance.startUp().catch((e) => {
+      console.error(e);
+    });
   }
 
   hostDisconnected() {
-    AppState.instance.off(APP_EVENTS.CHANGED_GAME_STATE, this.handleChangeGameStateCallback);
+    AppState.instance.off(
+      APP_EVENTS.CHANGED_GAME_STATE,
+      this.handleChangeGameStateCallback,
+    );
   }
 
   get gameState(): AppStateValue {
@@ -25,5 +33,5 @@ export class AppRootController implements ReactiveController {
 
   private handleChangeGameStateCallback = () => {
     this._host.requestUpdate();
-  }
+  };
 }

@@ -6,7 +6,7 @@ import { MiscMenuItem } from '@shared/constants';
 export class Viewport extends LitElement {
   @property({
     attribute: true,
-    type: String
+    type: String,
   })
   selectedMenuItem = '';
 

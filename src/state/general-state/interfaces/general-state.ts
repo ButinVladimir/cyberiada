@@ -3,7 +3,7 @@ import { IGeneralSerializedState } from './general-serialized-state';
 
 export interface IGeneralState {
   currentState: AppStateValue;
-  randomSeed: string;
+  randomSeed: number;
   startLoadingGame(): void;
   startRunningGame(): void;
   startNewState(): void;

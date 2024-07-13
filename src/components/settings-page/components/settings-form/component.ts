@@ -17,13 +17,13 @@ export class SettingsForm extends LitElement {
       grid-auto-rows: auto;
       margin-bottom: var(--sl-spacing-large);
     }
-   
+
     span.select-label {
       font-size: var(--sl-font-size-small);
       line-height: var(--sl-line-height-dense);
     }
 
-    sl-button[type=submit] {
+    sl-button[type='submit'] {
       grid-column: 2;
       justify-self: end;
     }
@@ -63,26 +63,28 @@ export class SettingsForm extends LitElement {
       ? this.renderSpinner()
       : this.renderForm();
 
-    return html`
-      ${content}
-    `;
+    return html` ${content} `;
   }
 
   private renderForm(): TemplateResult {
     return html`
       <form id="settings" @submit=${this.handleSubmit}>
-        <sl-select name="language" value=${this._settingsFormController.language}>
+        <sl-select
+          name="language"
+          value=${this._settingsFormController.language}
+        >
           <span class="select-label" slot="label">
             <intl-message label="ui:settings:language">Language</intl-message>
           </span>
 
-          ${LANGUAGES.map((language) => html`
-            <sl-option value=${language}>
-              <intl-message label="ui:settings:languages:${language}">
-                ${language}
-              </intl-message>
-            </sl-option>`)
-          }
+          ${LANGUAGES.map(
+            (language) =>
+              html` <sl-option value=${language}>
+                <intl-message label="ui:settings:languages:${language}">
+                  ${language}
+                </intl-message>
+              </sl-option>`,
+          )}
         </sl-select>
 
         <sl-select name="theme" value=${this._settingsFormController.theme}>
@@ -90,19 +92,18 @@ export class SettingsForm extends LitElement {
             <intl-message label="ui:settings:theme">Theme</intl-message>
           </span>
 
-          ${THEMES.map((theme) => html`
-            <sl-option value=${theme}>
-              <intl-message label="ui:settings:themes:${theme}">
-                ${theme}
-              </intl-message>
-            </sl-option>`)
-          }
+          ${THEMES.map(
+            (theme) =>
+              html` <sl-option value=${theme}>
+                <intl-message label="ui:settings:themes:${theme}">
+                  ${theme}
+                </intl-message>
+              </sl-option>`,
+          )}
         </sl-select>
 
         <sl-button variant="primary" type="submit" size="medium">
-          <intl-message label="ui:common:save">
-            Save
-          </intl-message>
+          <intl-message label="ui:common:save"> Save </intl-message>
         </sl-button>
       </form>
     `;
@@ -113,7 +114,7 @@ export class SettingsForm extends LitElement {
       <div class="spinner-container">
         <sl-spinner></sl-spinner>
       </div>
-    `
+    `;
   }
 
   private handleSubmit = async (event: Event): Promise<void> => {
@@ -130,9 +131,9 @@ export class SettingsForm extends LitElement {
     this._isSaving = true;
     await this._settingsFormController.applyFormValues(settingsStateFormValues);
     setTimeout(this.stopSaving, SAVING_TIME);
-  }
+  };
 
   private stopSaving = () => {
     this._isSaving = false;
-  }
+  };
 }

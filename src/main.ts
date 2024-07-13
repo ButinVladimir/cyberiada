@@ -10,15 +10,17 @@ setBasePath('/shoelace');
 
 window.i18next = i18n;
 
-i18n.init({
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  resources,
-  fallbackLng: 'en',
-  debug: true,
-}).then(() => {
-  const appRootElement = document.createElement('ca-app-root');
-  document.getElementById('root')!.append(appRootElement);
-}).catch((e) => {
-  console.error(e);
-});
-
+i18n
+  .init({
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    resources,
+    fallbackLng: 'en',
+    debug: true,
+  })
+  .then(() => {
+    const appRootElement = document.createElement('ca-app-root');
+    document.getElementById('root')!.append(appRootElement);
+  })
+  .catch((e) => {
+    console.error(e);
+  });

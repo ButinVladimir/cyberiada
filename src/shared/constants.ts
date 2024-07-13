@@ -24,3 +24,8 @@ export const MISC_MENU_ITEMS: string[] = Object.values(MiscMenuItem);
 
 export const MAP_WIDTH = 100;
 export const MAP_HEIGHT = 100;
+
+export enum Scenario {
+  tutorial1 = 'tutorial1',
+}
+export const SCENARIOS: string[] = Object.values(Scenario);

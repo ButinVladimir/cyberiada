@@ -1,3 +1,3 @@
 export interface IGeneralSerializedState {
-  randomSeed: string;
+  randomSeed: number;
 }

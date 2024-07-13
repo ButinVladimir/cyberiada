@@ -4,13 +4,10 @@ export class MenuItemSelectedEvent extends Event {
   menuItem = '';
 
   constructor(menuItem: string) {
-    super(
-      MenuItemSelectedEvent.type,
-      {
-        bubbles: true,
-        composed: true,
-      },
-    );
+    super(MenuItemSelectedEvent.type, {
+      bubbles: true,
+      composed: true,
+    });
 
     this.menuItem = menuItem;
   }

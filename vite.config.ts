@@ -48,14 +48,18 @@ export default defineConfig({
         replacement: path.resolve(__dirname, './src/configs'),
       },
       {
+        find: '@workers',
+        replacement: path.resolve(__dirname, './src/workers'),
+      },
+      {
         find: /\/assets\/icons\/(.+)/,
         replacement: `${iconsPath}/$1`,
-      }
-    ]
+      },
+    ],
   },
   build: {
     rollupOptions: {
       plugins: [],
-    }
+    },
   },
 });

@@ -1,6 +1,6 @@
 import { IPoint } from '@shared/interfaces';
 
-export interface IDistrictSerializedInfo {
-  name: string;
+export interface IMapGeneratorDistrictResult {
   startingPoint: IPoint;
+  name: string;
 }

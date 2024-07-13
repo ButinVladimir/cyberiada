@@ -8,7 +8,7 @@ import { MenuItemSelectedEvent } from './events/menu-item-selected-event';
 export class MenuBar extends LitElement {
   static styles = css`
     :host {
-      width: 100%;      
+      width: 100%;
       box-sizing: border-box;
       padding: var(--sl-spacing-2x-small);
     }

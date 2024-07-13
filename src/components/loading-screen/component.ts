@@ -25,9 +25,7 @@ export class GameScreen extends LitElement {
     return html`
       <span>
         <span>
-          <intl-message label="ui:common:loading">
-            Loading...
-          </intl-message>
+          <intl-message label="ui:common:loading"> Loading... </intl-message>
         </span>
       </span>
     `;

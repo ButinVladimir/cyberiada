@@ -29,6 +29,7 @@ Favors are faction-specific currency. Favors are earned by completing missions, 
 ## Qualities
 
 Various objects have different quality. Currently available qualities:
+
 - Common
 - Uncommon
 - Rare
@@ -176,6 +177,7 @@ Unlocked in starting town at some point.
 Augmentations are another way to buff crew members. Like equipment, each augmentation has level and quality, which affect requirements and stats. Augmentation is not free, each augmentation has time wall to install which can be reduced by endurance.
 
 Each crew member has following augmentations slots:
+
 - Skin
 - Nerve system
 - Eyes
@@ -238,7 +240,7 @@ Each factions has it's own predetermined power level speed, affecting power leve
 
 Faction specific equipment, boosters and augmentations can be obtained by capturing districts, getting blueprints or performing contracts and missions. Each faction have one or more perks which can be purchased by favors.
 
-Each faction has it's own set of requirement modifiers, affecting missions and related side jobs and contracts. 
+Each faction has it's own set of requirement modifiers, affecting missions and related side jobs and contracts.
 
 ### Turf war
 
@@ -263,6 +265,7 @@ Relocation is the prestige. After relocating, almost everything will be lost. Ce
 Relocation losses can be mitigated by getting favors, either by buying, capturing districts, performing missions or reaching certaing thresgolds of respect.
 
 Relocation favors include
+
 - Retaining money after relocations (10 tiers, each tier retain 10% more)
 - Keep weapons
 - Keep armors
@@ -305,6 +308,7 @@ Missions are issued to you by joined faction, can affect global state and can re
 Quality increases gains and requirements. Total amount of missions available at same time is capped. Some actions can make missions disappear. Faction and, if assigned, enemy faction will apply both their respective multipliers to requirements. Missions usually can be done in multiple ways.
 
 Missions allow feats such as:
+
 - Retaliations. Won't give favors
 - Raid enemy territory. Will not capture it, but will increase power level and resources. If it's captured before mission is finished, mission will be cancelled. Will give favors
 - Capturing enemy territory with assist of player. Same as above, but will capture territory and will give favors
@@ -312,7 +316,7 @@ Missions allow feats such as:
 
 #### Retaliations
 
-Retaliations are unique two-staged missions. Retaliations can have different quality, requiring different stats to locate it. 
+Retaliations are unique two-staged missions. Retaliations can have different quality, requiring different stats to locate it.
 First stage is to find out, what type of retaliation is. After this is found out, next stage is to deal with it. Failing to finish retaliation mission in time will result in one of actions below.
 
 Increasing wanted level will result in retaliations appear on it's own increasingly often and with increasing level. Retaliations cannot have lever lower than current difficulty level.
@@ -424,6 +428,7 @@ Programs are unavailable initially, unlocking them requires finishing specific c
 To prevent wasting resources, special program can be purchased/made to generate money depending on unused RAM/cores.
 
 Examples of programs:
+
 - Spoofing programs, for passive money generation. Will use unused RAM and cores. Server level will increase rewards
 - Side contract searching programs, for increasing search multiplier in particular district
 - Crew member searching programs, for increasing search multiplier in particular district
@@ -450,6 +455,7 @@ Cities have upper limit on difficulty level unless noted. Each city also has dif
 Starting city has only one faction - **Vigil**. Player begins here after starting the game. Has small size and designed to learn how to use basic mechanics.
 
 Has following unlocks:
+
 - Contracts
 - Relocation
 
@@ -486,6 +492,7 @@ Completin junkie's city will reward player with ability to use more side effects
 Combat zone has three-four factions - **Vigil**, **Mongrels** and **placeholder**. Size is medium. Designed to be a tutorial for advanced mechanics.
 
 Has following unlocks:
+
 - Combat
 - Wanted level and crimes
 - Missions and retailations
@@ -495,6 +502,7 @@ Has following unlocks:
 Hacking city has multiple factions. Size is medium.
 
 Has following unlocks:
+
 - Server (money spoofing program is default)
 - Hacking orders
 - Different types of programs and automation

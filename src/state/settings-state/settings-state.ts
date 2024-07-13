@@ -1,7 +1,11 @@
 import i18n from 'i18next';
 import { IAppState } from '@state/app-state/interfaces';
 import { Language, Theme } from '@shared/constants';
-import { ISettingsFormValues, ISettingsState, ISettingsSerializedState } from './interfaces';
+import {
+  ISettingsFormValues,
+  ISettingsState,
+  ISettingsSerializedState,
+} from './interfaces';
 import themes from '@configs/themes.json';
 
 export class SettingsState implements ISettingsState {
@@ -34,7 +38,7 @@ export class SettingsState implements ISettingsState {
     await i18n.changeLanguage();
 
     this._language = i18n.resolvedLanguage! as Language;
-    this._theme = window.matchMedia('(prefers-color-scheme:dark)').matches 
+    this._theme = window.matchMedia('(prefers-color-scheme:dark)').matches
       ? Theme.dark
       : Theme.light;
 
@@ -44,7 +48,7 @@ export class SettingsState implements ISettingsState {
   async deserialize(serializedState: ISettingsSerializedState): Promise<void> {
     this._language = serializedState.language;
     this._theme = serializedState.theme;
-    
+
     await this._updateBrowserSettings();
   }
 
