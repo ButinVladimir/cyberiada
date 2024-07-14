@@ -25,7 +25,7 @@ export class MenuBar extends LitElement {
     }
   `;
 
-  @property({ attribute: true, type: String })
+  @property({ attribute: 'selected-menu-item', type: String })
   selectedMenuItem = '';
 
   render() {

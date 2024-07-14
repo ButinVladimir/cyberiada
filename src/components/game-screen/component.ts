@@ -2,10 +2,6 @@ import { LitElement, html, css } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { OverviewMenuItem } from '@shared/constants';
-import {
-  LogsToggledEvent,
-  MenuToggledEvent,
-} from './components/top-bar/events';
 import { MenuItemSelectedEvent } from './components/menu-bar/events';
 
 @customElement('ca-game-screen')
@@ -23,8 +19,7 @@ export class GameScreen extends LitElement {
 
     .top-bar-outer-container {
       background-color: var(--sl-panel-background-color);
-      border-bottom: var(--sl-panel-border-width) solid
-        var(--sl-panel-border-color);
+      border-bottom: var(--sl-panel-border-width) solid var(--sl-panel-border-color);
       box-shadow: var(--sl-shadow-small);
       display: flex;
       justify-content: center;
@@ -41,8 +36,7 @@ export class GameScreen extends LitElement {
     }
 
     .content-outer-container {
-      border-bottom: var(--sl-panel-border-width) solid
-        var(--sl-panel-border-color);
+      border-bottom: var(--sl-panel-border-width) solid var(--sl-panel-border-color);
       box-shadow: var(--sl-shadow-small);
       display: flex;
       justify-content: center;
@@ -69,8 +63,7 @@ export class GameScreen extends LitElement {
     }
 
     .menu-bar-container {
-      border-right: var(--sl-panel-border-width) solid
-        var(--sl-panel-border-color);
+      border-right: var(--sl-panel-border-width) solid var(--sl-panel-border-color);
     }
     .menu-bar-container.opened {
       width: 16%;
@@ -84,8 +77,7 @@ export class GameScreen extends LitElement {
     }
 
     .logs-bar-container {
-      border-left: var(--sl-panel-border-width) solid
-        var(--sl-panel-border-color);
+      border-left: var(--sl-panel-border-width) solid var(--sl-panel-border-color);
     }
     .logs-bar-container.opened {
       width: 32%;
@@ -100,17 +92,6 @@ export class GameScreen extends LitElement {
 
   @state()
   private _selectedMenuItem = OverviewMenuItem.cityOverview;
-
-  constructor() {
-    super();
-
-    this.addEventListener(MenuToggledEvent.type, this.handleMenuToggle);
-    this.addEventListener(LogsToggledEvent.type, this.handleLogsToggle);
-    this.addEventListener(
-      MenuItemSelectedEvent.type,
-      this.handleMenuItemSelect,
-    );
-  }
 
   render() {
     const menuClasses = classMap({
@@ -128,22 +109,19 @@ export class GameScreen extends LitElement {
     return html`
       <div class="top-bar-outer-container">
         <div class="top-bar-inner-container">
-          <ca-top-bar> </ca-top-bar>
+          <ca-top-bar @menu-toggled=${this.handleMenuToggle} @logs-toggled=${this.handleLogsToggle}> </ca-top-bar>
         </div>
       </div>
 
       <div class="content-outer-container">
         <div class="content-inner-container">
           <div class=${menuClasses}>
-            <ca-menu-bar
-              selectedMenuItem=${this._selectedMenuItem}
-            ></ca-menu-bar>
+            <ca-menu-bar selected-menu-item=${this._selectedMenuItem} @menu-item-selected=${this.handleMenuItemSelect}>
+            </ca-menu-bar>
           </div>
 
           <div class="viewport-container">
-            <ca-viewport
-              selectedMenuItem=${this._selectedMenuItem}
-            ></ca-viewport>
+            <ca-viewport selected-menu-item=${this._selectedMenuItem}></ca-viewport>
           </div>
 
           <div class=${logsClasses}>

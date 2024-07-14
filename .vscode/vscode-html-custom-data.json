@@ -7,6 +7,36 @@
       "attributes": []
     },
     {
+      "name": "ca-city-page",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-city-overview",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_selectedDistrict` {`number | undefined`} - \n\n  * `handleSelectDistrict` - \n\n  * `_cityMapController` {`CityOverviewController`} - \n\n  * `_mapSize` {`number`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-city-district-info-panel",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `districtInfo` - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-city-map",
+      "description": "Attributes:\n\n  * `map-cell-size` {`number`} - \n\n  * `selected-district` {`number | undefined`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_canvas` {`HTMLCanvasElement`} - \n\n  * `mapCellSize` {`number`} - \n\n  * `map` {`number[][]`} - \n\n  * `selectedDistrict` {`number | undefined`} - \n\n  * `cellSizeWithBorder` {`number`} - \n\n  * `handleMouseLeave` - \n\n  * `handleMouseMove` - ",
+      "attributes": [
+        {
+          "name": "map-cell-size",
+          "description": "`map-cell-size` {`number`} - \n\nProperty: mapCellSize\n\nDefault: 5"
+        },
+        {
+          "name": "selected-district",
+          "description": "`selected-district` {`number | undefined`} - \n\nProperty: selectedDistrict",
+          "values": []
+        }
+      ]
+    },
+    {
       "name": "ca-game-screen",
       "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_menuOpened` {`boolean`} - \n\n  * `_logsOpened` {`boolean`} - \n\n  * `_selectedMenuItem` - \n\n  * `handleMenuToggle` - \n\n  * `handleLogsToggle` - \n\n  * `handleMenuItemSelect` - ",
       "attributes": []
@@ -17,11 +47,11 @@
     },
     {
       "name": "ca-menu-bar",
-      "description": "Attributes:\n\n  * `selectedMenuItem` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `selectedMenuItem` {`string`} - \n\n  * `renderMenuItem` - \n\n  * `handleMenuItemClick` - ",
+      "description": "Attributes:\n\n  * `selected-menu-item` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `selectedMenuItem` {`string`} - \n\n  * `renderMenuItem` - \n\n  * `handleMenuItemClick` - ",
       "attributes": [
         {
-          "name": "selectedMenuItem",
-          "description": "`selectedMenuItem` {`string`} - \n\nProperty: selectedMenuItem\n\nDefault: "
+          "name": "selected-menu-item",
+          "description": "`selected-menu-item` {`string`} - \n\nProperty: selectedMenuItem\n\nDefault: "
         }
       ]
     },
@@ -47,11 +77,11 @@
     },
     {
       "name": "ca-viewport",
-      "description": "Attributes:\n\n  * `selectedMenuItem` {`string`} - \n\nProperties:\n\n  * `selectedMenuItem` {`string`} - ",
+      "description": "Attributes:\n\n  * `selected-menu-item` {`string`} - \n\nProperties:\n\n  * `selectedMenuItem` {`string`} - ",
       "attributes": [
         {
-          "name": "selectedMenuItem",
-          "description": "`selectedMenuItem` {`string`} - \n\nProperty: selectedMenuItem\n\nDefault: "
+          "name": "selected-menu-item",
+          "description": "`selected-menu-item` {`string`} - \n\nProperty: selectedMenuItem\n\nDefault: "
         }
       ]
     },

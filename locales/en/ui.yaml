@@ -25,3 +25,7 @@ settings:
   exportSavefile: Export savefile
   deleteSaveData: Delete save data
   deleteSaveDataAlert: Are you sure want to delete save data? You cannot revert this operation unless you exported a backup savefile.
+city:
+  cityOverview:
+    title: City overview
+    hint: Click on a highlighted district to see it's info and available actions.

@@ -1,14 +1,8 @@
 import { IAppState } from '@state/app-state/interfaces';
 import { MAP_HEIGHT, MAP_WIDTH, Scenario } from '@shared/constants';
-import {
-  ICityState,
-  ICitySerializedState,
-  IDistrictInfo,
-  IDistrictSerializedInfo,
-} from './interfaces';
+import { ICityState, ICitySerializedState, IDistrictInfo, IDistrictSerializedInfo } from './interfaces';
 import { DistrictInfo } from '.';
 import { IMapGeneratorResult } from '@workers/map-generator/interfaces';
-import MapGeneratorWorker from '@workers/map-generator/index?worker';
 
 export class CityState implements ICityState {
   private _appState: IAppState;
@@ -50,7 +44,7 @@ export class CityState implements ICityState {
   }
 
   public async startNewState(): Promise<void> {
-    await this._generateMap();
+    await this.generateMap();
   }
 
   deserialize(serializedState: ICitySerializedState): void {
@@ -69,14 +63,12 @@ export class CityState implements ICityState {
 
     this._districts.clear();
 
-    Object.entries(serializedState.districts).forEach(
-      ([districtNum, districtSerializedInfo]) => {
-        const districtNumParsed = parseInt(districtNum);
-        const districtInfo = DistrictInfo.deserialize(districtSerializedInfo);
+    Object.entries(serializedState.districts).forEach(([districtNum, districtSerializedInfo]) => {
+      const districtNumParsed = parseInt(districtNum);
+      const districtInfo = DistrictInfo.deserialize(districtSerializedInfo);
 
-        this._districts.set(districtNumParsed, districtInfo);
-      },
-    );
+      this._districts.set(districtNumParsed, districtInfo);
+    });
   }
 
   serialize(): ICitySerializedState {
@@ -94,28 +86,22 @@ export class CityState implements ICityState {
     };
   }
 
-  private _generateMap(): Promise<void> {
+  private generateMap(): Promise<void> {
     return new Promise((resolve, reject) => {
-      const worker = new MapGeneratorWorker();
+      const worker = new Worker(new URL('@workers/map-generator/index.js', import.meta.url), { type: 'module' });
 
-      worker.addEventListener(
-        'message',
-        (event: MessageEvent<IMapGeneratorResult>) => {
-          this._map = event.data.map;
-          this._districts.clear();
-          for (const [districtNum, district] of Object.entries(
-            event.data.districts,
-          )) {
-            const parsedDistrictNum = parseInt(districtNum);
-            const districtInfo =
-              DistrictInfo.deserializeMapGeneratorResult(district);
+      worker.addEventListener('message', (event: MessageEvent<IMapGeneratorResult>) => {
+        this._map = event.data.map;
+        this._districts.clear();
+        for (const [districtNum, district] of Object.entries(event.data.districts)) {
+          const parsedDistrictNum = parseInt(districtNum);
+          const districtInfo = DistrictInfo.deserializeMapGeneratorResult(district);
 
-            this._districts.set(parsedDistrictNum, districtInfo);
-          }
+          this._districts.set(parsedDistrictNum, districtInfo);
+        }
 
-          resolve();
-        },
-      );
+        resolve();
+      });
 
       worker.addEventListener('error', (event: ErrorEvent) => {
         reject(event.error);

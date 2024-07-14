@@ -57,66 +57,29 @@ export class SavefilePanel extends LitElement {
 
   render() {
     return html`
-      <input
-        type="file"
-        id="import-file"
-        @change=${this.handleChangeImportSavefile}
-      />
+      <input type="file" id="import-file" @change=${this.handleChangeImportSavefile} />
 
-      <sl-button
-        variant="default"
-        type="button"
-        size="medium"
-        outline
-        @click=${this.handleImportSavefile}
-      >
-        <intl-message label="ui:settings:importSavefile">
-          Import savefile
-        </intl-message>
+      <sl-button variant="default" type="button" size="medium" outline @click=${this.handleImportSavefile}>
+        <intl-message label="ui:settings:importSavefile"> Import savefile </intl-message>
       </sl-button>
 
-      <sl-button
-        variant="default"
-        type="button"
-        size="medium"
-        outline
-        @click=${this.handleExportSavefile}
-      >
-        <intl-message label="ui:settings:exportSavefile">
-          Export savefile
-        </intl-message>
+      <sl-button variant="default" type="button" size="medium" outline @click=${this.handleExportSavefile}>
+        <intl-message label="ui:settings:exportSavefile"> Export savefile </intl-message>
       </sl-button>
 
-      <sl-button
-        variant="danger"
-        type="button"
-        size="medium"
-        @click=${this.handleOpenDeleteSaveDataDialog}
-      >
-        <intl-message label="ui:settings:deleteSaveData">
-          Delete save data
-        </intl-message>
+      <sl-button variant="danger" type="button" size="medium" @click=${this.handleOpenDeleteSaveDataDialog}>
+        <intl-message label="ui:settings:deleteSaveData"> Delete save data </intl-message>
       </sl-button>
 
       <sl-dialog no-header class="delete-save-data-dialog">
         <intl-message label="ui:settings:deleteSaveDataAlert">
-          Are you sure want to delete save data? You cannot revert this
-          operation unless you exported a backup savefile.
+          Are you sure want to delete save data? You cannot revert this operation unless you exported a backup savefile.
         </intl-message>
         <div slot="footer" class="footer">
-          <sl-button
-            size="medium"
-            variant="default"
-            outline
-            @click=${this.handleCloseDeleteSaveDataDialog}
-          >
+          <sl-button size="medium" variant="default" outline @click=${this.handleCloseDeleteSaveDataDialog}>
             <intl-message label="ui:common:cancel"> Cancel </intl-message>
           </sl-button>
-          <sl-button
-            size="medium"
-            variant="danger"
-            @click=${this.handleDeleteSaveData}
-          >
+          <sl-button size="medium" variant="danger" @click=${this.handleDeleteSaveData}>
             <intl-message label="ui:common:delete"> Delete </intl-message>
           </sl-button>
         </div>

@@ -1,5 +1,7 @@
 import { LitElement, html, css, TemplateResult } from 'lit';
 import { customElement, query, state } from 'lit/decorators.js';
+import { CacheDirective, cache } from 'lit/directives/cache.js';
+import { DirectiveResult } from 'lit/async-directive.js';
 import { Language, Theme, LANGUAGES, THEMES } from '@shared/constants';
 import { ISettingsFormValues } from '@state/settings-state';
 import { SettingsFormController } from './controller';
@@ -30,7 +32,7 @@ export class SettingsForm extends LitElement {
 
     div.spinner-container {
       width: 100%;
-      max-width: 70rem;
+      max-width: 20em;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -59,9 +61,9 @@ export class SettingsForm extends LitElement {
   }
 
   render() {
-    const content: TemplateResult = this._isSaving
-      ? this.renderSpinner()
-      : this.renderForm();
+    const content: DirectiveResult<typeof CacheDirective> = cache(
+      this._isSaving ? this.renderSpinner() : this.renderForm(),
+    );
 
     return html` ${content} `;
   }
@@ -69,10 +71,7 @@ export class SettingsForm extends LitElement {
   private renderForm(): TemplateResult {
     return html`
       <form id="settings" @submit=${this.handleSubmit}>
-        <sl-select
-          name="language"
-          value=${this._settingsFormController.language}
-        >
+        <sl-select name="language" value=${this._settingsFormController.language}>
           <span class="select-label" slot="label">
             <intl-message label="ui:settings:language">Language</intl-message>
           </span>
@@ -80,9 +79,7 @@ export class SettingsForm extends LitElement {
           ${LANGUAGES.map(
             (language) =>
               html` <sl-option value=${language}>
-                <intl-message label="ui:settings:languages:${language}">
-                  ${language}
-                </intl-message>
+                <intl-message label="ui:settings:languages:${language}"> ${language} </intl-message>
               </sl-option>`,
           )}
         </sl-select>
@@ -95,9 +92,7 @@ export class SettingsForm extends LitElement {
           ${THEMES.map(
             (theme) =>
               html` <sl-option value=${theme}>
-                <intl-message label="ui:settings:themes:${theme}">
-                  ${theme}
-                </intl-message>
+                <intl-message label="ui:settings:themes:${theme}"> ${theme} </intl-message>
               </sl-option>`,
           )}
         </sl-select>

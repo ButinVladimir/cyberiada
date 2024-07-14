@@ -8,9 +8,7 @@ export class DistrictInfo implements IDistrictInfo {
 
   private constructor() {}
 
-  static deserialize(
-    districtSerializedInfo: IDistrictSerializedInfo,
-  ): IDistrictInfo {
+  static deserialize(districtSerializedInfo: IDistrictSerializedInfo): IDistrictInfo {
     const districtInfo = new DistrictInfo();
     districtInfo._name = districtSerializedInfo.name;
     districtInfo._startingPoint = districtSerializedInfo.startingPoint;
@@ -18,9 +16,7 @@ export class DistrictInfo implements IDistrictInfo {
     return districtInfo;
   }
 
-  static deserializeMapGeneratorResult(
-    mapGeneratorDistrictResult: IMapGeneratorDistrictResult,
-  ): IDistrictInfo {
+  static deserializeMapGeneratorResult(mapGeneratorDistrictResult: IMapGeneratorDistrictResult): IDistrictInfo {
     const districtInfo = new DistrictInfo();
     districtInfo._name = mapGeneratorDistrictResult.name;
     districtInfo._startingPoint = mapGeneratorDistrictResult.startingPoint;

@@ -11,3 +11,4 @@ import './app-root';
 import './loading-screen';
 import './game-screen';
 import './settings-page';
+import './city-page';

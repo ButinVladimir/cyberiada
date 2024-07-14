@@ -16,10 +16,7 @@ export class MapGenerator implements IMapGenerator {
   private static DX: number[] = [-1, 1, 0, 0];
   private static DY: number[] = [0, 0, -1, 1];
   private _map: (number | undefined)[][];
-  private _districts: Map<number, IMapGeneratorDistrict> = new Map<
-    number,
-    IMapGeneratorDistrict
-  >();
+  private _districts: Map<number, IMapGeneratorDistrict> = new Map<number, IMapGeneratorDistrict>();
   private _args: IMapGeneratorArgs;
   private _random: XORShift128Plus;
 
@@ -41,17 +38,15 @@ export class MapGenerator implements IMapGenerator {
   }
 
   public generate(): IMapGeneratorResult {
-    this._setStartingPoints();
-    this._expandDistricts();
-    return this._buildResult();
+    this.setStartingPoints();
+    this.expandDistricts();
+    return this.buildResult();
   }
 
-  private _setStartingPoints(): void {
+  private setStartingPoints(): void {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (!scenarios[this._args.scenario]) {
-      throw new Error(
-        `Unable to generate map for scenario ${this._args.scenario}`,
-      );
+      throw new Error(`Unable to generate map for scenario ${this._args.scenario}`);
     }
 
     const startingPoints: IPoint[] = [];
@@ -82,9 +77,8 @@ export class MapGenerator implements IMapGenerator {
     }
   }
 
-  private _expandDistricts(): void {
-    let freeCells =
-      MAP_WIDTH * MAP_HEIGHT - scenarios[this._args.scenario].districtsNum;
+  private expandDistricts(): void {
+    let freeCells = MAP_WIDTH * MAP_HEIGHT - scenarios[this._args.scenario].districtsNum;
     const { districtsNum } = scenarios[this._args.scenario];
 
     while (freeCells > 0) {
@@ -109,7 +103,7 @@ export class MapGenerator implements IMapGenerator {
     }
   }
 
-  private _buildResult(): IMapGeneratorResult {
+  private buildResult(): IMapGeneratorResult {
     const districts: Record<number, IMapGeneratorDistrictResult> = {};
     for (const [districtNum, district] of this._districts.entries()) {
       districts[districtNum] = {
@@ -133,12 +127,7 @@ export class MapGenerator implements IMapGenerator {
         y: point.y + MapGenerator.DY[direction],
       };
 
-      if (
-        nextPoint.x >= 0 &&
-        nextPoint.y >= 0 &&
-        nextPoint.x < MAP_WIDTH &&
-        nextPoint.y < MAP_HEIGHT
-      ) {
+      if (nextPoint.x >= 0 && nextPoint.y >= 0 && nextPoint.x < MAP_WIDTH && nextPoint.y < MAP_HEIGHT) {
         result.push(nextPoint);
       }
     }
