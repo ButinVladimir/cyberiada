@@ -1,35 +1,39 @@
 import { LitElement, css, html } from 'lit';
 import { customElement, query, property } from 'lit/decorators.js';
 import { MAP_WIDTH, MAP_HEIGHT } from '@shared/constants';
-import { CityMapDistrictSelectedEvent } from './events/city-map-district-selected-event';
+import { CityMapDistrictSelectEvent } from './events';
+import { CityMapController } from './controller';
 
-@customElement('ca-city-map')
-export class CityMap extends LitElement {
+@customElement('ca-city-map-canvas')
+export class CityMapCanvas extends LitElement {
   static styles = css`
     canvas {
       cursor: pointer;
     }
   `;
 
+  private _cityMapController: CityMapController;
+
   @query('canvas', true)
   private _canvas!: HTMLCanvasElement;
 
   @property({
-    attribute: 'map-cell-size',
+    attribute: 'map-cell-zoom',
     type: Number,
   })
-  mapCellSize = 5;
-
-  @property({
-    attribute: false,
-  })
-  map!: number[][];
+  mapCellZoom!: number;
 
   @property({
     attribute: 'selected-district',
     type: Number,
   })
   selectedDistrict?: number;
+
+  constructor() {
+    super();
+
+    this._cityMapController = new CityMapController(this);
+  }
 
   render() {
     const cellSizeWithBorder = this.cellSizeWithBorder;
@@ -44,11 +48,18 @@ export class CityMap extends LitElement {
   }
 
   get cellSizeWithBorder() {
-    return this.mapCellSize + 1;
+    return this.mapCellZoom + 1;
+  }
+
+  get map(): number[][] {
+    return this._cityMapController.map;
+  }
+
+  protected firstUpdated(): void {
+    this.renderCanvas();
   }
 
   protected updated(): void {
-    console.log('Updated');
     this.renderCanvas();
   }
 
@@ -168,7 +179,7 @@ export class CityMap extends LitElement {
   }
 
   private handleMouseLeave = () => {
-    this.dispatchEvent(new CityMapDistrictSelectedEvent(undefined));
+    this.dispatchEvent(new CityMapDistrictSelectEvent(undefined));
   };
 
   private handleMouseMove = (event: MouseEvent) => {
@@ -176,6 +187,6 @@ export class CityMap extends LitElement {
     const x = Math.min(Math.floor(event.offsetX / cellSizeWithBorder), MAP_WIDTH - 1);
     const y = Math.min(Math.floor(event.offsetY / cellSizeWithBorder), MAP_HEIGHT - 1);
 
-    this.dispatchEvent(new CityMapDistrictSelectedEvent(this.map[x][y]));
+    this.dispatchEvent(new CityMapDistrictSelectEvent(this.map[x][y]));
   };
 }

@@ -29,3 +29,6 @@ city:
   cityOverview:
     title: City overview
     hint: Click on a highlighted district to see it's info and available actions.
+    toggleZoomPanel: Toggle zoom panel
+    zoom: Zoom
+    name: Name

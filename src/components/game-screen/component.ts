@@ -59,7 +59,14 @@ export class GameScreen extends LitElement {
       overflow: auto;
       scrollbar-width: thin;
       box-sizing: border-box;
-      transition: width var(--sl-transition-slow) ease-in-out;
+      visibility: hidden;
+      transition:
+        width var(--sl-transition-slow) ease-in-out,
+        visibility var(--sl-transition-slow) ease-in-out;
+    }
+
+    .side-bar-container.opened {
+      visibility: visible;
     }
 
     .menu-bar-container {

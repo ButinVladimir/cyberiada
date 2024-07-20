@@ -21,6 +21,8 @@ export class CityDistrictInfoPanel extends LitElement {
       return null;
     }
 
-    return cache(html`<p>Name: ${this.districtInfo.name}</p>`);
+    return html`
+      <p><intl-message label="ui:city:cityOverview:name">Name</intl-message>: ${this.districtInfo.name}</p>
+    `;
   }
 }

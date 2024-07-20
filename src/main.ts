@@ -15,7 +15,7 @@ i18n
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     resources,
     fallbackLng: 'en',
-    debug: true,
+    debug: import.meta.env.DEV,
   })
   .then(() => {
     const appRootElement = document.createElement('ca-app-root');

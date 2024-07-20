@@ -13,7 +13,7 @@
     },
     {
       "name": "ca-city-overview",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_selectedDistrict` {`number | undefined`} - \n\n  * `handleSelectDistrict` - \n\n  * `_cityMapController` {`CityOverviewController`} - \n\n  * `_mapSize` {`number`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_selectedDistrict` {`number | undefined`} - \n\n  * `handleSelectDistrict` - \n\n  * `handleChangeZoom` - \n\n  * `_cityOverviewController` {`CityOverviewController`} - \n\n  * `_mapZoom` {`number`} - ",
       "attributes": []
     },
     {
@@ -22,17 +22,27 @@
       "attributes": []
     },
     {
-      "name": "ca-city-map",
-      "description": "Attributes:\n\n  * `map-cell-size` {`number`} - \n\n  * `selected-district` {`number | undefined`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_canvas` {`HTMLCanvasElement`} - \n\n  * `mapCellSize` {`number`} - \n\n  * `map` {`number[][]`} - \n\n  * `selectedDistrict` {`number | undefined`} - \n\n  * `cellSizeWithBorder` {`number`} - \n\n  * `handleMouseLeave` - \n\n  * `handleMouseMove` - ",
+      "name": "ca-city-map-canvas",
+      "description": "Attributes:\n\n  * `map-cell-zoom` {`number`} - \n\n  * `selected-district` {`number | undefined`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_canvas` {`HTMLCanvasElement`} - \n\n  * `mapCellZoom` {`number`} - \n\n  * `selectedDistrict` {`number | undefined`} - \n\n  * `cellSizeWithBorder` {`number`} - \n\n  * `map` {`number[][]`} - \n\n  * `handleMouseLeave` - \n\n  * `handleMouseMove` - \n\n  * `_cityMapController` {`CityMapController`} - ",
       "attributes": [
         {
-          "name": "map-cell-size",
-          "description": "`map-cell-size` {`number`} - \n\nProperty: mapCellSize\n\nDefault: 5"
+          "name": "map-cell-zoom",
+          "description": "`map-cell-zoom` {`number`} - \n\nProperty: mapCellZoom"
         },
         {
           "name": "selected-district",
           "description": "`selected-district` {`number | undefined`} - \n\nProperty: selectedDistrict",
           "values": []
+        }
+      ]
+    },
+    {
+      "name": "ca-map-cell-zoom-panel",
+      "description": "Attributes:\n\n  * `zoom` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `zoom` {`number`} - \n\n  * `_showRange` {`boolean`} - \n\n  * `_rangeElement` {`SlRange`} - \n\n  * `handleToggleZoomPanel` - \n\n  * `handleChangeZoom` - ",
+      "attributes": [
+        {
+          "name": "zoom",
+          "description": "`zoom` {`number`} - \n\nProperty: zoom"
         }
       ]
     },
