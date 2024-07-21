@@ -10,11 +10,25 @@ pages:
   settings: Настройки
 topBar:
   menu: Меню
-  logs: Логи
+  messageLog: Сообщения
+messageLog:
+  messageLog: Сообщения
+  clearMessages: Удалить сообщения
+  messagesFilter: Фильтр сообщений
+  messagesFilterHint: Enable events in filter to start adding messages for them in log. Messages for disabled events will be removed from log.
+  events:
+    gameStarted: Игра началась
+    gameLoaded: Игра загружена
+    gameSaved: Игра сохранена
+  messages:
+    gameStarted: Игра началась
+    gameLoaded: Игра загружена
+    gameSaved: Игра сохранена
 settings:
   settings: Настройки
   language: Язык
   theme: Тема
+  maxLogMessages: Максимальное количество сообщений в логе
   languages:
     en: Английский
     ru: Русский

@@ -10,7 +10,7 @@ export class MenuBar extends LitElement {
     :host {
       width: 100%;
       box-sizing: border-box;
-      padding: var(--sl-spacing-2x-small);
+      padding: var(--sl-spacing-small) var(--sl-spacing-2x-small);
     }
 
     nav {

@@ -61,8 +61,8 @@ export class GameScreen extends LitElement {
       box-sizing: border-box;
       visibility: hidden;
       transition:
-        width var(--sl-transition-slow) ease-in-out,
-        visibility var(--sl-transition-slow) ease-in-out;
+        width var(--sl-transition-x-fast) ease-in-out,
+        visibility var(--sl-transition-x-fast) ease-in-out;
     }
 
     .side-bar-container.opened {
@@ -83,10 +83,10 @@ export class GameScreen extends LitElement {
       padding: var(--sl-spacing-small) var(--sl-spacing-medium);
     }
 
-    .logs-bar-container {
+    .message-log-bar-container {
       border-left: var(--sl-panel-border-width) solid var(--sl-panel-border-color);
     }
-    .logs-bar-container.opened {
+    .message-log-bar-container.opened {
       width: 32%;
     }
   `;
@@ -107,9 +107,9 @@ export class GameScreen extends LitElement {
       opened: this._menuOpened,
     });
 
-    const logsClasses = classMap({
+    const messageLogClasses = classMap({
       'side-bar-container': true,
-      'logs-bar-container': true,
+      'message-log-bar-container': true,
       opened: this._logsOpened,
     });
 
@@ -131,8 +131,8 @@ export class GameScreen extends LitElement {
             <ca-viewport selected-menu-item=${this._selectedMenuItem}></ca-viewport>
           </div>
 
-          <div class=${logsClasses}>
-            <ca-logs-bar></ca-logs-bar>
+          <div class=${messageLogClasses}>
+            <ca-message-log-bar></ca-logs-bar>
           </div>
         </div>
       </div>

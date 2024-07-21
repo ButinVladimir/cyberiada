@@ -14,8 +14,12 @@ export class TopBar extends LitElement {
 
     .icons-group {
       flex: 0 0 auto;
-      margin-right: var(--sl-spacing-medium);
       font-size: var(--sl-font-size-large);
+      line-height: var(--sl-line-height-denser);
+    }
+
+    .icons-group:first-child {
+      margin-right: var(--sl-spacing-medium);
     }
 
     .gutter {
@@ -37,9 +41,9 @@ export class TopBar extends LitElement {
 
       <span class="icons-group">
         <sl-tooltip @click=${this.handleLogsClick}>
-          <intl-message slot="content" label="ui:topBar:logs"> Logs </intl-message>
+          <intl-message slot="content" label="ui:topBar:messageLog"> Message log </intl-message>
 
-          <sl-icon-button name="chat-left-dots" label=${t('topBar.logs', { ns: 'ui' })}> </sl-icon-button>
+          <sl-icon-button name="chat-left-dots" label=${t('topBar.messageLog', { ns: 'ui' })}> </sl-icon-button>
         </sl-tooltip>
       </span>
     `;
