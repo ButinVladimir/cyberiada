@@ -1,19 +1,13 @@
-import { ReactiveController, ReactiveControllerHost } from 'lit';
-import { AppState } from '@state/app-state';
+import { ReactiveControllerHost } from 'lit';
+import { BaseController } from '@shared/base-controller';
 
-export class CityMapController implements ReactiveController {
-  private _host: ReactiveControllerHost;
+export class CityMapController extends BaseController {
   private _map: number[][];
 
   constructor(host: ReactiveControllerHost) {
-    this._host = host;
-    host.addController(this);
-    this._map = AppState.instance.cityState.getMapCopy();
+    super(host);
+    this._map = this.cityState.getMapCopy();
   }
-
-  hostConnected() {}
-
-  hostDisconnected() {}
 
   get map(): number[][] {
     return this._map;

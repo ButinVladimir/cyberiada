@@ -1,0 +1,36 @@
+import { ReactiveController, ReactiveControllerHost } from 'lit';
+import { IAppState } from '@state/app-state/interfaces/app-state';
+import { IGeneralState } from '@state/general-state/interfaces/general-state';
+import { ISettingsState } from '@state/settings-state/interfaces/settings-state';
+import { ICityState } from '@state/city-state/interfaces/city-state';
+import { container } from '@state/container';
+import { TYPES } from '@state/types';
+
+export class BaseController implements ReactiveController {
+  protected host: ReactiveControllerHost;
+
+  constructor(host: ReactiveControllerHost) {
+    this.host = host;
+    host.addController(this);
+  }
+
+  hostConnected() {}
+
+  hostDisconnected() {}
+
+  protected get appState(): IAppState {
+    return container.get<IAppState>(TYPES.AppState);
+  }
+
+  protected get generalState(): IGeneralState {
+    return container.get<IGeneralState>(TYPES.GeneralState);
+  }
+
+  protected get settingsState(): ISettingsState {
+    return container.get<ISettingsState>(TYPES.SettingsState);
+  }
+
+  protected get cityState(): ICityState {
+    return container.get<ICityState>(TYPES.CityState);
+  }
+}

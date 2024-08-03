@@ -1,17 +1,19 @@
+import { injectable } from 'inversify';
 import i18n from 'i18next';
-import { IAppState } from '@state/app-state/interfaces';
 import { Language, Theme } from '@shared/constants';
 import { ISettingsFormValues, ISettingsState, ISettingsSerializedState } from './interfaces';
 import themes from '@configs/themes.json';
 
+@injectable()
 export class SettingsState implements ISettingsState {
-  private _appState: IAppState;
-  private _language: Language = Language.en;
-  private _theme: Theme = Theme.light;
-  private _mapCellSize = 3;
+  private _language: Language;
+  private _theme: Theme;
+  private _mapCellSize: number;
 
-  constructor(appState: IAppState) {
-    this._appState = appState;
+  constructor() {
+    this._language = Language.en;
+    this._theme = Theme.light;
+    this._mapCellSize = 3;
   }
 
   get language() {
@@ -31,14 +33,10 @@ export class SettingsState implements ISettingsState {
     this._theme = values.theme;
 
     await this._updateBrowserSettings();
-
-    this._appState.saveGame();
   }
 
   setMapCellSize(mapCellSize: number) {
     this._mapCellSize = mapCellSize;
-
-    this._appState.saveGame();
   }
 
   async startNewState(): Promise<void> {

@@ -1,27 +1,15 @@
-import { ReactiveController, ReactiveControllerHost } from 'lit';
-import { AppState } from '@state/app-state';
+import { BaseController } from '@shared/base-controller';
 
-export class SavefilePanelController implements ReactiveController {
-  private _host: ReactiveControllerHost;
-
-  constructor(host: ReactiveControllerHost) {
-    this._host = host;
-    host.addController(this);
-  }
-
-  hostConnected() {}
-
-  hostDisconnected() {}
-
+export class SavefilePanelController extends BaseController {
   importSavefile(file: File) {
-    AppState.instance.importSavefile(file);
+    this.appState.importSavefile(file);
   }
 
   exportSavefile() {
-    AppState.instance.exportSavefile();
+    this.appState.exportSavefile();
   }
 
   deleteSaveData() {
-    AppState.instance.deleteSaveData();
+    this.appState.deleteSaveData();
   }
 }

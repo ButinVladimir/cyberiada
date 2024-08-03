@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import i18n from 'i18next';
 import resources from 'virtual:i18next-loader';
 import 'i18next-wc';

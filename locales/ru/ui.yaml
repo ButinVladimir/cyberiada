@@ -15,15 +15,7 @@ messageLog:
   messageLog: Сообщения
   clearMessages: Удалить сообщения
   messagesFilter: Фильтр сообщений
-  messagesFilterHint: Enable events in filter to start adding messages for them in log. Messages for disabled events will be removed from log.
-  events:
-    gameStarted: Игра началась
-    gameLoaded: Игра загружена
-    gameSaved: Игра сохранена
-  messages:
-    gameStarted: Игра началась
-    gameLoaded: Игра загружена
-    gameSaved: Игра сохранена
+  messagesFilterHint: Включите события в фильтре, чтобы получать сообщения о них. Сообщения для выключенных событий будут удалены.
 settings:
   settings: Настройки
   language: Язык

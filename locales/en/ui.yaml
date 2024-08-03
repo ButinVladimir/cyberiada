@@ -16,14 +16,6 @@ messageLog:
   clearMessages: Clear messages
   messagesFilter: Messages filter
   messagesFilterHint: Enable events in filter to start adding messages for them in log. Messages for disabled events will be removed from log.
-  events:
-    gameStarted: Game started
-    gameLoaded: Game loaded
-    gameSaved: Game saved
-  messages:
-    gameStarted: Game has been started
-    gameLoaded: Game has been loaded
-    gameSaved: Game has been saved
 settings:
   settings: Settings
   language: Language

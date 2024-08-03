@@ -52,10 +52,6 @@
       "attributes": []
     },
     {
-      "name": "ca-logs-bar",
-      "attributes": []
-    },
-    {
       "name": "ca-menu-bar",
       "description": "Attributes:\n\n  * `selected-menu-item` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `selectedMenuItem` {`string`} - \n\n  * `renderMenuItem` - \n\n  * `handleMenuItemClick` - ",
       "attributes": [
@@ -79,6 +75,11 @@
           "valueSet": "v"
         }
       ]
+    },
+    {
+      "name": "ca-message-log-bar",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - ",
+      "attributes": []
     },
     {
       "name": "ca-top-bar",

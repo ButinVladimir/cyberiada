@@ -1,6 +1,5 @@
 import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { cache } from 'lit/directives/cache.js';
 import type { IDistrictInfo } from '@state/city-state/interfaces';
 
 @customElement('ca-city-district-info-panel')

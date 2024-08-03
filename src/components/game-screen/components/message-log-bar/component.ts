@@ -51,12 +51,14 @@ export class MessageLogBar extends LitElement {
 
         <sl-tooltip>
           <intl-message slot="content" label="ui:messageLog:clearMessages">Clear messages</intl-message>
-          <sl-icon-button id="clear-messages-btn" name="x-circle" label=${t('messageLog.clearMessages', { ns: 'ui' })}> </sl-icon-button>
+          <sl-icon-button id="clear-messages-btn" name="x-circle" label=${t('messageLog.clearMessages', { ns: 'ui' })}>
+          </sl-icon-button>
         </sl-tooltip>
 
         <sl-tooltip>
           <intl-message slot="content" label="ui:messageLog:messagesFilter">Messages filter</intl-message>
-          <sl-icon-button id="messages-filter-btn" name="gear" label=${t('messageLog.messagesFilter', { ns: 'ui' })}> </sl-icon-button>
+          <sl-icon-button id="messages-filter-btn" name="gear" label=${t('messageLog.messagesFilter', { ns: 'ui' })}>
+          </sl-icon-button>
         </sl-tooltip>
       </div>
     `;

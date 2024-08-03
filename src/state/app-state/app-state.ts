@@ -1,44 +1,30 @@
+import { inject, injectable } from 'inversify';
 import { EventEmitter } from 'eventemitter3';
-import { GeneralState } from '@state/general-state/general-state';
-import { SettingsState } from '@state/settings-state/settings-state';
-import { CityState } from '@state/city-state/city-state';
+import type { IGeneralState } from '@state/general-state/interfaces/general-state';
+import type { ISettingsState } from '@state/settings-state/interfaces/settings-state';
+import type { ICityState } from '@state/city-state/interfaces/city-state';
+import { TYPES } from '@state/types';
 import { IAppState, ISerializedState } from './interfaces';
 import { LOCAL_STORAGE_KEY, APP_EVENTS } from './constants';
 
+@injectable()
 export class AppState implements IAppState {
-  private static _instance: AppState | undefined = undefined;
+  private _generalState: IGeneralState;
+  private _settingsState: ISettingsState;
+  private _cityState: ICityState;
 
-  private _generalState: GeneralState;
-  private _settingsState: SettingsState;
-  private _cityState: CityState;
   private readonly _eventEmitter: EventEmitter;
 
-  static get instance(): IAppState {
-    if (!AppState._instance) {
-      AppState._instance = new AppState();
-    }
+  constructor(
+    @inject(TYPES.GeneralState) _generalState: IGeneralState,
+    @inject(TYPES.SettingsState) _settingsState: ISettingsState,
+    @inject(TYPES.CityState) _cityState: ICityState,
+  ) {
+    this._generalState = _generalState;
+    this._settingsState = _settingsState;
+    this._cityState = _cityState;
 
-    return AppState._instance;
-  }
-
-  private constructor() {
     this._eventEmitter = new EventEmitter();
-
-    this._generalState = new GeneralState(this);
-    this._settingsState = new SettingsState(this);
-    this._cityState = new CityState(this);
-  }
-
-  get generalState(): GeneralState {
-    return this._generalState;
-  }
-
-  get settingsState(): SettingsState {
-    return this._settingsState;
-  }
-
-  get cityState(): CityState {
-    return this._cityState;
   }
 
   async startUp(): Promise<void> {
@@ -65,11 +51,11 @@ export class AppState implements IAppState {
     localStorage.setItem(LOCAL_STORAGE_KEY, encodedSaveData);
   }
 
-  on(eventName: symbol, handler: () => void): void {
+  addUiEventListener(eventName: symbol, handler: () => void): void {
     this._eventEmitter.addListener(eventName, handler);
   }
 
-  off(eventName: symbol, handler: () => void): void {
+  removeUiEventListener(eventName: symbol, handler: () => void): void {
     this._eventEmitter.removeListener(eventName, handler);
   }
 
@@ -116,9 +102,9 @@ export class AppState implements IAppState {
 
   private buildSaveData(): string {
     const saveState: ISerializedState = {
-      general: this.generalState.serialize(),
-      settings: this.settingsState.serialize(),
-      city: this.cityState.serialize(),
+      general: this._generalState.serialize(),
+      settings: this._settingsState.serialize(),
+      city: this._cityState.serialize(),
     };
 
     const encodedSaveState = btoa(JSON.stringify(saveState));
@@ -127,25 +113,25 @@ export class AppState implements IAppState {
   }
 
   private async startNewState(): Promise<void> {
-    this.generalState.startNewState();
-    await this.settingsState.startNewState();
-    await this.cityState.startNewState();
+    this._generalState.startNewState();
+    await this._settingsState.startNewState();
+    await this._cityState.startNewState();
     this.saveGame();
   }
 
   private async loadState(saveData: ISerializedState): Promise<void> {
-    this.generalState.deserialize(saveData.general);
-    await this.settingsState.deserialize(saveData.settings);
-    this.cityState.deserialize(saveData.city);
+    this._generalState.deserialize(saveData.general);
+    await this._settingsState.deserialize(saveData.settings);
+    this._cityState.deserialize(saveData.city);
   }
 
   private startLoadingGame = (): void => {
-    this.generalState.startLoadingGame();
+    this._generalState.startLoadingGame();
     this._eventEmitter.emit(APP_EVENTS.CHANGED_GAME_STATE);
   };
 
   private startRunningGame = (): void => {
-    this.generalState.startRunningGame();
+    this._generalState.startRunningGame();
     this._eventEmitter.emit(APP_EVENTS.CHANGED_GAME_STATE);
   };
 }

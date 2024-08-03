@@ -22,6 +22,7 @@ module.exports = {
     'semi-style': ['error', 'last'],
     '@typescript-eslint/no-non-null-assertion': 'off',
     '@typescript-eslint/no-empty-function': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
   },
   parserOptions: {
     project: 'tsconfig.json',

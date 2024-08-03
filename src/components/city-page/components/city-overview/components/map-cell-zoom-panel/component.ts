@@ -56,7 +56,7 @@ export class MapCellZoomPanel extends LitElement {
   zoom!: number;
 
   @state()
-  private _showRange: boolean = false;
+  private _showRange = false;
 
   @query('sl-range')
   private _rangeElement!: SlRange;

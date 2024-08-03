@@ -1,15 +1,13 @@
-import { IAppState } from '@state/app-state/interfaces';
-import { IGeneralState } from './interfaces';
+import { injectable } from 'inversify';
+import { IGeneralState, IGeneralSerializedState } from './interfaces';
 import { AppStateValue } from './types';
-import { IGeneralSerializedState } from './interfaces/general-serialized-state';
 
+@injectable()
 export class GeneralState implements IGeneralState {
-  private _appState: IAppState;
   private _currentState: AppStateValue;
   private _randomSeed: number;
 
-  constructor(appState: IAppState) {
-    this._appState = appState;
+  constructor() {
     this._currentState = AppStateValue.loading;
     this._randomSeed = 0;
   }
