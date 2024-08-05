@@ -1,6 +1,6 @@
 import { LitElement, css, html } from 'lit';
 import { customElement, query, property } from 'lit/decorators.js';
-import { MAP_WIDTH, MAP_HEIGHT } from '@shared/constants';
+import constants from '@configs/constants.json';
 import { CityMapDistrictSelectEvent } from './events';
 import { CityMapController } from './controller';
 
@@ -37,8 +37,8 @@ export class CityMapCanvas extends LitElement {
 
   render() {
     const cellSizeWithBorder = this.cellSizeWithBorder;
-    const width = MAP_WIDTH * cellSizeWithBorder;
-    const height = MAP_HEIGHT * cellSizeWithBorder;
+    const width = constants.mapWidth * cellSizeWithBorder;
+    const height = constants.mapHeight * cellSizeWithBorder;
 
     return html`
       <canvas width=${width} height=${height} @mouseleave=${this.handleMouseLeave} @mousemove=${this.handleMouseMove}>
@@ -86,8 +86,8 @@ export class CityMapCanvas extends LitElement {
   private renderCells(context: CanvasRenderingContext2D) {
     const cellSizeWithBorder = this.cellSizeWithBorder;
 
-    for (let x = 0; x < MAP_WIDTH; x++) {
-      for (let y = 0; y < MAP_HEIGHT; y++) {
+    for (let x = 0; x < constants.mapWidth; x++) {
+      for (let y = 0; y < constants.mapHeight; y++) {
         context.fillStyle = this.selectedDistrict === this.map[x][y] ? '#050' : '#010';
         context.fillRect(
           x * cellSizeWithBorder,
@@ -105,9 +105,9 @@ export class CityMapCanvas extends LitElement {
     context.lineWidth = 1;
     context.strokeStyle = '#EEEEEE';
 
-    for (let x = 0; x < MAP_WIDTH; x++) {
-      for (let y = 0; y < MAP_HEIGHT; y++) {
-        if (x < MAP_WIDTH - 1 && this.map[x][y] !== this.map[x + 1][y]) {
+    for (let x = 0; x < constants.mapWidth; x++) {
+      for (let y = 0; y < constants.mapHeight; y++) {
+        if (x < constants.mapWidth - 1 && this.map[x][y] !== this.map[x + 1][y]) {
           this.updateContextBorderStyle(
             context,
             this.map[x][y] === this.selectedDistrict || this.map[x + 1][y] === this.selectedDistrict,
@@ -119,7 +119,7 @@ export class CityMapCanvas extends LitElement {
           context.stroke();
         }
 
-        if (y < MAP_HEIGHT - 1 && this.map[x][y] !== this.map[x][y + 1]) {
+        if (y < constants.mapHeight - 1 && this.map[x][y] !== this.map[x][y + 1]) {
           this.updateContextBorderStyle(
             context,
             this.map[x][y] === this.selectedDistrict || this.map[x][y + 1] === this.selectedDistrict,
@@ -133,7 +133,7 @@ export class CityMapCanvas extends LitElement {
       }
     }
 
-    for (let x = 0; x < MAP_WIDTH; x++) {
+    for (let x = 0; x < constants.mapWidth; x++) {
       this.updateContextBorderStyle(context, this.map[x][0] === this.selectedDistrict);
 
       context.beginPath();
@@ -142,7 +142,7 @@ export class CityMapCanvas extends LitElement {
       context.stroke();
     }
 
-    for (let y = 0; y < MAP_HEIGHT; y++) {
+    for (let y = 0; y < constants.mapHeight; y++) {
       this.updateContextBorderStyle(context, this.map[0][y] === this.selectedDistrict);
 
       context.beginPath();
@@ -151,21 +151,21 @@ export class CityMapCanvas extends LitElement {
       context.stroke();
     }
 
-    for (let x = 0; x < MAP_WIDTH; x++) {
-      this.updateContextBorderStyle(context, this.map[x][MAP_HEIGHT - 1] === this.selectedDistrict);
+    for (let x = 0; x < constants.mapWidth; x++) {
+      this.updateContextBorderStyle(context, this.map[x][constants.mapHeight - 1] === this.selectedDistrict);
 
       context.beginPath();
-      context.moveTo(x * cellSizeWithBorder, MAP_HEIGHT * cellSizeWithBorder);
-      context.lineTo((x + 1) * cellSizeWithBorder, MAP_HEIGHT * cellSizeWithBorder);
+      context.moveTo(x * cellSizeWithBorder, constants.mapHeight * cellSizeWithBorder);
+      context.lineTo((x + 1) * cellSizeWithBorder, constants.mapHeight * cellSizeWithBorder);
       context.stroke();
     }
 
-    for (let y = 0; y < MAP_HEIGHT; y++) {
-      this.updateContextBorderStyle(context, this.map[MAP_WIDTH - 1][y] === this.selectedDistrict);
+    for (let y = 0; y < constants.mapHeight; y++) {
+      this.updateContextBorderStyle(context, this.map[constants.mapWidth - 1][y] === this.selectedDistrict);
 
       context.beginPath();
-      context.moveTo(MAP_WIDTH * cellSizeWithBorder, y * cellSizeWithBorder);
-      context.lineTo(MAP_WIDTH * cellSizeWithBorder, (y + 1) * cellSizeWithBorder);
+      context.moveTo(constants.mapWidth * cellSizeWithBorder, y * cellSizeWithBorder);
+      context.lineTo(constants.mapWidth * cellSizeWithBorder, (y + 1) * cellSizeWithBorder);
       context.stroke();
     }
   }
@@ -184,8 +184,8 @@ export class CityMapCanvas extends LitElement {
 
   private handleMouseMove = (event: MouseEvent) => {
     const cellSizeWithBorder = this.cellSizeWithBorder;
-    const x = Math.min(Math.floor(event.offsetX / cellSizeWithBorder), MAP_WIDTH - 1);
-    const y = Math.min(Math.floor(event.offsetY / cellSizeWithBorder), MAP_HEIGHT - 1);
+    const x = Math.min(Math.floor(event.offsetX / cellSizeWithBorder), constants.mapWidth - 1);
+    const y = Math.min(Math.floor(event.offsetY / cellSizeWithBorder), constants.mapHeight - 1);
 
     this.dispatchEvent(new CityMapDistrictSelectEvent(this.map[x][y]));
   };

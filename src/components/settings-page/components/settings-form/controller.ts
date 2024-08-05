@@ -1,17 +1,20 @@
-import { ISettingsFormValues } from '@state/settings-state';
-import { Language, Theme } from '@shared/constants';
+import { Language, Theme } from '@shared/types';
 import { BaseController } from '@shared/base-controller';
 
 export class SettingsFormController extends BaseController {
-  async applyFormValues(values: ISettingsFormValues): Promise<void> {
-    await this.settingsState.applyFormValues(values);
-  }
-
   get language(): Language {
     return this.settingsState.language;
   }
 
   get theme(): Theme {
     return this.settingsState.theme;
+  }
+
+  async setLanguage(language: Language) {
+    await this.settingsState.setLanguage(language);
+  }
+
+  setTheme(theme: Theme) {
+    this.settingsState.setTheme(theme);
   }
 }

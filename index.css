@@ -11,4 +11,5 @@ body {
 
 :root {
   --ca-max-width: 1920px;
+  --sl-input-font-family: var(--sl-font-sans);
 }

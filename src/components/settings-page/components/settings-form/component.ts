@@ -1,16 +1,14 @@
 import { LitElement, html, css, TemplateResult } from 'lit';
 import { customElement, query, state } from 'lit/decorators.js';
-import { CacheDirective, cache } from 'lit/directives/cache.js';
-import { DirectiveResult } from 'lit/async-directive.js';
-import { Language, Theme, LANGUAGES, THEMES } from '@shared/constants';
-import { ISettingsFormValues } from '@state/settings-state';
+import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.component.js';
+import { LANGUAGES, THEMES } from '@shared/constants';
+import { Language, Theme } from '@shared/types';
 import { SettingsFormController } from './controller';
-import { SAVING_TIME } from './constants';
 
 @customElement('ca-settings-form')
 export class SettingsForm extends LitElement {
   static styles = css`
-    form#settings {
+    :host {
       width: 100%;
       display: grid;
       column-gap: var(--sl-spacing-3x-large);
@@ -48,8 +46,11 @@ export class SettingsForm extends LitElement {
 
   private _settingsFormController: SettingsFormController;
 
-  @query('form#settings')
-  private _form!: HTMLFormElement;
+  @query('sl-select[name="language"]', true)
+  private _languageInput!: SlSelect;
+
+  @query('sl-select[name="theme"]', true)
+  private _themeInput!: SlSelect;
 
   @state()
   private _isSaving = false;
@@ -61,46 +62,38 @@ export class SettingsForm extends LitElement {
   }
 
   render() {
-    const content: DirectiveResult<typeof CacheDirective> = cache(
-      this._isSaving ? this.renderSpinner() : this.renderForm(),
-    );
+    const content = this._isSaving ? this.renderSpinner() : this.renderForm();
 
     return html` ${content} `;
   }
 
   private renderForm(): TemplateResult {
     return html`
-      <form id="settings" @submit=${this.handleSubmit}>
-        <sl-select name="language" value=${this._settingsFormController.language}>
-          <span class="select-label" slot="label">
-            <intl-message label="ui:settings:language">Language</intl-message>
-          </span>
+      <sl-select name="language" value=${this._settingsFormController.language} @sl-change=${this.handleUpdateLanguage}>
+        <span class="select-label" slot="label">
+          <intl-message label="ui:settings:language">Language</intl-message>
+        </span>
 
-          ${LANGUAGES.map(
-            (language) =>
-              html` <sl-option value=${language}>
-                <intl-message label="ui:settings:languages:${language}"> ${language} </intl-message>
-              </sl-option>`,
-          )}
-        </sl-select>
+        ${LANGUAGES.map(
+          (language) =>
+            html` <sl-option value=${language}>
+              <intl-message label="ui:settings:languages:${language}"> ${language} </intl-message>
+            </sl-option>`,
+        )}
+      </sl-select>
 
-        <sl-select name="theme" value=${this._settingsFormController.theme}>
-          <span class="select-label" slot="label">
-            <intl-message label="ui:settings:theme">Theme</intl-message>
-          </span>
+      <sl-select name="theme" value=${this._settingsFormController.theme} @sl-change=${this.handleUpdateTheme}>
+        <span class="select-label" slot="label">
+          <intl-message label="ui:settings:theme">Theme</intl-message>
+        </span>
 
-          ${THEMES.map(
-            (theme) =>
-              html` <sl-option value=${theme}>
-                <intl-message label="ui:settings:themes:${theme}"> ${theme} </intl-message>
-              </sl-option>`,
-          )}
-        </sl-select>
-
-        <sl-button variant="primary" type="submit" size="medium">
-          <intl-message label="ui:common:save"> Save </intl-message>
-        </sl-button>
-      </form>
+        ${THEMES.map(
+          (theme) =>
+            html` <sl-option value=${theme}>
+              <intl-message label="ui:settings:themes:${theme}"> ${theme} </intl-message>
+            </sl-option>`,
+        )}
+      </sl-select>
     `;
   }
 
@@ -112,23 +105,26 @@ export class SettingsForm extends LitElement {
     `;
   }
 
-  private handleSubmit = async (event: Event): Promise<void> => {
-    event.preventDefault();
-    event.stopPropagation();
-
-    const formData = new FormData(this._form);
-
-    const settingsStateFormValues: ISettingsFormValues = {
-      language: formData.get('language') as Language,
-      theme: formData.get('theme') as Theme,
-    };
-
+  private startSaving = () => {
     this._isSaving = true;
-    await this._settingsFormController.applyFormValues(settingsStateFormValues);
-    setTimeout(this.stopSaving, SAVING_TIME);
   };
 
   private stopSaving = () => {
     this._isSaving = false;
+  };
+
+  private handleUpdateLanguage = () => {
+    this.startSaving();
+
+    this._settingsFormController
+      .setLanguage(this._languageInput.value as Language)
+      .finally(this.stopSaving)
+      .catch((e) => {
+        console.error(e);
+      });
+  };
+
+  private handleUpdateTheme = () => {
+    this._settingsFormController.setTheme(this._themeInput.value as Theme);
   };
 }

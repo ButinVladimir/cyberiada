@@ -1,7 +1,7 @@
 import { LitElement, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { AppRootController } from './controller';
-import { AppStateValue } from '@/state/general-state';
+import { AppStage } from '@state/app/types';
 
 @customElement('ca-app-root')
 export class AppRoot extends LitElement {
@@ -14,11 +14,11 @@ export class AppRoot extends LitElement {
   }
 
   render() {
-    switch (this._appRootController.gameState) {
-      case AppStateValue.loading:
-        return html` <ca-loading-screen></ca-loading-screen> `;
-      case AppStateValue.running:
-        return html` <ca-game-screen></ca-game-screen> `;
+    switch (this._appRootController.appStage) {
+      case AppStage.loading:
+        return html`<ca-loading-screen></ca-loading-screen>`;
+      case AppStage.running:
+        return html`<ca-game-screen></ca-game-screen>`;
       default:
         return null;
     }

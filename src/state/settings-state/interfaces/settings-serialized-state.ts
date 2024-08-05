@@ -1,4 +1,4 @@
-import { Language, Theme } from '@shared/constants';
+import { Language, Theme } from '@shared/types';
 
 export interface ISettingsSerializedState {
   language: Language;

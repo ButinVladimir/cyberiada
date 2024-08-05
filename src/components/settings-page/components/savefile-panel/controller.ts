@@ -1,15 +1,19 @@
 import { BaseController } from '@shared/base-controller';
 
 export class SavefilePanelController extends BaseController {
+  saveGame() {
+    this.app.saveGame();
+  }
+
   importSavefile(file: File) {
-    this.appState.importSavefile(file);
+    this.app.importSavefile(file);
   }
 
   exportSavefile() {
-    this.appState.exportSavefile();
+    this.app.exportSavefile();
   }
 
-  deleteSaveData() {
-    this.appState.deleteSaveData();
+  async deleteSaveData() {
+    await this.app.deleteSaveData();
   }
 }

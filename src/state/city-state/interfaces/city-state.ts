@@ -1,4 +1,4 @@
-import { Scenario } from '@shared/constants';
+import { Scenario } from '@shared/types';
 import { ICitySerializedState } from './city-serialized-state';
 import { IDistrictInfo } from './district-info';
 

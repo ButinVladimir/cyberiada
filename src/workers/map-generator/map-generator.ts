@@ -1,6 +1,6 @@
 import { XORShift128Plus } from 'random-seedable';
 import { v4 as uuid } from 'uuid';
-import { MAP_HEIGHT, MAP_WIDTH } from '@shared/constants';
+import constants from '@configs/constants.json';
 import { IPoint } from '@shared/interfaces';
 import { RandomQueue } from '@shared/random-queue';
 import {
@@ -24,10 +24,10 @@ export class MapGenerator implements IMapGenerator {
     this._args = mapGeneratorArgs;
 
     this._map = [];
-    for (let x = 0; x < MAP_WIDTH; x++) {
+    for (let x = 0; x < constants.mapWidth; x++) {
       const row = [];
 
-      for (let y = 0; y < MAP_HEIGHT; y++) {
+      for (let y = 0; y < constants.mapHeight; y++) {
         row[y] = undefined;
       }
 
@@ -51,8 +51,8 @@ export class MapGenerator implements IMapGenerator {
 
     const startingPoints: IPoint[] = [];
 
-    for (let x = 0; x < MAP_WIDTH; x++) {
-      for (let y = 0; y < MAP_HEIGHT; y++) {
+    for (let x = 0; x < constants.mapWidth; x++) {
+      for (let y = 0; y < constants.mapHeight; y++) {
         startingPoints.push({ x, y });
       }
     }
@@ -78,7 +78,7 @@ export class MapGenerator implements IMapGenerator {
   }
 
   private expandDistricts(): void {
-    let freeCells = MAP_WIDTH * MAP_HEIGHT - scenarios[this._args.scenario].districtsNum;
+    let freeCells = constants.mapWidth * constants.mapHeight - scenarios[this._args.scenario].districtsNum;
     const { districtsNum } = scenarios[this._args.scenario];
 
     while (freeCells > 0) {
@@ -127,7 +127,12 @@ export class MapGenerator implements IMapGenerator {
         y: point.y + MapGenerator.DY[direction],
       };
 
-      if (nextPoint.x >= 0 && nextPoint.y >= 0 && nextPoint.x < MAP_WIDTH && nextPoint.y < MAP_HEIGHT) {
+      if (
+        nextPoint.x >= 0 &&
+        nextPoint.y >= 0 &&
+        nextPoint.x < constants.mapWidth &&
+        nextPoint.y < constants.mapHeight
+      ) {
         result.push(nextPoint);
       }
     }

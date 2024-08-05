@@ -1,7 +1,7 @@
 import { injectable } from 'inversify';
 import i18n from 'i18next';
-import { Language, Theme } from '@shared/constants';
-import { ISettingsFormValues, ISettingsState, ISettingsSerializedState } from './interfaces';
+import { Language, Theme } from '@shared/types';
+import { ISettingsState, ISettingsSerializedState } from './interfaces';
 import themes from '@configs/themes.json';
 
 @injectable()
@@ -28,11 +28,17 @@ export class SettingsState implements ISettingsState {
     return this._mapCellSize;
   }
 
-  async applyFormValues(values: ISettingsFormValues): Promise<void> {
-    this._language = values.language;
-    this._theme = values.theme;
+  async setLanguage(language: Language): Promise<void> {
+    this._language = language;
 
-    await this._updateBrowserSettings();
+    await i18n.changeLanguage(this.language);
+    document.documentElement.lang = this.language;
+  }
+
+  setTheme(theme: Theme) {
+    this._theme = theme;
+
+    document.body.className = themes[this.theme].classes;
   }
 
   setMapCellSize(mapCellSize: number) {
@@ -42,19 +48,15 @@ export class SettingsState implements ISettingsState {
   async startNewState(): Promise<void> {
     await i18n.changeLanguage();
 
-    this._language = i18n.resolvedLanguage! as Language;
-    this._theme = window.matchMedia('(prefers-color-scheme:dark)').matches ? Theme.dark : Theme.light;
-    this._mapCellSize = 3;
-
-    await this._updateBrowserSettings();
+    await this.setLanguage(i18n.resolvedLanguage! as Language);
+    this.setTheme(window.matchMedia('(prefers-color-scheme:dark)').matches ? Theme.dark : Theme.light);
+    this.setMapCellSize(3);
   }
 
   async deserialize(serializedState: ISettingsSerializedState): Promise<void> {
-    this._language = serializedState.language;
-    this._theme = serializedState.theme;
-    this._mapCellSize = serializedState.mapCellSize;
-
-    await this._updateBrowserSettings();
+    await this.setLanguage(serializedState.language);
+    this.setTheme(serializedState.theme);
+    this.setMapCellSize(serializedState.mapCellSize);
   }
 
   serialize(): ISettingsSerializedState {
@@ -63,11 +65,5 @@ export class SettingsState implements ISettingsState {
       theme: this.theme,
       mapCellSize: this.mapCellSize,
     };
-  }
-
-  private async _updateBrowserSettings(): Promise<void> {
-    await i18n.changeLanguage(this.language);
-    document.documentElement.lang = this.language;
-    document.body.className = themes[this.theme].classes;
   }
 }

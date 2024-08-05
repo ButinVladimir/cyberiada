@@ -1,6 +1,7 @@
 import { injectable, inject } from 'inversify';
 import type { IGeneralState } from '@state/general-state/interfaces';
-import { MAP_HEIGHT, MAP_WIDTH, Scenario } from '@shared/constants';
+import { Scenario } from '@shared/types';
+import constants from '@configs/constants.json';
 import { ICityState, ICitySerializedState, IDistrictInfo, IDistrictSerializedInfo } from './interfaces';
 import { DistrictInfo } from './district-info';
 import { IMapGeneratorResult } from '@workers/map-generator/interfaces';
@@ -27,10 +28,10 @@ export class CityState implements ICityState {
   getMapCopy(): number[][] {
     const map: number[][] = [];
 
-    for (let x = 0; x < MAP_WIDTH; x++) {
+    for (let x = 0; x < constants.mapWidth; x++) {
       map[x] = [];
 
-      for (let y = 0; y < MAP_HEIGHT; y++) {
+      for (let y = 0; y < constants.mapHeight; y++) {
         map[x][y] = this._map[x][y];
       }
     }
@@ -46,7 +47,7 @@ export class CityState implements ICityState {
     return this._districts.get(num)!;
   }
 
-  public async startNewState(): Promise<void> {
+  async startNewState(): Promise<void> {
     await this.generateMap();
   }
 
@@ -54,10 +55,10 @@ export class CityState implements ICityState {
     this._scenario = serializedState.scenario;
 
     this._map = [];
-    for (let x = 0; x < MAP_WIDTH; x++) {
+    for (let x = 0; x < constants.mapWidth; x++) {
       const row: number[] = [];
 
-      for (let y = 0; y < MAP_HEIGHT; y++) {
+      for (let y = 0; y < constants.mapHeight; y++) {
         row.push(serializedState.map[x][y]);
       }
 

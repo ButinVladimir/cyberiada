@@ -5,6 +5,7 @@ import { ISettingsState } from '@state/settings-state/interfaces/settings-state'
 import { ICityState } from '@state/city-state/interfaces/city-state';
 import { container } from '@state/container';
 import { TYPES } from '@state/types';
+import { IApp } from '@state/app';
 
 export class BaseController implements ReactiveController {
   protected host: ReactiveControllerHost;
@@ -17,6 +18,10 @@ export class BaseController implements ReactiveController {
   hostConnected() {}
 
   hostDisconnected() {}
+
+  protected get app(): IApp {
+    return container.get<IApp>(TYPES.App);
+  }
 
   protected get appState(): IAppState {
     return container.get<IAppState>(TYPES.AppState);

@@ -1,7 +1,6 @@
 import { t } from 'i18next';
 import { LitElement, css, html } from 'lit';
 import { customElement, query, property, state } from 'lit/decorators.js';
-import { cache } from 'lit/directives/cache.js';
 import SlRange from '@shoelace-style/shoelace/dist/components/range/range.component.js';
 import { MapCellZoomChangeEvent } from './events';
 import { classMap } from 'lit/directives/class-map.js';
@@ -67,7 +66,7 @@ export class MapCellZoomPanel extends LitElement {
       'show-range': this._showRange,
     });
 
-    return cache(html`
+    return html`
       <div class=${rangeContainerClasses}>
         <sl-range min="1" max="5" step="1" tooltip="bottom" value=${this.zoom} @sl-change=${this.handleChangeZoom}>
         </sl-range>
@@ -84,7 +83,7 @@ export class MapCellZoomPanel extends LitElement {
           </sl-icon-button>
         </sl-tooltip>
       </div>
-    `);
+    `;
   }
 
   private handleToggleZoomPanel = (event: Event) => {

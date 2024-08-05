@@ -78,8 +78,19 @@
     },
     {
       "name": "ca-message-log-bar",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_isMessageFilterOpen` {`boolean`} - \n\n  * `handleMessageFilterDialogOpen` - \n\n  * `handleMessageFilterDialogClose` - ",
       "attributes": []
+    },
+    {
+      "name": "ca-message-filter-dialog",
+      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `handleMessageFilterDialogClose` - ",
+      "attributes": [
+        {
+          "name": "is-open",
+          "description": "`is-open` {`boolean`} - \n\nProperty: isOpen\n\nDefault: false",
+          "valueSet": "v"
+        }
+      ]
     },
     {
       "name": "ca-top-bar",
@@ -108,12 +119,23 @@
     },
     {
       "name": "ca-savefile-panel",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_importInput` {`HTMLInputElement`} - \n\n  * `_deleteSaveDataDialog` {`SlDialog`} - \n\n  * `handleImportSavefile` - \n\n  * `handleChangeImportSavefile` - \n\n  * `handleExportSavefile` - \n\n  * `handleOpenDeleteSaveDataDialog` - \n\n  * `handleCloseDeleteSaveDataDialog` - \n\n  * `handleDeleteSaveData` - \n\n  * `_savefilePanelController` {`SavefilePanelController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_importInput` {`HTMLInputElement`} - \n\n  * `_isDeleteSaveDialogOpen` {`boolean`} - \n\n  * `handleSaveGame` - \n\n  * `handleImportSavefile` - \n\n  * `handleChangeImportSavefile` - \n\n  * `handleExportSavefile` - \n\n  * `handleOpenDeleteSaveDataDialog` - \n\n  * `handleCloseDeleteSaveDataDialog` - \n\n  * `handleDeleteSaveData` - \n\n  * `_savefilePanelController` {`SavefilePanelController`} - ",
       "attributes": []
     },
     {
+      "name": "ca-delete-save-data-dialog",
+      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `handleDeleteSaveDataDialogClose` - \n\n  * `handleDeleteSaveDataDialogSubmit` - ",
+      "attributes": [
+        {
+          "name": "is-open",
+          "description": "`is-open` {`boolean`} - \n\nProperty: isOpen\n\nDefault: false",
+          "valueSet": "v"
+        }
+      ]
+    },
+    {
       "name": "ca-settings-form",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_form` {`HTMLFormElement`} - \n\n  * `_isSaving` {`boolean`} - \n\n  * `handleSubmit` - \n\n  * `stopSaving` - \n\n  * `_settingsFormController` {`SettingsFormController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_languageInput` {`SlSelect`} - \n\n  * `_themeInput` {`SlSelect`} - \n\n  * `_isSaving` {`boolean`} - \n\n  * `startSaving` - \n\n  * `stopSaving` - \n\n  * `handleUpdateLanguage` - \n\n  * `handleUpdateTheme` - \n\n  * `_settingsFormController` {`SettingsFormController`} - ",
       "attributes": []
     }
   ],

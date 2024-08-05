@@ -1,12 +1,12 @@
-import { Language, Theme } from '@shared/constants';
-import { ISettingsFormValues } from './settings-form-values';
+import { Language, Theme } from '@shared/types';
 import { ISettingsSerializedState } from './settings-serialized-state';
 
 export interface ISettingsState {
   language: Language;
   theme: Theme;
   mapCellSize: number;
-  applyFormValues(values: ISettingsFormValues): Promise<void>;
+  setLanguage(language: Language): Promise<void>;
+  setTheme(theme: Theme): void;
   setMapCellSize(mapSize: number): void;
   startNewState(): Promise<void>;
   deserialize(serializedState: ISettingsSerializedState): Promise<void>;

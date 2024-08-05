@@ -1,7 +1,6 @@
 import { LitElement, css, html } from 'lit';
-import { customElement, query } from 'lit/decorators.js';
+import { customElement, query, state } from 'lit/decorators.js';
 import { SavefilePanelController } from './controller';
-import SlDialog from '@shoelace-style/shoelace/dist/components/dialog/dialog.component.js';
 
 @customElement('ca-savefile-panel')
 export class SavefilePanel extends LitElement {
@@ -10,34 +9,12 @@ export class SavefilePanel extends LitElement {
       display: flex;
       align-items: center;
       flex-direction: row;
-    }
-
-    :host > sl-button:not(:last-child) {
-      margin-right: var(--sl-spacing-large);
+      flex-wrap: wrap;
+      gap: var(--sl-spacing-large);
     }
 
     input#import-file {
       display: none;
-    }
-
-    sl-dialog.delete-save-data-dialog {
-      font-family: var(--sl-font-sans);
-      font-size: var(--sl-font-size-medium);
-      font-weight: var(--sl-font-weight-normal);
-      letter-spacing: var(--sl-letter-spacing-normal);
-      line-height: var(--sl-line-height-normal);
-      color: var(--sl-color-neutral-950);
-    }
-
-    sl-dialog.delete-save-data-dialog div.footer {
-      width: 100%;
-      display: flex;
-      flex-direction: row;
-      justify-content: flex-end;
-    }
-
-    sl-dialog.delete-save-data-dialog div.footer > sl-button:last-child {
-      margin-left: var(--sl-spacing-small);
     }
   `;
 
@@ -46,8 +23,8 @@ export class SavefilePanel extends LitElement {
   @query('input#import-file', true)
   private _importInput!: HTMLInputElement;
 
-  @query('sl-dialog.delete-save-data-dialog', true)
-  private _deleteSaveDataDialog!: SlDialog;
+  @state()
+  private _isDeleteSaveDialogOpen = false;
 
   constructor() {
     super();
@@ -58,6 +35,10 @@ export class SavefilePanel extends LitElement {
   render() {
     return html`
       <input type="file" id="import-file" @change=${this.handleChangeImportSavefile} />
+
+      <sl-button variant="primary" type="button" size="medium" @click=${this.handleSaveGame}>
+        <intl-message label="ui:settings:saveGame"> Save game </intl-message>
+      </sl-button>
 
       <sl-button variant="default" type="button" size="medium" outline @click=${this.handleImportSavefile}>
         <intl-message label="ui:settings:importSavefile"> Import savefile </intl-message>
@@ -71,21 +52,20 @@ export class SavefilePanel extends LitElement {
         <intl-message label="ui:settings:deleteSaveData"> Delete save data </intl-message>
       </sl-button>
 
-      <sl-dialog no-header class="delete-save-data-dialog">
-        <intl-message label="ui:settings:deleteSaveDataAlert">
-          Are you sure want to delete save data? You cannot revert this operation unless you exported a backup savefile.
-        </intl-message>
-        <div slot="footer" class="footer">
-          <sl-button size="medium" variant="default" outline @click=${this.handleCloseDeleteSaveDataDialog}>
-            <intl-message label="ui:common:cancel"> Cancel </intl-message>
-          </sl-button>
-          <sl-button size="medium" variant="danger" @click=${this.handleDeleteSaveData}>
-            <intl-message label="ui:common:delete"> Delete </intl-message>
-          </sl-button>
-        </div>
-      </sl-dialog>
+      <ca-delete-save-data-dialog
+        ?is-open=${this._isDeleteSaveDialogOpen}
+        @delete-save-data-dialog-close=${this.handleCloseDeleteSaveDataDialog}
+        @delete-save-data-dialog-submit=${this.handleDeleteSaveData}
+      >
+      </ca-delete-save-data-dialog>
     `;
   }
+
+  private handleSaveGame = (event: Event) => {
+    event.stopPropagation();
+
+    this._savefilePanelController.saveGame();
+  };
 
   private handleImportSavefile = (event: Event) => {
     event.stopPropagation();
@@ -112,22 +92,19 @@ export class SavefilePanel extends LitElement {
   private handleOpenDeleteSaveDataDialog = (event: Event) => {
     event.stopPropagation();
 
-    this._deleteSaveDataDialog.show().catch((e) => {
-      console.error(e);
-    });
+    this._isDeleteSaveDialogOpen = true;
   };
 
   private handleCloseDeleteSaveDataDialog = (event: Event) => {
     event.stopPropagation();
 
-    this._deleteSaveDataDialog.hide().catch((e) => {
-      console.error(e);
-    });
+    this._isDeleteSaveDialogOpen = false;
   };
 
-  private handleDeleteSaveData = (event: Event) => {
+  private handleDeleteSaveData = async (event: Event) => {
     event.stopPropagation();
 
-    this._savefilePanelController.deleteSaveData();
+    await this._savefilePanelController.deleteSaveData();
+    this._isDeleteSaveDialogOpen = false;
   };
 }

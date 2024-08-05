@@ -2,6 +2,7 @@ common:
   cancel: Отмена
   save: Сохранить
   delete: Удалить
+  close: Закрыть
   loading: Загрузка...
 pages:
   cityOverview: Обзор города
@@ -14,8 +15,8 @@ topBar:
 messageLog:
   messageLog: Сообщения
   clearMessages: Удалить сообщения
-  messagesFilter: Фильтр сообщений
-  messagesFilterHint: Включите события в фильтре, чтобы получать сообщения о них. Сообщения для выключенных событий будут удалены.
+  messageFilter: Фильтр сообщений
+  messageFilterHint: Включите события в фильтре, чтобы получать сообщения о них.
 settings:
   settings: Настройки
   language: Язык
@@ -27,6 +28,7 @@ settings:
   themes:
     light: Светлая
     dark: Темная
+  saveGame: Сохранить игру
   importSavefile: Импорт сохранения
   exportSavefile: Экспорт сохранения
   deleteSaveData: Удалить сохраненные данные

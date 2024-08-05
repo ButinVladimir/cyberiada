@@ -1,6 +1,6 @@
 import { t } from 'i18next';
 import { LitElement, html, css } from 'lit';
-import { customElement } from 'lit/decorators.js';
+import { customElement, state } from 'lit/decorators.js';
 
 @customElement('ca-message-log-bar')
 export class MessageLogBar extends LitElement {
@@ -40,6 +40,10 @@ export class MessageLogBar extends LitElement {
       color: var(--sl-color-danger-600);
     }
   `;
+
+  @state()
+  private _isMessageFilterOpen = false;
+
   render() {
     return html`
       <div class="title-bar">
@@ -56,11 +60,36 @@ export class MessageLogBar extends LitElement {
         </sl-tooltip>
 
         <sl-tooltip>
-          <intl-message slot="content" label="ui:messageLog:messagesFilter">Messages filter</intl-message>
-          <sl-icon-button id="messages-filter-btn" name="gear" label=${t('messageLog.messagesFilter', { ns: 'ui' })}>
+          <intl-message slot="content" label="ui:messageLog:messageFilter">Message filter</intl-message>
+          <sl-icon-button
+            id="message-filter-btn"
+            name="gear"
+            label=${t('messageLog.messageFilter', { ns: 'ui' })}
+            @click=${this.handleMessageFilterDialogOpen}
+          >
           </sl-icon-button>
         </sl-tooltip>
+
+        <ca-message-filter-dialog
+          ?is-open=${this._isMessageFilterOpen}
+          @message-filter-dialog-close=${this.handleMessageFilterDialogClose}
+        >
+        </ca-message-filter-dialog>
       </div>
     `;
   }
+
+  private handleMessageFilterDialogOpen = (event: Event) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    this._isMessageFilterOpen = true;
+  };
+
+  private handleMessageFilterDialogClose = (event: Event) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    this._isMessageFilterOpen = false;
+  };
 }

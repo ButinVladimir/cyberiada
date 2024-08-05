@@ -2,6 +2,7 @@ common:
   cancel: Cancel
   save: Save
   delete: Delete
+  close: Close
   loading: Loading...
 pages:
   cityOverview: City overview
@@ -14,8 +15,8 @@ topBar:
 messageLog:
   messageLog: Message log
   clearMessages: Clear messages
-  messagesFilter: Messages filter
-  messagesFilterHint: Enable events in filter to start adding messages for them in log. Messages for disabled events will be removed from log.
+  messageFilter: Message filter
+  messageFilterHint: Enable events in filter to start adding messages for them in log.
 settings:
   settings: Settings
   language: Language
@@ -27,6 +28,7 @@ settings:
   themes:
     light: Light
     dark: Dark
+  saveGame: Save game
   importSavefile: Import savefile
   exportSavefile: Export savefile
   deleteSaveData: Delete save data

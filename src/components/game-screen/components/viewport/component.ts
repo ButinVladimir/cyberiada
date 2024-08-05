@@ -1,7 +1,6 @@
 import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { cache } from 'lit/directives/cache.js';
-import { OverviewMenuItem, MiscMenuItem } from '@shared/constants';
+import { OverviewMenuItem, MiscMenuItem } from '@shared/types';
 
 @customElement('ca-viewport')
 export class Viewport extends LitElement {
@@ -14,9 +13,9 @@ export class Viewport extends LitElement {
   render() {
     switch (this.selectedMenuItem) {
       case OverviewMenuItem.cityOverview:
-        return cache(html`<ca-city-page></ca-city-page>`);
+        return html`<ca-city-page></ca-city-page>`;
       case MiscMenuItem.settings:
-        return cache(html`<ca-settings-page></ca-settings-page>`);
+        return html`<ca-settings-page></ca-settings-page>`;
       default:
         return null;
     }

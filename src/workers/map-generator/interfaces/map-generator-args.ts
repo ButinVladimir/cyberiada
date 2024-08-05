@@ -1,4 +1,4 @@
-import { Scenario } from '@shared/constants';
+import { Scenario } from '@shared/types';
 
 export interface IMapGeneratorArgs {
   scenario: Scenario;

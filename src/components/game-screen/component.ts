@@ -1,7 +1,7 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { OverviewMenuItem } from '@shared/constants';
+import { OverviewMenuItem } from '@shared/types';
 import { MenuItemSelectedEvent } from './components/menu-bar/events';
 
 @customElement('ca-game-screen')

@@ -23,11 +23,11 @@ export class EventBatcher implements IEventBatcher {
     this._eventMap.set(eventType, args);
   }
 
-  addEventListener(eventType: string | symbol, listener: (...args: any[]) => void): void {
+  addListener(eventType: string | symbol, listener: (...args: any[]) => void): void {
     this._eventEmitter.addListener(eventType, listener);
   }
 
-  removeEventListener(eventType: string | symbol, listener: (...args: any[]) => void): void {
+  removeListener(eventType: string | symbol, listener: (...args: any[]) => void): void {
     this._eventEmitter.removeListener(eventType, listener);
   }
 }

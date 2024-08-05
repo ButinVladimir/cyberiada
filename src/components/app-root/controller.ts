@@ -1,24 +1,23 @@
-import { APP_EVENTS } from '@state/app-state';
-import { AppStateValue } from '@state/general-state';
+import { APP_UI_EVENTS, AppStage } from '@state/app';
 import { BaseController } from '@shared/base-controller';
 
 export class AppRootController extends BaseController {
   hostConnected() {
-    this.appState.addUiEventListener(APP_EVENTS.CHANGED_GAME_STATE, this.handleChangeGameStateCallback);
-    this.appState.startUp().catch((e) => {
+    this.app.addUiEventListener(APP_UI_EVENTS.CHANGED_APP_STAGE, this.handleChangeAppStageCallback);
+    this.app.startUp().catch((e) => {
       console.error(e);
     });
   }
 
   hostDisconnected() {
-    this.appState.removeUiEventListener(APP_EVENTS.CHANGED_GAME_STATE, this.handleChangeGameStateCallback);
+    this.app.removeUiEventListener(APP_UI_EVENTS.CHANGED_APP_STAGE, this.handleChangeAppStageCallback);
   }
 
-  get gameState(): AppStateValue {
-    return this.generalState.currentState;
+  get appStage(): AppStage {
+    return this.app.appStage;
   }
 
-  private handleChangeGameStateCallback = () => {
+  private handleChangeAppStageCallback = () => {
     this.host.requestUpdate();
   };
 }

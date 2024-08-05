@@ -14,7 +14,6 @@ export class GameScreen extends LitElement {
     }
 
     :host span {
-      font-family: var(--sl-font-sans);
       font-size: var(--sl-font-size-3x-large);
       font-weight: var(--sl-font-weight-semibold);
       letter-spacing: var(--sl-letter-spacing-loose);
