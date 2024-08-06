@@ -23,11 +23,6 @@ export class SettingsForm extends LitElement {
       line-height: var(--sl-line-height-dense);
     }
 
-    sl-button[type='submit'] {
-      grid-column: 2;
-      justify-self: end;
-    }
-
     div.spinner-container {
       width: 100%;
       max-width: 20em;
@@ -46,10 +41,10 @@ export class SettingsForm extends LitElement {
 
   private _settingsFormController: SettingsFormController;
 
-  @query('sl-select[name="language"]', true)
+  @query('sl-select[name="language"]')
   private _languageInput!: SlSelect;
 
-  @query('sl-select[name="theme"]', true)
+  @query('sl-select[name="theme"]')
   private _themeInput!: SlSelect;
 
   @state()
@@ -113,15 +108,16 @@ export class SettingsForm extends LitElement {
     this._isSaving = false;
   };
 
-  private handleUpdateLanguage = () => {
+  private handleUpdateLanguage = async () => {
     this.startSaving();
 
-    this._settingsFormController
-      .setLanguage(this._languageInput.value as Language)
-      .finally(this.stopSaving)
-      .catch((e) => {
-        console.error(e);
-      });
+    try {
+      await this._settingsFormController.setLanguage(this._languageInput.value as Language);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      this.stopSaving();
+    }
   };
 
   private handleUpdateTheme = () => {

@@ -12,6 +12,7 @@ export class SettingsFormController extends BaseController {
 
   async setLanguage(language: Language) {
     await this.settingsState.setLanguage(language);
+    this.host.requestUpdate();
   }
 
   setTheme(theme: Theme) {

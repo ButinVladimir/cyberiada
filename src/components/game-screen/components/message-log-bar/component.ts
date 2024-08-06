@@ -1,6 +1,7 @@
 import { t } from 'i18next';
 import { LitElement, html, css } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
+import { MessageLogBarController } from './controller';
 
 @customElement('ca-message-log-bar')
 export class MessageLogBar extends LitElement {
@@ -8,7 +9,6 @@ export class MessageLogBar extends LitElement {
     :host {
       width: 100%;
       box-sizing: border-box;
-      padding: var(--sl-spacing-small);
     }
 
     div.title-bar div.gutter {
@@ -18,6 +18,8 @@ export class MessageLogBar extends LitElement {
     div.title-bar {
       display: flex;
       align-items: flex-start;
+      padding: var(--sl-spacing-small);
+      border-bottom: var(--sl-panel-border-width) solid var(--sl-panel-border-color);
     }
 
     h4.title {
@@ -39,7 +41,19 @@ export class MessageLogBar extends LitElement {
     sl-icon-button#clear-messages-btn::part(base):hover {
       color: var(--sl-color-danger-600);
     }
+
+    ca-message-log-content {
+      flex: 1 0 auto;
+    }
   `;
+
+  private _messageLogBarController: MessageLogBarController;
+
+  constructor() {
+    super();
+
+    this._messageLogBarController = new MessageLogBarController(this);
+  }
 
   @state()
   private _isMessageFilterOpen = false;
@@ -55,7 +69,12 @@ export class MessageLogBar extends LitElement {
 
         <sl-tooltip>
           <intl-message slot="content" label="ui:messageLog:clearMessages">Clear messages</intl-message>
-          <sl-icon-button id="clear-messages-btn" name="x-circle" label=${t('messageLog.clearMessages', { ns: 'ui' })}>
+          <sl-icon-button
+            id="clear-messages-btn"
+            name="x-circle"
+            label=${t('messageLog.clearMessages', { ns: 'ui' })}
+            @click=${this.handleClearMessages}
+          >
           </sl-icon-button>
         </sl-tooltip>
 
@@ -76,6 +95,8 @@ export class MessageLogBar extends LitElement {
         >
         </ca-message-filter-dialog>
       </div>
+
+      <ca-message-log-content></ca-message-log-content>
     `;
   }
 
@@ -91,5 +112,12 @@ export class MessageLogBar extends LitElement {
     event.stopPropagation();
 
     this._isMessageFilterOpen = false;
+  };
+
+  private handleClearMessages = (event: Event) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    this._messageLogBarController.clearMessages();
   };
 }

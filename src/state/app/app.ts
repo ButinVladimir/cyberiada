@@ -1,7 +1,9 @@
 import { inject, injectable } from 'inversify';
 import type { IAppState } from '@state/app-state/interfaces/app-state';
+import type { IMessageLogState } from '@state/message-log-state/interfaces';
 import { TYPES } from '@state/types';
 import { EventBatcher } from '@shared/event-batcher';
+import { GameStateEvent } from '@shared/types';
 import { IApp } from './interfaces';
 import { LOCAL_STORAGE_KEY, APP_UI_EVENTS } from './constants';
 import { AppStage } from './types';
@@ -9,11 +11,16 @@ import { AppStage } from './types';
 @injectable()
 export class App implements IApp {
   private _appState: IAppState;
+  private _messageLogState: IMessageLogState;
   private _appStage: AppStage;
   private readonly _uiEventBatcher: EventBatcher;
 
-  constructor(@inject(TYPES.AppState) _appState: IAppState) {
+  constructor(
+    @inject(TYPES.AppState) _appState: IAppState,
+    @inject(TYPES.MessageLogState) _messageLogState: IMessageLogState,
+  ) {
     this._appState = _appState;
+    this._messageLogState = _messageLogState;
     this._appStage = AppStage.loading;
 
     this._uiEventBatcher = new EventBatcher();
@@ -44,6 +51,7 @@ export class App implements IApp {
     const encodedSaveData = this._appState.serialize();
 
     localStorage.setItem(LOCAL_STORAGE_KEY, encodedSaveData);
+    this._messageLogState.postMessage(GameStateEvent.gameSaved);
   }
 
   addUiEventListener(eventName: symbol, handler: () => void): void {
@@ -113,6 +121,9 @@ export class App implements IApp {
 
   private startRunningGame = (): void => {
     this._appStage = AppStage.running;
+    this._messageLogState.clearMessages();
+    this._messageLogState.postMessage(GameStateEvent.gameStarted);
+
     this._uiEventBatcher.enqueueEvent(APP_UI_EVENTS.CHANGED_APP_STAGE);
     this._uiEventBatcher.fireEvents();
   };

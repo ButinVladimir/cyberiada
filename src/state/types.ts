@@ -4,4 +4,5 @@ export const TYPES = {
   GeneralState: Symbol('GeneralState'),
   CityState: Symbol('CityState'),
   SettingsState: Symbol('SettingsState'),
+  MessageLogState: Symbol('MessageLogState'),
 };

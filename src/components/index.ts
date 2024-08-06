@@ -7,6 +7,7 @@ import '@shoelace-style/shoelace/dist/components/button/button.js';
 import '@shoelace-style/shoelace/dist/components/spinner/spinner.js';
 import '@shoelace-style/shoelace/dist/components/dialog/dialog.js';
 import '@shoelace-style/shoelace/dist/components/range/range.js';
+import '@shoelace-style/shoelace/dist/components/checkbox/checkbox.js';
 
 import './app-root';
 import './loading-screen';

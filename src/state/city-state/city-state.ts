@@ -25,18 +25,8 @@ export class CityState implements ICityState {
     return this._scenario;
   }
 
-  getMapCopy(): number[][] {
-    const map: number[][] = [];
-
-    for (let x = 0; x < constants.mapWidth; x++) {
-      map[x] = [];
-
-      for (let y = 0; y < constants.mapHeight; y++) {
-        map[x][y] = this._map[x][y];
-      }
-    }
-
-    return map;
+  getMap(): number[][] {
+    return this._map;
   }
 
   getDistrictInfo(num: number): IDistrictInfo {
@@ -76,7 +66,7 @@ export class CityState implements ICityState {
   }
 
   serialize(): ICitySerializedState {
-    const map: number[][] = this.getMapCopy();
+    const map: number[][] = this.getMap();
 
     const districts: Record<number, IDistrictSerializedInfo> = {};
     this._districts.forEach((districtInfo, districtNum) => {

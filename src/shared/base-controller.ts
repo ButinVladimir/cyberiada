@@ -3,6 +3,7 @@ import { IAppState } from '@state/app-state/interfaces/app-state';
 import { IGeneralState } from '@state/general-state/interfaces/general-state';
 import { ISettingsState } from '@state/settings-state/interfaces/settings-state';
 import { ICityState } from '@state/city-state/interfaces/city-state';
+import { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
 import { container } from '@state/container';
 import { TYPES } from '@state/types';
 import { IApp } from '@state/app';
@@ -37,5 +38,9 @@ export class BaseController implements ReactiveController {
 
   protected get cityState(): ICityState {
     return container.get<ICityState>(TYPES.CityState);
+  }
+
+  protected get messageLogState(): IMessageLogState {
+    return container.get<IMessageLogState>(TYPES.MessageLogState);
   }
 }

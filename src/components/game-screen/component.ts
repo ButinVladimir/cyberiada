@@ -132,7 +132,7 @@ export class GameScreen extends LitElement {
           </div>
 
           <div class=${messageLogClasses}>
-            <ca-message-log-bar></ca-logs-bar>
+            <ca-message-log-bar></ca-message-log-bar>
           </div>
         </div>
       </div>

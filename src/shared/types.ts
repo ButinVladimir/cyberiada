@@ -21,3 +21,10 @@ export enum MiscMenuItem {
 export enum Scenario {
   tutorial1 = 'tutorial1',
 }
+
+export enum GameStateEvent {
+  gameStarted = 'gameStarted',
+  gameSaved = 'gameSaved',
+}
+
+export type MessageFilterEvent = GameStateEvent;

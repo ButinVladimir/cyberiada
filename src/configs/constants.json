@@ -1,4 +1,6 @@
 {
   "mapWidth": 100,
-  "mapHeight": 100
+  "mapHeight": 100,
+  "defaultMapSize": 3,
+  "defaultMessageFilter": ["gameStarted", "gameSaved"]
 }

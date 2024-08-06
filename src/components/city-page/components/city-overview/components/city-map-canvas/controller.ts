@@ -6,7 +6,7 @@ export class CityMapController extends BaseController {
 
   constructor(host: ReactiveControllerHost) {
     super(host);
-    this._map = this.cityState.getMapCopy();
+    this._map = this.cityState.getMap();
   }
 
   get map(): number[][] {

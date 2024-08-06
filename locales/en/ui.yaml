@@ -16,7 +16,7 @@ messageLog:
   messageLog: Message log
   clearMessages: Clear messages
   messageFilter: Message filter
-  messageFilterHint: Enable events in filter to start adding messages for them in log.
+  messageFilterHint: Enable events in filter to receive messages about them in the log.
 settings:
   settings: Settings
   language: Language
