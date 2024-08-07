@@ -1,6 +1,7 @@
 import { inject, injectable } from 'inversify';
 import type { IAppState } from '@state/app-state/interfaces/app-state';
-import type { IMessageLogState } from '@state/message-log-state/interfaces';
+import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
+import type { ISettingsState } from '@state/settings-state/interfaces/settings-state';
 import { TYPES } from '@state/types';
 import { EventBatcher } from '@shared/event-batcher';
 import { GameStateEvent } from '@shared/types';
@@ -11,17 +12,24 @@ import { AppStage } from './types';
 @injectable()
 export class App implements IApp {
   private _appState: IAppState;
+  private _settingsState: ISettingsState;
   private _messageLogState: IMessageLogState;
   private _appStage: AppStage;
+  private _updateTimer?: number;
+  private _autosaveTimer?: number;
   private readonly _uiEventBatcher: EventBatcher;
 
   constructor(
     @inject(TYPES.AppState) _appState: IAppState,
+    @inject(TYPES.SettingsState) _settingsState: ISettingsState,
     @inject(TYPES.MessageLogState) _messageLogState: IMessageLogState,
   ) {
     this._appState = _appState;
+    this._settingsState = _settingsState;
     this._messageLogState = _messageLogState;
     this._appStage = AppStage.loading;
+    this._updateTimer = undefined;
+    this._autosaveTimer = undefined;
 
     this._uiEventBatcher = new EventBatcher();
   }
@@ -47,12 +55,12 @@ export class App implements IApp {
     this.startRunningGame();
   }
 
-  saveGame(): void {
+  saveGame = (): void => {
     const encodedSaveData = this._appState.serialize();
 
     localStorage.setItem(LOCAL_STORAGE_KEY, encodedSaveData);
     this._messageLogState.postMessage(GameStateEvent.gameSaved);
-  }
+  };
 
   addUiEventListener(eventName: symbol, handler: () => void): void {
     this._uiEventBatcher.addListener(eventName, handler);
@@ -113,18 +121,63 @@ export class App implements IApp {
     }
   }
 
+  restartUpdateTimer() {
+    this.stopUpdateTimer();
+    this._updateTimer = setInterval(this.updateGame, this._settingsState.updateInterval);
+  }
+
+  restartAutosaveTimer() {
+    this.stopAutosaveTimer();
+
+    if (this._settingsState.autosaveEnabled) {
+      this._autosaveTimer = setInterval(this.saveGame, this._settingsState.autosaveInterval);
+    }
+  }
+
   private startLoadingGame = (): void => {
     this._appStage = AppStage.loading;
-    this._uiEventBatcher.enqueueEvent(APP_UI_EVENTS.CHANGED_APP_STAGE);
-    this._uiEventBatcher.fireEvents();
+
+    this.stopUpdateTimer();
+    this.stopAutosaveTimer();
+
+    this.emitChangedAppStageEvent();
   };
 
   private startRunningGame = (): void => {
     this._appStage = AppStage.running;
+
+    this.restartUpdateTimer();
+    this.restartAutosaveTimer();
+
     this._messageLogState.clearMessages();
     this._messageLogState.postMessage(GameStateEvent.gameStarted);
 
+    this.emitChangedAppStageEvent();
+  };
+
+  private emitChangedAppStageEvent() {
     this._uiEventBatcher.enqueueEvent(APP_UI_EVENTS.CHANGED_APP_STAGE);
     this._uiEventBatcher.fireEvents();
+  }
+
+  private stopUpdateTimer() {
+    if (this._updateTimer) {
+      clearInterval(this._updateTimer);
+    }
+
+    this._updateTimer = undefined;
+  }
+
+  private stopAutosaveTimer() {
+    if (this._autosaveTimer) {
+      clearInterval(this._autosaveTimer);
+    }
+
+    this._autosaveTimer = undefined;
+  }
+
+  private updateGame = (): void => {
+    this._uiEventBatcher.fireEvents();
+    this._appState.fireUiEvents();
   };
 }

@@ -9,4 +9,6 @@ export interface IApp {
   importSavefile(file: File): void;
   exportSavefile(): void;
   deleteSaveData(): Promise<void>;
+  restartUpdateTimer(): void;
+  restartAutosaveTimer(): void;
 }

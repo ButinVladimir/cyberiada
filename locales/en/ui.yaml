@@ -21,7 +21,11 @@ settings:
   settings: Settings
   language: Language
   theme: Theme
-  maxLogMessages: Maximum amount of messages in log
+  messageLogSize: Maximum amount of messages in log
+  messageLogSizeHint: Excessive messages in log won't be removed until new message is received
+  updateInterval: Update interval (ms)
+  autosaveEnabled: Enable autosave
+  autosaveInterval: Autosave interval (s)
   languages:
     en: English
     ru: Russian

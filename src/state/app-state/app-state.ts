@@ -2,6 +2,7 @@ import { inject, injectable } from 'inversify';
 import type { IGeneralState } from '@state/general-state/interfaces/general-state';
 import type { ISettingsState } from '@state/settings-state/interfaces/settings-state';
 import type { ICityState } from '@state/city-state/interfaces/city-state';
+import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
 import { TYPES } from '@state/types';
 import { IAppState, ISerializedState } from './interfaces';
 
@@ -10,15 +11,18 @@ export class AppState implements IAppState {
   private _generalState: IGeneralState;
   private _settingsState: ISettingsState;
   private _cityState: ICityState;
+  private _messageLogState: IMessageLogState;
 
   constructor(
     @inject(TYPES.GeneralState) _generalState: IGeneralState,
     @inject(TYPES.SettingsState) _settingsState: ISettingsState,
     @inject(TYPES.CityState) _cityState: ICityState,
+    @inject(TYPES.MessageLogState) _messageLogState: IMessageLogState,
   ) {
     this._generalState = _generalState;
     this._settingsState = _settingsState;
     this._cityState = _cityState;
+    this._messageLogState = _messageLogState;
   }
 
   async startNewState(): Promise<void> {
@@ -45,5 +49,9 @@ export class AppState implements IAppState {
     this._generalState.deserialize(parsedSaveData.general);
     await this._settingsState.deserialize(parsedSaveData.settings);
     this._cityState.deserialize(parsedSaveData.city);
+  }
+
+  fireUiEvents() {
+    this._messageLogState.fireUiEvents();
   }
 }

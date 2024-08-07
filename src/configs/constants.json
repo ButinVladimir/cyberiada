@@ -1,6 +1,12 @@
 {
   "mapWidth": 100,
   "mapHeight": 100,
-  "defaultMapSize": 3,
-  "defaultMessageFilter": ["gameStarted", "gameSaved"]
+  "defaultSettings": {
+    "messageLogSize": 10,
+    "updateInterval": 100,
+    "autosaveEnabled": true,
+    "autosaveInterval": 60000,
+    "mapSize": 3,
+    "messageFilterEvents": ["gameStarted", "gameSaved"]
+  }
 }

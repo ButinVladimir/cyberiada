@@ -7,4 +7,5 @@ export interface IMessageLogState {
   clearMessages(): void;
   addUiEventListener(eventName: symbol, handler: (...args: any[]) => void): void;
   removeUiEventListener(eventName: symbol, handler: (...args: any[]) => void): void;
+  fireUiEvents(): void;
 }

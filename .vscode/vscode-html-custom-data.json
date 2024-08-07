@@ -83,7 +83,7 @@
     },
     {
       "name": "ca-message-filter-dialog",
-      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `handleMessageFilterDialogClose` - \n\n  * `handleToggleEvent` - \n\n  * `_messageFilterDialogController` {`MessageFilterDialogController`} - ",
+      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `renderEventCheckbox` - \n\n  * `handleMessageFilterDialogClose` - \n\n  * `handleToggleEvent` - \n\n  * `_messageFilterDialogController` {`MessageFilterDialogController`} - ",
       "attributes": [
         {
           "name": "is-open",
@@ -140,7 +140,7 @@
     },
     {
       "name": "ca-settings-form",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_languageInput` {`SlSelect`} - \n\n  * `_themeInput` {`SlSelect`} - \n\n  * `_isSaving` {`boolean`} - \n\n  * `startSaving` - \n\n  * `stopSaving` - \n\n  * `handleUpdateLanguage` - \n\n  * `handleUpdateTheme` - \n\n  * `_settingsFormController` {`SettingsFormController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_languageInput` {`SlSelect`} - \n\n  * `_themeInput` {`SlSelect`} - \n\n  * `_messageLogSizeInput` {`SlInput`} - \n\n  * `_updateIntervalInput` {`SlRange`} - \n\n  * `_autosaveEnabledInput` {`SlCheckbox`} - \n\n  * `_autosaveIntervalInput` {`SlRange`} - \n\n  * `_isSaving` {`boolean`} - \n\n  * `autosaveIntervalFormatter` - \n\n  * `startSaving` - \n\n  * `stopSaving` - \n\n  * `handleChangeLanguage` - \n\n  * `handleChangeTheme` - \n\n  * `handleChangeMessageLogSize` - \n\n  * `handleChangeUpdateInterval` - \n\n  * `handleChangeAutosaveEnabled` - \n\n  * `handleChangeAutosaveInterval` - \n\n  * `_settingsFormController` {`SettingsFormController`} - ",
       "attributes": []
     }
   ],

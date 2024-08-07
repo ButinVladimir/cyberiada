@@ -1,5 +1,6 @@
-import { LitElement, css, html } from 'lit';
+import { LitElement, TemplateResult, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { repeat } from 'lit/directives/repeat.js';
 import SlCheckbox from '@shoelace-style/shoelace/dist/components/checkbox/checkbox.component.js';
 import { GAME_STATE_EVENTS } from '@shared/constants';
 import { GameStateEvent } from '@shared/types';
@@ -60,21 +61,7 @@ export class MessageFilterDialog extends LitElement {
             Enable events in filter to start adding messages for them in log.
           </intl-message>
 
-          <div class="events-container">
-            ${GAME_STATE_EVENTS.map(
-              (event) => html`
-                <sl-checkbox
-                  size="medium"
-                  name="event"
-                  value=${event}
-                  ?checked=${this._messageFilterDialogController.isMessageFilterEventEnabled(event)}
-                  @sl-change=${this.handleToggleEvent}
-                >
-                  <intl-message label=${`events:names:${event}`}> ${event} </intl-message>
-                </sl-checkbox>
-              `,
-            )}
-          </div>
+          <div class="events-container">${repeat(GAME_STATE_EVENTS, (event) => event, this.renderEventCheckbox)}</div>
         </div>
 
         <sl-button slot="footer" size="large" variant="default" outline @click=${this.handleMessageFilterDialogClose}>
@@ -83,6 +70,20 @@ export class MessageFilterDialog extends LitElement {
       </sl-dialog>
     `;
   }
+
+  private renderEventCheckbox = (event: GameStateEvent): TemplateResult => {
+    return html`
+      <sl-checkbox
+        size="medium"
+        name="event"
+        value=${event}
+        ?checked=${this._messageFilterDialogController.isMessageFilterEventEnabled(event)}
+        @sl-change=${this.handleToggleEvent}
+      >
+        <intl-message label=${`events:names:${event}`}> ${event} </intl-message>
+      </sl-checkbox>
+    `;
+  };
 
   private handleMessageFilterDialogClose = (event: Event) => {
     event.stopPropagation();

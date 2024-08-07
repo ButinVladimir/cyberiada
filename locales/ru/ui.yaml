@@ -21,7 +21,11 @@ settings:
   settings: Настройки
   language: Язык
   theme: Тема
-  maxLogMessages: Максимальное количество сообщений в логе
+  messageLogSize: Максимальное количество сообщений
+  messageLogSizeHint: Лишние сообщения не будут удалены, пока не будет получено новое сообщение
+  updateInterval: Интервал обновления (мс)
+  autosaveEnabled: Включить автосохранение
+  autosaveInterval: Интервал автосохранения (сек)
   languages:
     en: Английский
     ru: Русский

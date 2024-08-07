@@ -4,6 +4,7 @@ import resources from 'virtual:i18next-loader';
 import 'i18next-wc';
 import '@components';
 import { setBasePath } from '@shoelace-style/shoelace/dist/utilities/base-path.js';
+import '@state/bindings';
 import '@shoelace-style/shoelace/dist/themes/light.css';
 import '@shoelace-style/shoelace/dist/themes/dark.css';
 

@@ -1,21 +1,37 @@
 import { injectable } from 'inversify';
 import i18n from 'i18next';
 import { Language, MessageFilterEvent, Theme } from '@shared/types';
+import type { IApp } from '@state/app/interfaces/app';
+import { decorators } from '@state/container';
+import { TYPES } from '@state/types';
 import { ISettingsState, ISettingsSerializedState } from './interfaces';
 import themes from '@configs/themes.json';
 import constants from '@configs/constants.json';
 
+const { lazyInject } = decorators;
+
 @injectable()
 export class SettingsState implements ISettingsState {
+  @lazyInject(TYPES.App)
+  private _app!: IApp;
+
   private _language: Language;
   private _theme: Theme;
+  private _messageLogSize: number;
+  private _updateInterval: number;
+  private _autosaveEnabled: boolean;
+  private _autosaveInterval: number;
   private _mapCellSize: number;
   private _enabledMessageFilterEvents: Set<MessageFilterEvent>;
 
   constructor() {
     this._language = Language.en;
     this._theme = Theme.light;
-    this._mapCellSize = constants.defaultMapSize;
+    this._messageLogSize = constants.defaultSettings.messageLogSize;
+    this._updateInterval = constants.defaultSettings.updateInterval;
+    this._autosaveEnabled = constants.defaultSettings.autosaveEnabled;
+    this._autosaveInterval = constants.defaultSettings.autosaveInterval;
+    this._mapCellSize = constants.defaultSettings.mapSize;
     this._enabledMessageFilterEvents = new Set<MessageFilterEvent>();
   }
 
@@ -25,6 +41,22 @@ export class SettingsState implements ISettingsState {
 
   get theme() {
     return this._theme;
+  }
+
+  get messageLogSize() {
+    return this._messageLogSize;
+  }
+
+  get updateInterval() {
+    return this._updateInterval;
+  }
+
+  get autosaveEnabled() {
+    return this._autosaveEnabled;
+  }
+
+  get autosaveInterval() {
+    return this._autosaveInterval;
   }
 
   get mapCellSize() {
@@ -48,6 +80,25 @@ export class SettingsState implements ISettingsState {
     document.body.className = themes[this.theme].classes;
   }
 
+  setMessageLogSize(messageLogSize: number) {
+    this._messageLogSize = messageLogSize;
+  }
+
+  setUpdateInterval(updateInterval: number) {
+    this._updateInterval = updateInterval;
+    this._app.restartUpdateTimer();
+  }
+
+  setAutosaveEnabled(autosaveEnabled: boolean) {
+    this._autosaveEnabled = autosaveEnabled;
+    this._app.restartAutosaveTimer();
+  }
+
+  setAutosaveInterval(autosaveInterval: number) {
+    this._autosaveInterval = autosaveInterval;
+    this._app.restartAutosaveTimer();
+  }
+
   setMapCellSize(mapCellSize: number) {
     this._mapCellSize = mapCellSize;
   }
@@ -65,13 +116,21 @@ export class SettingsState implements ISettingsState {
 
     await this.setLanguage(i18n.resolvedLanguage! as Language);
     this.setTheme(window.matchMedia('(prefers-color-scheme:dark)').matches ? Theme.dark : Theme.light);
-    this.setMapCellSize(constants.defaultMapSize);
-    this.deserializeMessageFilter(constants.defaultMessageFilter as MessageFilterEvent[]);
+    this.setMessageLogSize(constants.defaultSettings.messageLogSize);
+    this.setUpdateInterval(constants.defaultSettings.updateInterval);
+    this.setAutosaveEnabled(constants.defaultSettings.autosaveEnabled);
+    this.setAutosaveInterval(constants.defaultSettings.autosaveInterval);
+    this.setMapCellSize(constants.defaultSettings.mapSize);
+    this.deserializeMessageFilter(constants.defaultSettings.messageFilterEvents as MessageFilterEvent[]);
   }
 
   async deserialize(serializedState: ISettingsSerializedState): Promise<void> {
     await this.setLanguage(serializedState.language);
     this.setTheme(serializedState.theme);
+    this.setMessageLogSize(serializedState.messageLogSize);
+    this.setUpdateInterval(serializedState.updateInterval);
+    this.setAutosaveEnabled(serializedState.autosaveEnabled);
+    this.setAutosaveInterval(serializedState.autosaveInterval);
     this.setMapCellSize(serializedState.mapCellSize);
     this.deserializeMessageFilter(serializedState.enabledMessageFilterEvents);
   }
@@ -80,6 +139,10 @@ export class SettingsState implements ISettingsState {
     return {
       language: this.language,
       theme: this.theme,
+      messageLogSize: this.messageLogSize,
+      updateInterval: this.updateInterval,
+      autosaveEnabled: this.autosaveEnabled,
+      autosaveInterval: this.autosaveInterval,
       mapCellSize: this.mapCellSize,
       enabledMessageFilterEvents: this.serializeMessageFilter(),
     };

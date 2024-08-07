@@ -1,6 +1,9 @@
 import { LitElement, html, css, TemplateResult } from 'lit';
 import { customElement, query, state } from 'lit/decorators.js';
 import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.component.js';
+import SlInput from '@shoelace-style/shoelace/dist/components/input/input.component.js';
+import SlRange from '@shoelace-style/shoelace/dist/components/range/range.component.js';
+import SlCheckbox from '@shoelace-style/shoelace/dist/components/checkbox/checkbox.component.js';
 import { LANGUAGES, THEMES } from '@shared/constants';
 import { Language, Theme } from '@shared/types';
 import { SettingsFormController } from './controller';
@@ -15,11 +18,12 @@ export class SettingsForm extends LitElement {
       row-gap: var(--sl-spacing-large);
       grid-template-columns: repeat(2, minmax(0, 30rem));
       grid-auto-rows: auto;
+      align-items: flex-start;
       margin-bottom: var(--sl-spacing-large);
     }
 
-    span.select-label {
-      font-size: var(--sl-font-size-small);
+    span.input-label {
+      font-size: var(--sl-font-size-medium);
       line-height: var(--sl-line-height-dense);
     }
 
@@ -47,8 +51,24 @@ export class SettingsForm extends LitElement {
   @query('sl-select[name="theme"]')
   private _themeInput!: SlSelect;
 
+  @query('sl-input[name="messageLogSize"]')
+  private _messageLogSizeInput!: SlInput;
+
+  @query('sl-range[name="updateInterval"]')
+  private _updateIntervalInput!: SlRange;
+
+  @query('sl-checkbox[name="autosaveEnabled"]')
+  private _autosaveEnabledInput!: SlCheckbox;
+
+  @query('sl-range[name="autosaveInterval"]')
+  private _autosaveIntervalInput!: SlRange;
+
   @state()
   private _isSaving = false;
+
+  private static autosaveIntervalFormatter = (value: number): string => {
+    return Math.round(value / 1000).toString();
+  };
 
   constructor() {
     super();
@@ -62,10 +82,14 @@ export class SettingsForm extends LitElement {
     return html` ${content} `;
   }
 
+  updated() {
+    this._autosaveIntervalInput.tooltipFormatter = SettingsForm.autosaveIntervalFormatter;
+  }
+
   private renderForm(): TemplateResult {
     return html`
-      <sl-select name="language" value=${this._settingsFormController.language} @sl-change=${this.handleUpdateLanguage}>
-        <span class="select-label" slot="label">
+      <sl-select name="language" value=${this._settingsFormController.language} @sl-change=${this.handleChangeLanguage}>
+        <span class="input-label" slot="label">
           <intl-message label="ui:settings:language">Language</intl-message>
         </span>
 
@@ -77,8 +101,8 @@ export class SettingsForm extends LitElement {
         )}
       </sl-select>
 
-      <sl-select name="theme" value=${this._settingsFormController.theme} @sl-change=${this.handleUpdateTheme}>
-        <span class="select-label" slot="label">
+      <sl-select name="theme" value=${this._settingsFormController.theme} @sl-change=${this.handleChangeTheme}>
+        <span class="input-label" slot="label">
           <intl-message label="ui:settings:theme">Theme</intl-message>
         </span>
 
@@ -89,6 +113,63 @@ export class SettingsForm extends LitElement {
             </sl-option>`,
         )}
       </sl-select>
+
+      <sl-input
+        name="messageLogSize"
+        value=${this._settingsFormController.messageLogSize}
+        type="number"
+        min="1"
+        max="100"
+        step="1"
+        @sl-change=${this.handleChangeMessageLogSize}
+      >
+        <span class="input-label" slot="label">
+          <intl-message label="ui:settings:messageLogSize">Message log size</intl-message>
+        </span>
+
+        <span class="" slot="help-text">
+          <intl-message label="ui:settings:messageLogSizeHint">
+            Excessive messages in log won't be removed until new message is received
+          </intl-message>
+        </span>
+      </sl-input>
+
+      <sl-range
+        min="25"
+        max="1000"
+        step="1"
+        name="updateInterval"
+        value=${this._settingsFormController.updateInterval}
+        @sl-change=${this.handleChangeUpdateInterval}
+      >
+        <span class="input-label" slot="label">
+          <intl-message label="ui:settings:updateInterval">Update interval</intl-message>
+        </span>
+      </sl-range>
+
+      <sl-checkbox
+        size="medium"
+        name="autosaveEnabled"
+        ?checked=${this._settingsFormController.autosaveEnabled}
+        @sl-change=${this.handleChangeAutosaveEnabled}
+      >
+        <span class="input-label">
+          <intl-message label="ui:settings:autosaveEnabled">Autosave enabled</intl-message>
+        </span>
+      </sl-checkbox>
+
+      <sl-range
+        min="10000"
+        max="600000"
+        step="1000"
+        name="autosaveInterval"
+        value=${this._settingsFormController.autosaveInterval}
+        @sl-change=${this.handleChangeAutosaveInterval}
+      >
+        <span class="input-label" slot="label">
+          <intl-message label="ui:settings:autosaveInterval">Autosave interval</intl-message>
+        </span>
+      </sl-range>
     `;
   }
 
@@ -108,7 +189,7 @@ export class SettingsForm extends LitElement {
     this._isSaving = false;
   };
 
-  private handleUpdateLanguage = async () => {
+  private handleChangeLanguage = async () => {
     this.startSaving();
 
     try {
@@ -120,7 +201,34 @@ export class SettingsForm extends LitElement {
     }
   };
 
-  private handleUpdateTheme = () => {
+  private handleChangeTheme = () => {
     this._settingsFormController.setTheme(this._themeInput.value as Theme);
+  };
+
+  private handleChangeMessageLogSize = () => {
+    let value = this._messageLogSizeInput.valueAsNumber;
+
+    if (value < 1) {
+      value = 1;
+    }
+
+    if (value > 100) {
+      value = 100;
+    }
+
+    this._settingsFormController.setMessageLogSize(value);
+    this._messageLogSizeInput.valueAsNumber = value;
+  };
+
+  private handleChangeUpdateInterval = () => {
+    this._settingsFormController.setUpdateInterval(this._updateIntervalInput.value);
+  };
+
+  private handleChangeAutosaveEnabled = () => {
+    this._settingsFormController.setAutosaveEnabled(this._autosaveEnabledInput.checked);
+  };
+
+  private handleChangeAutosaveInterval = () => {
+    this._settingsFormController.setAutosaveInterval(this._autosaveIntervalInput.value);
   };
 }

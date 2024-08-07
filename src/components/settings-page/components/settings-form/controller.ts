@@ -10,6 +10,22 @@ export class SettingsFormController extends BaseController {
     return this.settingsState.theme;
   }
 
+  get messageLogSize(): number {
+    return this.settingsState.messageLogSize;
+  }
+
+  get updateInterval(): number {
+    return this.settingsState.updateInterval;
+  }
+
+  get autosaveEnabled(): boolean {
+    return this.settingsState.autosaveEnabled;
+  }
+
+  get autosaveInterval(): number {
+    return this.settingsState.autosaveInterval;
+  }
+
   async setLanguage(language: Language) {
     await this.settingsState.setLanguage(language);
     this.host.requestUpdate();
@@ -17,5 +33,21 @@ export class SettingsFormController extends BaseController {
 
   setTheme(theme: Theme) {
     this.settingsState.setTheme(theme);
+  }
+
+  setMessageLogSize(messageLogSize: number) {
+    this.settingsState.setMessageLogSize(messageLogSize);
+  }
+
+  setUpdateInterval(updateInterval: number) {
+    this.settingsState.setUpdateInterval(updateInterval);
+  }
+
+  setAutosaveEnabled(autosaveEnabled: boolean) {
+    this.settingsState.setAutosaveEnabled(autosaveEnabled);
+  }
+
+  setAutosaveInterval(autosaveInterval: number) {
+    this.settingsState.setAutosaveInterval(autosaveInterval);
   }
 }

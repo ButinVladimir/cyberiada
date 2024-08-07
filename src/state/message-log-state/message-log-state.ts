@@ -33,8 +33,12 @@ export class MessageLogState implements IMessageLogState {
       parameters,
     });
 
+    const messagesToDelete = this._messages.length - this._settingsState.messageLogSize;
+    if (messagesToDelete > 0) {
+      this._messages.splice(0, messagesToDelete);
+    }
+
     this._uiEventBatcher.enqueueEvent(MESSAGE_LOG_UI_EVENTS.UPDATED_MESSAGES);
-    this._uiEventBatcher.fireEvents();
   }
 
   getMessages(): IMessage[] {
@@ -45,7 +49,6 @@ export class MessageLogState implements IMessageLogState {
     this._messages.splice(0);
 
     this._uiEventBatcher.enqueueEvent(MESSAGE_LOG_UI_EVENTS.UPDATED_MESSAGES);
-    this._uiEventBatcher.fireEvents();
   }
 
   addUiEventListener(eventName: symbol, handler: (...args: any[]) => void) {
@@ -54,5 +57,9 @@ export class MessageLogState implements IMessageLogState {
 
   removeUiEventListener(eventName: symbol, handler: (...args: any[]) => void) {
     this._uiEventBatcher.removeListener(eventName, handler);
+  }
+
+  fireUiEvents() {
+    this._uiEventBatcher.fireEvents();
   }
 }
