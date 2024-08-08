@@ -10,7 +10,8 @@
     "lint-fix": "eslint . --ext ts,tsx --fix",
     "prettier": "prettier . --write",
     "preview": "vite preview",
-    "wca": "wca analyze --format vscode --outFile ./.vscode/vscode-html-custom-data.json"
+    "wca": "wca analyze --format vscode --outFile ./.vscode/vscode-html-custom-data.json",
+    "test": "vitest"
   },
   "dependencies": {
     "@shoelace-style/shoelace": "^2.15.0",
@@ -43,6 +44,7 @@
     "typescript": "5.2.2",
     "vite": "^5.0.0",
     "vite-plugin-i18next-loader": "^2.0.4",
-    "vite-plugin-static-copy": "^1.0.4"
+    "vite-plugin-static-copy": "^1.0.4",
+    "vitest": "^2.0.5"
   }
 }

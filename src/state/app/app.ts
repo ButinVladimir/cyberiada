@@ -15,8 +15,8 @@ export class App implements IApp {
   private _settingsState: ISettingsState;
   private _messageLogState: IMessageLogState;
   private _appStage: AppStage;
-  private _updateTimer?: number;
-  private _autosaveTimer?: number;
+  private _updateTimer?: NodeJS.Timeout;
+  private _autosaveTimer?: NodeJS.Timeout;
   private readonly _uiEventBatcher: EventBatcher;
 
   constructor(
