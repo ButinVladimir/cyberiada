@@ -6,6 +6,7 @@
     "updateInterval": 100,
     "autosaveEnabled": true,
     "autosaveInterval": 60000,
+    "maxTicksPerUpdate": 5,
     "mapSize": 3,
     "messageFilterEvents": ["gameStarted", "gameSaved"]
   }

@@ -21,6 +21,7 @@ export class SettingsState implements ISettingsState {
   private _updateInterval: number;
   private _autosaveEnabled: boolean;
   private _autosaveInterval: number;
+  private _maxTicksPerUpdate: number;
   private _mapCellSize: number;
   private _enabledMessageFilterEvents: Set<MessageFilterEvent>;
 
@@ -31,6 +32,7 @@ export class SettingsState implements ISettingsState {
     this._updateInterval = constants.defaultSettings.updateInterval;
     this._autosaveEnabled = constants.defaultSettings.autosaveEnabled;
     this._autosaveInterval = constants.defaultSettings.autosaveInterval;
+    this._maxTicksPerUpdate = constants.defaultSettings.maxTicksPerUpdate;
     this._mapCellSize = constants.defaultSettings.mapSize;
     this._enabledMessageFilterEvents = new Set<MessageFilterEvent>();
   }
@@ -57,6 +59,10 @@ export class SettingsState implements ISettingsState {
 
   get autosaveInterval() {
     return this._autosaveInterval;
+  }
+
+  get maxTicksPerUpdate() {
+    return this._maxTicksPerUpdate;
   }
 
   get mapCellSize() {
@@ -99,6 +105,10 @@ export class SettingsState implements ISettingsState {
     this._app.restartAutosaveTimer();
   }
 
+  setMaxTicksPerUpdate(maxTicksPerUpdate: number) {
+    this._maxTicksPerUpdate = maxTicksPerUpdate;
+  }
+
   setMapCellSize(mapCellSize: number) {
     this._mapCellSize = mapCellSize;
   }
@@ -131,6 +141,7 @@ export class SettingsState implements ISettingsState {
     this.setUpdateInterval(serializedState.updateInterval);
     this.setAutosaveEnabled(serializedState.autosaveEnabled);
     this.setAutosaveInterval(serializedState.autosaveInterval);
+    this.setMaxTicksPerUpdate(serializedState.maxTicksPerUpdate);
     this.setMapCellSize(serializedState.mapCellSize);
     this.deserializeMessageFilter(serializedState.enabledMessageFilterEvents);
   }
@@ -143,6 +154,7 @@ export class SettingsState implements ISettingsState {
       updateInterval: this.updateInterval,
       autosaveEnabled: this.autosaveEnabled,
       autosaveInterval: this.autosaveInterval,
+      maxTicksPerUpdate: this.maxTicksPerUpdate,
       mapCellSize: this.mapCellSize,
       enabledMessageFilterEvents: this.serializeMessageFilter(),
     };

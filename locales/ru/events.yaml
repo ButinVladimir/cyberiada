@@ -1,8 +1,8 @@
 names:
   gameStarted: Игра началась
-  gameLoaded: Игра загружена
   gameSaved: Игра сохранена
+  gameStateUpdated: Состояние игры обновлено
 messages:
   gameStarted: Игра началась
-  gameLoaded: Игра загружена
   gameSaved: Игра сохранена
+  gameStateUpdated: Состояние игры обновлено {{parameters.count}} раз

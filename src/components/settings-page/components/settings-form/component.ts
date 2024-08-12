@@ -63,6 +63,9 @@ export class SettingsForm extends LitElement {
   @query('sl-range[name="autosaveInterval"]')
   private _autosaveIntervalInput!: SlRange;
 
+  @query('sl-range[name="maxTicksPerUpdate"]')
+  private _maxTicksPerUpdateInput!: SlRange;
+
   @state()
   private _isSaving = false;
 
@@ -127,7 +130,7 @@ export class SettingsForm extends LitElement {
           <intl-message label="ui:settings:messageLogSize">Message log size</intl-message>
         </span>
 
-        <span class="" slot="help-text">
+        <span slot="help-text">
           <intl-message label="ui:settings:messageLogSizeHint">
             Excessive messages in log won't be removed until new message is received
           </intl-message>
@@ -170,6 +173,26 @@ export class SettingsForm extends LitElement {
           <intl-message label="ui:settings:autosaveInterval">Autosave interval</intl-message>
         </span>
       </sl-range>
+
+      <sl-range
+        min="2"
+        max="20"
+        step="1"
+        name="maxTicksPerUpdate"
+        value=${this._settingsFormController.maxTicksPerUpdate}
+        @sl-change=${this.handleChangeMaxTicksPerUpdate}
+      >
+        <span class="input-label" slot="label">
+          <intl-message label="ui:settings:maxTicksPerUpdate">Max ticks per update</intl-message>
+        </span>
+
+        <span slot="help-text">
+          <intl-message label="ui:settings:maxTicksPerUpdateHint">
+            Excessive messages in log won't be removed until new message is received
+          </intl-message>
+        </span>
+      </sl-range>
+
     `;
   }
 
@@ -230,5 +253,9 @@ export class SettingsForm extends LitElement {
 
   private handleChangeAutosaveInterval = () => {
     this._settingsFormController.setAutosaveInterval(this._autosaveIntervalInput.value);
+  };
+
+  private handleChangeMaxTicksPerUpdate = () => {
+    this._settingsFormController.setMaxTicksPerUpdate(this._maxTicksPerUpdateInput.value);
   };
 }

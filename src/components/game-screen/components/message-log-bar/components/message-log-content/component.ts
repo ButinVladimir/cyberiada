@@ -45,7 +45,7 @@ export class MessageLogContent extends LitElement {
     return html`
       <p>
         [<intl-datetime time .value=${message.date}></intl-datetime>]
-        <intl-message label=${label} value=${ifDefined(parameters)}></intl-message>
+        <intl-message label=${label} parameters=${ifDefined(parameters)}></intl-message>
       </p>
     `;
   };

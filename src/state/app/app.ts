@@ -177,6 +177,9 @@ export class App implements IApp {
   }
 
   private updateGame = (): void => {
+    this._appState.updateState();
+
+    this._uiEventBatcher.enqueueEvent(APP_UI_EVENTS.REFRESHED_UI);
     this._uiEventBatcher.fireEvents();
     this._appState.fireUiEvents();
   };

@@ -8,5 +8,6 @@ export interface ISettingsSerializedState {
   updateInterval: number;
   autosaveEnabled: boolean;
   autosaveInterval: number;
+  maxTicksPerUpdate: number;
   enabledMessageFilterEvents: MessageFilterEvent[];
 }

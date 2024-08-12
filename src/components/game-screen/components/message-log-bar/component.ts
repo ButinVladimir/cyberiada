@@ -67,27 +67,21 @@ export class MessageLogBar extends LitElement {
 
         <div class="gutter"></div>
 
-        <sl-tooltip>
-          <intl-message slot="content" label="ui:messageLog:clearMessages">Clear messages</intl-message>
-          <sl-icon-button
-            id="clear-messages-btn"
-            name="x-circle"
-            label=${t('messageLog.clearMessages', { ns: 'ui' })}
-            @click=${this.handleClearMessages}
-          >
-          </sl-icon-button>
-        </sl-tooltip>
+        <sl-icon-button
+          id="clear-messages-btn"
+          name="x-circle"
+          label=${t('messageLog.clearMessages', { ns: 'ui' })}
+          @click=${this.handleClearMessages}
+        >
+        </sl-icon-button>
 
-        <sl-tooltip>
-          <intl-message slot="content" label="ui:messageLog:messageFilter">Message filter</intl-message>
-          <sl-icon-button
-            id="message-filter-btn"
-            name="gear"
-            label=${t('messageLog.messageFilter', { ns: 'ui' })}
-            @click=${this.handleMessageFilterDialogOpen}
-          >
-          </sl-icon-button>
-        </sl-tooltip>
+        <sl-icon-button
+          id="message-filter-btn"
+          name="gear"
+          label=${t('messageLog.messageFilter', { ns: 'ui' })}
+          @click=${this.handleMessageFilterDialogOpen}
+        >
+        </sl-icon-button>
 
         <ca-message-filter-dialog
           ?is-open=${this._isMessageFilterOpen}

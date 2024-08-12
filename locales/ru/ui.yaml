@@ -12,6 +12,11 @@ pages:
 topBar:
   menu: Меню
   messageLog: Сообщения
+  gameSpeedButtons:
+    pause: Пауза
+    playNormal: Играть на нормальной скорости (без бонусного времени)
+    playFast: Играть на быстрой скорости (с бонусным временем)
+  bonusTime: Бонусное время
 messageLog:
   messageLog: Сообщения
   clearMessages: Удалить сообщения
@@ -26,6 +31,8 @@ settings:
   updateInterval: Интервал обновления (мс)
   autosaveEnabled: Включить автосохранение
   autosaveInterval: Интервал автосохранения (сек)
+  maxTicksPerUpdate: Максимальное количество тиков за обновление
+  maxTicksPerUpdateHint: Действительно только тогда, когда скорость игры быстрая
   languages:
     en: Английский
     ru: Русский

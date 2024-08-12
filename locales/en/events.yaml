@@ -1,6 +1,8 @@
 names:
   gameStarted: Game started
   gameSaved: Game saved
+  gameStateUpdated: Game state updated
 messages:
   gameStarted: Game has been started
   gameSaved: Game has been saved
+  gameStateUpdated: Game state has been updated {{parameters.count}} times

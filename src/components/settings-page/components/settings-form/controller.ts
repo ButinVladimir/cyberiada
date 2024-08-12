@@ -26,6 +26,10 @@ export class SettingsFormController extends BaseController {
     return this.settingsState.autosaveInterval;
   }
 
+  get maxTicksPerUpdate(): number {
+    return this.settingsState.maxTicksPerUpdate;
+  }
+
   async setLanguage(language: Language) {
     await this.settingsState.setLanguage(language);
     this.host.requestUpdate();
@@ -49,5 +53,9 @@ export class SettingsFormController extends BaseController {
 
   setAutosaveInterval(autosaveInterval: number) {
     this.settingsState.setAutosaveInterval(autosaveInterval);
+  }
+
+  setMaxTicksPerUpdate(maxTicksPerUpdate: number) {
+    this.settingsState.setMaxTicksPerUpdate(maxTicksPerUpdate);
   }
 }

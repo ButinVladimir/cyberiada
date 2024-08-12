@@ -11,7 +11,8 @@
     "prettier": "prettier . --write",
     "preview": "vite preview",
     "wca": "wca analyze --format vscode --outFile ./.vscode/vscode-html-custom-data.json",
-    "test": "vitest"
+    "test": "vitest",
+    "cy:open": "cypress open"
   },
   "dependencies": {
     "@shoelace-style/shoelace": "^2.15.0",
@@ -36,6 +37,7 @@
     "@types/uuid": "^9.0.6",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
+    "cypress": "^13.13.2",
     "eslint": "^8.52.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-lit": "^1.13.0",

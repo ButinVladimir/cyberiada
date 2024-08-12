@@ -12,6 +12,11 @@ pages:
 topBar:
   menu: Menu
   messageLog: Message log
+  gameSpeedButtons:
+    pause: Pause
+    playNormal: Play at normal speed (do not use bonus time)
+    playFast: Play at fast speed (use bonus time)
+  bonusTime: Bonus time
 messageLog:
   messageLog: Message log
   clearMessages: Clear messages
@@ -26,6 +31,8 @@ settings:
   updateInterval: Update interval (ms)
   autosaveEnabled: Enable autosave
   autosaveInterval: Autosave interval (s)
+  maxTicksPerUpdate: Maximum amount of ticks per update
+  maxTicksPerUpdateHint: Applies only when game speed is fast
   languages:
     en: English
     ru: Russian

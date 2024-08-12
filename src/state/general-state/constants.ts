@@ -1,0 +1,3 @@
+export const GENERAL_STATE_UI_EVENTS = {
+  CHANGED_GAME_SPEED: Symbol('CHANGED_GAME_SPEED'),
+};
