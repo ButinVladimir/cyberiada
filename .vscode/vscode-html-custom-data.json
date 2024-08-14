@@ -13,7 +13,7 @@
     },
     {
       "name": "ca-city-overview",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_selectedDistrict` {`number | undefined`} - \n\n  * `handleSelectDistrict` - \n\n  * `handleChangeZoom` - \n\n  * `_cityOverviewController` {`CityOverviewController`} - \n\n  * `_mapZoom` {`number`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_selectedDistrict` {`number | undefined`} - \n\n  * `handleSelectDistrict` - \n\n  * `handleChangeZoom` - \n\n  * `_cityOverviewController` {`CityOverviewController`} - ",
       "attributes": []
     },
     {
@@ -103,6 +103,16 @@
       "attributes": []
     },
     {
+      "name": "ca-game-speed-buttons",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderButton` - \n\n  * `handleChangeGameSpeed` - \n\n  * `_gameSpeedButtonsController` {`GameSpeedButtonsController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-top-bar-values",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_topBarValuesController` {`TopBarValuesController`} - ",
+      "attributes": []
+    },
+    {
       "name": "ca-viewport",
       "description": "Attributes:\n\n  * `selected-menu-item` {`string`} - \n\nProperties:\n\n  * `selectedMenuItem` {`string`} - ",
       "attributes": [
@@ -140,7 +150,7 @@
     },
     {
       "name": "ca-settings-form",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_languageInput` {`SlSelect`} - \n\n  * `_themeInput` {`SlSelect`} - \n\n  * `_messageLogSizeInput` {`SlInput`} - \n\n  * `_updateIntervalInput` {`SlRange`} - \n\n  * `_autosaveEnabledInput` {`SlCheckbox`} - \n\n  * `_autosaveIntervalInput` {`SlRange`} - \n\n  * `_isSaving` {`boolean`} - \n\n  * `autosaveIntervalFormatter` - \n\n  * `startSaving` - \n\n  * `stopSaving` - \n\n  * `handleChangeLanguage` - \n\n  * `handleChangeTheme` - \n\n  * `handleChangeMessageLogSize` - \n\n  * `handleChangeUpdateInterval` - \n\n  * `handleChangeAutosaveEnabled` - \n\n  * `handleChangeAutosaveInterval` - \n\n  * `_settingsFormController` {`SettingsFormController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_languageInput` {`SlSelect`} - \n\n  * `_themeInput` {`SlSelect`} - \n\n  * `_messageLogSizeInput` {`SlInput`} - \n\n  * `_updateIntervalInput` {`SlRange`} - \n\n  * `_autosaveEnabledInput` {`SlCheckbox`} - \n\n  * `_autosaveIntervalInput` {`SlRange`} - \n\n  * `_maxTicksPerUpdateInput` {`SlRange`} - \n\n  * `_isSaving` {`boolean`} - \n\n  * `autosaveIntervalFormatter` - \n\n  * `startSaving` - \n\n  * `stopSaving` - \n\n  * `handleChangeLanguage` - \n\n  * `handleChangeTheme` - \n\n  * `handleChangeMessageLogSize` - \n\n  * `handleChangeUpdateInterval` - \n\n  * `handleChangeAutosaveEnabled` - \n\n  * `handleChangeAutosaveInterval` - \n\n  * `handleChangeMaxTicksPerUpdate` - \n\n  * `_settingsFormController` {`SettingsFormController`} - ",
       "attributes": []
     }
   ],

@@ -37,14 +37,12 @@ export class GameSpeedButtons extends LitElement {
         icon: gameSpeed === GameSpeed.paused ? 'pause-circle' : 'pause',
         className: gameSpeed === GameSpeed.paused ? 'speed-button-active' : '',
       })}
-
       ${this.renderButton({
         gameSpeed: GameSpeed.normal,
         label: 'playNormal',
         icon: gameSpeed === GameSpeed.normal ? 'play-circle' : 'play',
         className: gameSpeed === GameSpeed.normal ? 'speed-button-active' : '',
       })}
-
       ${this.renderButton({
         gameSpeed: GameSpeed.fast,
         label: 'playFast',

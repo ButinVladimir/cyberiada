@@ -192,7 +192,6 @@ export class SettingsForm extends LitElement {
           </intl-message>
         </span>
       </sl-range>
-
     `;
   }
 

@@ -3,7 +3,7 @@
     "target": "ES2022",
     "useDefineForClassFields": false,
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
-    "types": ["reflect-metadata", "cypress"],
+    "types": ["reflect-metadata"],
     "module": "ESNext",
     "skipLibCheck": true,
     "emitDecoratorMetadata": true,
@@ -33,6 +33,7 @@
     "noFallthroughCasesInSwitch": true
   },
   "include": ["src"],
+  "exclude": ["cypress", "node_modules"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
 

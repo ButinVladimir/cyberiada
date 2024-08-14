@@ -37,25 +37,31 @@ export class SettingsFormController extends BaseController {
 
   setTheme(theme: Theme) {
     this.settingsState.setTheme(theme);
+    this.host.requestUpdate();
   }
 
   setMessageLogSize(messageLogSize: number) {
     this.settingsState.setMessageLogSize(messageLogSize);
+    this.host.requestUpdate();
   }
 
   setUpdateInterval(updateInterval: number) {
     this.settingsState.setUpdateInterval(updateInterval);
+    this.host.requestUpdate();
   }
 
   setAutosaveEnabled(autosaveEnabled: boolean) {
     this.settingsState.setAutosaveEnabled(autosaveEnabled);
+    this.host.requestUpdate();
   }
 
   setAutosaveInterval(autosaveInterval: number) {
     this.settingsState.setAutosaveInterval(autosaveInterval);
+    this.host.requestUpdate();
   }
 
   setMaxTicksPerUpdate(maxTicksPerUpdate: number) {
     this.settingsState.setMaxTicksPerUpdate(maxTicksPerUpdate);
+    this.host.requestUpdate();
   }
 }

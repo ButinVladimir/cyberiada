@@ -70,6 +70,11 @@ export class App implements IApp {
     this._uiEventBatcher.removeListener(eventName, handler);
   }
 
+  fireUiEvents() {
+    this._uiEventBatcher.fireEvents();
+    this._appState.fireUiEvents();
+  }
+
   importSavefile(file: File): void {
     this.startLoadingGame();
 
@@ -157,7 +162,7 @@ export class App implements IApp {
 
   private emitChangedAppStageEvent() {
     this._uiEventBatcher.enqueueEvent(APP_UI_EVENTS.CHANGED_APP_STAGE);
-    this._uiEventBatcher.fireEvents();
+    this.fireUiEvents();
   }
 
   private stopUpdateTimer() {
@@ -180,7 +185,6 @@ export class App implements IApp {
     this._appState.updateState();
 
     this._uiEventBatcher.enqueueEvent(APP_UI_EVENTS.REFRESHED_UI);
-    this._uiEventBatcher.fireEvents();
-    this._appState.fireUiEvents();
+    this.fireUiEvents();
   };
 }

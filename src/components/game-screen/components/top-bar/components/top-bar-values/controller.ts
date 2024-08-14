@@ -17,5 +17,5 @@ export class TopBarValuesController extends BaseController {
   handleUpdatedUI = () => {
     console.log('Request');
     this.host.requestUpdate();
-  }
+  };
 }

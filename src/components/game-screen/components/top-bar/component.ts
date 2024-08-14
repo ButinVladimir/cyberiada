@@ -28,11 +28,7 @@ export class TopBar extends LitElement {
   render() {
     return html`
       <div class="group">
-        <sl-icon-button
-          name="list"
-          label=${t('topBar.menu', { ns: 'ui' })}
-          @click=${this.handleMenuClick}
-        >
+        <sl-icon-button name="list" label=${t('topBar.menu', { ns: 'ui' })} @click=${this.handleMenuClick}>
         </sl-icon-button>
       </div>
 

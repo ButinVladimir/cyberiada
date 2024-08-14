@@ -11,7 +11,7 @@ export enum Theme {
 export enum OverviewMenuItem {
   cityOverview = 'cityOverview',
   company = 'company',
-  activity = 'activity',
+  mainframe = 'mainframe',
 }
 
 export enum MiscMenuItem {

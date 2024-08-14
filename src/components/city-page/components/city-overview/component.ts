@@ -57,14 +57,10 @@ export class CityOverview extends LitElement {
   @state()
   private _selectedDistrict?: number;
 
-  @state()
-  private _mapZoom: number;
-
   constructor() {
     super();
 
     this._cityOverviewController = new CityOverviewController(this);
-    this._mapZoom = this._cityOverviewController.mapCellSize;
   }
 
   render() {
@@ -77,13 +73,16 @@ export class CityOverview extends LitElement {
         <intl-message label="ui:city:cityOverview:hint">City overview hint</intl-message>
       </p>
 
-      <ca-map-cell-zoom-panel zoom=${this._mapZoom} @map-cell-zoom-change=${this.handleChangeZoom}>
+      <ca-map-cell-zoom-panel
+        zoom=${this._cityOverviewController.mapCellSize}
+        @map-cell-zoom-change=${this.handleChangeZoom}
+      >
       </ca-map-cell-zoom-panel>
 
       <div class="content">
         <ca-city-map-canvas
           selected-district=${ifDefined(this._selectedDistrict)}
-          map-cell-zoom=${this._mapZoom}
+          map-cell-zoom=${this._cityOverviewController.mapCellSize}
           @city-map-district-select=${this.handleSelectDistrict}
         >
         </ca-city-map-canvas>
@@ -108,7 +107,6 @@ export class CityOverview extends LitElement {
     const mapCellZoomChangeEvent = event as MapCellZoomChangeEvent;
 
     const { zoom } = mapCellZoomChangeEvent;
-    this._mapZoom = zoom;
     this._cityOverviewController.setMapCellSize(zoom);
   };
 }

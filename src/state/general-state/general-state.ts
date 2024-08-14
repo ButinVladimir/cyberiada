@@ -3,7 +3,6 @@ import { EventBatcher } from '@shared/event-batcher';
 import type { ISettingsState } from '@state/settings-state/interfaces/settings-state';
 import { IGeneralState, IGeneralSerializedState } from './interfaces';
 import { GameSpeed } from './types';
-import { GENERAL_STATE_UI_EVENTS } from './constants';
 import { TYPES } from '@state/types';
 
 @injectable()
@@ -16,9 +15,7 @@ export class GeneralState implements IGeneralState {
   private _bonusTime: number;
   private _gameSpeed: GameSpeed;
 
-  constructor(
-    @inject(TYPES.SettingsState) _settingsState: ISettingsState,
-  ) {
+  constructor(@inject(TYPES.SettingsState) _settingsState: ISettingsState) {
     this._settingsState = _settingsState;
 
     this._randomSeed = 0;
@@ -47,8 +44,6 @@ export class GeneralState implements IGeneralState {
 
   changeGameSpeed(gameSpeed: GameSpeed) {
     this._gameSpeed = gameSpeed;
-
-    this._uiEventBatcher.enqueueEvent(GENERAL_STATE_UI_EVENTS.CHANGED_GAME_SPEED);
   }
 
   updateLastUpdateTime() {
@@ -67,14 +62,16 @@ export class GeneralState implements IGeneralState {
     return false;
   }
 
-  startNewState(): void {
+  // eslint-disable-next-line @typescript-eslint/require-await
+  async startNewState(): Promise<void> {
     this._randomSeed = Date.now();
     this._lastUpdateTime = Date.now();
     this._bonusTime = 0;
     this._gameSpeed = GameSpeed.normal;
   }
 
-  deserialize(serializedState: IGeneralSerializedState): void {
+  // eslint-disable-next-line @typescript-eslint/require-await
+  async deserialize(serializedState: IGeneralSerializedState): Promise<void> {
     this._randomSeed = serializedState.randomSeed;
     this._lastUpdateTime = serializedState.lastUpdateTime;
     this._bonusTime = serializedState.bonusTime;

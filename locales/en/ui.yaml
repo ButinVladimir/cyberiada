@@ -7,7 +7,7 @@ common:
 pages:
   cityOverview: City overview
   company: Company
-  activity: Activity
+  mainframe: Mainframe
   settings: Settings
 topBar:
   menu: Menu

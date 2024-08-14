@@ -1,7 +1,6 @@
-export interface IAppState {
+import { ISerializeable } from '@shared/interfaces/serializable';
+import { IUIEventEmitter } from '@shared/interfaces/ui-event-emitter';
+
+export interface IAppState extends ISerializeable<string>, IUIEventEmitter {
   updateState(): void;
-  startNewState(): Promise<void>;
-  serialize(): string;
-  deserialize(serializedState: string): Promise<void>;
-  fireUiEvents(): void;
 }

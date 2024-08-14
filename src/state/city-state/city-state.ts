@@ -18,7 +18,7 @@ export class CityState implements ICityState {
     this._generalState = _generalState;
     this._map = [];
     this._districts = new Map();
-    this._scenario = Scenario.tutorial1;
+    this._scenario = constants.startingSettings.scenario as Scenario;
   }
 
   get scenario(): Scenario {
@@ -41,7 +41,8 @@ export class CityState implements ICityState {
     await this.generateMap();
   }
 
-  deserialize(serializedState: ICitySerializedState): void {
+  // eslint-disable-next-line @typescript-eslint/require-await
+  async deserialize(serializedState: ICitySerializedState): Promise<void> {
     this._scenario = serializedState.scenario;
 
     this._map = [];

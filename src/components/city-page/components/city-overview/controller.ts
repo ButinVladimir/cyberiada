@@ -12,9 +12,6 @@ export class CityOverviewController extends BaseController {
 
   setMapCellSize(mapCellSize: number) {
     this.settingsState.setMapCellSize(mapCellSize);
-  }
-
-  saveGame() {
-    this.saveGame();
+    this.host.requestUpdate();
   }
 }

@@ -1,7 +1,9 @@
+import { ISerializeable } from '@shared/interfaces/serializable';
+import { IUIEventEmitter } from '@shared/interfaces/ui-event-emitter';
 import { IGeneralSerializedState } from './general-serialized-state';
 import { GameSpeed } from '../types';
 
-export interface IGeneralState {
+export interface IGeneralState extends ISerializeable<IGeneralSerializedState>, IUIEventEmitter {
   randomSeed: number;
   lastUpdateTime: number;
   bonusTime: number;
@@ -9,10 +11,4 @@ export interface IGeneralState {
   changeGameSpeed(gameSpeed: GameSpeed): void;
   updateLastUpdateTime(): void;
   decreaseBonusTimeByTick(): boolean;
-  startNewState(): void;
-  deserialize(serializedState: IGeneralSerializedState): void;
-  serialize(): IGeneralSerializedState;
-  addUiEventListener(eventName: symbol, handler: (...args: any[]) => void): void;
-  removeUiEventListener(eventName: symbol, handler: (...args: any[]) => void): void;
-  fireUiEvents(): void;
 }

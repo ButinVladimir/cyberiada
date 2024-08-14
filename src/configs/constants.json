@@ -9,5 +9,17 @@
     "maxTicksPerUpdate": 5,
     "mapSize": 3,
     "messageFilterEvents": ["gameStarted", "gameSaved"]
+  },
+  "startingSettings": {
+    "scenario": "tutorial1",
+    "mainframe": {
+      "performanceLevel": 0,
+      "coresLevel": 0,
+      "ramLevel": 0
+    },
+    "phisher": {
+      "level": 0,
+      "quality": 0
+    }
   }
 }

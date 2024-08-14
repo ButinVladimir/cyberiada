@@ -9,7 +9,7 @@ export class TopBarValues extends LitElement {
     :host {
       height: 100%;
       display: flex;
-      align-items: stretch
+      align-items: stretch;
     }
 
     div.block {
@@ -41,14 +41,11 @@ export class TopBarValues extends LitElement {
       <div class="block">
         <sl-tooltip>
           <intl-message slot="content" label="ui:topBar:bonusTime"> Bonus time </intl-message>
-  
-          <sl-icon name="clock">
-          </sl-icon>
+
+          <sl-icon name="clock"> </sl-icon>
         </sl-tooltip>
 
-        <span class="text">
-          ${bonusTimeFormatted}
-        </span>
+        <span class="text"> ${bonusTimeFormatted} </span>
       </div>
     `;
   }

@@ -4,6 +4,8 @@ import { GeneralState, IGeneralState } from '@state/general-state';
 import { SettingsState, ISettingsState } from '@state/settings-state';
 import { CityState, ICityState } from '@state/city-state';
 import { IMessageLogState, MessageLogState } from '@state/message-log-state';
+import { IProgramFactory, ProgramFactory } from '@state/progam-factory';
+import { IMainframeState, MainframeState } from '@state/mainframe-state';
 import { TYPES } from './types';
 import { container } from './container';
 
@@ -13,3 +15,5 @@ container.bind<IGeneralState>(TYPES.GeneralState).to(GeneralState).inSingletonSc
 container.bind<ISettingsState>(TYPES.SettingsState).to(SettingsState).inSingletonScope().whenTargetIsDefault();
 container.bind<ICityState>(TYPES.CityState).to(CityState).inSingletonScope().whenTargetIsDefault();
 container.bind<IMessageLogState>(TYPES.MessageLogState).to(MessageLogState).inSingletonScope().whenTargetIsDefault();
+container.bind<IProgramFactory>(TYPES.ProgramFactory).to(ProgramFactory).inSingletonScope().whenTargetIsDefault();
+container.bind<IMainframeState>(TYPES.MainframeState).to(MainframeState).inSingletonScope().whenTargetIsDefault();

@@ -1,7 +1,8 @@
+import { ISerializeable } from '@shared/interfaces/serializable';
 import { Language, Theme, MessageFilterEvent } from '@shared/types';
 import { ISettingsSerializedState } from './settings-serialized-state';
 
-export interface ISettingsState {
+export interface ISettingsState extends ISerializeable<ISettingsSerializedState> {
   language: Language;
   theme: Theme;
   messageLogSize: number;
@@ -20,7 +21,4 @@ export interface ISettingsState {
   setMaxTicksPerUpdate(maxTicksPerUpdate: number): void;
   setMapCellSize(mapSize: number): void;
   toggleMessageFilterEvent(event: MessageFilterEvent, enabled: boolean): void;
-  startNewState(): Promise<void>;
-  deserialize(serializedState: ISettingsSerializedState): Promise<void>;
-  serialize(): ISettingsSerializedState;
 }

@@ -4,7 +4,7 @@ declare global {
   var i18next: typeof i18n;
   namespace Cypress {
     interface Chainable {
-      loadGame(saveFile: string): Chainable
+      loadGame(saveFile: string): Chainable;
     }
   }
 }

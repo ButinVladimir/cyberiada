@@ -4,6 +4,7 @@ import { GameSpeed } from '@state/general-state/types';
 import type { ISettingsState } from '@state/settings-state/interfaces/settings-state';
 import type { ICityState } from '@state/city-state/interfaces/city-state';
 import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
+import type { IMainframeState } from '@state/mainframe-state/interfaces/mainframe-state';
 import { TYPES } from '@state/types';
 import { GameStateEvent } from '@shared/types';
 import { IAppState, ISerializedState } from './interfaces';
@@ -14,17 +15,20 @@ export class AppState implements IAppState {
   private _settingsState: ISettingsState;
   private _cityState: ICityState;
   private _messageLogState: IMessageLogState;
+  private _mainframeState: IMainframeState;
 
   constructor(
     @inject(TYPES.GeneralState) _generalState: IGeneralState,
     @inject(TYPES.SettingsState) _settingsState: ISettingsState,
     @inject(TYPES.CityState) _cityState: ICityState,
     @inject(TYPES.MessageLogState) _messageLogState: IMessageLogState,
+    @inject(TYPES.MainframeState) _mainframeState: IMainframeState,
   ) {
     this._generalState = _generalState;
     this._settingsState = _settingsState;
     this._cityState = _cityState;
     this._messageLogState = _messageLogState;
+    this._mainframeState = _mainframeState;
   }
 
   updateState() {
@@ -53,9 +57,10 @@ export class AppState implements IAppState {
   }
 
   async startNewState(): Promise<void> {
-    this._generalState.startNewState();
+    await this._generalState.startNewState();
     await this._settingsState.startNewState();
     await this._cityState.startNewState();
+    await this._mainframeState.startNewState();
   }
 
   serialize(): string {
@@ -63,6 +68,7 @@ export class AppState implements IAppState {
       general: this._generalState.serialize(),
       settings: this._settingsState.serialize(),
       city: this._cityState.serialize(),
+      mainframe: this._mainframeState.serialize(),
     };
 
     const encodedSaveState = btoa(JSON.stringify(saveState));
@@ -73,10 +79,15 @@ export class AppState implements IAppState {
   async deserialize(saveData: string): Promise<void> {
     const parsedSaveData = JSON.parse(atob(saveData)) as ISerializedState;
 
-    this._generalState.deserialize(parsedSaveData.general);
+    await this._generalState.deserialize(parsedSaveData.general);
     await this._settingsState.deserialize(parsedSaveData.settings);
-    this._cityState.deserialize(parsedSaveData.city);
+    await this._cityState.deserialize(parsedSaveData.city);
+    await this._mainframeState.deserialize(parsedSaveData.mainframe);
   }
+
+  addUiEventListener() {}
+
+  removeUiEventListener() {}
 
   fireUiEvents() {
     this._generalState.fireUiEvents();

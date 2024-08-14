@@ -7,7 +7,7 @@ common:
 pages:
   cityOverview: Обзор города
   company: Компания
-  activity: Активность
+  mainframe: Мейнфрейм
   settings: Настройки
 topBar:
   menu: Меню

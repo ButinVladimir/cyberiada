@@ -8,5 +8,6 @@ export class MessageFilterDialogController extends BaseController {
 
   toggleMessageFilterEvent(event: MessageFilterEvent, enabled: boolean) {
     this.settingsState.toggleMessageFilterEvent(event, enabled);
+    this.host.requestUpdate();
   }
 }
