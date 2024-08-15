@@ -5,7 +5,8 @@ import { SettingsState, ISettingsState } from '@state/settings-state';
 import { CityState, ICityState } from '@state/city-state';
 import { IMessageLogState, MessageLogState } from '@state/message-log-state';
 import { IProgramFactory, ProgramFactory } from '@state/progam-factory';
-import { IMainframeState, MainframeState } from '@state/mainframe-state';
+import { IMainframeHardwareState, MainframeHardwareState } from '@/state/mainframe-hardware-state';
+import { IMainframeProgramState, MainframeProgramState } from '@/state/mainframe-program-state';
 import { TYPES } from './types';
 import { container } from './container';
 
@@ -16,4 +17,13 @@ container.bind<ISettingsState>(TYPES.SettingsState).to(SettingsState).inSingleto
 container.bind<ICityState>(TYPES.CityState).to(CityState).inSingletonScope().whenTargetIsDefault();
 container.bind<IMessageLogState>(TYPES.MessageLogState).to(MessageLogState).inSingletonScope().whenTargetIsDefault();
 container.bind<IProgramFactory>(TYPES.ProgramFactory).to(ProgramFactory).inSingletonScope().whenTargetIsDefault();
-container.bind<IMainframeState>(TYPES.MainframeState).to(MainframeState).inSingletonScope().whenTargetIsDefault();
+container
+  .bind<IMainframeHardwareState>(TYPES.MainframeHardwareState)
+  .to(MainframeHardwareState)
+  .inSingletonScope()
+  .whenTargetIsDefault();
+container
+  .bind<IMainframeProgramState>(TYPES.MainframeProgramState)
+  .to(MainframeProgramState)
+  .inSingletonScope()
+  .whenTargetIsDefault();

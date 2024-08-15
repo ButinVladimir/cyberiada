@@ -14,6 +14,8 @@ export class Viewport extends LitElement {
     switch (this.selectedMenuItem) {
       case OverviewMenuItem.cityOverview:
         return html`<ca-city-page></ca-city-page>`;
+      case OverviewMenuItem.mainframe:
+        return html`<ca-mainframe-page></ca-mainframe-page>`;
       case MiscMenuItem.settings:
         return html`<ca-settings-page></ca-settings-page>`;
       default:

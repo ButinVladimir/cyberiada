@@ -14,6 +14,11 @@ export class MessageFilterDialog extends LitElement {
       --width: 40rem;
     }
 
+    sl-dialog::part(body) {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+
     h4.title {
       font-weight: var(--sl-font-weight-bold);
       margin: 0;
@@ -23,7 +28,14 @@ export class MessageFilterDialog extends LitElement {
       display: flex;
       flex-direction: column;
       align-items: stretch;
-      gap: var(--sl-spacing-small);
+      gap: var(--sl-spacing-medium);
+    }
+
+    p.hint {
+      margin-top: 0;
+      margin-bottom: var(--sl-spacing-small);
+      color: var(--sl-input-help-text-color);
+      font-size: var(--sl-font-size-small);
     }
 
     div.events-container {
@@ -57,9 +69,11 @@ export class MessageFilterDialog extends LitElement {
         </h4>
 
         <div class="body">
-          <intl-message label="ui:messageLog:messageFilterHint">
-            Enable events in filter to start adding messages for them in log.
-          </intl-message>
+          <p class="hint">
+            <intl-message label="ui:messageLog:messageFilterHint">
+              Enable events in filter to start adding messages for them in log.
+            </intl-message>
+          </p>
 
           <div class="events-container">${repeat(GAME_STATE_EVENTS, (event) => event, this.renderEventCheckbox)}</div>
         </div>

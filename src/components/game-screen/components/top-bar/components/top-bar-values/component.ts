@@ -10,6 +10,7 @@ export class TopBarValues extends LitElement {
       height: 100%;
       display: flex;
       align-items: stretch;
+      gap: var(--sl-spacing-medium);
     }
 
     div.block {
@@ -17,8 +18,12 @@ export class TopBarValues extends LitElement {
       align-items: center;
     }
 
-    sl-icon {
+    sl-icon[name='clock'] {
       margin-right: var(--sl-spacing-small);
+    }
+
+    sl-icon[name='currency-bitcoin'] {
+      margin-right: var(--sl-spacing-2x-small);
     }
 
     span.text {
@@ -46,6 +51,16 @@ export class TopBarValues extends LitElement {
         </sl-tooltip>
 
         <span class="text"> ${bonusTimeFormatted} </span>
+      </div>
+
+      <div class="block">
+        <sl-tooltip>
+          <intl-message slot="content" label="ui:topBar:money"> Money </intl-message>
+
+          <sl-icon name="currency-bitcoin"> </sl-icon>
+        </sl-tooltip>
+
+        <span class="text"> ${this._topBarValuesController.money} </span>
       </div>
     `;
   }

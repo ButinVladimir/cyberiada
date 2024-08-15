@@ -4,7 +4,8 @@ import { GameSpeed } from '@state/general-state/types';
 import type { ISettingsState } from '@state/settings-state/interfaces/settings-state';
 import type { ICityState } from '@state/city-state/interfaces/city-state';
 import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
-import type { IMainframeState } from '@state/mainframe-state/interfaces/mainframe-state';
+import type { IMainframeHardwareState } from '@/state/mainframe-hardware-state/interfaces/mainframe-hardware-state';
+import type { IMainframeProgramState } from '@/state/mainframe-program-state/interfaces/mainframe-program-state';
 import { TYPES } from '@state/types';
 import { GameStateEvent } from '@shared/types';
 import { IAppState, ISerializedState } from './interfaces';
@@ -15,20 +16,23 @@ export class AppState implements IAppState {
   private _settingsState: ISettingsState;
   private _cityState: ICityState;
   private _messageLogState: IMessageLogState;
-  private _mainframeState: IMainframeState;
+  private _mainframeHardwareState: IMainframeHardwareState;
+  private _mainframeProgramState: IMainframeProgramState;
 
   constructor(
     @inject(TYPES.GeneralState) _generalState: IGeneralState,
     @inject(TYPES.SettingsState) _settingsState: ISettingsState,
     @inject(TYPES.CityState) _cityState: ICityState,
     @inject(TYPES.MessageLogState) _messageLogState: IMessageLogState,
-    @inject(TYPES.MainframeState) _mainframeState: IMainframeState,
+    @inject(TYPES.MainframeHardwareState) _mainframeHardwareState: IMainframeHardwareState,
+    @inject(TYPES.MainframeProgramState) _mainframeProgramState: IMainframeProgramState,
   ) {
     this._generalState = _generalState;
     this._settingsState = _settingsState;
     this._cityState = _cityState;
     this._messageLogState = _messageLogState;
-    this._mainframeState = _mainframeState;
+    this._mainframeHardwareState = _mainframeHardwareState;
+    this._mainframeProgramState = _mainframeProgramState;
   }
 
   updateState() {
@@ -60,7 +64,8 @@ export class AppState implements IAppState {
     await this._generalState.startNewState();
     await this._settingsState.startNewState();
     await this._cityState.startNewState();
-    await this._mainframeState.startNewState();
+    await this._mainframeHardwareState.startNewState();
+    await this._mainframeProgramState.startNewState();
   }
 
   serialize(): string {
@@ -68,7 +73,8 @@ export class AppState implements IAppState {
       general: this._generalState.serialize(),
       settings: this._settingsState.serialize(),
       city: this._cityState.serialize(),
-      mainframe: this._mainframeState.serialize(),
+      mainframeHardware: this._mainframeHardwareState.serialize(),
+      mainframeProgram: this._mainframeProgramState.serialize(),
     };
 
     const encodedSaveState = btoa(JSON.stringify(saveState));
@@ -82,7 +88,8 @@ export class AppState implements IAppState {
     await this._generalState.deserialize(parsedSaveData.general);
     await this._settingsState.deserialize(parsedSaveData.settings);
     await this._cityState.deserialize(parsedSaveData.city);
-    await this._mainframeState.deserialize(parsedSaveData.mainframe);
+    await this._mainframeHardwareState.deserialize(parsedSaveData.mainframeHardware);
+    await this._mainframeProgramState.deserialize(parsedSaveData.mainframeProgram);
   }
 
   addUiEventListener() {}

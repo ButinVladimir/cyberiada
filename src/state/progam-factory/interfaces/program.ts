@@ -5,6 +5,7 @@ export interface IProgram {
   name: ProgramName;
   level: number;
   quality: number;
-  perform(cores: number): boolean;
+  isRepeatable: boolean;
+  perform(cores: number, ram: number): void;
   serialize(): IMakeProgramParameters;
 }

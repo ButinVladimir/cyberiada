@@ -7,6 +7,7 @@ import { setBasePath } from '@shoelace-style/shoelace/dist/utilities/base-path.j
 import '@state/bindings';
 import '@shoelace-style/shoelace/dist/themes/light.css';
 import '@shoelace-style/shoelace/dist/themes/dark.css';
+import './index.css';
 
 setBasePath('/shoelace');
 

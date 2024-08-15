@@ -8,7 +8,10 @@ export interface IGeneralState extends ISerializeable<IGeneralSerializedState>, 
   lastUpdateTime: number;
   bonusTime: number;
   gameSpeed: GameSpeed;
+  money: number;
   changeGameSpeed(gameSpeed: GameSpeed): void;
   updateLastUpdateTime(): void;
   decreaseBonusTimeByTick(): boolean;
+  increaseMoney(moneyDelta: number): void;
+  purchase(cost: number, handler: () => void): boolean;
 }

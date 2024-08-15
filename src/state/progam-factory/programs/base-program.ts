@@ -22,7 +22,9 @@ export abstract class BaseProgram implements IProgram {
     return this._quality;
   }
 
-  abstract perform(cores: number): boolean;
+  abstract get isRepeatable(): boolean;
+
+  abstract perform(cores: number, ram: number): void;
 
   serialize(): IMakeProgramParameters {
     return {

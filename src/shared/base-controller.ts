@@ -4,6 +4,8 @@ import { IGeneralState } from '@state/general-state/interfaces/general-state';
 import { ISettingsState } from '@state/settings-state/interfaces/settings-state';
 import { ICityState } from '@state/city-state/interfaces/city-state';
 import { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
+import { IMainframeHardwareState } from '@/state/mainframe-hardware-state/interfaces/mainframe-hardware-state';
+import { IMainframeProgramState } from '@/state/mainframe-program-state/interfaces/mainframe-program-state';
 import { container } from '@state/container';
 import { TYPES } from '@state/types';
 import { IApp } from '@state/app';
@@ -42,5 +44,13 @@ export class BaseController implements ReactiveController {
 
   protected get messageLogState(): IMessageLogState {
     return container.get<IMessageLogState>(TYPES.MessageLogState);
+  }
+
+  protected get mainframeHardwareState(): IMainframeHardwareState {
+    return container.get<IMainframeHardwareState>(TYPES.MainframeHardwareState);
+  }
+
+  protected get mainframeProgramState(): IMainframeProgramState {
+    return container.get<IMainframeProgramState>(TYPES.MainframeProgramState);
   }
 }

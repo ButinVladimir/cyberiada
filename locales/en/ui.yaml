@@ -17,6 +17,7 @@ topBar:
     playNormal: Play at normal speed (do not use bonus time)
     playFast: Play at fast speed (use bonus time)
   bonusTime: Bonus time
+  money: Money
 messageLog:
   messageLog: Message log
   clearMessages: Clear messages
@@ -51,3 +52,17 @@ city:
     toggleZoomPanel: Toggle zoom panel
     zoom: Zoom
     name: Name
+mainframe:
+  mainframe: Mainframe
+  tabs:
+    processes: Processes
+    hardware: Hardware
+    programs: Programs
+  hardware:
+    performance: 'Performance level: {{value}}'
+    performanceHint: Higher performance level leads to faster running processes.
+    cores: 'Cores level: {{value}}'
+    coresHint: Additional cores allow better scalability and running more processes at same time.
+    ram: 'RAM level: {{value}}'
+    ramHint: Additional RAM allows to keep more processes in memory so they could ran later or in bigger batches.
+    buy: Buy x{{value.increase}} for {{value.cost}}

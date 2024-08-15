@@ -12,14 +12,23 @@
   },
   "startingSettings": {
     "scenario": "tutorial1",
+    "money": 1000000000,
     "mainframe": {
-      "performanceLevel": 0,
-      "coresLevel": 0,
-      "ramLevel": 0
-    },
-    "phisher": {
-      "level": 0,
-      "quality": 0
+      "performanceLevel": 1,
+      "coresLevel": 1,
+      "ramLevel": 1
     }
+  },
+  "cloudAIShare": {
+    "baseIncome": 1000,
+    "qualityMultiplier": 1.2
+  },
+  "mainframeHardware": {
+    "performanceBaseCost": 1000,
+    "performanceCostMultiplier": 1.5,
+    "coresBaseCost": 10000,
+    "coresCostMultiplier": 1.5,
+    "ramBaseCost": 10000,
+    "ramCostMultiplier": 1.5
   }
 }

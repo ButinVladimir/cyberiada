@@ -5,4 +5,5 @@ export interface IGeneralSerializedState {
   lastUpdateTime: number;
   bonusTime: number;
   gameSpeed: GameSpeed;
+  money: number;
 }

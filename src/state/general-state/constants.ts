@@ -1,1 +1,3 @@
-export const GENERAL_STATE_UI_EVENTS = {};
+export const GENERAL_STATE_UI_EVENTS = {
+  PURCHASE_COMPLETED: Symbol('PURCHASE_COMPLETED'),
+};

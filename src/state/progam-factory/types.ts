@@ -1,3 +1,3 @@
 export enum ProgramName {
-  phisher = 'phisher',
+  cloudAiShare = 'cloudAiShare',
 }
