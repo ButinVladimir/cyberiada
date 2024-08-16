@@ -1,21 +1,28 @@
 import { injectable, inject } from 'inversify';
 import constants from '@configs/constants.json';
 import type { IGeneralState } from '@state/general-state/interfaces/general-state';
+import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
 import { TYPES } from '@state/types';
 import { EventBatcher } from '@shared/event-batcher';
+import { PurchaseEvent } from '@shared/types';
 import { IMainframeHardwareState, IMainframeHardwareSerializedState } from './interfaces';
 
 @injectable()
 export class MainframeHardwareState implements IMainframeHardwareState {
   private _generalState: IGeneralState;
+  private _messageLogState: IMessageLogState;
   private readonly _uiEventBatcher: EventBatcher;
 
   private _performance: number;
   private _cores: number;
   private _ram: number;
 
-  constructor(@inject(TYPES.GeneralState) _generalState: IGeneralState) {
+  constructor(
+    @inject(TYPES.GeneralState) _generalState: IGeneralState,
+    @inject(TYPES.MessageLogState) _messageLogState: IMessageLogState,
+  ) {
     this._generalState = _generalState;
+    this._messageLogState = _messageLogState;
 
     this._performance = constants.startingSettings.mainframe.performanceLevel;
     this._cores = constants.startingSettings.mainframe.coresLevel;
@@ -122,13 +129,16 @@ export class MainframeHardwareState implements IMainframeHardwareState {
 
   private handlePurchasePerformanceIncrease = (increase: number) => () => {
     this._performance += increase;
+    this._messageLogState.postMessage(PurchaseEvent.performanceUpdated, { level: this._performance });
   };
 
   private handlePurchaseCoresIncrease = (increase: number) => () => {
     this._cores += increase;
+    this._messageLogState.postMessage(PurchaseEvent.coresUpdated, { level: this._cores });
   };
 
   private handlePurchaseRamIncrease = (increase: number) => () => {
     this._ram += increase;
+    this._messageLogState.postMessage(PurchaseEvent.ramUpdated, { level: this._ram });
   };
 }

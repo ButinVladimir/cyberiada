@@ -28,4 +28,11 @@ export enum GameStateEvent {
   gameStateUpdated = 'gameStateUpdated',
 }
 
-export type MessageFilterEvent = GameStateEvent;
+export enum PurchaseEvent {
+  performanceUpdated = 'performanceUpdated',
+  coresUpdated = 'coresUpdated',
+  ramUpdated = 'ramUpdated',
+  programPurchased = 'programPurchased',
+}
+
+export type MessageFilterEvent = GameStateEvent | PurchaseEvent;

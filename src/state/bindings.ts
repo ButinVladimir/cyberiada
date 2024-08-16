@@ -5,8 +5,8 @@ import { SettingsState, ISettingsState } from '@state/settings-state';
 import { CityState, ICityState } from '@state/city-state';
 import { IMessageLogState, MessageLogState } from '@state/message-log-state';
 import { IProgramFactory, ProgramFactory } from '@state/progam-factory';
-import { IMainframeHardwareState, MainframeHardwareState } from '@/state/mainframe-hardware-state';
-import { IMainframeProgramState, MainframeProgramState } from '@/state/mainframe-program-state';
+import { IMainframeHardwareState, MainframeHardwareState } from '@state/mainframe-hardware-state';
+import { IMainframeOwnedProgramsState, MainframeOwnedProgramsState } from '@state/mainframe-owned-programs-state';
 import { TYPES } from './types';
 import { container } from './container';
 
@@ -23,7 +23,7 @@ container
   .inSingletonScope()
   .whenTargetIsDefault();
 container
-  .bind<IMainframeProgramState>(TYPES.MainframeProgramState)
-  .to(MainframeProgramState)
+  .bind<IMainframeOwnedProgramsState>(TYPES.MainframeOwnedProgramsState)
+  .to(MainframeOwnedProgramsState)
   .inSingletonScope()
   .whenTargetIsDefault();

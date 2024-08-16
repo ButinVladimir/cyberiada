@@ -32,8 +32,8 @@ export class MainframeHardwarePanelArticle extends LitElement {
 
     p.hint {
       margin: 0;
-      color: var(--sl-input-help-text-color);
-      font-size: var(--sl-font-size-small);
+      color: var(--ca-hint-color);
+      font-size: var(--ca-hint-font-size);
     }
   `;
 

@@ -1,8 +1,21 @@
-names:
-  gameStarted: Game started
-  gameSaved: Game saved
-  gameStateUpdated: Game state updated
-messages:
-  gameStarted: Game has been started
-  gameSaved: Game has been saved
-  gameStateUpdated: Game state has been updated {{parameters.count}} times
+gameStarted:
+  name: Game started
+  message: Game has been started
+gameSaved:
+  name: Game saved
+  message: Game has been saved
+gameStateUpdated:
+  name: Game state updated
+  message: Game state has been updated {{value.count}} times
+performanceUpdated:
+  name: Mainframe performance updated
+  message: Mainframe performance has been updated to {{value.level}}
+coresUpdated:
+  name: Mainframe cores updated
+  message: Mainframe cores has been updated to {{value.level}}
+ramUpdated:
+  name: Mainframe ram updated
+  message: Mainframe RAM has been updated to {{value.level}}
+programPurchased:
+  name: Program purchased
+  message: Program $t(programs:{{value.programName}}:name) with level {{value.level}} and quality {{value.quality}} has been purchased

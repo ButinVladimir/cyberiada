@@ -27,14 +27,12 @@ export class DeleteSaveDataDialog extends LitElement {
           Are you sure want to delete save data? You cannot revert this operation unless you exported a backup savefile.
         </intl-message>
 
-        <div slot="footer">
-          <sl-button size="medium" variant="default" outline @click=${this.handleDeleteSaveDataDialogClose}>
-            <intl-message label="ui:common:cancel"> Cancel </intl-message>
-          </sl-button>
-          <sl-button size="medium" variant="danger" @click=${this.handleDeleteSaveDataDialogSubmit}>
-            <intl-message label="ui:common:delete"> Delete </intl-message>
-          </sl-button>
-        </div>
+        <sl-button slot="footer" size="medium" variant="default" outline @click=${this.handleDeleteSaveDataDialogClose}>
+          <intl-message label="ui:common:cancel"> Cancel </intl-message>
+        </sl-button>
+        <sl-button slot="footer" size="medium" variant="danger" @click=${this.handleDeleteSaveDataDialogSubmit}>
+          <intl-message label="ui:common:delete"> Delete </intl-message>
+        </sl-button>
       </sl-dialog>
     `;
   }

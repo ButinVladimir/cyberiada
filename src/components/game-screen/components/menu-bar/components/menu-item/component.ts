@@ -56,7 +56,7 @@ export class MenuItem extends LitElement {
 
     return html`
       <button type="button" class=${classes}>
-        <intl-message label="ui:pages:${this.name}"> ${this.name} </intl-message>
+        <intl-message label="ui:pages:${this.name}"> Name </intl-message>
       </button>
     `;
   }

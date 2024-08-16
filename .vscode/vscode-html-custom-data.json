@@ -83,7 +83,7 @@
     },
     {
       "name": "ca-message-filter-dialog",
-      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `renderEventCheckbox` - \n\n  * `handleMessageFilterDialogClose` - \n\n  * `handleToggleEvent` - \n\n  * `_messageFilterDialogController` {`MessageFilterDialogController`} - ",
+      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `renderEventCheckbox` - \n\n  * `handleClose` - \n\n  * `handleToggleEvent` - \n\n  * `_messageFilterDialogController` {`MessageFilterDialogController`} - ",
       "attributes": [
         {
           "name": "is-open",
@@ -160,6 +160,22 @@
         {
           "name": "cost",
           "description": "`cost` {`number`} - \n\nProperty: cost"
+        }
+      ]
+    },
+    {
+      "name": "ca-mainframe-owned-programs-panel",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_isBuyProgramDialogOpen` {`boolean`} - \n\n  * `handleBuyProgramDialogOpen` - \n\n  * `handleBuyProgramDialogClose` - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-buy-program-dialog",
+      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_programInput` {`SlSelect`} - \n\n  * `_levelInput` {`SlInput`} - \n\n  * `_qualityInput` {`SlSelect`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `_programName` - \n\n  * `_level` {`number`} - \n\n  * `_quality` {`number`} - \n\n  * `handleClose` - \n\n  * `handleProgramChange` - \n\n  * `handleLevelChange` - \n\n  * `handleQualityChange` - \n\n  * `handleBuy` - \n\n  * `_buyProgramDialogController` {`BuyProgramDialogController`} - ",
+      "attributes": [
+        {
+          "name": "is-open",
+          "description": "`is-open` {`boolean`} - \n\nProperty: isOpen\n\nDefault: false",
+          "valueSet": "v"
         }
       ]
     },

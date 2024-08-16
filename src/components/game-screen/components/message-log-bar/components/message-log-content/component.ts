@@ -40,12 +40,12 @@ export class MessageLogContent extends LitElement {
 
   private renderMessage = (message: IMessage): TemplateResult => {
     const parameters = message.parameters ? JSON.stringify(message.parameters) : undefined;
-    const label = `events:messages:${message.event}`;
+    const label = `events:${message.event}:message`;
 
     return html`
       <p>
         [<intl-datetime time .value=${message.date}></intl-datetime>]
-        <intl-message label=${label} parameters=${ifDefined(parameters)}></intl-message>
+        <intl-message label=${label} value=${ifDefined(parameters)}>Message</intl-message>
       </p>
     `;
   };

@@ -16,4 +16,6 @@ body {
   --ca-max-width: 1920px;
   --sl-input-font-family: var(--sl-font-sans);
   --sl-input-help-text-color: var(--sl-color-neutral-700);
+  --ca-hint-color: var(--sl-input-help-text-color);
+  --ca-hint-font-size: var(--sl-font-size-small);
 }

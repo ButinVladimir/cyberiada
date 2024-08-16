@@ -26,15 +26,21 @@ export class MainframePage extends LitElement {
         <sl-tab slot="nav" panel="hardware">
           <intl-message label="ui:mainframe:tabs:hardware">Hardware</intl-message>
         </sl-tab>
-        <sl-tab slot="nav" panel="programs">
-          <intl-message label="ui:mainframe:tabs:programs">Programs</intl-message>
+        <sl-tab slot="nav" panel="ownedPrograms">
+          <intl-message label="ui:mainframe:tabs:ownedPrograms">Owned programs</intl-message>
+        </sl-tab>
+        <sl-tab slot="nav" panel="developingPrograms">
+          <intl-message label="ui:mainframe:tabs:developingPrograms">Developing programs</intl-message>
         </sl-tab>
 
         <sl-tab-panel name="processes">Processes</sl-tab-panel>
         <sl-tab-panel name="hardware">
           <ca-mainframe-hardware-panel></ca-mainframe-hardware-panel>
         </sl-tab-panel>
-        <sl-tab-panel name="programs">Programs</sl-tab-panel>
+        <sl-tab-panel name="ownedPrograms">
+          <ca-mainframe-owned-programs-panel></ca-mainframe-owned-programs-panel>
+        </sl-tab-panel>
+        <sl-tab-panel name="developingPrograms">Developing programs</sl-tab-panel>
       </sl-tab-group>
     `;
   }

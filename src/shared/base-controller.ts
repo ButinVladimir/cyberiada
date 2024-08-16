@@ -4,11 +4,12 @@ import { IGeneralState } from '@state/general-state/interfaces/general-state';
 import { ISettingsState } from '@state/settings-state/interfaces/settings-state';
 import { ICityState } from '@state/city-state/interfaces/city-state';
 import { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
-import { IMainframeHardwareState } from '@/state/mainframe-hardware-state/interfaces/mainframe-hardware-state';
-import { IMainframeProgramState } from '@/state/mainframe-program-state/interfaces/mainframe-program-state';
+import { IMainframeHardwareState } from '@state/mainframe-hardware-state/interfaces/mainframe-hardware-state';
+import { IMainframeOwnedProgramsState } from '@state/mainframe-owned-programs-state/interfaces/mainframe-owned-program-state';
 import { container } from '@state/container';
 import { TYPES } from '@state/types';
 import { IApp } from '@state/app';
+import { IProgramFactory } from '@/state/progam-factory';
 
 export class BaseController implements ReactiveController {
   protected host: ReactiveControllerHost;
@@ -50,7 +51,11 @@ export class BaseController implements ReactiveController {
     return container.get<IMainframeHardwareState>(TYPES.MainframeHardwareState);
   }
 
-  protected get mainframeProgramState(): IMainframeProgramState {
-    return container.get<IMainframeProgramState>(TYPES.MainframeProgramState);
+  protected get mainframeOwnedProgramState(): IMainframeOwnedProgramsState {
+    return container.get<IMainframeOwnedProgramsState>(TYPES.MainframeOwnedProgramsState);
+  }
+
+  protected get programFactory(): IProgramFactory {
+    return container.get<IProgramFactory>(TYPES.ProgramFactory);
   }
 }

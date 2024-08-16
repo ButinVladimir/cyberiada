@@ -54,11 +54,17 @@ city:
     name: Name
 mainframe:
   mainframe: Mainframe
+  program: Program
+  level: Level
+  levelHint: Level cannot be above current development level
+  quality: Quality
   tabs:
     processes: Processes
     hardware: Hardware
-    programs: Programs
+    ownedPrograms: Owned programs
+    developingPrograms: Developing programs
   hardware:
+    keyboardHint: Press either Ctrl or Shift to buy 10 levels. Press both Ctrl and Shift to buy 100 levels.
     performance: 'Performance level: {{value}}'
     performanceHint: Higher performance level leads to faster running processes.
     cores: 'Cores level: {{value}}'
@@ -66,3 +72,7 @@ mainframe:
     ram: 'RAM level: {{value}}'
     ramHint: Additional RAM allows to keep more processes in memory so they could ran later or in bigger batches.
     buy: Buy x{{value.increase}} for {{value.cost}}
+  ownedPrograms:
+    buyProgram: Buy a program
+    buyProgramDialogHint: Select program type, level and quality to buy it. Level cannot be above current development level.
+    buy: Buy for {{value.cost}}

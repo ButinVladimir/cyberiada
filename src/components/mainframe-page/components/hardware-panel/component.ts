@@ -14,6 +14,12 @@ export class MainframeHardwarePanel extends LitElement {
       justify-content: center;
       gap: var(--sl-spacing-large);
     }
+
+    p.hint {
+      margin: 0;
+      color: var(--ca-hint-color);
+      font-size: var(--ca-hint-font-size);
+    }
   `;
 
   private _mainframeHardwarePanelController: MainframeHardwarePanelController;
@@ -48,6 +54,11 @@ export class MainframeHardwarePanel extends LitElement {
     const increase = this.getIncrease();
 
     return html`
+      <p class="hint">
+        <intl-message label="ui:mainframe:hardware:keyboardHint">
+          Press either ctrl or shift to buy 10 levels. Press both ctrl and shift to buy 100 levels.
+        </intl-message>
+      </p>
       <ca-mainframe-hardware-panel-article
         label="performance"
         increase=${increase}

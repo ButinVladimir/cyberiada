@@ -7,5 +7,8 @@ export interface IProgram {
   quality: number;
   isRepeatable: boolean;
   perform(cores: number, ram: number): void;
+  getCost(): number;
+  getRam(): number;
+  getCores(): number;
   serialize(): IMakeProgramParameters;
 }

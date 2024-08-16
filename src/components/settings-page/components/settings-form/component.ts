@@ -99,7 +99,7 @@ export class SettingsForm extends LitElement {
         ${LANGUAGES.map(
           (language) =>
             html` <sl-option value=${language}>
-              <intl-message label="ui:settings:languages:${language}"> ${language} </intl-message>
+              <intl-message label="ui:settings:languages:${language}"> Language </intl-message>
             </sl-option>`,
         )}
       </sl-select>
@@ -112,7 +112,7 @@ export class SettingsForm extends LitElement {
         ${THEMES.map(
           (theme) =>
             html` <sl-option value=${theme}>
-              <intl-message label="ui:settings:themes:${theme}"> ${theme} </intl-message>
+              <intl-message label="ui:settings:themes:${theme}"> Theme </intl-message>
             </sl-option>`,
         )}
       </sl-select>

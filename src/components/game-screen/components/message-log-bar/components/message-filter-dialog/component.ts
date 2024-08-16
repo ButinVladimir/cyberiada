@@ -2,8 +2,8 @@ import { LitElement, TemplateResult, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import SlCheckbox from '@shoelace-style/shoelace/dist/components/checkbox/checkbox.component.js';
-import { GAME_STATE_EVENTS } from '@shared/constants';
-import { GameStateEvent } from '@shared/types';
+import { GAME_STATE_EVENTS, PURCHASE_EVENTS } from '@shared/constants';
+import { MessageFilterEvent } from '@shared/types';
 import { MessageFilterDialogClose } from './events';
 import { MessageFilterDialogController } from './controller';
 
@@ -20,6 +20,7 @@ export class MessageFilterDialog extends LitElement {
     }
 
     h4.title {
+      font-size: var(--sl-font-size-large);
       font-weight: var(--sl-font-weight-bold);
       margin: 0;
     }
@@ -28,14 +29,13 @@ export class MessageFilterDialog extends LitElement {
       display: flex;
       flex-direction: column;
       align-items: stretch;
-      gap: var(--sl-spacing-medium);
     }
 
     p.hint {
       margin-top: 0;
       margin-bottom: var(--sl-spacing-small);
-      color: var(--sl-input-help-text-color);
-      font-size: var(--sl-font-size-small);
+      color: var(--ca-hint-color);
+      font-size: var(--ca-hint-font-size);
     }
 
     div.events-container {
@@ -44,6 +44,10 @@ export class MessageFilterDialog extends LitElement {
       row-gap: var(--sl-spacing-3x-small);
       grid-template-columns: repeat(2, minmax(0, 30em));
       grid-auto-rows: auto;
+    }
+
+    sl-divider {
+      --spacing: var(--sl-spacing-medium);
     }
   `;
 
@@ -63,7 +67,7 @@ export class MessageFilterDialog extends LitElement {
 
   render() {
     return html`
-      <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleMessageFilterDialogClose}>
+      <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
         <h4 slot="label" class="title">
           <intl-message label="ui:messageLog:messageFilter"> Message filter </intl-message>
         </h4>
@@ -76,16 +80,20 @@ export class MessageFilterDialog extends LitElement {
           </p>
 
           <div class="events-container">${repeat(GAME_STATE_EVENTS, (event) => event, this.renderEventCheckbox)}</div>
+
+          <sl-divider></sl-divider>
+
+          <div class="events-container">${repeat(PURCHASE_EVENTS, (event) => event, this.renderEventCheckbox)}</div>
         </div>
 
-        <sl-button slot="footer" size="large" variant="default" outline @click=${this.handleMessageFilterDialogClose}>
-          <intl-message label="ui:common:close" @click=${this.handleMessageFilterDialogClose}> Close </intl-message>
+        <sl-button slot="footer" size="medium" variant="default" outline @click=${this.handleClose}>
+          <intl-message label="ui:common:close"> Close </intl-message>
         </sl-button>
       </sl-dialog>
     `;
   }
 
-  private renderEventCheckbox = (event: GameStateEvent): TemplateResult => {
+  private renderEventCheckbox = (event: MessageFilterEvent): TemplateResult => {
     return html`
       <sl-checkbox
         size="medium"
@@ -94,12 +102,13 @@ export class MessageFilterDialog extends LitElement {
         ?checked=${this._messageFilterDialogController.isMessageFilterEventEnabled(event)}
         @sl-change=${this.handleToggleEvent}
       >
-        <intl-message label=${`events:names:${event}`}> ${event} </intl-message>
+        <intl-message label=${`events:${event}:name`}> Event </intl-message>
       </sl-checkbox>
     `;
   };
 
-  private handleMessageFilterDialogClose = (event: Event) => {
+  private handleClose = (event: Event) => {
+    event.preventDefault();
     event.stopPropagation();
 
     this.dispatchEvent(new MessageFilterDialogClose());
@@ -108,6 +117,6 @@ export class MessageFilterDialog extends LitElement {
   private handleToggleEvent = (event: Event) => {
     const target = event.target as SlCheckbox;
 
-    this._messageFilterDialogController.toggleMessageFilterEvent(target.value as GameStateEvent, target.checked);
+    this._messageFilterDialogController.toggleMessageFilterEvent(target.value as MessageFilterEvent, target.checked);
   };
 }

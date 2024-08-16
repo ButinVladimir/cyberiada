@@ -1,0 +1,10 @@
+{
+  "cloudAiShare": {
+    "ram": 0,
+    "cores": 0,
+    "processCompletionPoints": 0,
+    "baseCost": 1000,
+    "levelCostMultiplier": 1.1,
+    "qualityCostMultiplier": 1.5
+  }
+}

@@ -6,6 +6,6 @@ export const TYPES = {
   SettingsState: Symbol('SettingsState'),
   MessageLogState: Symbol('MessageLogState'),
   MainframeHardwareState: Symbol('MainframeHardwareState'),
-  MainframeProgramState: Symbol('MainframeProgramState'),
+  MainframeOwnedProgramsState: Symbol('MainframeOwnedProgramsState'),
   ProgramFactory: Symbol('ProgramFactory'),
 };
