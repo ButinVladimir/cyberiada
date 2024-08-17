@@ -12,7 +12,7 @@ export class MapCellZoomPanel extends LitElement {
       display: flex;
       align-items: center;
       background-color: var(--sl-panel-background-color);
-      border: var(--sl-panel-border-width) solid var(--sl-panel-border-color);
+      border: var(--ca-border);
       border-radius: var(--sl-border-radius-small);
     }
 

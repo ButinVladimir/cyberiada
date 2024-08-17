@@ -56,8 +56,8 @@ mainframe:
   mainframe: Mainframe
   program: Program
   level: Level
-  levelHint: Level cannot be above current development level
   quality: Quality
+  description: Description
   tabs:
     processes: Processes
     hardware: Hardware
@@ -73,6 +73,7 @@ mainframe:
     ramHint: Additional RAM allows to keep more processes in memory so they could ran later or in bigger batches.
     buy: Buy x{{value.increase}} for {{value.cost}}
   ownedPrograms:
-    buyProgram: Buy a program
-    buyProgramDialogHint: Select program type, level and quality to buy it. Level cannot be above current development level.
-    buy: Buy for {{value.cost}}
+    purchaseProgram: Purchase a program
+    purchaseProgramDialogHint: Select program type, level and quality to purchase it. Level cannot be above current development level. Quality is limited depending on gained favors. If you already have program with same name, old one will be replaced with new one.
+    purchase: Purchase for {{value.cost}}
+    emptyListNotification: You don't have any programs

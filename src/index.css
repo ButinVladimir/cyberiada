@@ -18,4 +18,6 @@ body {
   --sl-input-help-text-color: var(--sl-color-neutral-700);
   --ca-hint-color: var(--sl-input-help-text-color);
   --ca-hint-font-size: var(--sl-font-size-small);
+  --ca-border: var(--sl-panel-border-width) solid var(--sl-panel-border-color);
+  --ca-table-header-font-weight: var(--sl-font-weight-bold);
 }

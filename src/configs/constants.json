@@ -2,7 +2,7 @@
   "mapWidth": 100,
   "mapHeight": 100,
   "defaultSettings": {
-    "messageLogSize": 10,
+    "messageLogSize": 20,
     "updateInterval": 100,
     "autosaveEnabled": true,
     "autosaveInterval": 60000,

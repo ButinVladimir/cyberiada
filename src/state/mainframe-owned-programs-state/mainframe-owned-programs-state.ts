@@ -8,13 +8,17 @@ import { TYPES } from '@state/types';
 import { ProgramName } from '@state/progam-factory/types';
 import { PurchaseEvent } from '@shared/types';
 import { formatQuality } from '@shared/formatters';
+import { EventBatcher } from '@shared/event-batcher';
 import { IMainframeOwnedProgramsState, IMainframeOwnedProgramsSerializedState } from './interfaces';
+import { MAINFRAME_OWNED_PROGRAMES_STATE_UI_EVENTS } from './constants';
 
 @injectable()
 export class MainframeOwnedProgramsState implements IMainframeOwnedProgramsState {
   private _programFactory: IProgramFactory;
   private _generalState: IGeneralState;
   private _messageLogState: IMessageLogState;
+
+  private readonly _uiEventBatcher: EventBatcher;
 
   private _ownedPrograms: Map<ProgramName, IProgram>;
 
@@ -28,6 +32,8 @@ export class MainframeOwnedProgramsState implements IMainframeOwnedProgramsState
     this._messageLogState = _messageLogState;
 
     this._ownedPrograms = new Map();
+
+    this._uiEventBatcher = new EventBatcher();
   }
 
   purchaseProgram(programParameters: IMakeProgramParameters): boolean {
@@ -64,13 +70,33 @@ export class MainframeOwnedProgramsState implements IMainframeOwnedProgramsState
     };
   }
 
-  handlePurchaseProgram = (program: IProgram) => () => {
-    this._ownedPrograms.set(program.name, program);
+  addUiEventListener(eventName: symbol, handler: (...args: any[]) => void) {
+    this._uiEventBatcher.addListener(eventName, handler);
+  }
+
+  removeUiEventListener(eventName: symbol, handler: (...args: any[]) => void) {
+    this._uiEventBatcher.removeListener(eventName, handler);
+  }
+
+  fireUiEvents() {
+    this._uiEventBatcher.fireEvents();
+  }
+
+  private handlePurchaseProgram = (newProgram: IProgram) => () => {
+    const existingProgram = this._ownedPrograms.get(newProgram.name);
+
+    if (existingProgram) {
+      existingProgram.updateProgram(newProgram);
+    } else {
+      this._ownedPrograms.set(newProgram.name, newProgram);
+    }
+
+    this._uiEventBatcher.enqueueEvent(MAINFRAME_OWNED_PROGRAMES_STATE_UI_EVENTS.OWNED_PROGRAMS_UPDATED);
 
     this._messageLogState.postMessage(PurchaseEvent.programPurchased, {
-      programName: program.name,
-      level: program.level,
-      quality: formatQuality(program.quality),
+      programName: newProgram.name,
+      level: newProgram.level,
+      quality: formatQuality(newProgram.quality),
     });
   };
 }

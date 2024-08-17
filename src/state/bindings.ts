@@ -7,6 +7,7 @@ import { IMessageLogState, MessageLogState } from '@state/message-log-state';
 import { IProgramFactory, ProgramFactory } from '@state/progam-factory';
 import { IMainframeHardwareState, MainframeHardwareState } from '@state/mainframe-hardware-state';
 import { IMainframeOwnedProgramsState, MainframeOwnedProgramsState } from '@state/mainframe-owned-programs-state';
+import { IMainframeProcessesState, MainframeProcessesState } from '@state/mainframe-processes-state';
 import { TYPES } from './types';
 import { container } from './container';
 
@@ -25,5 +26,10 @@ container
 container
   .bind<IMainframeOwnedProgramsState>(TYPES.MainframeOwnedProgramsState)
   .to(MainframeOwnedProgramsState)
+  .inSingletonScope()
+  .whenTargetIsDefault();
+container
+  .bind<IMainframeProcessesState>(TYPES.MainframeProcessesState)
+  .to(MainframeProcessesState)
   .inSingletonScope()
   .whenTargetIsDefault();

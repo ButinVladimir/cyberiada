@@ -3,7 +3,6 @@ import constants from '@configs/constants.json';
 import type { IGeneralState } from '@state/general-state/interfaces/general-state';
 import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
 import { TYPES } from '@state/types';
-import { EventBatcher } from '@shared/event-batcher';
 import { PurchaseEvent } from '@shared/types';
 import { IMainframeHardwareState, IMainframeHardwareSerializedState } from './interfaces';
 
@@ -11,7 +10,6 @@ import { IMainframeHardwareState, IMainframeHardwareSerializedState } from './in
 export class MainframeHardwareState implements IMainframeHardwareState {
   private _generalState: IGeneralState;
   private _messageLogState: IMessageLogState;
-  private readonly _uiEventBatcher: EventBatcher;
 
   private _performance: number;
   private _cores: number;
@@ -27,8 +25,6 @@ export class MainframeHardwareState implements IMainframeHardwareState {
     this._performance = constants.startingSettings.mainframe.performanceLevel;
     this._cores = constants.startingSettings.mainframe.coresLevel;
     this._ram = constants.startingSettings.mainframe.ramLevel;
-
-    this._uiEventBatcher = new EventBatcher();
   }
 
   get performance() {
@@ -113,18 +109,6 @@ export class MainframeHardwareState implements IMainframeHardwareState {
       cores: this.cores,
       ram: this.ram,
     };
-  }
-
-  addUiEventListener(eventName: symbol, handler: (...args: any[]) => void) {
-    this._uiEventBatcher.addListener(eventName, handler);
-  }
-
-  removeUiEventListener(eventName: symbol, handler: (...args: any[]) => void) {
-    this._uiEventBatcher.removeListener(eventName, handler);
-  }
-
-  fireUiEvents() {
-    this._uiEventBatcher.fireEvents();
   }
 
   private handlePurchasePerformanceIncrease = (increase: number) => () => {

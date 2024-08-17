@@ -1,1 +1,2 @@
-import './buy-program-dialog';
+import './purchase-program-dialog';
+import './owned-programs-list';

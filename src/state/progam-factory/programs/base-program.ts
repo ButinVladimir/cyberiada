@@ -25,7 +25,18 @@ export abstract class BaseProgram implements IProgram {
 
   abstract get isRepeatable(): boolean;
 
+  abstract get isPassive(): boolean;
+
   abstract perform(cores: number, ram: number): void;
+
+  updateProgram(newProgram: IProgram): void {
+    if (this.name !== newProgram.name) {
+      throw new Error(`Unable to update program ${this.name} with ${newProgram.name}`);
+    }
+
+    this._level = newProgram.level;
+    this._quality = newProgram.quality;
+  }
 
   getCost(): number {
     const programData = programs[this.name];

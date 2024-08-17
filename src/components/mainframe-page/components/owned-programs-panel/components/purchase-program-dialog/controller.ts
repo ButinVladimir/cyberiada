@@ -4,7 +4,7 @@ import { BaseController } from '@shared/base-controller';
 import { IProgram } from '@state/progam-factory/interfaces/program';
 import { ProgramName } from '@state/progam-factory/types';
 
-export class BuyProgramDialogController extends BaseController {
+export class PurchaseProgramDialogController extends BaseController {
   hostConnected() {
     this.app.addUiEventListener(APP_UI_EVENTS.REFRESHED_UI, this.handleRefreshUI);
     this.generalState.addUiEventListener(GENERAL_STATE_UI_EVENTS.PURCHASE_COMPLETED, this.handleRefreshUI);

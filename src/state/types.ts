@@ -7,5 +7,6 @@ export const TYPES = {
   MessageLogState: Symbol('MessageLogState'),
   MainframeHardwareState: Symbol('MainframeHardwareState'),
   MainframeOwnedProgramsState: Symbol('MainframeOwnedProgramsState'),
+  MainframeProcessesState: Symbol('MainframeProcessesState'),
   ProgramFactory: Symbol('ProgramFactory'),
 };

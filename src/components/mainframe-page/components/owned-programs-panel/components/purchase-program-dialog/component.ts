@@ -4,14 +4,14 @@ import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.com
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.component.js';
 import { PROGRAMS } from '@state/progam-factory/constants';
 import { ProgramName } from '@state/progam-factory/types';
-import { BuyProgramDialogClose } from './events';
+import { PurchaseProgramDialogClose } from './events';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { formatQuality } from '@shared/formatters';
 import { QUALITIES } from '@shared/constants';
-import { BuyProgramDialogController } from './controller';
+import { PurchaseProgramDialogController } from './controller';
 
-@customElement('ca-buy-program-dialog')
-export class BuyProgramDialog extends LitElement {
+@customElement('ca-purchase-program-dialog')
+export class PurchaseProgramDialog extends LitElement {
   static styles = css`
     sl-dialog {
       --width: 50rem;
@@ -70,7 +70,7 @@ export class BuyProgramDialog extends LitElement {
     }
   `;
 
-  private _buyProgramDialogController: BuyProgramDialogController;
+  private _purchaseProgramDialogController: PurchaseProgramDialogController;
 
   @query('sl-select[name="program"]')
   private _programInput!: SlSelect;
@@ -99,15 +99,15 @@ export class BuyProgramDialog extends LitElement {
   constructor() {
     super();
 
-    this._buyProgramDialogController = new BuyProgramDialogController(this);
+    this._purchaseProgramDialogController = new PurchaseProgramDialogController(this);
   }
 
   render() {
     const program = this._programName
-      ? this._buyProgramDialogController.getProgram(this._programName, this._level, this._quality)
+      ? this._purchaseProgramDialogController.getProgram(this._programName, this._level, this._quality)
       : undefined;
     const cost = program ? program.getCost() : 0;
-    const money = this._buyProgramDialogController.money;
+    const money = this._purchaseProgramDialogController.money;
 
     const submitButtonValues = JSON.stringify({ cost });
     const isSubmitButtonEnabled = program && money >= cost;
@@ -115,13 +115,13 @@ export class BuyProgramDialog extends LitElement {
     return html`
       <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
         <h4 slot="label" class="title">
-          <intl-message label="ui:mainframe:ownedPrograms:buyProgram"> Buy a program </intl-message>
+          <intl-message label="ui:mainframe:ownedPrograms:purchaseProgram"> Purchase a program </intl-message>
         </h4>
 
         <div class="body">
           <p class="hint">
-            <intl-message label="ui:mainframe:ownedPrograms:buyProgramDialogHint">
-              Select program type, level and quality to buy it.
+            <intl-message label="ui:mainframe:ownedPrograms:purchaseProgramDialogHint">
+              Select program type, level and quality to purchase it.
             </intl-message>
           </p>
 
@@ -179,9 +179,11 @@ export class BuyProgramDialog extends LitElement {
           size="medium"
           variant="primary"
           ?disabled=${!isSubmitButtonEnabled}
-          @click=${this.handleBuy}
+          @click=${this.handlePurchase}
         >
-          <intl-message label="ui:mainframe:ownedPrograms:buy" value=${submitButtonValues}> Buy </intl-message>
+          <intl-message label="ui:mainframe:ownedPrograms:purchase" value=${submitButtonValues}>
+            Purchase
+          </intl-message>
         </sl-button>
       </sl-dialog>
     `;
@@ -203,7 +205,7 @@ export class BuyProgramDialog extends LitElement {
     event.preventDefault();
     event.stopPropagation();
 
-    this.dispatchEvent(new BuyProgramDialogClose());
+    this.dispatchEvent(new PurchaseProgramDialogClose());
   };
 
   private handleProgramChange = () => {
@@ -229,15 +231,19 @@ export class BuyProgramDialog extends LitElement {
     this._quality = this._qualityInput.value as unknown as number;
   };
 
-  private handleBuy = (event: Event) => {
+  private handlePurchase = (event: Event) => {
     event.stopPropagation();
     event.preventDefault();
 
     if (this._programName) {
-      const isBought = this._buyProgramDialogController.purchaseProgram(this._programName, this._level, this._quality);
+      const isBought = this._purchaseProgramDialogController.purchaseProgram(
+        this._programName,
+        this._level,
+        this._quality,
+      );
 
       if (isBought) {
-        this.dispatchEvent(new BuyProgramDialogClose());
+        this.dispatchEvent(new PurchaseProgramDialogClose());
       }
     }
   };

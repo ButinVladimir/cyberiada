@@ -139,7 +139,7 @@
     },
     {
       "name": "ca-mainframe-hardware-panel-article",
-      "description": "Attributes:\n\n  * `label` {`string`} - \n\n  * `increase` {`number`} - \n\n  * `money` {`number`} - \n\n  * `level` {`number`} - \n\n  * `cost` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `label` {`string`} - \n\n  * `increase` {`number`} - \n\n  * `money` {`number`} - \n\n  * `level` {`number`} - \n\n  * `cost` {`number`} - ",
+      "description": "Attributes:\n\n  * `label` {`string`} - \n\n  * `increase` {`number`} - \n\n  * `money` {`number`} - \n\n  * `level` {`number`} - \n\n  * `cost` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `label` {`string`} - \n\n  * `increase` {`number`} - \n\n  * `money` {`number`} - \n\n  * `level` {`number`} - \n\n  * `cost` {`number`} - \n\n  * `handleBuy` - ",
       "attributes": [
         {
           "name": "label",
@@ -165,12 +165,17 @@
     },
     {
       "name": "ca-mainframe-owned-programs-panel",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_isBuyProgramDialogOpen` {`boolean`} - \n\n  * `handleBuyProgramDialogOpen` - \n\n  * `handleBuyProgramDialogClose` - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_isPurchaseProgramDialogOpen` {`boolean`} - \n\n  * `handlePurchaseProgramDialogOpen` - \n\n  * `handlePurchaseProgramDialogClose` - ",
       "attributes": []
     },
     {
-      "name": "ca-buy-program-dialog",
-      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_programInput` {`SlSelect`} - \n\n  * `_levelInput` {`SlInput`} - \n\n  * `_qualityInput` {`SlSelect`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `_programName` - \n\n  * `_level` {`number`} - \n\n  * `_quality` {`number`} - \n\n  * `handleClose` - \n\n  * `handleProgramChange` - \n\n  * `handleLevelChange` - \n\n  * `handleQualityChange` - \n\n  * `handleBuy` - \n\n  * `_buyProgramDialogController` {`BuyProgramDialogController`} - ",
+      "name": "ca-owned-programs-list",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderContent` - \n\n  * `renderEmptyListNotification` - \n\n  * `renderListItem` - \n\n  * `_ownedProgramsListController` {`OwnedProgramsListController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-purchase-program-dialog",
+      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_programInput` {`SlSelect`} - \n\n  * `_levelInput` {`SlInput`} - \n\n  * `_qualityInput` {`SlSelect`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `_programName` - \n\n  * `_level` {`number`} - \n\n  * `_quality` {`number`} - \n\n  * `handleClose` - \n\n  * `handleProgramChange` - \n\n  * `handleLevelChange` - \n\n  * `handleQualityChange` - \n\n  * `handlePurchase` - \n\n  * `_purchaseProgramDialogController` {`PurchaseProgramDialogController`} - ",
       "attributes": [
         {
           "name": "is-open",

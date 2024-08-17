@@ -1,5 +1,6 @@
 import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { BuyHardwareUpgradeEvent } from './events';
 
 @customElement('ca-mainframe-hardware-panel-article')
 export class MainframeHardwarePanelArticle extends LitElement {
@@ -7,7 +8,7 @@ export class MainframeHardwarePanelArticle extends LitElement {
     :host {
       padding: var(--sl-spacing-large);
       box-sizing: border-box;
-      border: var(--sl-panel-border-width) solid var(--sl-panel-border-color);
+      border: var(--ca-border);
       border-radius: var(--sl-border-radius-small);
       display: flex;
       align-items: center;
@@ -83,10 +84,23 @@ export class MainframeHardwarePanelArticle extends LitElement {
         </p>
       </div>
       <div class="button-container">
-        <sl-button variant="primary" type="button" size="medium" ?disabled=${this.money < this.cost}>
+        <sl-button
+          variant="primary"
+          type="button"
+          size="medium"
+          ?disabled=${this.money < this.cost}
+          @click=${this.handleBuy}
+        >
           <intl-message label="ui:mainframe:hardware:buy" value=${buttonValue}> Buy </intl-message>
         </sl-button>
       </div>
     `;
   }
+
+  handleBuy = (event: Event) => {
+    event.stopPropagation();
+    event.preventDefault();
+
+    this.dispatchEvent(new BuyHardwareUpgradeEvent());
+  };
 }

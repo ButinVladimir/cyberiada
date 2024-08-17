@@ -3,6 +3,7 @@ import { ISettingsSerializedState } from '@state/settings-state/interfaces/setti
 import { ICitySerializedState } from '@state/city-state/interfaces/city-serialized-state';
 import { IMainframeHardwareSerializedState } from '@/state/mainframe-hardware-state/interfaces/mainframe-hardware-serialized-state';
 import { IMainframeOwnedProgramsSerializedState } from '@/state/mainframe-owned-programs-state/interfaces/mainframe-owned-programs-serialized-state';
+import { IMainframeProcessesSerializedState } from '@/state/mainframe-processes-state/interfaces/mainframe-processes-serialized-state';
 
 export interface ISerializedState {
   general: IGeneralSerializedState;
@@ -10,4 +11,5 @@ export interface ISerializedState {
   city: ICitySerializedState;
   mainframeHardware: IMainframeHardwareSerializedState;
   mainframeOwnedPrograms: IMainframeOwnedProgramsSerializedState;
+  mainframeProcesses: IMainframeProcessesSerializedState;
 }

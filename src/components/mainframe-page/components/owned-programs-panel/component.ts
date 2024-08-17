@@ -3,36 +3,48 @@ import { customElement, state } from 'lit/decorators.js';
 
 @customElement('ca-mainframe-owned-programs-panel')
 export class MainframeHardwarePanel extends LitElement {
-  static styles = css``;
+  static styles = css`
+    :host {
+      display: flex;
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    ca-owned-programs-list {
+      margin-top: var(--sl-spacing-large);
+    }
+  `;
 
   @state()
-  private _isBuyProgramDialogOpen = false;
+  private _isPurchaseProgramDialogOpen = false;
 
   render() {
     return html`
-      <sl-button variant="primary" size="medium" @click=${this.handleBuyProgramDialogOpen}>
-        <intl-message label="ui:mainframe:ownedPrograms:buyProgram"> Buy a program </intl-message>
+      <sl-button class="purchase-button" variant="primary" size="medium" @click=${this.handlePurchaseProgramDialogOpen}>
+        <intl-message label="ui:mainframe:ownedPrograms:purchaseProgram"> Purchase a program </intl-message>
       </sl-button>
 
-      <ca-buy-program-dialog
-        ?is-open=${this._isBuyProgramDialogOpen}
-        @buy-program-dialog-close=${this.handleBuyProgramDialogClose}
+      <ca-purchase-program-dialog
+        ?is-open=${this._isPurchaseProgramDialogOpen}
+        @purchase-program-dialog-close=${this.handlePurchaseProgramDialogClose}
       >
-      </ca-buy-program-dialog>
+      </ca-purchase-program-dialog>
+
+      <ca-owned-programs-list></ca-owned-programs-list>
     `;
   }
 
-  private handleBuyProgramDialogOpen = (event: Event) => {
+  private handlePurchaseProgramDialogOpen = (event: Event) => {
     event.preventDefault();
     event.stopPropagation();
 
-    this._isBuyProgramDialogOpen = true;
+    this._isPurchaseProgramDialogOpen = true;
   };
 
-  private handleBuyProgramDialogClose = (event: Event) => {
+  private handlePurchaseProgramDialogClose = (event: Event) => {
     event.preventDefault();
     event.stopPropagation();
 
-    this._isBuyProgramDialogOpen = false;
+    this._isPurchaseProgramDialogOpen = false;
   };
 }

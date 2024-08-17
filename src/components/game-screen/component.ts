@@ -19,7 +19,7 @@ export class GameScreen extends LitElement {
 
     .top-bar-outer-container {
       background-color: var(--sl-panel-background-color);
-      border-bottom: var(--sl-panel-border-width) solid var(--sl-panel-border-color);
+      border-bottom: var(--ca-border);
       box-shadow: var(--sl-shadow-small);
       display: flex;
       justify-content: center;
@@ -36,7 +36,7 @@ export class GameScreen extends LitElement {
     }
 
     .content-outer-container {
-      border-bottom: var(--sl-panel-border-width) solid var(--sl-panel-border-color);
+      border-bottom: var(--ca-border);
       box-shadow: var(--sl-shadow-small);
       display: flex;
       justify-content: center;
@@ -70,7 +70,7 @@ export class GameScreen extends LitElement {
     }
 
     .menu-bar-container {
-      border-right: var(--sl-panel-border-width) solid var(--sl-panel-border-color);
+      border-right: var(--ca-border);
     }
     .menu-bar-container.opened {
       width: 16%;
@@ -84,7 +84,7 @@ export class GameScreen extends LitElement {
     }
 
     .message-log-bar-container {
-      border-left: var(--sl-panel-border-width) solid var(--sl-panel-border-color);
+      border-left: var(--ca-border);
     }
     .message-log-bar-container.opened {
       width: 32%;

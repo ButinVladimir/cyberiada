@@ -19,7 +19,7 @@ export class MessageLogBar extends LitElement {
       display: flex;
       align-items: flex-start;
       padding: var(--sl-spacing-small);
-      border-bottom: var(--sl-panel-border-width) solid var(--sl-panel-border-color);
+      border-bottom: var(--ca-border);
     }
 
     h4.title {

@@ -6,6 +6,8 @@ export interface IProgram {
   level: number;
   quality: number;
   isRepeatable: boolean;
+  isPassive: boolean;
+  updateProgram(newProgram: IProgram): void;
   perform(cores: number, ram: number): void;
   getCost(): number;
   getRam(): number;

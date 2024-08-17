@@ -6,8 +6,8 @@ import type { ICityState } from '@state/city-state/interfaces/city-state';
 import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
 import type { IMainframeHardwareState } from '@state/mainframe-hardware-state/interfaces/mainframe-hardware-state';
 import type { IMainframeOwnedProgramsState } from '@/state/mainframe-owned-programs-state/interfaces/mainframe-owned-program-state';
+import type { IMainframeProcessesState } from '@/state/mainframe-processes-state/interfaces/mainframe-processes-state';
 import { TYPES } from '@state/types';
-import { GameStateEvent } from '@shared/types';
 import { IAppState, ISerializedState } from './interfaces';
 
 @injectable()
@@ -18,6 +18,7 @@ export class AppState implements IAppState {
   private _messageLogState: IMessageLogState;
   private _mainframeHardwareState: IMainframeHardwareState;
   private _mainframeOwnedProgramsState: IMainframeOwnedProgramsState;
+  private _mainframeProcessesState: IMainframeProcessesState;
 
   constructor(
     @inject(TYPES.GeneralState) _generalState: IGeneralState,
@@ -26,6 +27,7 @@ export class AppState implements IAppState {
     @inject(TYPES.MessageLogState) _messageLogState: IMessageLogState,
     @inject(TYPES.MainframeHardwareState) _mainframeHardwareState: IMainframeHardwareState,
     @inject(TYPES.MainframeOwnedProgramsState) _mainframeOwnedProgramsState: IMainframeOwnedProgramsState,
+    @inject(TYPES.MainframeProcessesState) _mainframeProcessesState: IMainframeProcessesState,
   ) {
     this._generalState = _generalState;
     this._settingsState = _settingsState;
@@ -33,12 +35,12 @@ export class AppState implements IAppState {
     this._messageLogState = _messageLogState;
     this._mainframeHardwareState = _mainframeHardwareState;
     this._mainframeOwnedProgramsState = _mainframeOwnedProgramsState;
+    this._mainframeProcessesState = _mainframeProcessesState;
   }
 
   updateState() {
     this._generalState.updateLastUpdateTime();
 
-    let updatedTicks = 0;
     let maxTicks = 0;
 
     switch (this._generalState.gameSpeed) {
@@ -54,11 +56,13 @@ export class AppState implements IAppState {
     }
 
     for (let tick = 0; tick < maxTicks && this._generalState.decreaseBonusTimeByTick(); tick++) {
-      updatedTicks++;
+      this.processTick();
     }
-
-    this._messageLogState.postMessage(GameStateEvent.gameStateUpdated, { count: updatedTicks });
   }
+
+  private processTick = () => {
+    this._mainframeProcessesState.processTick();
+  };
 
   async startNewState(): Promise<void> {
     await this._generalState.startNewState();
@@ -66,6 +70,7 @@ export class AppState implements IAppState {
     await this._cityState.startNewState();
     await this._mainframeHardwareState.startNewState();
     await this._mainframeOwnedProgramsState.startNewState();
+    await this._mainframeProcessesState.startNewState();
   }
 
   serialize(): string {
@@ -75,6 +80,7 @@ export class AppState implements IAppState {
       city: this._cityState.serialize(),
       mainframeHardware: this._mainframeHardwareState.serialize(),
       mainframeOwnedPrograms: this._mainframeOwnedProgramsState.serialize(),
+      mainframeProcesses: this._mainframeProcessesState.serialize(),
     };
 
     const encodedSaveState = btoa(JSON.stringify(saveState));
@@ -90,6 +96,7 @@ export class AppState implements IAppState {
     await this._cityState.deserialize(parsedSaveData.city);
     await this._mainframeHardwareState.deserialize(parsedSaveData.mainframeHardware);
     await this._mainframeOwnedProgramsState.deserialize(parsedSaveData.mainframeOwnedPrograms);
+    await this._mainframeProcessesState.deserialize(parsedSaveData.mainframeProcesses);
   }
 
   addUiEventListener() {}
@@ -99,5 +106,7 @@ export class AppState implements IAppState {
   fireUiEvents() {
     this._generalState.fireUiEvents();
     this._messageLogState.fireUiEvents();
+    this._mainframeOwnedProgramsState.fireUiEvents();
+    this._mainframeProcessesState.fireUiEvents();
   }
 }
