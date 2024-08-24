@@ -18,4 +18,22 @@ ramUpdated:
   message: Mainframe RAM has been updated to {{value.level}}
 programPurchased:
   name: Program purchased
-  message: Program $t(programs:{{value.programName}}:name) with level {{value.level}} and quality {{value.quality}} has been purchased
+  message: Program $t(programs:{{value.programName}}:name) with level {{value.level}} and quality $t(ui:common:qualities:{{value.quality}}) has been purchased
+processStarted:
+  name: Process started
+  message: Process for program $t(programs:{{value.programName}}:name) with threads {{value.threads}} has been started
+processFinished:
+  name: Process finished
+  message: Process for program $t(programs:{{value.programName}}:name) with threads {{value.threads}} has been finished
+processDeleted:
+  name: Process deleted
+  message: Process for program $t(programs:{{value.programName}}:name) with threads {{value.threads}} has been deleted
+programDevelopmentStarted:
+  name: Program development started
+  message: Development for program $t(programs:{{value.programName}}:name) with level {{value.level}} and quality $t(ui:common:qualities:{{value.quality}}) has been started
+programDevelopmentFinished:
+  name: Program development finished
+  message: Development for program $t(programs:{{value.programName}}:name) with level {{value.level}} and quality $t(ui:common:qualities:{{value.quality}}) has been finished
+programDevelopmentAborted:
+  name: Program development aborted
+  message: Development for program $t(programs:{{value.programName}}:name) with level {{value.level}} and quality $t(ui:common:qualities:{{value.quality}}) has been aborted

@@ -4,9 +4,12 @@ import { IProcess } from './process';
 import { IMainframeProcessesSerializedState } from './mainframe-processes-serialized-state';
 
 export interface IMainframeProcessesState extends ISerializeable<IMainframeProcessesSerializedState>, IUIEventEmitter {
-  processes: IProcess[];
-  addProcess(programName: ProgramName): boolean;
-  removeProcess(id: string): void;
+  availableCores: number;
+  availableRam: number;
+  listProcesses(): IProcess[];
+  getProcessByName(programName: ProgramName): IProcess;
+  addProcess(programName: ProgramName, threads: number): boolean;
+  deleteProcess(programName: ProgramName): void;
   updateRunningProcesses(): void;
   processTick(): void;
 }

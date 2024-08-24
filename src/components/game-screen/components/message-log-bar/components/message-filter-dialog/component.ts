@@ -2,7 +2,7 @@ import { LitElement, TemplateResult, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import SlCheckbox from '@shoelace-style/shoelace/dist/components/checkbox/checkbox.component.js';
-import { GAME_STATE_EVENTS, PURCHASE_EVENTS } from '@shared/constants';
+import { GAME_STATE_EVENTS, PURCHASE_EVENTS, PROGRAM_EVENTS } from '@shared/constants';
 import { MessageFilterEvent } from '@shared/types';
 import { MessageFilterDialogClose } from './events';
 import { MessageFilterDialogController } from './controller';
@@ -84,6 +84,10 @@ export class MessageFilterDialog extends LitElement {
           <sl-divider></sl-divider>
 
           <div class="events-container">${repeat(PURCHASE_EVENTS, (event) => event, this.renderEventCheckbox)}</div>
+
+          <sl-divider></sl-divider>
+
+          <div class="events-container">${repeat(PROGRAM_EVENTS, (event) => event, this.renderEventCheckbox)}</div>
         </div>
 
         <sl-button slot="footer" size="medium" variant="default" outline @click=${this.handleClose}>

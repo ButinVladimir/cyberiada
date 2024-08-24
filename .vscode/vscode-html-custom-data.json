@@ -185,6 +185,55 @@
       ]
     },
     {
+      "name": "ca-mainframe-processes-panel",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_isStartProcessDialogOpen` {`boolean`} - \n\n  * `handleStartProcessDialogOpen` - \n\n  * `handleStartProcessDialogClose` - \n\n  * `_processesPanelController` {`ProcessesPanelController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-process-actions-column",
+      "description": "Attributes:\n\n  * `program-name` - \n\n  * `current-completion-points` {`number`} - \n\n  * `max-completion-points` {`number`} - \n\n  * `active` {`boolean`} - \n\n  * `autoscalable` {`boolean`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` - \n\n  * `currentCompletionPoints` {`number`} - \n\n  * `maxCompletionPoints` {`number`} - \n\n  * `active` {`boolean`} - \n\n  * `autoscalable` {`boolean`} - \n\n  * `handleToggleProcess` - \n\n  * `handleDeleteProcess` - \n\n  * `_processActionsColumnController` {`ProcessActionsColumnController`} - ",
+      "attributes": [
+        {
+          "name": "program-name",
+          "description": "`program-name` - \n\nProperty: programName\n\nDefault: cloudAiShare"
+        },
+        {
+          "name": "current-completion-points",
+          "description": "`current-completion-points` {`number`} - \n\nProperty: currentCompletionPoints\n\nDefault: 0"
+        },
+        {
+          "name": "max-completion-points",
+          "description": "`max-completion-points` {`number`} - \n\nProperty: maxCompletionPoints\n\nDefault: 0"
+        },
+        {
+          "name": "active",
+          "description": "`active` {`boolean`} - \n\nProperty: active\n\nDefault: true",
+          "valueSet": "v"
+        },
+        {
+          "name": "autoscalable",
+          "description": "`autoscalable` {`boolean`} - \n\nProperty: autoscalable\n\nDefault: false",
+          "valueSet": "v"
+        }
+      ]
+    },
+    {
+      "name": "ca-processes-list",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderContent` - \n\n  * `renderEmptyListNotification` - \n\n  * `renderListItem` - \n\n  * `_processesListController` {`ProcessesListController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-start-process-dialog",
+      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_programInput` {`SlSelect`} - \n\n  * `_threadsInput` {`SlInput`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `_programName` - \n\n  * `_threads` {`number`} - \n\n  * `handleClose` - \n\n  * `handleProgramChange` - \n\n  * `handleThreadsChange` - \n\n  * `handleStartProcess` - \n\n  * `formatProgramSelectItem` - \n\n  * `_startProcessDialogController` {`StartProcessDialogController`} - ",
+      "attributes": [
+        {
+          "name": "is-open",
+          "description": "`is-open` {`boolean`} - \n\nProperty: isOpen\n\nDefault: false",
+          "valueSet": "v"
+        }
+      ]
+    },
+    {
       "name": "ca-settings-page",
       "description": "Properties:\n\n  * `styles` {`CSSResult`} - ",
       "attributes": []

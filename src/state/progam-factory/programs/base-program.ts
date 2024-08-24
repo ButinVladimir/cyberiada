@@ -25,9 +25,9 @@ export abstract class BaseProgram implements IProgram {
 
   abstract get isRepeatable(): boolean;
 
-  abstract get isPassive(): boolean;
+  abstract get isAutoscalable(): boolean;
 
-  abstract perform(cores: number, ram: number): void;
+  abstract perform(usedCores: number, usedRam: number): void;
 
   updateProgram(newProgram: IProgram): void {
     if (this.name !== newProgram.name) {
@@ -53,7 +53,7 @@ export abstract class BaseProgram implements IProgram {
   }
 
   getCores() {
-    return programs[this.name].cores * this.quality;
+    return programs[this.name].cores * (this.quality + 1);
   }
 
   serialize(): IMakeProgramParameters {

@@ -4,6 +4,14 @@ common:
   delete: Delete
   close: Close
   loading: Loading...
+  qualities:
+    0: I
+    1: II
+    2: III
+    3: IV
+    4: V
+    5: VI
+    6: VII
 pages:
   cityOverview: City overview
   company: Company
@@ -57,12 +65,13 @@ mainframe:
   program: Program
   level: Level
   quality: Quality
+  threads: Threads
   description: Description
   tabs:
     processes: Processes
     hardware: Hardware
     ownedPrograms: Owned programs
-    developingPrograms: Developing programs
+    developingPrograms: Programs in development
   hardware:
     keyboardHint: Press either Ctrl or Shift to buy 10 levels. Press both Ctrl and Shift to buy 100 levels.
     performance: 'Performance level: {{value}}'
@@ -73,7 +82,33 @@ mainframe:
     ramHint: Additional RAM allows to keep more processes in memory so they could ran later or in bigger batches.
     buy: Buy x{{value.increase}} for {{value.cost}}
   ownedPrograms:
-    purchaseProgram: Purchase a program
-    purchaseProgramDialogHint: Select program type, level and quality to purchase it. Level cannot be above current development level. Quality is limited depending on gained favors. If you already have program with same name, old one will be replaced with new one.
+    purchaseProgram: Purchase program
+    purchaseProgramDialogHint: Select program type, level and quality to purchase it.
+      Level cannot be above current development level.
+      Quality is limited depending on gained favors.
+      If you already have program with same name, old one will be replaced with new one.
     purchase: Purchase for {{value.cost}}
-    emptyListNotification: You don't have any programs
+    emptyListNotification: You don't have any owned programs
+  processes:
+    startProcess: Start process
+    startProcessDialogHint: Select one of owned programs to start process for it.
+      If you already have process for same program, old one will be replaced with new one.
+      Threads allow to run multiple instances of same process at same time, but additional threads require additional memory.
+    emptyListNotification: You don't have any processes
+    programSelectItem: $t(programs:{{value.programName}}:name), level {{value.level}}, quality $t(ui:common:qualities:{{value.quality}})
+    progressBarLabel: "{{value.currentCompletionPoints}} \/ {{value.maxCompletionPoints}}"
+    processToggle: Enable / disable process
+    processDelete: Delete process
+    autoscalable: Autoscalable
+    availableCores: 'Available cores: {{value}}'
+    availableRam: 'Available RAM: {{value}}'
+  developingPrograms:
+    startProgramDevelopment: Start program development
+    startProgramDevelopmentDialogHint: Select program type, level and quality to purchase it.
+      Level cannot be above current development level.
+      Quality is limited depending on gained favors.
+      If you already have development for same program, old one will be replaced with new one.
+    emptyListNotification: You don't have any programs in development
+    developingProgramBarLabel: "{{value.currentDevelopmentPoints}} \/ {{value.maxDevelopmentPoints}}"
+    developingProgramToggle: Enable / disable program development
+    developingProgramDelete: Abort program development

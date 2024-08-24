@@ -7,7 +7,6 @@ import type { IMessageLogState } from '@state/message-log-state/interfaces/messa
 import { TYPES } from '@state/types';
 import { ProgramName } from '@state/progam-factory/types';
 import { PurchaseEvent } from '@shared/types';
-import { formatQuality } from '@shared/formatters';
 import { EventBatcher } from '@shared/event-batcher';
 import { IMainframeOwnedProgramsState, IMainframeOwnedProgramsSerializedState } from './interfaces';
 import { MAINFRAME_OWNED_PROGRAMES_STATE_UI_EVENTS } from './constants';
@@ -36,6 +35,18 @@ export class MainframeOwnedProgramsState implements IMainframeOwnedProgramsState
     this._uiEventBatcher = new EventBatcher();
   }
 
+  addProgram(newProgram: IProgram): void {
+    const existingProgram = this._ownedPrograms.get(newProgram.name);
+
+    if (existingProgram) {
+      existingProgram.updateProgram(newProgram);
+    } else {
+      this._ownedPrograms.set(newProgram.name, newProgram);
+    }
+
+    this._uiEventBatcher.enqueueEvent(MAINFRAME_OWNED_PROGRAMES_STATE_UI_EVENTS.OWNED_PROGRAMS_UPDATED);
+  }
+
   purchaseProgram(programParameters: IMakeProgramParameters): boolean {
     const program = this._programFactory.makeProgram(programParameters);
 
@@ -47,7 +58,7 @@ export class MainframeOwnedProgramsState implements IMainframeOwnedProgramsState
   }
 
   getOwnedProgramByName(name: ProgramName): IProgram | undefined {
-    return this._ownedPrograms.get(name)!;
+    return this._ownedPrograms.get(name);
   }
 
   // eslint-disable-next-line @typescript-eslint/require-await
@@ -83,20 +94,12 @@ export class MainframeOwnedProgramsState implements IMainframeOwnedProgramsState
   }
 
   private handlePurchaseProgram = (newProgram: IProgram) => () => {
-    const existingProgram = this._ownedPrograms.get(newProgram.name);
-
-    if (existingProgram) {
-      existingProgram.updateProgram(newProgram);
-    } else {
-      this._ownedPrograms.set(newProgram.name, newProgram);
-    }
-
-    this._uiEventBatcher.enqueueEvent(MAINFRAME_OWNED_PROGRAMES_STATE_UI_EVENTS.OWNED_PROGRAMS_UPDATED);
+    this.addProgram(newProgram);
 
     this._messageLogState.postMessage(PurchaseEvent.programPurchased, {
       programName: newProgram.name,
       level: newProgram.level,
-      quality: formatQuality(newProgram.quality),
+      quality: newProgram.quality,
     });
   };
 }

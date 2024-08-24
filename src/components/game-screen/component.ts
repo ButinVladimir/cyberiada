@@ -87,7 +87,7 @@ export class GameScreen extends LitElement {
       border-left: var(--ca-border);
     }
     .message-log-bar-container.opened {
-      width: 32%;
+      width: 24%;
     }
   `;
 

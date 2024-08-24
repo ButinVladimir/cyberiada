@@ -35,4 +35,13 @@ export enum PurchaseEvent {
   programPurchased = 'programPurchased',
 }
 
-export type MessageFilterEvent = GameStateEvent | PurchaseEvent;
+export enum ProgramsEvent {
+  processStarted = 'processStarted',
+  processFinished = 'processFinished',
+  processDeleted = 'processDeleted',
+  programDevelopmentStarted = 'programDevelopmentStarted',
+  programDevelopmentFinished = 'programDevelopmentFinished',
+  programDevelopmentAborted = 'programDevelopmentAborted',
+}
+
+export type MessageFilterEvent = GameStateEvent | PurchaseEvent | ProgramsEvent;

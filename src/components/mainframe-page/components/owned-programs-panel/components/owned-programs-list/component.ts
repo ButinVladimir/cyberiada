@@ -2,7 +2,6 @@ import { LitElement, css, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { IProgram } from '@state/progam-factory/interfaces/program';
-import { formatQuality } from '@shared/formatters';
 import { OwnedProgramsListController } from './controller';
 
 @customElement('ca-owned-programs-list')
@@ -121,7 +120,9 @@ export class OwnedProgramsList extends LitElement {
           <intl-message label="programs:${program.name}:name">Progam name</intl-message>
         </td>
         <td class="level">${program.level}</td>
-        <td class="quality">${formatQuality(program.quality)}</td>
+        <td class="quality">
+          <intl-message label="ui:common:qualities:${program.quality}">quality</intl-message>
+        </td>
         <td class="description">Description goes here</td>
       </tr>
     `;

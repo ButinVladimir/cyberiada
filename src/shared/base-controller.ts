@@ -6,6 +6,7 @@ import { ICityState } from '@state/city-state/interfaces/city-state';
 import { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
 import { IMainframeHardwareState } from '@state/mainframe-hardware-state/interfaces/mainframe-hardware-state';
 import { IMainframeOwnedProgramsState } from '@state/mainframe-owned-programs-state/interfaces/mainframe-owned-program-state';
+import { IMainframeProcessesState } from '@state/mainframe-processes-state/interfaces/mainframe-processes-state';
 import { container } from '@state/container';
 import { TYPES } from '@state/types';
 import { IApp } from '@state/app';
@@ -53,6 +54,10 @@ export class BaseController implements ReactiveController {
 
   protected get mainframeOwnedProgramState(): IMainframeOwnedProgramsState {
     return container.get<IMainframeOwnedProgramsState>(TYPES.MainframeOwnedProgramsState);
+  }
+
+  protected get mainframeProcessesState(): IMainframeProcessesState {
+    return container.get<IMainframeProcessesState>(TYPES.MainframeProcessesState);
   }
 
   protected get programFactory(): IProgramFactory {

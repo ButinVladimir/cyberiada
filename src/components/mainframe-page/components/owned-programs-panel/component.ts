@@ -20,7 +20,7 @@ export class MainframeHardwarePanel extends LitElement {
 
   render() {
     return html`
-      <sl-button class="purchase-button" variant="primary" size="medium" @click=${this.handlePurchaseProgramDialogOpen}>
+      <sl-button variant="primary" size="medium" @click=${this.handlePurchaseProgramDialogOpen}>
         <intl-message label="ui:mainframe:ownedPrograms:purchaseProgram"> Purchase a program </intl-message>
       </sl-button>
 

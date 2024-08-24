@@ -1,4 +1,13 @@
-import { GameStateEvent, Language, MiscMenuItem, OverviewMenuItem, PurchaseEvent, Scenario, Theme } from './types';
+import {
+  GameStateEvent,
+  Language,
+  MiscMenuItem,
+  OverviewMenuItem,
+  PurchaseEvent,
+  Scenario,
+  Theme,
+  ProgramsEvent,
+} from './types';
 
 export const LANGUAGES: Language[] = Object.values(Language);
 
@@ -13,5 +22,7 @@ export const SCENARIOS: Scenario[] = Object.values(Scenario);
 export const GAME_STATE_EVENTS: GameStateEvent[] = Object.values(GameStateEvent);
 
 export const PURCHASE_EVENTS: PurchaseEvent[] = Object.values(PurchaseEvent);
+
+export const PROGRAM_EVENTS: ProgramsEvent[] = Object.values(ProgramsEvent);
 
 export const QUALITIES: number[] = [0, 1, 2, 3, 4, 5, 6];

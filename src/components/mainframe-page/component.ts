@@ -33,7 +33,9 @@ export class MainframePage extends LitElement {
           <intl-message label="ui:mainframe:tabs:developingPrograms">Developing programs</intl-message>
         </sl-tab>
 
-        <sl-tab-panel name="processes">Processes</sl-tab-panel>
+        <sl-tab-panel name="processes">
+          <ca-mainframe-processes-panel></ca-mainframe-processes-panel>
+        </sl-tab-panel>
         <sl-tab-panel name="hardware">
           <ca-mainframe-hardware-panel></ca-mainframe-hardware-panel>
         </sl-tab-panel>

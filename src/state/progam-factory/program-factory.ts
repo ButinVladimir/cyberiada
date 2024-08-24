@@ -3,10 +3,12 @@ import { decorators } from '@state/container';
 import { TYPES } from '@state/types';
 import type { IGeneralState } from '@state/general-state/interfaces/general-state';
 import type { IMainframeHardwareState } from '@state/mainframe-hardware-state/interfaces/mainframe-hardware-state';
+import type { IMainframeDevelopingProgramsState } from '@state/mainframe-developing-programs-state/interfaces/mainframe-developing-programs-state';
+import type { ISettingsState } from '@state/settings-state/interfaces/settings-state';
 import { IProgramFactory } from './interfaces/program-factory';
 import { IMakeProgramParameters, IProgram } from './interfaces';
 import { ProgramName } from './types';
-import { CloudAIShareProgram } from './programs';
+import { CloudAIShareProgram, CodeGeneratorProgram } from './programs';
 
 const { lazyInject } = decorators;
 
@@ -15,15 +17,31 @@ export class ProgramFactory implements IProgramFactory {
   @lazyInject(TYPES.GeneralState)
   private _generalState!: IGeneralState;
 
+  @lazyInject(TYPES.SettingsState)
+  private _settingsState!: ISettingsState;
+
   @lazyInject(TYPES.MainframeHardwareState)
   private _mainframeHardwareState!: IMainframeHardwareState;
+
+  @lazyInject(TYPES.MainframeDevelopingProgramsState)
+  private _mainframeDevelopingProgramsState!: IMainframeDevelopingProgramsState;
 
   makeProgram(parameters: IMakeProgramParameters): IProgram {
     switch (parameters.name) {
       case ProgramName.cloudAiShare:
         return new CloudAIShareProgram({
           generalState: this._generalState,
+          settingsState: this._settingsState,
           mainframeHardwareState: this._mainframeHardwareState,
+          level: parameters.level,
+          quality: parameters.quality,
+        });
+
+      case ProgramName.codeGenerator:
+        return new CodeGeneratorProgram({
+          settingsState: this._settingsState,
+          mainframeHardwareState: this._mainframeHardwareState,
+          mainframeDevelopingProgramsState: this._mainframeDevelopingProgramsState,
           level: parameters.level,
           quality: parameters.quality,
         });

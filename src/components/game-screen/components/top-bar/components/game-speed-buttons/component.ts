@@ -34,19 +34,19 @@ export class GameSpeedButtons extends LitElement {
       ${this.renderButton({
         gameSpeed: GameSpeed.paused,
         label: 'pause',
-        icon: gameSpeed === GameSpeed.paused ? 'pause-circle' : 'pause',
+        icon: gameSpeed === GameSpeed.paused ? 'pause-fill' : 'pause',
         className: gameSpeed === GameSpeed.paused ? 'speed-button-active' : '',
       })}
       ${this.renderButton({
         gameSpeed: GameSpeed.normal,
         label: 'playNormal',
-        icon: gameSpeed === GameSpeed.normal ? 'play-circle' : 'play',
+        icon: gameSpeed === GameSpeed.normal ? 'play-fill' : 'play',
         className: gameSpeed === GameSpeed.normal ? 'speed-button-active' : '',
       })}
       ${this.renderButton({
         gameSpeed: GameSpeed.fast,
         label: 'playFast',
-        icon: gameSpeed === GameSpeed.fast ? 'fast-forward-circle' : 'fast-forward',
+        icon: gameSpeed === GameSpeed.fast ? 'fast-forward-fill' : 'fast-forward',
         className: gameSpeed === GameSpeed.fast ? 'speed-button-active' : '',
       })}
     `;

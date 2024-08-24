@@ -20,8 +20,12 @@
     }
   },
   "cloudAIShare": {
-    "baseIncome": 1000,
+    "baseIncome": 1,
     "qualityMultiplier": 1.2
+  },
+  "codeGenerator": {
+    "baseIncrease": 1,
+    "qualityMultiplier": 1.1
   },
   "mainframeHardware": {
     "performanceBaseCost": 1000,

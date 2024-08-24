@@ -1,8 +1,8 @@
 import { ProgramName } from '@state/progam-factory/types';
 
 export interface ISerializedProcess {
-  id: string;
   programName: ProgramName;
   isActive: boolean;
+  threads: number;
   currentCompletionPoints: number;
 }

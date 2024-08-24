@@ -8,6 +8,10 @@ import { IProgramFactory, ProgramFactory } from '@state/progam-factory';
 import { IMainframeHardwareState, MainframeHardwareState } from '@state/mainframe-hardware-state';
 import { IMainframeOwnedProgramsState, MainframeOwnedProgramsState } from '@state/mainframe-owned-programs-state';
 import { IMainframeProcessesState, MainframeProcessesState } from '@state/mainframe-processes-state';
+import {
+  IMainframeDevelopingProgramsState,
+  MainframeDevelopingProgramsState,
+} from '@state/mainframe-developing-programs-state';
 import { TYPES } from './types';
 import { container } from './container';
 
@@ -31,5 +35,10 @@ container
 container
   .bind<IMainframeProcessesState>(TYPES.MainframeProcessesState)
   .to(MainframeProcessesState)
+  .inSingletonScope()
+  .whenTargetIsDefault();
+container
+  .bind<IMainframeDevelopingProgramsState>(TYPES.MainframeDevelopingProgramsState)
+  .to(MainframeDevelopingProgramsState)
   .inSingletonScope()
   .whenTargetIsDefault();

@@ -5,8 +5,6 @@ import SlInput from '@shoelace-style/shoelace/dist/components/input/input.compon
 import { PROGRAMS } from '@state/progam-factory/constants';
 import { ProgramName } from '@state/progam-factory/types';
 import { PurchaseProgramDialogClose } from './events';
-import { ifDefined } from 'lit/directives/if-defined.js';
-import { formatQuality } from '@shared/formatters';
 import { QUALITIES } from '@shared/constants';
 import { PurchaseProgramDialogController } from './controller';
 
@@ -50,7 +48,7 @@ export class PurchaseProgramDialog extends LitElement {
 
     p.hint {
       margin-top: 0;
-      margin-bottom: var(--sl-spacing-small);
+      margin-bottom: var(--sl-spacing-medium);
       color: var(--ca-hint-color);
       font-size: var(--ca-hint-font-size);
     }
@@ -102,6 +100,14 @@ export class PurchaseProgramDialog extends LitElement {
     this._purchaseProgramDialogController = new PurchaseProgramDialogController(this);
   }
 
+  updated(_changedProperties: Map<string, any>) {
+    if (_changedProperties.get('isOpen') === false) {
+      this._programName = undefined;
+      this._level = 1;
+      this._quality = 0;
+    }
+  }
+
   render() {
     const program = this._programName
       ? this._purchaseProgramDialogController.getProgram(this._programName, this._level, this._quality)
@@ -126,12 +132,7 @@ export class PurchaseProgramDialog extends LitElement {
           </p>
 
           <div class="inputs-container">
-            <sl-select
-              name="program"
-              value=${ifDefined(this._programName)}
-              hoist
-              @sl-change=${this.handleProgramChange}
-            >
+            <sl-select name="program" value=${this._programName ?? ''} hoist @sl-change=${this.handleProgramChange}>
               <span class="input-label" slot="label">
                 <intl-message label="ui:mainframe:program">Program</intl-message>
               </span>
@@ -163,7 +164,12 @@ export class PurchaseProgramDialog extends LitElement {
                 <intl-message label="ui:mainframe:quality">Quality</intl-message>
               </span>
 
-              ${QUALITIES.map((quality) => html`<sl-option value=${quality}>${formatQuality(quality)}</sl-option>`)}
+              ${QUALITIES.map(
+                (quality) =>
+                  html` <sl-option value=${quality}>
+                    <intl-message label="ui:common:qualities:${quality}">Quality</intl-message>
+                  </sl-option>`,
+              )}
             </sl-select>
           </div>
 

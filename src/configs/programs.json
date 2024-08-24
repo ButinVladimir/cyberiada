@@ -1,12 +1,28 @@
 {
   "cloudAiShare": {
-    "ram": 0,
     "cores": 0,
+    "ram": 0,
     "processCompletionPoints": 0,
     "developmentLevelCompletionPointsMultiplier": 0,
-    "qualityCompletionPointsMultiplier": 0,
-    "baseCost": 1000,
+    "qualityCompletionPointsMultiplier": 1,
+    "developmentPoints": 100000,
+    "developmentLevelDevelopmentPointsMultiplier": 1.1,
+    "qualityDevelopmentPointsMultiplier": 2,
+    "baseCost": 100000,
     "levelCostMultiplier": 1.1,
     "qualityCostMultiplier": 1.5
+  },
+  "codeGenerator": {
+    "cores": 1,
+    "ram": 1,
+    "processCompletionPoints": 100000,
+    "developmentLevelCompletionPointsMultiplier": 0,
+    "qualityCompletionPointsMultiplier": 1,
+    "developmentPoints": 100000,
+    "developmentLevelDevelopmentPointsMultiplier": 1.1,
+    "qualityDevelopmentPointsMultiplier": 2,
+    "baseCost": 10000,
+    "levelCostMultiplier": 1.2,
+    "qualityCostMultiplier": 2
   }
 }
