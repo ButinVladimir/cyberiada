@@ -1,12 +1,12 @@
 import { LitElement, css, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
-import { IProgram } from '@state/progam-factory/interfaces/program';
+import { IDevelopingProgram } from '@state/mainframe-developing-programs-state/interfaces/developing-program';
 import { formatter } from '@shared/formatter';
-import { OwnedProgramsListController } from './controller';
+import { DevelopingProgramsListController } from './controller';
 
-@customElement('ca-owned-programs-list')
-export class OwnedProgramsList extends LitElement {
+@customElement('ca-developing-programs-list')
+export class DevelopingProgramsList extends LitElement {
   static styles = css`
     :host {
       width: 100%;
@@ -59,12 +59,12 @@ export class OwnedProgramsList extends LitElement {
     }
   `;
 
-  private _ownedProgramsListController: OwnedProgramsListController;
+  private _developingProgramsListController: DevelopingProgramsListController;
 
   constructor() {
     super();
 
-    this._ownedProgramsListController = new OwnedProgramsListController(this);
+    this._developingProgramsListController = new DevelopingProgramsListController(this);
   }
 
   render() {
@@ -80,9 +80,7 @@ export class OwnedProgramsList extends LitElement {
           <th class="quality">
             <intl-message label="ui:mainframe:quality">Quality</intl-message>
           </th>
-          <th class="description">
-            <intl-message label="ui:mainframe:description">Description</intl-message>
-          </th>
+          <th></th>
         </thead>
 
         <tbody>
@@ -93,20 +91,20 @@ export class OwnedProgramsList extends LitElement {
   }
 
   renderContent = () => {
-    const ownedPrograms = this._ownedProgramsListController.listOwnedPrograms();
+    const developingPrograms = this._developingProgramsListController.listDevelopingPrograms();
 
-    if (ownedPrograms.length === 0) {
+    if (developingPrograms.length === 0) {
       return this.renderEmptyListNotification();
     }
 
-    return repeat(ownedPrograms, (program) => program.name, this.renderListItem);
+    return repeat(developingPrograms, (developingProgram) => developingProgram.program.name, this.renderListItem);
   };
 
   renderEmptyListNotification = () => {
     return html`
       <tr class="notification">
         <td colspan="4">
-          <intl-message label="ui:mainframe:ownedPrograms:emptyListNotification"
+          <intl-message label="ui:mainframe:developingPrograms:emptyListNotification"
             >You don't have any programs</intl-message
           >
         </td>
@@ -114,18 +112,25 @@ export class OwnedProgramsList extends LitElement {
     `;
   };
 
-  renderListItem = (program: IProgram) => {
+  renderListItem = (developingProgram: IDevelopingProgram) => {
     return html`
       <tr class="list-item">
         <td class="program">
-          <intl-message label="programs:${program.name}:name">Progam name</intl-message>
+          <intl-message label="programs:${developingProgram.program.name}:name">Progam name</intl-message>
         </td>
 
-        <td class="level">${formatter.formatNumberDecimal(program.level)}</td>
+        <td class="level">${formatter.formatNumberDecimal(developingProgram.program.level)}</td>
 
-        <td class="quality">${formatter.formatQuality(program.quality)}</td>
+        <td class="quality">${formatter.formatQuality(developingProgram.program.quality)}</td>
 
-        <td class="description">Description goes here</td>
+        <td>
+          <ca-developing-program-actions-column
+            program-name=${developingProgram.program.name}
+            ?active=${developingProgram.isActive}
+            current-development-points=${developingProgram.currentDevelopmentPoints}
+            max-development-points=${developingProgram.maxDevelopmentPoints}
+          ></ca-developing-program-actions-column>
+        </td>
       </tr>
     `;
   };

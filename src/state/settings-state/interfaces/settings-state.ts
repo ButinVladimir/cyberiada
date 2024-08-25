@@ -1,5 +1,5 @@
 import { ISerializeable } from '@shared/interfaces/serializable';
-import { Language, Theme, MessageFilterEvent } from '@shared/types';
+import { Language, Theme, MessageFilterEvent, LongNumberFormat } from '@shared/types';
 import { ISettingsSerializedState } from './settings-serialized-state';
 
 export interface ISettingsState extends ISerializeable<ISettingsSerializedState> {
@@ -10,6 +10,7 @@ export interface ISettingsState extends ISerializeable<ISettingsSerializedState>
   autosaveEnabled: boolean;
   autosaveInterval: number;
   maxTicksPerUpdate: number;
+  longNumberFormat: LongNumberFormat;
   mapCellSize: number;
   isMessageFilterEventEnabled(event: MessageFilterEvent): boolean;
   setLanguage(language: Language): Promise<void>;
@@ -19,6 +20,7 @@ export interface ISettingsState extends ISerializeable<ISettingsSerializedState>
   setAutosaveEnabled(autosaveEnabled: boolean): void;
   setAutosaveInterval(autosaveInterval: number): void;
   setMaxTicksPerUpdate(maxTicksPerUpdate: number): void;
+  setLongNumberFormat(longNumberFormat: LongNumberFormat): void;
   setMapCellSize(mapSize: number): void;
   toggleMessageFilterEvent(event: MessageFilterEvent, enabled: boolean): void;
 }

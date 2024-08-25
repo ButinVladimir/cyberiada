@@ -4,8 +4,9 @@ import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.com
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.component.js';
 import SlRange from '@shoelace-style/shoelace/dist/components/range/range.component.js';
 import SlCheckbox from '@shoelace-style/shoelace/dist/components/checkbox/checkbox.component.js';
-import { LANGUAGES, THEMES } from '@shared/constants';
-import { Language, Theme } from '@shared/types';
+import { LANGUAGES, LONG_NUMBER_FORMATS, THEMES } from '@shared/constants';
+import { Language, LongNumberFormat, Theme } from '@shared/types';
+import { formatter } from '@shared/formatter';
 import { SettingsFormController } from './controller';
 
 @customElement('ca-settings-form')
@@ -46,31 +47,38 @@ export class SettingsForm extends LitElement {
   private _settingsFormController: SettingsFormController;
 
   @query('sl-select[name="language"]')
-  private _languageInput!: SlSelect;
+  private _languageInput?: SlSelect;
 
   @query('sl-select[name="theme"]')
-  private _themeInput!: SlSelect;
+  private _themeInput?: SlSelect;
 
   @query('sl-input[name="messageLogSize"]')
-  private _messageLogSizeInput!: SlInput;
+  private _messageLogSizeInput?: SlInput;
 
   @query('sl-range[name="updateInterval"]')
-  private _updateIntervalInput!: SlRange;
+  private _updateIntervalInput?: SlRange;
 
   @query('sl-checkbox[name="autosaveEnabled"]')
-  private _autosaveEnabledInput!: SlCheckbox;
+  private _autosaveEnabledInput?: SlCheckbox;
 
   @query('sl-range[name="autosaveInterval"]')
-  private _autosaveIntervalInput!: SlRange;
+  private _autosaveIntervalInput?: SlRange;
 
   @query('sl-range[name="maxTicksPerUpdate"]')
-  private _maxTicksPerUpdateInput!: SlRange;
+  private _maxTicksPerUpdateInput?: SlRange;
+
+  @query('sl-select[name="longNumberFormat"]')
+  private _longNumberFormatInput?: SlSelect;
 
   @state()
   private _isSaving = false;
 
   private static autosaveIntervalFormatter = (value: number): string => {
-    return Math.round(value / 1000).toString();
+    return formatter.formatNumberDecimal(value / 1000);
+  };
+
+  private static decimalNumberFormatter = (value: number): string => {
+    return formatter.formatNumberDecimal(value);
   };
 
   constructor() {
@@ -86,7 +94,17 @@ export class SettingsForm extends LitElement {
   }
 
   updated() {
-    this._autosaveIntervalInput.tooltipFormatter = SettingsForm.autosaveIntervalFormatter;
+    if (this._autosaveIntervalInput) {
+      this._autosaveIntervalInput.tooltipFormatter = SettingsForm.autosaveIntervalFormatter;
+    }
+
+    if (this._updateIntervalInput) {
+      this._updateIntervalInput.tooltipFormatter = SettingsForm.decimalNumberFormatter;
+    }
+
+    if (this._maxTicksPerUpdateInput) {
+      this._maxTicksPerUpdateInput.tooltipFormatter = SettingsForm.decimalNumberFormatter;
+    }
   }
 
   private renderForm(): TemplateResult {
@@ -137,6 +155,25 @@ export class SettingsForm extends LitElement {
         </span>
       </sl-input>
 
+      <sl-select
+        name="longNumberFormat"
+        value=${this._settingsFormController.longNumberFormat}
+        @sl-change=${this.handleChangeLongNumberFormat}
+      >
+        <span class="input-label" slot="label">
+          <intl-message label="ui:settings:longNumberFormat">Long number format</intl-message>
+        </span>
+
+        ${LONG_NUMBER_FORMATS.map(
+          (longNumberFormat) =>
+            html` <sl-option value=${longNumberFormat}>
+              <intl-message label="ui:settings:longNumberFormats:${longNumberFormat}">
+                Long number format
+              </intl-message>
+            </sl-option>`,
+        )}
+      </sl-select>
+
       <sl-range
         min="25"
         max="1000"
@@ -147,6 +184,25 @@ export class SettingsForm extends LitElement {
       >
         <span class="input-label" slot="label">
           <intl-message label="ui:settings:updateInterval">Update interval</intl-message>
+        </span>
+      </sl-range>
+
+      <sl-range
+        min="2"
+        max="20"
+        step="1"
+        name="maxTicksPerUpdate"
+        value=${this._settingsFormController.maxTicksPerUpdate}
+        @sl-change=${this.handleChangeMaxTicksPerUpdate}
+      >
+        <span class="input-label" slot="label">
+          <intl-message label="ui:settings:maxTicksPerUpdate">Max ticks per update</intl-message>
+        </span>
+
+        <span slot="help-text">
+          <intl-message label="ui:settings:maxTicksPerUpdateHint">
+            Excessive messages in log won't be removed until new message is received
+          </intl-message>
         </span>
       </sl-range>
 
@@ -173,25 +229,6 @@ export class SettingsForm extends LitElement {
           <intl-message label="ui:settings:autosaveInterval">Autosave interval</intl-message>
         </span>
       </sl-range>
-
-      <sl-range
-        min="2"
-        max="20"
-        step="1"
-        name="maxTicksPerUpdate"
-        value=${this._settingsFormController.maxTicksPerUpdate}
-        @sl-change=${this.handleChangeMaxTicksPerUpdate}
-      >
-        <span class="input-label" slot="label">
-          <intl-message label="ui:settings:maxTicksPerUpdate">Max ticks per update</intl-message>
-        </span>
-
-        <span slot="help-text">
-          <intl-message label="ui:settings:maxTicksPerUpdateHint">
-            Excessive messages in log won't be removed until new message is received
-          </intl-message>
-        </span>
-      </sl-range>
     `;
   }
 
@@ -215,7 +252,7 @@ export class SettingsForm extends LitElement {
     this.startSaving();
 
     try {
-      await this._settingsFormController.setLanguage(this._languageInput.value as Language);
+      await this._settingsFormController.setLanguage(this._languageInput!.value as Language);
     } catch (e) {
       console.error(e);
     } finally {
@@ -224,11 +261,11 @@ export class SettingsForm extends LitElement {
   };
 
   private handleChangeTheme = () => {
-    this._settingsFormController.setTheme(this._themeInput.value as Theme);
+    this._settingsFormController.setTheme(this._themeInput!.value as Theme);
   };
 
   private handleChangeMessageLogSize = () => {
-    let value = this._messageLogSizeInput.valueAsNumber;
+    let value = this._messageLogSizeInput!.valueAsNumber;
 
     if (value < 1) {
       value = 1;
@@ -239,22 +276,26 @@ export class SettingsForm extends LitElement {
     }
 
     this._settingsFormController.setMessageLogSize(value);
-    this._messageLogSizeInput.valueAsNumber = value;
+    this._messageLogSizeInput!.valueAsNumber = value;
   };
 
   private handleChangeUpdateInterval = () => {
-    this._settingsFormController.setUpdateInterval(this._updateIntervalInput.value);
+    this._settingsFormController.setUpdateInterval(this._updateIntervalInput!.value);
   };
 
   private handleChangeAutosaveEnabled = () => {
-    this._settingsFormController.setAutosaveEnabled(this._autosaveEnabledInput.checked);
+    this._settingsFormController.setAutosaveEnabled(this._autosaveEnabledInput!.checked);
   };
 
   private handleChangeAutosaveInterval = () => {
-    this._settingsFormController.setAutosaveInterval(this._autosaveIntervalInput.value);
+    this._settingsFormController.setAutosaveInterval(this._autosaveIntervalInput!.value);
   };
 
   private handleChangeMaxTicksPerUpdate = () => {
-    this._settingsFormController.setMaxTicksPerUpdate(this._maxTicksPerUpdateInput.value);
+    this._settingsFormController.setMaxTicksPerUpdate(this._maxTicksPerUpdateInput!.value);
+  };
+
+  private handleChangeLongNumberFormat = () => {
+    this._settingsFormController.setLongNumberFormat(this._longNumberFormatInput!.value as LongNumberFormat);
   };
 }

@@ -19,7 +19,6 @@
     "paths": {
       "@/*": ["./src/*"],
       "@components/*": ["./src/components/*"],
-      "@helpers/*": ["./src/helpers/*"],
       "@state/*": ["./src/state/*"],
       "@shared/*": ["./src/shared/*"],
       "@configs/*": ["./src/configs/*"],

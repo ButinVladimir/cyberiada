@@ -7,10 +7,11 @@ import { IMessageLogState } from '@state/message-log-state/interfaces/message-lo
 import { IMainframeHardwareState } from '@state/mainframe-hardware-state/interfaces/mainframe-hardware-state';
 import { IMainframeOwnedProgramsState } from '@state/mainframe-owned-programs-state/interfaces/mainframe-owned-program-state';
 import { IMainframeProcessesState } from '@state/mainframe-processes-state/interfaces/mainframe-processes-state';
+import { IMainframeDevelopingProgramsState } from '@state/mainframe-developing-programs-state/interfaces/mainframe-developing-programs-state';
+import { IProgramFactory } from '@state/progam-factory';
 import { container } from '@state/container';
 import { TYPES } from '@state/types';
 import { IApp } from '@state/app';
-import { IProgramFactory } from '@/state/progam-factory';
 
 export class BaseController implements ReactiveController {
   protected host: ReactiveControllerHost;
@@ -58,6 +59,10 @@ export class BaseController implements ReactiveController {
 
   protected get mainframeProcessesState(): IMainframeProcessesState {
     return container.get<IMainframeProcessesState>(TYPES.MainframeProcessesState);
+  }
+
+  protected get mainframeDevelopingProgramsStart(): IMainframeDevelopingProgramsState {
+    return container.get<IMainframeDevelopingProgramsState>(TYPES.MainframeDevelopingProgramsState);
   }
 
   protected get programFactory(): IProgramFactory {

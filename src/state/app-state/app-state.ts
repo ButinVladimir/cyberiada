@@ -116,5 +116,6 @@ export class AppState implements IAppState {
     this._mainframeHardwareState.fireUiEvents();
     this._mainframeOwnedProgramsState.fireUiEvents();
     this._mainframeProcessesState.fireUiEvents();
+    this._mainframeDevelopingProgramsState.fireUiEvents();
   }
 }

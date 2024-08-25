@@ -1,6 +1,6 @@
 import { LitElement, html, css } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import { formatTimeShort } from '@shared/formatters';
+import { formatter } from '@shared/formatter';
 import { TopBarValuesController } from './controller';
 
 @customElement('ca-top-bar-values')
@@ -40,7 +40,8 @@ export class TopBarValues extends LitElement {
   }
 
   render() {
-    const bonusTimeFormatted = formatTimeShort(this._topBarValuesController.bonusTime);
+    const bonusTimeFormatted = formatter.formatTimeShort(this._topBarValuesController.bonusTime);
+    const moneyFormatted = formatter.formatNumberLong(this._topBarValuesController.money);
 
     return html`
       <div class="block">
@@ -60,7 +61,7 @@ export class TopBarValues extends LitElement {
           <sl-icon name="currency-bitcoin"> </sl-icon>
         </sl-tooltip>
 
-        <span class="text"> ${this._topBarValuesController.money} </span>
+        <span class="text"> ${moneyFormatted} </span>
       </div>
     `;
   }

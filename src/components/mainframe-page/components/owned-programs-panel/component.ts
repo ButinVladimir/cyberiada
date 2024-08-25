@@ -2,7 +2,7 @@ import { LitElement, css, html } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 
 @customElement('ca-mainframe-owned-programs-panel')
-export class MainframeHardwarePanel extends LitElement {
+export class MainframeOwnedProgramsPanel extends LitElement {
   static styles = css`
     :host {
       display: flex;

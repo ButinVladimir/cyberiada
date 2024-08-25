@@ -7,6 +7,7 @@ import type { IMainframeProcessesState } from '@state/mainframe-processes-state/
 import { TYPES } from '@state/types';
 import { PurchaseEvent } from '@shared/types';
 import { EventBatcher } from '@shared/event-batcher';
+import { formatter } from '@shared/formatter';
 import { IMainframeHardwareState, IMainframeHardwareSerializedState } from './interfaces';
 import { MAINFRAME_HARDWARE_STATE_UI_EVENTS } from './constants';
 
@@ -138,19 +139,23 @@ export class MainframeHardwareState implements IMainframeHardwareState {
 
   private handlePurchasePerformanceIncrease = (increase: number) => () => {
     this._performance += increase;
-    this._messageLogState.postMessage(PurchaseEvent.performanceUpdated, { level: this._performance });
+    this._messageLogState.postMessage(PurchaseEvent.performanceUpdated, {
+      level: formatter.formatNumberDecimal(this._performance),
+    });
     this.handlePostUpdate();
   };
 
   private handlePurchaseCoresIncrease = (increase: number) => () => {
     this._cores += increase;
-    this._messageLogState.postMessage(PurchaseEvent.coresUpdated, { level: this._cores });
+    this._messageLogState.postMessage(PurchaseEvent.coresUpdated, {
+      level: formatter.formatNumberDecimal(this._cores),
+    });
     this.handlePostUpdate();
   };
 
   private handlePurchaseRamIncrease = (increase: number) => () => {
     this._ram += increase;
-    this._messageLogState.postMessage(PurchaseEvent.ramUpdated, { level: this._ram });
+    this._messageLogState.postMessage(PurchaseEvent.ramUpdated, { level: formatter.formatNumberDecimal(this._ram) });
     this.handlePostUpdate();
   };
 

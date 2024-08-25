@@ -1,12 +1,13 @@
 import { injectable } from 'inversify';
 import i18n from 'i18next';
-import { Language, MessageFilterEvent, Theme } from '@shared/types';
+import { Language, LongNumberFormat, MessageFilterEvent, Theme } from '@shared/types';
 import type { IApp } from '@state/app/interfaces/app';
 import { decorators } from '@state/container';
 import { TYPES } from '@state/types';
-import { ISettingsState, ISettingsSerializedState } from './interfaces';
+import { EventBatcher } from '@shared/event-batcher';
 import themes from '@configs/themes.json';
 import constants from '@configs/constants.json';
+import { ISettingsState, ISettingsSerializedState } from './interfaces';
 
 const { lazyInject } = decorators;
 
@@ -22,8 +23,11 @@ export class SettingsState implements ISettingsState {
   private _autosaveEnabled: boolean;
   private _autosaveInterval: number;
   private _maxTicksPerUpdate: number;
+  private _longNumberFormat: LongNumberFormat;
   private _mapCellSize: number;
   private _enabledMessageFilterEvents: Set<MessageFilterEvent>;
+
+  private readonly _uiEventBatcher: EventBatcher;
 
   constructor() {
     this._language = Language.en;
@@ -33,8 +37,11 @@ export class SettingsState implements ISettingsState {
     this._autosaveEnabled = constants.defaultSettings.autosaveEnabled;
     this._autosaveInterval = constants.defaultSettings.autosaveInterval;
     this._maxTicksPerUpdate = constants.defaultSettings.maxTicksPerUpdate;
+    this._longNumberFormat = constants.defaultSettings.longNumberFormat as LongNumberFormat;
     this._mapCellSize = constants.defaultSettings.mapSize;
     this._enabledMessageFilterEvents = new Set<MessageFilterEvent>();
+
+    this._uiEventBatcher = new EventBatcher();
   }
 
   get language() {
@@ -63,6 +70,10 @@ export class SettingsState implements ISettingsState {
 
   get maxTicksPerUpdate() {
     return this._maxTicksPerUpdate;
+  }
+
+  get longNumberFormat() {
+    return this._longNumberFormat;
   }
 
   get mapCellSize() {
@@ -109,6 +120,10 @@ export class SettingsState implements ISettingsState {
     this._maxTicksPerUpdate = maxTicksPerUpdate;
   }
 
+  setLongNumberFormat(longNumberFormat: LongNumberFormat) {
+    this._longNumberFormat = longNumberFormat;
+  }
+
   setMapCellSize(mapCellSize: number) {
     this._mapCellSize = mapCellSize;
   }
@@ -130,6 +145,7 @@ export class SettingsState implements ISettingsState {
     this.setUpdateInterval(constants.defaultSettings.updateInterval);
     this.setAutosaveEnabled(constants.defaultSettings.autosaveEnabled);
     this.setAutosaveInterval(constants.defaultSettings.autosaveInterval);
+    this.setLongNumberFormat(constants.defaultSettings.longNumberFormat as LongNumberFormat);
     this.setMapCellSize(constants.defaultSettings.mapSize);
     this.deserializeMessageFilter(constants.defaultSettings.messageFilterEvents as MessageFilterEvent[]);
   }
@@ -142,6 +158,7 @@ export class SettingsState implements ISettingsState {
     this.setAutosaveEnabled(serializedState.autosaveEnabled);
     this.setAutosaveInterval(serializedState.autosaveInterval);
     this.setMaxTicksPerUpdate(serializedState.maxTicksPerUpdate);
+    this.setLongNumberFormat(serializedState.longNumberFormat);
     this.setMapCellSize(serializedState.mapCellSize);
     this.deserializeMessageFilter(serializedState.enabledMessageFilterEvents);
   }
@@ -155,6 +172,7 @@ export class SettingsState implements ISettingsState {
       autosaveEnabled: this.autosaveEnabled,
       autosaveInterval: this.autosaveInterval,
       maxTicksPerUpdate: this.maxTicksPerUpdate,
+      longNumberFormat: this.longNumberFormat,
       mapCellSize: this.mapCellSize,
       enabledMessageFilterEvents: this.serializeMessageFilter(),
     };

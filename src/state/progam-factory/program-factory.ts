@@ -8,7 +8,7 @@ import type { ISettingsState } from '@state/settings-state/interfaces/settings-s
 import { IProgramFactory } from './interfaces/program-factory';
 import { IMakeProgramParameters, IProgram } from './interfaces';
 import { ProgramName } from './types';
-import { CloudAIShareProgram, CodeGeneratorProgram } from './programs';
+import { ShareServerProgram, CodeGeneratorProgram } from './programs';
 
 const { lazyInject } = decorators;
 
@@ -28,8 +28,8 @@ export class ProgramFactory implements IProgramFactory {
 
   makeProgram(parameters: IMakeProgramParameters): IProgram {
     switch (parameters.name) {
-      case ProgramName.cloudAiShare:
-        return new CloudAIShareProgram({
+      case ProgramName.shareServer:
+        return new ShareServerProgram({
           generalState: this._generalState,
           settingsState: this._settingsState,
           mainframeHardwareState: this._mainframeHardwareState,

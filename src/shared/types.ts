@@ -45,3 +45,8 @@ export enum ProgramsEvent {
 }
 
 export type MessageFilterEvent = GameStateEvent | PurchaseEvent | ProgramsEvent;
+
+export enum LongNumberFormat {
+  builtIn = 'builtIn',
+  scientific = 'scientific',
+}

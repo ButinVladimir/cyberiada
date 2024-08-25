@@ -1,4 +1,4 @@
-import { Language, Theme } from '@shared/types';
+import { Language, LongNumberFormat, Theme } from '@shared/types';
 import { BaseController } from '@shared/base-controller';
 
 export class SettingsFormController extends BaseController {
@@ -28,6 +28,10 @@ export class SettingsFormController extends BaseController {
 
   get maxTicksPerUpdate(): number {
     return this.settingsState.maxTicksPerUpdate;
+  }
+
+  get longNumberFormat(): LongNumberFormat {
+    return this.settingsState.longNumberFormat;
   }
 
   async setLanguage(language: Language) {
@@ -62,6 +66,11 @@ export class SettingsFormController extends BaseController {
 
   setMaxTicksPerUpdate(maxTicksPerUpdate: number) {
     this.settingsState.setMaxTicksPerUpdate(maxTicksPerUpdate);
+    this.host.requestUpdate();
+  }
+
+  setLongNumberFormat(longNumberFormat: LongNumberFormat) {
+    this.settingsState.setLongNumberFormat(longNumberFormat);
     this.host.requestUpdate();
   }
 }

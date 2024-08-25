@@ -1,6 +1,6 @@
-cloudAiShare:
-  name: Cloud AI Share
-  description: Program to share your mainframe capabilities with fellow AIs. Generates passive income. Uses all unused cores and RAM.
+shareServer:
+  name: Share Server
+  description: Program to share your mainframe capabilities within network. Generates passive income. Uses all unused cores and RAM.
 codeGenerator:
   name: Code Generator
   description: Program to develop other programs.

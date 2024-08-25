@@ -2,6 +2,7 @@ import { t } from 'i18next';
 import { LitElement, css, html } from 'lit';
 import { customElement, query, property, state } from 'lit/decorators.js';
 import SlRange from '@shoelace-style/shoelace/dist/components/range/range.component.js';
+import { formatter } from '@shared/formatter';
 import { MapCellZoomChangeEvent } from './events';
 import { classMap } from 'lit/directives/class-map.js';
 
@@ -48,6 +49,10 @@ export class MapCellZoomPanel extends LitElement {
     }
   `;
 
+  private static decimalNumberFormatter = (value: number): string => {
+    return formatter.formatNumberDecimal(value);
+  };
+
   @property({
     attribute: true,
     type: Number,
@@ -81,6 +86,10 @@ export class MapCellZoomPanel extends LitElement {
         </sl-icon-button>
       </div>
     `;
+  }
+
+  updated() {
+    this._rangeElement.tooltipFormatter = MapCellZoomPanel.decimalNumberFormatter;
   }
 
   private handleToggleZoomPanel = (event: Event) => {

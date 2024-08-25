@@ -13,6 +13,7 @@ import {
 import { TYPES } from '@state/types';
 import { EventBatcher } from '@shared/event-batcher';
 import { ProgramsEvent } from '@shared/types';
+import { formatter } from '@shared/formatter';
 import { Process } from './process';
 import { MAINFRAME_PROCESSES_STATE_UI_EVENTS } from './constants';
 
@@ -107,7 +108,7 @@ export class MainframeProcessesState implements IMainframeProcessesState {
 
     this._messageLogState.postMessage(ProgramsEvent.processStarted, {
       programName: program.name,
-      threads: threadCount,
+      threads: formatter.formatNumberDecimal(threadCount),
     });
 
     return true;
@@ -125,7 +126,7 @@ export class MainframeProcessesState implements IMainframeProcessesState {
 
         this._messageLogState.postMessage(ProgramsEvent.processDeleted, {
           programName: process.program.name,
-          threads: process.threads,
+          threads: formatter.formatNumberDecimal(process.threads),
         });
       } else {
         index++;
@@ -200,6 +201,7 @@ export class MainframeProcessesState implements IMainframeProcessesState {
   // eslint-disable-next-line @typescript-eslint/require-await
   async startNewState(): Promise<void> {
     this._processes = [];
+    this.updateRunningProcesses();
   }
 
   // eslint-disable-next-line @typescript-eslint/require-await
@@ -250,7 +252,7 @@ export class MainframeProcessesState implements IMainframeProcessesState {
 
         this._messageLogState.postMessage(ProgramsEvent.processDeleted, {
           programName: process.program.name,
-          threads: process.threads,
+          threads: formatter.formatNumberDecimal(process.threads),
         });
       } else {
         index++;
@@ -274,7 +276,7 @@ export class MainframeProcessesState implements IMainframeProcessesState {
         } else {
           this._messageLogState.postMessage(ProgramsEvent.processDeleted, {
             programName: process.program.name,
-            threads: process.threads,
+            threads: formatter.formatNumberDecimal(process.threads),
           });
         }
       } else {

@@ -1,3 +1,3 @@
 export * from './base-program';
-export * from './cloud-ai-share';
+export * from './share-server';
 export * from './code-generator';

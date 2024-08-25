@@ -1,4 +1,4 @@
 export enum ProgramName {
-  cloudAiShare = 'cloudAiShare',
+  shareServer = 'shareServer',
   codeGenerator = 'codeGenerator',
 }

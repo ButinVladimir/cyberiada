@@ -8,6 +8,7 @@ import { TYPES } from '@state/types';
 import { ProgramName } from '@state/progam-factory/types';
 import { PurchaseEvent } from '@shared/types';
 import { EventBatcher } from '@shared/event-batcher';
+import { formatter } from '@shared/formatter';
 import { IMainframeOwnedProgramsState, IMainframeOwnedProgramsSerializedState } from './interfaces';
 import { MAINFRAME_OWNED_PROGRAMES_STATE_UI_EVENTS } from './constants';
 
@@ -98,8 +99,8 @@ export class MainframeOwnedProgramsState implements IMainframeOwnedProgramsState
 
     this._messageLogState.postMessage(PurchaseEvent.programPurchased, {
       programName: newProgram.name,
-      level: newProgram.level,
-      quality: newProgram.quality,
+      level: formatter.formatNumberDecimal(newProgram.level),
+      quality: formatter.formatQuality(newProgram.quality),
     });
   };
 }

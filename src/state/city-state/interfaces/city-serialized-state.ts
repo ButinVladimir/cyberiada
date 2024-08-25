@@ -1,4 +1,4 @@
-import { Scenario } from '@/shared';
+import { Scenario } from '@shared/types';
 import { IDistrictSerializedInfo } from './district-serialized-info';
 
 export interface ICitySerializedState {

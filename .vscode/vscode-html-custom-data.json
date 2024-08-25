@@ -38,7 +38,7 @@
     },
     {
       "name": "ca-map-cell-zoom-panel",
-      "description": "Attributes:\n\n  * `zoom` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `zoom` {`number`} - \n\n  * `_showRange` {`boolean`} - \n\n  * `_rangeElement` {`SlRange`} - \n\n  * `handleToggleZoomPanel` - \n\n  * `handleChangeZoom` - ",
+      "description": "Attributes:\n\n  * `zoom` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `decimalNumberFormatter` - \n\n  * `zoom` {`number`} - \n\n  * `_showRange` {`boolean`} - \n\n  * `_rangeElement` {`SlRange`} - \n\n  * `handleToggleZoomPanel` - \n\n  * `handleChangeZoom` - ",
       "attributes": [
         {
           "name": "zoom",
@@ -133,6 +133,50 @@
       "attributes": []
     },
     {
+      "name": "ca-mainframe-developing-programs-panel",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_isStartProgramDevelopmentDialogOpen` {`boolean`} - \n\n  * `handleStartProgramDevelopmentDialogOpen` - \n\n  * `handleStartProgramDevelopmentDialogClose` - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-developing-program-actions-column",
+      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\n  * `current-development-points` {`number`} - \n\n  * `max-development-points` {`number`} - \n\n  * `active` {`boolean`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `currentDevelopmentPoints` {`number`} - \n\n  * `maxDevelopmentPoints` {`number`} - \n\n  * `active` {`boolean`} - \n\n  * `handleToggleDevelopingProgram` - \n\n  * `handleDeleteDevelopingProgram` - \n\n  * `_developingProgramActionsColumnController` {`DevelopingProgramActionsColumnController`} - ",
+      "attributes": [
+        {
+          "name": "program-name",
+          "description": "`program-name` {`string`} - \n\nProperty: programName\n\nDefault: shareServer"
+        },
+        {
+          "name": "current-development-points",
+          "description": "`current-development-points` {`number`} - \n\nProperty: currentDevelopmentPoints\n\nDefault: 0"
+        },
+        {
+          "name": "max-development-points",
+          "description": "`max-development-points` {`number`} - \n\nProperty: maxDevelopmentPoints\n\nDefault: 0"
+        },
+        {
+          "name": "active",
+          "description": "`active` {`boolean`} - \n\nProperty: active\n\nDefault: true",
+          "valueSet": "v"
+        }
+      ]
+    },
+    {
+      "name": "ca-developing-programs-list",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderContent` - \n\n  * `renderEmptyListNotification` - \n\n  * `renderListItem` - \n\n  * `_developingProgramsListController` {`DevelopingProgramsListController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-start-program-development-dialog",
+      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_programInput` {`SlSelect`} - \n\n  * `_levelInput` {`SlInput`} - \n\n  * `_qualityInput` {`SlSelect`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `_programName` - \n\n  * `_level` {`number`} - \n\n  * `_quality` {`number`} - \n\n  * `handleClose` - \n\n  * `handleProgramChange` - \n\n  * `handleLevelChange` - \n\n  * `handleQualityChange` - \n\n  * `handlePurchase` - \n\n  * `_startProgramDevelopmentDialogController` {`StartProgramDevelopmentDialogController`} - ",
+      "attributes": [
+        {
+          "name": "is-open",
+          "description": "`is-open` {`boolean`} - \n\nProperty: isOpen\n\nDefault: false",
+          "valueSet": "v"
+        }
+      ]
+    },
+    {
       "name": "ca-mainframe-hardware-panel",
       "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_shiftPressed` {`boolean`} - \n\n  * `_ctrlPressed` {`boolean`} - \n\n  * `handlePurchasePerformanceIncrease` - \n\n  * `handlePurchaseCoresIncrease` - \n\n  * `handlePurchaseRamIncrease` - \n\n  * `handleKeypress` - \n\n  * `_mainframeHardwarePanelController` {`MainframeHardwarePanelController`} - ",
       "attributes": []
@@ -191,11 +235,11 @@
     },
     {
       "name": "ca-process-actions-column",
-      "description": "Attributes:\n\n  * `program-name` - \n\n  * `current-completion-points` {`number`} - \n\n  * `max-completion-points` {`number`} - \n\n  * `active` {`boolean`} - \n\n  * `autoscalable` {`boolean`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` - \n\n  * `currentCompletionPoints` {`number`} - \n\n  * `maxCompletionPoints` {`number`} - \n\n  * `active` {`boolean`} - \n\n  * `autoscalable` {`boolean`} - \n\n  * `handleToggleProcess` - \n\n  * `handleDeleteProcess` - \n\n  * `_processActionsColumnController` {`ProcessActionsColumnController`} - ",
+      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\n  * `current-completion-points` {`number`} - \n\n  * `max-completion-points` {`number`} - \n\n  * `active` {`boolean`} - \n\n  * `autoscalable` {`boolean`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `currentCompletionPoints` {`number`} - \n\n  * `maxCompletionPoints` {`number`} - \n\n  * `active` {`boolean`} - \n\n  * `autoscalable` {`boolean`} - \n\n  * `handleToggleProcess` - \n\n  * `handleDeleteProcess` - \n\n  * `_processActionsColumnController` {`ProcessActionsColumnController`} - ",
       "attributes": [
         {
           "name": "program-name",
-          "description": "`program-name` - \n\nProperty: programName\n\nDefault: cloudAiShare"
+          "description": "`program-name` {`string`} - \n\nProperty: programName\n\nDefault: shareServer"
         },
         {
           "name": "current-completion-points",
@@ -256,7 +300,7 @@
     },
     {
       "name": "ca-settings-form",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_languageInput` {`SlSelect`} - \n\n  * `_themeInput` {`SlSelect`} - \n\n  * `_messageLogSizeInput` {`SlInput`} - \n\n  * `_updateIntervalInput` {`SlRange`} - \n\n  * `_autosaveEnabledInput` {`SlCheckbox`} - \n\n  * `_autosaveIntervalInput` {`SlRange`} - \n\n  * `_maxTicksPerUpdateInput` {`SlRange`} - \n\n  * `_isSaving` {`boolean`} - \n\n  * `autosaveIntervalFormatter` - \n\n  * `startSaving` - \n\n  * `stopSaving` - \n\n  * `handleChangeLanguage` - \n\n  * `handleChangeTheme` - \n\n  * `handleChangeMessageLogSize` - \n\n  * `handleChangeUpdateInterval` - \n\n  * `handleChangeAutosaveEnabled` - \n\n  * `handleChangeAutosaveInterval` - \n\n  * `handleChangeMaxTicksPerUpdate` - \n\n  * `_settingsFormController` {`SettingsFormController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_languageInput` {`SlSelect | undefined`} - \n\n  * `_themeInput` {`SlSelect | undefined`} - \n\n  * `_messageLogSizeInput` {`SlInput | undefined`} - \n\n  * `_updateIntervalInput` {`SlRange | undefined`} - \n\n  * `_autosaveEnabledInput` {`SlCheckbox | undefined`} - \n\n  * `_autosaveIntervalInput` {`SlRange | undefined`} - \n\n  * `_maxTicksPerUpdateInput` {`SlRange | undefined`} - \n\n  * `_longNumberFormatInput` {`SlSelect | undefined`} - \n\n  * `_isSaving` {`boolean`} - \n\n  * `autosaveIntervalFormatter` - \n\n  * `decimalNumberFormatter` - \n\n  * `startSaving` - \n\n  * `stopSaving` - \n\n  * `handleChangeLanguage` - \n\n  * `handleChangeTheme` - \n\n  * `handleChangeMessageLogSize` - \n\n  * `handleChangeUpdateInterval` - \n\n  * `handleChangeAutosaveEnabled` - \n\n  * `handleChangeAutosaveInterval` - \n\n  * `handleChangeMaxTicksPerUpdate` - \n\n  * `handleChangeLongNumberFormat` - \n\n  * `_settingsFormController` {`SettingsFormController`} - ",
       "attributes": []
     }
   ],

@@ -3,7 +3,7 @@ import { IMainframeHardwareState } from '@state/mainframe-hardware-state/interfa
 import { ISettingsState } from '@state/settings-state/interfaces/settings-state';
 import { IBaseProgramParameters } from './base-program-parameters';
 
-export interface ICloudAiShareParameters extends IBaseProgramParameters {
+export interface IShareServerParameters extends IBaseProgramParameters {
   generalState: IGeneralState;
   settingsState: ISettingsState;
   mainframeHardwareState: IMainframeHardwareState;

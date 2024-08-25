@@ -42,7 +42,9 @@ export class MainframePage extends LitElement {
         <sl-tab-panel name="ownedPrograms">
           <ca-mainframe-owned-programs-panel></ca-mainframe-owned-programs-panel>
         </sl-tab-panel>
-        <sl-tab-panel name="developingPrograms">Developing programs</sl-tab-panel>
+        <sl-tab-panel name="developingPrograms">
+          <ca-mainframe-developing-programs-panel></ca-mainframe-developing-programs-panel>
+        </sl-tab-panel>
       </sl-tab-group>
     `;
   }

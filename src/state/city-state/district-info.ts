@@ -1,4 +1,4 @@
-import { IMapGeneratorDistrictResult } from '@/workers/map-generator/interfaces';
+import { IMapGeneratorDistrictResult } from '@workers/map-generator/interfaces';
 import { IPoint } from '@shared/interfaces';
 import { IDistrictInfo, IDistrictSerializedInfo } from './interfaces';
 

@@ -13,6 +13,7 @@ import {
 import { TYPES } from '@state/types';
 import { EventBatcher } from '@shared/event-batcher';
 import { ProgramsEvent } from '@shared/types';
+import { formatter } from '@shared/formatter';
 import { DevelopingProgram } from './developing-program';
 import { MAINFRAME_DEVELOPING_PROGRAMS_STATE_UI_EVENTS } from './constants';
 
@@ -75,8 +76,8 @@ export class MainframeDevelopingProgramsState implements IMainframeDevelopingPro
 
     this._messageLogState.postMessage(ProgramsEvent.programDevelopmentStarted, {
       programName: program.name,
-      level: program.level,
-      quality: program.quality,
+      level: formatter.formatNumberDecimal(program.level),
+      quality: formatter.formatQuality(program.quality),
     });
 
     return true;
@@ -94,8 +95,8 @@ export class MainframeDevelopingProgramsState implements IMainframeDevelopingPro
 
         this._messageLogState.postMessage(ProgramsEvent.programDevelopmentAborted, {
           programName: developingProgram.program.name,
-          level: developingProgram.program.level,
-          quality: developingProgram.program.quality,
+          level: formatter.formatNumberDecimal(developingProgram.program.level),
+          quality: formatter.formatQuality(developingProgram.program.quality),
         });
       } else {
         index++;
@@ -103,11 +104,13 @@ export class MainframeDevelopingProgramsState implements IMainframeDevelopingPro
     }
 
     this.enqueueUiUpdate();
+    this.fireUiEvents();
   }
 
   increaseDevelopingProgramCompletion(delta: number) {
-    if (this._developingPrograms.length > 0) {
-      const developingProgram = this._developingPrograms[0];
+    const developingProgram = this._developingPrograms.find((developingProgram) => developingProgram.isActive);
+
+    if (developingProgram) {
       developingProgram.increaseDevelopment(delta);
 
       if (developingProgram.currentDevelopmentPoints >= developingProgram.maxDevelopmentPoints) {
@@ -115,8 +118,8 @@ export class MainframeDevelopingProgramsState implements IMainframeDevelopingPro
 
         this._messageLogState.postMessage(ProgramsEvent.programDevelopmentFinished, {
           programName: developingProgram.program.name,
-          level: developingProgram.program.level,
-          quality: developingProgram.program.quality,
+          level: formatter.formatNumberDecimal(developingProgram.program.level),
+          quality: formatter.formatQuality(developingProgram.program.quality),
         });
 
         this._developingPrograms.shift();

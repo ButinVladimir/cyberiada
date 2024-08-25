@@ -1,5 +1,6 @@
 import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { formatter } from '@shared/formatter';
 import { BuyHardwareUpgradeEvent } from './events';
 
 @customElement('ca-mainframe-hardware-panel-article')
@@ -70,14 +71,16 @@ export class MainframeHardwarePanelArticle extends LitElement {
 
   render() {
     const buttonValue = JSON.stringify({
-      cost: this.cost,
-      increase: this.increase,
+      cost: formatter.formatNumberLong(this.cost),
+      increase: formatter.formatNumberDecimal(this.increase),
     });
 
     return html`
       <div class="text-container">
         <h4 class="title">
-          <intl-message label="ui:mainframe:hardware:${this.label}" value=${this.level}>Level</intl-message>
+          <intl-message label="ui:mainframe:hardware:${this.label}" value=${formatter.formatNumberDecimal(this.level)}
+            >Level</intl-message
+          >
         </h4>
         <p class="hint">
           <intl-message label="ui:mainframe:hardware:${this.label}Hint"> Higher level leads to profit. </intl-message>

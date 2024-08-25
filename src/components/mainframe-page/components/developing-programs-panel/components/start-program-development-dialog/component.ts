@@ -4,13 +4,13 @@ import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.com
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.component.js';
 import { PROGRAMS } from '@state/progam-factory/constants';
 import { ProgramName } from '@state/progam-factory/types';
-import { formatter } from '@shared/formatter';
-import { PurchaseProgramDialogClose } from './events';
+import { StartProgramDevelopmentDialogClose } from './events';
 import { QUALITIES } from '@shared/constants';
-import { PurchaseProgramDialogController } from './controller';
+import { formatter } from '@shared/formatter';
+import { StartProgramDevelopmentDialogController } from './controller';
 
-@customElement('ca-purchase-program-dialog')
-export class PurchaseProgramDialog extends LitElement {
+@customElement('ca-start-program-development-dialog')
+export class StartProgramDevelopmentDialog extends LitElement {
   static styles = css`
     sl-dialog {
       --width: 50rem;
@@ -69,7 +69,7 @@ export class PurchaseProgramDialog extends LitElement {
     }
   `;
 
-  private _purchaseProgramDialogController: PurchaseProgramDialogController;
+  private _startProgramDevelopmentDialogController: StartProgramDevelopmentDialogController;
 
   @query('sl-select[name="program"]')
   private _programInput!: SlSelect;
@@ -98,7 +98,7 @@ export class PurchaseProgramDialog extends LitElement {
   constructor() {
     super();
 
-    this._purchaseProgramDialogController = new PurchaseProgramDialogController(this);
+    this._startProgramDevelopmentDialogController = new StartProgramDevelopmentDialogController(this);
   }
 
   updated(_changedProperties: Map<string, any>) {
@@ -110,25 +110,18 @@ export class PurchaseProgramDialog extends LitElement {
   }
 
   render() {
-    const program = this._programName
-      ? this._purchaseProgramDialogController.getProgram(this._programName, this._level, this._quality)
-      : undefined;
-    const cost = program ? program.getCost() : 0;
-    const money = this._purchaseProgramDialogController.money;
-
-    const submitButtonValues = JSON.stringify({ cost: formatter.formatNumberLong(cost) });
-    const isSubmitButtonEnabled = program && money >= cost;
-
     return html`
       <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
         <h4 slot="label" class="title">
-          <intl-message label="ui:mainframe:ownedPrograms:purchaseProgram"> Purchase a program </intl-message>
+          <intl-message label="ui:mainframe:developingPrograms:startProgramDevelopment">
+            Start program development
+          </intl-message>
         </h4>
 
         <div class="body">
           <p class="hint">
-            <intl-message label="ui:mainframe:ownedPrograms:purchaseProgramDialogHint">
-              Select program type, level and quality to purchase it.
+            <intl-message label="ui:mainframe:developingPrograms:startProgramDevelopmentDialogHint">
+              Select program type, level and quality to start developing it.
             </intl-message>
           </p>
 
@@ -178,16 +171,8 @@ export class PurchaseProgramDialog extends LitElement {
           <intl-message label="ui:common:close"> Close </intl-message>
         </sl-button>
 
-        <sl-button
-          slot="footer"
-          size="medium"
-          variant="primary"
-          ?disabled=${!isSubmitButtonEnabled}
-          @click=${this.handlePurchase}
-        >
-          <intl-message label="ui:mainframe:ownedPrograms:purchase" value=${submitButtonValues}>
-            Purchase
-          </intl-message>
+        <sl-button slot="footer" size="medium" variant="primary" @click=${this.handlePurchase}>
+          <intl-message label="ui:mainframe:developingPrograms:startDevelopment"> Start development </intl-message>
         </sl-button>
       </sl-dialog>
     `;
@@ -209,7 +194,7 @@ export class PurchaseProgramDialog extends LitElement {
     event.preventDefault();
     event.stopPropagation();
 
-    this.dispatchEvent(new PurchaseProgramDialogClose());
+    this.dispatchEvent(new StartProgramDevelopmentDialogClose());
   };
 
   private handleProgramChange = () => {
@@ -240,14 +225,14 @@ export class PurchaseProgramDialog extends LitElement {
     event.preventDefault();
 
     if (this._programName) {
-      const isBought = this._purchaseProgramDialogController.purchaseProgram(
+      const hasStarted = this._startProgramDevelopmentDialogController.startDevelopingProgram(
         this._programName,
         this._level,
         this._quality,
       );
 
-      if (isBought) {
-        this.dispatchEvent(new PurchaseProgramDialogClose());
+      if (hasStarted) {
+        this.dispatchEvent(new StartProgramDevelopmentDialogClose());
       }
     }
   };

@@ -2,6 +2,7 @@ import { t } from 'i18next';
 import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { ProgramName } from '@state/progam-factory/types';
+import { formatter } from '@shared/formatter';
 import { ProcessActionsColumnController } from './controller';
 
 @customElement('ca-process-actions-column')
@@ -30,7 +31,7 @@ export class ProcessActionsColumn extends LitElement {
     attribute: 'program-name',
     type: String,
   })
-  programName: ProgramName = ProgramName.cloudAiShare;
+  programName: string = ProgramName.shareServer;
 
   @property({
     attribute: 'current-completion-points',
@@ -66,8 +67,8 @@ export class ProcessActionsColumn extends LitElement {
 
   render() {
     const progressBarValues = JSON.stringify({
-      currentCompletionPoints: this.currentCompletionPoints,
-      maxCompletionPoints: this.maxCompletionPoints,
+      currentCompletionPoints: formatter.formatNumberLong(this.currentCompletionPoints),
+      maxCompletionPoints: formatter.formatNumberLong(this.maxCompletionPoints),
     });
 
     const progressBar = this.autoscalable
@@ -102,13 +103,13 @@ export class ProcessActionsColumn extends LitElement {
     event.preventDefault();
     event.stopPropagation();
 
-    this._processActionsColumnController.toggleProcess(this.programName, !this.active);
+    this._processActionsColumnController.toggleProcess(this.programName as ProgramName, !this.active);
   };
 
   private handleDeleteProcess = (event: Event) => {
     event.preventDefault();
     event.stopPropagation();
 
-    this._processActionsColumnController.deleteProcess(this.programName);
+    this._processActionsColumnController.deleteProcess(this.programName as ProgramName);
   };
 }

@@ -7,6 +7,7 @@ import {
   Scenario,
   Theme,
   ProgramsEvent,
+  LongNumberFormat,
 } from './types';
 
 export const LANGUAGES: Language[] = Object.values(Language);
@@ -26,3 +27,5 @@ export const PURCHASE_EVENTS: PurchaseEvent[] = Object.values(PurchaseEvent);
 export const PROGRAM_EVENTS: ProgramsEvent[] = Object.values(ProgramsEvent);
 
 export const QUALITIES: number[] = [0, 1, 2, 3, 4, 5, 6];
+
+export const LONG_NUMBER_FORMATS: LongNumberFormat[] = Object.values(LongNumberFormat);
