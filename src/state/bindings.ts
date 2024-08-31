@@ -12,6 +12,8 @@ import {
   IMainframeDevelopingProgramsState,
   MainframeDevelopingProgramsState,
 } from '@state/mainframe-developing-programs-state';
+import { Formatter } from '@shared/formatter';
+import { IFormatter } from '@shared/interfaces/formatter';
 import { TYPES } from './types';
 import { container } from './container';
 
@@ -42,3 +44,10 @@ container
   .to(MainframeDevelopingProgramsState)
   .inSingletonScope()
   .whenTargetIsDefault();
+  container
+  .bind<IFormatter>(TYPES.Formatter)
+  .to(Formatter)
+  .inSingletonScope()
+  .whenTargetIsDefault();
+
+  

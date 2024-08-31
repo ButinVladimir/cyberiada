@@ -1,6 +1,6 @@
 import i18n from 'i18next';
-import { container } from '@state/container';
-import { ISettingsState } from '@state/settings-state/interfaces/settings-state';
+import { injectable, inject } from 'inversify';
+import type { ISettingsState } from '@state/settings-state/interfaces/settings-state';
 import { TYPES } from '@state/types';
 import { IFormatter } from './interfaces/formatter';
 import { LongNumberFormat } from './types';
@@ -30,11 +30,18 @@ const QUALITY_MAP: Record<number, string> = {
   6: 'VII',
 };
 
-class Formatter implements IFormatter {
+@injectable()
+export class Formatter implements IFormatter {
+  private _settingsState: ISettingsState;
+
   private _decimalBuiltInFormatter: Intl.NumberFormat;
   private _floatBuiltInFormatter: Intl.NumberFormat;
 
-  constructor() {
+  constructor(
+    @inject(TYPES.SettingsState) _settingsState: ISettingsState,
+  ) {
+    this._settingsState = _settingsState;
+
     this._decimalBuiltInFormatter = new Intl.NumberFormat(navigator.language, { maximumFractionDigits: 0 });
     this._floatBuiltInFormatter = new Intl.NumberFormat(navigator.language, {
       minimumFractionDigits: 2,
@@ -67,9 +74,7 @@ class Formatter implements IFormatter {
   }
 
   formatNumberLong(value: number): string {
-    const settingsState: ISettingsState = container.get(TYPES.SettingsState);
-
-    switch (settingsState.longNumberFormat) {
+    switch (this._settingsState.longNumberFormat) {
       case LongNumberFormat.builtIn:
         return this.formatNumberFloat(value);
 
@@ -90,9 +95,9 @@ class Formatter implements IFormatter {
     return QUALITY_MAP[value];
   }
 
-  private updateBuiltInFormatters = (language: string) => {
-    this._decimalBuiltInFormatter = new Intl.NumberFormat(language, { maximumFractionDigits: 0 });
-    this._floatBuiltInFormatter = new Intl.NumberFormat(language, {
+  private updateBuiltInFormatters = () => {
+    this._decimalBuiltInFormatter = new Intl.NumberFormat(this._settingsState.language, { maximumFractionDigits: 0 });
+    this._floatBuiltInFormatter = new Intl.NumberFormat(this._settingsState.language, {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     });
@@ -103,4 +108,3 @@ class Formatter implements IFormatter {
   }
 }
 
-export const formatter = new Formatter();

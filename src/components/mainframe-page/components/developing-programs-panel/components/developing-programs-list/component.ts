@@ -2,7 +2,6 @@ import { LitElement, css, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { IDevelopingProgram } from '@state/mainframe-developing-programs-state/interfaces/developing-program';
-import { formatter } from '@shared/formatter';
 import { DevelopingProgramsListController } from './controller';
 
 @customElement('ca-developing-programs-list')
@@ -113,6 +112,8 @@ export class DevelopingProgramsList extends LitElement {
   };
 
   renderListItem = (developingProgram: IDevelopingProgram) => {
+    const formatter = this._developingProgramsListController.formatter;
+
     return html`
       <tr class="list-item">
         <td class="program">
@@ -128,7 +129,7 @@ export class DevelopingProgramsList extends LitElement {
             program-name=${developingProgram.program.name}
             ?active=${developingProgram.isActive}
             current-development-points=${developingProgram.currentDevelopmentPoints}
-            max-development-points=${developingProgram.maxDevelopmentPoints}
+            max-development-points=${developingProgram.program.developmentPoints}
           ></ca-developing-program-actions-column>
         </td>
       </tr>

@@ -5,6 +5,7 @@ import type { IGeneralState } from '@state/general-state/interfaces/general-stat
 import type { IMainframeHardwareState } from '@state/mainframe-hardware-state/interfaces/mainframe-hardware-state';
 import type { IMainframeDevelopingProgramsState } from '@state/mainframe-developing-programs-state/interfaces/mainframe-developing-programs-state';
 import type { ISettingsState } from '@state/settings-state/interfaces/settings-state';
+import type { IFormatter } from "@shared/interfaces/formatter";
 import { IProgramFactory } from './interfaces/program-factory';
 import { IMakeProgramParameters, IProgram } from './interfaces';
 import { ProgramName } from './types';
@@ -26,6 +27,9 @@ export class ProgramFactory implements IProgramFactory {
   @lazyInject(TYPES.MainframeDevelopingProgramsState)
   private _mainframeDevelopingProgramsState!: IMainframeDevelopingProgramsState;
 
+  @lazyInject(TYPES.Formatter)
+  private _formatter!: IFormatter;
+
   makeProgram(parameters: IMakeProgramParameters): IProgram {
     switch (parameters.name) {
       case ProgramName.shareServer:
@@ -33,6 +37,7 @@ export class ProgramFactory implements IProgramFactory {
           generalState: this._generalState,
           settingsState: this._settingsState,
           mainframeHardwareState: this._mainframeHardwareState,
+          formatter: this._formatter,
           level: parameters.level,
           quality: parameters.quality,
         });
@@ -42,6 +47,7 @@ export class ProgramFactory implements IProgramFactory {
           settingsState: this._settingsState,
           mainframeHardwareState: this._mainframeHardwareState,
           mainframeDevelopingProgramsState: this._mainframeDevelopingProgramsState,
+          formatter: this._formatter,
           level: parameters.level,
           quality: parameters.quality,
         });

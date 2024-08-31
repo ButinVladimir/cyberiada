@@ -1,3 +1,4 @@
+import { MS_IN_SECOND } from '@shared/constants';
 import { IGeneralState } from '@state/general-state/interfaces/general-state';
 import { IMainframeHardwareState } from '@state/mainframe-hardware-state/interfaces/mainframe-hardware-state';
 import { ISettingsState } from '@state/settings-state/interfaces/settings-state';
@@ -22,15 +23,27 @@ export class ShareServerProgram extends BaseProgram {
     this._mainframeHardwareState = parameters.mainframeHardwareState;
   }
 
-  perform(usedCores: number, usedRam: number): void {
-    this._generalState.increaseMoney(
-      this._settingsState.updateInterval *
-        constants.shareServer.baseIncome *
-        this._mainframeHardwareState.performance *
-        usedCores *
-        usedRam *
-        this.level *
-        Math.pow(constants.shareServer.qualityMultiplier, this.quality),
-    );
+  perform(threads: number, usedRam: number): void {
+    const delta = this.calculateDelta(threads, usedRam, this._settingsState.updateInterval);
+
+    this._generalState.increaseMoney(delta);
+  }
+
+  buildDescriptionParametersObject(threads: number, usedRam: number) {
+    const delta = this.calculateDelta(threads, usedRam, MS_IN_SECOND);
+
+    return {
+      value: this.formatter.formatNumberLong(delta),
+    };
+  }
+
+  private calculateDelta(threads: number, usedRam: number, passedTime: number): number {
+    return passedTime *
+      constants.shareServer.baseIncome *
+      this._mainframeHardwareState.performance *
+      threads *
+      usedRam *
+      this.level *
+      Math.pow(constants.shareServer.qualityMultiplier, this.quality);
   }
 }

@@ -251,11 +251,11 @@ Relocation losses can be mitigated by getting favors, either by buying, capturin
 Relocation favors include
 
 - Retaining money after relocations (10 tiers, each tier retain 10% more)
-- Keep weapons
-- Keep armors
-- Keep utility items
+- Keep weapons (7 tiers, each tier will allow to keep weapons with quality not above it's corresponding tier)
+- Keep armors (7 tiers, each tier will allow to keep armors with quality not above it's corresponding tier)
+- Keep utility items (7 tiers, each tier will allow to keep items with quality not above it's corresponding tier)
 - Keep additional company members (10 tiers, each tier allow to keep 1 more)
-- Keep programs
+- Keep programs (7 tiers, each tier will allow to keep programs with quality not above it's corresponding tier)
 
 Augmentations and blueprints are not affected by relocation.
 
@@ -428,7 +428,7 @@ Each city has it's own rewards for neutral faction.
 
 ### Starting city
 
-Starting city has only one faction - **World security service**. Player begins here after starting the game. Has small size and designed to learn how to use basic mechanics.
+Starting city has only one faction - **Global security service**. Player begins here after starting the game. Has small size and designed to learn how to use basic mechanics.
 
 Has following unlocks:
 

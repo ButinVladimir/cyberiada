@@ -1,7 +1,7 @@
 import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { formatter } from '@shared/formatter';
 import { BuyHardwareUpgradeEvent } from './events';
+import { MainframeHardwarePanelArticleController } from './controller';
 
 @customElement('ca-mainframe-hardware-panel-article')
 export class MainframeHardwarePanelArticle extends LitElement {
@@ -69,7 +69,17 @@ export class MainframeHardwarePanelArticle extends LitElement {
   })
   cost!: number;
 
+  private _mainframeHardwarePanelArticleController: MainframeHardwarePanelArticleController;
+
+  constructor() {
+    super();
+
+    this._mainframeHardwarePanelArticleController = new MainframeHardwarePanelArticleController(this);
+  }
+
   render() {
+    const formatter = this._mainframeHardwarePanelArticleController.formatter;
+
     const buttonValue = JSON.stringify({
       cost: formatter.formatNumberLong(this.cost),
       increase: formatter.formatNumberDecimal(this.increase),

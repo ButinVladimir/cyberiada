@@ -1,10 +1,10 @@
-import { LitElement, TemplateResult, css, html } from 'lit';
+import { LitElement, css, html } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.component.js';
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.component.js';
 import { PROGRAMS } from '@state/progam-factory/constants';
 import { ProgramName } from '@state/progam-factory/types';
-import { formatter } from '@shared/formatter';
 import { PurchaseProgramDialogClose } from './events';
 import { QUALITIES } from '@shared/constants';
 import { PurchaseProgramDialogController } from './controller';
@@ -54,7 +54,7 @@ export class PurchaseProgramDialog extends LitElement {
       font-size: var(--ca-hint-font-size);
     }
 
-    p.description {
+    ca-program-description[program-name] {
       margin-top: var(--sl-spacing-medium);
       margin-bottom: 0;
     }
@@ -110,14 +110,19 @@ export class PurchaseProgramDialog extends LitElement {
   }
 
   render() {
+    const formatter = this._purchaseProgramDialogController.formatter;
+
     const program = this._programName
       ? this._purchaseProgramDialogController.getProgram(this._programName, this._level, this._quality)
       : undefined;
-    const cost = program ? program.getCost() : 0;
+    const cost = program ? program.cost : 0;
     const money = this._purchaseProgramDialogController.money;
 
     const submitButtonValues = JSON.stringify({ cost: formatter.formatNumberLong(cost) });
     const isSubmitButtonEnabled = program && money >= cost;
+
+    const threads = program?.isAutoscalable ? this._purchaseProgramDialogController.cores : 1;
+    const ram = this._purchaseProgramDialogController.ram;
 
     return html`
       <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
@@ -171,7 +176,14 @@ export class PurchaseProgramDialog extends LitElement {
             </sl-select>
           </div>
 
-          ${this.renderProgramDescription()}
+          <ca-program-description
+            program-name=${ifDefined(this._programName)}
+            level=${this._level}
+            quality=${this._quality}
+            threads=${threads}
+            ram=${ram}
+          >
+          </ca-program-description>
         </div>
 
         <sl-button slot="footer" size="medium" variant="default" outline @click=${this.handleClose}>
@@ -190,18 +202,6 @@ export class PurchaseProgramDialog extends LitElement {
           </intl-message>
         </sl-button>
       </sl-dialog>
-    `;
-  }
-
-  private renderProgramDescription(): TemplateResult {
-    if (!this._programName) {
-      return html``;
-    }
-
-    return html`
-      <p class="description">
-        <intl-message label="programs:${this._programName}:description"> Program </intl-message>
-      </p>
     `;
   }
 
@@ -232,7 +232,7 @@ export class PurchaseProgramDialog extends LitElement {
   };
 
   private handleQualityChange = () => {
-    this._quality = this._qualityInput.value as unknown as number;
+    this._quality = +this._qualityInput.value;
   };
 
   private handlePurchase = (event: Event) => {

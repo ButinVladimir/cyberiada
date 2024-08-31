@@ -4,6 +4,7 @@ import type { IMainframeHardwareState } from '@state/mainframe-hardware-state/in
 import type { IMainframeOwnedProgramsState } from '@state/mainframe-owned-programs-state/interfaces/mainframe-owned-program-state';
 import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
 import type { ISettingsState } from '@state/settings-state/interfaces/settings-state';
+import type { IFormatter } from '@shared/interfaces/formatter';
 import {
   IMainframeProcessesSerializedState,
   IMainframeProcessesState,
@@ -13,7 +14,6 @@ import {
 import { TYPES } from '@state/types';
 import { EventBatcher } from '@shared/event-batcher';
 import { ProgramsEvent } from '@shared/types';
-import { formatter } from '@shared/formatter';
 import { Process } from './process';
 import { MAINFRAME_PROCESSES_STATE_UI_EVENTS } from './constants';
 
@@ -23,6 +23,7 @@ export class MainframeProcessesState implements IMainframeProcessesState {
   private _mainframeHardwareState: IMainframeHardwareState;
   private _mainframeOwnedProgramsState: IMainframeOwnedProgramsState;
   private _messageLogState: IMessageLogState;
+  private _formatter: IFormatter;
 
   private _processes: IProcess[];
   private _runningProcesses: IProcess[];
@@ -37,11 +38,13 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     @inject(TYPES.MainframeHardwareState) _mainframeHardwareState: IMainframeHardwareState,
     @inject(TYPES.MainframeOwnedProgramsState) _mainframeOwnedProgramsState: IMainframeOwnedProgramsState,
     @inject(TYPES.MessageLogState) _messageLogState: IMessageLogState,
+    @inject(TYPES.Formatter) _formatter: IFormatter,
   ) {
     this._settingsState = _settingsState;
     this._mainframeHardwareState = _mainframeHardwareState;
     this._mainframeOwnedProgramsState = _mainframeOwnedProgramsState;
     this._messageLogState = _messageLogState;
+    this._formatter = _formatter;
 
     this._processes = [];
     this._runningProcesses = [];
@@ -108,7 +111,7 @@ export class MainframeProcessesState implements IMainframeProcessesState {
 
     this._messageLogState.postMessage(ProgramsEvent.processStarted, {
       programName: program.name,
-      threads: formatter.formatNumberDecimal(threadCount),
+      threads: this._formatter.formatNumberDecimal(threadCount),
     });
 
     return true;
@@ -126,7 +129,7 @@ export class MainframeProcessesState implements IMainframeProcessesState {
 
         this._messageLogState.postMessage(ProgramsEvent.processDeleted, {
           programName: process.program.name,
-          threads: formatter.formatNumberDecimal(process.threads),
+          threads: this._formatter.formatNumberDecimal(process.threads),
         });
       } else {
         index++;
@@ -147,22 +150,22 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     let cores = 0;
 
     for (const process of this._processes) {
-      if (!process.isActive || process.program.isAutoscalable) {
+      if (process.program.isAutoscalable) { 
         continue;
       }
 
-      processRam = process.getTotalRam();
+      processRam = process.totalRam;
+      this._availableRam -= processRam;
 
-      if (processRam > this._availableRam) {
+      if (!process.isActive) {
         continue;
       }
 
-      cores = Math.min(process.threads * process.program.getCores(), this._availableCores);
+      cores = Math.min(process.threads * process.program.cores, this._availableCores);
 
       if (cores > 0) {
         this._runningProcesses.push(process);
         this._availableCores -= cores;
-        this._availableRam -= processRam;
       }
     }
 
@@ -179,14 +182,14 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     let hasFinishedProcesses = false;
 
     for (const process of this._runningProcesses) {
-      cores = Math.min(process.threads * process.program.getCores(), availableCores);
+      cores = Math.min(process.threads * process.program.cores, availableCores);
 
       if (cores > 0) {
         availableCores -= cores;
         process.increaseCompletion(cores);
 
-        if (cores > 0 && process.currentCompletionPoints >= process.maxCompletionPoints) {
-          process.program.perform(cores, process.getTotalRam());
+        if (process.currentCompletionPoints >= process.maxCompletionPoints) {
+          process.program.perform(process.threads, process.totalRam);
           hasFinishedProcesses = true;
         }
       }
@@ -252,7 +255,7 @@ export class MainframeProcessesState implements IMainframeProcessesState {
 
         this._messageLogState.postMessage(ProgramsEvent.processDeleted, {
           programName: process.program.name,
-          threads: formatter.formatNumberDecimal(process.threads),
+          threads: this._formatter.formatNumberDecimal(process.threads),
         });
       } else {
         index++;
@@ -276,7 +279,7 @@ export class MainframeProcessesState implements IMainframeProcessesState {
         } else {
           this._messageLogState.postMessage(ProgramsEvent.processDeleted, {
             programName: process.program.name,
-            threads: formatter.formatNumberDecimal(process.threads),
+            threads: this._formatter.formatNumberDecimal(process.threads),
           });
         }
       } else {

@@ -4,11 +4,11 @@ import type { IProgramFactory } from '@state/progam-factory/interfaces/program-f
 import { IProgram } from '@state/progam-factory/interfaces/program';
 import type { IGeneralState } from '@state/general-state/interfaces/general-state';
 import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
+import type { IFormatter } from '@shared/interfaces/formatter';
 import { TYPES } from '@state/types';
 import { ProgramName } from '@state/progam-factory/types';
 import { PurchaseEvent } from '@shared/types';
 import { EventBatcher } from '@shared/event-batcher';
-import { formatter } from '@shared/formatter';
 import { IMainframeOwnedProgramsState, IMainframeOwnedProgramsSerializedState } from './interfaces';
 import { MAINFRAME_OWNED_PROGRAMES_STATE_UI_EVENTS } from './constants';
 
@@ -17,6 +17,7 @@ export class MainframeOwnedProgramsState implements IMainframeOwnedProgramsState
   private _programFactory: IProgramFactory;
   private _generalState: IGeneralState;
   private _messageLogState: IMessageLogState;
+  private _formatter: IFormatter;
 
   private readonly _uiEventBatcher: EventBatcher;
 
@@ -26,10 +27,12 @@ export class MainframeOwnedProgramsState implements IMainframeOwnedProgramsState
     @inject(TYPES.ProgramFactory) _programFactory: IProgramFactory,
     @inject(TYPES.GeneralState) _generalState: IGeneralState,
     @inject(TYPES.MessageLogState) _messageLogState: IMessageLogState,
+    @inject(TYPES.Formatter) _formatter: IFormatter,
   ) {
     this._programFactory = _programFactory;
     this._generalState = _generalState;
     this._messageLogState = _messageLogState;
+    this._formatter = _formatter;
 
     this._ownedPrograms = new Map();
 
@@ -51,7 +54,7 @@ export class MainframeOwnedProgramsState implements IMainframeOwnedProgramsState
   purchaseProgram(programParameters: IMakeProgramParameters): boolean {
     const program = this._programFactory.makeProgram(programParameters);
 
-    return this._generalState.purchase(program.getCost(), this.handlePurchaseProgram(program));
+    return this._generalState.purchase(program.cost, this.handlePurchaseProgram(program));
   }
 
   listOwnedPrograms(): IProgram[] {
@@ -99,8 +102,8 @@ export class MainframeOwnedProgramsState implements IMainframeOwnedProgramsState
 
     this._messageLogState.postMessage(PurchaseEvent.programPurchased, {
       programName: newProgram.name,
-      level: formatter.formatNumberDecimal(newProgram.level),
-      quality: formatter.formatQuality(newProgram.quality),
+      level: this._formatter.formatNumberDecimal(newProgram.level),
+      quality: this._formatter.formatQuality(newProgram.quality),
     });
   };
 }

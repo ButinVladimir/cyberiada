@@ -4,6 +4,7 @@ import type { IMainframeOwnedProgramsState } from '@state/mainframe-owned-progra
 import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
 import type { IProgramFactory } from '@state/progam-factory/interfaces/program-factory';
 import type { IMakeProgramParameters } from '@state/progam-factory/interfaces/make-program-parameters';
+import type { IFormatter } from '@shared/interfaces/formatter';
 import {
   IMainframeDevelopingProgramsSerializedState,
   IMainframeDevelopingProgramsState,
@@ -13,7 +14,6 @@ import {
 import { TYPES } from '@state/types';
 import { EventBatcher } from '@shared/event-batcher';
 import { ProgramsEvent } from '@shared/types';
-import { formatter } from '@shared/formatter';
 import { DevelopingProgram } from './developing-program';
 import { MAINFRAME_DEVELOPING_PROGRAMS_STATE_UI_EVENTS } from './constants';
 
@@ -22,6 +22,7 @@ export class MainframeDevelopingProgramsState implements IMainframeDevelopingPro
   private _programFactory: IProgramFactory;
   private _mainframeOwnedProgramsState: IMainframeOwnedProgramsState;
   private _messageLogState: IMessageLogState;
+  private _formatter: IFormatter;
 
   private _developingPrograms: IDevelopingProgram[];
 
@@ -31,10 +32,12 @@ export class MainframeDevelopingProgramsState implements IMainframeDevelopingPro
     @inject(TYPES.ProgramFactory) _programFactory: IProgramFactory,
     @inject(TYPES.MainframeOwnedProgramsState) _mainframeOwnedProgramsState: IMainframeOwnedProgramsState,
     @inject(TYPES.MessageLogState) _messageLogState: IMessageLogState,
+    @inject(TYPES.Formatter) _formatter: IFormatter,
   ) {
     this._programFactory = _programFactory;
     this._mainframeOwnedProgramsState = _mainframeOwnedProgramsState;
     this._messageLogState = _messageLogState;
+    this._formatter = _formatter;
 
     this._developingPrograms = [];
 
@@ -76,8 +79,8 @@ export class MainframeDevelopingProgramsState implements IMainframeDevelopingPro
 
     this._messageLogState.postMessage(ProgramsEvent.programDevelopmentStarted, {
       programName: program.name,
-      level: formatter.formatNumberDecimal(program.level),
-      quality: formatter.formatQuality(program.quality),
+      level: this._formatter.formatNumberDecimal(program.level),
+      quality: this._formatter.formatQuality(program.quality),
     });
 
     return true;
@@ -95,8 +98,8 @@ export class MainframeDevelopingProgramsState implements IMainframeDevelopingPro
 
         this._messageLogState.postMessage(ProgramsEvent.programDevelopmentAborted, {
           programName: developingProgram.program.name,
-          level: formatter.formatNumberDecimal(developingProgram.program.level),
-          quality: formatter.formatQuality(developingProgram.program.quality),
+          level: this._formatter.formatNumberDecimal(developingProgram.program.level),
+          quality: this._formatter.formatQuality(developingProgram.program.quality),
         });
       } else {
         index++;
@@ -113,13 +116,13 @@ export class MainframeDevelopingProgramsState implements IMainframeDevelopingPro
     if (developingProgram) {
       developingProgram.increaseDevelopment(delta);
 
-      if (developingProgram.currentDevelopmentPoints >= developingProgram.maxDevelopmentPoints) {
+      if (developingProgram.currentDevelopmentPoints >= developingProgram.program.developmentPoints) {
         this._mainframeOwnedProgramsState.addProgram(developingProgram.program);
 
         this._messageLogState.postMessage(ProgramsEvent.programDevelopmentFinished, {
           programName: developingProgram.program.name,
-          level: formatter.formatNumberDecimal(developingProgram.program.level),
-          quality: formatter.formatQuality(developingProgram.program.quality),
+          level: this._formatter.formatNumberDecimal(developingProgram.program.level),
+          quality: this._formatter.formatQuality(developingProgram.program.quality),
         });
 
         this._developingPrograms.shift();

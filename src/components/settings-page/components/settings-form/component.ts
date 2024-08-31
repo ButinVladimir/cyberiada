@@ -3,10 +3,9 @@ import { customElement, query, state } from 'lit/decorators.js';
 import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.component.js';
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.component.js';
 import SlRange from '@shoelace-style/shoelace/dist/components/range/range.component.js';
-import SlCheckbox from '@shoelace-style/shoelace/dist/components/checkbox/checkbox.component.js';
+import SlSwitch from '@shoelace-style/shoelace/dist/components/switch/switch.component.js';
 import { LANGUAGES, LONG_NUMBER_FORMATS, THEMES } from '@shared/constants';
 import { Language, LongNumberFormat, Theme } from '@shared/types';
-import { formatter } from '@shared/formatter';
 import { SettingsFormController } from './controller';
 
 @customElement('ca-settings-form')
@@ -58,8 +57,8 @@ export class SettingsForm extends LitElement {
   @query('sl-range[name="updateInterval"]')
   private _updateIntervalInput?: SlRange;
 
-  @query('sl-checkbox[name="autosaveEnabled"]')
-  private _autosaveEnabledInput?: SlCheckbox;
+  @query('sl-switch[name="autosaveEnabled"]')
+  private _autosaveEnabledSwitch?: SlSwitch;
 
   @query('sl-range[name="autosaveInterval"]')
   private _autosaveIntervalInput?: SlRange;
@@ -72,14 +71,6 @@ export class SettingsForm extends LitElement {
 
   @state()
   private _isSaving = false;
-
-  private static autosaveIntervalFormatter = (value: number): string => {
-    return formatter.formatNumberDecimal(value / 1000);
-  };
-
-  private static decimalNumberFormatter = (value: number): string => {
-    return formatter.formatNumberDecimal(value);
-  };
 
   constructor() {
     super();
@@ -95,15 +86,15 @@ export class SettingsForm extends LitElement {
 
   updated() {
     if (this._autosaveIntervalInput) {
-      this._autosaveIntervalInput.tooltipFormatter = SettingsForm.autosaveIntervalFormatter;
+      this._autosaveIntervalInput.tooltipFormatter = this.autosaveIntervalFormatter;
     }
 
     if (this._updateIntervalInput) {
-      this._updateIntervalInput.tooltipFormatter = SettingsForm.decimalNumberFormatter;
+      this._updateIntervalInput.tooltipFormatter = this.decimalNumberFormatter;
     }
 
     if (this._maxTicksPerUpdateInput) {
-      this._maxTicksPerUpdateInput.tooltipFormatter = SettingsForm.decimalNumberFormatter;
+      this._maxTicksPerUpdateInput.tooltipFormatter = this.decimalNumberFormatter;
     }
   }
 
@@ -206,8 +197,8 @@ export class SettingsForm extends LitElement {
         </span>
       </sl-range>
 
-      <sl-checkbox
-        size="medium"
+      <sl-switch
+        size="large"
         name="autosaveEnabled"
         ?checked=${this._settingsFormController.autosaveEnabled}
         @sl-change=${this.handleChangeAutosaveEnabled}
@@ -215,7 +206,7 @@ export class SettingsForm extends LitElement {
         <span class="input-label">
           <intl-message label="ui:settings:autosaveEnabled">Autosave enabled</intl-message>
         </span>
-      </sl-checkbox>
+      </sl-switch>
 
       <sl-range
         min="10000"
@@ -284,7 +275,7 @@ export class SettingsForm extends LitElement {
   };
 
   private handleChangeAutosaveEnabled = () => {
-    this._settingsFormController.setAutosaveEnabled(this._autosaveEnabledInput!.checked);
+    this._settingsFormController.setAutosaveEnabled(this._autosaveEnabledSwitch!.checked);
   };
 
   private handleChangeAutosaveInterval = () => {
@@ -297,5 +288,13 @@ export class SettingsForm extends LitElement {
 
   private handleChangeLongNumberFormat = () => {
     this._settingsFormController.setLongNumberFormat(this._longNumberFormatInput!.value as LongNumberFormat);
+  };
+
+  private autosaveIntervalFormatter = (value: number): string => {
+    return this._settingsFormController.formatter.formatNumberDecimal(value / 1000);
+  };
+
+  private decimalNumberFormatter = (value: number): string => {
+    return this._settingsFormController.formatter.formatNumberDecimal(value);
   };
 }

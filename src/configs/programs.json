@@ -1,6 +1,5 @@
 {
   "shareServer": {
-    "cores": 0,
     "ram": 0,
     "processCompletionPoints": 0,
     "developmentLevelCompletionPointsMultiplier": 0,
@@ -13,7 +12,6 @@
     "qualityCostMultiplier": 1.5
   },
   "codeGenerator": {
-    "cores": 1,
     "ram": 1,
     "processCompletionPoints": 100000,
     "developmentLevelCompletionPointsMultiplier": 0,

@@ -12,6 +12,7 @@ import { IProgramFactory } from '@state/progam-factory';
 import { container } from '@state/container';
 import { TYPES } from '@state/types';
 import { IApp } from '@state/app';
+import { IFormatter } from './interfaces/formatter';
 
 export class BaseController implements ReactiveController {
   protected host: ReactiveControllerHost;
@@ -24,6 +25,10 @@ export class BaseController implements ReactiveController {
   hostConnected() {}
 
   hostDisconnected() {}
+
+  get formatter(): IFormatter {
+    return container.get<IFormatter>(TYPES.Formatter);
+  }
 
   protected get app(): IApp {
     return container.get<IApp>(TYPES.App);

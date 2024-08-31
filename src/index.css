@@ -14,6 +14,7 @@ body {
 .sl-theme-light,
 .sl-theme-dark {
   --ca-max-width: 1920px;
+  --ca-max-content-width: 70rem;
   --sl-input-font-family: var(--sl-font-sans);
   --sl-input-help-text-color: var(--sl-color-neutral-700);
   --ca-hint-color: var(--sl-input-help-text-color);

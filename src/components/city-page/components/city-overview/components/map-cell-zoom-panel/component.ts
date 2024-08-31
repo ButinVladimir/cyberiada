@@ -2,7 +2,7 @@ import { t } from 'i18next';
 import { LitElement, css, html } from 'lit';
 import { customElement, query, property, state } from 'lit/decorators.js';
 import SlRange from '@shoelace-style/shoelace/dist/components/range/range.component.js';
-import { formatter } from '@shared/formatter';
+import { MapCellZoomPanelController } from './controller';
 import { MapCellZoomChangeEvent } from './events';
 import { classMap } from 'lit/directives/class-map.js';
 
@@ -25,16 +25,12 @@ export class MapCellZoomPanel extends LitElement {
       flex: 1 1 auto;
       width: 0;
       box-sizing: border-box;
-      visibility: hidden;
-      transition:
-        visibility var(--sl-transition-x-fast) ease,
-        width var(--sl-transition-x-fast) ease,
-        padding-right var(--sl-transition-x-fast) ease;
+      display: none;
     }
 
     div.range-container.show-range {
       width: 20em;
-      visibility: visible;
+      display: block;
       padding: var(--sl-spacing-2x-small) var(--sl-spacing-medium);
     }
 
@@ -49,9 +45,7 @@ export class MapCellZoomPanel extends LitElement {
     }
   `;
 
-  private static decimalNumberFormatter = (value: number): string => {
-    return formatter.formatNumberDecimal(value);
-  };
+  private _mapCellZoomPanelController: MapCellZoomPanelController;
 
   @property({
     attribute: true,
@@ -64,6 +58,12 @@ export class MapCellZoomPanel extends LitElement {
 
   @query('sl-range')
   private _rangeElement!: SlRange;
+
+  constructor() {
+    super();
+
+    this._mapCellZoomPanelController = new MapCellZoomPanelController(this);
+  }
 
   render() {
     const rangeContainerClasses = classMap({
@@ -89,7 +89,7 @@ export class MapCellZoomPanel extends LitElement {
   }
 
   updated() {
-    this._rangeElement.tooltipFormatter = MapCellZoomPanel.decimalNumberFormatter;
+    this._rangeElement.tooltipFormatter = this.decimalNumberFormatter;
   }
 
   private handleToggleZoomPanel = (event: Event) => {
@@ -102,5 +102,9 @@ export class MapCellZoomPanel extends LitElement {
     event.stopPropagation();
 
     this.dispatchEvent(new MapCellZoomChangeEvent(this._rangeElement.value));
+  };
+
+  private decimalNumberFormatter = (value: number): string => {
+    return this._mapCellZoomPanelController.formatter.formatNumberDecimal(value);
   };
 }

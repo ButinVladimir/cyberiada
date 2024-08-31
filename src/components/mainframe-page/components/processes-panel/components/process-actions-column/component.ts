@@ -2,7 +2,6 @@ import { t } from 'i18next';
 import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { ProgramName } from '@state/progam-factory/types';
-import { formatter } from '@shared/formatter';
 import { ProcessActionsColumnController } from './controller';
 
 @customElement('ca-process-actions-column')
@@ -66,6 +65,8 @@ export class ProcessActionsColumn extends LitElement {
   }
 
   render() {
+    const formatter = this._processActionsColumnController.formatter;
+
     const progressBarValues = JSON.stringify({
       currentCompletionPoints: formatter.formatNumberLong(this.currentCompletionPoints),
       maxCompletionPoints: formatter.formatNumberLong(this.maxCompletionPoints),

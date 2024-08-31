@@ -2,7 +2,6 @@ import { t } from 'i18next';
 import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { ProgramName } from '@state/progam-factory/types';
-import { formatter } from '@shared/formatter';
 import { DevelopingProgramActionsColumnController } from './controller';
 
 @customElement('ca-developing-program-actions-column')
@@ -59,6 +58,7 @@ export class DevelopingProgramActionsColumn extends LitElement {
   }
 
   render() {
+    const formatter = this._developingProgramActionsColumnController.formatter;
     const progressBarValues = JSON.stringify({
       currentDevelopmentPoints: formatter.formatNumberLong(this.currentDevelopmentPoints),
       maxDevelopmentPoints: formatter.formatNumberLong(this.maxDevelopmentPoints),

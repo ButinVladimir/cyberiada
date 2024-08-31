@@ -1,9 +1,17 @@
-import { LitElement, html } from 'lit';
+import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { OverviewMenuItem, MiscMenuItem } from '@shared/types';
 
 @customElement('ca-viewport')
 export class Viewport extends LitElement {
+  static styles = css`
+    :host {
+      display: block;
+      width: 100%;
+      max-width: var(--ca-max-content-width);
+    }
+  `
+
   @property({
     attribute: 'selected-menu-item',
     type: String,

@@ -1,3 +1,4 @@
+import { MS_IN_SECOND } from '@shared/constants';
 import { IMainframeHardwareState } from '@state/mainframe-hardware-state/interfaces/mainframe-hardware-state';
 import { IMainframeDevelopingProgramsState } from '@state/mainframe-developing-programs-state/interfaces/mainframe-developing-programs-state';
 import { ISettingsState } from '@state/settings-state/interfaces/settings-state';
@@ -22,15 +23,26 @@ export class CodeGeneratorProgram extends BaseProgram {
     this._mainframeDevelopingProgramsState = parameters.mainframeDevelopingProgramsState;
   }
 
-  perform(usedCores: number): void {
-    const delta =
-      this._settingsState.updateInterval *
-      constants.codeGenerator.baseIncrease *
-      this._mainframeHardwareState.performance *
-      usedCores *
-      this.level *
-      Math.pow(constants.codeGenerator.qualityMultiplier, this.quality);
+  perform(threads: number): void {
+    const delta = this.calculateDelta(threads, this._settingsState.updateInterval);
 
     this._mainframeDevelopingProgramsState.increaseDevelopingProgramCompletion(delta);
+  }
+
+  buildDescriptionParametersObject(threads: number) {
+    const delta = this.calculateDelta(threads, MS_IN_SECOND);
+
+    return {
+      value: this.formatter.formatNumberLong(delta),
+    };
+  }
+
+  private calculateDelta(threads: number, passedTime: number): number {
+    return passedTime *
+      constants.codeGenerator.baseIncrease *
+      this._mainframeHardwareState.performance *
+      threads *
+      this.level *
+      Math.pow(constants.codeGenerator.qualityMultiplier, this.quality);
   }
 }

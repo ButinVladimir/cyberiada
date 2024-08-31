@@ -1,5 +1,4 @@
 import { IProgram } from '@state/progam-factory/interfaces/program';
-import constants from '@configs/programs.json';
 import {
   IMainframeDevelopingProgramsState,
   IDevelopingProgram,
@@ -32,10 +31,6 @@ export class DevelopingProgram implements IDevelopingProgram {
     return this._currentDevelopmentPoints;
   }
 
-  get maxDevelopmentPoints() {
-    return constants[this.program.name].developmentPoints;
-  }
-
   toggleActive(active: boolean) {
     this._isActive = active;
     this._mainframeDevelopingProgramsState.fireUiEvents();
@@ -44,7 +39,7 @@ export class DevelopingProgram implements IDevelopingProgram {
   increaseDevelopment(delta: number): void {
     this._currentDevelopmentPoints += delta;
 
-    const maxDevelopmentPoints = this.maxDevelopmentPoints;
+    const maxDevelopmentPoints = this.program.developmentPoints;
 
     if (this._currentDevelopmentPoints > maxDevelopmentPoints) {
       this._currentDevelopmentPoints = maxDevelopmentPoints;

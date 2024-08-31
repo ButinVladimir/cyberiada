@@ -5,7 +5,6 @@ export interface IDevelopingProgram {
   program: IProgram;
   isActive: boolean;
   currentDevelopmentPoints: number;
-  maxDevelopmentPoints: number;
   toggleActive(active: boolean): void;
   increaseDevelopment(delta: number): void;
   serialize(): ISerializedDevelopingProgram;

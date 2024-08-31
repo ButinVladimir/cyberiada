@@ -1,0 +1,3 @@
+export const SETTINGS_STATE_EVENTS = {
+  UPDATED_LANGUAGE: Symbol('UPDATED_LANGUAGE'),
+};

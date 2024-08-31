@@ -1,6 +1,5 @@
 import { LitElement, html, css } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import { formatter } from '@shared/formatter';
 import { TopBarValuesController } from './controller';
 
 @customElement('ca-top-bar-values')
@@ -40,6 +39,7 @@ export class TopBarValues extends LitElement {
   }
 
   render() {
+    const formatter = this._topBarValuesController.formatter;
     const bonusTimeFormatted = formatter.formatTimeShort(this._topBarValuesController.bonusTime);
     const moneyFormatted = formatter.formatNumberLong(this._topBarValuesController.money);
 

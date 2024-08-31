@@ -1,13 +1,14 @@
 import { injectable } from 'inversify';
 import i18n from 'i18next';
+import { EventEmitter } from 'eventemitter3';
 import { Language, LongNumberFormat, MessageFilterEvent, Theme } from '@shared/types';
 import type { IApp } from '@state/app/interfaces/app';
 import { decorators } from '@state/container';
 import { TYPES } from '@state/types';
-import { EventBatcher } from '@shared/event-batcher';
 import themes from '@configs/themes.json';
 import constants from '@configs/constants.json';
 import { ISettingsState, ISettingsSerializedState } from './interfaces';
+import { SETTINGS_STATE_EVENTS } from './constants';
 
 const { lazyInject } = decorators;
 
@@ -27,7 +28,7 @@ export class SettingsState implements ISettingsState {
   private _mapCellSize: number;
   private _enabledMessageFilterEvents: Set<MessageFilterEvent>;
 
-  private readonly _uiEventBatcher: EventBatcher;
+  private _stateEventEmitter: EventEmitter;
 
   constructor() {
     this._language = Language.en;
@@ -41,7 +42,7 @@ export class SettingsState implements ISettingsState {
     this._mapCellSize = constants.defaultSettings.mapSize;
     this._enabledMessageFilterEvents = new Set<MessageFilterEvent>();
 
-    this._uiEventBatcher = new EventBatcher();
+    this._stateEventEmitter = new EventEmitter();
   }
 
   get language() {
@@ -89,6 +90,8 @@ export class SettingsState implements ISettingsState {
 
     await i18n.changeLanguage(this.language);
     document.documentElement.lang = this.language;
+
+    this._stateEventEmitter.emit(SETTINGS_STATE_EVENTS.UPDATED_LANGUAGE);
   }
 
   setTheme(theme: Theme) {
@@ -176,6 +179,14 @@ export class SettingsState implements ISettingsState {
       mapCellSize: this.mapCellSize,
       enabledMessageFilterEvents: this.serializeMessageFilter(),
     };
+  }
+
+  addStateEventListener(eventName: symbol, handler: (...args: any[]) => void) {
+    this._stateEventEmitter.addListener(eventName, handler);
+  }
+
+  removeStateEventListener(eventName: symbol, handler: (...args: any[]) => void) {
+    this._stateEventEmitter.removeListener(eventName, handler);
   }
 
   private serializeMessageFilter(): MessageFilterEvent[] {

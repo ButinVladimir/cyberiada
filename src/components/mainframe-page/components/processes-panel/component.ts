@@ -1,6 +1,5 @@
 import { LitElement, css, html } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
-import { formatter } from '@shared/formatter';
 import { ProcessesPanelController } from './controller';
 
 @customElement('ca-mainframe-processes-panel')
@@ -35,6 +34,8 @@ export class MainframeHardwarePanel extends LitElement {
   }
 
   render() {
+    const formatter = this._processesPanelController.formatter;
+
     return html`
       <div class="top-container">
         <sl-button variant="primary" size="medium" @click=${this.handleStartProcessDialogOpen}>

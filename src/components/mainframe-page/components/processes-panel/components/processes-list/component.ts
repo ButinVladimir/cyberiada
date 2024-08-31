@@ -2,7 +2,6 @@ import { LitElement, css, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { IProcess } from '@state/mainframe-processes-state/interfaces/process';
-import { formatter } from '@shared/formatter';
 import { ProcessesListController } from './controller';
 
 @customElement('ca-processes-list')
@@ -105,6 +104,8 @@ export class ProcessesList extends LitElement {
   };
 
   renderListItem = (process: IProcess) => {
+    const formatter = this._processesListController.formatter;
+
     const threads = process.program.isAutoscalable
       ? html`<intl-message label="ui:mainframe:processes:autoscalable">Autoscalable</intl-message>`
       : formatter.formatNumberDecimal(process.threads);

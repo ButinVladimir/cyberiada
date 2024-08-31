@@ -4,10 +4,10 @@ import constants from '@configs/constants.json';
 import type { IGeneralState } from '@state/general-state/interfaces/general-state';
 import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
 import type { IMainframeProcessesState } from '@state/mainframe-processes-state/interfaces/mainframe-processes-state';
+import type { IFormatter } from '@shared/interfaces/formatter';
 import { TYPES } from '@state/types';
 import { PurchaseEvent } from '@shared/types';
 import { EventBatcher } from '@shared/event-batcher';
-import { formatter } from '@shared/formatter';
 import { IMainframeHardwareState, IMainframeHardwareSerializedState } from './interfaces';
 import { MAINFRAME_HARDWARE_STATE_UI_EVENTS } from './constants';
 
@@ -17,6 +17,7 @@ const { lazyInject } = decorators;
 export class MainframeHardwareState implements IMainframeHardwareState {
   private _generalState: IGeneralState;
   private _messageLogState: IMessageLogState;
+  private _formatter: IFormatter;
 
   @lazyInject(TYPES.MainframeProcessesState)
   private _mainframeProcessesState!: IMainframeProcessesState;
@@ -30,9 +31,11 @@ export class MainframeHardwareState implements IMainframeHardwareState {
   constructor(
     @inject(TYPES.GeneralState) _generalState: IGeneralState,
     @inject(TYPES.MessageLogState) _messageLogState: IMessageLogState,
+    @inject(TYPES.Formatter) _formatter: IFormatter,
   ) {
     this._generalState = _generalState;
     this._messageLogState = _messageLogState;
+    this._formatter = _formatter;
 
     this._performance = constants.startingSettings.mainframe.performanceLevel;
     this._cores = constants.startingSettings.mainframe.coresLevel;
@@ -140,7 +143,7 @@ export class MainframeHardwareState implements IMainframeHardwareState {
   private handlePurchasePerformanceIncrease = (increase: number) => () => {
     this._performance += increase;
     this._messageLogState.postMessage(PurchaseEvent.performanceUpdated, {
-      level: formatter.formatNumberDecimal(this._performance),
+      level: this._formatter.formatNumberDecimal(this._performance),
     });
     this.handlePostUpdate();
   };
@@ -148,14 +151,14 @@ export class MainframeHardwareState implements IMainframeHardwareState {
   private handlePurchaseCoresIncrease = (increase: number) => () => {
     this._cores += increase;
     this._messageLogState.postMessage(PurchaseEvent.coresUpdated, {
-      level: formatter.formatNumberDecimal(this._cores),
+      level: this._formatter.formatNumberDecimal(this._cores),
     });
     this.handlePostUpdate();
   };
 
   private handlePurchaseRamIncrease = (increase: number) => () => {
     this._ram += increase;
-    this._messageLogState.postMessage(PurchaseEvent.ramUpdated, { level: formatter.formatNumberDecimal(this._ram) });
+    this._messageLogState.postMessage(PurchaseEvent.ramUpdated, { level: this._formatter.formatNumberDecimal(this._ram) });
     this.handlePostUpdate();
   };
 

@@ -1,5 +1,5 @@
 import { IProgram } from '@state/progam-factory/interfaces/program';
-import constants from '@configs/programs.json';
+import programs from '@configs/programs.json';
 import { IMainframeHardwareState } from '@state/mainframe-hardware-state/interfaces/mainframe-hardware-state';
 import { ISettingsState } from '@state/settings-state/interfaces/settings-state';
 import { IMainframeProcessesState, IProcess, IProcessParameters, ISerializedProcess } from './interfaces';
@@ -40,7 +40,11 @@ export class Process implements IProcess {
   }
 
   get maxCompletionPoints() {
-    return constants[this.program.name].processCompletionPoints;
+    return this.program.completionPoints * this.threads;
+  }
+
+  get totalRam() {
+    return this.program.ram * this.threads;
   }
 
   toggleActive(active: boolean) {
@@ -49,12 +53,9 @@ export class Process implements IProcess {
     this._mainframeProcessesState.fireUiEvents();
   }
 
-  getTotalRam() {
-    return this.program.getRam() * this.threads;
-  }
-
   increaseCompletion(usedCores: number): void {
-    const programConstants = constants[this.program.name];
+    const programConstants = programs[this.program.name];
+
     this._currentCompletionPoints +=
       this._settingsState.updateInterval *
       usedCores *

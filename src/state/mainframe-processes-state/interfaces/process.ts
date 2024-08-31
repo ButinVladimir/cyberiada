@@ -7,8 +7,8 @@ export interface IProcess {
   threads: number;
   currentCompletionPoints: number;
   maxCompletionPoints: number;
+  totalRam: number;
   toggleActive(active: boolean): void;
-  getTotalRam(): number;
   increaseCompletion(usedCores: number): void;
   resetCompletion(): void;
   serialize(): ISerializedProcess;

@@ -1,5 +1,6 @@
-import { LitElement, TemplateResult, css, html } from 'lit';
+import { LitElement, css, html } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.component.js';
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.component.js';
 import { ProgramName } from '@state/progam-factory/types';
@@ -52,7 +53,7 @@ export class StartProcessDialog extends LitElement {
       font-size: var(--ca-hint-font-size);
     }
 
-    p.description {
+    ca-program-description[program-name] {
       margin-top: var(--sl-spacing-medium);
       margin-bottom: 0;
     }
@@ -85,7 +86,7 @@ export class StartProcessDialog extends LitElement {
   private _programName?: ProgramName = undefined;
 
   @state()
-  private _threads = 0;
+  private _threads = 1;
 
   constructor() {
     super();
@@ -101,6 +102,9 @@ export class StartProcessDialog extends LitElement {
 
   render() {
     const program = this._programName ? this._startProcessDialogController.getProgram(this._programName) : undefined;
+
+    const threads = program?.isAutoscalable ? this._startProcessDialogController.cores : this._threads;
+    const ram = this._startProcessDialogController.ram;
 
     return html`
       <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
@@ -126,7 +130,7 @@ export class StartProcessDialog extends LitElement {
               name="threads"
               value=${this._threads}
               type="number"
-              min="0"
+              min="1"
               step="1"
               ?disabled=${!!program?.isAutoscalable}
               @sl-change=${this.handleThreadsChange}
@@ -138,7 +142,14 @@ export class StartProcessDialog extends LitElement {
             </sl-select>
           </div>
 
-          ${this.renderProgramDescription()}
+          <ca-program-description
+            program-name=${ifDefined(this._programName)}
+            level=${program?.level ?? 1}
+            quality=${program?.quality ?? 0}
+            threads=${threads}
+            ram=${ram}
+          >
+          </ca-program-description>
         </div>
 
         <sl-button slot="footer" size="medium" variant="default" outline @click=${this.handleClose}>
@@ -149,18 +160,6 @@ export class StartProcessDialog extends LitElement {
           <intl-message label="ui:mainframe:processes:startProcess"> Start process </intl-message>
         </sl-button>
       </sl-dialog>
-    `;
-  }
-
-  private renderProgramDescription(): TemplateResult {
-    if (!this._programName) {
-      return html``;
-    }
-
-    return html`
-      <p class="description">
-        <intl-message label="programs:${this._programName}:description"> Program </intl-message>
-      </p>
     `;
   }
 
@@ -204,10 +203,11 @@ export class StartProcessDialog extends LitElement {
   };
 
   private formatProgramSelectItem = (program: IProgram) => {
+    const formatter = this._startProcessDialogController.formatter;
     const value = JSON.stringify({
       programName: program.name,
-      level: program.level,
-      quality: program.quality,
+      level: formatter.formatNumberDecimal(program.level),
+      quality: formatter.formatQuality(program.quality),
     });
 
     return html`<sl-option value=${program.name}>

@@ -63,6 +63,9 @@ mainframe:
   quality: Quality
   threads: Threads
   description: Description
+  programCost: Costs {{value.cost}} money to purchase or {{value.developmentPoints}} DP to develop.
+  programRequirements: Requires {{value.ram}} RAM and up to {{value.cores}} cores to run {{value.threads}} threads and {{value.completionPoints}} CP to complete the process.
+  programRequirementsScalable: Is scalable and will use all remaining RAM and cores. It will run every tick.
   tabs:
     processes: Processes
     hardware: Hardware
@@ -91,7 +94,7 @@ mainframe:
       If you already have process for same program, old one will be replaced with new one.
       Threads allow to run multiple instances of same process at same time, but additional threads require additional memory.
     emptyListNotification: You don't have any processes
-    programSelectItem: $t(programs:{{value.programName}}:name), level {{value.level}}, quality $t(ui:common:qualities:{{value.quality}})
+    programSelectItem: $t(programs:{{value.programName}}:name), level {{value.level}}, quality {{value.quality}}
     progressBarLabel: "{{value.currentCompletionPoints}} \/ {{value.maxCompletionPoints}}"
     processToggle: Enable / disable process
     processDelete: Delete process

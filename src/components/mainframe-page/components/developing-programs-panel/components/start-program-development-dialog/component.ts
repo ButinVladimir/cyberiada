@@ -1,12 +1,12 @@
 import { LitElement, TemplateResult, css, html } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.component.js';
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.component.js';
 import { PROGRAMS } from '@state/progam-factory/constants';
 import { ProgramName } from '@state/progam-factory/types';
 import { StartProgramDevelopmentDialogClose } from './events';
 import { QUALITIES } from '@shared/constants';
-import { formatter } from '@shared/formatter';
 import { StartProgramDevelopmentDialogController } from './controller';
 
 @customElement('ca-start-program-development-dialog')
@@ -54,7 +54,7 @@ export class StartProgramDevelopmentDialog extends LitElement {
       font-size: var(--ca-hint-font-size);
     }
 
-    p.description {
+    ca-program-description[program-name] {
       margin-top: var(--sl-spacing-medium);
       margin-bottom: 0;
     }
@@ -110,6 +110,15 @@ export class StartProgramDevelopmentDialog extends LitElement {
   }
 
   render() {
+    const formatter = this._startProgramDevelopmentDialogController.formatter;
+
+    const program = this._programName
+      ? this._startProgramDevelopmentDialogController.getProgram(this._programName, this._level, this._quality)
+      : undefined;
+
+    const threads = program?.isAutoscalable ? this._startProgramDevelopmentDialogController.cores : 1;
+    const ram = this._startProgramDevelopmentDialogController.ram;
+
     return html`
       <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
         <h4 slot="label" class="title">
@@ -164,7 +173,14 @@ export class StartProgramDevelopmentDialog extends LitElement {
             </sl-select>
           </div>
 
-          ${this.renderProgramDescription()}
+          <ca-program-description
+            program-name=${ifDefined(this._programName)}
+            level=${this._level}
+            quality=${this._quality}
+            threads=${threads}
+            ram=${ram}
+          >
+          </ca-program-description>
         </div>
 
         <sl-button slot="footer" size="medium" variant="default" outline @click=${this.handleClose}>

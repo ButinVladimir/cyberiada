@@ -2,7 +2,6 @@ import { LitElement, css, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { IProgram } from '@state/progam-factory/interfaces/program';
-import { formatter } from '@shared/formatter';
 import { OwnedProgramsListController } from './controller';
 
 @customElement('ca-owned-programs-list')
@@ -106,15 +105,17 @@ export class OwnedProgramsList extends LitElement {
     return html`
       <tr class="notification">
         <td colspan="4">
-          <intl-message label="ui:mainframe:ownedPrograms:emptyListNotification"
-            >You don't have any programs</intl-message
-          >
+          <intl-message label="ui:mainframe:ownedPrograms:emptyListNotification">
+            You don't have any programs
+          </intl-message>
         </td>
       </tr>
     `;
   };
 
   renderListItem = (program: IProgram) => {
+    const formatter = this._ownedProgramsListController.formatter;
+
     return html`
       <tr class="list-item">
         <td class="program">
