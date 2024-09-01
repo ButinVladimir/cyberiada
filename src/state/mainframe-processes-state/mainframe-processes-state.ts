@@ -14,6 +14,7 @@ import {
 import { TYPES } from '@state/types';
 import { EventBatcher } from '@shared/event-batcher';
 import { ProgramsEvent } from '@shared/types';
+import { MAINFRAME_HARDWARE_STATE_EVENTS } from '@state/mainframe-hardware-state/constants';
 import { Process } from './process';
 import { MAINFRAME_PROCESSES_STATE_UI_EVENTS } from './constants';
 
@@ -52,6 +53,8 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     this._availableRam = 0;
 
     this._uiEventBatcher = new EventBatcher();
+
+    this._mainframeHardwareState.addStateEventListener(MAINFRAME_HARDWARE_STATE_EVENTS.HARDWARE_UPDATED, this.updateRunningProcesses);
   }
 
   get availableCores() {
@@ -107,7 +110,6 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     this._processes.push(process);
 
     this.updateRunningProcesses();
-    this.fireUiEvents();
 
     this._messageLogState.postMessage(ProgramsEvent.processStarted, {
       programName: program.name,
@@ -137,39 +139,6 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     }
 
     this.updateRunningProcesses();
-    this.fireUiEvents();
-  }
-
-  updateRunningProcesses() {
-    this._availableCores = this._mainframeHardwareState.cores;
-    this._availableRam = this._mainframeHardwareState.ram;
-    this._runningProcesses.splice(0);
-    this._runningPassiveProcess = this._processes.find((process) => process.program.isAutoscalable);
-
-    let processRam = 0;
-    let cores = 0;
-
-    for (const process of this._processes) {
-      if (process.program.isAutoscalable) { 
-        continue;
-      }
-
-      processRam = process.totalRam;
-      this._availableRam -= processRam;
-
-      if (!process.isActive) {
-        continue;
-      }
-
-      cores = Math.min(process.threads * process.program.cores, this._availableCores);
-
-      if (cores > 0) {
-        this._runningProcesses.push(process);
-        this._availableCores -= cores;
-      }
-    }
-
-    this._uiEventBatcher.enqueueEvent(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESSES_UPDATED);
   }
 
   processTick() {
@@ -241,6 +210,38 @@ export class MainframeProcessesState implements IMainframeProcessesState {
 
   fireUiEvents() {
     this._uiEventBatcher.fireEvents();
+  }
+
+  private updateRunningProcesses = () => {
+    this._availableCores = this._mainframeHardwareState.cores;
+    this._availableRam = this._mainframeHardwareState.ram;
+    this._runningProcesses.splice(0);
+    this._runningPassiveProcess = this._processes.find((process) => process.program.isAutoscalable);
+
+    let processRam = 0;
+    let cores = 0;
+
+    for (const process of this._processes) {
+      if (process.program.isAutoscalable) { 
+        continue;
+      }
+
+      processRam = process.totalRam;
+      this._availableRam -= processRam;
+
+      if (!process.isActive) {
+        continue;
+      }
+
+      cores = Math.min(process.threads * process.program.cores, this._availableCores);
+
+      if (cores > 0) {
+        this._runningProcesses.push(process);
+        this._availableCores -= cores;
+      }
+    }
+
+    this._uiEventBatcher.enqueueEvent(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESSES_UPDATED);
   }
 
   private deletePassiveProcesses(): void {

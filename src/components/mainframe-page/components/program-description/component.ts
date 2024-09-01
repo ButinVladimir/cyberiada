@@ -37,12 +37,6 @@ export class ProgramDescription extends LitElement {
   })
   threads = 0;
 
-  @property({
-    attribute: 'ram',
-    type: Number,
-  })
-  ram = 0;
-
   constructor() {
     super();
 
@@ -58,11 +52,14 @@ export class ProgramDescription extends LitElement {
       return html``;
     }
 
+    const cores = this._programDescriptionController.cores;
+    const ram = this._programDescriptionController.ram;
+
     const costValues = JSON.stringify(program.buildCostParametersObject());
     const requirementsValues = JSON.stringify(program.buildRequirementsParametersObject(this.threads));
     const descriptionValues = JSON.stringify(
       program.isAutoscalable
-        ? program.buildDescriptionParametersObject(this.threads, this.ram)
+        ? program.buildDescriptionParametersObject(cores, ram)
         : program.buildDescriptionParametersObject(this.threads, 1),
     );
     const requirementsKey = program.isAutoscalable ? 'programRequirementsScalable' : 'programRequirements';

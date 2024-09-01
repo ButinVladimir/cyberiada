@@ -30,4 +30,8 @@ export class EventBatcher implements IEventBatcher {
   removeListener(eventType: string | symbol, listener: (...args: any[]) => void): void {
     this._eventEmitter.removeListener(eventType, listener);
   }
+
+  removeAllListeners(): void {
+    this._eventEmitter.removeAllListeners();
+  }
 }

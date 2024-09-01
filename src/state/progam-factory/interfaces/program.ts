@@ -1,7 +1,8 @@
+import { IUIEventEmitter } from '@shared/interfaces/ui-event-emitter';
 import { ProgramName } from '../types';
 import { IMakeProgramParameters } from './make-program-parameters';
 
-export interface IProgram {
+export interface IProgram extends IUIEventEmitter {
   name: ProgramName;
   level: number;
   quality: number;
@@ -12,7 +13,8 @@ export interface IProgram {
   cost: number;
   ram: number;
   cores: number;
-  updateProgram(newProgram: IProgram): void;
+  update(newProgram: IProgram): void;
+  removeEventListeners(): void;
   perform(threads: number, usedRam: number): void;
   serialize(): IMakeProgramParameters;
   buildCostParametersObject(): object;

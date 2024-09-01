@@ -62,7 +62,6 @@ export class MainframeHardwarePanel extends LitElement {
       <ca-mainframe-hardware-panel-article
         label="performance"
         increase=${increase}
-        money=${this._mainframeHardwarePanelController.money}
         level=${this._mainframeHardwarePanelController.performance}
         cost=${this._mainframeHardwarePanelController.getPerformanceIncreaseCost(increase)}
         @buy-hardware-upgrade=${this.handlePurchasePerformanceIncrease}
@@ -72,7 +71,6 @@ export class MainframeHardwarePanel extends LitElement {
       <ca-mainframe-hardware-panel-article
         label="cores"
         increase=${increase}
-        money=${this._mainframeHardwarePanelController.money}
         level=${this._mainframeHardwarePanelController.cores}
         cost=${this._mainframeHardwarePanelController.getCoresIncreaseCost(increase)}
         @buy-hardware-upgrade=${this.handlePurchaseCoresIncrease}
@@ -82,7 +80,6 @@ export class MainframeHardwarePanel extends LitElement {
       <ca-mainframe-hardware-panel-article
         label="ram"
         increase=${increase}
-        money=${this._mainframeHardwarePanelController.money}
         level=${this._mainframeHardwarePanelController.ram}
         cost=${this._mainframeHardwarePanelController.getRamIncreaseCost(increase)}
         @buy-hardware-upgrade=${this.handlePurchaseRamIncrease}

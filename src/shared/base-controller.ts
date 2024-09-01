@@ -14,10 +14,10 @@ import { TYPES } from '@state/types';
 import { IApp } from '@state/app';
 import { IFormatter } from './interfaces/formatter';
 
-export class BaseController implements ReactiveController {
-  protected host: ReactiveControllerHost;
+export class BaseController<T extends ReactiveControllerHost = ReactiveControllerHost> implements ReactiveController {
+  protected host: T;
 
-  constructor(host: ReactiveControllerHost) {
+  constructor(host: T) {
     this.host = host;
     host.addController(this);
   }

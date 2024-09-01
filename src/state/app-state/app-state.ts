@@ -8,6 +8,7 @@ import type { IMainframeHardwareState } from '@state/mainframe-hardware-state/in
 import type { IMainframeOwnedProgramsState } from '@state/mainframe-owned-programs-state/interfaces/mainframe-owned-program-state';
 import type { IMainframeProcessesState } from '@state/mainframe-processes-state/interfaces/mainframe-processes-state';
 import type { IMainframeDevelopingProgramsState } from '@state/mainframe-developing-programs-state/interfaces/mainframe-developing-programs-state';
+import type { IProgramFactory } from '@state/progam-factory/interfaces/program-factory';
 import { TYPES } from '@state/types';
 import { IAppState, ISerializedState } from './interfaces';
 
@@ -21,6 +22,7 @@ export class AppState implements IAppState {
   private _mainframeOwnedProgramsState: IMainframeOwnedProgramsState;
   private _mainframeProcessesState: IMainframeProcessesState;
   private _mainframeDevelopingProgramsState: IMainframeDevelopingProgramsState;
+  private _programFactory: IProgramFactory;
 
   constructor(
     @inject(TYPES.GeneralState) _generalState: IGeneralState,
@@ -32,6 +34,7 @@ export class AppState implements IAppState {
     @inject(TYPES.MainframeProcessesState) _mainframeProcessesState: IMainframeProcessesState,
     @inject(TYPES.MainframeDevelopingProgramsState)
     _mainframeDevelopingProgramsState: IMainframeDevelopingProgramsState,
+    @inject(TYPES.ProgramFactory) _programFactory: IProgramFactory,
   ) {
     this._generalState = _generalState;
     this._settingsState = _settingsState;
@@ -41,6 +44,7 @@ export class AppState implements IAppState {
     this._mainframeOwnedProgramsState = _mainframeOwnedProgramsState;
     this._mainframeProcessesState = _mainframeProcessesState;
     this._mainframeDevelopingProgramsState = _mainframeDevelopingProgramsState;
+    this._programFactory = _programFactory;
   }
 
   updateState() {
@@ -70,6 +74,8 @@ export class AppState implements IAppState {
   };
 
   async startNewState(): Promise<void> {
+    this._programFactory.deleteAllPrograms();
+
     await this._generalState.startNewState();
     await this._settingsState.startNewState();
     await this._cityState.startNewState();
@@ -97,6 +103,8 @@ export class AppState implements IAppState {
   async deserialize(saveData: string): Promise<void> {
     const parsedSaveData = JSON.parse(atob(saveData)) as ISerializedState;
 
+    this._programFactory.deleteAllPrograms();
+
     await this._generalState.deserialize(parsedSaveData.general);
     await this._settingsState.deserialize(parsedSaveData.settings);
     await this._cityState.deserialize(parsedSaveData.city);
@@ -117,5 +125,6 @@ export class AppState implements IAppState {
     this._mainframeOwnedProgramsState.fireUiEvents();
     this._mainframeProcessesState.fireUiEvents();
     this._mainframeDevelopingProgramsState.fireUiEvents();
+    this._programFactory.fireUiEvents();
   }
 }

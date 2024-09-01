@@ -21,7 +21,7 @@ describe('Message log state', () => {
 
   beforeEach(() => {
     messageLogState.clearMessages();
-    messageLogState.fireUiEvents();
+    messageLogState.updateUI();
 
     listener = vi.fn();
     messageLogState.addUiEventListener(MESSAGE_LOG_UI_EVENTS.UPDATED_MESSAGES, listener);
@@ -82,14 +82,14 @@ describe('Message log state', () => {
 
   it('triggers ui update after posting message', () => {
     messageLogState.postMessage(GameStateEvent.gameStarted);
-    messageLogState.fireUiEvents();
+    messageLogState.updateUI();
 
     expect(listener!).toHaveBeenCalled();
   });
 
   it('triggers ui update after clearing messages', () => {
     messageLogState.clearMessages();
-    messageLogState.fireUiEvents();
+    messageLogState.updateUI();
 
     expect(listener!).toHaveBeenCalled();
   });
@@ -97,7 +97,7 @@ describe('Message log state', () => {
   it('does not trigger ui update after removing handler', () => {
     messageLogState.removeUiEventListener(MESSAGE_LOG_UI_EVENTS.UPDATED_MESSAGES, listener);
     messageLogState.clearMessages();
-    messageLogState.fireUiEvents();
+    messageLogState.updateUI();
 
     expect(listener!).not.toHaveBeenCalled();
   });

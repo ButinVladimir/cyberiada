@@ -2,21 +2,13 @@ import { injectable } from 'inversify';
 import i18n from 'i18next';
 import { EventEmitter } from 'eventemitter3';
 import { Language, LongNumberFormat, MessageFilterEvent, Theme } from '@shared/types';
-import type { IApp } from '@state/app/interfaces/app';
-import { decorators } from '@state/container';
-import { TYPES } from '@state/types';
 import themes from '@configs/themes.json';
 import constants from '@configs/constants.json';
 import { ISettingsState, ISettingsSerializedState } from './interfaces';
 import { SETTINGS_STATE_EVENTS } from './constants';
 
-const { lazyInject } = decorators;
-
 @injectable()
 export class SettingsState implements ISettingsState {
-  @lazyInject(TYPES.App)
-  private _app!: IApp;
-
   private _language: Language;
   private _theme: Theme;
   private _messageLogSize: number;
@@ -28,7 +20,7 @@ export class SettingsState implements ISettingsState {
   private _mapCellSize: number;
   private _enabledMessageFilterEvents: Set<MessageFilterEvent>;
 
-  private _stateEventEmitter: EventEmitter;
+  private readonly _stateEventEmitter: EventEmitter;
 
   constructor() {
     this._language = Language.en;
@@ -106,17 +98,17 @@ export class SettingsState implements ISettingsState {
 
   setUpdateInterval(updateInterval: number) {
     this._updateInterval = updateInterval;
-    this._app.restartUpdateTimer();
+    this._stateEventEmitter.emit(SETTINGS_STATE_EVENTS.UPDATED_UPDATE_INTERVAL);
   }
 
   setAutosaveEnabled(autosaveEnabled: boolean) {
     this._autosaveEnabled = autosaveEnabled;
-    this._app.restartAutosaveTimer();
+    this._stateEventEmitter.emit(SETTINGS_STATE_EVENTS.UPDATED_AUTOSAVE_INTERVAL);
   }
 
   setAutosaveInterval(autosaveInterval: number) {
     this._autosaveInterval = autosaveInterval;
-    this._app.restartAutosaveTimer();
+    this._stateEventEmitter.emit(SETTINGS_STATE_EVENTS.UPDATED_AUTOSAVE_INTERVAL);
   }
 
   setMaxTicksPerUpdate(maxTicksPerUpdate: number) {

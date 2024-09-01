@@ -33,7 +33,6 @@ export class DevelopingProgram implements IDevelopingProgram {
 
   toggleActive(active: boolean) {
     this._isActive = active;
-    this._mainframeDevelopingProgramsState.fireUiEvents();
   }
 
   increaseDevelopment(delta: number): void {

@@ -1,15 +1,19 @@
 import programs from '@configs/programs.json';
 import { IFormatter } from "@shared/interfaces/formatter";
+import { EventBatcher } from '@shared/event-batcher';
 import { ProgramName } from '../types';
 import { IProgram } from '../interfaces/program';
 import { IMakeProgramParameters } from '../interfaces/make-program-parameters';
 import { IBaseProgramParameters } from '../interfaces/program-parameters/base-program-parameters';
+import { PROGRAM_UI_EVENTS } from '../constants';
 
 export abstract class BaseProgram implements IProgram {
   protected formatter: IFormatter;
 
   private _level!: number;
   private _quality!: number;
+
+  protected readonly uiEventBatcher: EventBatcher;
 
   abstract get name(): ProgramName;
 
@@ -18,6 +22,8 @@ export abstract class BaseProgram implements IProgram {
 
     this._level = parameters.level;
     this._quality = parameters.quality;
+
+    this.uiEventBatcher = new EventBatcher();
   }
 
   get level() {
@@ -66,14 +72,18 @@ export abstract class BaseProgram implements IProgram {
 
   abstract perform(usedCores: number, usedRam: number): void;
 
-  updateProgram(newProgram: IProgram): void {
+  update(newProgram: IProgram): void {
     if (this.name !== newProgram.name) {
       throw new Error(`Unable to update program ${this.name} with ${newProgram.name}`);
     }
 
     this._level = newProgram.level;
     this._quality = newProgram.quality;
+
+    this.uiEventBatcher.enqueueEvent(PROGRAM_UI_EVENTS.PROGRAM_UPDATED);
   }
+
+  abstract removeEventListeners(): void;
 
   serialize(): IMakeProgramParameters {
     return {
@@ -81,6 +91,18 @@ export abstract class BaseProgram implements IProgram {
       level: this.level,
       quality: this.quality,
     };
+  }
+
+  addUiEventListener(eventName: symbol, handler: (...args: any[]) => void) {
+    this.uiEventBatcher.addListener(eventName, handler);
+  }
+
+  removeUiEventListener(eventName: symbol, handler: (...args: any[]) => void) {
+    this.uiEventBatcher.removeListener(eventName, handler);
+  }
+
+  fireUiEvents() {
+    this.uiEventBatcher.fireEvents();
   }
 
   buildCostParametersObject(): object {

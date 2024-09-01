@@ -10,6 +10,5 @@ export interface IMainframeProcessesState extends ISerializeable<IMainframeProce
   getProcessByName(programName: ProgramName): IProcess;
   addProcess(programName: ProgramName, threads: number): boolean;
   deleteProcess(programName: ProgramName): void;
-  updateRunningProcesses(): void;
   processTick(): void;
 }

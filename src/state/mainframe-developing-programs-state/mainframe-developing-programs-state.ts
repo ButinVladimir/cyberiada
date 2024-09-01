@@ -75,7 +75,6 @@ export class MainframeDevelopingProgramsState implements IMainframeDevelopingPro
     this._developingPrograms.push(developingProgram);
 
     this.enqueueUiUpdate();
-    this.fireUiEvents();
 
     this._messageLogState.postMessage(ProgramsEvent.programDevelopmentStarted, {
       programName: program.name,
@@ -107,7 +106,6 @@ export class MainframeDevelopingProgramsState implements IMainframeDevelopingPro
     }
 
     this.enqueueUiUpdate();
-    this.fireUiEvents();
   }
 
   increaseDevelopingProgramCompletion(delta: number) {

@@ -1,17 +1,14 @@
 import { injectable, inject } from 'inversify';
-import { decorators } from '@state/container';
+import { EventEmitter } from 'eventemitter3';
 import constants from '@configs/constants.json';
 import type { IGeneralState } from '@state/general-state/interfaces/general-state';
 import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
-import type { IMainframeProcessesState } from '@state/mainframe-processes-state/interfaces/mainframe-processes-state';
 import type { IFormatter } from '@shared/interfaces/formatter';
 import { TYPES } from '@state/types';
 import { PurchaseEvent } from '@shared/types';
 import { EventBatcher } from '@shared/event-batcher';
 import { IMainframeHardwareState, IMainframeHardwareSerializedState } from './interfaces';
-import { MAINFRAME_HARDWARE_STATE_UI_EVENTS } from './constants';
-
-const { lazyInject } = decorators;
+import { MAINFRAME_HARDWARE_STATE_EVENTS, MAINFRAME_HARDWARE_STATE_UI_EVENTS } from './constants';
 
 @injectable()
 export class MainframeHardwareState implements IMainframeHardwareState {
@@ -19,9 +16,7 @@ export class MainframeHardwareState implements IMainframeHardwareState {
   private _messageLogState: IMessageLogState;
   private _formatter: IFormatter;
 
-  @lazyInject(TYPES.MainframeProcessesState)
-  private _mainframeProcessesState!: IMainframeProcessesState;
-
+  private readonly _stateEventEmitter: EventEmitter;
   private readonly _uiEventBatcher: EventBatcher;
 
   private _performance: number;
@@ -41,6 +36,7 @@ export class MainframeHardwareState implements IMainframeHardwareState {
     this._cores = constants.startingSettings.mainframe.coresLevel;
     this._ram = constants.startingSettings.mainframe.ramLevel;
 
+    this._stateEventEmitter = new EventEmitter();
     this._uiEventBatcher = new EventBatcher();
   }
 
@@ -140,12 +136,20 @@ export class MainframeHardwareState implements IMainframeHardwareState {
     this._uiEventBatcher.fireEvents();
   }
 
+  addStateEventListener(eventName: symbol, handler: (...args: any[]) => void) {
+    this._stateEventEmitter.addListener(eventName, handler);
+  }
+
+  removeStateEventListener(eventName: symbol, handler: (...args: any[]) => void) {
+    this._stateEventEmitter.removeListener(eventName, handler);
+  }
+
   private handlePurchasePerformanceIncrease = (increase: number) => () => {
     this._performance += increase;
     this._messageLogState.postMessage(PurchaseEvent.performanceUpdated, {
       level: this._formatter.formatNumberDecimal(this._performance),
     });
-    this.handlePostUpdate();
+    this.handlePostHardwareUpdate();
   };
 
   private handlePurchaseCoresIncrease = (increase: number) => () => {
@@ -153,18 +157,17 @@ export class MainframeHardwareState implements IMainframeHardwareState {
     this._messageLogState.postMessage(PurchaseEvent.coresUpdated, {
       level: this._formatter.formatNumberDecimal(this._cores),
     });
-    this.handlePostUpdate();
+    this.handlePostHardwareUpdate();
   };
 
   private handlePurchaseRamIncrease = (increase: number) => () => {
     this._ram += increase;
     this._messageLogState.postMessage(PurchaseEvent.ramUpdated, { level: this._formatter.formatNumberDecimal(this._ram) });
-    this.handlePostUpdate();
+    this.handlePostHardwareUpdate();
   };
 
-  private handlePostUpdate() {
-    this._mainframeProcessesState.updateRunningProcesses();
+  private handlePostHardwareUpdate() {
+    this._stateEventEmitter.emit(MAINFRAME_HARDWARE_STATE_EVENTS.HARDWARE_UPDATED);
     this._uiEventBatcher.enqueueEvent(MAINFRAME_HARDWARE_STATE_UI_EVENTS.HARDWARE_UPDATED);
-    this._uiEventBatcher.fireEvents();
   }
 }

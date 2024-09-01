@@ -112,13 +112,6 @@ export class StartProgramDevelopmentDialog extends LitElement {
   render() {
     const formatter = this._startProgramDevelopmentDialogController.formatter;
 
-    const program = this._programName
-      ? this._startProgramDevelopmentDialogController.getProgram(this._programName, this._level, this._quality)
-      : undefined;
-
-    const threads = program?.isAutoscalable ? this._startProgramDevelopmentDialogController.cores : 1;
-    const ram = this._startProgramDevelopmentDialogController.ram;
-
     return html`
       <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
         <h4 slot="label" class="title">
@@ -177,8 +170,7 @@ export class StartProgramDevelopmentDialog extends LitElement {
             program-name=${ifDefined(this._programName)}
             level=${this._level}
             quality=${this._quality}
-            threads=${threads}
-            ram=${ram}
+            threads=${1}
           >
           </ca-program-description>
         </div>

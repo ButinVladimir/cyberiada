@@ -50,7 +50,6 @@ export class Process implements IProcess {
   toggleActive(active: boolean) {
     this._isActive = active;
     this._mainframeProcessesState.updateRunningProcesses();
-    this._mainframeProcessesState.fireUiEvents();
   }
 
   increaseCompletion(usedCores: number): void {

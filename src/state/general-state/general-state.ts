@@ -63,6 +63,7 @@ export class GeneralState implements IGeneralState {
   decreaseBonusTimeByTick(): boolean {
     if (this._bonusTime >= this._settingsState.updateInterval) {
       this._bonusTime -= this._settingsState.updateInterval;
+      this._uiEventBatcher.enqueueEvent(GENERAL_STATE_UI_EVENTS.BONUS_TIME_CHANGED);
 
       return true;
     }
@@ -72,6 +73,7 @@ export class GeneralState implements IGeneralState {
 
   increaseMoney(moneyDelta: number) {
     this._money += moneyDelta;
+    this._uiEventBatcher.enqueueEvent(GENERAL_STATE_UI_EVENTS.MONEY_CHANGED);
   }
 
   purchase(cost: number, handler: () => void): boolean {
@@ -79,8 +81,7 @@ export class GeneralState implements IGeneralState {
       this.increaseMoney(-cost);
       handler();
 
-      this._uiEventBatcher.enqueueEvent(GENERAL_STATE_UI_EVENTS.PURCHASE_COMPLETED);
-      this.fireUiEvents();
+      this._uiEventBatcher.enqueueEvent(GENERAL_STATE_UI_EVENTS.MONEY_CHANGED);
 
       return true;
     }

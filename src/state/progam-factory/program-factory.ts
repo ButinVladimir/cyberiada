@@ -5,7 +5,7 @@ import type { IGeneralState } from '@state/general-state/interfaces/general-stat
 import type { IMainframeHardwareState } from '@state/mainframe-hardware-state/interfaces/mainframe-hardware-state';
 import type { IMainframeDevelopingProgramsState } from '@state/mainframe-developing-programs-state/interfaces/mainframe-developing-programs-state';
 import type { ISettingsState } from '@state/settings-state/interfaces/settings-state';
-import type { IFormatter } from "@shared/interfaces/formatter";
+import type { IFormatter } from '@shared/interfaces/formatter';
 import { IProgramFactory } from './interfaces/program-factory';
 import { IMakeProgramParameters, IProgram } from './interfaces';
 import { ProgramName } from './types';
@@ -30,7 +30,41 @@ export class ProgramFactory implements IProgramFactory {
   @lazyInject(TYPES.Formatter)
   private _formatter!: IFormatter;
 
+  private _programRepository: Set<IProgram>;
+
+  constructor() {
+    this._programRepository = new Set<IProgram>();
+  }
+
   makeProgram(parameters: IMakeProgramParameters): IProgram {
+    const program: IProgram = this.makeProgramImplementation(parameters);
+
+    this._programRepository.add(program);
+
+    return program;
+  }
+
+  deleteProgram(program: IProgram) {
+    program.removeEventListeners();
+
+    this._programRepository.delete(program);
+  }
+
+  deleteAllPrograms() {
+    for (const program of this._programRepository.values()) {
+      program.removeEventListeners();
+    }
+
+    this._programRepository.clear();
+  }
+
+  fireUiEvents() {
+    for (const program of this._programRepository.values()) {
+      program.fireUiEvents();
+    }
+  }
+
+  private makeProgramImplementation(parameters: IMakeProgramParameters): IProgram {
     switch (parameters.name) {
       case ProgramName.shareServer:
         return new ShareServerProgram({
@@ -51,6 +85,6 @@ export class ProgramFactory implements IProgramFactory {
           level: parameters.level,
           quality: parameters.quality,
         });
-    }
+    }    
   }
 }

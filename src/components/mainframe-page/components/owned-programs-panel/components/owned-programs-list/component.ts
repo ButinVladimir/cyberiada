@@ -22,30 +22,21 @@ export class OwnedProgramsList extends LitElement {
       font-weight: var(--sl-font-weight-bold);
     }
 
-    th.program,
-    td.program {
+    th.program {
       width: 32%;
     }
 
-    th.level,
-    td.level {
+    th.level {
       width: 17%;
     }
 
-    th.quality,
-    td.quality {
+    th.quality {
       width: 17%;
     }
 
     thead th {
       font-weight: var(--ca-table-header-font-weight);
       border-top: var(--ca-border);
-      border-bottom: var(--ca-border);
-      text-align: left;
-      padding: var(--sl-spacing-small);
-    }
-
-    tr.list-item td {
       border-bottom: var(--ca-border);
       text-align: left;
       padding: var(--sl-spacing-small);
@@ -79,9 +70,6 @@ export class OwnedProgramsList extends LitElement {
           <th class="quality">
             <intl-message label="ui:mainframe:quality">Quality</intl-message>
           </th>
-          <th class="description">
-            <intl-message label="ui:mainframe:description">Description</intl-message>
-          </th>
         </thead>
 
         <tbody>
@@ -114,20 +102,9 @@ export class OwnedProgramsList extends LitElement {
   };
 
   renderListItem = (program: IProgram) => {
-    const formatter = this._ownedProgramsListController.formatter;
-
     return html`
-      <tr class="list-item">
-        <td class="program">
-          <intl-message label="programs:${program.name}:name">Progam name</intl-message>
-        </td>
-
-        <td class="level">${formatter.formatNumberDecimal(program.level)}</td>
-
-        <td class="quality">${formatter.formatQuality(program.quality)}</td>
-
-        <td class="description">Description goes here</td>
-      </tr>
+      <ca-owned-programs-list-item program-name=${program.name}>
+      </ca-owned-programs-list-item>
     `;
   };
 }

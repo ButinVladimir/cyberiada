@@ -43,7 +43,7 @@ export class MainframeOwnedProgramsState implements IMainframeOwnedProgramsState
     const existingProgram = this._ownedPrograms.get(newProgram.name);
 
     if (existingProgram) {
-      existingProgram.updateProgram(newProgram);
+      existingProgram.update(newProgram);
     } else {
       this._ownedPrograms.set(newProgram.name, newProgram);
     }
@@ -54,7 +54,13 @@ export class MainframeOwnedProgramsState implements IMainframeOwnedProgramsState
   purchaseProgram(programParameters: IMakeProgramParameters): boolean {
     const program = this._programFactory.makeProgram(programParameters);
 
-    return this._generalState.purchase(program.cost, this.handlePurchaseProgram(program));
+    const bought = this._generalState.purchase(program.cost, this.handlePurchaseProgram(program));
+
+    if (this.getOwnedProgramByName(programParameters.name) !== program) {
+      this._programFactory.deleteProgram(program);
+    }
+
+    return bought;
   }
 
   listOwnedPrograms(): IProgram[] {
