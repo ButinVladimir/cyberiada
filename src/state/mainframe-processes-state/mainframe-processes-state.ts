@@ -16,7 +16,7 @@ import { EventBatcher } from '@shared/event-batcher';
 import { ProgramsEvent } from '@shared/types';
 import { MAINFRAME_HARDWARE_STATE_EVENTS } from '@state/mainframe-hardware-state/constants';
 import { Process } from './process';
-import { MAINFRAME_PROCESSES_STATE_UI_EVENTS } from './constants';
+import { MAINFRAME_PROCESSES_STATE_UI_EVENTS, MAINFRAME_PROCESSES_STATE_STATE_EVENTS } from './constants';
 
 @injectable()
 export class MainframeProcessesState implements IMainframeProcessesState {
@@ -69,12 +69,8 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     return this._processes;
   }
 
-  getProcessByName(programName: ProgramName): IProcess {
+  getProcessByName(programName: ProgramName): IProcess | undefined {
     const process = this._processes.find((process) => process.program.name === programName);
-
-    if (!process) {
-      throw new Error(`Process ${programName} is not found`);
-    }
 
     return process;
   }
@@ -85,29 +81,38 @@ export class MainframeProcessesState implements IMainframeProcessesState {
       return false;
     }
 
-    if (program.isAutoscalable) {
-      this.deletePassiveProcesses();
-    } else {
-      this.deleteProcess(programName);
-    }
-
     if (!program.isAutoscalable && threads <= 0) {
       throw new Error('Invalid amount of threads for process');
     }
 
     const threadCount = program.isAutoscalable ? 0 : threads;
 
-    const process = new Process({
-      isActive: true,
-      threads: threadCount,
-      currentCompletionPoints: 0,
-      program: program,
-      settingsState: this._settingsState,
-      mainframeHardwareState: this._mainframeHardwareState,
-      mainframeProcessesState: this,
-    });
+    const existingProcess = this.getProcessByName(programName);
 
-    this._processes.push(process);
+    if (!program.isAutoscalable) {
+      let availableRam = this.availableRam;
+
+      if (existingProcess) {
+        availableRam += existingProcess.totalRam;
+      }
+
+      if (availableRam < program.ram * threads) {
+        return false;
+      }
+    }
+
+    if (existingProcess) {
+      existingProcess.update(threads);
+    } else {
+      const process = this.createProcess({
+        isActive: true,
+        threads: threadCount,
+        currentCompletionPoints: 0,
+        programName: programName,
+      });
+
+      this._processes.push(process);
+  }
 
     this.updateRunningProcesses();
 
@@ -127,6 +132,7 @@ export class MainframeProcessesState implements IMainframeProcessesState {
       process = this._processes[index];
 
       if (process.program.name === programName) {
+        process.removeEventListeners();
         this._processes.splice(index, 1);
 
         this._messageLogState.postMessage(ProgramsEvent.processDeleted, {
@@ -146,21 +152,14 @@ export class MainframeProcessesState implements IMainframeProcessesState {
       this._runningPassiveProcess.program.perform(this._availableCores, this._availableRam);
     }
 
-    let availableCores = this._mainframeHardwareState.cores;
-    let cores = 0;
     let hasFinishedProcesses = false;
 
     for (const process of this._runningProcesses) {
-      cores = Math.min(process.threads * process.program.cores, availableCores);
+      process.increaseCompletion();
 
-      if (cores > 0) {
-        availableCores -= cores;
-        process.increaseCompletion(cores);
-
-        if (process.currentCompletionPoints >= process.maxCompletionPoints) {
-          process.program.perform(process.threads, process.totalRam);
-          hasFinishedProcesses = true;
-        }
+      if (process.currentCompletionPoints >= process.maxCompletionPoints) {
+        process.program.perform(process.threads, process.totalRam);
+        hasFinishedProcesses = true;
       }
     }
 
@@ -178,18 +177,7 @@ export class MainframeProcessesState implements IMainframeProcessesState {
 
   // eslint-disable-next-line @typescript-eslint/require-await
   async deserialize(serializedState: IMainframeProcessesSerializedState): Promise<void> {
-    this._processes = serializedState.processes.map(
-      (serializedProcess: ISerializedProcess) =>
-        new Process({
-          isActive: serializedProcess.isActive,
-          threads: serializedProcess.threads,
-          program: this._mainframeOwnedProgramsState.getOwnedProgramByName(serializedProcess.programName)!,
-          currentCompletionPoints: serializedProcess.currentCompletionPoints,
-          settingsState: this._settingsState,
-          mainframeHardwareState: this._mainframeHardwareState,
-          mainframeProcessesState: this,
-        }),
-    );
+    this._processes = serializedState.processes.map(this.createProcess);
 
     this.updateRunningProcesses();
   }
@@ -210,6 +198,10 @@ export class MainframeProcessesState implements IMainframeProcessesState {
 
   fireUiEvents() {
     this._uiEventBatcher.fireEvents();
+
+    for (const process of this._processes) {
+      process.fireUiEvents();
+    }
   }
 
   private updateRunningProcesses = () => {
@@ -219,10 +211,11 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     this._runningPassiveProcess = this._processes.find((process) => process.program.isAutoscalable);
 
     let processRam = 0;
-    let cores = 0;
+    let usedCores = 0;
 
     for (const process of this._processes) {
       if (process.program.isAutoscalable) { 
+        process.usedCores = 0;
         continue;
       }
 
@@ -230,38 +223,22 @@ export class MainframeProcessesState implements IMainframeProcessesState {
       this._availableRam -= processRam;
 
       if (!process.isActive) {
+        process.usedCores = 0;
         continue;
       }
 
-      cores = Math.min(process.threads * process.program.cores, this._availableCores);
+      usedCores = Math.min(process.threads * process.program.cores, this._availableCores);
 
-      if (cores > 0) {
+      if (usedCores > 0) {
+        process.usedCores = usedCores;
         this._runningProcesses.push(process);
-        this._availableCores -= cores;
+        this._availableCores -= usedCores;
+      } else {
+        process.usedCores = 0;
       }
     }
 
     this._uiEventBatcher.enqueueEvent(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESSES_UPDATED);
-  }
-
-  private deletePassiveProcesses(): void {
-    let index = 0;
-    let process: IProcess;
-
-    while (index < this._processes.length) {
-      process = this._processes[index];
-
-      if (process.program.isAutoscalable) {
-        this._processes.splice(index, 1);
-
-        this._messageLogState.postMessage(ProgramsEvent.processDeleted, {
-          programName: process.program.name,
-          threads: this._formatter.formatNumberDecimal(process.threads),
-        });
-      } else {
-        index++;
-      }
-    }
   }
 
   private updateFinishedProcesses(): void {
@@ -278,6 +255,7 @@ export class MainframeProcessesState implements IMainframeProcessesState {
           process.resetCompletion();
           this._processes.push(process);
         } else {
+          process.removeEventListeners();
           this._messageLogState.postMessage(ProgramsEvent.processDeleted, {
             programName: process.program.name,
             threads: this._formatter.formatNumberDecimal(process.threads),
@@ -288,4 +266,20 @@ export class MainframeProcessesState implements IMainframeProcessesState {
       }
     }
   }
+
+  private createProcess = (processParameters: ISerializedProcess): IProcess =>{
+    const process = new Process({
+      isActive: processParameters.isActive,
+      threads: processParameters.threads,
+      program: this._mainframeOwnedProgramsState.getOwnedProgramByName(processParameters.programName)!,
+      currentCompletionPoints: processParameters.currentCompletionPoints,
+      settingsState: this._settingsState,
+      mainframeHardwareState: this._mainframeHardwareState,
+    });
+
+    process.addStateEventListener(MAINFRAME_PROCESSES_STATE_STATE_EVENTS.PROCESS_TOGGLED, this.updateRunningProcesses);
+    process.addStateEventListener(MAINFRAME_PROCESSES_STATE_STATE_EVENTS.PROCESS_PROGRAM_UPDATED, this.updateRunningProcesses);
+
+    return process;
+  };
 }

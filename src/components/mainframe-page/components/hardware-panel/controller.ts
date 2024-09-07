@@ -52,7 +52,7 @@ export class MainframeHardwarePanelController extends BaseController {
     this.mainframeHardwareState.purchaseRamIncrease(increase);
   }
 
-  handleRefreshUI = () => {
+  private handleRefreshUI = () => {
     this.host.requestUpdate();
   };
 }

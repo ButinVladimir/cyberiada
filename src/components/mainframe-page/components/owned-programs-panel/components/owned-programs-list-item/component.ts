@@ -4,7 +4,7 @@ import { OwnedProgramsListItemController } from './controller';
 import { ProgramName } from '@state/progam-factory/types';
 
 @customElement('ca-owned-programs-list-item')
-export class OwnedProgramsList extends LitElement {
+export class OwnedProgramsListItem extends LitElement {
   static styles = css`
     :host {
       display: table-row;

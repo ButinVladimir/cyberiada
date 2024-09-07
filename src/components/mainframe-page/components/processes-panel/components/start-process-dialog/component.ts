@@ -97,6 +97,7 @@ export class StartProcessDialog extends LitElement {
   updated(_changedProperties: Map<string, any>) {
     if (_changedProperties.get('isOpen') === false) {
       this._programName = undefined;
+      this._threads = 1;
     }
   }
 
@@ -104,7 +105,6 @@ export class StartProcessDialog extends LitElement {
     const program = this._programName ? this._startProcessDialogController.getProgram(this._programName) : undefined;
 
     const threads = program?.isAutoscalable ? this._startProcessDialogController.cores : this._threads;
-    const ram = this._startProcessDialogController.ram;
 
     return html`
       <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
@@ -147,7 +147,6 @@ export class StartProcessDialog extends LitElement {
             level=${program?.level ?? 1}
             quality=${program?.quality ?? 0}
             threads=${threads}
-            ram=${ram}
           >
           </ca-program-description>
         </div>
@@ -177,12 +176,8 @@ export class StartProcessDialog extends LitElement {
   private handleThreadsChange = () => {
     let threads = this._threadsInput.valueAsNumber;
 
-    if (threads < 0) {
-      threads = 0;
-    }
-
-    if (threads > 100) {
-      threads = 100;
+    if (threads < 1) {
+      threads = 1;
     }
 
     this._threads = threads;

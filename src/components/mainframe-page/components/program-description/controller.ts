@@ -1,25 +1,15 @@
-import { MAINFRAME_HARDWARE_STATE_UI_EVENTS } from '@state/mainframe-hardware-state/constants';
 import { BaseController } from '@shared/base-controller';
 import { IProgram } from '@state/progam-factory/interfaces/program';
 import { ProgramName } from '@state/progam-factory/types';
-import { PROGRAM_UI_EVENTS } from '@/state/progam-factory/constants';
+import { PROGRAMS_UI_EVENTS } from '@/state/progam-factory/constants';
 
 export class ProgramDescriptionController extends BaseController {
   private _program?: IProgram;
 
   hostConnected() {
-    this.mainframeHardwareState.addUiEventListener(
-      MAINFRAME_HARDWARE_STATE_UI_EVENTS.HARDWARE_UPDATED,
-      this.handleRefreshUI,
-    );
   }
 
   hostDisconnected() {
-    this.mainframeHardwareState.removeUiEventListener(
-      MAINFRAME_HARDWARE_STATE_UI_EVENTS.HARDWARE_UPDATED,
-      this.handleRefreshUI,
-    );
-
     this.deleteOldProgram();
   }
 
@@ -41,18 +31,19 @@ export class ProgramDescriptionController extends BaseController {
         quality,
       });
 
-      this._program.addUiEventListener(PROGRAM_UI_EVENTS.PROGRAM_UPDATED, this.handleRefreshUI);
+      this._program.addUiEventListener(PROGRAMS_UI_EVENTS.PROGRAM_UPDATED, this.handleRefreshUI);
     }
 
     return this._program;
   }
 
-  handleRefreshUI = () => {
+  private handleRefreshUI = () => {
     this.host.requestUpdate();
   };
 
   private deleteOldProgram() {
     if (this._program) {
+      this._program.removeEventListeners();
       this.programFactory.deleteProgram(this._program);
     }
   }

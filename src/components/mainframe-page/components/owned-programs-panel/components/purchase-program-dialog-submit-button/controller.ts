@@ -14,7 +14,7 @@ export class PurchaseProgramDialogSubmitButtonController extends BaseController 
     return this.generalState.money;
   }
 
-  handleRefreshUI = () => {
+  private handleRefreshUI = () => {
     this.host.requestUpdate();
   };
 }

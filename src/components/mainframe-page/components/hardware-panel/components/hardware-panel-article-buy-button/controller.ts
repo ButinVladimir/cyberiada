@@ -14,7 +14,7 @@ export class MainframeHardwarePanelArticleBuyButtonController extends BaseContro
     return this.generalState.money;
   }
 
-  handleRefreshUI = () => {
+  private handleRefreshUI = () => {
     this.host.requestUpdate();
   };
 }

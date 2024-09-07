@@ -4,6 +4,7 @@ common:
   delete: Delete
   close: Close
   loading: Loading...
+  never: Never
 pages:
   cityOverview: City overview
   company: Company
@@ -62,10 +63,10 @@ mainframe:
   level: Level
   quality: Quality
   threads: Threads
-  description: Description
-  programCost: Costs {{value.cost}} money to purchase or {{value.developmentPoints}} DP to develop.
-  programRequirements: Requires {{value.ram}} RAM and up to {{value.cores}} cores to run {{value.threads}} threads and {{value.completionPoints}} CP to complete the process.
-  programRequirementsScalable: Is scalable and will use all remaining RAM and cores. It will run every tick.
+  programDescription:
+    cost: Costs {{value.cost}} money to purchase or {{value.developmentPoints}} DP to develop.
+    requirements: Requires {{value.ram}} RAM and up to {{value.cores}} cores to run {{value.threads}} threads and {{value.completionPoints}} CP to complete the process.
+    requirementsScalable: Is scalable and will use all remaining RAM and cores. It will run every tick.
   tabs:
     processes: Processes
     hardware: Hardware
@@ -96,11 +97,17 @@ mainframe:
     emptyListNotification: You don't have any processes
     programSelectItem: $t(programs:{{value.programName}}:name), level {{value.level}}, quality {{value.quality}}
     progressBarLabel: "{{value.currentCompletionPoints}} \/ {{value.maxCompletionPoints}}"
+    progressBarHintActive: "Process will be completed in {{value}}"
+    progressBarHintPaused: "Process isn't active"
     processToggle: Enable / disable process
     processDelete: Delete process
     autoscalable: Autoscalable
     availableCores: 'Available cores: {{value}}'
     availableRam: 'Available RAM: {{value}}'
+    processDescription:
+      usesCores: Uses {{value}} cores.
+      completionSpeed: Completion speed is {{value.speed}} CP per second, completion time is {{value.time}}.
+      completionSpeedScalable: Completion speed is instant.
   developingPrograms:
     startProgramDevelopment: Start program development
     startDevelopment: Start development

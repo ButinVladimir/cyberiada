@@ -1,6 +1,6 @@
 import { BaseController } from '@shared/base-controller';
 import { IProgram } from '@state/progam-factory/interfaces/program';
-import { PROGRAM_UI_EVENTS } from '@state/progam-factory/constants';
+import { PROGRAMS_UI_EVENTS } from '@state/progam-factory/constants';
 import { ProgramName } from '@state/progam-factory/types';
 
 export class OwnedProgramsListItemController extends BaseController {
@@ -19,17 +19,17 @@ export class OwnedProgramsListItemController extends BaseController {
 
       this._ownedProgram = this.mainframeOwnedProgramState.getOwnedProgramByName(programName);
 
-      this._ownedProgram?.addUiEventListener(PROGRAM_UI_EVENTS.PROGRAM_UPDATED, this.handleRefreshUI);
+      this._ownedProgram?.addUiEventListener(PROGRAMS_UI_EVENTS.PROGRAM_UPDATED, this.handleRefreshUI);
     }
 
     return this._ownedProgram;
   }
 
-  handleRefreshUI = () => {
+  private handleRefreshUI = () => {
     this.host.requestUpdate();
   };
 
-  removeOldProgramListeners() {
-    this._ownedProgram?.removeUiEventListener(PROGRAM_UI_EVENTS.PROGRAM_UPDATED, this.handleRefreshUI);
+  private removeOldProgramListeners() {
+    this._ownedProgram?.removeUiEventListener(PROGRAMS_UI_EVENTS.PROGRAM_UPDATED, this.handleRefreshUI);
   }
 }

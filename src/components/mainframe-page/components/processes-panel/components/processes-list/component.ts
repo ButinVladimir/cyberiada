@@ -40,12 +40,6 @@ export class ProcessesList extends LitElement {
       padding: var(--sl-spacing-small);
     }
 
-    tr.list-item td {
-      border-bottom: var(--ca-border);
-      text-align: left;
-      padding: var(--sl-spacing-small);
-    }
-
     tr.notification td {
       padding: var(--sl-spacing-3x-large);
       text-align: center;
@@ -104,29 +98,9 @@ export class ProcessesList extends LitElement {
   };
 
   renderListItem = (process: IProcess) => {
-    const formatter = this._processesListController.formatter;
-
-    const threads = process.program.isAutoscalable
-      ? html`<intl-message label="ui:mainframe:processes:autoscalable">Autoscalable</intl-message>`
-      : formatter.formatNumberDecimal(process.threads);
-
     return html`
-      <tr class="list-item">
-        <td class="program">
-          <intl-message label="programs:${process.program.name}:name">Progam name</intl-message>
-        </td>
-        <td class="threads">${threads}</td>
-        <td>
-          <ca-process-actions-column
-            program-name=${process.program.name}
-            ?active=${process.isActive}
-            ?autoscalable=${process.program.isAutoscalable}
-            current-completion-points=${process.currentCompletionPoints}
-            max-completion-points=${process.maxCompletionPoints}
-          >
-          </ca-process-actions-column>
-        </td>
-      </tr>
+      <ca-processes-list-item program-name=${process.program.name}>
+      </ca-processes-list-item>
     `;
   };
 }

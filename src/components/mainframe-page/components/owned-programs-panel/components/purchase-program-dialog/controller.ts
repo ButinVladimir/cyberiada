@@ -1,7 +1,7 @@
 import { BaseController } from '@shared/base-controller';
 import { IProgram } from '@state/progam-factory/interfaces/program';
 import { ProgramName } from '@state/progam-factory/types';
-import { PROGRAM_UI_EVENTS } from '@/state/progam-factory/constants';
+import { PROGRAMS_UI_EVENTS } from '@/state/progam-factory/constants';
 
 export class PurchaseProgramDialogController extends BaseController {
   private _selectedProgram?: IProgram;
@@ -30,7 +30,7 @@ export class PurchaseProgramDialogController extends BaseController {
         quality,
       });
 
-      this._selectedProgram.addUiEventListener(PROGRAM_UI_EVENTS.PROGRAM_UPDATED, this.handleRefreshUI);
+      this._selectedProgram.addUiEventListener(PROGRAMS_UI_EVENTS.PROGRAM_UPDATED, this.handleRefreshUI);
     }
 
     return this._selectedProgram;
@@ -44,7 +44,7 @@ export class PurchaseProgramDialogController extends BaseController {
     });
   }
 
-  handleRefreshUI = () => {
+  private handleRefreshUI = () => {
     this.host.requestUpdate();
   };
 }

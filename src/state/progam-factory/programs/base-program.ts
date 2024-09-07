@@ -1,3 +1,4 @@
+import { EventEmitter } from 'eventemitter3';
 import programs from '@configs/programs.json';
 import { IFormatter } from "@shared/interfaces/formatter";
 import { EventBatcher } from '@shared/event-batcher';
@@ -5,7 +6,7 @@ import { ProgramName } from '../types';
 import { IProgram } from '../interfaces/program';
 import { IMakeProgramParameters } from '../interfaces/make-program-parameters';
 import { IBaseProgramParameters } from '../interfaces/program-parameters/base-program-parameters';
-import { PROGRAM_UI_EVENTS } from '../constants';
+import { PROGRAMS_STATE_EVENTS, PROGRAMS_UI_EVENTS } from '../constants';
 
 export abstract class BaseProgram implements IProgram {
   protected formatter: IFormatter;
@@ -14,6 +15,7 @@ export abstract class BaseProgram implements IProgram {
   private _quality!: number;
 
   protected readonly uiEventBatcher: EventBatcher;
+  protected readonly stateEventEmitter: EventEmitter;
 
   abstract get name(): ProgramName;
 
@@ -24,6 +26,7 @@ export abstract class BaseProgram implements IProgram {
     this._quality = parameters.quality;
 
     this.uiEventBatcher = new EventBatcher();
+    this.stateEventEmitter = new EventEmitter();
   }
 
   get level() {
@@ -80,7 +83,8 @@ export abstract class BaseProgram implements IProgram {
     this._level = newProgram.level;
     this._quality = newProgram.quality;
 
-    this.uiEventBatcher.enqueueEvent(PROGRAM_UI_EVENTS.PROGRAM_UPDATED);
+    this.stateEventEmitter.emit(PROGRAMS_STATE_EVENTS.PROGRAM_UPDATED);
+    this.uiEventBatcher.enqueueEvent(PROGRAMS_UI_EVENTS.PROGRAM_UPDATED);
   }
 
   abstract removeEventListeners(): void;
@@ -103,6 +107,14 @@ export abstract class BaseProgram implements IProgram {
 
   fireUiEvents() {
     this.uiEventBatcher.fireEvents();
+  }
+
+  addStateEventListener(eventName: symbol, handler: (...args: any[]) => void) {
+    this.stateEventEmitter.addListener(eventName, handler);
+  }
+
+  removeStateEventListener(eventName: symbol, handler: (...args: any[]) => void) {
+    this.stateEventEmitter.removeListener(eventName, handler);
   }
 
   buildCostParametersObject(): object {

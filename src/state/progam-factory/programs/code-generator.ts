@@ -7,7 +7,7 @@ import constants from '@configs/constants.json';
 import { ProgramName } from '../types';
 import { ICodeGeneratorParameters } from '../interfaces/program-parameters/code-generator-parameters';
 import { BaseProgram } from './base-program';
-import { PROGRAM_UI_EVENTS } from '../constants';
+import { PROGRAMS_UI_EVENTS } from '../constants';
 
 export class CodeGeneratorProgram extends BaseProgram {
   public readonly name = ProgramName.codeGenerator;
@@ -36,6 +36,7 @@ export class CodeGeneratorProgram extends BaseProgram {
   removeEventListeners() {
     this._mainframeHardwareState.removeStateEventListener(MAINFRAME_HARDWARE_STATE_EVENTS.HARDWARE_UPDATED, this.handleHardwareUpdate);
     this.uiEventBatcher.removeAllListeners();
+    this.stateEventEmitter.removeAllListeners();
   }
 
   buildDescriptionParametersObject(threads: number) {
@@ -56,6 +57,6 @@ export class CodeGeneratorProgram extends BaseProgram {
   }
 
   private handleHardwareUpdate = () => {
-    this.uiEventBatcher.enqueueEvent(PROGRAM_UI_EVENTS.PROGRAM_UPDATED);
+    this.uiEventBatcher.enqueueEvent(PROGRAMS_UI_EVENTS.PROGRAM_UPDATED);
   };
 }

@@ -1,3 +1,5 @@
 import './start-process-dialog';
 import './processes-list';
-import './process-actions-column';
+import './processes-list-item';
+import './processes-list-item-progress';
+import './process-description';
