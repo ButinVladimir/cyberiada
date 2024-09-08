@@ -4,6 +4,7 @@ common:
   delete: Удалить
   close: Закрыть
   loading: Загрузка...
+  never: Никогда
 pages:
   cityOverview: Обзор города
   company: Компания
@@ -40,6 +41,9 @@ settings:
   themes:
     light: Светлая
     dark: Темная
+  longNumberFormats:
+    scientific: Научный
+    builtIn: Встроенный
   saveGame: Сохранить игру
   importSavefile: Импорт сохранения
   exportSavefile: Экспорт сохранения
@@ -54,11 +58,21 @@ city:
     name: Название
 mainframe:
   mainframe: Мейнфрейм
+  program: Программа
+  level: Уровень
+  quality: Качество
+  threads: Потоки
+  programDescription:
+    cost: Стоит {{value.cost}} для покупки или {{value.developmentPoints}} ОРП для разработки.
+    requirements: Требует {{value.ram}} ПЗУ и до {{value.cores}} ядер для запуска {{value.threads}} потоков и {{value.completionPoints}} ОВП для завершения процесса.
+    requirementsScalable: Масштабируется и использует все неиспользуемые ПЗУ и ядра. Выполняется каждый тик.
   tabs:
     processes: Процессы
     hardware: Оборудование
-    programs: Программы
+    ownedPrograms: Имеющиеся программы
+    developingPrograms: Программы в разработке
   hardware:
+    keyboardHint: Нажмите Ctrl или Shift для покупки 10 уровней. Нажмите вместе Ctrl и Shift для покупки 100 уровней.
     performance: 'Уровень производительности: {{value}}'
     performanceHint: Высокие уровни производительности ведут к более быстрым процессам.
     cores: 'Уровень ядер: {{value}}'
@@ -66,3 +80,43 @@ mainframe:
     ram: 'Уровень памяти: {{value}}'
     ramHint: Дополнительная память дает возможность держать больше процессов в памяти, чтобы они смогли выполниться позже или в больших группах.
     buy: Купить x{{value.increase}} за {{value.cost}}
+  ownedPrograms:
+    purchaseProgram: Купить программу
+    purchaseProgramDialogHint: Выберите тип программы, уровень и качество, чтобы купить её.
+      Уровень не может быть выше текущего уровня развития города.
+      Качество зависит от полученных услуг.
+      Если у вас уже есть программа с тем же именем, старая будет заменена на новую.
+    purchase: Купить за {{value.cost}}
+    emptyListNotification: У вас нет имеющихся програм
+  processes:
+    startProcess: Начать процесс
+    startProcessDialogHint: Выберите одну из имеющихся программ, чтобы начать процесс для неё.
+      Если у вас уже есть процесс для выбранной программы, старый процесс будет замене на новый.
+      Потоки позволяют выполняться нескольким экземплярам программы одновременно, но дополнительные потоки требует больше памяти.
+    emptyListNotification: У вас нет процессов
+    programSelectItem: $t(programs:{{value.programName}}:name), level {{value.level}}, quality {{value.quality}}
+    progressBarLabel: "{{value.currentCompletionPoints}} \/ {{value.maxCompletionPoints}}"
+    progressBarHintActive: 'Процесс будет выполнен через {{value}}'
+    progressBarHintPaused: 'Процесс неактивен'
+    processToggle: Включить / выключить процесс
+    processDelete: Удалить процесс
+    autoscalable: Автомасштабируется
+    availableCores: 'Доступные ядра: {{value}}'
+    availableRam: 'Доступная ПЗУ: {{value}}'
+    processDescription:
+      usesCores: Использует {{value}} ядер.
+      completionSpeed: Скорость выполнения - {{value}} ОВП в секунду.
+      completionSpeedScalable: Скорость выполнения мгновенна.
+  developingPrograms:
+    startProgramDevelopment: Начать разработку программы
+    startDevelopment: Начать разработку программы за {{value.developmentPoints}} ОРП
+    startProgramDevelopmentDialogHint: Выберите тип программы, уровень и качество, чтобы начать её разработку.
+      Уровень не может быть выше текущего уровня развития города.
+      Качество зависит от полученных услуг.
+      Если у вас уже есть разработка для выбранной программы, старая разработка будет заменена на новую.
+    emptyListNotification: У вас нет программ в разработке
+    progressBarLabel: "{{value.currentDevelopmentPoints}} \/ {{value.maxDevelopmentPoints}}"
+    progressBarHintActive: 'Разработка программы будет завершена через {{value}}'
+    progressBarHintPaused: Разработка программы неактивна
+    developingProgramToggle: Включить / выключить разработку программы
+    developingProgramDelete: Отменить разработку программы

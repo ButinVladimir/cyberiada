@@ -6,8 +6,7 @@ import { ProgramName } from '@state/progam-factory/types';
 export class OwnedProgramsListItemController extends BaseController {
   private _ownedProgram?: IProgram;
 
-  hostConnected() {
-  }
+  hostConnected() {}
 
   hostDisconnected() {
     this.removeOldProgramListeners();

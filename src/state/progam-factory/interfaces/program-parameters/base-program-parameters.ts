@@ -1,4 +1,4 @@
-import { IFormatter } from "@shared/interfaces/formatter";
+import { IFormatter } from '@shared/interfaces/formatter';
 
 export interface IBaseProgramParameters {
   formatter: IFormatter;

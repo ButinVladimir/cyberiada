@@ -37,9 +37,7 @@ export class Formatter implements IFormatter {
   private _decimalBuiltInFormatter: Intl.NumberFormat;
   private _floatBuiltInFormatter: Intl.NumberFormat;
 
-  constructor(
-    @inject(TYPES.SettingsState) _settingsState: ISettingsState,
-  ) {
+  constructor(@inject(TYPES.SettingsState) _settingsState: ISettingsState) {
     this._settingsState = _settingsState;
 
     this._decimalBuiltInFormatter = new Intl.NumberFormat(navigator.language, { maximumFractionDigits: 0 });
@@ -66,11 +64,11 @@ export class Formatter implements IFormatter {
   }
 
   formatNumberFloat(value: number): string {
-    return this._floatBuiltInFormatter.format(value);
+    return 'F' + this._floatBuiltInFormatter.format(value);
   }
 
   formatNumberDecimal(value: number): string {
-    return this._decimalBuiltInFormatter.format(value);
+    return 'D' + this._decimalBuiltInFormatter.format(value);
   }
 
   formatNumberLong(value: number): string {
@@ -104,7 +102,6 @@ export class Formatter implements IFormatter {
   };
 
   private formatNumberExponential(value: number) {
-    return value.toExponential(2);
+    return 'E' + value.toExponential(2);
   }
 }
-

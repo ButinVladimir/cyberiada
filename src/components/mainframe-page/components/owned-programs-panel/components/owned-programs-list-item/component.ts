@@ -29,7 +29,7 @@ export class OwnedProgramsListItem extends LitElement {
       padding: var(--sl-spacing-small);
     }
 
-    sl-icon[name=question-circle] {
+    sl-icon[name='question-circle'] {
       position: relative;
       top: 0.25em;
       margin-left: 0.5em;

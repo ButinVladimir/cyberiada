@@ -8,7 +8,7 @@ export interface IMainframeDevelopingProgramsState
   extends ISerializeable<IMainframeDevelopingProgramsSerializedState>,
     IUIEventEmitter {
   listDevelopingPrograms(): IDevelopingProgram[];
-  getDevelopingProgramByName(programName: ProgramName): IDevelopingProgram;
+  getDevelopingProgramByName(programName: ProgramName): IDevelopingProgram | undefined;
   addDevelopingProgram(parameters: IMakeProgramParameters): boolean;
   deleteDevelopingProgram(programName: ProgramName): void;
   increaseDevelopingProgramCompletion(delta: number): void;

@@ -10,7 +10,10 @@ export class StartProcessDialogController extends BaseController {
       MAINFRAME_OWNED_PROGRAMES_STATE_UI_EVENTS.OWNED_PROGRAMS_UPDATED,
       this.handleRefreshUI,
     );
-    this.mainframeHardwareState.addUiEventListener(MAINFRAME_HARDWARE_STATE_UI_EVENTS.HARDWARE_UPDATED, this.handleRefreshUI);
+    this.mainframeHardwareState.addUiEventListener(
+      MAINFRAME_HARDWARE_STATE_UI_EVENTS.HARDWARE_UPDATED,
+      this.handleRefreshUI,
+    );
   }
 
   hostDisconnected() {
@@ -18,7 +21,10 @@ export class StartProcessDialogController extends BaseController {
       MAINFRAME_OWNED_PROGRAMES_STATE_UI_EVENTS.OWNED_PROGRAMS_UPDATED,
       this.handleRefreshUI,
     );
-    this.mainframeHardwareState.removeUiEventListener(MAINFRAME_HARDWARE_STATE_UI_EVENTS.HARDWARE_UPDATED, this.handleRefreshUI);
+    this.mainframeHardwareState.removeUiEventListener(
+      MAINFRAME_HARDWARE_STATE_UI_EVENTS.HARDWARE_UPDATED,
+      this.handleRefreshUI,
+    );
   }
 
   get ram(): number {
@@ -27,6 +33,20 @@ export class StartProcessDialogController extends BaseController {
 
   get cores(): number {
     return this.mainframeHardwareState.cores;
+  }
+
+  getAvailableRamForProgram(programName?: ProgramName): number {
+    let availableRam = this.mainframeProcessesState.availableRam;
+
+    if (programName) {
+      const existingProcess = this.mainframeProcessesState.getProcessByName(programName);
+
+      if (existingProcess) {
+        availableRam += existingProcess.totalRam;
+      }
+    }
+
+    return availableRam;
   }
 
   listPrograms(): IProgram[] {

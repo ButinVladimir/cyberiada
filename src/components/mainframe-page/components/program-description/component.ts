@@ -66,7 +66,9 @@ export class ProgramDescription extends LitElement {
 
     return html`<intl-message label="programs:${this.programName}:overview"> Program overview </intl-message>
       <intl-message label="ui:mainframe:programDescription:cost" value=${costValues}> Cost </intl-message>
-      <intl-message label="ui:mainframe:programDescription:${requirementsKey}" value=${requirementsValues}> Requirements </intl-message>
+      <intl-message label="ui:mainframe:programDescription:${requirementsKey}" value=${requirementsValues}>
+        Requirements
+      </intl-message>
       <intl-message label="programs:${this.programName}:programDescription" value=${descriptionValues}>
         Program description
       </intl-message>`;

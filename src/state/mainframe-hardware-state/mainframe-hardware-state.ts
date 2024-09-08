@@ -162,7 +162,9 @@ export class MainframeHardwareState implements IMainframeHardwareState {
 
   private handlePurchaseRamIncrease = (increase: number) => () => {
     this._ram += increase;
-    this._messageLogState.postMessage(PurchaseEvent.ramUpdated, { level: this._formatter.formatNumberDecimal(this._ram) });
+    this._messageLogState.postMessage(PurchaseEvent.ramUpdated, {
+      level: this._formatter.formatNumberDecimal(this._ram),
+    });
     this.handlePostHardwareUpdate();
   };
 

@@ -6,8 +6,7 @@ import { PROGRAMS_UI_EVENTS } from '@/state/progam-factory/constants';
 export class ProgramDescriptionController extends BaseController {
   private _program?: IProgram;
 
-  hostConnected() {
-  }
+  hostConnected() {}
 
   hostDisconnected() {
     this.deleteOldProgram();

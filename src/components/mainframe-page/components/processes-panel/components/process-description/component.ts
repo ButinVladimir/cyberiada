@@ -1,4 +1,3 @@
-import { t } from 'i18next';
 import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { ProgramName } from '@state/progam-factory/types';
@@ -44,7 +43,7 @@ export class ProcessDescription extends LitElement {
     let descriptionValues: string;
     let requirementsKey: string;
     let completionSpeedKey: string;
-    let completionSpeedValues: string;
+    let completionSpeedValue: string;
     let cores: number;
 
     const requirementsValues = JSON.stringify(process.program.buildRequirementsParametersObject(process.threads));
@@ -54,40 +53,33 @@ export class ProcessDescription extends LitElement {
         process.program.buildDescriptionParametersObject(availableCores, availableRam),
       );
       requirementsKey = 'requirementsScalable';
+
       completionSpeedKey = 'completionSpeedScalable';
-      completionSpeedValues = '';
+      completionSpeedValue = '';
+
       cores = availableCores;
     } else {
       descriptionValues = JSON.stringify(process.program.buildDescriptionParametersObject(process.threads, 1));
       requirementsKey = 'requirements';
 
-      const completionDelta = process.calculateCompletionDelta(1);
-
-      completionSpeedValues = JSON.stringify({
-        speed: formatter.formatNumberLong(process.calculateCompletionDelta(MS_IN_SECOND)),
-        time:
-          completionDelta > 0
-            ? formatter.formatTimeShort(process.maxCompletionPoints / completionDelta)
-            : t('ui:common:never'),
-      });
       completionSpeedKey = 'completionSpeed';
+      completionSpeedValue = JSON.stringify(formatter.formatNumberLong(process.calculateCompletionDelta(MS_IN_SECOND)));
 
       cores = process.usedCores;
     }
+
+    const coresValue = JSON.stringify(formatter.formatNumberDecimal(cores));
 
     return html`<intl-message label="programs:${this.programName}:overview"> Program overview </intl-message>
       <intl-message label="ui:mainframe:programDescription:${requirementsKey}" value=${requirementsValues}>
         Requirements
       </intl-message>
-      <intl-message
-        label="ui:mainframe:processes:processDescription:usesCores"
-        value=${formatter.formatNumberDecimal(cores)}
-      >
+      <intl-message label="ui:mainframe:processes:processDescription:usesCores" value=${coresValue}>
         Uses cores
       </intl-message>
       <intl-message
         label="ui:mainframe:processes:processDescription:${completionSpeedKey}"
-        value=${completionSpeedValues}
+        value=${completionSpeedValue}
       >
         Completion speed
       </intl-message>

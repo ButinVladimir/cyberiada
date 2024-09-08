@@ -119,6 +119,8 @@ export class PurchaseProgramDialog extends LitElement {
 
     const submitButtonValues = JSON.stringify({ cost: formatter.formatNumberLong(cost) });
 
+    const submitButtonDisabled = !program;
+
     return html`
       <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
         <h4 slot="label" class="title">
@@ -186,7 +188,7 @@ export class PurchaseProgramDialog extends LitElement {
 
         <ca-purchase-program-dialog-submit-button
           slot="footer"
-          ?disabled=${!program}
+          ?disabled=${submitButtonDisabled}
           cost=${cost}
           @click=${this.handlePurchase}
         >

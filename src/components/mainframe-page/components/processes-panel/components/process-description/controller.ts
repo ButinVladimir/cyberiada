@@ -6,8 +6,7 @@ import { MAINFRAME_PROCESSES_STATE_UI_EVENTS } from '@/state/mainframe-processes
 export class ProcessDescriptionController extends BaseController {
   private _process?: IProcess;
 
-  hostConnected() {
-  }
+  hostConnected() {}
 
   hostDisconnected() {
     this.unsubscribeFromProcess();

@@ -194,7 +194,7 @@ Each city is described as square map of 100x100 cells. City is divided into dist
 
 Each city has it's own line of rewards, each reward requires increasing development level. Player can achieve multiple rewards in same run.
 
-Each city district has it's own set of contract and hire counters. In addition, each district has wanted level and wanted points, job searching points, connections to get more rewards and investigation points. 
+Each city district has it's own set of contract and hire counters. In addition, each district has wanted level and wanted points, job searching points, connections to get more rewards and investigation points.
 
 ### Facilities
 

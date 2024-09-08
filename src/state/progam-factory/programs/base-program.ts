@@ -1,6 +1,6 @@
 import { EventEmitter } from 'eventemitter3';
 import programs from '@configs/programs.json';
-import { IFormatter } from "@shared/interfaces/formatter";
+import { IFormatter } from '@shared/interfaces/formatter';
 import { EventBatcher } from '@shared/event-batcher';
 import { ProgramName } from '../types';
 import { IProgram } from '../interfaces/program';

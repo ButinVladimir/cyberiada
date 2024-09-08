@@ -38,7 +38,7 @@
     },
     {
       "name": "ca-map-cell-zoom-panel",
-      "description": "Attributes:\n\n  * `zoom` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `decimalNumberFormatter` - \n\n  * `zoom` {`number`} - \n\n  * `_showRange` {`boolean`} - \n\n  * `_rangeElement` {`SlRange`} - \n\n  * `handleToggleZoomPanel` - \n\n  * `handleChangeZoom` - ",
+      "description": "Attributes:\n\n  * `zoom` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `zoom` {`number`} - \n\n  * `_showRange` {`boolean`} - \n\n  * `_rangeElement` {`SlRange`} - \n\n  * `handleToggleZoomPanel` - \n\n  * `handleChangeZoom` - \n\n  * `decimalNumberFormatter` - \n\n  * `_mapCellZoomPanelController` {`MapCellZoomPanelController`} - ",
       "attributes": [
         {
           "name": "zoom",
@@ -48,7 +48,7 @@
     },
     {
       "name": "ca-game-screen",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_menuOpened` {`boolean`} - \n\n  * `_logsOpened` {`boolean`} - \n\n  * `_selectedMenuItem` - \n\n  * `handleMenuToggle` - \n\n  * `handleLogsToggle` - \n\n  * `handleMenuItemSelect` - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_menuOpened` {`boolean`} - \n\n  * `_messageLogOpened` {`boolean`} - \n\n  * `_selectedMenuItem` - \n\n  * `handleMenuToggle` - \n\n  * `handleMessageLogToggle` - \n\n  * `handleMenuItemSelect` - ",
       "attributes": []
     },
     {
@@ -114,7 +114,7 @@
     },
     {
       "name": "ca-viewport",
-      "description": "Attributes:\n\n  * `selected-menu-item` {`string`} - \n\nProperties:\n\n  * `selectedMenuItem` {`string`} - ",
+      "description": "Attributes:\n\n  * `selected-menu-item` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `selectedMenuItem` {`string`} - ",
       "attributes": [
         {
           "name": "selected-menu-item",
@@ -138,25 +138,22 @@
       "attributes": []
     },
     {
-      "name": "ca-developing-program-actions-column",
-      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\n  * `current-development-points` {`number`} - \n\n  * `max-development-points` {`number`} - \n\n  * `active` {`boolean`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `currentDevelopmentPoints` {`number`} - \n\n  * `maxDevelopmentPoints` {`number`} - \n\n  * `active` {`boolean`} - \n\n  * `handleToggleDevelopingProgram` - \n\n  * `handleDeleteDevelopingProgram` - \n\n  * `_developingProgramActionsColumnController` {`DevelopingProgramActionsColumnController`} - ",
+      "name": "ca-developing-programs-list-item-progress",
+      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `_developingProgramsListItemProgressController` {`DevelopingProgramsListItemProgressController`} - ",
       "attributes": [
         {
           "name": "program-name",
           "description": "`program-name` {`string`} - \n\nProperty: programName\n\nDefault: shareServer"
-        },
+        }
+      ]
+    },
+    {
+      "name": "ca-developing-programs-list-item",
+      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `handleToggleDevelopingProgram` - \n\n  * `handleDeleteDevelopingProgram` - \n\n  * `_developingProgramsListItemController` {`DevelopingProgramsListItemController`} - ",
+      "attributes": [
         {
-          "name": "current-development-points",
-          "description": "`current-development-points` {`number`} - \n\nProperty: currentDevelopmentPoints\n\nDefault: 0"
-        },
-        {
-          "name": "max-development-points",
-          "description": "`max-development-points` {`number`} - \n\nProperty: maxDevelopmentPoints\n\nDefault: 0"
-        },
-        {
-          "name": "active",
-          "description": "`active` {`boolean`} - \n\nProperty: active\n\nDefault: true",
-          "valueSet": "v"
+          "name": "program-name",
+          "description": "`program-name` {`string`} - \n\nProperty: programName\n\nDefault: shareServer"
         }
       ]
     },
@@ -182,8 +179,18 @@
       "attributes": []
     },
     {
+      "name": "ca-mainframe-hardware-panel-article-buy-button",
+      "description": "Attributes:\n\n  * `cost` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `cost` {`number`} - \n\n  * `_mainframeHardwarePanelArticleBuyButtonController` {`MainframeHardwarePanelArticleBuyButtonController`} - ",
+      "attributes": [
+        {
+          "name": "cost",
+          "description": "`cost` {`number`} - \n\nProperty: cost"
+        }
+      ]
+    },
+    {
       "name": "ca-mainframe-hardware-panel-article",
-      "description": "Attributes:\n\n  * `label` {`string`} - \n\n  * `increase` {`number`} - \n\n  * `money` {`number`} - \n\n  * `level` {`number`} - \n\n  * `cost` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `label` {`string`} - \n\n  * `increase` {`number`} - \n\n  * `money` {`number`} - \n\n  * `level` {`number`} - \n\n  * `cost` {`number`} - \n\n  * `handleBuy` - ",
+      "description": "Attributes:\n\n  * `label` {`string`} - \n\n  * `increase` {`number`} - \n\n  * `money` {`number`} - \n\n  * `level` {`number`} - \n\n  * `cost` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `label` {`string`} - \n\n  * `increase` {`number`} - \n\n  * `money` {`number`} - \n\n  * `level` {`number`} - \n\n  * `cost` {`number`} - \n\n  * `handleBuy` - \n\n  * `_mainframeHardwarePanelArticleController` {`MainframeHardwarePanelArticleController`} - ",
       "attributes": [
         {
           "name": "label",
@@ -213,9 +220,34 @@
       "attributes": []
     },
     {
+      "name": "ca-owned-programs-list-item",
+      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `_ownedProgramsListItemController` {`OwnedProgramsListItemController`} - ",
+      "attributes": [
+        {
+          "name": "program-name",
+          "description": "`program-name` {`string`} - \n\nProperty: programName\n\nDefault: shareServer"
+        }
+      ]
+    },
+    {
       "name": "ca-owned-programs-list",
       "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderContent` - \n\n  * `renderEmptyListNotification` - \n\n  * `renderListItem` - \n\n  * `_ownedProgramsListController` {`OwnedProgramsListController`} - ",
       "attributes": []
+    },
+    {
+      "name": "ca-purchase-program-dialog-submit-button",
+      "description": "Attributes:\n\n  * `disabled` {`boolean`} - \n\n  * `cost` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `disabled` {`boolean`} - \n\n  * `cost` {`number`} - \n\n  * `_purchaseProgramDialogSubmitButtonController` {`PurchaseProgramDialogSubmitButtonController`} - ",
+      "attributes": [
+        {
+          "name": "disabled",
+          "description": "`disabled` {`boolean`} - \n\nProperty: disabled\n\nDefault: false",
+          "valueSet": "v"
+        },
+        {
+          "name": "cost",
+          "description": "`cost` {`number`} - \n\nProperty: cost\n\nDefault: 0"
+        }
+      ]
     },
     {
       "name": "ca-purchase-program-dialog",
@@ -234,30 +266,32 @@
       "attributes": []
     },
     {
-      "name": "ca-process-actions-column",
-      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\n  * `current-completion-points` {`number`} - \n\n  * `max-completion-points` {`number`} - \n\n  * `active` {`boolean`} - \n\n  * `autoscalable` {`boolean`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `currentCompletionPoints` {`number`} - \n\n  * `maxCompletionPoints` {`number`} - \n\n  * `active` {`boolean`} - \n\n  * `autoscalable` {`boolean`} - \n\n  * `handleToggleProcess` - \n\n  * `handleDeleteProcess` - \n\n  * `_processActionsColumnController` {`ProcessActionsColumnController`} - ",
+      "name": "ca-process-description",
+      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `_processDescriptionController` {`ProcessDescriptionController`} - ",
+      "attributes": [
+        {
+          "name": "program-name",
+          "description": "`program-name` {`string`} - \n\nProperty: programName\n\nDefault: "
+        }
+      ]
+    },
+    {
+      "name": "ca-processes-list-item-progress",
+      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `_processesListItemProgressController` {`ProcessesListItemProgressController`} - ",
       "attributes": [
         {
           "name": "program-name",
           "description": "`program-name` {`string`} - \n\nProperty: programName\n\nDefault: shareServer"
-        },
+        }
+      ]
+    },
+    {
+      "name": "ca-processes-list-item",
+      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `handleToggleProcess` - \n\n  * `handleDeleteProcess` - \n\n  * `_processesListItemController` {`ProcessesListItemController`} - ",
+      "attributes": [
         {
-          "name": "current-completion-points",
-          "description": "`current-completion-points` {`number`} - \n\nProperty: currentCompletionPoints\n\nDefault: 0"
-        },
-        {
-          "name": "max-completion-points",
-          "description": "`max-completion-points` {`number`} - \n\nProperty: maxCompletionPoints\n\nDefault: 0"
-        },
-        {
-          "name": "active",
-          "description": "`active` {`boolean`} - \n\nProperty: active\n\nDefault: true",
-          "valueSet": "v"
-        },
-        {
-          "name": "autoscalable",
-          "description": "`autoscalable` {`boolean`} - \n\nProperty: autoscalable\n\nDefault: false",
-          "valueSet": "v"
+          "name": "program-name",
+          "description": "`program-name` {`string`} - \n\nProperty: programName\n\nDefault: shareServer"
         }
       ]
     },
@@ -274,6 +308,28 @@
           "name": "is-open",
           "description": "`is-open` {`boolean`} - \n\nProperty: isOpen\n\nDefault: false",
           "valueSet": "v"
+        }
+      ]
+    },
+    {
+      "name": "ca-program-description",
+      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\n  * `level` {`number`} - \n\n  * `quality` {`number`} - \n\n  * `threads` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `level` {`number`} - \n\n  * `quality` {`number`} - \n\n  * `threads` {`number`} - \n\n  * `_programDescriptionController` {`ProgramDescriptionController`} - ",
+      "attributes": [
+        {
+          "name": "program-name",
+          "description": "`program-name` {`string`} - \n\nProperty: programName\n\nDefault: "
+        },
+        {
+          "name": "level",
+          "description": "`level` {`number`} - \n\nProperty: level\n\nDefault: 1"
+        },
+        {
+          "name": "quality",
+          "description": "`quality` {`number`} - \n\nProperty: quality\n\nDefault: 0"
+        },
+        {
+          "name": "threads",
+          "description": "`threads` {`number`} - \n\nProperty: threads\n\nDefault: 0"
         }
       ]
     },
@@ -300,7 +356,7 @@
     },
     {
       "name": "ca-settings-form",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_languageInput` {`SlSelect | undefined`} - \n\n  * `_themeInput` {`SlSelect | undefined`} - \n\n  * `_messageLogSizeInput` {`SlInput | undefined`} - \n\n  * `_updateIntervalInput` {`SlRange | undefined`} - \n\n  * `_autosaveEnabledInput` {`SlCheckbox | undefined`} - \n\n  * `_autosaveIntervalInput` {`SlRange | undefined`} - \n\n  * `_maxTicksPerUpdateInput` {`SlRange | undefined`} - \n\n  * `_longNumberFormatInput` {`SlSelect | undefined`} - \n\n  * `_isSaving` {`boolean`} - \n\n  * `autosaveIntervalFormatter` - \n\n  * `decimalNumberFormatter` - \n\n  * `startSaving` - \n\n  * `stopSaving` - \n\n  * `handleChangeLanguage` - \n\n  * `handleChangeTheme` - \n\n  * `handleChangeMessageLogSize` - \n\n  * `handleChangeUpdateInterval` - \n\n  * `handleChangeAutosaveEnabled` - \n\n  * `handleChangeAutosaveInterval` - \n\n  * `handleChangeMaxTicksPerUpdate` - \n\n  * `handleChangeLongNumberFormat` - \n\n  * `_settingsFormController` {`SettingsFormController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_languageInput` {`SlSelect | undefined`} - \n\n  * `_themeInput` {`SlSelect | undefined`} - \n\n  * `_messageLogSizeInput` {`SlInput | undefined`} - \n\n  * `_updateIntervalInput` {`SlRange | undefined`} - \n\n  * `_autosaveEnabledSwitch` {`SlSwitch | undefined`} - \n\n  * `_autosaveIntervalInput` {`SlRange | undefined`} - \n\n  * `_maxTicksPerUpdateInput` {`SlRange | undefined`} - \n\n  * `_longNumberFormatInput` {`SlSelect | undefined`} - \n\n  * `_isSaving` {`boolean`} - \n\n  * `startSaving` - \n\n  * `stopSaving` - \n\n  * `handleChangeLanguage` - \n\n  * `handleChangeTheme` - \n\n  * `handleChangeMessageLogSize` - \n\n  * `handleChangeUpdateInterval` - \n\n  * `handleChangeAutosaveEnabled` - \n\n  * `handleChangeAutosaveInterval` - \n\n  * `handleChangeMaxTicksPerUpdate` - \n\n  * `handleChangeLongNumberFormat` - \n\n  * `autosaveIntervalFormatter` - \n\n  * `decimalNumberFormatter` - \n\n  * `_settingsFormController` {`SettingsFormController`} - ",
       "attributes": []
     }
   ],

@@ -102,9 +102,6 @@ export class OwnedProgramsList extends LitElement {
   };
 
   renderListItem = (program: IProgram) => {
-    return html`
-      <ca-owned-programs-list-item program-name=${program.name}>
-      </ca-owned-programs-list-item>
-    `;
+    return html` <ca-owned-programs-list-item program-name=${program.name}> </ca-owned-programs-list-item> `;
   };
 }

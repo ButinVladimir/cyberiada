@@ -78,13 +78,12 @@ export class ProgramFactory implements IProgramFactory {
 
       case ProgramName.codeGenerator:
         return new CodeGeneratorProgram({
-          settingsState: this._settingsState,
           mainframeHardwareState: this._mainframeHardwareState,
           mainframeDevelopingProgramsState: this._mainframeDevelopingProgramsState,
           formatter: this._formatter,
           level: parameters.level,
           quality: parameters.quality,
         });
-    }    
+    }
   }
 }

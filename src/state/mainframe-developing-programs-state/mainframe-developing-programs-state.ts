@@ -48,38 +48,38 @@ export class MainframeDevelopingProgramsState implements IMainframeDevelopingPro
     return this._developingPrograms;
   }
 
-  getDevelopingProgramByName(programName: ProgramName): IDevelopingProgram {
+  getDevelopingProgramByName(programName: ProgramName): IDevelopingProgram | undefined {
     const developingProgram = this._developingPrograms.find(
       (developingProgram) => developingProgram.program.name === programName,
     );
-
-    if (!developingProgram) {
-      throw new Error(`Developing program ${programName} is not found`);
-    }
 
     return developingProgram;
   }
 
   addDevelopingProgram(parameters: IMakeProgramParameters): boolean {
-    const program = this._programFactory.makeProgram(parameters);
+    const existingDevelopingProgram = this.getDevelopingProgramByName(parameters.name);
 
-    this.deleteDevelopingProgram(parameters.name);
+    if (existingDevelopingProgram) {
+      const program = this._programFactory.makeProgram(parameters);
+      existingDevelopingProgram.update(program);
+    } else {
+      const developingProgram = this.createDevelopingProgram({
+        isActive: true,
+        currentDevelopmentPoints: 0,
+        programName: parameters.name,
+        level: parameters.level,
+        quality: parameters.quality,
+      });
 
-    const developingProgram = new DevelopingProgram({
-      isActive: true,
-      currentDevelopmentPoints: 0,
-      program: program,
-      mainframeDevelopingProgramsState: this,
-    });
+      this._developingPrograms.push(developingProgram);
+    }
 
-    this._developingPrograms.push(developingProgram);
-
-    this.enqueueUiUpdate();
+    this._uiEventBatcher.enqueueEvent(MAINFRAME_DEVELOPING_PROGRAMS_STATE_UI_EVENTS.DEVELOPING_PROGRAMS_UPDATED);
 
     this._messageLogState.postMessage(ProgramsEvent.programDevelopmentStarted, {
-      programName: program.name,
-      level: this._formatter.formatNumberDecimal(program.level),
-      quality: this._formatter.formatQuality(program.quality),
+      programName: parameters.name,
+      level: this._formatter.formatNumberDecimal(parameters.level),
+      quality: this._formatter.formatQuality(parameters.quality),
     });
 
     return true;
@@ -93,6 +93,8 @@ export class MainframeDevelopingProgramsState implements IMainframeDevelopingPro
       developingProgram = this._developingPrograms[index];
 
       if (developingProgram.program.name === programName) {
+        developingProgram.removeEventListeners();
+        this._programFactory.deleteProgram(developingProgram.program);
         this._developingPrograms.splice(index, 1);
 
         this._messageLogState.postMessage(ProgramsEvent.programDevelopmentAborted, {
@@ -105,7 +107,7 @@ export class MainframeDevelopingProgramsState implements IMainframeDevelopingPro
       }
     }
 
-    this.enqueueUiUpdate();
+    this._uiEventBatcher.enqueueEvent(MAINFRAME_DEVELOPING_PROGRAMS_STATE_UI_EVENTS.DEVELOPING_PROGRAMS_UPDATED);
   }
 
   increaseDevelopingProgramCompletion(delta: number) {
@@ -115,6 +117,7 @@ export class MainframeDevelopingProgramsState implements IMainframeDevelopingPro
       developingProgram.increaseDevelopment(delta);
 
       if (developingProgram.currentDevelopmentPoints >= developingProgram.program.developmentPoints) {
+        developingProgram.removeEventListeners();
         this._mainframeOwnedProgramsState.addProgram(developingProgram.program);
 
         this._messageLogState.postMessage(ProgramsEvent.programDevelopmentFinished, {
@@ -124,33 +127,25 @@ export class MainframeDevelopingProgramsState implements IMainframeDevelopingPro
         });
 
         this._developingPrograms.shift();
-        this.enqueueUiUpdate();
+        this._uiEventBatcher.enqueueEvent(MAINFRAME_DEVELOPING_PROGRAMS_STATE_UI_EVENTS.DEVELOPING_PROGRAMS_UPDATED);
       }
     }
   }
 
   // eslint-disable-next-line @typescript-eslint/require-await
   async startNewState(): Promise<void> {
-    this._developingPrograms = [];
+    this.clearState();
+
+    this._uiEventBatcher.enqueueEvent(MAINFRAME_DEVELOPING_PROGRAMS_STATE_UI_EVENTS.DEVELOPING_PROGRAMS_UPDATED);
   }
 
   // eslint-disable-next-line @typescript-eslint/require-await
   async deserialize(serializedState: IMainframeDevelopingProgramsSerializedState): Promise<void> {
-    this._developingPrograms = serializedState.developingPrograms.map(
-      (serializedDevelopingProgram: ISerializedDevelopingProgram) =>
-        new DevelopingProgram({
-          isActive: serializedDevelopingProgram.isActive,
-          program: this._programFactory.makeProgram({
-            name: serializedDevelopingProgram.programName,
-            level: serializedDevelopingProgram.level,
-            quality: serializedDevelopingProgram.quality,
-          }),
-          currentDevelopmentPoints: serializedDevelopingProgram.currentDevelopmentPoints,
-          mainframeDevelopingProgramsState: this,
-        }),
-    );
+    this.clearState();
 
-    this.enqueueUiUpdate();
+    this._developingPrograms = serializedState.developingPrograms.map(this.createDevelopingProgram);
+
+    this._uiEventBatcher.enqueueEvent(MAINFRAME_DEVELOPING_PROGRAMS_STATE_UI_EVENTS.DEVELOPING_PROGRAMS_UPDATED);
   }
 
   serialize(): IMainframeDevelopingProgramsSerializedState {
@@ -169,9 +164,33 @@ export class MainframeDevelopingProgramsState implements IMainframeDevelopingPro
 
   fireUiEvents() {
     this._uiEventBatcher.fireEvents();
+
+    for (const developingProgram of this._developingPrograms) {
+      developingProgram.fireUiEvents();
+    }
   }
 
-  private enqueueUiUpdate() {
-    this._uiEventBatcher.enqueueEvent(MAINFRAME_DEVELOPING_PROGRAMS_STATE_UI_EVENTS.DEVELOPING_PROGRAMS_UPDATED);
+  private createDevelopingProgram = (developingProgramParameters: ISerializedDevelopingProgram): IDevelopingProgram => {
+    const developingProgram = new DevelopingProgram({
+      isActive: developingProgramParameters.isActive,
+      program: this._programFactory.makeProgram({
+        name: developingProgramParameters.programName,
+        level: developingProgramParameters.level,
+        quality: developingProgramParameters.quality,
+      }),
+      currentDevelopmentPoints: developingProgramParameters.currentDevelopmentPoints,
+      programFactory: this._programFactory,
+    });
+
+    return developingProgram;
+  };
+
+  private clearState() {
+    for (const developingProgram of this._developingPrograms) {
+      developingProgram.removeEventListeners();
+      this._programFactory.deleteProgram(developingProgram.program);
+    }
+
+    this._developingPrograms = [];
   }
 }

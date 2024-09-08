@@ -24,7 +24,10 @@ export class ShareServerProgram extends BaseProgram {
     this._settingsState = parameters.settingsState;
     this._mainframeHardwareState = parameters.mainframeHardwareState;
 
-    this._mainframeHardwareState.addStateEventListener(MAINFRAME_HARDWARE_STATE_EVENTS.HARDWARE_UPDATED, this.handleHardwareUpdate);
+    this._mainframeHardwareState.addStateEventListener(
+      MAINFRAME_HARDWARE_STATE_EVENTS.HARDWARE_UPDATED,
+      this.handleHardwareUpdate,
+    );
   }
 
   perform(threads: number, usedRam: number): void {
@@ -34,7 +37,10 @@ export class ShareServerProgram extends BaseProgram {
   }
 
   removeEventListeners() {
-    this._mainframeHardwareState.removeStateEventListener(MAINFRAME_HARDWARE_STATE_EVENTS.HARDWARE_UPDATED, this.handleHardwareUpdate);
+    this._mainframeHardwareState.removeStateEventListener(
+      MAINFRAME_HARDWARE_STATE_EVENTS.HARDWARE_UPDATED,
+      this.handleHardwareUpdate,
+    );
     this.uiEventBatcher.removeAllListeners();
     this.stateEventEmitter.removeAllListeners();
   }
@@ -48,13 +54,15 @@ export class ShareServerProgram extends BaseProgram {
   }
 
   private calculateDelta(threads: number, usedRam: number, passedTime: number): number {
-    return passedTime *
+    return (
+      passedTime *
       constants.shareServer.baseIncome *
       this._mainframeHardwareState.performance *
       threads *
       usedRam *
       this.level *
-      Math.pow(constants.shareServer.qualityMultiplier, this.quality);
+      Math.pow(constants.shareServer.qualityMultiplier, this.quality)
+    );
   }
 
   private handleHardwareUpdate = () => {

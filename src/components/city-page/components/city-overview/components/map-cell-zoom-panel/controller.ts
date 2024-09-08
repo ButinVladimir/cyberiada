@@ -1,5 +1,3 @@
 import { BaseController } from '@shared/base-controller';
 
-export class MapCellZoomPanelController extends BaseController {
-  
-}
+export class MapCellZoomPanelController extends BaseController {}

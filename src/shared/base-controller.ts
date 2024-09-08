@@ -66,7 +66,7 @@ export class BaseController<T extends ReactiveControllerHost = ReactiveControlle
     return container.get<IMainframeProcessesState>(TYPES.MainframeProcessesState);
   }
 
-  protected get mainframeDevelopingProgramsStart(): IMainframeDevelopingProgramsState {
+  protected get mainframeDevelopingProgramsState(): IMainframeDevelopingProgramsState {
     return container.get<IMainframeDevelopingProgramsState>(TYPES.MainframeDevelopingProgramsState);
   }
 

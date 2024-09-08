@@ -64,9 +64,9 @@ mainframe:
   quality: Quality
   threads: Threads
   programDescription:
-    cost: Costs {{value.cost}} money to purchase or {{value.developmentPoints}} DP to develop.
-    requirements: Requires {{value.ram}} RAM and up to {{value.cores}} cores to run {{value.threads}} threads and {{value.completionPoints}} CP to complete the process.
-    requirementsScalable: Is scalable and will use all remaining RAM and cores. It will run every tick.
+    cost: Costs {{value.cost}} money to purchase or {{value.developmentPoints}} PrDP to develop.
+    requirements: Requires {{value.ram}} RAM and up to {{value.cores}} cores to run {{value.threads}} threads and {{value.completionPoints}} PrCP to complete the process.
+    requirementsScalable: Is scalable and uses all unused RAM and cores. It will run every tick.
   tabs:
     processes: Processes
     hardware: Hardware
@@ -84,7 +84,7 @@ mainframe:
   ownedPrograms:
     purchaseProgram: Purchase program
     purchaseProgramDialogHint: Select program type, level and quality to purchase it.
-      Level cannot be above current development level.
+      Level cannot be above current city development level.
       Quality is limited depending on gained favors.
       If you already have program with same name, old one will be replaced with new one.
     purchase: Purchase for {{value.cost}}
@@ -92,12 +92,12 @@ mainframe:
   processes:
     startProcess: Start process
     startProcessDialogHint: Select one of owned programs to start process for it.
-      If you already have process for same program, old one will be replaced with new one.
-      Threads allow to run multiple instances of same process at same time, but additional threads require additional memory.
+      If you already have process for same program, old process will be replaced with new one.
+      Threads allow to run multiple instances of same program at same time, but additional threads require additional memory.
     emptyListNotification: You don't have any processes
     programSelectItem: $t(programs:{{value.programName}}:name), level {{value.level}}, quality {{value.quality}}
     progressBarLabel: "{{value.currentCompletionPoints}} \/ {{value.maxCompletionPoints}}"
-    progressBarHintActive: "Process will be completed in {{value}}"
+    progressBarHintActive: 'Process will be completed in {{value}}'
     progressBarHintPaused: "Process isn't active"
     processToggle: Enable / disable process
     processDelete: Delete process
@@ -106,16 +106,18 @@ mainframe:
     availableRam: 'Available RAM: {{value}}'
     processDescription:
       usesCores: Uses {{value}} cores.
-      completionSpeed: Completion speed is {{value.speed}} CP per second, completion time is {{value.time}}.
+      completionSpeed: Completion speed is {{value}} PrCP per second.
       completionSpeedScalable: Completion speed is instant.
   developingPrograms:
     startProgramDevelopment: Start program development
-    startDevelopment: Start development
-    startProgramDevelopmentDialogHint: Select program type, level and quality to purchase it.
-      Level cannot be above current development level.
+    startDevelopment: Start development for {{value.developmentPoints}} PrDP
+    startProgramDevelopmentDialogHint: Select program type, level and quality to start developing it.
+      Level cannot be above current city development level.
       Quality is limited depending on gained favors.
-      If you already have development for same program, old one will be replaced with new one.
+      If you already have development for same program, old development will be replaced with new one.
     emptyListNotification: You don't have any programs in development
     progressBarLabel: "{{value.currentDevelopmentPoints}} \/ {{value.maxDevelopmentPoints}}"
+    progressBarHintActive: 'Program development will be completed in {{value}}'
+    progressBarHintPaused: "Program development isn't active"
     developingProgramToggle: Enable / disable program development
     developingProgramDelete: Abort program development

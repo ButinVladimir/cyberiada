@@ -6,8 +6,7 @@ import { ProgramName } from '@state/progam-factory/types';
 export class ProcessesListItemController extends BaseController {
   private _process?: IProcess;
 
-  hostConnected() {
-  }
+  hostConnected() {}
 
   hostDisconnected() {
     this.removeOldProcessListeners();

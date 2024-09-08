@@ -40,25 +40,29 @@ export class ProcessesListItemProgressColumn extends LitElement {
     });
 
     const processCompletionDelta = process.calculateCompletionDelta(1);
-    const progressBarLabel =
-      processCompletionDelta > 0
-        ? 'ui:mainframe:processes:progressBarHintActive'
-        : 'ui:mainframe:processes:progressBarHintPaused';
-    const progressBarHintValue =
-      processCompletionDelta > 0
-        ? formatter.formatTimeShort(
-            (process.maxCompletionPoints - process.currentCompletionPoints) / processCompletionDelta,
-          )
-        : '';
+    let progressBarHintLabel: string;
+    let progressBarHintValue: string;
+
+    if (processCompletionDelta > 0) {
+      progressBarHintLabel = 'ui:mainframe:processes:progressBarHintActive';
+      progressBarHintValue = formatter.formatTimeShort(
+        (process.maxCompletionPoints - process.currentCompletionPoints) / processCompletionDelta,
+      );
+    } else {
+      progressBarHintLabel = 'ui:mainframe:processes:progressBarHintPaused';
+      progressBarHintValue = '';
+    }
+
+    const progresBarValue = Math.round((process.currentCompletionPoints / process.maxCompletionPoints) * 100);
 
     return process.program.isAutoscalable
       ? html`<div class="progress-gap"></div>`
       : html` <sl-tooltip>
-          <intl-message slot="content" label=${progressBarLabel} value=${progressBarHintValue}>
+          <intl-message slot="content" label=${progressBarHintLabel} value=${progressBarHintValue}>
             Progress bar hint
           </intl-message>
 
-          <sl-progress-bar value=${Math.round((process.currentCompletionPoints / process.maxCompletionPoints) * 100)}>
+          <sl-progress-bar value=${progresBarValue}>
             <intl-message label="ui:mainframe:processes:progressBarLabel" value=${progressBarLabelValues}>
               Progress
             </intl-message>

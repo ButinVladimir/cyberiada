@@ -98,9 +98,6 @@ export class ProcessesList extends LitElement {
   };
 
   renderListItem = (process: IProcess) => {
-    return html`
-      <ca-processes-list-item program-name=${process.program.name}>
-      </ca-processes-list-item>
-    `;
+    return html` <ca-processes-list-item program-name=${process.program.name}> </ca-processes-list-item> `;
   };
 }

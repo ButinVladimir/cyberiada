@@ -16,7 +16,7 @@ import { EventBatcher } from '@shared/event-batcher';
 import { ProgramsEvent } from '@shared/types';
 import { MAINFRAME_HARDWARE_STATE_EVENTS } from '@state/mainframe-hardware-state/constants';
 import { Process } from './process';
-import { MAINFRAME_PROCESSES_STATE_UI_EVENTS, MAINFRAME_PROCESSES_STATE_STATE_EVENTS } from './constants';
+import { MAINFRAME_PROCESSES_STATE_UI_EVENTS, MAINFRAME_PROCESSES_STATE_EVENTS } from './constants';
 
 @injectable()
 export class MainframeProcessesState implements IMainframeProcessesState {
@@ -54,7 +54,10 @@ export class MainframeProcessesState implements IMainframeProcessesState {
 
     this._uiEventBatcher = new EventBatcher();
 
-    this._mainframeHardwareState.addStateEventListener(MAINFRAME_HARDWARE_STATE_EVENTS.HARDWARE_UPDATED, this.updateRunningProcesses);
+    this._mainframeHardwareState.addStateEventListener(
+      MAINFRAME_HARDWARE_STATE_EVENTS.HARDWARE_UPDATED,
+      this.updateRunningProcesses,
+    );
   }
 
   get availableCores() {
@@ -101,6 +104,10 @@ export class MainframeProcessesState implements IMainframeProcessesState {
       }
     }
 
+    if (program.isAutoscalable && !existingProcess) {
+      this.deleteAutoscalableProcesses();
+    }
+
     if (existingProcess) {
       existingProcess.update(threads);
     } else {
@@ -112,7 +119,7 @@ export class MainframeProcessesState implements IMainframeProcessesState {
       });
 
       this._processes.push(process);
-  }
+    }
 
     this.updateRunningProcesses();
 
@@ -171,12 +178,15 @@ export class MainframeProcessesState implements IMainframeProcessesState {
 
   // eslint-disable-next-line @typescript-eslint/require-await
   async startNewState(): Promise<void> {
-    this._processes = [];
+    this.clearState();
+
     this.updateRunningProcesses();
   }
 
   // eslint-disable-next-line @typescript-eslint/require-await
   async deserialize(serializedState: IMainframeProcessesSerializedState): Promise<void> {
+    this.clearState();
+
     this._processes = serializedState.processes.map(this.createProcess);
 
     this.updateRunningProcesses();
@@ -214,7 +224,7 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     let usedCores = 0;
 
     for (const process of this._processes) {
-      if (process.program.isAutoscalable) { 
+      if (process.program.isAutoscalable) {
         process.usedCores = 0;
         continue;
       }
@@ -239,7 +249,7 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     }
 
     this._uiEventBatcher.enqueueEvent(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESSES_UPDATED);
-  }
+  };
 
   private updateFinishedProcesses(): void {
     let index = 0;
@@ -267,7 +277,7 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     }
   }
 
-  private createProcess = (processParameters: ISerializedProcess): IProcess =>{
+  private createProcess = (processParameters: ISerializedProcess): IProcess => {
     const process = new Process({
       isActive: processParameters.isActive,
       threads: processParameters.threads,
@@ -277,9 +287,43 @@ export class MainframeProcessesState implements IMainframeProcessesState {
       mainframeHardwareState: this._mainframeHardwareState,
     });
 
-    process.addStateEventListener(MAINFRAME_PROCESSES_STATE_STATE_EVENTS.PROCESS_TOGGLED, this.updateRunningProcesses);
-    process.addStateEventListener(MAINFRAME_PROCESSES_STATE_STATE_EVENTS.PROCESS_PROGRAM_UPDATED, this.updateRunningProcesses);
+    process.addStateEventListener(MAINFRAME_PROCESSES_STATE_EVENTS.PROCESS_TOGGLED, this.updateRunningProcesses);
+    process.addStateEventListener(
+      MAINFRAME_PROCESSES_STATE_EVENTS.PROCESS_PROGRAM_UPDATED,
+      this.updateRunningProcesses,
+    );
 
     return process;
   };
+
+  private deleteAutoscalableProcesses(): void {
+    let index = 0;
+    let process: IProcess;
+
+    while (index < this._processes.length) {
+      process = this._processes[index];
+
+      if (process.program.isAutoscalable) {
+        process.removeEventListeners();
+        this._processes.splice(index, 1);
+
+        this._messageLogState.postMessage(ProgramsEvent.processDeleted, {
+          programName: process.program.name,
+          threads: this._formatter.formatNumberDecimal(process.threads),
+        });
+      } else {
+        index++;
+      }
+    }
+
+    this.updateRunningProcesses();
+  }
+
+  private clearState() {
+    for (const process of this._processes) {
+      process.removeEventListeners();
+    }
+
+    this._processes = [];
+  }
 }

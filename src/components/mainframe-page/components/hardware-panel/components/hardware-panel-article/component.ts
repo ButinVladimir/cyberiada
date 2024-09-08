@@ -98,16 +98,13 @@ export class MainframeHardwarePanelArticle extends LitElement {
       </div>
 
       <div class="button-container">
-        <ca-mainframe-hardware-panel-article-buy-button
-          cost=${this.cost}
-          @click=${this.handleBuy}
-        >
+        <ca-mainframe-hardware-panel-article-buy-button cost=${this.cost} @click=${this.handleBuy}>
           <intl-message label="ui:mainframe:hardware:buy" value=${buttonValue}> Buy </intl-message>
         </ca-mainframe-hardware-panel-article-buy-button>
       </div>
     `;
   }
- 
+
   handleBuy = (event: Event) => {
     event.stopPropagation();
     event.preventDefault();

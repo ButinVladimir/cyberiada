@@ -10,7 +10,7 @@ export class Viewport extends LitElement {
       width: 100%;
       max-width: var(--ca-max-content-width);
     }
-  `
+  `;
 
   @property({
     attribute: 'selected-menu-item',

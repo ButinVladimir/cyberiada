@@ -24,15 +24,9 @@ export class MainframeHardwarePanelArticleBuyButton extends LitElement {
     const buttonDisabled = this._mainframeHardwarePanelArticleBuyButtonController.money < this.cost;
 
     return html`
-      <sl-button
-        variant="primary"
-        type="button"
-        size="medium"
-        ?disabled=${buttonDisabled}
-      >
+      <sl-button variant="primary" type="button" size="medium" ?disabled=${buttonDisabled}>
         <slot></slot>
       </sl-button>
     `;
   }
-
 }

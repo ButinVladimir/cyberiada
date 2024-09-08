@@ -103,8 +103,20 @@ export class StartProcessDialog extends LitElement {
 
   render() {
     const program = this._programName ? this._startProcessDialogController.getProgram(this._programName) : undefined;
+    const availableRam = this._startProcessDialogController.getAvailableRamForProgram(this._programName);
 
     const threads = program?.isAutoscalable ? this._startProcessDialogController.cores : this._threads;
+    let maxThreads = 1;
+
+    if (program && !program.isAutoscalable) {
+      maxThreads = Math.max(Math.floor(availableRam / program.ram), 1);
+    }
+
+    const threadsInputDisabled = !(program && !program.isAutoscalable);
+    const submitButtonDisabled = !(
+      program &&
+      (program.isAutoscalable || (this._threads >= 1 && this._threads <= maxThreads))
+    );
 
     return html`
       <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
@@ -131,8 +143,9 @@ export class StartProcessDialog extends LitElement {
               value=${this._threads}
               type="number"
               min="1"
+              max=${maxThreads}
               step="1"
-              ?disabled=${!!program?.isAutoscalable}
+              ?disabled=${threadsInputDisabled}
               @sl-change=${this.handleThreadsChange}
             >
               <span class="input-label" slot="label">
@@ -155,7 +168,7 @@ export class StartProcessDialog extends LitElement {
           <intl-message label="ui:common:close"> Close </intl-message>
         </sl-button>
 
-        <sl-button slot="footer" size="medium" variant="primary" @click=${this.handleStartProcess}>
+        <sl-button ?disabled=${submitButtonDisabled} slot="footer" size="medium" variant="primary" @click=${this.handleStartProcess}>
           <intl-message label="ui:mainframe:processes:startProcess"> Start process </intl-message>
         </sl-button>
       </sl-dialog>

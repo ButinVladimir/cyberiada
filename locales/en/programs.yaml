@@ -1,10 +1,10 @@
 shareServer:
-  name: Share Server
-  overview: Program to share your mainframe capabilities within city network. Generates passive income.
+  name: Mainframe share server
+  overview: Program to share your mainframe capabilities to city network. Generates passive income.
   programDescription: Can generate up to {{value.value}} money per second.
   processDescription: Generates {{value.value}} money per second.
 codeGenerator:
-  name: Code Generator
+  name: Code generator
   overview: Program to develop other programs.
-  programDescription: Generates {{value.value}} DP per completion.
-  processDescription: Generates {{value.value}} DP per completion.
+  programDescription: Generates {{value.value}} PrDP per completion.
+  processDescription: Generates {{value.value}} PrDP per completion.

@@ -1,4 +1,4 @@
-import { LitElement, TemplateResult, css, html } from 'lit';
+import { LitElement, css, html } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.component.js';
@@ -112,6 +112,17 @@ export class StartProgramDevelopmentDialog extends LitElement {
   render() {
     const formatter = this._startProgramDevelopmentDialogController.formatter;
 
+    const program = this._programName
+      ? this._startProgramDevelopmentDialogController.getProgram(this._programName, this._level, this._quality)
+      : undefined;
+    const developmentPoints = program ? program.developmentPoints : 0;
+
+    const submitButtonValues = JSON.stringify({
+      developmentPoints: formatter.formatNumberLong(developmentPoints),
+    });
+
+    const submitButtonDisabled = !program;
+
     return html`
       <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
         <h4 slot="label" class="title">
@@ -146,7 +157,6 @@ export class StartProgramDevelopmentDialog extends LitElement {
               value=${this._level}
               type="number"
               min="1"
-              max="100"
               step="1"
               @sl-change=${this.handleLevelChange}
             >
@@ -179,22 +189,18 @@ export class StartProgramDevelopmentDialog extends LitElement {
           <intl-message label="ui:common:close"> Close </intl-message>
         </sl-button>
 
-        <sl-button slot="footer" size="medium" variant="primary" @click=${this.handlePurchase}>
-          <intl-message label="ui:mainframe:developingPrograms:startDevelopment"> Start development </intl-message>
+        <sl-button
+          slot="footer"
+          ?disabled=${submitButtonDisabled}
+          size="medium"
+          variant="primary"
+          @click=${this.handlePurchase}
+        >
+          <intl-message label="ui:mainframe:developingPrograms:startDevelopment" value=${submitButtonValues}>
+            Start development
+          </intl-message>
         </sl-button>
       </sl-dialog>
-    `;
-  }
-
-  private renderProgramDescription(): TemplateResult {
-    if (!this._programName) {
-      return html``;
-    }
-
-    return html`
-      <p class="description">
-        <intl-message label="programs:${this._programName}:description"> Program </intl-message>
-      </p>
     `;
   }
 
@@ -214,10 +220,6 @@ export class StartProgramDevelopmentDialog extends LitElement {
 
     if (level < 1) {
       level = 1;
-    }
-
-    if (level > 100) {
-      level = 100;
     }
 
     this._level = level;

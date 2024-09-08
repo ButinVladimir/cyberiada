@@ -26,7 +26,7 @@ export class ProcessesListItem extends LitElement {
       padding: var(--sl-spacing-small);
     }
 
-    sl-icon[name=question-circle] {
+    sl-icon[name='question-circle'] {
       position: relative;
       top: 0.25em;
       margin-left: 0.5em;
@@ -35,9 +35,12 @@ export class ProcessesListItem extends LitElement {
     }
 
     div.indicators-container {
+      width: 100%;
       display: flex;
       align-items: center;
+      flex-direction: row;
       gap: var(--sl-spacing-small);
+      font-size: var(--sl-font-size-large);
     }
   `;
 
@@ -74,11 +77,7 @@ export class ProcessesListItem extends LitElement {
         <sl-tooltip>
           <sl-icon name="question-circle"></sl-icon>
 
-          <ca-process-description
-            slot="content"
-            program-name=${process.program.name}
-          >
-          </ca-process-description>
+          <ca-process-description slot="content" program-name=${process.program.name}> </ca-process-description>
         </sl-tooltip>
       </td>
 
@@ -86,8 +85,7 @@ export class ProcessesListItem extends LitElement {
 
       <td>
         <div class="indicators-container">
-          <ca-processes-list-item-progress program-name=${process.program.name}>
-          </ca-processes-list-item-progress>
+          <ca-processes-list-item-progress program-name=${process.program.name}> </ca-processes-list-item-progress>
 
           <sl-icon-button
             name=${process.isActive ? 'play-fill' : 'pause-fill'}

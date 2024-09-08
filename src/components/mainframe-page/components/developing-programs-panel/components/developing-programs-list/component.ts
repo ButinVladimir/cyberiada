@@ -22,30 +22,21 @@ export class DevelopingProgramsList extends LitElement {
       font-weight: var(--sl-font-weight-bold);
     }
 
-    th.program,
-    td.program {
+    th.program {
       width: 32%;
     }
 
-    th.level,
-    td.level {
+    th.level {
       width: 17%;
     }
 
-    th.quality,
-    td.quality {
+    th.quality {
       width: 17%;
     }
 
     thead th {
       font-weight: var(--ca-table-header-font-weight);
       border-top: var(--ca-border);
-      border-bottom: var(--ca-border);
-      text-align: left;
-      padding: var(--sl-spacing-small);
-    }
-
-    tr.list-item td {
       border-bottom: var(--ca-border);
       text-align: left;
       padding: var(--sl-spacing-small);
@@ -112,27 +103,9 @@ export class DevelopingProgramsList extends LitElement {
   };
 
   renderListItem = (developingProgram: IDevelopingProgram) => {
-    const formatter = this._developingProgramsListController.formatter;
-
     return html`
-      <tr class="list-item">
-        <td class="program">
-          <intl-message label="programs:${developingProgram.program.name}:name">Progam name</intl-message>
-        </td>
-
-        <td class="level">${formatter.formatNumberDecimal(developingProgram.program.level)}</td>
-
-        <td class="quality">${formatter.formatQuality(developingProgram.program.quality)}</td>
-
-        <td>
-          <ca-developing-program-actions-column
-            program-name=${developingProgram.program.name}
-            ?active=${developingProgram.isActive}
-            current-development-points=${developingProgram.currentDevelopmentPoints}
-            max-development-points=${developingProgram.program.developmentPoints}
-          ></ca-developing-program-actions-column>
-        </td>
-      </tr>
+      <ca-developing-programs-list-item program-name=${developingProgram.program.name}>
+      </ca-developing-programs-list-item>
     `;
   };
 }

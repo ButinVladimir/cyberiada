@@ -6,7 +6,7 @@ import { ISettingsState } from '@state/settings-state/interfaces/settings-state'
 import { EventBatcher } from '@shared/event-batcher';
 import { PROGRAMS_STATE_EVENTS } from '@state/progam-factory/constants';
 import { IProcess, IProcessParameters, ISerializedProcess } from './interfaces';
-import { MAINFRAME_PROCESSES_STATE_UI_EVENTS, MAINFRAME_PROCESSES_STATE_STATE_EVENTS } from './constants';
+import { MAINFRAME_PROCESSES_STATE_UI_EVENTS, MAINFRAME_PROCESSES_STATE_EVENTS } from './constants';
 
 export class Process implements IProcess {
   private _program: IProgram;
@@ -70,7 +70,7 @@ export class Process implements IProcess {
 
   toggleActive(active: boolean) {
     this._isActive = active;
-    this._stateEventEmitter.emit(MAINFRAME_PROCESSES_STATE_STATE_EVENTS.PROCESS_TOGGLED);
+    this._stateEventEmitter.emit(MAINFRAME_PROCESSES_STATE_EVENTS.PROCESS_TOGGLED);
   }
 
   increaseCompletion(): void {
@@ -93,11 +93,13 @@ export class Process implements IProcess {
   calculateCompletionDelta(passedTime: number): number {
     const programConstants = programs[this.program.name];
 
-    return passedTime *
+    return (
+      passedTime *
       this.usedCores *
       this.program.level *
       this._mainframeHardwareState.performance *
-      Math.pow(programConstants.qualityCompletionPointsMultiplier, this.program.quality);
+      Math.pow(programConstants.qualityCompletionPointsMultiplier, this.program.quality)
+    );
   }
 
   update(threads: number) {
@@ -143,6 +145,6 @@ export class Process implements IProcess {
 
   private handleProgramUpdate = () => {
     this._uiEventBatcher.enqueueEvent(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESS_UPDATED);
-    this._stateEventEmitter.emit(MAINFRAME_PROCESSES_STATE_STATE_EVENTS.PROCESS_PROGRAM_UPDATED);
+    this._stateEventEmitter.emit(MAINFRAME_PROCESSES_STATE_EVENTS.PROCESS_PROGRAM_UPDATED);
   };
 }

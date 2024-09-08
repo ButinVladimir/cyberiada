@@ -34,7 +34,10 @@ export class App implements IApp {
 
     this._uiEventBatcher = new EventBatcher();
 
-    this._settingsState.addStateEventListener(SETTINGS_STATE_EVENTS.UPDATED_AUTOSAVE_INTERVAL, this.restartAutosaveTimer);
+    this._settingsState.addStateEventListener(
+      SETTINGS_STATE_EVENTS.UPDATED_AUTOSAVE_INTERVAL,
+      this.restartAutosaveTimer,
+    );
     this._settingsState.addStateEventListener(SETTINGS_STATE_EVENTS.UPDATED_UPDATE_INTERVAL, this.restartUpdateTimer);
   }
 
@@ -133,7 +136,7 @@ export class App implements IApp {
   private restartUpdateTimer = () => {
     this.stopUpdateTimer();
     this._updateTimer = setInterval(this.updateGame, this._settingsState.updateInterval);
-  }
+  };
 
   private restartAutosaveTimer = () => {
     this.stopAutosaveTimer();
@@ -141,7 +144,7 @@ export class App implements IApp {
     if (this._settingsState.autosaveEnabled) {
       this._autosaveTimer = setInterval(this.saveGame, this._settingsState.autosaveInterval);
     }
-  }
+  };
 
   private startLoadingGame = (): void => {
     this._appStage = AppStage.loading;

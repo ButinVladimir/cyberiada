@@ -1,4 +1,3 @@
 import { BaseController } from '@shared/base-controller';
 
-export class MainframeHardwarePanelArticleController extends BaseController {
-}
+export class MainframeHardwarePanelArticleController extends BaseController {}

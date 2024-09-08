@@ -26,18 +26,13 @@ export class PurchaseProgramDialogSubmitButton extends LitElement {
     this._purchaseProgramDialogSubmitButtonController = new PurchaseProgramDialogSubmitButtonController(this);
   }
 
-
   render() {
     const money = this._purchaseProgramDialogSubmitButtonController.money;
 
     const isEnabled = !this.disabled && money >= this.cost;
 
     return html`
-      <sl-button
-        size="medium"
-        variant="primary"
-        ?disabled=${!isEnabled}
-      >
+      <sl-button size="medium" variant="primary" ?disabled=${!isEnabled}>
         <slot></slot>
       </sl-button>
     `;

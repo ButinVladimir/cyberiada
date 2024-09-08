@@ -73,16 +73,21 @@ export class MainframeOwnedProgramsState implements IMainframeOwnedProgramsState
 
   // eslint-disable-next-line @typescript-eslint/require-await
   async startNewState(): Promise<void> {
-    this._ownedPrograms.clear();
+    this.clearState();
+
+    this._uiEventBatcher.enqueueEvent(MAINFRAME_OWNED_PROGRAMES_STATE_UI_EVENTS.OWNED_PROGRAMS_UPDATED);
   }
 
   // eslint-disable-next-line @typescript-eslint/require-await
   async deserialize(serializedState: IMainframeOwnedProgramsSerializedState): Promise<void> {
-    this._ownedPrograms.clear();
+    this.clearState();
+
     serializedState.ownedPrograms.forEach((programParameters) => {
       const program = this._programFactory.makeProgram(programParameters);
       this._ownedPrograms.set(programParameters.name, program);
     });
+
+    this._uiEventBatcher.enqueueEvent(MAINFRAME_OWNED_PROGRAMES_STATE_UI_EVENTS.OWNED_PROGRAMS_UPDATED);
   }
 
   serialize(): IMainframeOwnedProgramsSerializedState {
@@ -112,4 +117,12 @@ export class MainframeOwnedProgramsState implements IMainframeOwnedProgramsState
       quality: this._formatter.formatQuality(newProgram.quality),
     });
   };
+
+  private clearState() {
+    for (const ownedProgram of this._ownedPrograms.values()) {
+      this._programFactory.deleteProgram(ownedProgram);
+    }
+
+    this._ownedPrograms.clear();
+  }
 }

@@ -44,10 +44,4 @@ container
   .to(MainframeDevelopingProgramsState)
   .inSingletonScope()
   .whenTargetIsDefault();
-  container
-  .bind<IFormatter>(TYPES.Formatter)
-  .to(Formatter)
-  .inSingletonScope()
-  .whenTargetIsDefault();
-
-  
+container.bind<IFormatter>(TYPES.Formatter).to(Formatter).inSingletonScope().whenTargetIsDefault();

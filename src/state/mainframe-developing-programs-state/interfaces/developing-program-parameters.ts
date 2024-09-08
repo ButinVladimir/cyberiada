@@ -1,9 +1,9 @@
 import { IProgram } from '@state/progam-factory/interfaces/program';
-import { IMainframeDevelopingProgramsState } from './mainframe-developing-programs-state';
+import { IProgramFactory } from '@state/progam-factory/interfaces/program-factory';
 
 export interface IDevelopingProgramParameters {
   program: IProgram;
   isActive: boolean;
   currentDevelopmentPoints: number;
-  mainframeDevelopingProgramsState: IMainframeDevelopingProgramsState;
+  programFactory: IProgramFactory;
 }
