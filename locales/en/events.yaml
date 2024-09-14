@@ -4,9 +4,6 @@ gameStarted:
 gameSaved:
   name: Game saved
   message: Game has been saved
-gameStateUpdated:
-  name: Game state updated
-  message: Game state has been updated {{value.count}} times
 performanceUpdated:
   name: Mainframe performance updated
   message: Mainframe performance has been updated to {{value.level}}

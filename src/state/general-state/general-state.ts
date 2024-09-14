@@ -1,7 +1,7 @@
 import { injectable, inject } from 'inversify';
 import { EventBatcher } from '@shared/event-batcher';
+import type { IScenarioState } from '@state/scenario-state/interfaces/scenario-state';
 import type { ISettingsState } from '@state/settings-state/interfaces/settings-state';
-import constants from '@configs/constants.json';
 import { TYPES } from '@state/types';
 import { IGeneralState, IGeneralSerializedState } from './interfaces';
 import { GameSpeed } from './types';
@@ -9,6 +9,7 @@ import { GENERAL_STATE_UI_EVENTS } from './constants';
 
 @injectable()
 export class GeneralState implements IGeneralState {
+  private _scenarioState: IScenarioState;
   private _settingsState: ISettingsState;
   private readonly _uiEventBatcher: EventBatcher;
 
@@ -18,14 +19,18 @@ export class GeneralState implements IGeneralState {
   private _gameSpeed: GameSpeed;
   private _money: number;
 
-  constructor(@inject(TYPES.SettingsState) _settingsState: ISettingsState) {
+  constructor(
+    @inject(TYPES.ScenarioState) _scenarioState: IScenarioState,
+    @inject(TYPES.SettingsState) _settingsState: ISettingsState,
+  ) {
+    this._scenarioState = _scenarioState;
     this._settingsState = _settingsState;
 
     this._randomSeed = 0;
     this._lastUpdateTime = 0;
     this._bonusTime = 0;
     this._gameSpeed = GameSpeed.normal;
-    this._money = constants.startingSettings.money;
+    this._money = this._scenarioState.currentValues.startingMoney;
 
     this._uiEventBatcher = new EventBatcher();
   }
@@ -95,7 +100,7 @@ export class GeneralState implements IGeneralState {
     this._lastUpdateTime = Date.now();
     this._bonusTime = 0;
     this._gameSpeed = GameSpeed.normal;
-    this._money = constants.startingSettings.money;
+    this._money = this._scenarioState.currentValues.startingMoney;
   }
 
   // eslint-disable-next-line @typescript-eslint/require-await

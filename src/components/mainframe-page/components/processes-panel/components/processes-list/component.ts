@@ -1,7 +1,7 @@
 import { LitElement, css, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
-import { IProcess } from '@state/mainframe-processes-state/interfaces/process';
+import { ProgramName } from '@state/progam-factory/types';
 import { ProcessesListController } from './controller';
 
 @customElement('ca-processes-list')
@@ -82,7 +82,7 @@ export class ProcessesList extends LitElement {
       return this.renderEmptyListNotification();
     }
 
-    return repeat(processes, (process) => process.program.name, this.renderListItem);
+    return repeat(processes, (programName) => programName, this.renderListItem);
   };
 
   renderEmptyListNotification = () => {
@@ -97,7 +97,7 @@ export class ProcessesList extends LitElement {
     `;
   };
 
-  renderListItem = (process: IProcess) => {
-    return html` <ca-processes-list-item program-name=${process.program.name}> </ca-processes-list-item> `;
+  renderListItem = (programName: ProgramName) => {
+    return html` <ca-processes-list-item program-name=${programName}> </ca-processes-list-item> `;
   };
 }

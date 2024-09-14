@@ -1,4 +1,5 @@
 import { inject, injectable } from 'inversify';
+import type { IScenarioState } from '@state/scenario-state/interfaces/scenario-state';
 import type { IGeneralState } from '@state/general-state/interfaces/general-state';
 import { GameSpeed } from '@state/general-state/types';
 import type { ISettingsState } from '@state/settings-state/interfaces/settings-state';
@@ -14,6 +15,7 @@ import { IAppState, ISerializedState } from './interfaces';
 
 @injectable()
 export class AppState implements IAppState {
+  private _scenarioState: IScenarioState;
   private _generalState: IGeneralState;
   private _settingsState: ISettingsState;
   private _cityState: ICityState;
@@ -25,6 +27,7 @@ export class AppState implements IAppState {
   private _programFactory: IProgramFactory;
 
   constructor(
+    @inject(TYPES.ScenarioState) _scenarioState: IScenarioState,
     @inject(TYPES.GeneralState) _generalState: IGeneralState,
     @inject(TYPES.SettingsState) _settingsState: ISettingsState,
     @inject(TYPES.CityState) _cityState: ICityState,
@@ -36,6 +39,7 @@ export class AppState implements IAppState {
     _mainframeDevelopingProgramsState: IMainframeDevelopingProgramsState,
     @inject(TYPES.ProgramFactory) _programFactory: IProgramFactory,
   ) {
+    this._scenarioState = _scenarioState;
     this._generalState = _generalState;
     this._settingsState = _settingsState;
     this._cityState = _cityState;
@@ -86,6 +90,7 @@ export class AppState implements IAppState {
 
   serialize(): string {
     const saveState: ISerializedState = {
+      scenario: this._scenarioState.serialize(),
       general: this._generalState.serialize(),
       settings: this._settingsState.serialize(),
       city: this._cityState.serialize(),
@@ -105,6 +110,7 @@ export class AppState implements IAppState {
 
     this._programFactory.deleteAllPrograms();
 
+    await this._scenarioState.deserialize(parsedSaveData.scenario);
     await this._generalState.deserialize(parsedSaveData.general);
     await this._settingsState.deserialize(parsedSaveData.settings);
     await this._cityState.deserialize(parsedSaveData.city);

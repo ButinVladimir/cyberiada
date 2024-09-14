@@ -1,6 +1,5 @@
 {
-  "mapWidth": 100,
-  "mapHeight": 100,
+  "startingScenario": "tutorial1",
   "defaultSettings": {
     "messageLogSize": 20,
     "updateInterval": 100,
@@ -9,31 +8,34 @@
     "maxTicksPerUpdate": 5,
     "longNumberFormat": "builtIn",
     "mapSize": 3,
-    "messageFilterEvents": ["gameStarted", "gameSaved"]
+    "messageFilterEvents": [
+      "gameStarted",
+      "gameSaved",
+      "performanceUpdated",
+      "coresUpdated",
+      "ramUpdated",
+      "programPurchased",
+      "processStarted",
+      "processFinished",
+      "processDeleted",
+      "programDevelopmentStarted",
+      "programDevelopmentFinished",
+      "programDevelopmentAborted"
+    ]
   },
-  "startingSettings": {
-    "scenario": "tutorial1",
-    "money": 1000000000,
-    "mainframe": {
+  "defaultScenarioSettings": {
+    "mapWidth": 100,
+    "mapHeight": 100,
+    "districtsNum": 5,
+    "startingMoney": 0,
+    "mainframeHardware": {
       "performanceLevel": 1,
       "coresLevel": 1,
-      "ramLevel": 1
-    }
-  },
-  "shareServer": {
-    "baseIncome": 1,
-    "qualityMultiplier": 1.2
-  },
-  "codeGenerator": {
-    "baseIncrease": 100,
-    "qualityMultiplier": 1.2
-  },
-  "mainframeHardware": {
-    "performanceBaseCost": 1000,
-    "performanceCostMultiplier": 1.5,
-    "coresBaseCost": 10000,
-    "coresCostMultiplier": 1.5,
-    "ramBaseCost": 10000,
-    "ramCostMultiplier": 1.5
+      "ramLevel": 1,
+      "performancePrice": { "baseMultiplier": 1000, "base": 1.05 },
+      "coresPrice": { "baseMultiplier": 1000, "base": 1.05 },
+      "ramPrice": { "baseMultiplier": 1000, "base": 1.05 }
+    },
+    "startingPrograms": ["shareServer"]
   }
 }

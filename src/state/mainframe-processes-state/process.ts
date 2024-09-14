@@ -1,5 +1,7 @@
 import { EventEmitter } from 'eventemitter3';
 import { IProgram } from '@state/progam-factory/interfaces/program';
+import { IExponent } from '@shared/interfaces/exponent';
+import { calculatePow } from '@shared/helpers';
 import programs from '@configs/programs.json';
 import { IMainframeHardwareState } from '@state/mainframe-hardware-state/interfaces/mainframe-hardware-state';
 import { ISettingsState } from '@state/settings-state/interfaces/settings-state';
@@ -91,14 +93,13 @@ export class Process implements IProcess {
   }
 
   calculateCompletionDelta(passedTime: number): number {
-    const programConstants = programs[this.program.name];
+    const programData = programs[this._program.name];
 
     return (
       passedTime *
       this.usedCores *
-      this.program.level *
-      this._mainframeHardwareState.performance *
-      Math.pow(programConstants.qualityCompletionPointsMultiplier, this.program.quality)
+      calculatePow(this._mainframeHardwareState.performance, programData.performanceBoost as IExponent) *
+      calculatePow(this._program.level, programData.completion as IExponent)
     );
   }
 

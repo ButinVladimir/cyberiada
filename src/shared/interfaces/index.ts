@@ -5,3 +5,4 @@ export * from './serializable';
 export * from './ui-event-emitter';
 export * from './state-event-emitter';
 export * from './formatter';
+export * from './exponent';

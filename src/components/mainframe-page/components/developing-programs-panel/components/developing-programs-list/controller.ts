@@ -1,6 +1,6 @@
 import { MAINFRAME_DEVELOPING_PROGRAMS_STATE_UI_EVENTS } from '@state/mainframe-developing-programs-state/constants';
 import { BaseController } from '@shared/base-controller';
-import { IDevelopingProgram } from '@state/mainframe-developing-programs-state/interfaces/developing-program';
+import { ProgramName } from '@state/progam-factory/types';
 
 export class DevelopingProgramsListController extends BaseController {
   hostConnected() {
@@ -17,7 +17,7 @@ export class DevelopingProgramsListController extends BaseController {
     );
   }
 
-  listDevelopingPrograms(): IDevelopingProgram[] {
+  listDevelopingPrograms(): ProgramName[] {
     return this.mainframeDevelopingProgramsState.listDevelopingPrograms();
   }
 

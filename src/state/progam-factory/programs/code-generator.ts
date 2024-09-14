@@ -1,7 +1,9 @@
 import { IMainframeHardwareState } from '@state/mainframe-hardware-state/interfaces/mainframe-hardware-state';
 import { IMainframeDevelopingProgramsState } from '@state/mainframe-developing-programs-state/interfaces/mainframe-developing-programs-state';
 import { MAINFRAME_HARDWARE_STATE_EVENTS } from '@state/mainframe-hardware-state/constants';
-import constants from '@configs/constants.json';
+import { IExponent } from '@shared/interfaces/exponent';
+import { calculatePow } from '@shared/helpers';
+import programs from '@configs/programs.json';
 import { ProgramName } from '../types';
 import { ICodeGeneratorParameters } from '../interfaces/program-parameters/code-generator-parameters';
 import { BaseProgram } from './base-program';
@@ -50,12 +52,12 @@ export class CodeGeneratorProgram extends BaseProgram {
   }
 
   calculateDelta(threads: number): number {
+    const programData = programs[this.name];
+
     return (
-      constants.codeGenerator.baseIncrease *
-      this._mainframeHardwareState.performance *
       threads *
-      this.level *
-      Math.pow(constants.codeGenerator.qualityMultiplier, this.quality)
+      calculatePow(this.level - 1, programData.dpIncrease as IExponent) *
+      Math.pow(programData.dpIncreaseQualityMultiplier, this.quality)
     );
   }
 

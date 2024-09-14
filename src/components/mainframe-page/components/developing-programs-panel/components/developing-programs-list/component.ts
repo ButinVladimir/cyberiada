@@ -1,7 +1,7 @@
 import { LitElement, css, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
-import { IDevelopingProgram } from '@state/mainframe-developing-programs-state/interfaces/developing-program';
+import { ProgramName } from '@state/progam-factory/types';
 import { DevelopingProgramsListController } from './controller';
 
 @customElement('ca-developing-programs-list')
@@ -87,7 +87,7 @@ export class DevelopingProgramsList extends LitElement {
       return this.renderEmptyListNotification();
     }
 
-    return repeat(developingPrograms, (developingProgram) => developingProgram.program.name, this.renderListItem);
+    return repeat(developingPrograms, (programName) => programName, this.renderListItem);
   };
 
   renderEmptyListNotification = () => {
@@ -102,10 +102,7 @@ export class DevelopingProgramsList extends LitElement {
     `;
   };
 
-  renderListItem = (developingProgram: IDevelopingProgram) => {
-    return html`
-      <ca-developing-programs-list-item program-name=${developingProgram.program.name}>
-      </ca-developing-programs-list-item>
-    `;
+  renderListItem = (programName: ProgramName) => {
+    return html` <ca-developing-programs-list-item program-name=${programName}> </ca-developing-programs-list-item> `;
   };
 }

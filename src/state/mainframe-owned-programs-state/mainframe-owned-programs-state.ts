@@ -2,6 +2,7 @@ import { inject, injectable } from 'inversify';
 import { IMakeProgramParameters } from '@state/progam-factory/interfaces/make-program-parameters';
 import type { IProgramFactory } from '@state/progam-factory/interfaces/program-factory';
 import { IProgram } from '@state/progam-factory/interfaces/program';
+import type { IScenarioState } from '@state/scenario-state/interfaces/scenario-state';
 import type { IGeneralState } from '@state/general-state/interfaces/general-state';
 import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
 import type { IFormatter } from '@shared/interfaces/formatter';
@@ -15,6 +16,7 @@ import { MAINFRAME_OWNED_PROGRAMES_STATE_UI_EVENTS } from './constants';
 @injectable()
 export class MainframeOwnedProgramsState implements IMainframeOwnedProgramsState {
   private _programFactory: IProgramFactory;
+  private _scenarioState: IScenarioState;
   private _generalState: IGeneralState;
   private _messageLogState: IMessageLogState;
   private _formatter: IFormatter;
@@ -25,11 +27,13 @@ export class MainframeOwnedProgramsState implements IMainframeOwnedProgramsState
 
   constructor(
     @inject(TYPES.ProgramFactory) _programFactory: IProgramFactory,
+    @inject(TYPES.ScenarioState) _scenarioState: IScenarioState,
     @inject(TYPES.GeneralState) _generalState: IGeneralState,
     @inject(TYPES.MessageLogState) _messageLogState: IMessageLogState,
     @inject(TYPES.Formatter) _formatter: IFormatter,
   ) {
     this._programFactory = _programFactory;
+    this._scenarioState = _scenarioState;
     this._generalState = _generalState;
     this._messageLogState = _messageLogState;
     this._formatter = _formatter;
@@ -74,6 +78,16 @@ export class MainframeOwnedProgramsState implements IMainframeOwnedProgramsState
   // eslint-disable-next-line @typescript-eslint/require-await
   async startNewState(): Promise<void> {
     this.clearState();
+
+    for (const programName of this._scenarioState.currentValues.startingPrograms) {
+      this.addProgram(
+        this._programFactory.makeProgram({
+          name: programName,
+          level: 1,
+          quality: 0,
+        }),
+      );
+    }
 
     this._uiEventBatcher.enqueueEvent(MAINFRAME_OWNED_PROGRAMES_STATE_UI_EVENTS.OWNED_PROGRAMS_UPDATED);
   }

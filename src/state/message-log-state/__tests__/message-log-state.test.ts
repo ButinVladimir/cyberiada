@@ -94,7 +94,7 @@ describe('Message log state', () => {
   it('does not trigger ui update after removing handler', () => {
     messageLogState.removeUiEventListener(MESSAGE_LOG_UI_EVENTS.UPDATED_MESSAGES, listener);
     messageLogState.clearMessages();
- 
+
     expect(listener!).not.toHaveBeenCalled();
   });
 });

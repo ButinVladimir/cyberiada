@@ -1,28 +1,28 @@
 import { injectable, inject } from 'inversify';
+import type { IScenarioState } from '@state/scenario-state/interfaces/scenario-state';
 import type { IGeneralState } from '@state/general-state/interfaces';
-import { Scenario } from '@shared/types';
-import constants from '@configs/constants.json';
-import { ICityState, ICitySerializedState, IDistrictInfo, IDistrictSerializedInfo } from './interfaces';
-import { DistrictInfo } from './district-info';
 import { IMapGeneratorResult } from '@workers/map-generator/interfaces';
 import { TYPES } from '@state/types';
+import { ICityState, ICitySerializedState, IDistrictInfo, IDistrictSerializedInfo } from './interfaces';
+import { DistrictInfo } from './district-info';
 
 @injectable()
 export class CityState implements ICityState {
+  private _scenarioState: IScenarioState;
   private _generalState: IGeneralState;
+
   private _map: number[][];
   private _districts: Map<number, IDistrictInfo>;
-  private _scenario: Scenario;
 
-  constructor(@inject(TYPES.GeneralState) _generalState: IGeneralState) {
+  constructor(
+    @inject(TYPES.ScenarioState) _scenarioState: IScenarioState,
+    @inject(TYPES.GeneralState) _generalState: IGeneralState,
+  ) {
+    this._scenarioState = _scenarioState;
     this._generalState = _generalState;
+
     this._map = [];
     this._districts = new Map();
-    this._scenario = constants.startingSettings.scenario as Scenario;
-  }
-
-  get scenario(): Scenario {
-    return this._scenario;
   }
 
   getMap(): number[][] {
@@ -43,13 +43,11 @@ export class CityState implements ICityState {
 
   // eslint-disable-next-line @typescript-eslint/require-await
   async deserialize(serializedState: ICitySerializedState): Promise<void> {
-    this._scenario = serializedState.scenario;
-
     this._map = [];
-    for (let x = 0; x < constants.mapWidth; x++) {
+    for (let x = 0; x < this._scenarioState.currentValues.mapWidth; x++) {
       const row: number[] = [];
 
-      for (let y = 0; y < constants.mapHeight; y++) {
+      for (let y = 0; y < this._scenarioState.currentValues.mapHeight; y++) {
         row.push(serializedState.map[x][y]);
       }
 
@@ -75,7 +73,6 @@ export class CityState implements ICityState {
     });
 
     return {
-      scenario: this._scenario,
       map,
       districts,
     };
@@ -106,8 +103,12 @@ export class CityState implements ICityState {
         reject('Unable to parse map generator message');
       });
 
+      const scenarioValues = this._scenarioState.currentValues;
+
       worker.postMessage({
-        scenario: this._scenario,
+        mapWidth: scenarioValues.mapWidth,
+        mapHeight: scenarioValues.mapHeight,
+        districtsNum: scenarioValues.districtsNum,
         randomSeed: this._generalState.randomSeed,
       });
     });

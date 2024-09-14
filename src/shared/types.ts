@@ -25,7 +25,6 @@ export enum Scenario {
 export enum GameStateEvent {
   gameStarted = 'gameStarted',
   gameSaved = 'gameSaved',
-  gameStateUpdated = 'gameStateUpdated',
 }
 
 export enum PurchaseEvent {

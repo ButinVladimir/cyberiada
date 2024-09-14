@@ -1,5 +1,6 @@
 import { ReactiveController, ReactiveControllerHost } from 'lit';
 import { IAppState } from '@state/app-state/interfaces/app-state';
+import { IScenarioState } from '@state/scenario-state/interfaces/scenario-state';
 import { IGeneralState } from '@state/general-state/interfaces/general-state';
 import { ISettingsState } from '@state/settings-state/interfaces/settings-state';
 import { ICityState } from '@state/city-state/interfaces/city-state';
@@ -36,6 +37,10 @@ export class BaseController<T extends ReactiveControllerHost = ReactiveControlle
 
   protected get appState(): IAppState {
     return container.get<IAppState>(TYPES.AppState);
+  }
+
+  protected get scenarioState(): IScenarioState {
+    return container.get<IScenarioState>(TYPES.ScenarioState);
   }
 
   protected get generalState(): IGeneralState {

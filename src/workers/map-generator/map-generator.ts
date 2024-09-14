@@ -1,6 +1,5 @@
 import { XORShift128Plus } from 'random-seedable';
 import { v4 as uuid } from 'uuid';
-import constants from '@configs/constants.json';
 import { IPoint } from '@shared/interfaces';
 import { RandomQueue } from '@shared/random-queue';
 import {
@@ -10,7 +9,6 @@ import {
   IMapGeneratorDistrict,
   IMapGeneratorDistrictResult,
 } from './interfaces';
-import scenarios from '@configs/scenarios.json';
 
 export class MapGenerator implements IMapGenerator {
   private static DX: number[] = [-1, 1, 0, 0];
@@ -20,14 +18,26 @@ export class MapGenerator implements IMapGenerator {
   private _args: IMapGeneratorArgs;
   private _random: XORShift128Plus;
 
+  private get _mapWidth() {
+    return this._args.mapWidth;
+  }
+
+  private get _mapHeight() {
+    return this._args.mapHeight;
+  }
+
+  private get _districtsNum() {
+    return this._args.districtsNum;
+  }
+
   constructor(mapGeneratorArgs: IMapGeneratorArgs) {
     this._args = mapGeneratorArgs;
 
     this._map = [];
-    for (let x = 0; x < constants.mapWidth; x++) {
+    for (let x = 0; x < this._mapWidth; x++) {
       const row = [];
 
-      for (let y = 0; y < constants.mapHeight; y++) {
+      for (let y = 0; y < this._mapHeight; y++) {
         row[y] = undefined;
       }
 
@@ -40,32 +50,27 @@ export class MapGenerator implements IMapGenerator {
   public generate(): IMapGeneratorResult {
     this.setStartingPoints();
     this.expandDistricts();
+
     return this.buildResult();
   }
 
   private setStartingPoints(): void {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (!scenarios[this._args.scenario]) {
-      throw new Error(`Unable to generate map for scenario ${this._args.scenario}`);
-    }
-
     const startingPoints: IPoint[] = [];
 
-    for (let x = 0; x < constants.mapWidth; x++) {
-      for (let y = 0; y < constants.mapHeight; y++) {
+    for (let x = 0; x < this._args.mapWidth; x++) {
+      for (let y = 0; y < this._args.mapHeight; y++) {
         startingPoints.push({ x, y });
       }
     }
     this._random.shuffle(startingPoints, true);
 
-    const { districtsNum } = scenarios[this._args.scenario];
-    for (let districtNum = 0; districtNum < districtsNum; districtNum++) {
+    for (let districtNum = 0; districtNum < this._districtsNum; districtNum++) {
       const queue = new RandomQueue<IPoint>(this._random);
       const startingPoint = startingPoints.shift()!;
 
       this._map[startingPoint.x][startingPoint.y] = districtNum;
 
-      const nextPoints = MapGenerator._buildNextPoints(startingPoint);
+      const nextPoints = this.buildNextPoints(startingPoint);
       nextPoints.forEach((nextPoint) => {
         queue.push(nextPoint);
       });
@@ -78,11 +83,10 @@ export class MapGenerator implements IMapGenerator {
   }
 
   private expandDistricts(): void {
-    let freeCells = constants.mapWidth * constants.mapHeight - scenarios[this._args.scenario].districtsNum;
-    const { districtsNum } = scenarios[this._args.scenario];
+    let freeCells = this._mapWidth * this._mapHeight - this._districtsNum;
 
     while (freeCells > 0) {
-      for (let districtNum = 0; districtNum < districtsNum; districtNum++) {
+      for (let districtNum = 0; districtNum < this._districtsNum; districtNum++) {
         const district = this._districts.get(districtNum);
 
         while (!district!.queue.isEmpty()) {
@@ -92,7 +96,7 @@ export class MapGenerator implements IMapGenerator {
             freeCells--;
             this._map[attemptPoint.x][attemptPoint.y] = districtNum;
 
-            const nextPoints = MapGenerator._buildNextPoints(attemptPoint);
+            const nextPoints = this.buildNextPoints(attemptPoint);
             nextPoints.forEach((nextPoint) => {
               district!.queue.push(nextPoint);
             });
@@ -118,7 +122,7 @@ export class MapGenerator implements IMapGenerator {
     };
   }
 
-  private static _buildNextPoints(point: IPoint): IPoint[] {
+  private buildNextPoints(point: IPoint): IPoint[] {
     const result: IPoint[] = [];
 
     for (let direction = 0; direction < MapGenerator.DX.length; direction++) {
@@ -127,12 +131,7 @@ export class MapGenerator implements IMapGenerator {
         y: point.y + MapGenerator.DY[direction],
       };
 
-      if (
-        nextPoint.x >= 0 &&
-        nextPoint.y >= 0 &&
-        nextPoint.x < constants.mapWidth &&
-        nextPoint.y < constants.mapHeight
-      ) {
+      if (nextPoint.x >= 0 && nextPoint.y >= 0 && nextPoint.x < this._mapWidth && nextPoint.y < this._mapHeight) {
         result.push(nextPoint);
       }
     }

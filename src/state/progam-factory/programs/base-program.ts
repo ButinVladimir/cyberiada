@@ -2,6 +2,8 @@ import { EventEmitter } from 'eventemitter3';
 import programs from '@configs/programs.json';
 import { IFormatter } from '@shared/interfaces/formatter';
 import { EventBatcher } from '@shared/event-batcher';
+import { IExponent } from '@shared/interfaces/exponent';
+import { calculatePow } from '@shared/helpers';
 import { ProgramName } from '../types';
 import { IProgram } from '../interfaces/program';
 import { IMakeProgramParameters } from '../interfaces/make-program-parameters';
@@ -38,16 +40,17 @@ export abstract class BaseProgram implements IProgram {
   }
 
   get completionPoints() {
-    return programs[this.name].processCompletionPoints;
+    const programData = programs[this.name];
+
+    return calculatePow(0, programData.completionPoints as IExponent);
   }
 
   get developmentPoints() {
     const programData = programs[this.name];
 
     return (
-      programData.developmentPoints *
-      Math.pow(programData.levelCostMultiplier, this.level - 1) *
-      Math.pow(programData.qualityDevelopmentPointsMultiplier, this.quality)
+      calculatePow(this._level - 1, programData.developmentPoints as IExponent) *
+      Math.pow(programData.developmentPointsQualityMultiplier, this.quality)
     );
   }
 
@@ -59,9 +62,8 @@ export abstract class BaseProgram implements IProgram {
     const programData = programs[this.name];
 
     return (
-      programData.baseCost *
-      Math.pow(programData.levelCostMultiplier, this.level - 1) *
-      Math.pow(programData.qualityCostMultiplier, this.quality)
+      calculatePow(this._level - 1, programData.cost as IExponent) *
+      Math.pow(programData.costQualityMultiplier, this.quality)
     );
   }
 

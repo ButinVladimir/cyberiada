@@ -1,26 +1,26 @@
 {
   "shareServer": {
     "ram": 0,
-    "processCompletionPoints": 0,
-    "developmentLevelCompletionPointsMultiplier": 0,
-    "qualityCompletionPointsMultiplier": 1,
-    "developmentPoints": 100000,
-    "developmentLevelDevelopmentPointsMultiplier": 1.1,
-    "qualityDevelopmentPointsMultiplier": 2,
-    "baseCost": 100000,
-    "levelCostMultiplier": 1.1,
-    "qualityCostMultiplier": 1.5
+    "completionPoints": { "baseMultiplier": 0, "base": 1 },
+    "completion": { "baseMultiplier": 1, "base": 1 },
+    "developmentPoints": { "baseMultiplier": 30000, "base": 1.2 },
+    "developmentPointsQualityMultiplier": 2,
+    "cost": { "baseMultiplier": 5000, "base": 1.2 },
+    "costQualityMultiplier": 2,
+    "performanceBoost": { "baseMultiplier": 1, "base": 1.01 },
+    "income": { "baseMultiplier": 1, "base": 1.1 },
+    "incomeQualityMultiplier": 2
   },
   "codeGenerator": {
     "ram": 1,
-    "processCompletionPoints": 100000,
-    "developmentLevelCompletionPointsMultiplier": 0,
-    "qualityCompletionPointsMultiplier": 1,
-    "developmentPoints": 100000,
-    "developmentLevelDevelopmentPointsMultiplier": 1.1,
-    "qualityDevelopmentPointsMultiplier": 2,
-    "baseCost": 10000,
-    "levelCostMultiplier": 1.2,
-    "qualityCostMultiplier": 2
+    "completionPoints": { "baseMultiplier": 10000, "base": 1 },
+    "completion": { "baseMultiplier": 1, "base": 1 },
+    "developmentPoints": { "baseMultiplier": 60000, "base": 1.2 },
+    "developmentPointsQualityMultiplier": 2,
+    "cost": { "baseMultiplier": 100000, "base": 1.2 },
+    "costQualityMultiplier": 2,
+    "performanceBoost": { "baseMultiplier": 1, "base": 1.01 },
+    "dpIncrease": { "baseMultiplier": 10000, "base": 1.1 },
+    "dpIncreaseQualityMultiplier": 2
   }
 }

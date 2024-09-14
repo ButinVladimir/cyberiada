@@ -24,7 +24,8 @@ export class MainframeDevelopingProgramsState implements IMainframeDevelopingPro
   private _messageLogState: IMessageLogState;
   private _formatter: IFormatter;
 
-  private _developingPrograms: IDevelopingProgram[];
+  private _developingProgramsList: ProgramName[];
+  private _developingProgramsMap: Map<ProgramName, IDevelopingProgram>;
 
   private readonly _uiEventBatcher: EventBatcher;
 
@@ -39,21 +40,18 @@ export class MainframeDevelopingProgramsState implements IMainframeDevelopingPro
     this._messageLogState = _messageLogState;
     this._formatter = _formatter;
 
-    this._developingPrograms = [];
+    this._developingProgramsList = [];
+    this._developingProgramsMap = new Map<ProgramName, IDevelopingProgram>();
 
     this._uiEventBatcher = new EventBatcher();
   }
 
-  listDevelopingPrograms(): IDevelopingProgram[] {
-    return this._developingPrograms;
+  listDevelopingPrograms(): ProgramName[] {
+    return this._developingProgramsList;
   }
 
   getDevelopingProgramByName(programName: ProgramName): IDevelopingProgram | undefined {
-    const developingProgram = this._developingPrograms.find(
-      (developingProgram) => developingProgram.program.name === programName,
-    );
-
-    return developingProgram;
+    return this._developingProgramsMap.get(programName);
   }
 
   addDevelopingProgram(parameters: IMakeProgramParameters): boolean {
@@ -71,7 +69,8 @@ export class MainframeDevelopingProgramsState implements IMainframeDevelopingPro
         quality: parameters.quality,
       });
 
-      this._developingPrograms.push(developingProgram);
+      this._developingProgramsList.push(parameters.name);
+      this._developingProgramsMap.set(parameters.name, developingProgram);
     }
 
     this._uiEventBatcher.enqueueEvent(MAINFRAME_DEVELOPING_PROGRAMS_STATE_UI_EVENTS.DEVELOPING_PROGRAMS_UPDATED);
@@ -86,34 +85,39 @@ export class MainframeDevelopingProgramsState implements IMainframeDevelopingPro
   }
 
   deleteDevelopingProgram(programName: ProgramName): void {
+    const developingProgram: IDevelopingProgram | undefined = this.getDevelopingProgramByName(programName);
+
     let index = 0;
-    let developingProgram: IDevelopingProgram;
 
-    while (index < this._developingPrograms.length) {
-      developingProgram = this._developingPrograms[index];
-
-      if (developingProgram.program.name === programName) {
-        developingProgram.removeEventListeners();
-        this._programFactory.deleteProgram(developingProgram.program);
-        this._developingPrograms.splice(index, 1);
-
-        this._messageLogState.postMessage(ProgramsEvent.programDevelopmentAborted, {
-          programName: developingProgram.program.name,
-          level: this._formatter.formatNumberDecimal(developingProgram.program.level),
-          quality: this._formatter.formatQuality(developingProgram.program.quality),
-        });
+    while (index < this._developingProgramsList.length) {
+      if (this._developingProgramsList[index] === programName) {
+        this._developingProgramsList.splice(index, 1);
       } else {
         index++;
       }
+    }
+
+    if (developingProgram) {
+      developingProgram.removeEventListeners();
+      this._programFactory.deleteProgram(developingProgram.program);
+
+      this._messageLogState.postMessage(ProgramsEvent.programDevelopmentAborted, {
+        programName,
+        level: this._formatter.formatNumberDecimal(developingProgram.program.level),
+        quality: this._formatter.formatQuality(developingProgram.program.quality),
+      });
     }
 
     this._uiEventBatcher.enqueueEvent(MAINFRAME_DEVELOPING_PROGRAMS_STATE_UI_EVENTS.DEVELOPING_PROGRAMS_UPDATED);
   }
 
   increaseDevelopingProgramCompletion(delta: number) {
-    const developingProgram = this._developingPrograms.find((developingProgram) => developingProgram.isActive);
+    const developingProgramName = this._developingProgramsList.find(
+      (programName) => this.getDevelopingProgramByName(programName)?.isActive,
+    );
 
-    if (developingProgram) {
+    if (developingProgramName) {
+      const developingProgram = this.getDevelopingProgramByName(developingProgramName)!;
       developingProgram.increaseDevelopment(delta);
 
       if (developingProgram.currentDevelopmentPoints >= developingProgram.program.developmentPoints) {
@@ -126,7 +130,8 @@ export class MainframeDevelopingProgramsState implements IMainframeDevelopingPro
           quality: this._formatter.formatQuality(developingProgram.program.quality),
         });
 
-        this._developingPrograms.shift();
+        this._developingProgramsList.shift();
+        this._developingProgramsMap.delete(developingProgramName);
         this._uiEventBatcher.enqueueEvent(MAINFRAME_DEVELOPING_PROGRAMS_STATE_UI_EVENTS.DEVELOPING_PROGRAMS_UPDATED);
       }
     }
@@ -143,14 +148,22 @@ export class MainframeDevelopingProgramsState implements IMainframeDevelopingPro
   async deserialize(serializedState: IMainframeDevelopingProgramsSerializedState): Promise<void> {
     this.clearState();
 
-    this._developingPrograms = serializedState.developingPrograms.map(this.createDevelopingProgram);
+    serializedState.developingPrograms.forEach((serializedDevelopingProgram) => {
+      this._developingProgramsMap.set(
+        serializedDevelopingProgram.programName,
+        this.createDevelopingProgram(serializedDevelopingProgram),
+      );
+      this._developingProgramsList.push(serializedDevelopingProgram.programName);
+    });
 
     this._uiEventBatcher.enqueueEvent(MAINFRAME_DEVELOPING_PROGRAMS_STATE_UI_EVENTS.DEVELOPING_PROGRAMS_UPDATED);
   }
 
   serialize(): IMainframeDevelopingProgramsSerializedState {
     return {
-      developingPrograms: this._developingPrograms.map((developingProgram) => developingProgram.serialize()),
+      developingPrograms: this._developingProgramsList.map((programName) =>
+        this.getDevelopingProgramByName(programName)!.serialize(),
+      ),
     };
   }
 
@@ -165,7 +178,7 @@ export class MainframeDevelopingProgramsState implements IMainframeDevelopingPro
   fireUiEvents() {
     this._uiEventBatcher.fireEvents();
 
-    for (const developingProgram of this._developingPrograms) {
+    for (const developingProgram of this._developingProgramsMap.values()) {
       developingProgram.fireUiEvents();
     }
   }
@@ -186,11 +199,12 @@ export class MainframeDevelopingProgramsState implements IMainframeDevelopingPro
   };
 
   private clearState() {
-    for (const developingProgram of this._developingPrograms) {
+    for (const developingProgram of this._developingProgramsMap.values()) {
       developingProgram.removeEventListeners();
       this._programFactory.deleteProgram(developingProgram.program);
     }
 
-    this._developingPrograms = [];
+    this._developingProgramsList = [];
+    this._developingProgramsMap.clear();
   }
 }

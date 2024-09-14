@@ -26,11 +26,12 @@ export class MainframeProcessesState implements IMainframeProcessesState {
   private _messageLogState: IMessageLogState;
   private _formatter: IFormatter;
 
-  private _processes: IProcess[];
-  private _runningProcesses: IProcess[];
+  private _processesList: ProgramName[];
+  private _processesMap: Map<ProgramName, IProcess>;
+  private _runningProcesses: ProgramName[];
   private _availableCores: number;
   private _availableRam: number;
-  private _runningPassiveProcess?: IProcess;
+  private _runningPassiveProgram?: ProgramName;
 
   private readonly _uiEventBatcher: EventBatcher;
 
@@ -47,7 +48,8 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     this._messageLogState = _messageLogState;
     this._formatter = _formatter;
 
-    this._processes = [];
+    this._processesMap = new Map<ProgramName, IProcess>();
+    this._processesList = [];
     this._runningProcesses = [];
     this._availableCores = 0;
     this._availableRam = 0;
@@ -68,14 +70,12 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     return this._availableRam;
   }
 
-  listProcesses(): IProcess[] {
-    return this._processes;
+  listProcesses(): ProgramName[] {
+    return this._processesList;
   }
 
   getProcessByName(programName: ProgramName): IProcess | undefined {
-    const process = this._processes.find((process) => process.program.name === programName);
-
-    return process;
+    return this._processesMap.get(programName);
   }
 
   addProcess(programName: ProgramName, threads: number): boolean {
@@ -118,7 +118,8 @@ export class MainframeProcessesState implements IMainframeProcessesState {
         programName: programName,
       });
 
-      this._processes.push(process);
+      this._processesList.push(programName);
+      this._processesMap.set(programName, process);
     }
 
     this.updateRunningProcesses();
@@ -132,36 +133,40 @@ export class MainframeProcessesState implements IMainframeProcessesState {
   }
 
   deleteProcess(programName: ProgramName): void {
+    const process: IProcess | undefined = this.getProcessByName(programName);
+
     let index = 0;
-    let process: IProcess;
 
-    while (index < this._processes.length) {
-      process = this._processes[index];
-
-      if (process.program.name === programName) {
-        process.removeEventListeners();
-        this._processes.splice(index, 1);
-
-        this._messageLogState.postMessage(ProgramsEvent.processDeleted, {
-          programName: process.program.name,
-          threads: this._formatter.formatNumberDecimal(process.threads),
-        });
+    while (index < this._processesList.length) {
+      if (this._processesList[index] === programName) {
+        this._processesList.splice(index, 1);
       } else {
         index++;
       }
+    }
+
+    if (process) {
+      process.removeEventListeners();
+
+      this._messageLogState.postMessage(ProgramsEvent.processDeleted, {
+        programName,
+        threads: this._formatter.formatNumberDecimal(process.threads),
+      });
     }
 
     this.updateRunningProcesses();
   }
 
   processTick() {
-    if (this._runningPassiveProcess && this._runningPassiveProcess.isActive) {
-      this._runningPassiveProcess.program.perform(this._availableCores, this._availableRam);
+    if (this._runningPassiveProgram) {
+      const passiveProcess = this.getProcessByName(this._runningPassiveProgram);
+      passiveProcess?.program.perform(this._availableCores, this._availableRam);
     }
 
     let hasFinishedProcesses = false;
 
-    for (const process of this._runningProcesses) {
+    for (const programName of this._runningProcesses) {
+      const process = this.getProcessByName(programName)!;
       process.increaseCompletion();
 
       if (process.currentCompletionPoints >= process.maxCompletionPoints) {
@@ -187,14 +192,17 @@ export class MainframeProcessesState implements IMainframeProcessesState {
   async deserialize(serializedState: IMainframeProcessesSerializedState): Promise<void> {
     this.clearState();
 
-    this._processes = serializedState.processes.map(this.createProcess);
+    serializedState.processes.forEach((serializedProcess) => {
+      this._processesMap.set(serializedProcess.programName, this.createProcess(serializedProcess));
+      this._processesList.push(serializedProcess.programName);
+    });
 
     this.updateRunningProcesses();
   }
 
   serialize(): IMainframeProcessesSerializedState {
     return {
-      processes: this._processes.map((process) => process.serialize()),
+      processes: this._processesList.map((programName) => this.getProcessByName(programName)!.serialize()),
     };
   }
 
@@ -209,7 +217,7 @@ export class MainframeProcessesState implements IMainframeProcessesState {
   fireUiEvents() {
     this._uiEventBatcher.fireEvents();
 
-    for (const process of this._processes) {
+    for (const process of this._processesMap.values()) {
       process.fireUiEvents();
     }
   }
@@ -218,12 +226,20 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     this._availableCores = this._mainframeHardwareState.cores;
     this._availableRam = this._mainframeHardwareState.ram;
     this._runningProcesses.splice(0);
-    this._runningPassiveProcess = this._processes.find((process) => process.program.isAutoscalable);
+    this._runningPassiveProgram = this._processesList.find(
+      (programName) => this.getProcessByName(programName)?.program.isAutoscalable,
+    );
 
     let processRam = 0;
     let usedCores = 0;
 
-    for (const process of this._processes) {
+    for (const programName of this._processesList) {
+      const process = this.getProcessByName(programName);
+
+      if (!process) {
+        continue;
+      }
+
       if (process.program.isAutoscalable) {
         process.usedCores = 0;
         continue;
@@ -241,7 +257,7 @@ export class MainframeProcessesState implements IMainframeProcessesState {
 
       if (usedCores > 0) {
         process.usedCores = usedCores;
-        this._runningProcesses.push(process);
+        this._runningProcesses.push(programName);
         this._availableCores -= usedCores;
       } else {
         process.usedCores = 0;
@@ -253,17 +269,23 @@ export class MainframeProcessesState implements IMainframeProcessesState {
 
   private updateFinishedProcesses(): void {
     let index = 0;
-    let process: IProcess;
+    let programName: ProgramName;
 
-    while (index < this._processes.length) {
-      process = this._processes[index];
+    while (index < this._processesList.length) {
+      programName = this._processesList[index];
+      const process = this.getProcessByName(programName);
+
+      if (!process) {
+        index++;
+        continue;
+      }
 
       if (!process.program.isAutoscalable && process.currentCompletionPoints >= process.maxCompletionPoints) {
-        this._processes.splice(index, 1);
+        this._processesList.splice(index, 1);
 
         if (process.program.isRepeatable) {
           process.resetCompletion();
-          this._processes.push(process);
+          this._processesList.push(programName);
         } else {
           process.removeEventListeners();
           this._messageLogState.postMessage(ProgramsEvent.processDeleted, {
@@ -297,33 +319,21 @@ export class MainframeProcessesState implements IMainframeProcessesState {
   };
 
   private deleteAutoscalableProcesses(): void {
-    let index = 0;
-    let process: IProcess;
+    const passiveProgram = this._runningPassiveProgram;
 
-    while (index < this._processes.length) {
-      process = this._processes[index];
+    this._runningPassiveProgram = undefined;
 
-      if (process.program.isAutoscalable) {
-        process.removeEventListeners();
-        this._processes.splice(index, 1);
-
-        this._messageLogState.postMessage(ProgramsEvent.processDeleted, {
-          programName: process.program.name,
-          threads: this._formatter.formatNumberDecimal(process.threads),
-        });
-      } else {
-        index++;
-      }
+    if (passiveProgram) {
+      this.deleteProcess(passiveProgram);
     }
-
-    this.updateRunningProcesses();
   }
 
   private clearState() {
-    for (const process of this._processes) {
+    for (const process of this._processesMap.values()) {
       process.removeEventListeners();
     }
 
-    this._processes = [];
+    this._processesList = [];
+    this._processesMap.clear();
   }
 }

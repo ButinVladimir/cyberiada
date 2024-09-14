@@ -7,7 +7,7 @@ import type { IMakeProgramParameters } from '@state/progam-factory/interfaces/ma
 export interface IMainframeDevelopingProgramsState
   extends ISerializeable<IMainframeDevelopingProgramsSerializedState>,
     IUIEventEmitter {
-  listDevelopingPrograms(): IDevelopingProgram[];
+  listDevelopingPrograms(): ProgramName[];
   getDevelopingProgramByName(programName: ProgramName): IDevelopingProgram | undefined;
   addDevelopingProgram(parameters: IMakeProgramParameters): boolean;
   deleteDevelopingProgram(programName: ProgramName): void;

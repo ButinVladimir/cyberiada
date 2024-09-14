@@ -1,7 +1,7 @@
 import { APP_UI_EVENTS } from '@state/app/constants';
 import { MAINFRAME_PROCESSES_STATE_UI_EVENTS } from '@state/mainframe-processes-state/constants';
 import { BaseController } from '@shared/base-controller';
-import { IProcess } from '@state/mainframe-processes-state/interfaces/process';
+import { ProgramName } from '@state/progam-factory/types';
 
 export class ProcessesListController extends BaseController {
   hostConnected() {
@@ -20,7 +20,7 @@ export class ProcessesListController extends BaseController {
     );
   }
 
-  listProcesses(): IProcess[] {
+  listProcesses(): ProgramName[] {
     return this.mainframeProcessesState.listProcesses();
   }
 

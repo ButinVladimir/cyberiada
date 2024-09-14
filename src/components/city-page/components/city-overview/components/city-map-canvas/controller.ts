@@ -12,4 +12,12 @@ export class CityMapController extends BaseController {
   get map(): number[][] {
     return this._map;
   }
+
+  get mapWidth(): number {
+    return this.scenarioState.currentValues.mapWidth;
+  }
+
+  get mapHeight(): number {
+    return this.scenarioState.currentValues.mapHeight;
+  }
 }

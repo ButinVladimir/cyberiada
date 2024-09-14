@@ -1,6 +1,7 @@
 export const TYPES = {
   App: Symbol('App'),
   AppState: Symbol('AppState'),
+  ScenarioState: Symbol('ScenarioState'),
   GeneralState: Symbol('GeneralState'),
   CityState: Symbol('CityState'),
   SettingsState: Symbol('SettingsState'),

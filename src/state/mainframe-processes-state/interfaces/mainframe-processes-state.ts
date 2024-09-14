@@ -6,7 +6,7 @@ import { IMainframeProcessesSerializedState } from './mainframe-processes-serial
 export interface IMainframeProcessesState extends ISerializeable<IMainframeProcessesSerializedState>, IUIEventEmitter {
   availableCores: number;
   availableRam: number;
-  listProcesses(): IProcess[];
+  listProcesses(): ProgramName[];
   getProcessByName(programName: ProgramName): IProcess | undefined;
   addProcess(programName: ProgramName, threads: number): boolean;
   deleteProcess(programName: ProgramName): void;

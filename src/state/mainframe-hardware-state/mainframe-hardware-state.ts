@@ -1,17 +1,19 @@
 import { injectable, inject } from 'inversify';
 import { EventEmitter } from 'eventemitter3';
-import constants from '@configs/constants.json';
+import type { IScenarioState } from '@state/scenario-state/interfaces/scenario-state';
 import type { IGeneralState } from '@state/general-state/interfaces/general-state';
 import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
 import type { IFormatter } from '@shared/interfaces/formatter';
 import { TYPES } from '@state/types';
 import { PurchaseEvent } from '@shared/types';
 import { EventBatcher } from '@shared/event-batcher';
+import { calculatePow } from '@shared/helpers';
 import { IMainframeHardwareState, IMainframeHardwareSerializedState } from './interfaces';
 import { MAINFRAME_HARDWARE_STATE_EVENTS, MAINFRAME_HARDWARE_STATE_UI_EVENTS } from './constants';
 
 @injectable()
 export class MainframeHardwareState implements IMainframeHardwareState {
+  private _scenarioState: IScenarioState;
   private _generalState: IGeneralState;
   private _messageLogState: IMessageLogState;
   private _formatter: IFormatter;
@@ -24,17 +26,21 @@ export class MainframeHardwareState implements IMainframeHardwareState {
   private _ram: number;
 
   constructor(
+    @inject(TYPES.ScenarioState) _scenarioState: IScenarioState,
     @inject(TYPES.GeneralState) _generalState: IGeneralState,
     @inject(TYPES.MessageLogState) _messageLogState: IMessageLogState,
     @inject(TYPES.Formatter) _formatter: IFormatter,
   ) {
+    this._scenarioState = _scenarioState;
     this._generalState = _generalState;
     this._messageLogState = _messageLogState;
     this._formatter = _formatter;
 
-    this._performance = constants.startingSettings.mainframe.performanceLevel;
-    this._cores = constants.startingSettings.mainframe.coresLevel;
-    this._ram = constants.startingSettings.mainframe.ramLevel;
+    const scenarioValues = this._scenarioState.currentValues;
+
+    this._performance = scenarioValues.mainframeHardware.performanceLevel;
+    this._cores = scenarioValues.mainframeHardware.coresLevel;
+    this._ram = scenarioValues.mainframeHardware.ramLevel;
 
     this._stateEventEmitter = new EventEmitter();
     this._uiEventBatcher = new EventBatcher();
@@ -53,14 +59,10 @@ export class MainframeHardwareState implements IMainframeHardwareState {
   }
 
   getPerformanceIncreaseCost(increase: number): number {
-    const baseCost =
-      constants.mainframeHardware.performanceBaseCost *
-      Math.pow(constants.mainframeHardware.performanceCostMultiplier, this.performance - 1);
+    const exp = this._scenarioState.currentValues.mainframeHardware.performancePrice;
+    const baseCost = calculatePow(this._performance - 1, exp);
 
-    return (
-      (baseCost * (Math.pow(constants.mainframeHardware.performanceCostMultiplier, increase) - 1)) /
-      (constants.mainframeHardware.performanceCostMultiplier - 1)
-    );
+    return (baseCost * (Math.pow(exp.base, increase) - 1)) / (exp.base - 1);
   }
 
   purchasePerformanceIncrease(increase: number): boolean {
@@ -70,14 +72,10 @@ export class MainframeHardwareState implements IMainframeHardwareState {
   }
 
   getCoresIncreaseCost(increase: number): number {
-    const baseCost =
-      constants.mainframeHardware.coresBaseCost *
-      Math.pow(constants.mainframeHardware.coresCostMultiplier, this.cores - 1);
+    const exp = this._scenarioState.currentValues.mainframeHardware.coresPrice;
+    const baseCost = calculatePow(this._performance - 1, exp);
 
-    return (
-      (baseCost * (Math.pow(constants.mainframeHardware.coresCostMultiplier, increase) - 1)) /
-      (constants.mainframeHardware.coresCostMultiplier - 1)
-    );
+    return (baseCost * (Math.pow(exp.base, increase) - 1)) / (exp.base - 1);
   }
 
   purchaseCoresIncrease(increase: number): boolean {
@@ -87,13 +85,10 @@ export class MainframeHardwareState implements IMainframeHardwareState {
   }
 
   getRamIncreaseCost(increase: number): number {
-    const baseCost =
-      constants.mainframeHardware.ramBaseCost * Math.pow(constants.mainframeHardware.ramCostMultiplier, this.ram - 1);
+    const exp = this._scenarioState.currentValues.mainframeHardware.ramPrice;
+    const baseCost = calculatePow(this._performance - 1, exp);
 
-    return (
-      (baseCost * (Math.pow(constants.mainframeHardware.ramCostMultiplier, increase) - 1)) /
-      (constants.mainframeHardware.ramCostMultiplier - 1)
-    );
+    return (baseCost * (Math.pow(exp.base, increase) - 1)) / (exp.base - 1);
   }
 
   purchaseRamIncrease(increase: number): boolean {
@@ -104,9 +99,11 @@ export class MainframeHardwareState implements IMainframeHardwareState {
 
   // eslint-disable-next-line @typescript-eslint/require-await
   async startNewState(): Promise<void> {
-    this._performance = constants.startingSettings.mainframe.performanceLevel;
-    this._cores = constants.startingSettings.mainframe.coresLevel;
-    this._ram = constants.startingSettings.mainframe.ramLevel;
+    const scenarioValues = this._scenarioState.currentValues;
+
+    this._performance = scenarioValues.mainframeHardware.performanceLevel;
+    this._cores = scenarioValues.mainframeHardware.coresLevel;
+    this._ram = scenarioValues.mainframeHardware.ramLevel;
   }
 
   // eslint-disable-next-line @typescript-eslint/require-await
