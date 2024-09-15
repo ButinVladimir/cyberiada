@@ -1,3 +1,4 @@
+import { GENERAL_STATE_UI_EVENTS } from '@state/general-state/constants';
 import { BaseController } from '@shared/base-controller';
 import { IProgram } from '@state/progam-factory/interfaces/program';
 import { ProgramName } from '@state/progam-factory/types';
@@ -6,12 +7,20 @@ import { PROGRAMS_UI_EVENTS } from '@/state/progam-factory/constants';
 export class PurchaseProgramDialogController extends BaseController {
   private _selectedProgram?: IProgram;
 
-  hostConnected() {}
+  hostConnected() {
+    this.generalState.addUiEventListener(GENERAL_STATE_UI_EVENTS.CITY_LEVEL_CHANGED, this.handleRefreshUI);
+  }
 
   hostDisconnected() {
+    this.generalState.removeUiEventListener(GENERAL_STATE_UI_EVENTS.CITY_LEVEL_CHANGED, this.handleRefreshUI);
+
     if (this._selectedProgram) {
       this.programFactory.deleteProgram(this._selectedProgram);
     }
+  }
+
+  get cityLevel(): number {
+    return this.generalState.cityLevel;
   }
 
   getProgram(name: ProgramName, level: number, quality: number): IProgram {

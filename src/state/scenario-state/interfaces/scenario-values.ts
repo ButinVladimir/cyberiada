@@ -15,4 +15,6 @@ export interface IScenarioValues {
     ramPrice: IExponent;
   };
   startingPrograms: ProgramName[];
+  startingCityLevel: number;
+  cityLevelRequirements: IExponent;
 }

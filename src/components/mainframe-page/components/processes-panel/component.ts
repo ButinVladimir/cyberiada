@@ -11,6 +11,13 @@ export class MainframeHardwarePanel extends LitElement {
       flex-direction: column;
     }
 
+    p.hint {
+      margin-top: 0;
+      margin-bottom: var(--sl-spacing-large);
+      color: var(--ca-hint-color);
+      font-size: var(--ca-hint-font-size);
+    }
+
     div.top-container {
       display: flex;
       align-items: center;
@@ -37,6 +44,9 @@ export class MainframeHardwarePanel extends LitElement {
     const formatter = this._processesPanelController.formatter;
 
     return html`
+      <p class="hint">
+        <intl-message label="ui:mainframe:processes:processesHint"> Start process hint. </intl-message>
+      </p>
       <div class="top-container">
         <sl-button variant="primary" size="medium" @click=${this.handleStartProcessDialogOpen}>
           <intl-message label="ui:mainframe:processes:startProcess"> Purchase a program </intl-message>

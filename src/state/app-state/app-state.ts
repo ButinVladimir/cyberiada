@@ -68,7 +68,7 @@ export class AppState implements IAppState {
         break;
     }
 
-    for (let tick = 0; tick < maxTicks && this._generalState.decreaseBonusTimeByTick(); tick++) {
+    for (let tick = 0; tick < maxTicks && this._generalState.decreaseOfflineTimeByTick(); tick++) {
       this.processTick();
     }
   }

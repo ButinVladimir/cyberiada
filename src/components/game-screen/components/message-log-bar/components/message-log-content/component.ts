@@ -9,6 +9,18 @@ import { MessageLogContentController } from './controller';
 export class MessageLogContent extends LitElement {
   static styles = css`
     :host {
+      display: block;
+    }
+
+    scrollable-component {
+      width: 100%;
+      height: 100%;
+      --scrollbar-width: var(--ca-scrollbar-width);
+      --scrollbar-thumb-fill-color: var(--ca-scrollbar-thumb-fill-color);
+      --scrollbar-thumb-fill-color-hover: var(--ca-scrollbar-thumb-fill-color-hover);
+    }
+
+    div.log-content {
       box-sizing: border-box;
       width: 100%;
       padding: var(--sl-spacing-small);
@@ -35,7 +47,11 @@ export class MessageLogContent extends LitElement {
   render() {
     const messages = this._messageLogContentController.getMessages();
 
-    return repeat(messages, (message) => message.id, this.renderMessage);
+    return html`
+      <scrollable-component>
+        <div class="log-content">${repeat(messages, (message) => message.id, this.renderMessage)}</div>
+      </scrollable-component>
+    `;
   }
 
   private renderMessage = (message: IMessage): TemplateResult => {

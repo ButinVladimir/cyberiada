@@ -25,6 +25,10 @@ export class TopBarValues extends LitElement {
       margin-right: var(--sl-spacing-2x-small);
     }
 
+    sl-icon[name='star'] {
+      margin-right: var(--sl-spacing-2x-small);
+    }
+
     span.text {
       font-size: var(--sl-font-size-medium);
     }
@@ -40,18 +44,22 @@ export class TopBarValues extends LitElement {
 
   render() {
     const formatter = this._topBarValuesController.formatter;
-    const bonusTimeFormatted = formatter.formatTimeShort(this._topBarValuesController.bonusTime);
+    const offlineTimeFormatted = formatter.formatTimeShort(this._topBarValuesController.offlineTime);
     const moneyFormatted = formatter.formatNumberLong(this._topBarValuesController.money);
+    const cityLevelFormatted = formatter.formatNumberDecimal(this._topBarValuesController.cityLevel);
+    const cityDevelopmentPointsFormatted = formatter.formatNumberLong(
+      this._topBarValuesController.cityDevelopmentPoints,
+    );
 
     return html`
       <div class="block">
         <sl-tooltip>
-          <intl-message slot="content" label="ui:topBar:bonusTime"> Bonus time </intl-message>
+          <intl-message slot="content" label="ui:topBar:offlineTime"> Offline time </intl-message>
 
           <sl-icon name="clock"> </sl-icon>
-        </sl-tooltip>
 
-        <span class="text"> ${bonusTimeFormatted} </span>
+          <span class="text"> ${offlineTimeFormatted} </span>
+        </sl-tooltip>
       </div>
 
       <div class="block">
@@ -59,9 +67,21 @@ export class TopBarValues extends LitElement {
           <intl-message slot="content" label="ui:topBar:money"> Money </intl-message>
 
           <sl-icon name="currency-bitcoin"> </sl-icon>
-        </sl-tooltip>
 
-        <span class="text"> ${moneyFormatted} </span>
+          <span class="text"> ${moneyFormatted} </span>
+        </sl-tooltip>
+      </div>
+
+      <div class="block">
+        <sl-tooltip>
+          <intl-message slot="content" label="ui:topBar:cityLevel" value=${cityDevelopmentPointsFormatted}>
+            City level
+          </intl-message>
+
+          <sl-icon name="star"> </sl-icon>
+
+          <span class="text"> ${cityLevelFormatted} </span>
+        </sl-tooltip>
       </div>
     `;
   }

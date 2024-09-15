@@ -160,7 +160,10 @@ export class MainframeProcessesState implements IMainframeProcessesState {
   processTick() {
     if (this._runningPassiveProgram) {
       const passiveProcess = this.getProcessByName(this._runningPassiveProgram);
-      passiveProcess?.program.perform(this._availableCores, this._availableRam);
+
+      if (passiveProcess?.isActive) {
+        passiveProcess.program.perform(this._availableCores, this._availableRam);
+      }
     }
 
     let hasFinishedProcesses = false;

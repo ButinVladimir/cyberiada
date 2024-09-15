@@ -111,6 +111,7 @@ export class PurchaseProgramDialog extends LitElement {
 
   render() {
     const formatter = this._purchaseProgramDialogController.formatter;
+    const cityLevel = this._purchaseProgramDialogController.cityLevel;
 
     const program = this._programName
       ? this._purchaseProgramDialogController.getProgram(this._programName, this._level, this._quality)
@@ -119,7 +120,7 @@ export class PurchaseProgramDialog extends LitElement {
 
     const submitButtonValues = JSON.stringify({ cost: formatter.formatNumberLong(cost) });
 
-    const submitButtonDisabled = !program;
+    const submitButtonDisabled = !(program && this._level <= cityLevel);
 
     return html`
       <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
@@ -153,7 +154,7 @@ export class PurchaseProgramDialog extends LitElement {
               value=${this._level}
               type="number"
               min="1"
-              max="100"
+              max=${cityLevel}
               step="1"
               @sl-change=${this.handleLevelChange}
             >
@@ -218,8 +219,8 @@ export class PurchaseProgramDialog extends LitElement {
       level = 1;
     }
 
-    if (level > 100) {
-      level = 100;
+    if (level > this._purchaseProgramDialogController.cityLevel) {
+      level = this._purchaseProgramDialogController.cityLevel;
     }
 
     this._level = level;

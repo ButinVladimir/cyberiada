@@ -42,7 +42,7 @@ export class CityOverview extends LitElement {
 
     ca-city-district-info-panel {
       min-width: 25em;
-      flex: 1 0 auto;
+      flex: 1 0;
     }
 
     ca-map-cell-zoom-panel {

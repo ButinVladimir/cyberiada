@@ -111,6 +111,7 @@ export class StartProgramDevelopmentDialog extends LitElement {
 
   render() {
     const formatter = this._startProgramDevelopmentDialogController.formatter;
+    const cityLevel = this._startProgramDevelopmentDialogController.cityLevel;
 
     const program = this._programName
       ? this._startProgramDevelopmentDialogController.getProgram(this._programName, this._level, this._quality)
@@ -121,7 +122,7 @@ export class StartProgramDevelopmentDialog extends LitElement {
       developmentPoints: formatter.formatNumberLong(developmentPoints),
     });
 
-    const submitButtonDisabled = !program;
+    const submitButtonDisabled = !(program && this._level <= cityLevel);
 
     return html`
       <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
@@ -157,6 +158,7 @@ export class StartProgramDevelopmentDialog extends LitElement {
               value=${this._level}
               type="number"
               min="1"
+              max=${cityLevel}
               step="1"
               @sl-change=${this.handleLevelChange}
             >
@@ -222,28 +224,34 @@ export class StartProgramDevelopmentDialog extends LitElement {
       level = 1;
     }
 
+    if (level > this._startProgramDevelopmentDialogController.cityLevel) {
+      level = this._startProgramDevelopmentDialogController.cityLevel;
+    }
+
     this._level = level;
     this._levelInput.valueAsNumber = level;
   };
 
   private handleQualityChange = () => {
-    this._quality = this._qualityInput.value as unknown as number;
+    this._quality = +this._qualityInput.value;
   };
 
   private handlePurchase = (event: Event) => {
     event.stopPropagation();
     event.preventDefault();
 
-    if (this._programName) {
-      const hasStarted = this._startProgramDevelopmentDialogController.startDevelopingProgram(
-        this._programName,
-        this._level,
-        this._quality,
-      );
+    if (!this._programName) {
+      return;
+    }
 
-      if (hasStarted) {
-        this.dispatchEvent(new StartProgramDevelopmentDialogClose());
-      }
+    const hasStarted = this._startProgramDevelopmentDialogController.startDevelopingProgram(
+      this._programName,
+      this._level,
+      this._quality,
+    );
+
+    if (hasStarted) {
+      this.dispatchEvent(new StartProgramDevelopmentDialogClose());
     }
   };
 }

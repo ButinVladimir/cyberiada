@@ -12,6 +12,12 @@ export class MainframeHardwarePanelArticleBuyButton extends LitElement {
   })
   cost!: number;
 
+  @property({
+    attribute: 'level',
+    type: Number,
+  })
+  level!: number;
+
   private _mainframeHardwarePanelArticleBuyButtonController: MainframeHardwarePanelArticleBuyButtonController;
 
   constructor() {
@@ -21,7 +27,10 @@ export class MainframeHardwarePanelArticleBuyButton extends LitElement {
   }
 
   render() {
-    const buttonDisabled = this._mainframeHardwarePanelArticleBuyButtonController.money < this.cost;
+    const buttonDisabled = !(
+      this._mainframeHardwarePanelArticleBuyButtonController.money >= this.cost &&
+      this._mainframeHardwarePanelArticleBuyButtonController.cityLevel > this.level
+    );
 
     return html`
       <sl-button variant="primary" type="button" size="medium" ?disabled=${buttonDisabled}>

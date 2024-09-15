@@ -66,6 +66,11 @@ export class MainframeHardwareState implements IMainframeHardwareState {
   }
 
   purchasePerformanceIncrease(increase: number): boolean {
+    const maxIncrease = this._generalState.cityLevel - this.performance;
+    if (increase > maxIncrease) {
+      throw new Error('Mainframe hardware performance level cannot be above city level');
+    }
+
     const cost = this.getPerformanceIncreaseCost(increase);
 
     return this._generalState.purchase(cost, this.handlePurchasePerformanceIncrease(increase));
@@ -79,6 +84,11 @@ export class MainframeHardwareState implements IMainframeHardwareState {
   }
 
   purchaseCoresIncrease(increase: number): boolean {
+    const maxIncrease = this._generalState.cityLevel - this.cores;
+    if (increase > maxIncrease) {
+      throw new Error('Mainframe hardware cores level cannot be above city level');
+    }
+
     const cost = this.getCoresIncreaseCost(increase);
 
     return this._generalState.purchase(cost, this.handlePurchaseCoresIncrease(increase));
@@ -92,6 +102,11 @@ export class MainframeHardwareState implements IMainframeHardwareState {
   }
 
   purchaseRamIncrease(increase: number): boolean {
+    const maxIncrease = this._generalState.cityLevel - this.ram;
+    if (increase > maxIncrease) {
+      throw new Error('Mainframe hardware RAM level cannot be above city level');
+    }
+
     const cost = this.getRamIncreaseCost(increase);
 
     return this._generalState.purchase(cost, this.handlePurchaseRamIncrease(increase));

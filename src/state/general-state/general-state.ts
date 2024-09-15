@@ -15,9 +15,11 @@ export class GeneralState implements IGeneralState {
 
   private _randomSeed: number;
   private _lastUpdateTime: number;
-  private _bonusTime: number;
+  private _offlineTime: number;
   private _gameSpeed: GameSpeed;
   private _money: number;
+  private _cityLevel: number;
+  private _cityDevelopmentPoints: number;
 
   constructor(
     @inject(TYPES.ScenarioState) _scenarioState: IScenarioState,
@@ -28,9 +30,11 @@ export class GeneralState implements IGeneralState {
 
     this._randomSeed = 0;
     this._lastUpdateTime = 0;
-    this._bonusTime = 0;
+    this._offlineTime = 0;
     this._gameSpeed = GameSpeed.normal;
     this._money = this._scenarioState.currentValues.startingMoney;
+    this._cityLevel = this._scenarioState.currentValues.startingCityLevel;
+    this._cityDevelopmentPoints = 0;
 
     this._uiEventBatcher = new EventBatcher();
   }
@@ -43,8 +47,8 @@ export class GeneralState implements IGeneralState {
     return this._lastUpdateTime;
   }
 
-  get bonusTime() {
-    return this._bonusTime;
+  get offlineTime() {
+    return this._offlineTime;
   }
 
   get gameSpeed() {
@@ -55,19 +59,27 @@ export class GeneralState implements IGeneralState {
     return this._money;
   }
 
+  get cityLevel() {
+    return this._cityLevel;
+  }
+
+  get cityDevelopmentPoints() {
+    return this._cityDevelopmentPoints;
+  }
+
   changeGameSpeed(gameSpeed: GameSpeed) {
     this._gameSpeed = gameSpeed;
   }
 
   updateLastUpdateTime() {
     const updateTime = Date.now();
-    this._bonusTime += updateTime - this.lastUpdateTime;
+    this._offlineTime += updateTime - this.lastUpdateTime;
     this._lastUpdateTime = updateTime;
   }
 
-  decreaseBonusTimeByTick(): boolean {
-    if (this._bonusTime >= this._settingsState.updateInterval) {
-      this._bonusTime -= this._settingsState.updateInterval;
+  decreaseOfflineTimeByTick(): boolean {
+    if (this._offlineTime >= this._settingsState.updateInterval) {
+      this._offlineTime -= this._settingsState.updateInterval;
       this._uiEventBatcher.enqueueEvent(GENERAL_STATE_UI_EVENTS.BONUS_TIME_CHANGED);
 
       return true;
@@ -94,22 +106,39 @@ export class GeneralState implements IGeneralState {
     return false;
   }
 
+  increaseCityDevelopmentPoints(delta: number) {
+    this._cityDevelopmentPoints += delta;
+
+    const { base, baseMultiplier } = this._scenarioState.currentValues.cityLevelRequirements;
+    const newCityLevel =
+      Math.floor(Math.log(1 + (this._cityDevelopmentPoints * (base - 1)) / baseMultiplier) / Math.log(base)) + 1;
+
+    if (newCityLevel > this._cityLevel) {
+      this._cityLevel = newCityLevel;
+      this._uiEventBatcher.enqueueEvent(GENERAL_STATE_UI_EVENTS.CITY_LEVEL_CHANGED);
+    }
+  }
+
   // eslint-disable-next-line @typescript-eslint/require-await
   async startNewState(): Promise<void> {
     this._randomSeed = Date.now();
     this._lastUpdateTime = Date.now();
-    this._bonusTime = 0;
+    this._offlineTime = 0;
     this._gameSpeed = GameSpeed.normal;
     this._money = this._scenarioState.currentValues.startingMoney;
+    this._cityLevel = this._scenarioState.currentValues.startingCityLevel;
+    this._cityDevelopmentPoints = 0;
   }
 
   // eslint-disable-next-line @typescript-eslint/require-await
   async deserialize(serializedState: IGeneralSerializedState): Promise<void> {
     this._randomSeed = serializedState.randomSeed;
     this._lastUpdateTime = serializedState.lastUpdateTime;
-    this._bonusTime = serializedState.bonusTime;
+    this._offlineTime = serializedState.offlineTime;
     this._gameSpeed = serializedState.gameSpeed;
     this._money = serializedState.money;
+    this._cityLevel = serializedState.cityLevel;
+    this._cityDevelopmentPoints = serializedState.cityDevelopmentPoints;
 
     this.updateLastUpdateTime();
   }
@@ -118,9 +147,11 @@ export class GeneralState implements IGeneralState {
     return {
       randomSeed: this.randomSeed,
       lastUpdateTime: this.lastUpdateTime,
-      bonusTime: this.bonusTime,
+      offlineTime: this.offlineTime,
       gameSpeed: this.gameSpeed,
       money: this._money,
+      cityLevel: this._cityLevel,
+      cityDevelopmentPoints: this._cityDevelopmentPoints,
     };
   }
 

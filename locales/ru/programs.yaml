@@ -1,8 +1,8 @@
 shareServer:
   name: Сервер для аренды мейнфрейма
-  overview: Программа для предоставления доступа к мейнфрейму городской сети. Генерирует пассивный доход.
-  programDescription: Может генерировать до {{value.value}} денег в секунду.
-  processDescription: Генерирует {{value.value}} денег в секунду.
+  overview: Программа для предоставления доступа к мейнфрейму городской сети. Пассивно генерирует доход и очки развития города.
+  programDescription: Может генерировать до {{value.money}} денег и {{value.cityDevelopmentPoints}} ОРГ в секунду.
+  processDescription: Генерирует {{value.money}} денег и {{value.cityDevelopmentPoints}} ОРГ в секунду.
 codeGenerator:
   name: Генератор кода
   overview: Программа для разработки других программ.

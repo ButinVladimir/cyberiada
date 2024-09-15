@@ -56,6 +56,10 @@ export class MainframeOwnedProgramsState implements IMainframeOwnedProgramsState
   }
 
   purchaseProgram(programParameters: IMakeProgramParameters): boolean {
+    if (programParameters.level > this._generalState.cityLevel) {
+      throw new Error(`Cannot purchase program ${programParameters.name} with level above city level`);
+    }
+
     const program = this._programFactory.makeProgram(programParameters);
 
     const bought = this._generalState.purchase(program.cost, this.handlePurchaseProgram(program));

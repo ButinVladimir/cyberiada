@@ -9,7 +9,9 @@
     "costQualityMultiplier": 2,
     "performanceBoost": { "baseMultiplier": 1, "base": 1.01 },
     "income": { "baseMultiplier": 1, "base": 1.1 },
-    "incomeQualityMultiplier": 2
+    "incomeQualityMultiplier": 2,
+    "cityDevelopmentPoints": { "baseMultiplier": 1, "base": 1.1 },
+    "cityDevelopmentPointsQualityMultiplier": 2
   },
   "codeGenerator": {
     "ram": 1,

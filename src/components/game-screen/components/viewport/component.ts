@@ -8,6 +8,19 @@ export class Viewport extends LitElement {
     :host {
       display: block;
       width: 100%;
+      height: 100%;
+    }
+
+    scrollable-component {
+      width: 100%;
+      height: 100%;
+      --content-padding: var(--sl-spacing-small) var(--sl-spacing-medium);
+      --scrollbar-width: var(--ca-scrollbar-width);
+      --scrollbar-thumb-fill-color: var(--ca-scrollbar-thumb-fill-color);
+      --scrollbar-thumb-fill-color-hover: var(--ca-scrollbar-thumb-fill-color-hover);
+    }
+
+    div.content-wrapper {
       max-width: var(--ca-max-content-width);
     }
   `;
@@ -19,6 +32,14 @@ export class Viewport extends LitElement {
   selectedMenuItem = '';
 
   render() {
+    return html`
+      <scrollable-component>
+        <div class="content-wrapper">${this.renderContent()}</div>
+      </scrollable-component>
+    `;
+  }
+
+  renderContent() {
     switch (this.selectedMenuItem) {
       case OverviewMenuItem.cityOverview:
         return html`<ca-city-page></ca-city-page>`;

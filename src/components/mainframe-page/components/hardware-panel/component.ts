@@ -51,7 +51,9 @@ export class MainframeHardwarePanel extends LitElement {
   }
 
   render() {
-    const increase = this.getIncrease();
+    const performanceIncrease = this.getIncrease(this._mainframeHardwarePanelController.performance);
+    const coresIncrease = this.getIncrease(this._mainframeHardwarePanelController.cores);
+    const ramIncrease = this.getIncrease(this._mainframeHardwarePanelController.ram);
 
     return html`
       <p class="hint">
@@ -61,27 +63,27 @@ export class MainframeHardwarePanel extends LitElement {
       </p>
       <ca-mainframe-hardware-panel-article
         label="performance"
-        increase=${increase}
+        increase=${performanceIncrease}
         level=${this._mainframeHardwarePanelController.performance}
-        cost=${this._mainframeHardwarePanelController.getPerformanceIncreaseCost(increase)}
+        cost=${this._mainframeHardwarePanelController.getPerformanceIncreaseCost(performanceIncrease)}
         @buy-hardware-upgrade=${this.handlePurchasePerformanceIncrease}
       >
       </ca-mainframe-hardware-panel-article>
 
       <ca-mainframe-hardware-panel-article
         label="cores"
-        increase=${increase}
+        increase=${coresIncrease}
         level=${this._mainframeHardwarePanelController.cores}
-        cost=${this._mainframeHardwarePanelController.getCoresIncreaseCost(increase)}
+        cost=${this._mainframeHardwarePanelController.getCoresIncreaseCost(coresIncrease)}
         @buy-hardware-upgrade=${this.handlePurchaseCoresIncrease}
       >
       </ca-mainframe-hardware-panel-article>
 
       <ca-mainframe-hardware-panel-article
         label="ram"
-        increase=${increase}
+        increase=${ramIncrease}
         level=${this._mainframeHardwarePanelController.ram}
-        cost=${this._mainframeHardwarePanelController.getRamIncreaseCost(increase)}
+        cost=${this._mainframeHardwarePanelController.getRamIncreaseCost(ramIncrease)}
         @buy-hardware-upgrade=${this.handlePurchaseRamIncrease}
       >
       </ca-mainframe-hardware-panel-article>
@@ -92,7 +94,7 @@ export class MainframeHardwarePanel extends LitElement {
     event.preventDefault();
     event.stopPropagation();
 
-    const increase = this.getIncrease();
+    const increase = this.getIncrease(this._mainframeHardwarePanelController.performance);
     this._mainframeHardwarePanelController.purchasePerformanceIncrease(increase);
   };
 
@@ -100,7 +102,7 @@ export class MainframeHardwarePanel extends LitElement {
     event.preventDefault();
     event.stopPropagation();
 
-    const increase = this.getIncrease();
+    const increase = this.getIncrease(this._mainframeHardwarePanelController.cores);
     this._mainframeHardwarePanelController.purchaseCoresIncrease(increase);
   };
 
@@ -108,7 +110,7 @@ export class MainframeHardwarePanel extends LitElement {
     event.preventDefault();
     event.stopPropagation();
 
-    const increase = this.getIncrease();
+    const increase = this.getIncrease(this._mainframeHardwarePanelController.ram);
     this._mainframeHardwarePanelController.purchaseRamIncrease(increase);
   };
 
@@ -117,17 +119,23 @@ export class MainframeHardwarePanel extends LitElement {
     this._ctrlPressed = event.ctrlKey;
   };
 
-  private getIncrease(): number {
-    let increase = 1;
+  private getMaxIncrease(): number {
+    let maxIncrease = 1;
 
     if (this._shiftPressed) {
-      increase *= 10;
+      maxIncrease *= 10;
     }
 
     if (this._ctrlPressed) {
-      increase *= 10;
+      maxIncrease *= 10;
     }
 
-    return increase;
+    return maxIncrease;
+  }
+
+  private getIncrease(currentLevel: number): number {
+    const maxIncrease = this.getMaxIncrease();
+
+    return Math.max(Math.min(maxIncrease, this._mainframeHardwarePanelController.cityLevel - currentLevel), 1);
   }
 }

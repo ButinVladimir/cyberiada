@@ -8,12 +8,22 @@ import { MenuItemSelectedEvent } from './events/menu-item-selected-event';
 export class MenuBar extends LitElement {
   static styles = css`
     :host {
+      display: block;
       width: 100%;
-      box-sizing: border-box;
-      padding: var(--sl-spacing-small) var(--sl-spacing-2x-small);
+      height: 100%;
+    }
+
+    scrollable-component {
+      width: 100%;
+      height: 100%;
+      --scrollbar-width: var(--ca-scrollbar-width);
+      --scrollbar-thumb-fill-color: var(--ca-scrollbar-thumb-fill-color);
+      --scrollbar-thumb-fill-color-hover: var(--ca-scrollbar-thumb-fill-color-hover);
     }
 
     nav {
+      box-sizing: border-box;
+      padding: var(--sl-spacing-small) var(--sl-spacing-2x-small);
       width: 100%;
       display: flex;
       flex-direction: column;
@@ -30,13 +40,15 @@ export class MenuBar extends LitElement {
 
   render() {
     return html`
-      <nav>
-        ${OVERVIEW_MENU_ITEMS.map(this.renderMenuItem)}
+      <scrollable-component>
+        <nav>
+          ${OVERVIEW_MENU_ITEMS.map(this.renderMenuItem)}
 
-        <sl-divider></sl-divider>
+          <sl-divider></sl-divider>
 
-        ${MISC_MENU_ITEMS.map(this.renderMenuItem)}
-      </nav>
+          ${MISC_MENU_ITEMS.map(this.renderMenuItem)}
+        </nav>
+      </scrollable-component>
     `;
   }
 

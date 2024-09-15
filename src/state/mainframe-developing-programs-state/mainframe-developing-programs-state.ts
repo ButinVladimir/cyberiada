@@ -1,5 +1,6 @@
 import { inject, injectable } from 'inversify';
 import { ProgramName } from '@state/progam-factory/types';
+import type { IGeneralState } from '@state/general-state/interfaces/general-state';
 import type { IMainframeOwnedProgramsState } from '@state/mainframe-owned-programs-state/interfaces/mainframe-owned-program-state';
 import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
 import type { IProgramFactory } from '@state/progam-factory/interfaces/program-factory';
@@ -20,6 +21,7 @@ import { MAINFRAME_DEVELOPING_PROGRAMS_STATE_UI_EVENTS } from './constants';
 @injectable()
 export class MainframeDevelopingProgramsState implements IMainframeDevelopingProgramsState {
   private _programFactory: IProgramFactory;
+  private _generalState: IGeneralState;
   private _mainframeOwnedProgramsState: IMainframeOwnedProgramsState;
   private _messageLogState: IMessageLogState;
   private _formatter: IFormatter;
@@ -31,11 +33,13 @@ export class MainframeDevelopingProgramsState implements IMainframeDevelopingPro
 
   constructor(
     @inject(TYPES.ProgramFactory) _programFactory: IProgramFactory,
+    @inject(TYPES.GeneralState) _generalState: IGeneralState,
     @inject(TYPES.MainframeOwnedProgramsState) _mainframeOwnedProgramsState: IMainframeOwnedProgramsState,
     @inject(TYPES.MessageLogState) _messageLogState: IMessageLogState,
     @inject(TYPES.Formatter) _formatter: IFormatter,
   ) {
     this._programFactory = _programFactory;
+    this._generalState = _generalState;
     this._mainframeOwnedProgramsState = _mainframeOwnedProgramsState;
     this._messageLogState = _messageLogState;
     this._formatter = _formatter;
@@ -55,6 +59,10 @@ export class MainframeDevelopingProgramsState implements IMainframeDevelopingPro
   }
 
   addDevelopingProgram(parameters: IMakeProgramParameters): boolean {
+    if (parameters.level > this._generalState.cityLevel) {
+      throw new Error(`Cannot develop program ${parameters.name} with level above city level`);
+    }
+
     const existingDevelopingProgram = this.getDevelopingProgramByName(parameters.name);
 
     if (existingDevelopingProgram) {

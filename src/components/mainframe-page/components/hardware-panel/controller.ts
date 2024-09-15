@@ -1,4 +1,5 @@
 import { MAINFRAME_HARDWARE_STATE_UI_EVENTS } from '@state/mainframe-hardware-state/constants';
+import { GENERAL_STATE_UI_EVENTS } from '@state/general-state/constants';
 import { BaseController } from '@shared/base-controller';
 
 export class MainframeHardwarePanelController extends BaseController {
@@ -7,6 +8,7 @@ export class MainframeHardwarePanelController extends BaseController {
       MAINFRAME_HARDWARE_STATE_UI_EVENTS.HARDWARE_UPDATED,
       this.handleRefreshUI,
     );
+    this.generalState.addUiEventListener(GENERAL_STATE_UI_EVENTS.CITY_LEVEL_CHANGED, this.handleRefreshUI);
   }
 
   hostDisconnected() {
@@ -14,6 +16,7 @@ export class MainframeHardwarePanelController extends BaseController {
       MAINFRAME_HARDWARE_STATE_UI_EVENTS.HARDWARE_UPDATED,
       this.handleRefreshUI,
     );
+    this.generalState.removeUiEventListener(GENERAL_STATE_UI_EVENTS.CITY_LEVEL_CHANGED, this.handleRefreshUI);
   }
 
   get performance(): number {
@@ -26,6 +29,10 @@ export class MainframeHardwarePanelController extends BaseController {
 
   get ram(): number {
     return this.mainframeHardwareState.ram;
+  }
+
+  get cityLevel(): number {
+    return this.generalState.cityLevel;
   }
 
   getPerformanceIncreaseCost(increase: number): number {

@@ -180,11 +180,15 @@
     },
     {
       "name": "ca-mainframe-hardware-panel-article-buy-button",
-      "description": "Attributes:\n\n  * `cost` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `cost` {`number`} - \n\n  * `_mainframeHardwarePanelArticleBuyButtonController` {`MainframeHardwarePanelArticleBuyButtonController`} - ",
+      "description": "Attributes:\n\n  * `cost` {`number`} - \n\n  * `level` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `cost` {`number`} - \n\n  * `level` {`number`} - \n\n  * `_mainframeHardwarePanelArticleBuyButtonController` {`MainframeHardwarePanelArticleBuyButtonController`} - ",
       "attributes": [
         {
           "name": "cost",
           "description": "`cost` {`number`} - \n\nProperty: cost"
+        },
+        {
+          "name": "level",
+          "description": "`level` {`number`} - \n\nProperty: level"
         }
       ]
     },

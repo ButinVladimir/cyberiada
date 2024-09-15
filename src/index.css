@@ -21,4 +21,10 @@ body {
   --ca-hint-font-size: var(--sl-font-size-small);
   --ca-border: var(--sl-panel-border-width) solid var(--sl-panel-border-color);
   --ca-table-header-font-weight: var(--sl-font-weight-bold);
+  --ca-top-bar-height: 61px;
+  --ca-message-log-top-bar: 55px;
+  --ca-top-bar-gutter: 1px;
+  --ca-scrollbar-width: 0.7rem;
+  --ca-scrollbar-thumb-fill-color: var(--sl-color-neutral-400);
+  --ca-scrollbar-thumb-fill-color-hover: var(--sl-color-neutral-700);
 }

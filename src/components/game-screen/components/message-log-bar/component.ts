@@ -9,6 +9,10 @@ export class MessageLogBar extends LitElement {
     :host {
       width: 100%;
       box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: flex-start;
     }
 
     div.title-bar div.gutter {
@@ -16,10 +20,12 @@ export class MessageLogBar extends LitElement {
     }
 
     div.title-bar {
+      flex: 0;
       display: flex;
       align-items: flex-start;
       padding: var(--sl-spacing-small);
       border-bottom: var(--ca-border);
+      height: var(--ca-message-log-top-bar);
     }
 
     h4.title {
@@ -28,7 +34,7 @@ export class MessageLogBar extends LitElement {
       margin-top: 0;
       margin-bottom: 0;
       line-height: var(--sl-line-height-denser);
-      flex: 0 0 auto;
+      flex: 1 1 auto;
     }
 
     sl-icon-button {
@@ -43,7 +49,9 @@ export class MessageLogBar extends LitElement {
     }
 
     ca-message-log-content {
-      flex: 1 0 auto;
+      flex: 1 1 auto;
+      width: 100%;
+      height: calc(100vh - var(--ca-message-log-top-bar) - var(--ca-top-bar-height) - var(--ca-top-bar-gutter));
     }
   `;
 

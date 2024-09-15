@@ -9,6 +9,7 @@ export class GameScreen extends LitElement {
     :host {
       width: 100vw;
       height: 100vh;
+      max-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: stretch;
@@ -20,10 +21,12 @@ export class GameScreen extends LitElement {
       background-color: var(--sl-panel-background-color);
       border-bottom: var(--ca-border);
       box-shadow: var(--sl-shadow-small);
+      box-sizing: border-box;
       display: flex;
       justify-content: center;
       align-items: center;
-      flex-basis: 0 0 auto;
+      flex: 0 0 auto;
+      height: var(--ca-top-bar-height);
       z-index: 2;
     }
 
@@ -35,6 +38,7 @@ export class GameScreen extends LitElement {
     }
 
     .content-outer-container {
+      height: calc(100vh - var(--ca-top-bar-height) - var(--ca-top-bar-gutter));
       border-bottom: var(--ca-border);
       box-shadow: var(--sl-shadow-small);
       display: flex;
@@ -52,12 +56,10 @@ export class GameScreen extends LitElement {
     }
 
     .side-bar-container {
-      width: 0;
-      display: flex;
       flex: 0 0 auto;
-      overflow: auto;
-      scrollbar-width: thin;
       box-sizing: border-box;
+      width: 0;
+      height: calc(100vh - var(--ca-top-bar-height) - var(--ca-top-bar-gutter));
     }
 
     .menu-bar-container {
@@ -67,9 +69,7 @@ export class GameScreen extends LitElement {
 
     .viewport-container {
       flex: 1 1 auto;
-      overflow: auto;
-      scrollbar-width: thin;
-      padding: var(--sl-spacing-small) var(--sl-spacing-medium);
+      height: calc(100vh - var(--ca-top-bar-height) - var(--ca-top-bar-gutter));
     }
 
     .message-log-bar-container {

@@ -33,9 +33,15 @@ export class ShareServerProgram extends BaseProgram {
   }
 
   perform(threads: number, usedRam: number): void {
-    const delta = this.calculateDelta(threads, usedRam, this._settingsState.updateInterval);
+    const moneyDelta = this.calculateMoneyDelta(threads, usedRam, this._settingsState.updateInterval);
+    const cityDevelopmentPointsDelta = this.calculateCityDevelopmentPointsDelta(
+      threads,
+      usedRam,
+      this._settingsState.updateInterval,
+    );
 
-    this._generalState.increaseMoney(delta);
+    this._generalState.increaseMoney(moneyDelta);
+    this._generalState.increaseCityDevelopmentPoints(cityDevelopmentPointsDelta);
   }
 
   removeEventListeners() {
@@ -48,14 +54,16 @@ export class ShareServerProgram extends BaseProgram {
   }
 
   buildDescriptionParametersObject(threads: number, usedRam: number) {
-    const delta = this.calculateDelta(threads, usedRam, MS_IN_SECOND);
+    const moneyDelta = this.calculateMoneyDelta(threads, usedRam, MS_IN_SECOND);
+    const cityDevelopmentPointsDelta = this.calculateCityDevelopmentPointsDelta(threads, usedRam, MS_IN_SECOND);
 
     return {
-      value: this.formatter.formatNumberLong(delta),
+      money: this.formatter.formatNumberLong(moneyDelta),
+      cityDevelopmentPoints: this.formatter.formatNumberLong(cityDevelopmentPointsDelta),
     };
   }
 
-  private calculateDelta(threads: number, usedRam: number, passedTime: number): number {
+  private calculateMoneyDelta(threads: number, usedRam: number, passedTime: number): number {
     const programData = programs[this.name];
 
     return (
@@ -64,6 +72,19 @@ export class ShareServerProgram extends BaseProgram {
       usedRam *
       calculatePow(this.level - 1, programData.income as IExponent) *
       Math.pow(programData.incomeQualityMultiplier, this.quality) *
+      calculatePow(this._mainframeHardwareState.performance, programData.performanceBoost as IExponent)
+    );
+  }
+
+  private calculateCityDevelopmentPointsDelta(threads: number, usedRam: number, passedTime: number): number {
+    const programData = programs[this.name];
+
+    return (
+      passedTime *
+      threads *
+      usedRam *
+      calculatePow(this.level - 1, programData.cityDevelopmentPoints as IExponent) *
+      Math.pow(programData.cityDevelopmentPointsQualityMultiplier, this.quality) *
       calculatePow(this._mainframeHardwareState.performance, programData.performanceBoost as IExponent)
     );
   }

@@ -27,6 +27,7 @@
     "lodash": "^4.17.21",
     "random-seedable": "^1.0.8",
     "reflect-metadata": "^0.2.2",
+    "scrollable-component": "^1.2.1",
     "uuid": "^9.0.1",
     "web-component-analyzer": "^2.0.0"
   },
