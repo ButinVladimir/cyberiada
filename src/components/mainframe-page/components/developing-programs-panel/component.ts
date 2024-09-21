@@ -10,6 +10,13 @@ export class MainframeDevelopingProgramsPanel extends LitElement {
       flex-direction: column;
     }
 
+    p.hint {
+      margin-top: 0;
+      margin-bottom: var(--sl-spacing-large);
+      color: var(--ca-hint-color);
+      font-size: var(--ca-hint-font-size);
+    }
+
     ca-developing-programs-list {
       margin-top: var(--sl-spacing-large);
     }
@@ -20,6 +27,12 @@ export class MainframeDevelopingProgramsPanel extends LitElement {
 
   render() {
     return html`
+      <p class="hint">
+        <intl-message label="ui:mainframe:developingPrograms:developingProgramsHint">
+          Program development hint.
+        </intl-message>
+      </p>
+
       <sl-button variant="primary" size="medium" @click=${this.handleStartProgramDevelopmentDialogOpen}>
         <intl-message label="ui:mainframe:developingPrograms:startProgramDevelopment">
           Start program development

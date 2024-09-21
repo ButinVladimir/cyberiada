@@ -4,15 +4,15 @@ gameStarted:
 gameSaved:
   name: Game saved
   message: Game has been saved
-performanceUpdated:
-  name: Mainframe performance updated
-  message: Mainframe performance has been updated to {{value.level}}
-coresUpdated:
-  name: Mainframe cores updated
-  message: Mainframe cores has been updated to {{value.level}}
-ramUpdated:
-  name: Mainframe ram updated
-  message: Mainframe RAM has been updated to {{value.level}}
+performanceUpgraded:
+  name: Mainframe performance upgraded
+  message: Mainframe performance has been upgraded to {{value.level}}
+coresUpgraded:
+  name: Mainframe cores upgraded
+  message: Mainframe cores has been upgraded to {{value.level}}
+ramUpgraded:
+  name: Mainframe ram upgraded
+  message: Mainframe RAM has been upgraded to {{value.level}}
 programPurchased:
   name: Program purchased
   message: Program $t(programs:{{value.programName}}:name) with level {{value.level}} and quality {{value.quality}} has been purchased

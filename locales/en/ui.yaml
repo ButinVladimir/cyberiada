@@ -13,6 +13,10 @@ pages:
 topBar:
   menu: Menu
   messageLog: Message log
+  gameSpeedButtons:
+    pause: Pause
+    playNormal: Play on normal speed (without offline time)
+    playFast: Play on fast speed (with offline time)
   offlineTime: Offline time
   money: Money
   cityLevel: City level, development points {{value}}
@@ -108,6 +112,9 @@ mainframe:
       completionSpeed: Completion speed is {{value}} PCP per second.
       completionSpeedScalable: Completion speed is instant.
   developingPrograms:
+    developingProgramsHint:
+      To develop a program, at least one company member should be assignined programming job and not have any primary tasks.
+      Alternatively, process to develop a program must be started and active.
     startProgramDevelopment: Start program development
     startDevelopment: Start development for {{value.developmentPoints}} PDP
     startProgramDevelopmentDialogHint: Select program type, level and quality to start developing it.

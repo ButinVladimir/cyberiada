@@ -28,9 +28,9 @@ export enum GameStateEvent {
 }
 
 export enum PurchaseEvent {
-  performanceUpdated = 'performanceUpdated',
-  coresUpdated = 'coresUpdated',
-  ramUpdated = 'ramUpdated',
+  performanceUpgraded = 'performanceUpgraded',
+  coresUpgraded = 'coresUpgraded',
+  ramUpgraded = 'ramUpgraded',
   programPurchased = 'programPurchased',
 }
 

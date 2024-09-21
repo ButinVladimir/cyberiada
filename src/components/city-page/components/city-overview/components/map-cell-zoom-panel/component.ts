@@ -1,6 +1,7 @@
 import { t } from 'i18next';
 import { LitElement, css, html } from 'lit';
-import { customElement, query, property, state } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
+import { createRef, ref } from 'lit/directives/ref.js';
 import SlRange from '@shoelace-style/shoelace/dist/components/range/range.component.js';
 import { MapCellZoomPanelController } from './controller';
 import { MapCellZoomChangeEvent } from './events';
@@ -56,8 +57,7 @@ export class MapCellZoomPanel extends LitElement {
   @state()
   private _showRange = false;
 
-  @query('sl-range')
-  private _rangeElement!: SlRange;
+  private _rangeElementRef = createRef<SlRange>();
 
   constructor() {
     super();
@@ -73,7 +73,15 @@ export class MapCellZoomPanel extends LitElement {
 
     return html`
       <div class=${rangeContainerClasses}>
-        <sl-range min="1" max="5" step="1" tooltip="bottom" value=${this.zoom} @sl-change=${this.handleChangeZoom}>
+        <sl-range
+          ${ref(this._rangeElementRef)}
+          min="1"
+          max="5"
+          step="1"
+          tooltip="bottom"
+          value=${this.zoom}
+          @sl-change=${this.handleChangeZoom}
+        >
         </sl-range>
       </div>
 
@@ -89,7 +97,9 @@ export class MapCellZoomPanel extends LitElement {
   }
 
   updated() {
-    this._rangeElement.tooltipFormatter = this.decimalNumberFormatter;
+    if (this._rangeElementRef.value) {
+      this._rangeElementRef.value.tooltipFormatter = this.decimalNumberFormatter;
+    }
   }
 
   private handleToggleZoomPanel = (event: Event) => {
@@ -101,7 +111,9 @@ export class MapCellZoomPanel extends LitElement {
   private handleChangeZoom = (event: Event) => {
     event.stopPropagation();
 
-    this.dispatchEvent(new MapCellZoomChangeEvent(this._rangeElement.value));
+    if (this._rangeElementRef.value) {
+      this.dispatchEvent(new MapCellZoomChangeEvent(this._rangeElementRef.value.value));
+    }
   };
 
   private decimalNumberFormatter = (value: number): string => {

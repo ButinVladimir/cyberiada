@@ -1,5 +1,6 @@
 import { LitElement, css, html } from 'lit';
-import { customElement, query, state } from 'lit/decorators.js';
+import { customElement, state } from 'lit/decorators.js';
+import { createRef, ref } from 'lit/directives/ref.js';
 import { SavefilePanelController } from './controller';
 
 @customElement('ca-savefile-panel')
@@ -20,8 +21,7 @@ export class SavefilePanel extends LitElement {
 
   private _savefilePanelController: SavefilePanelController;
 
-  @query('input#import-file', true)
-  private _importInput!: HTMLInputElement;
+  private _importInputRef = createRef<HTMLInputElement>();
 
   @state()
   private _isDeleteSaveDialogOpen = false;
@@ -34,7 +34,7 @@ export class SavefilePanel extends LitElement {
 
   render() {
     return html`
-      <input type="file" id="import-file" @change=${this.handleChangeImportSavefile} />
+      <input ${ref(this._importInputRef)} type="file" id="import-file" @change=${this.handleChangeImportSavefile} />
 
       <sl-button variant="primary" type="button" size="medium" @click=${this.handleSaveGame}>
         <intl-message label="ui:settings:saveGame"> Save game </intl-message>
@@ -70,13 +70,19 @@ export class SavefilePanel extends LitElement {
   private handleImportSavefile = (event: Event) => {
     event.stopPropagation();
 
-    this._importInput.click();
+    if (this._importInputRef.value) {
+      this._importInputRef.value.click();
+    }
   };
 
   private handleChangeImportSavefile = (event: Event) => {
     event.stopPropagation();
 
-    const importedSavefile = this._importInput.files?.item(0);
+    if (!this._importInputRef.value) {
+      return;
+    }
+
+    const importedSavefile = this._importInputRef.value.files?.item(0);
 
     if (importedSavefile) {
       this._savefilePanelController.importSavefile(importedSavefile);

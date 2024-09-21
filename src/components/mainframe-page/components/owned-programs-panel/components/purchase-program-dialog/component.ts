@@ -1,5 +1,6 @@
 import { LitElement, css, html } from 'lit';
-import { customElement, property, state, query } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
+import { createRef, ref } from 'lit/directives/ref.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.component.js';
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.component.js';
@@ -71,14 +72,11 @@ export class PurchaseProgramDialog extends LitElement {
 
   private _purchaseProgramDialogController: PurchaseProgramDialogController;
 
-  @query('sl-select[name="program"]')
-  private _programInput!: SlSelect;
+  private _programInputRef = createRef<SlSelect>();
 
-  @query('sl-input[name="level"]')
-  private _levelInput!: SlInput;
+  private _levelInputRef = createRef<SlInput>();
 
-  @query('sl-select[name="quality"]')
-  private _qualityInput!: SlSelect;
+  private _qualityInputRef = createRef<SlSelect>();
 
   @property({
     attribute: 'is-open',
@@ -136,7 +134,13 @@ export class PurchaseProgramDialog extends LitElement {
           </p>
 
           <div class="inputs-container">
-            <sl-select name="program" value=${this._programName ?? ''} hoist @sl-change=${this.handleProgramChange}>
+            <sl-select
+              ${ref(this._programInputRef)}
+              name="program"
+              value=${this._programName ?? ''}
+              hoist
+              @sl-change=${this.handleProgramChange}
+            >
               <span class="input-label" slot="label">
                 <intl-message label="ui:mainframe:program">Program</intl-message>
               </span>
@@ -150,6 +154,7 @@ export class PurchaseProgramDialog extends LitElement {
             </sl-select>
 
             <sl-input
+              ${ref(this._levelInputRef)}
               name="level"
               value=${this._level}
               type="number"
@@ -163,7 +168,13 @@ export class PurchaseProgramDialog extends LitElement {
               </span>
             </sl-input>
 
-            <sl-select name="quality" value=${this._quality} hoist @sl-change=${this.handleQualityChange}>
+            <sl-select
+              ${ref(this._qualityInputRef)}
+              name="quality"
+              value=${this._quality}
+              hoist
+              @sl-change=${this.handleQualityChange}
+            >
               <span class="input-label" slot="label">
                 <intl-message label="ui:mainframe:quality">Quality</intl-message>
               </span>
@@ -209,11 +220,19 @@ export class PurchaseProgramDialog extends LitElement {
   };
 
   private handleProgramChange = () => {
-    this._programName = this._programInput.value as ProgramName;
+    if (!this._programInputRef.value) {
+      return;
+    }
+
+    this._programName = this._programInputRef.value.value as ProgramName;
   };
 
   private handleLevelChange = () => {
-    let level = this._levelInput.valueAsNumber;
+    if (!this._levelInputRef.value) {
+      return;
+    }
+
+    let level = this._levelInputRef.value.valueAsNumber;
 
     if (level < 1) {
       level = 1;
@@ -224,11 +243,15 @@ export class PurchaseProgramDialog extends LitElement {
     }
 
     this._level = level;
-    this._levelInput.valueAsNumber = level;
+    this._levelInputRef.value.valueAsNumber = level;
   };
 
   private handleQualityChange = () => {
-    this._quality = +this._qualityInput.value;
+    if (!this._qualityInputRef.value) {
+      return;
+    }
+
+    this._quality = +this._qualityInputRef.value.value;
   };
 
   private handlePurchase = (event: Event) => {

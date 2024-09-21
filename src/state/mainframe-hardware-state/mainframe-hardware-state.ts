@@ -158,7 +158,7 @@ export class MainframeHardwareState implements IMainframeHardwareState {
 
   private handlePurchasePerformanceIncrease = (increase: number) => () => {
     this._performance += increase;
-    this._messageLogState.postMessage(PurchaseEvent.performanceUpdated, {
+    this._messageLogState.postMessage(PurchaseEvent.performanceUpgraded, {
       level: this._formatter.formatNumberDecimal(this._performance),
     });
     this.handlePostHardwareUpdate();
@@ -166,7 +166,7 @@ export class MainframeHardwareState implements IMainframeHardwareState {
 
   private handlePurchaseCoresIncrease = (increase: number) => () => {
     this._cores += increase;
-    this._messageLogState.postMessage(PurchaseEvent.coresUpdated, {
+    this._messageLogState.postMessage(PurchaseEvent.coresUpgraded, {
       level: this._formatter.formatNumberDecimal(this._cores),
     });
     this.handlePostHardwareUpdate();
@@ -174,7 +174,7 @@ export class MainframeHardwareState implements IMainframeHardwareState {
 
   private handlePurchaseRamIncrease = (increase: number) => () => {
     this._ram += increase;
-    this._messageLogState.postMessage(PurchaseEvent.ramUpdated, {
+    this._messageLogState.postMessage(PurchaseEvent.ramUpgraded, {
       level: this._formatter.formatNumberDecimal(this._ram),
     });
     this.handlePostHardwareUpdate();

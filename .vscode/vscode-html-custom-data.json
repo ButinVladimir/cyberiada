@@ -23,7 +23,7 @@
     },
     {
       "name": "ca-city-map-canvas",
-      "description": "Attributes:\n\n  * `map-cell-zoom` {`number`} - \n\n  * `selected-district` {`number | undefined`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_canvas` {`HTMLCanvasElement`} - \n\n  * `mapCellZoom` {`number`} - \n\n  * `selectedDistrict` {`number | undefined`} - \n\n  * `cellSizeWithBorder` {`number`} - \n\n  * `map` {`number[][]`} - \n\n  * `handleMouseLeave` - \n\n  * `handleMouseMove` - \n\n  * `_cityMapController` {`CityMapController`} - ",
+      "description": "Attributes:\n\n  * `map-cell-zoom` {`number`} - \n\n  * `selected-district` {`number | undefined`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_canvasRef` {`Ref<HTMLCanvasElement>`} - \n\n  * `mapCellZoom` {`number`} - \n\n  * `selectedDistrict` {`number | undefined`} - \n\n  * `cellSizeWithBorder` {`number`} - \n\n  * `map` {`number[][]`} - \n\n  * `handleMouseLeave` - \n\n  * `handleMouseMove` - \n\n  * `_cityMapController` {`CityMapController`} - ",
       "attributes": [
         {
           "name": "map-cell-zoom",
@@ -38,7 +38,7 @@
     },
     {
       "name": "ca-map-cell-zoom-panel",
-      "description": "Attributes:\n\n  * `zoom` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `zoom` {`number`} - \n\n  * `_showRange` {`boolean`} - \n\n  * `_rangeElement` {`SlRange`} - \n\n  * `handleToggleZoomPanel` - \n\n  * `handleChangeZoom` - \n\n  * `decimalNumberFormatter` - \n\n  * `_mapCellZoomPanelController` {`MapCellZoomPanelController`} - ",
+      "description": "Attributes:\n\n  * `zoom` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `zoom` {`number`} - \n\n  * `_showRange` {`boolean`} - \n\n  * `_rangeElementRef` {`Ref<SlRange>`} - \n\n  * `handleToggleZoomPanel` - \n\n  * `handleChangeZoom` - \n\n  * `decimalNumberFormatter` - \n\n  * `_mapCellZoomPanelController` {`MapCellZoomPanelController`} - ",
       "attributes": [
         {
           "name": "zoom",
@@ -94,7 +94,7 @@
     },
     {
       "name": "ca-message-log-content",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderMessage` - \n\n  * `_messageLogContentController` {`MessageLogContentController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `SCROLL_EPS` {`number`} - \n\n  * `_scrollableComponentRef` {`Ref<ScrollableComponentElement>`} - \n\n  * `_scrollSticky` {`boolean`} - \n\n  * `renderMessage` - \n\n  * `handleScroll` - \n\n  * `_messageLogContentController` {`MessageLogContentController`} - ",
       "attributes": []
     },
     {
@@ -164,7 +164,7 @@
     },
     {
       "name": "ca-start-program-development-dialog",
-      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_programInput` {`SlSelect`} - \n\n  * `_levelInput` {`SlInput`} - \n\n  * `_qualityInput` {`SlSelect`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `_programName` - \n\n  * `_level` {`number`} - \n\n  * `_quality` {`number`} - \n\n  * `handleClose` - \n\n  * `handleProgramChange` - \n\n  * `handleLevelChange` - \n\n  * `handleQualityChange` - \n\n  * `handlePurchase` - \n\n  * `_startProgramDevelopmentDialogController` {`StartProgramDevelopmentDialogController`} - ",
+      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_programInputRef` {`Ref<SlSelect>`} - \n\n  * `_levelInputRef` {`Ref<SlInput>`} - \n\n  * `_qualityInputRef` {`Ref<SlSelect>`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `_programName` - \n\n  * `_level` {`number`} - \n\n  * `_quality` {`number`} - \n\n  * `handleClose` - \n\n  * `handleProgramChange` - \n\n  * `handleLevelChange` - \n\n  * `handleQualityChange` - \n\n  * `handlePurchase` - \n\n  * `_startProgramDevelopmentDialogController` {`StartProgramDevelopmentDialogController`} - ",
       "attributes": [
         {
           "name": "is-open",
@@ -255,7 +255,7 @@
     },
     {
       "name": "ca-purchase-program-dialog",
-      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_programInput` {`SlSelect`} - \n\n  * `_levelInput` {`SlInput`} - \n\n  * `_qualityInput` {`SlSelect`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `_programName` - \n\n  * `_level` {`number`} - \n\n  * `_quality` {`number`} - \n\n  * `handleClose` - \n\n  * `handleProgramChange` - \n\n  * `handleLevelChange` - \n\n  * `handleQualityChange` - \n\n  * `handlePurchase` - \n\n  * `_purchaseProgramDialogController` {`PurchaseProgramDialogController`} - ",
+      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_programInputRef` {`Ref<SlSelect>`} - \n\n  * `_levelInputRef` {`Ref<SlInput>`} - \n\n  * `_qualityInputRef` {`Ref<SlSelect>`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `_programName` - \n\n  * `_level` {`number`} - \n\n  * `_quality` {`number`} - \n\n  * `handleClose` - \n\n  * `handleProgramChange` - \n\n  * `handleLevelChange` - \n\n  * `handleQualityChange` - \n\n  * `handlePurchase` - \n\n  * `_purchaseProgramDialogController` {`PurchaseProgramDialogController`} - ",
       "attributes": [
         {
           "name": "is-open",
@@ -306,7 +306,7 @@
     },
     {
       "name": "ca-start-process-dialog",
-      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_programInput` {`SlSelect`} - \n\n  * `_threadsInput` {`SlInput`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `_programName` - \n\n  * `_threads` {`number`} - \n\n  * `handleClose` - \n\n  * `handleProgramChange` - \n\n  * `handleThreadsChange` - \n\n  * `handleStartProcess` - \n\n  * `formatProgramSelectItem` - \n\n  * `_startProcessDialogController` {`StartProcessDialogController`} - ",
+      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_programInputRef` {`Ref<SlSelect>`} - \n\n  * `_threadsInputRef` {`Ref<SlInput>`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `_programName` - \n\n  * `_threads` {`number`} - \n\n  * `_maxThreads` {`number`} - \n\n  * `handleClose` - \n\n  * `handleProgramChange` - \n\n  * `handleThreadsChange` - \n\n  * `handleStartProcess` - \n\n  * `formatProgramSelectItem` - \n\n  * `_startProcessDialogController` {`StartProcessDialogController`} - ",
       "attributes": [
         {
           "name": "is-open",
@@ -344,7 +344,7 @@
     },
     {
       "name": "ca-savefile-panel",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_importInput` {`HTMLInputElement`} - \n\n  * `_isDeleteSaveDialogOpen` {`boolean`} - \n\n  * `handleSaveGame` - \n\n  * `handleImportSavefile` - \n\n  * `handleChangeImportSavefile` - \n\n  * `handleExportSavefile` - \n\n  * `handleOpenDeleteSaveDataDialog` - \n\n  * `handleCloseDeleteSaveDataDialog` - \n\n  * `handleDeleteSaveData` - \n\n  * `_savefilePanelController` {`SavefilePanelController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_importInputRef` {`Ref<HTMLInputElement>`} - \n\n  * `_isDeleteSaveDialogOpen` {`boolean`} - \n\n  * `handleSaveGame` - \n\n  * `handleImportSavefile` - \n\n  * `handleChangeImportSavefile` - \n\n  * `handleExportSavefile` - \n\n  * `handleOpenDeleteSaveDataDialog` - \n\n  * `handleCloseDeleteSaveDataDialog` - \n\n  * `handleDeleteSaveData` - \n\n  * `_savefilePanelController` {`SavefilePanelController`} - ",
       "attributes": []
     },
     {
@@ -360,7 +360,7 @@
     },
     {
       "name": "ca-settings-form",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_languageInput` {`SlSelect | undefined`} - \n\n  * `_themeInput` {`SlSelect | undefined`} - \n\n  * `_messageLogSizeInput` {`SlInput | undefined`} - \n\n  * `_updateIntervalInput` {`SlRange | undefined`} - \n\n  * `_autosaveEnabledSwitch` {`SlSwitch | undefined`} - \n\n  * `_autosaveIntervalInput` {`SlRange | undefined`} - \n\n  * `_maxTicksPerUpdateInput` {`SlRange | undefined`} - \n\n  * `_longNumberFormatInput` {`SlSelect | undefined`} - \n\n  * `_isSaving` {`boolean`} - \n\n  * `startSaving` - \n\n  * `stopSaving` - \n\n  * `handleChangeLanguage` - \n\n  * `handleChangeTheme` - \n\n  * `handleChangeMessageLogSize` - \n\n  * `handleChangeUpdateInterval` - \n\n  * `handleChangeAutosaveEnabled` - \n\n  * `handleChangeAutosaveInterval` - \n\n  * `handleChangeMaxTicksPerUpdate` - \n\n  * `handleChangeLongNumberFormat` - \n\n  * `autosaveIntervalFormatter` - \n\n  * `decimalNumberFormatter` - \n\n  * `_settingsFormController` {`SettingsFormController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_languageInputRef` {`Ref<SlSelect>`} - \n\n  * `_themeInputRef` {`Ref<SlSelect>`} - \n\n  * `_messageLogSizeInputRef` {`Ref<SlInput>`} - \n\n  * `_updateIntervalInputRef` {`Ref<SlRange>`} - \n\n  * `_autosaveEnabledSwitchRef` {`Ref<SlSwitch>`} - \n\n  * `_autosaveIntervalInputRef` {`Ref<SlRange>`} - \n\n  * `_maxTicksPerUpdateInputRef` {`Ref<SlRange>`} - \n\n  * `_longNumberFormatInputRef` {`Ref<SlSelect>`} - \n\n  * `_isSaving` {`boolean`} - \n\n  * `startSaving` - \n\n  * `stopSaving` - \n\n  * `handleChangeLanguage` - \n\n  * `handleChangeTheme` - \n\n  * `handleChangeMessageLogSize` - \n\n  * `handleChangeUpdateInterval` - \n\n  * `handleChangeAutosaveEnabled` - \n\n  * `handleChangeAutosaveInterval` - \n\n  * `handleChangeMaxTicksPerUpdate` - \n\n  * `handleChangeLongNumberFormat` - \n\n  * `autosaveIntervalFormatter` - \n\n  * `decimalNumberFormatter` - \n\n  * `_settingsFormController` {`SettingsFormController`} - ",
       "attributes": []
     }
   ],

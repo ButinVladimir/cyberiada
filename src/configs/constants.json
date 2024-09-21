@@ -11,9 +11,9 @@
     "messageFilterEvents": [
       "gameStarted",
       "gameSaved",
-      "performanceUpdated",
-      "coresUpdated",
-      "ramUpdated",
+      "performanceUpgraded",
+      "coresUpgraded",
+      "ramUpgraded",
       "programPurchased",
       "processStarted",
       "processFinished",

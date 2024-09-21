@@ -1,5 +1,6 @@
 import { LitElement, css, html } from 'lit';
-import { customElement, query, property } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
+import { createRef, ref } from 'lit/directives/ref.js';
 import { CityMapDistrictSelectEvent } from './events';
 import { CityMapController } from './controller';
 
@@ -13,8 +14,7 @@ export class CityMapCanvas extends LitElement {
 
   private _cityMapController: CityMapController;
 
-  @query('canvas', true)
-  private _canvas!: HTMLCanvasElement;
+  private _canvasRef = createRef<HTMLCanvasElement>();
 
   @property({
     attribute: 'map-cell-zoom',
@@ -40,7 +40,13 @@ export class CityMapCanvas extends LitElement {
     const height = this._cityMapController.mapHeight * cellSizeWithBorder;
 
     return html`
-      <canvas width=${width} height=${height} @mouseleave=${this.handleMouseLeave} @mousemove=${this.handleMouseMove}>
+      <canvas
+        ${ref(this._canvasRef)}
+        width=${width}
+        height=${height}
+        @mouseleave=${this.handleMouseLeave}
+        @mousemove=${this.handleMouseMove}
+      >
         Canvas is not supported
       </canvas>
     `;
@@ -63,14 +69,18 @@ export class CityMapCanvas extends LitElement {
   }
 
   private renderCanvas() {
-    const context = this._canvas.getContext('2d');
+    if (!this._canvasRef.value) {
+      return;
+    }
+
+    const context = this._canvasRef.value.getContext('2d');
     if (!context) {
       throw new Error('Canvas context is not supported');
     }
 
     const offscreenCanvas = document.createElement('canvas');
-    offscreenCanvas.width = this._canvas.width;
-    offscreenCanvas.height = this._canvas.height;
+    offscreenCanvas.width = this._canvasRef.value.width;
+    offscreenCanvas.height = this._canvasRef.value.height;
     const offscreenCanvasContext = offscreenCanvas.getContext('2d');
     if (!offscreenCanvasContext) {
       throw new Error('Canvas context is not supported');

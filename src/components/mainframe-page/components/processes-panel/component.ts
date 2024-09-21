@@ -47,6 +47,7 @@ export class MainframeHardwarePanel extends LitElement {
       <p class="hint">
         <intl-message label="ui:mainframe:processes:processesHint"> Start process hint. </intl-message>
       </p>
+
       <div class="top-container">
         <sl-button variant="primary" size="medium" @click=${this.handleStartProcessDialogOpen}>
           <intl-message label="ui:mainframe:processes:startProcess"> Purchase a program </intl-message>

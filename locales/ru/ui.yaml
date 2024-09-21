@@ -15,11 +15,11 @@ topBar:
   messageLog: Сообщения
   gameSpeedButtons:
     pause: Пауза
-    playNormal: Играть на нормальной скорости (без бонусного времени)
-    playFast: Играть на быстрой скорости (с бонусным временем)
+    playNormal: Играть на нормальной скорости (без оффлайн времени)
+    playFast: Играть на быстрой скорости (с оффлайн временем)
   offlineTime: Оффлайн время
   money: Деньги
-  cityLevel: Уровень города
+  cityLevel: Уровень города, очки разработки {{value}}
 messageLog:
   messageLog: Сообщения
   clearMessages: Удалить сообщения
@@ -36,6 +36,7 @@ settings:
   autosaveInterval: Интервал автосохранения (сек)
   maxTicksPerUpdate: Максимальное количество тиков за обновление
   maxTicksPerUpdateHint: Действительно только тогда, когда скорость игры быстрая
+  longNumberFormat: Формат больших чисел
   languages:
     en: Английский
     ru: Русский
@@ -65,8 +66,8 @@ mainframe:
   threads: Потоки
   programDescription:
     cost: Стоит {{value.cost}} для покупки или {{value.developmentPoints}} ОРП для разработки.
-    requirements: Требует {{value.ram}} ПЗУ и до {{value.cores}} ядер для запуска {{value.threads}} потоков и {{value.completionPoints}} ОВП для завершения процесса.
-    requirementsScalable: Масштабируется и использует все неиспользуемые ПЗУ и ядра. Выполняется каждый тик.
+    requirements: Требует {{value.ram}} памяти и до {{value.cores}} ядер для запуска {{value.threads}} потоков и {{value.completionPoints}} ОВП для завершения процесса.
+    requirementsScalable: Масштабируется и использует все неиспользуемые ядра и память. Выполняется каждый тик.
   tabs:
     processes: Процессы
     hardware: Оборудование
@@ -105,12 +106,15 @@ mainframe:
     processDelete: Удалить процесс
     autoscalable: Автомасштабируется
     availableCores: 'Доступные ядра: {{value}}'
-    availableRam: 'Доступная ПЗУ: {{value}}'
+    availableRam: 'Доступная память: {{value}}'
     processDescription:
       usesCores: Использует {{value}} ядер.
       completionSpeed: Скорость выполнения - {{value}} ОВП в секунду.
       completionSpeedScalable: Скорость выполнения мгновенна.
   developingPrograms:
+    developingProgramsHint:
+      Чтобы разработать программу, хотя бы один член компании должен работать программистом и не иметь основных задач.
+      Или, как вариант, процесс для разработки программ должен быть начат и активен.
     startProgramDevelopment: Начать разработку программы
     startDevelopment: Начать разработку программы за {{value.developmentPoints}} ОРП
     startProgramDevelopmentDialogHint: Выберите тип программы, уровень и качество, чтобы начать её разработку.

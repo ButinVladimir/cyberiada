@@ -51,7 +51,7 @@ export class MessageLogBar extends LitElement {
     ca-message-log-content {
       flex: 1 1 auto;
       width: 100%;
-      height: calc(100vh - var(--ca-message-log-top-bar) - var(--ca-top-bar-height) - var(--ca-top-bar-gutter));
+      height: calc(100vh - var(--ca-message-log-top-bar) - var(--ca-top-bar-height));
     }
   `;
 

@@ -1,5 +1,6 @@
 import { LitElement, css, html } from 'lit';
-import { customElement, property, state, query } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
+import { createRef, ref } from 'lit/directives/ref.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.component.js';
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.component.js';
@@ -70,11 +71,9 @@ export class StartProcessDialog extends LitElement {
 
   private _startProcessDialogController: StartProcessDialogController;
 
-  @query('sl-select[name="program"]')
-  private _programInput!: SlSelect;
+  private _programInputRef = createRef<SlSelect>();
 
-  @query('sl-input[name="threads"]')
-  private _threadsInput!: SlInput;
+  private _threadsInputRef = createRef<SlInput>();
 
   @property({
     attribute: 'is-open',
@@ -87,6 +86,9 @@ export class StartProcessDialog extends LitElement {
 
   @state()
   private _threads = 1;
+
+  @state()
+  private _maxThreads = 1;
 
   constructor() {
     super();
@@ -103,19 +105,13 @@ export class StartProcessDialog extends LitElement {
 
   render() {
     const program = this._programName ? this._startProcessDialogController.getProgram(this._programName) : undefined;
-    const availableRam = this._startProcessDialogController.getAvailableRamForProgram(this._programName);
 
     const threads = program?.isAutoscalable ? this._startProcessDialogController.cores : this._threads;
-    let maxThreads = 1;
-
-    if (program && !program.isAutoscalable) {
-      maxThreads = Math.max(Math.floor(availableRam / program.ram), 1);
-    }
 
     const threadsInputDisabled = !(program && !program.isAutoscalable);
     const submitButtonDisabled = !(
       program &&
-      (program.isAutoscalable || (this._threads >= 1 && this._threads <= maxThreads))
+      (program.isAutoscalable || (this._threads >= 1 && this._threads <= this._maxThreads))
     );
 
     return html`
@@ -130,7 +126,9 @@ export class StartProcessDialog extends LitElement {
           </p>
 
           <div class="inputs-container">
-            <sl-select name="program" value=${this._programName ?? ''} hoist @sl-change=${this.handleProgramChange}>
+            <sl-select
+            ${ref(this._programInputRef)}
+             name="program" value=${this._programName ?? ''} hoist @sl-change=${this.handleProgramChange}>
               <span class="input-label" slot="label">
                 <intl-message label="ui:mainframe:program">Program</intl-message>
               </span>
@@ -139,11 +137,12 @@ export class StartProcessDialog extends LitElement {
             </sl-select>
 
             <sl-input
+            ${ref(this._threadsInputRef)}
               name="threads"
               value=${this._threads}
               type="number"
               min="1"
-              max=${maxThreads}
+              max=${this._maxThreads}
               step="1"
               ?disabled=${threadsInputDisabled}
               @sl-change=${this.handleThreadsChange}
@@ -183,18 +182,39 @@ export class StartProcessDialog extends LitElement {
   };
 
   private handleProgramChange = () => {
-    this._programName = this._programInput.value as ProgramName;
+    if (!this._programInputRef.value) {
+      return;
+    }
+
+    this._programName = this._programInputRef.value.value as ProgramName;
+
+    const program = this._startProcessDialogController.getProgram(this._programName);
+    const availableRam = this._startProcessDialogController.getAvailableRamForProgram(this._programName);
+
+    this._maxThreads = 1;
+
+    if (program && !program.isAutoscalable) {
+      this._maxThreads = Math.max(Math.floor(availableRam / program.ram), 1);
+    }
   };
 
   private handleThreadsChange = () => {
-    let threads = this._threadsInput.valueAsNumber;
+    if (!this._threadsInputRef.value) {
+      return;
+    }
+
+    let threads = this._threadsInputRef.value.valueAsNumber;
 
     if (threads < 1) {
       threads = 1;
     }
 
+    if (threads > this._maxThreads) {
+      threads = this._maxThreads;
+    }
+
     this._threads = threads;
-    this._threadsInput.valueAsNumber = threads;
+    this._threadsInputRef.value.valueAsNumber = threads;
   };
 
   private handleStartProcess = (event: Event) => {
