@@ -8,7 +8,7 @@
     "maxTicksPerUpdate": 5,
     "longNumberFormat": "builtIn",
     "mapSize": 3,
-    "messageFilterEvents": [
+    "messageEvents": [
       "gameStarted",
       "gameSaved",
       "performanceUpgraded",
@@ -21,6 +21,15 @@
       "programDevelopmentStarted",
       "programDevelopmentFinished",
       "programDevelopmentAborted"
+    ],
+    "gameAlerts": [
+      "saveImport",
+      "saveDelete",
+      "purchaseProgramOverwrite",
+      "developingProgramDelete",
+      "developingProgramOverwrite",
+      "processDelete",
+      "processOverwrite"
     ]
   },
   "defaultScenarioSettings": {

@@ -43,7 +43,22 @@ export enum ProgramsEvent {
   programDevelopmentAborted = 'programDevelopmentAborted',
 }
 
-export type MessageFilterEvent = GameStateEvent | PurchaseEvent | ProgramsEvent;
+export type MessageEvent = GameStateEvent | PurchaseEvent | ProgramsEvent;
+
+export enum GameStateAlert {
+  saveImport = 'saveImport',
+  saveDelete = 'saveDelete',
+}
+
+export enum ProgramAlert {
+  purchaseProgramOverwrite = 'purchaseProgramOverwrite',
+  developingProgramDelete = 'developingProgramDelete',
+  developingProgramOverwrite = 'developingProgramOverwrite',
+  processDelete = 'processDelete',
+  processOverwrite = 'processOverwrite',
+}
+
+export type GameAlert = GameStateAlert | ProgramAlert;
 
 export enum LongNumberFormat {
   builtIn = 'builtIn',

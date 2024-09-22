@@ -22,7 +22,7 @@ export class MessageLogState implements IMessageLogState {
   }
 
   postMessage(event: GameStateEvent, parameters?: Record<string, any>) {
-    if (!this._settingsState.isMessageFilterEventEnabled(event)) {
+    if (!this._settingsState.isMessageEventEnabled(event)) {
       return;
     }
 

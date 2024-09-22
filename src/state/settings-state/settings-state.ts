@@ -1,7 +1,7 @@
 import { injectable } from 'inversify';
 import i18n from 'i18next';
 import { EventEmitter } from 'eventemitter3';
-import { Language, LongNumberFormat, MessageFilterEvent, Theme } from '@shared/types';
+import { GameAlert, Language, LongNumberFormat, MessageEvent, Theme } from '@shared/types';
 import themes from '@configs/themes.json';
 import constants from '@configs/constants.json';
 import { ISettingsState, ISettingsSerializedState } from './interfaces';
@@ -18,7 +18,8 @@ export class SettingsState implements ISettingsState {
   private _maxTicksPerUpdate: number;
   private _longNumberFormat: LongNumberFormat;
   private _mapCellSize: number;
-  private _enabledMessageFilterEvents: Set<MessageFilterEvent>;
+  private _enabledMessageEvents: Set<MessageEvent>;
+  private _enabledGameAlerts: Set<GameAlert>;
 
   private readonly _stateEventEmitter: EventEmitter;
 
@@ -32,7 +33,8 @@ export class SettingsState implements ISettingsState {
     this._maxTicksPerUpdate = constants.defaultSettings.maxTicksPerUpdate;
     this._longNumberFormat = constants.defaultSettings.longNumberFormat as LongNumberFormat;
     this._mapCellSize = constants.defaultSettings.mapSize;
-    this._enabledMessageFilterEvents = new Set<MessageFilterEvent>();
+    this._enabledMessageEvents = new Set<MessageEvent>();
+    this._enabledGameAlerts = new Set<GameAlert>();
 
     this._stateEventEmitter = new EventEmitter();
   }
@@ -73,8 +75,12 @@ export class SettingsState implements ISettingsState {
     return this._mapCellSize;
   }
 
-  isMessageFilterEventEnabled(event: MessageFilterEvent): boolean {
-    return this._enabledMessageFilterEvents.has(event);
+  isMessageEventEnabled(event: MessageEvent): boolean {
+    return this._enabledMessageEvents.has(event);
+  }
+
+  isGameAlertEnabled(gameAlert: GameAlert): boolean {
+    return this._enabledGameAlerts.has(gameAlert);
   }
 
   async setLanguage(language: Language): Promise<void> {
@@ -123,11 +129,19 @@ export class SettingsState implements ISettingsState {
     this._mapCellSize = mapCellSize;
   }
 
-  toggleMessageFilterEvent(event: MessageFilterEvent, enabled: boolean) {
+  toggleMessageEvent(event: MessageEvent, enabled: boolean) {
     if (enabled) {
-      this._enabledMessageFilterEvents.add(event);
+      this._enabledMessageEvents.add(event);
     } else {
-      this._enabledMessageFilterEvents.delete(event);
+      this._enabledMessageEvents.delete(event);
+    }
+  }
+
+  toggleGameAlert(gameAlert: GameAlert, enabled: boolean) {
+    if (enabled) {
+      this._enabledGameAlerts.add(gameAlert);
+    } else {
+      this._enabledGameAlerts.delete(gameAlert);
     }
   }
 
@@ -142,7 +156,8 @@ export class SettingsState implements ISettingsState {
     this.setAutosaveInterval(constants.defaultSettings.autosaveInterval);
     this.setLongNumberFormat(constants.defaultSettings.longNumberFormat as LongNumberFormat);
     this.setMapCellSize(constants.defaultSettings.mapSize);
-    this.deserializeMessageFilter(constants.defaultSettings.messageFilterEvents as MessageFilterEvent[]);
+    this.deserializeMessageEvents(constants.defaultSettings.messageEvents as MessageEvent[]);
+    this.deserializeGameAlerts(constants.defaultSettings.gameAlerts as GameAlert[]);
   }
 
   async deserialize(serializedState: ISettingsSerializedState): Promise<void> {
@@ -155,7 +170,8 @@ export class SettingsState implements ISettingsState {
     this.setMaxTicksPerUpdate(serializedState.maxTicksPerUpdate);
     this.setLongNumberFormat(serializedState.longNumberFormat);
     this.setMapCellSize(serializedState.mapCellSize);
-    this.deserializeMessageFilter(serializedState.enabledMessageFilterEvents);
+    this.deserializeMessageEvents(serializedState.enabledMessageEvents);
+    this.deserializeGameAlerts(serializedState.enabledGameAlerts);
   }
 
   serialize(): ISettingsSerializedState {
@@ -169,7 +185,8 @@ export class SettingsState implements ISettingsState {
       maxTicksPerUpdate: this.maxTicksPerUpdate,
       longNumberFormat: this.longNumberFormat,
       mapCellSize: this.mapCellSize,
-      enabledMessageFilterEvents: this.serializeMessageFilter(),
+      enabledMessageEvents: this.serializeMessageEvents(),
+      enabledGameAlerts: this.serializeGameAlerts(),
     };
   }
 
@@ -181,12 +198,21 @@ export class SettingsState implements ISettingsState {
     this._stateEventEmitter.removeListener(eventName, handler);
   }
 
-  private serializeMessageFilter(): MessageFilterEvent[] {
-    return Array.from(this._enabledMessageFilterEvents.values());
+  private serializeMessageEvents(): MessageEvent[] {
+    return Array.from(this._enabledMessageEvents.values());
   }
 
-  private deserializeMessageFilter(events: MessageFilterEvent[]) {
-    this._enabledMessageFilterEvents.clear();
-    events.forEach((event) => this._enabledMessageFilterEvents.add(event));
+  private deserializeMessageEvents(events: MessageEvent[]) {
+    this._enabledMessageEvents.clear();
+    events.forEach((event) => this._enabledMessageEvents.add(event));
+  }
+
+  private serializeGameAlerts(): GameAlert[] {
+    return Array.from(this._enabledGameAlerts.values());
+  }
+
+  private deserializeGameAlerts(gameAlerts: GameAlert[]) {
+    this._enabledGameAlerts.clear();
+    gameAlerts.forEach((gameAlert) => this._enabledGameAlerts.add(gameAlert));
   }
 }

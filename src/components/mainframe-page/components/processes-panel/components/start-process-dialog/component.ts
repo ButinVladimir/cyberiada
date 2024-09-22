@@ -6,7 +6,7 @@ import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.com
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.component.js';
 import { ProgramName } from '@state/progam-factory/types';
 import { IProgram } from '@state/progam-factory/interfaces/program';
-import { StartProcessDialogClose } from './events';
+import { StartProcessDialogCloseEvent } from './events';
 import { StartProcessDialogController } from './controller';
 
 @customElement('ca-start-process-dialog')
@@ -178,7 +178,7 @@ export class StartProcessDialog extends LitElement {
     event.preventDefault();
     event.stopPropagation();
 
-    this.dispatchEvent(new StartProcessDialogClose());
+    this.dispatchEvent(new StartProcessDialogCloseEvent());
   };
 
   private handleProgramChange = () => {
@@ -225,7 +225,7 @@ export class StartProcessDialog extends LitElement {
       const isStarted = this._startProcessDialogController.startProcess(this._programName, this._threads);
 
       if (isStarted) {
-        this.dispatchEvent(new StartProcessDialogClose());
+        this.dispatchEvent(new StartProcessDialogCloseEvent());
       }
     }
   };

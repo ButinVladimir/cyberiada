@@ -6,7 +6,7 @@ import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.com
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.component.js';
 import { PROGRAMS } from '@state/progam-factory/constants';
 import { ProgramName } from '@state/progam-factory/types';
-import { StartProgramDevelopmentDialogClose } from './events';
+import { StartProgramDevelopmentDialogCloseEvent } from './events';
 import { QUALITIES } from '@shared/constants';
 import { StartProgramDevelopmentDialogController } from './controller';
 
@@ -221,7 +221,7 @@ export class StartProgramDevelopmentDialog extends LitElement {
     event.preventDefault();
     event.stopPropagation();
 
-    this.dispatchEvent(new StartProgramDevelopmentDialogClose());
+    this.dispatchEvent(new StartProgramDevelopmentDialogCloseEvent());
   };
 
   private handleProgramChange = () => {
@@ -274,7 +274,7 @@ export class StartProgramDevelopmentDialog extends LitElement {
     );
 
     if (hasStarted) {
-      this.dispatchEvent(new StartProgramDevelopmentDialogClose());
+      this.dispatchEvent(new StartProgramDevelopmentDialogCloseEvent());
     }
   };
 }

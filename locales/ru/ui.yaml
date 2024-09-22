@@ -23,8 +23,6 @@ topBar:
 messageLog:
   messageLog: Сообщения
   clearMessages: Удалить сообщения
-  messageFilter: Фильтр сообщений
-  messageFilterHint: Включите события в фильтре, чтобы получать сообщения о них.
 settings:
   settings: Настройки
   language: Язык
@@ -50,7 +48,10 @@ settings:
   importSavefile: Импорт сохранения
   exportSavefile: Экспорт сохранения
   deleteSaveData: Удалить сохраненные данные
-  deleteSaveDataAlert: Вы уверены, что хотите удалить сохраненные данные? Вы не сможете отменить эту операцию в дальнейшем без экспорта сохранения.
+  messageFilter: Фильтр сообщений
+  messageFilterHint: Включите события в фильтре, чтобы получать сообщения о них.
+  alertFilter: Фильтр предупреждений
+  alertFilterHint: Включите предупреждения в фильтре, чтобы они появлялись, когда соответствующее события произошли.
 city:
   cityOverview:
     title: Обзор города

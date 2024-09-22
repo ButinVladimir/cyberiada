@@ -1,6 +1,6 @@
 import { t } from 'i18next';
 import { LitElement, html, css } from 'lit';
-import { customElement, state } from 'lit/decorators.js';
+import { customElement } from 'lit/decorators.js';
 import { MessageLogBarController } from './controller';
 
 @customElement('ca-message-log-bar')
@@ -63,9 +63,6 @@ export class MessageLogBar extends LitElement {
     this._messageLogBarController = new MessageLogBarController(this);
   }
 
-  @state()
-  private _isMessageFilterOpen = false;
-
   render() {
     return html`
       <div class="title-bar">
@@ -82,39 +79,11 @@ export class MessageLogBar extends LitElement {
           @click=${this.handleClearMessages}
         >
         </sl-icon-button>
-
-        <sl-icon-button
-          id="message-filter-btn"
-          name="gear"
-          label=${t('messageLog.messageFilter', { ns: 'ui' })}
-          @click=${this.handleMessageFilterDialogOpen}
-        >
-        </sl-icon-button>
-
-        <ca-message-filter-dialog
-          ?is-open=${this._isMessageFilterOpen}
-          @message-filter-dialog-close=${this.handleMessageFilterDialogClose}
-        >
-        </ca-message-filter-dialog>
       </div>
 
       <ca-message-log-content></ca-message-log-content>
     `;
   }
-
-  private handleMessageFilterDialogOpen = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
-    this._isMessageFilterOpen = true;
-  };
-
-  private handleMessageFilterDialogClose = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
-    this._isMessageFilterOpen = false;
-  };
 
   private handleClearMessages = (event: Event) => {
     event.preventDefault();

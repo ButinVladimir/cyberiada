@@ -2,16 +2,16 @@ import { LitElement, TemplateResult, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import SlCheckbox from '@shoelace-style/shoelace/dist/components/checkbox/checkbox.component.js';
-import { GAME_STATE_EVENTS, PURCHASE_EVENTS, PROGRAM_EVENTS } from '@shared/constants';
-import { MessageFilterEvent } from '@shared/types';
-import { MessageFilterDialogClose } from './events';
-import { MessageFilterDialogController } from './controller';
+import { GAME_STATE_ALERTS, PROGRAM_ALERTS } from '@shared/constants';
+import { GameAlert } from '@shared/types';
+import { AlertFilterDialogCloseEvent } from './events';
+import { AlertFilterDialogController } from './controller';
 
-@customElement('ca-message-filter-dialog')
-export class MessageFilterDialog extends LitElement {
+@customElement('ca-alert-filter-dialog')
+export class AlertFilterDialog extends LitElement {
   static styles = css`
     sl-dialog {
-      --width: 40rem;
+      --width: 50rem;
     }
 
     sl-dialog::part(body) {
@@ -51,7 +51,7 @@ export class MessageFilterDialog extends LitElement {
     }
   `;
 
-  private _messageFilterDialogController: MessageFilterDialogController;
+  private _alertFilterDialogController: AlertFilterDialogController;
 
   @property({
     attribute: 'is-open',
@@ -62,32 +62,30 @@ export class MessageFilterDialog extends LitElement {
   constructor() {
     super();
 
-    this._messageFilterDialogController = new MessageFilterDialogController(this);
+    this._alertFilterDialogController = new AlertFilterDialogController(this);
   }
 
   render() {
     return html`
       <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
         <h4 slot="label" class="title">
-          <intl-message label="ui:messageLog:messageFilter"> Message filter </intl-message>
+          <intl-message label="ui:settings:alertFilter"> Alert filter </intl-message>
         </h4>
 
         <div class="body">
           <p class="hint">
-            <intl-message label="ui:messageLog:messageFilterHint">
-              Enable events in filter to start adding messages for them in log.
+            <intl-message label="ui:settings:alertFilterHint">
+              Enable alerts in filter to make them visible when event happens.
             </intl-message>
           </p>
 
-          <div class="events-container">${repeat(GAME_STATE_EVENTS, (event) => event, this.renderEventCheckbox)}</div>
+          <div class="events-container">
+            ${repeat(GAME_STATE_ALERTS, (gameAlert) => gameAlert, this.renderGameAlertCheckbox)}
+          </div>
 
           <sl-divider></sl-divider>
 
-          <div class="events-container">${repeat(PURCHASE_EVENTS, (event) => event, this.renderEventCheckbox)}</div>
-
-          <sl-divider></sl-divider>
-
-          <div class="events-container">${repeat(PROGRAM_EVENTS, (event) => event, this.renderEventCheckbox)}</div>
+          <div class="events-container">${repeat(PROGRAM_ALERTS, (event) => event, this.renderGameAlertCheckbox)}</div>
         </div>
 
         <sl-button slot="footer" size="medium" variant="default" outline @click=${this.handleClose}>
@@ -97,16 +95,16 @@ export class MessageFilterDialog extends LitElement {
     `;
   }
 
-  private renderEventCheckbox = (event: MessageFilterEvent): TemplateResult => {
+  private renderGameAlertCheckbox = (gameAlert: GameAlert): TemplateResult => {
     return html`
       <sl-checkbox
         size="medium"
         name="event"
-        value=${event}
-        ?checked=${this._messageFilterDialogController.isMessageFilterEventEnabled(event)}
-        @sl-change=${this.handleToggleEvent}
+        value=${gameAlert}
+        ?checked=${this._alertFilterDialogController.isGameAlertEnabled(gameAlert)}
+        @sl-change=${this.handleToggleAlert}
       >
-        <intl-message label=${`events:${event}:name`}> Event </intl-message>
+        <intl-message label=${`alerts:${gameAlert}:name`}> Alert </intl-message>
       </sl-checkbox>
     `;
   };
@@ -115,12 +113,12 @@ export class MessageFilterDialog extends LitElement {
     event.preventDefault();
     event.stopPropagation();
 
-    this.dispatchEvent(new MessageFilterDialogClose());
+    this.dispatchEvent(new AlertFilterDialogCloseEvent());
   };
 
-  private handleToggleEvent = (event: Event) => {
+  private handleToggleAlert = (event: Event) => {
     const target = event.target as SlCheckbox;
 
-    this._messageFilterDialogController.toggleMessageFilterEvent(target.value as MessageFilterEvent, target.checked);
+    this._alertFilterDialogController.toggleMessageFilterEvent(target.value as GameAlert, target.checked);
   };
 }

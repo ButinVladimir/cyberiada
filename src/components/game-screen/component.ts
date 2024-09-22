@@ -20,14 +20,12 @@ export class GameScreen extends LitElement {
     .top-bar-outer-container {
       background-color: var(--sl-panel-background-color);
       border-bottom: var(--ca-border);
-      box-shadow: var(--sl-shadow-small);
       box-sizing: border-box;
       display: flex;
       justify-content: center;
       align-items: center;
       flex: 0 0 auto;
       height: var(--ca-top-bar-height);
-      z-index: 2;
     }
 
     .top-bar-inner-container {

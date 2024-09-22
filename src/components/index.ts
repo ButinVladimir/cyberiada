@@ -17,6 +17,7 @@ import '@shoelace-style/shoelace/dist/components/tab-panel/tab-panel.js';
 import '@shoelace-style/shoelace/dist/components/progress-bar/progress-bar.js';
 import '@shoelace-style/shoelace/dist/components/switch/switch.js';
 
+import './shared';
 import './app-root';
 import './loading-screen';
 import './game-screen';

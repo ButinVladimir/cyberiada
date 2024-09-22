@@ -78,19 +78,8 @@
     },
     {
       "name": "ca-message-log-bar",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_isMessageFilterOpen` {`boolean`} - \n\n  * `handleMessageFilterDialogOpen` - \n\n  * `handleMessageFilterDialogClose` - \n\n  * `handleClearMessages` - \n\n  * `_messageLogBarController` {`MessageLogBarController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `handleClearMessages` - \n\n  * `_messageLogBarController` {`MessageLogBarController`} - ",
       "attributes": []
-    },
-    {
-      "name": "ca-message-filter-dialog",
-      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `renderEventCheckbox` - \n\n  * `handleClose` - \n\n  * `handleToggleEvent` - \n\n  * `_messageFilterDialogController` {`MessageFilterDialogController`} - ",
-      "attributes": [
-        {
-          "name": "is-open",
-          "description": "`is-open` {`boolean`} - \n\nProperty: isOpen\n\nDefault: false",
-          "valueSet": "v"
-        }
-      ]
     },
     {
       "name": "ca-message-log-content",
@@ -343,13 +332,8 @@
       "attributes": []
     },
     {
-      "name": "ca-savefile-panel",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_importInputRef` {`Ref<HTMLInputElement>`} - \n\n  * `_isDeleteSaveDialogOpen` {`boolean`} - \n\n  * `handleSaveGame` - \n\n  * `handleImportSavefile` - \n\n  * `handleChangeImportSavefile` - \n\n  * `handleExportSavefile` - \n\n  * `handleOpenDeleteSaveDataDialog` - \n\n  * `handleCloseDeleteSaveDataDialog` - \n\n  * `handleDeleteSaveData` - \n\n  * `_savefilePanelController` {`SavefilePanelController`} - ",
-      "attributes": []
-    },
-    {
-      "name": "ca-delete-save-data-dialog",
-      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `handleDeleteSaveDataDialogClose` - \n\n  * `handleDeleteSaveDataDialogSubmit` - ",
+      "name": "ca-alert-filter-dialog",
+      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `renderGameAlertCheckbox` - \n\n  * `handleClose` - \n\n  * `handleToggleAlert` - \n\n  * `_alertFilterDialogController` {`AlertFilterDialogController`} - ",
       "attributes": [
         {
           "name": "is-open",
@@ -359,9 +343,44 @@
       ]
     },
     {
-      "name": "ca-settings-form",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_languageInputRef` {`Ref<SlSelect>`} - \n\n  * `_themeInputRef` {`Ref<SlSelect>`} - \n\n  * `_messageLogSizeInputRef` {`Ref<SlInput>`} - \n\n  * `_updateIntervalInputRef` {`Ref<SlRange>`} - \n\n  * `_autosaveEnabledSwitchRef` {`Ref<SlSwitch>`} - \n\n  * `_autosaveIntervalInputRef` {`Ref<SlRange>`} - \n\n  * `_maxTicksPerUpdateInputRef` {`Ref<SlRange>`} - \n\n  * `_longNumberFormatInputRef` {`Ref<SlSelect>`} - \n\n  * `_isSaving` {`boolean`} - \n\n  * `startSaving` - \n\n  * `stopSaving` - \n\n  * `handleChangeLanguage` - \n\n  * `handleChangeTheme` - \n\n  * `handleChangeMessageLogSize` - \n\n  * `handleChangeUpdateInterval` - \n\n  * `handleChangeAutosaveEnabled` - \n\n  * `handleChangeAutosaveInterval` - \n\n  * `handleChangeMaxTicksPerUpdate` - \n\n  * `handleChangeLongNumberFormat` - \n\n  * `autosaveIntervalFormatter` - \n\n  * `decimalNumberFormatter` - \n\n  * `_settingsFormController` {`SettingsFormController`} - ",
+      "name": "ca-message-filter-dialog",
+      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `renderEventCheckbox` - \n\n  * `handleClose` - \n\n  * `handleToggleEvent` - \n\n  * `_messageFilterDialogController` {`MessageFilterDialogController`} - ",
+      "attributes": [
+        {
+          "name": "is-open",
+          "description": "`is-open` {`boolean`} - \n\nProperty: isOpen\n\nDefault: false",
+          "valueSet": "v"
+        }
+      ]
+    },
+    {
+      "name": "ca-savefile-panel",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_importInputRef` {`Ref<HTMLInputElement>`} - \n\n  * `_isImportSavefileDialogOpen` {`boolean`} - \n\n  * `_isDeleteSaveDataDialogOpen` {`boolean`} - \n\n  * `handleSaveGame` - \n\n  * `handleImportSavefileDialogClose` - \n\n  * `handleImportSavefileDialogPresubmit` - \n\n  * `handleImportSavefileDialogSubmit` - \n\n  * `handleChangeImportSavefile` - \n\n  * `handleExportSavefile` - \n\n  * `handleDeleteSaveDataDialogClose` - \n\n  * `handleDeleteSaveDataDialogPresubmit` - \n\n  * `handleDeleteSaveDataDialogSubmit` - \n\n  * `_savefilePanelController` {`SavefilePanelController`} - ",
       "attributes": []
+    },
+    {
+      "name": "ca-settings-form",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_languageInputRef` {`Ref<SlSelect>`} - \n\n  * `_themeInputRef` {`Ref<SlSelect>`} - \n\n  * `_messageLogSizeInputRef` {`Ref<SlInput>`} - \n\n  * `_updateIntervalInputRef` {`Ref<SlRange>`} - \n\n  * `_autosaveEnabledSwitchRef` {`Ref<SlSwitch>`} - \n\n  * `_autosaveIntervalInputRef` {`Ref<SlRange>`} - \n\n  * `_maxTicksPerUpdateInputRef` {`Ref<SlRange>`} - \n\n  * `_longNumberFormatInputRef` {`Ref<SlSelect>`} - \n\n  * `_isSaving` {`boolean`} - \n\n  * `_isMessageFilterOpen` {`boolean`} - \n\n  * `_isAlertFilterOpen` {`boolean`} - \n\n  * `startSaving` - \n\n  * `stopSaving` - \n\n  * `handleChangeLanguage` - \n\n  * `handleChangeTheme` - \n\n  * `handleChangeMessageLogSize` - \n\n  * `handleChangeUpdateInterval` - \n\n  * `handleChangeAutosaveEnabled` - \n\n  * `handleChangeAutosaveInterval` - \n\n  * `handleChangeMaxTicksPerUpdate` - \n\n  * `handleChangeLongNumberFormat` - \n\n  * `handleMessageFilterDialogOpen` - \n\n  * `handleMessageFilterDialogClose` - \n\n  * `handleAlertFilterDialogOpen` - \n\n  * `handleAlertFilterDialogClose` - \n\n  * `autosaveIntervalFormatter` - \n\n  * `decimalNumberFormatter` - \n\n  * `_settingsFormController` {`SettingsFormController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-confirmation-alert-modal",
+      "description": "Attributes:\n\n  * `game-alert` - \n\n  * `message-params` {`string`} - \n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_gameAlertToggleRef` {`Ref<SlCheckbox>`} - \n\n  * `gameAlert` - \n\n  * `messageParams` {`string`} - \n\n  * `_isOpen` {`boolean`} - \n\n  * `_alertToggled` {`boolean`} - \n\n  * `handleClose` - \n\n  * `handleSubmit` - \n\n  * `handleToggleAlert` - \n\n  * `_confirmationAlertModalController` {`ConfirmationAlertModalController`} - ",
+      "attributes": [
+        {
+          "name": "game-alert",
+          "description": "`game-alert` - \n\nProperty: gameAlert"
+        },
+        {
+          "name": "message-params",
+          "description": "`message-params` {`string`} - \n\nProperty: messageParams\n\nDefault: "
+        },
+        {
+          "name": "is-open",
+          "description": "`is-open` {`boolean`} - \n\nProperty: _isOpen\n\nDefault: false",
+          "valueSet": "v"
+        }
+      ]
     }
   ],
   "globalAttributes": [],

@@ -65,6 +65,12 @@ export class SettingsForm extends LitElement {
   @state()
   private _isSaving = false;
 
+  @state()
+  private _isMessageFilterOpen = false;
+
+  @state()
+  private _isAlertFilterOpen = false;
+
   constructor() {
     super();
 
@@ -93,6 +99,16 @@ export class SettingsForm extends LitElement {
 
   private renderForm(): TemplateResult {
     return html`
+      <sl-button class="dialog-btn" variant="default" size="medium" @click=${this.handleMessageFilterDialogOpen}>
+        <sl-icon slot="prefix" name="chat-left-dots"></sl-icon>
+        <intl-message label="ui:settings:messageFilter">Message filter</intl-message>
+      </sl-button>
+
+      <sl-button class="dialog-btn" variant="default" size="medium" @click=${this.handleAlertFilterDialogOpen}>
+        <sl-icon slot="prefix" name="exclamation-circle"></sl-icon>
+        <intl-message label="ui:settings:alertFilter">Alert filter</intl-message>
+      </sl-button>
+
       <sl-select
         ${ref(this._languageInputRef)}
         name="language"
@@ -229,6 +245,18 @@ export class SettingsForm extends LitElement {
           <intl-message label="ui:settings:autosaveInterval">Autosave interval</intl-message>
         </span>
       </sl-range>
+
+      <ca-message-filter-dialog
+        ?is-open=${this._isMessageFilterOpen}
+        @message-filter-dialog-close=${this.handleMessageFilterDialogClose}
+      >
+      </ca-message-filter-dialog>
+
+      <ca-alert-filter-dialog
+        ?is-open=${this._isAlertFilterOpen}
+        @alert-filter-dialog-close=${this.handleAlertFilterDialogClose}
+      >
+      </ca-alert-filter-dialog>
     `;
   }
 
@@ -329,6 +357,34 @@ export class SettingsForm extends LitElement {
     }
 
     this._settingsFormController.setLongNumberFormat(this._longNumberFormatInputRef.value.value as LongNumberFormat);
+  };
+
+  private handleMessageFilterDialogOpen = (event: Event) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    this._isMessageFilterOpen = true;
+  };
+
+  private handleMessageFilterDialogClose = (event: Event) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    this._isMessageFilterOpen = false;
+  };
+
+  private handleAlertFilterDialogOpen = (event: Event) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    this._isAlertFilterOpen = true;
+  };
+
+  private handleAlertFilterDialogClose = (event: Event) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    this._isAlertFilterOpen = false;
   };
 
   private autosaveIntervalFormatter = (value: number): string => {

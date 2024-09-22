@@ -25,7 +25,7 @@ describe('Message log state', () => {
     listener = vi.fn();
     messageLogState.addUiEventListener(MESSAGE_LOG_UI_EVENTS.UPDATED_MESSAGES, listener);
 
-    settingsState.toggleMessageFilterEvent(GameStateEvent.gameStarted, true);
+    settingsState.toggleMessageEvent(GameStateEvent.gameStarted, true);
     settingsState.setMessageLogSize(maxMessageLogSize);
   });
 
@@ -70,7 +70,7 @@ describe('Message log state', () => {
   });
 
   it('does not post message when event is disabled', () => {
-    settingsState.toggleMessageFilterEvent(GameStateEvent.gameStarted, false);
+    settingsState.toggleMessageEvent(GameStateEvent.gameStarted, false);
 
     const messageParameters = { parameter: 'value' };
     messageLogState.postMessage(GameStateEvent.gameStarted, messageParameters);

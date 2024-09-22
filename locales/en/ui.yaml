@@ -5,6 +5,7 @@ common:
   close: Close
   loading: Loading...
   never: Never
+  continue: Continue
 pages:
   cityOverview: City overview
   company: Company
@@ -23,8 +24,6 @@ topBar:
 messageLog:
   messageLog: Message log
   clearMessages: Clear messages
-  messageFilter: Message filter
-  messageFilterHint: Enable events in filter to receive messages about them in the log.
 settings:
   settings: Settings
   language: Language
@@ -50,7 +49,11 @@ settings:
   importSavefile: Import savefile
   exportSavefile: Export savefile
   deleteSaveData: Delete save data
-  deleteSaveDataAlert: Are you sure want to delete save data? You cannot revert this operation unless you exported a backup savefile.
+  messageFilter: Message filter
+  messageFilterHint: Enable events in filter to receive messages about them in the log.
+  alertFilter: Alert filter
+  alertFilterHint: Enable alerts in filter to make them visible when event happens.
+  alertToggle: Show alerts like this in the future
 city:
   cityOverview:
     title: City overview

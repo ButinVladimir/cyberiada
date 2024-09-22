@@ -6,7 +6,7 @@ import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.com
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.component.js';
 import { PROGRAMS } from '@state/progam-factory/constants';
 import { ProgramName } from '@state/progam-factory/types';
-import { PurchaseProgramDialogClose } from './events';
+import { PurchaseProgramDialogCloseEvent } from './events';
 import { QUALITIES } from '@shared/constants';
 import { PurchaseProgramDialogController } from './controller';
 
@@ -216,7 +216,7 @@ export class PurchaseProgramDialog extends LitElement {
     event.preventDefault();
     event.stopPropagation();
 
-    this.dispatchEvent(new PurchaseProgramDialogClose());
+    this.dispatchEvent(new PurchaseProgramDialogCloseEvent());
   };
 
   private handleProgramChange = () => {
@@ -269,7 +269,7 @@ export class PurchaseProgramDialog extends LitElement {
     );
 
     if (isBought) {
-      this.dispatchEvent(new PurchaseProgramDialogClose());
+      this.dispatchEvent(new PurchaseProgramDialogCloseEvent());
     }
   };
 }

@@ -1,0 +1,1 @@
+import './confirmation-alert-modal';

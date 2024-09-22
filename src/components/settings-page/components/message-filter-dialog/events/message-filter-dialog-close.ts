@@ -1,8 +1,8 @@
-export class MessageFilterDialogClose extends Event {
+export class MessageFilterDialogCloseEvent extends Event {
   static readonly type = 'message-filter-dialog-close';
 
   constructor() {
-    super(MessageFilterDialogClose.type, {
+    super(MessageFilterDialogCloseEvent.type, {
       bubbles: true,
       composed: true,
     });

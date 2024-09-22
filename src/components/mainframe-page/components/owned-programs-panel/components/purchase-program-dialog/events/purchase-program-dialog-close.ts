@@ -1,8 +1,8 @@
-export class PurchaseProgramDialogClose extends Event {
+export class PurchaseProgramDialogCloseEvent extends Event {
   static readonly type = 'purchase-program-dialog-close';
 
   constructor() {
-    super(PurchaseProgramDialogClose.type, {
+    super(PurchaseProgramDialogCloseEvent.type, {
       bubbles: true,
       composed: true,
     });

@@ -1,0 +1,21 @@
+saveImport:
+  name: Import savefile
+  message: Are you sure want to import savefile? Your current progress will be lost.
+saveDelete:
+  name: Delete save data
+  message: Are you sure want to delete save data? Your current progress will be lost.
+purchaseProgramOverwrite:
+  name: Purchase an already owned program
+  message: Are you sure want to purchase program $t(programs:{{value.programName}}:name)? This will replace your current program.
+developingProgramDelete:
+  name: Delete a developing program
+  message: Are you sure want to delete developing program $t(programs:{{value.programName}}:name)? It's progress will be lost.
+developingProgramOverwrite:
+  name: Overwrite a developing program
+  message: Are you sure want to overwrite developing program $t(programs:{{value.programName}}:name)? This will replace your current program.
+processDelete:
+  name: Delete a process
+  message: Are you sure want to delete process for program $t(programs:{{value.programName}}:name)? It's progress will be lost.
+processOverwrite:
+  name: Overwrite a process
+  message: Are you sure want to overwrite process for program $t(programs:{{value.programName}}:name)? This will replace your current process.

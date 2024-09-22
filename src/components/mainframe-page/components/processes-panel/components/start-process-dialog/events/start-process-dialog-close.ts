@@ -1,8 +1,8 @@
-export class StartProcessDialogClose extends Event {
+export class StartProcessDialogCloseEvent extends Event {
   static readonly type = 'start-process-dialog-close';
 
   constructor() {
-    super(StartProcessDialogClose.type, {
+    super(StartProcessDialogCloseEvent.type, {
       bubbles: true,
       composed: true,
     });
