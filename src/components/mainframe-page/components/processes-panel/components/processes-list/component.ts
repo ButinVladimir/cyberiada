@@ -27,8 +27,8 @@ export class ProcessesList extends LitElement {
       width: 32%;
     }
 
-    th.threads,
-    td.threads {
+    th.cores,
+    td.cores {
       width: 17%;
     }
 
@@ -62,8 +62,8 @@ export class ProcessesList extends LitElement {
           <th class="program">
             <intl-message label="ui:mainframe:program">Program</intl-message>
           </th>
-          <th class="threads">
-            <intl-message label="ui:mainframe:threads">Threads</intl-message>
+          <th class="cores">
+            <intl-message label="ui:mainframe:cores">Cores</intl-message>
           </th>
           <th class="progress"></th>
         </thead>
@@ -98,6 +98,6 @@ export class ProcessesList extends LitElement {
   };
 
   renderListItem = (programName: ProgramName) => {
-    return html` <ca-processes-list-item program-name=${programName}> </ca-processes-list-item> `;
+    return html` <ca-processes-list-item draggable="true" program-name=${programName}> </ca-processes-list-item> `;
   };
 }

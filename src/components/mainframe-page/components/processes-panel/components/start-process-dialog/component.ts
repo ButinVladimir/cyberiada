@@ -6,6 +6,12 @@ import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.com
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.component.js';
 import { ProgramName } from '@state/progam-factory/types';
 import { IProgram } from '@state/progam-factory/interfaces/program';
+import {
+  ConfirmationAlertOpenEvent,
+  ConfirmationAlertCloseEvent,
+  ConfirmationAlertSubmitEvent,
+} from '@components/shared/confirmation-alert/events';
+import { ProgramAlert } from '@shared/types';
 import { StartProcessDialogCloseEvent } from './events';
 import { StartProcessDialogController } from './controller';
 
@@ -90,16 +96,34 @@ export class StartProcessDialog extends LitElement {
   @state()
   private _maxThreads = 1;
 
+  @state()
+  private _confirmationAlertVisible = false;
+
   constructor() {
     super();
 
     this._startProcessDialogController = new StartProcessDialogController(this);
   }
 
+  connectedCallback() {
+    super.connectedCallback();
+
+    document.addEventListener(ConfirmationAlertCloseEvent.type, this.handleCloseConfirmationAlert);
+    document.addEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmConfirmationAlert);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+
+    document.removeEventListener(ConfirmationAlertCloseEvent.type, this.handleCloseConfirmationAlert);
+    document.removeEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmConfirmationAlert);
+  }
+
   updated(_changedProperties: Map<string, any>) {
     if (_changedProperties.get('isOpen') === false) {
       this._programName = undefined;
       this._threads = 1;
+      this._confirmationAlertVisible = false;
     }
   }
 
@@ -115,7 +139,7 @@ export class StartProcessDialog extends LitElement {
     );
 
     return html`
-      <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
+      <sl-dialog ?open=${this.isOpen && !this._confirmationAlertVisible} @sl-request-close=${this.handleClose}>
         <h4 slot="label" class="title">
           <intl-message label="ui:mainframe:processes:startProcess"> Start process </intl-message>
         </h4>
@@ -167,7 +191,7 @@ export class StartProcessDialog extends LitElement {
           <intl-message label="ui:common:close"> Close </intl-message>
         </sl-button>
 
-        <sl-button ?disabled=${submitButtonDisabled} slot="footer" size="medium" variant="primary" @click=${this.handleStartProcess}>
+        <sl-button ?disabled=${submitButtonDisabled} slot="footer" size="medium" variant="primary" @click=${this.handleOpenConfirmationAlert}>
           <intl-message label="ui:mainframe:processes:startProcess"> Start process </intl-message>
         </sl-button>
       </sl-dialog>
@@ -217,10 +241,44 @@ export class StartProcessDialog extends LitElement {
     this._threadsInputRef.value.valueAsNumber = threads;
   };
 
-  private handleStartProcess = (event: Event) => {
+  private handleOpenConfirmationAlert = (event: Event) => {
     event.stopPropagation();
     event.preventDefault();
 
+    if (!this._programName) {
+      return;
+    }
+
+    const existingProcess = this._startProcessDialogController.getProcessByName(this._programName);
+    const formatter = this._startProcessDialogController.formatter;
+
+    if (existingProcess) {
+      const confirmationAlertParameters = JSON.stringify({
+        programName: this._programName,
+        threads: formatter.formatNumberDecimal(existingProcess.threads),
+      });
+
+      this._confirmationAlertVisible = true;
+
+      this.dispatchEvent(new ConfirmationAlertOpenEvent(ProgramAlert.processReplace, confirmationAlertParameters));
+    } else {
+      this.startProcess();
+    }
+  };
+
+  private handleConfirmConfirmationAlert = (event: Event) => {
+    const convertedEvent = event as ConfirmationAlertSubmitEvent;
+
+    if (convertedEvent.gameAlert !== ProgramAlert.processReplace) {
+      return;
+    }
+
+    this._confirmationAlertVisible = false;
+
+    this.startProcess();
+  };
+
+  private startProcess = () => {
     if (this._programName) {
       const isStarted = this._startProcessDialogController.startProcess(this._programName, this._threads);
 
@@ -228,6 +286,16 @@ export class StartProcessDialog extends LitElement {
         this.dispatchEvent(new StartProcessDialogCloseEvent());
       }
     }
+  };
+
+  private handleCloseConfirmationAlert = (event: Event) => {
+    const convertedEvent = event as ConfirmationAlertCloseEvent;
+
+    if (convertedEvent.gameAlert !== ProgramAlert.processReplace) {
+      return;
+    }
+
+    this._confirmationAlertVisible = false;
   };
 
   private formatProgramSelectItem = (program: IProgram) => {

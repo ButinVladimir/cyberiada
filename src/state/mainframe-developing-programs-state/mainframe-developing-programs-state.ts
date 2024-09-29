@@ -109,6 +109,8 @@ export class MainframeDevelopingProgramsState implements IMainframeDevelopingPro
       developingProgram.removeEventListeners();
       this._programFactory.deleteProgram(developingProgram.program);
 
+      this._developingProgramsMap.delete(programName);
+
       this._messageLogState.postMessage(ProgramsEvent.programDevelopmentAborted, {
         programName,
         level: this._formatter.formatNumberDecimal(developingProgram.program.level),

@@ -1,6 +1,8 @@
 import { t } from 'i18next';
 import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { ConfirmationAlertOpenEvent, ConfirmationAlertSubmitEvent } from '@components/shared/confirmation-alert/events';
+import { ProgramAlert } from '@shared/types';
 import { ProcessesListItemController } from './controller';
 import { ProgramName } from '@state/progam-factory/types';
 
@@ -16,7 +18,7 @@ export class ProcessesListItem extends LitElement {
       width: 32%;
     }
 
-    td.threads {
+    td.cores {
       width: 17%;
     }
 
@@ -58,6 +60,18 @@ export class ProcessesListItem extends LitElement {
     this._processesListItemController = new ProcessesListItemController(this);
   }
 
+  connectedCallback() {
+    super.connectedCallback();
+
+    document.addEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmDeleteProcessDialog);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+
+    document.removeEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmDeleteProcessDialog);
+  }
+
   render() {
     const formatter = this._processesListItemController.formatter;
     const process = this._processesListItemController.getProcess(this.programName as ProgramName);
@@ -66,9 +80,14 @@ export class ProcessesListItem extends LitElement {
       return html``;
     }
 
-    const threads = process.program.isAutoscalable
+    const coresValue = JSON.stringify({
+      cores: formatter.formatNumberDecimal(process.usedCores),
+      maxCores: formatter.formatNumberDecimal(process.maxCores),
+    });
+
+    const cores = process.program.isAutoscalable
       ? html`<intl-message label="ui:mainframe:processes:autoscalable">Autoscalable</intl-message>`
-      : formatter.formatNumberDecimal(process.threads);
+      : html`<intl-message label="ui:mainframe:processes:usesCores" value=${coresValue}>Cores</intl-message>`;
 
     return html`
       <td class="program">
@@ -81,7 +100,7 @@ export class ProcessesListItem extends LitElement {
         </sl-tooltip>
       </td>
 
-      <td class="threads">${threads}</td>
+      <td class="cores">${cores}</td>
 
       <td>
         <div class="indicators-container">
@@ -98,7 +117,7 @@ export class ProcessesListItem extends LitElement {
             id="delete-btn"
             name="x-lg"
             label=${t('mainframe.processes.processDelete', { ns: 'ui' })}
-            @click=${this.handleDeleteProcess}
+            @click=${this.handleOpenDeleteProcessDialog}
           >
           </sl-icon-button>
         </div>
@@ -113,9 +132,25 @@ export class ProcessesListItem extends LitElement {
     this._processesListItemController.toggleProcess();
   };
 
-  private handleDeleteProcess = (event: Event) => {
+  private handleOpenDeleteProcessDialog = (event: Event) => {
     event.preventDefault();
     event.stopPropagation();
+
+    const confirmationAlertParameters = JSON.stringify({
+      programName: this.programName,
+    });
+
+    this.dispatchEvent(
+      new ConfirmationAlertOpenEvent(ProgramAlert.processDelete, confirmationAlertParameters, this.programName),
+    );
+  };
+
+  private handleConfirmDeleteProcessDialog = (event: Event) => {
+    const convertedEvent = event as ConfirmationAlertSubmitEvent;
+
+    if (convertedEvent.gameAlert !== ProgramAlert.processDelete || convertedEvent.gameAlertKey !== this.programName) {
+      return;
+    }
 
     this._processesListItemController.deleteProcess();
   };

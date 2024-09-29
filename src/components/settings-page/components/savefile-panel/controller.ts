@@ -1,5 +1,4 @@
 import { BaseController } from '@shared/base-controller';
-import { GameAlert } from '@shared/types';
 
 export class SavefilePanelController extends BaseController {
   saveGame() {
@@ -16,13 +15,5 @@ export class SavefilePanelController extends BaseController {
 
   async deleteSaveData() {
     await this.app.deleteSaveData();
-  }
-
-  isGameAlertEnabled(gameAlert: GameAlert): boolean {
-    return this.settingsState.isGameAlertEnabled(gameAlert);
-  }
-
-  toggleGameAlert(gameAlert: GameAlert, enabled: boolean) {
-    this.settingsState.toggleGameAlert(gameAlert, enabled);
   }
 }

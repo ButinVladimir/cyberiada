@@ -61,7 +61,7 @@ export class GameScreen extends LitElement {
     }
 
     .menu-bar-container {
-      width: 16%;
+      width: 15rem;
       border-right: var(--ca-border);
     }
 
@@ -71,7 +71,7 @@ export class GameScreen extends LitElement {
     }
 
     .message-log-bar-container {
-      width: 24%;
+      width: 25rem;
       border-left: var(--ca-border);
     }
   `;
@@ -120,6 +120,8 @@ export class GameScreen extends LitElement {
             : nothing}
         </div>
       </div>
+
+      <ca-confirmation-alert></ca-confirmation-alert>
     `;
   }
 

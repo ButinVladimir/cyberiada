@@ -9,34 +9,20 @@ export class DevelopingProgramsListItemProgressController extends BaseController
   private _developingProgram?: IDevelopingProgram;
 
   hostConnected() {
-    this.mainframeProcessesState.addUiEventListener(
-      MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESSES_UPDATED,
-      this.handleRefreshUI,
-    );
+    this.addDevelopingProgramListeners();
   }
 
   hostDisconnected() {
-    this.removeOldDevelopingProgramListeners();
-    this.mainframeProcessesState.removeUiEventListener(
-      MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESSES_UPDATED,
-      this.handleRefreshUI,
-    );
+    this.removeDevelopingProgramListeners();
   }
 
   getDevelopingProgram(programName: ProgramName) {
     if (this._developingProgram?.program.name !== programName) {
-      this.removeOldDevelopingProgramListeners();
+      this.removeDevelopingProgramListeners();
 
       this._developingProgram = this.mainframeDevelopingProgramsState.getDevelopingProgramByName(programName);
 
-      this._developingProgram?.addUiEventListener(
-        MAINFRAME_DEVELOPING_PROGRAMS_STATE_UI_EVENTS.DEVELOPING_PROGRAM_UPDATED,
-        this.handleRefreshUI,
-      );
-      this._developingProgram?.addUiEventListener(
-        MAINFRAME_DEVELOPING_PROGRAMS_STATE_UI_EVENTS.DEVELOPING_PROGRAM_PROGRESS_UPDATED,
-        this.handleRefreshUI,
-      );
+      this.addDevelopingProgramListeners();
     }
 
     return this._developingProgram;
@@ -61,13 +47,32 @@ export class DevelopingProgramsListItemProgressController extends BaseController
     this.host.requestUpdate();
   };
 
-  private removeOldDevelopingProgramListeners() {
+  private addDevelopingProgramListeners() {
+    this._developingProgram?.addUiEventListener(
+      MAINFRAME_DEVELOPING_PROGRAMS_STATE_UI_EVENTS.DEVELOPING_PROGRAM_UPDATED,
+      this.handleRefreshUI,
+    );
+    this._developingProgram?.addUiEventListener(
+      MAINFRAME_DEVELOPING_PROGRAMS_STATE_UI_EVENTS.DEVELOPING_PROGRAM_PROGRESS_UPDATED,
+      this.handleRefreshUI,
+    );
+    this.mainframeProcessesState.addUiEventListener(
+      MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESSES_UPDATED,
+      this.handleRefreshUI,
+    );
+  }
+
+  private removeDevelopingProgramListeners() {
     this._developingProgram?.removeUiEventListener(
       MAINFRAME_DEVELOPING_PROGRAMS_STATE_UI_EVENTS.DEVELOPING_PROGRAM_UPDATED,
       this.handleRefreshUI,
     );
     this._developingProgram?.removeUiEventListener(
       MAINFRAME_DEVELOPING_PROGRAMS_STATE_UI_EVENTS.DEVELOPING_PROGRAM_PROGRESS_UPDATED,
+      this.handleRefreshUI,
+    );
+    this.mainframeProcessesState.removeUiEventListener(
+      MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESSES_UPDATED,
       this.handleRefreshUI,
     );
   }

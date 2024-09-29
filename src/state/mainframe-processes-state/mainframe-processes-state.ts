@@ -148,6 +148,8 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     if (process) {
       process.removeEventListeners();
 
+      this._processesMap.delete(programName);
+
       this._messageLogState.postMessage(ProgramsEvent.processDeleted, {
         programName,
         threads: this._formatter.formatNumberDecimal(process.threads),
@@ -256,7 +258,7 @@ export class MainframeProcessesState implements IMainframeProcessesState {
         continue;
       }
 
-      usedCores = Math.min(process.threads * process.program.cores, this._availableCores);
+      usedCores = Math.min(process.maxCores, this._availableCores);
 
       if (usedCores > 0) {
         process.usedCores = usedCores;

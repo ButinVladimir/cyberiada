@@ -6,8 +6,14 @@ import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.com
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.component.js';
 import { PROGRAMS } from '@state/progam-factory/constants';
 import { ProgramName } from '@state/progam-factory/types';
-import { PurchaseProgramDialogCloseEvent } from './events';
+import {
+  ConfirmationAlertOpenEvent,
+  ConfirmationAlertCloseEvent,
+  ConfirmationAlertSubmitEvent,
+} from '@components/shared/confirmation-alert/events';
 import { QUALITIES } from '@shared/constants';
+import { ProgramAlert } from '@shared/types';
+import { PurchaseProgramDialogCloseEvent } from './events';
 import { PurchaseProgramDialogController } from './controller';
 
 @customElement('ca-purchase-program-dialog')
@@ -93,10 +99,27 @@ export class PurchaseProgramDialog extends LitElement {
   @state()
   private _quality = 0;
 
+  @state()
+  private _confirmationAlertVisible = false;
+
   constructor() {
     super();
 
     this._purchaseProgramDialogController = new PurchaseProgramDialogController(this);
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+
+    document.addEventListener(ConfirmationAlertCloseEvent.type, this.handleCloseConfirmationAlert);
+    document.addEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmConfirmationAlert);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+
+    document.removeEventListener(ConfirmationAlertCloseEvent.type, this.handleCloseConfirmationAlert);
+    document.removeEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmConfirmationAlert);
   }
 
   updated(_changedProperties: Map<string, any>) {
@@ -104,6 +127,7 @@ export class PurchaseProgramDialog extends LitElement {
       this._programName = undefined;
       this._level = 1;
       this._quality = 0;
+      this._confirmationAlertVisible = false;
     }
   }
 
@@ -112,7 +136,7 @@ export class PurchaseProgramDialog extends LitElement {
     const cityLevel = this._purchaseProgramDialogController.cityLevel;
 
     const program = this._programName
-      ? this._purchaseProgramDialogController.getProgram(this._programName, this._level, this._quality)
+      ? this._purchaseProgramDialogController.getSelectedProgram(this._programName, this._level, this._quality)
       : undefined;
     const cost = program ? program.cost : 0;
 
@@ -121,7 +145,7 @@ export class PurchaseProgramDialog extends LitElement {
     const submitButtonDisabled = !(program && this._level <= cityLevel);
 
     return html`
-      <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
+      <sl-dialog ?open=${this.isOpen && !this._confirmationAlertVisible} @sl-request-close=${this.handleClose}>
         <h4 slot="label" class="title">
           <intl-message label="ui:mainframe:ownedPrograms:purchaseProgram"> Purchase a program </intl-message>
         </h4>
@@ -202,7 +226,7 @@ export class PurchaseProgramDialog extends LitElement {
           slot="footer"
           ?disabled=${submitButtonDisabled}
           cost=${cost}
-          @click=${this.handlePurchase}
+          @click=${this.handleOpenConfirmationAlert}
         >
           <intl-message label="ui:mainframe:ownedPrograms:purchase" value=${submitButtonValues}>
             Purchase
@@ -254,10 +278,48 @@ export class PurchaseProgramDialog extends LitElement {
     this._quality = +this._qualityInputRef.value.value;
   };
 
-  private handlePurchase = (event: Event) => {
+  private handleOpenConfirmationAlert = (event: Event) => {
     event.stopPropagation();
     event.preventDefault();
 
+    if (!this._programName) {
+      return;
+    }
+
+    const ownedProgram = this._purchaseProgramDialogController.getOwnedProgram(this._programName);
+
+    if (ownedProgram) {
+      const formatter = this._purchaseProgramDialogController.formatter;
+
+      const confirmationAlertParameters = JSON.stringify({
+        programName: this._programName,
+        level: formatter.formatNumberDecimal(ownedProgram.level),
+        quality: formatter.formatQuality(ownedProgram.quality),
+      });
+
+      this._confirmationAlertVisible = true;
+
+      this.dispatchEvent(
+        new ConfirmationAlertOpenEvent(ProgramAlert.purchaseProgramOverwrite, confirmationAlertParameters),
+      );
+    } else {
+      this.purchase();
+    }
+  };
+
+  private handleConfirmConfirmationAlert = (event: Event) => {
+    const convertedEvent = event as ConfirmationAlertSubmitEvent;
+
+    if (convertedEvent.gameAlert !== ProgramAlert.purchaseProgramOverwrite) {
+      return;
+    }
+
+    this._confirmationAlertVisible = false;
+
+    this.purchase();
+  };
+
+  private purchase = () => {
     if (!this._programName) {
       return;
     }
@@ -271,5 +333,15 @@ export class PurchaseProgramDialog extends LitElement {
     if (isBought) {
       this.dispatchEvent(new PurchaseProgramDialogCloseEvent());
     }
+  };
+
+  private handleCloseConfirmationAlert = (event: Event) => {
+    const convertedEvent = event as ConfirmationAlertCloseEvent;
+
+    if (convertedEvent.gameAlert !== ProgramAlert.purchaseProgramOverwrite) {
+      return;
+    }
+
+    this._confirmationAlertVisible = false;
   };
 }

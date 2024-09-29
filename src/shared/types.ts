@@ -54,8 +54,10 @@ export enum ProgramAlert {
   purchaseProgramOverwrite = 'purchaseProgramOverwrite',
   developingProgramDelete = 'developingProgramDelete',
   developingProgramOverwrite = 'developingProgramOverwrite',
+  developingProgramReplace = 'developingProgramReplace',
   processDelete = 'processDelete',
-  processOverwrite = 'processOverwrite',
+  processReplace = 'processReplace',
+  passiveProcessReplace = 'passiveProcessReplace',
 }
 
 export type GameAlert = GameStateAlert | ProgramAlert;

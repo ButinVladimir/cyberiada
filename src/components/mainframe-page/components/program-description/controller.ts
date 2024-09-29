@@ -1,7 +1,7 @@
 import { BaseController } from '@shared/base-controller';
 import { IProgram } from '@state/progam-factory/interfaces/program';
 import { ProgramName } from '@state/progam-factory/types';
-import { PROGRAMS_UI_EVENTS } from '@/state/progam-factory/constants';
+import { PROGRAMS_UI_EVENTS } from '@state/progam-factory/constants';
 
 export class ProgramDescriptionController extends BaseController {
   private _program?: IProgram;

@@ -65,6 +65,7 @@ export class ProgramDescription extends LitElement {
     const requirementsKey = program.isAutoscalable ? 'requirementsScalable' : 'requirements';
 
     return html`<intl-message label="programs:${this.programName}:overview"> Program overview </intl-message>
+
       <intl-message label="ui:mainframe:programDescription:cost" value=${costValues}> Cost </intl-message>
       <intl-message label="ui:mainframe:programDescription:${requirementsKey}" value=${requirementsValues}>
         Requirements

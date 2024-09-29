@@ -1,8 +1,12 @@
 import { LitElement, css, html } from 'lit';
-import { customElement, state } from 'lit/decorators.js';
+import { customElement } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { GameStateAlert } from '@shared/types';
 import { SavefilePanelController } from './controller';
+import {
+  ConfirmationAlertOpenEvent,
+  ConfirmationAlertSubmitEvent,
+} from '@/components/shared/confirmation-alert/events';
 
 @customElement('ca-savefile-panel')
 export class SavefilePanel extends LitElement {
@@ -24,16 +28,24 @@ export class SavefilePanel extends LitElement {
 
   private _importInputRef = createRef<HTMLInputElement>();
 
-  @state()
-  private _isImportSavefileDialogOpen = false;
-
-  @state()
-  private _isDeleteSaveDataDialogOpen = false;
-
   constructor() {
     super();
 
     this._savefilePanelController = new SavefilePanelController(this);
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+
+    document.addEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmImportSavefileDialog);
+    document.addEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmDeleteSaveDataDialog);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+
+    document.removeEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmImportSavefileDialog);
+    document.removeEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmDeleteSaveDataDialog);
   }
 
   render() {
@@ -44,13 +56,7 @@ export class SavefilePanel extends LitElement {
         <intl-message label="ui:settings:saveGame"> Save game </intl-message>
       </sl-button>
 
-      <sl-button
-        variant="default"
-        type="button"
-        size="medium"
-        outline
-        @click=${this.handleImportSavefileDialogPresubmit}
-      >
+      <sl-button variant="default" type="button" size="medium" outline @click=${this.handleOpenImportSavefileDialog}>
         <intl-message label="ui:settings:importSavefile"> Import savefile </intl-message>
       </sl-button>
 
@@ -58,25 +64,9 @@ export class SavefilePanel extends LitElement {
         <intl-message label="ui:settings:exportSavefile"> Export savefile </intl-message>
       </sl-button>
 
-      <sl-button variant="danger" type="button" size="medium" @click=${this.handleDeleteSaveDataDialogPresubmit}>
+      <sl-button variant="danger" type="button" size="medium" @click=${this.handleOpenDeleteSaveDataDialog}>
         <intl-message label="ui:settings:deleteSaveData"> Delete save data </intl-message>
       </sl-button>
-
-      <ca-confirmation-alert-modal
-        ?is-open=${this._isImportSavefileDialogOpen}
-        game-alert=${GameStateAlert.saveImport}
-        @confirmation-alert-close=${this.handleImportSavefileDialogClose}
-        @confirmation-alert-submit=${this.handleImportSavefileDialogSubmit}
-      >
-      </ca-confirmation-alert-modal>
-
-      <ca-confirmation-alert-modal
-        ?is-open=${this._isDeleteSaveDataDialogOpen}
-        game-alert=${GameStateAlert.saveDelete}
-        @confirmation-alert-close=${this.handleDeleteSaveDataDialogClose}
-        @confirmation-alert-submit=${this.handleDeleteSaveDataDialogSubmit}
-      >
-      </ca-confirmation-alert-modal>
     `;
   }
 
@@ -86,26 +76,18 @@ export class SavefilePanel extends LitElement {
     this._savefilePanelController.saveGame();
   };
 
-  private handleImportSavefileDialogClose = (event: Event) => {
+  private handleOpenImportSavefileDialog = (event: Event) => {
     event.stopPropagation();
 
-    this._isImportSavefileDialogOpen = false;
+    this.dispatchEvent(new ConfirmationAlertOpenEvent(GameStateAlert.saveImport, ''));
   };
 
-  private handleImportSavefileDialogPresubmit = (event: Event) => {
-    event.stopPropagation();
+  private handleConfirmImportSavefileDialog = (event: Event) => {
+    const convertedEvent = event as ConfirmationAlertSubmitEvent;
 
-    if (this._savefilePanelController.isGameAlertEnabled(GameStateAlert.saveImport)) {
-      this._isImportSavefileDialogOpen = true;
-    } else {
-      this.handleImportSavefileDialogSubmit(event);
+    if (convertedEvent.gameAlert !== GameStateAlert.saveImport) {
+      return;
     }
-  };
-
-  private handleImportSavefileDialogSubmit = (event: Event) => {
-    event.stopPropagation();
-
-    this._isImportSavefileDialogOpen = false;
 
     if (this._importInputRef.value) {
       this._importInputRef.value.click();
@@ -132,27 +114,21 @@ export class SavefilePanel extends LitElement {
     this._savefilePanelController.exportSavefile();
   };
 
-  private handleDeleteSaveDataDialogClose = (event: Event) => {
+  private handleOpenDeleteSaveDataDialog = (event: Event) => {
     event.stopPropagation();
 
-    this._isDeleteSaveDataDialogOpen = false;
+    this.dispatchEvent(new ConfirmationAlertOpenEvent(GameStateAlert.saveDelete, ''));
   };
 
-  private handleDeleteSaveDataDialogPresubmit = async (event: Event) => {
-    event.stopPropagation();
+  private handleConfirmDeleteSaveDataDialog = (event: Event) => {
+    const convertedEvent = event as ConfirmationAlertSubmitEvent;
 
-    if (this._savefilePanelController.isGameAlertEnabled(GameStateAlert.saveDelete)) {
-      this._isDeleteSaveDataDialogOpen = true;
-    } else {
-      await this.handleDeleteSaveDataDialogSubmit(event);
+    if (convertedEvent.gameAlert !== GameStateAlert.saveDelete) {
+      return;
     }
-  };
 
-  private handleDeleteSaveDataDialogSubmit = async (event: Event) => {
-    event.stopPropagation();
-
-    this._isDeleteSaveDataDialogOpen = false;
-
-    await this._savefilePanelController.deleteSaveData();
+    this._savefilePanelController.deleteSaveData().catch((e) => {
+      console.error(e);
+    });
   };
 }

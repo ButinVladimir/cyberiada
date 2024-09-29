@@ -26,7 +26,7 @@ export class TopBarValuesController extends BaseController {
     return this.generalState.cityDevelopmentPoints;
   }
 
-  handleUpdatedUI = () => {
+  private handleUpdatedUI = () => {
     this.host.requestUpdate();
   };
 }

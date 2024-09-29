@@ -8,6 +8,7 @@ export interface IProcess extends IUIEventEmitter, IStateEventEmitter {
   isActive: boolean;
   threads: number;
   usedCores: number;
+  maxCores: number;
   currentCompletionPoints: number;
   maxCompletionPoints: number;
   totalRam: number;

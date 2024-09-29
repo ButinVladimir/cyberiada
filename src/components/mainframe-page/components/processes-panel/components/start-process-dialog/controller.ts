@@ -3,6 +3,7 @@ import { MAINFRAME_HARDWARE_STATE_UI_EVENTS } from '@state/mainframe-hardware-st
 import { BaseController } from '@shared/base-controller';
 import { IProgram } from '@state/progam-factory/interfaces/program';
 import { ProgramName } from '@state/progam-factory/types';
+import { IProcess } from '@state/mainframe-processes-state/interfaces/process';
 
 export class StartProcessDialogController extends BaseController {
   hostConnected() {
@@ -55,6 +56,10 @@ export class StartProcessDialogController extends BaseController {
 
   getProgram(name: ProgramName): IProgram | undefined {
     return this.mainframeOwnedProgramState.getOwnedProgramByName(name)!;
+  }
+
+  getProcessByName(name: ProgramName): IProcess | undefined {
+    return this.mainframeProcessesState.getProcessByName(name);
   }
 
   startProcess(name: ProgramName, threads: number): boolean {

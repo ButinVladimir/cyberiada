@@ -103,6 +103,9 @@ export class DevelopingProgramsList extends LitElement {
   };
 
   renderListItem = (programName: ProgramName) => {
-    return html` <ca-developing-programs-list-item program-name=${programName}> </ca-developing-programs-list-item> `;
+    return html`
+      <ca-developing-programs-list-item draggable="true" program-name=${programName}>
+      </ca-developing-programs-list-item>
+    `;
   };
 }

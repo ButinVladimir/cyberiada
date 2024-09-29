@@ -1,1 +1,1 @@
-import './confirmation-alert-modal';
+import './confirmation-alert';

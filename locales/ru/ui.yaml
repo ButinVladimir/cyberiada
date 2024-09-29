@@ -65,6 +65,7 @@ mainframe:
   level: Уровень
   quality: Качество
   threads: Потоки
+  cores: Ядра
   programDescription:
     cost: Стоит {{value.cost}} для покупки или {{value.developmentPoints}} ОРП для разработки.
     requirements: Требует {{value.ram}} памяти и до {{value.cores}} ядер для запуска {{value.threads}} потоков и {{value.completionPoints}} ОВП для завершения процесса.
@@ -106,10 +107,10 @@ mainframe:
     processToggle: Включить / выключить процесс
     processDelete: Удалить процесс
     autoscalable: Автомасштабируется
+    usesCores: "{{value.cores}} \/ {{value.maxCores}}"
     availableCores: 'Доступные ядра: {{value}}'
     availableRam: 'Доступная память: {{value}}'
     processDescription:
-      usesCores: Использует {{value}} ядер.
       completionSpeed: Скорость выполнения - {{value}} ОВП в секунду.
       completionSpeedScalable: Скорость выполнения мгновенна.
   developingPrograms:

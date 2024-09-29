@@ -138,7 +138,7 @@
     },
     {
       "name": "ca-developing-programs-list-item",
-      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `handleToggleDevelopingProgram` - \n\n  * `handleDeleteDevelopingProgram` - \n\n  * `_developingProgramsListItemController` {`DevelopingProgramsListItemController`} - ",
+      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `handleToggleDevelopingProgram` - \n\n  * `handleOpenDeleteDevelopingProgramDialog` - \n\n  * `handleConfirmDeleteDevelopingProgramDialog` - \n\n  * `_developingProgramsListItemController` {`DevelopingProgramsListItemController`} - ",
       "attributes": [
         {
           "name": "program-name",
@@ -153,7 +153,7 @@
     },
     {
       "name": "ca-start-program-development-dialog",
-      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_programInputRef` {`Ref<SlSelect>`} - \n\n  * `_levelInputRef` {`Ref<SlInput>`} - \n\n  * `_qualityInputRef` {`Ref<SlSelect>`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `_programName` - \n\n  * `_level` {`number`} - \n\n  * `_quality` {`number`} - \n\n  * `handleClose` - \n\n  * `handleProgramChange` - \n\n  * `handleLevelChange` - \n\n  * `handleQualityChange` - \n\n  * `handlePurchase` - \n\n  * `_startProgramDevelopmentDialogController` {`StartProgramDevelopmentDialogController`} - ",
+      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_programInputRef` {`Ref<SlSelect>`} - \n\n  * `_levelInputRef` {`Ref<SlInput>`} - \n\n  * `_qualityInputRef` {`Ref<SlSelect>`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `_programName` - \n\n  * `_level` {`number`} - \n\n  * `_quality` {`number`} - \n\n  * `_confirmationAlertVisible` {`boolean`} - \n\n  * `handleClose` - \n\n  * `handleProgramChange` - \n\n  * `handleLevelChange` - \n\n  * `handleQualityChange` - \n\n  * `handleOpenConfirmationAlert` - \n\n  * `handleConfirmConfirmationAlert` - \n\n  * `startDevelopingProgram` - \n\n  * `handleCloseConfirmationAlert` - \n\n  * `_startProgramDevelopmentDialogController` {`StartProgramDevelopmentDialogController`} - ",
       "attributes": [
         {
           "name": "is-open",
@@ -244,7 +244,7 @@
     },
     {
       "name": "ca-purchase-program-dialog",
-      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_programInputRef` {`Ref<SlSelect>`} - \n\n  * `_levelInputRef` {`Ref<SlInput>`} - \n\n  * `_qualityInputRef` {`Ref<SlSelect>`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `_programName` - \n\n  * `_level` {`number`} - \n\n  * `_quality` {`number`} - \n\n  * `handleClose` - \n\n  * `handleProgramChange` - \n\n  * `handleLevelChange` - \n\n  * `handleQualityChange` - \n\n  * `handlePurchase` - \n\n  * `_purchaseProgramDialogController` {`PurchaseProgramDialogController`} - ",
+      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_programInputRef` {`Ref<SlSelect>`} - \n\n  * `_levelInputRef` {`Ref<SlInput>`} - \n\n  * `_qualityInputRef` {`Ref<SlSelect>`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `_programName` - \n\n  * `_level` {`number`} - \n\n  * `_quality` {`number`} - \n\n  * `_confirmationAlertVisible` {`boolean`} - \n\n  * `handleClose` - \n\n  * `handleProgramChange` - \n\n  * `handleLevelChange` - \n\n  * `handleQualityChange` - \n\n  * `handleOpenConfirmationAlert` - \n\n  * `handleConfirmConfirmationAlert` - \n\n  * `purchase` - \n\n  * `handleCloseConfirmationAlert` - \n\n  * `_purchaseProgramDialogController` {`PurchaseProgramDialogController`} - ",
       "attributes": [
         {
           "name": "is-open",
@@ -280,7 +280,7 @@
     },
     {
       "name": "ca-processes-list-item",
-      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `handleToggleProcess` - \n\n  * `handleDeleteProcess` - \n\n  * `_processesListItemController` {`ProcessesListItemController`} - ",
+      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `handleToggleProcess` - \n\n  * `handleOpenDeleteProcessDialog` - \n\n  * `handleConfirmDeleteProcessDialog` - \n\n  * `_processesListItemController` {`ProcessesListItemController`} - ",
       "attributes": [
         {
           "name": "program-name",
@@ -295,7 +295,7 @@
     },
     {
       "name": "ca-start-process-dialog",
-      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_programInputRef` {`Ref<SlSelect>`} - \n\n  * `_threadsInputRef` {`Ref<SlInput>`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `_programName` - \n\n  * `_threads` {`number`} - \n\n  * `_maxThreads` {`number`} - \n\n  * `handleClose` - \n\n  * `handleProgramChange` - \n\n  * `handleThreadsChange` - \n\n  * `handleStartProcess` - \n\n  * `formatProgramSelectItem` - \n\n  * `_startProcessDialogController` {`StartProcessDialogController`} - ",
+      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_programInputRef` {`Ref<SlSelect>`} - \n\n  * `_threadsInputRef` {`Ref<SlInput>`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `_programName` - \n\n  * `_threads` {`number`} - \n\n  * `_maxThreads` {`number`} - \n\n  * `_confirmationAlertVisible` {`boolean`} - \n\n  * `handleClose` - \n\n  * `handleProgramChange` - \n\n  * `handleThreadsChange` - \n\n  * `handleOpenConfirmationAlert` - \n\n  * `handleConfirmConfirmationAlert` - \n\n  * `startProcess` - \n\n  * `handleCloseConfirmationAlert` - \n\n  * `formatProgramSelectItem` - \n\n  * `_startProcessDialogController` {`StartProcessDialogController`} - ",
       "attributes": [
         {
           "name": "is-open",
@@ -355,7 +355,7 @@
     },
     {
       "name": "ca-savefile-panel",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_importInputRef` {`Ref<HTMLInputElement>`} - \n\n  * `_isImportSavefileDialogOpen` {`boolean`} - \n\n  * `_isDeleteSaveDataDialogOpen` {`boolean`} - \n\n  * `handleSaveGame` - \n\n  * `handleImportSavefileDialogClose` - \n\n  * `handleImportSavefileDialogPresubmit` - \n\n  * `handleImportSavefileDialogSubmit` - \n\n  * `handleChangeImportSavefile` - \n\n  * `handleExportSavefile` - \n\n  * `handleDeleteSaveDataDialogClose` - \n\n  * `handleDeleteSaveDataDialogPresubmit` - \n\n  * `handleDeleteSaveDataDialogSubmit` - \n\n  * `_savefilePanelController` {`SavefilePanelController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_importInputRef` {`Ref<HTMLInputElement>`} - \n\n  * `handleSaveGame` - \n\n  * `handleOpenImportSavefileDialog` - \n\n  * `handleConfirmImportSavefileDialog` - \n\n  * `handleChangeImportSavefile` - \n\n  * `handleExportSavefile` - \n\n  * `handleOpenDeleteSaveDataDialog` - \n\n  * `handleConfirmDeleteSaveDataDialog` - \n\n  * `_savefilePanelController` {`SavefilePanelController`} - ",
       "attributes": []
     },
     {
@@ -364,23 +364,9 @@
       "attributes": []
     },
     {
-      "name": "ca-confirmation-alert-modal",
-      "description": "Attributes:\n\n  * `game-alert` - \n\n  * `message-params` {`string`} - \n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_gameAlertToggleRef` {`Ref<SlCheckbox>`} - \n\n  * `gameAlert` - \n\n  * `messageParams` {`string`} - \n\n  * `_isOpen` {`boolean`} - \n\n  * `_alertToggled` {`boolean`} - \n\n  * `handleClose` - \n\n  * `handleSubmit` - \n\n  * `handleToggleAlert` - \n\n  * `_confirmationAlertModalController` {`ConfirmationAlertModalController`} - ",
-      "attributes": [
-        {
-          "name": "game-alert",
-          "description": "`game-alert` - \n\nProperty: gameAlert"
-        },
-        {
-          "name": "message-params",
-          "description": "`message-params` {`string`} - \n\nProperty: messageParams\n\nDefault: "
-        },
-        {
-          "name": "is-open",
-          "description": "`is-open` {`boolean`} - \n\nProperty: _isOpen\n\nDefault: false",
-          "valueSet": "v"
-        }
-      ]
+      "name": "ca-confirmation-alert",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_gameAlertToggleRef` {`Ref<SlCheckbox>`} - \n\n  * `_gameAlert` - \n\n  * `_gameAlertKey` {`string | undefined`} - \n\n  * `_messageParams` {`string`} - \n\n  * `_isOpen` {`boolean`} - \n\n  * `_alertToggled` {`boolean`} - \n\n  * `handleOpen` - \n\n  * `handleClose` - \n\n  * `handleSubmit` - \n\n  * `handleToggleAlert` - \n\n  * `_confirmationAlertModalController` {`ConfirmationAlertController`} - ",
+      "attributes": []
     }
   ],
   "globalAttributes": [],

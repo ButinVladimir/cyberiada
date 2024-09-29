@@ -70,6 +70,10 @@ export class Process implements IProcess {
     this._uiEventBatcher.enqueueEvent(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESS_UPDATED);
   }
 
+  get maxCores() {
+    return this._threads * this.program.cores;
+  }
+
   toggleActive(active: boolean) {
     this._isActive = active;
     this._stateEventEmitter.emit(MAINFRAME_PROCESSES_STATE_EVENTS.PROCESS_TOGGLED);

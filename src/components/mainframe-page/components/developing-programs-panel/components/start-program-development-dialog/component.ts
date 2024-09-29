@@ -6,8 +6,14 @@ import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.com
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.component.js';
 import { PROGRAMS } from '@state/progam-factory/constants';
 import { ProgramName } from '@state/progam-factory/types';
-import { StartProgramDevelopmentDialogCloseEvent } from './events';
+import {
+  ConfirmationAlertOpenEvent,
+  ConfirmationAlertCloseEvent,
+  ConfirmationAlertSubmitEvent,
+} from '@components/shared/confirmation-alert/events';
 import { QUALITIES } from '@shared/constants';
+import { ProgramAlert } from '@shared/types';
+import { StartProgramDevelopmentDialogCloseEvent } from './events';
 import { StartProgramDevelopmentDialogController } from './controller';
 
 @customElement('ca-start-program-development-dialog')
@@ -93,10 +99,27 @@ export class StartProgramDevelopmentDialog extends LitElement {
   @state()
   private _quality = 0;
 
+  @state()
+  private _confirmationAlertVisible = false;
+
   constructor() {
     super();
 
     this._startProgramDevelopmentDialogController = new StartProgramDevelopmentDialogController(this);
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+
+    document.addEventListener(ConfirmationAlertCloseEvent.type, this.handleCloseConfirmationAlert);
+    document.addEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmConfirmationAlert);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+
+    document.removeEventListener(ConfirmationAlertCloseEvent.type, this.handleCloseConfirmationAlert);
+    document.removeEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmConfirmationAlert);
   }
 
   updated(_changedProperties: Map<string, any>) {
@@ -104,6 +127,7 @@ export class StartProgramDevelopmentDialog extends LitElement {
       this._programName = undefined;
       this._level = 1;
       this._quality = 0;
+      this._confirmationAlertVisible = false;
     }
   }
 
@@ -112,7 +136,7 @@ export class StartProgramDevelopmentDialog extends LitElement {
     const cityLevel = this._startProgramDevelopmentDialogController.cityLevel;
 
     const program = this._programName
-      ? this._startProgramDevelopmentDialogController.getProgram(this._programName, this._level, this._quality)
+      ? this._startProgramDevelopmentDialogController.getSelectedProgram(this._programName, this._level, this._quality)
       : undefined;
     const developmentPoints = program ? program.developmentPoints : 0;
 
@@ -123,7 +147,7 @@ export class StartProgramDevelopmentDialog extends LitElement {
     const submitButtonDisabled = !(program && this._level <= cityLevel);
 
     return html`
-      <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
+      <sl-dialog ?open=${this.isOpen && !this._confirmationAlertVisible} @sl-request-close=${this.handleClose}>
         <h4 slot="label" class="title">
           <intl-message label="ui:mainframe:developingPrograms:startProgramDevelopment">
             Start program development
@@ -207,7 +231,7 @@ export class StartProgramDevelopmentDialog extends LitElement {
           ?disabled=${submitButtonDisabled}
           size="medium"
           variant="primary"
-          @click=${this.handlePurchase}
+          @click=${this.handleOpenConfirmationAlert}
         >
           <intl-message label="ui:mainframe:developingPrograms:startDevelopment" value=${submitButtonValues}>
             Start development
@@ -259,10 +283,63 @@ export class StartProgramDevelopmentDialog extends LitElement {
     this._quality = +this._qualityInputRef.value.value;
   };
 
-  private handlePurchase = (event: Event) => {
+  private handleOpenConfirmationAlert = (event: Event) => {
     event.stopPropagation();
     event.preventDefault();
 
+    if (!this._programName) {
+      return;
+    }
+
+    const developingProgram = this._startProgramDevelopmentDialogController.getDevelopingProgram(this._programName);
+    const ownedProgram = this._startProgramDevelopmentDialogController.getOwnedProgram(this._programName);
+    const formatter = this._startProgramDevelopmentDialogController.formatter;
+
+    if (developingProgram) {
+      const confirmationAlertParameters = JSON.stringify({
+        programName: this._programName,
+        level: formatter.formatNumberDecimal(developingProgram.program.level),
+        quality: formatter.formatQuality(developingProgram.program.quality),
+      });
+
+      this._confirmationAlertVisible = true;
+
+      this.dispatchEvent(
+        new ConfirmationAlertOpenEvent(ProgramAlert.developingProgramReplace, confirmationAlertParameters),
+      );
+    } else if (ownedProgram) {
+      const confirmationAlertParameters = JSON.stringify({
+        programName: this._programName,
+        level: formatter.formatNumberDecimal(ownedProgram.level),
+        quality: formatter.formatQuality(ownedProgram.quality),
+      });
+
+      this._confirmationAlertVisible = true;
+
+      this.dispatchEvent(
+        new ConfirmationAlertOpenEvent(ProgramAlert.developingProgramOverwrite, confirmationAlertParameters),
+      );
+    } else {
+      this.startDevelopingProgram();
+    }
+  };
+
+  private handleConfirmConfirmationAlert = (event: Event) => {
+    const convertedEvent = event as ConfirmationAlertSubmitEvent;
+
+    if (
+      convertedEvent.gameAlert !== ProgramAlert.developingProgramOverwrite &&
+      convertedEvent.gameAlert !== ProgramAlert.developingProgramReplace
+    ) {
+      return;
+    }
+
+    this._confirmationAlertVisible = false;
+
+    this.startDevelopingProgram();
+  };
+
+  private startDevelopingProgram = () => {
     if (!this._programName) {
       return;
     }
@@ -276,5 +353,18 @@ export class StartProgramDevelopmentDialog extends LitElement {
     if (hasStarted) {
       this.dispatchEvent(new StartProgramDevelopmentDialogCloseEvent());
     }
+  };
+
+  private handleCloseConfirmationAlert = (event: Event) => {
+    const convertedEvent = event as ConfirmationAlertCloseEvent;
+
+    if (
+      convertedEvent.gameAlert !== ProgramAlert.developingProgramOverwrite &&
+      convertedEvent.gameAlert !== ProgramAlert.developingProgramReplace
+    ) {
+      return;
+    }
+
+    this._confirmationAlertVisible = false;
   };
 }

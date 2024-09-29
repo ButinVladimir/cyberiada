@@ -28,8 +28,10 @@
       "purchaseProgramOverwrite",
       "developingProgramDelete",
       "developingProgramOverwrite",
+      "developingProgramReplace",
       "processDelete",
-      "processOverwrite"
+      "processReplace",
+      "passiveProcessReplace"
     ]
   },
   "defaultScenarioSettings": {

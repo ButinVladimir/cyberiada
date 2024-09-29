@@ -67,9 +67,10 @@ mainframe:
   level: Level
   quality: Quality
   threads: Threads
+  cores: Cores
   programDescription:
     cost: Costs {{value.cost}} money to purchase or {{value.developmentPoints}} PrDP to develop.
-    requirements: Requires {{value.ram}} RAM and up to {{value.cores}} cores to run {{value.threads}} threads and {{value.completionPoints}} PrCP to complete the process.
+    requirements: Requires {{value.ram}} RAM, up to {{value.cores}} cores to run {{value.threads}} threads and {{value.completionPoints}} PrCP to complete the process.
     requirementsScalable: Is scalable and uses all unused RAM and cores. It will run every tick.
   tabs:
     processes: Processes
@@ -108,10 +109,10 @@ mainframe:
     processToggle: Enable / disable process
     processDelete: Delete process
     autoscalable: Autoscalable
+    usesCores: "{{value.cores}} \/ {{value.maxCores}}"
     availableCores: 'Available cores: {{value}}'
     availableRam: 'Available RAM: {{value}}'
     processDescription:
-      usesCores: Uses {{value}} cores.
       completionSpeed: Completion speed is {{value}} PCP per second.
       completionSpeedScalable: Completion speed is instant.
   developingPrograms:

@@ -1,6 +1,8 @@
 import { t } from 'i18next';
 import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { ConfirmationAlertOpenEvent, ConfirmationAlertSubmitEvent } from '@components/shared/confirmation-alert/events';
+import { ProgramAlert } from '@shared/types';
 import { DevelopingProgramsListItemController } from './controller';
 import { ProgramName } from '@state/progam-factory/types';
 
@@ -62,6 +64,18 @@ export class DevelopingProgramsListItem extends LitElement {
     this._developingProgramsListItemController = new DevelopingProgramsListItemController(this);
   }
 
+  connectedCallback() {
+    super.connectedCallback();
+
+    document.addEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmDeleteDevelopingProgramDialog);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+
+    document.removeEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmDeleteDevelopingProgramDialog);
+  }
+
   render() {
     const developingProgram = this._developingProgramsListItemController.getDevelopingProgram(
       this.programName as ProgramName,
@@ -111,7 +125,7 @@ export class DevelopingProgramsListItem extends LitElement {
             id="delete-btn"
             name="x-lg"
             label=${t('mainframe.developingPrograms.developingProgramDelete', { ns: 'ui' })}
-            @click=${this.handleDeleteDevelopingProgram}
+            @click=${this.handleOpenDeleteDevelopingProgramDialog}
           >
           </sl-icon-button>
         </div>
@@ -126,9 +140,32 @@ export class DevelopingProgramsListItem extends LitElement {
     this._developingProgramsListItemController.toggleDevelopingProgram();
   };
 
-  private handleDeleteDevelopingProgram = (event: Event) => {
+  private handleOpenDeleteDevelopingProgramDialog = (event: Event) => {
     event.preventDefault();
     event.stopPropagation();
+
+    const confirmationAlertParameters = JSON.stringify({
+      programName: this.programName,
+    });
+
+    this.dispatchEvent(
+      new ConfirmationAlertOpenEvent(
+        ProgramAlert.developingProgramDelete,
+        confirmationAlertParameters,
+        this.programName,
+      ),
+    );
+  };
+
+  private handleConfirmDeleteDevelopingProgramDialog = (event: Event) => {
+    const convertedEvent = event as ConfirmationAlertSubmitEvent;
+
+    if (
+      convertedEvent.gameAlert !== ProgramAlert.developingProgramDelete ||
+      convertedEvent.gameAlertKey !== this.programName
+    ) {
+      return;
+    }
 
     this._developingProgramsListItemController.deleteDevelopingProgram();
   };

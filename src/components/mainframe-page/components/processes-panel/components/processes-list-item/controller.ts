@@ -6,19 +6,21 @@ import { ProgramName } from '@state/progam-factory/types';
 export class ProcessesListItemController extends BaseController {
   private _process?: IProcess;
 
-  hostConnected() {}
+  hostConnected() {
+    this.addProcessListeners();
+  }
 
   hostDisconnected() {
-    this.removeOldProcessListeners();
+    this.removeProcessListeners();
   }
 
   getProcess(programName: ProgramName) {
     if (this._process?.program.name !== programName) {
-      this.removeOldProcessListeners();
+      this.removeProcessListeners();
 
       this._process = this.mainframeProcessesState.getProcessByName(programName);
 
-      this._process?.addUiEventListener(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESS_UPDATED, this.handleRefreshUI);
+      this.addProcessListeners();
     }
 
     return this._process;
@@ -28,7 +30,11 @@ export class ProcessesListItemController extends BaseController {
     this.host.requestUpdate();
   };
 
-  private removeOldProcessListeners() {
+  private addProcessListeners() {
+    this._process?.addUiEventListener(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESS_UPDATED, this.handleRefreshUI);
+  }
+
+  private removeProcessListeners() {
     this._process?.removeUiEventListener(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESS_UPDATED, this.handleRefreshUI);
   }
 
