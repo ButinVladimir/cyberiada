@@ -28,8 +28,14 @@ export class TopBar extends LitElement {
   render() {
     return html`
       <div class="group">
-        <sl-icon-button name="list" label=${t('topBar.menu', { ns: 'ui' })} @click=${this.handleMenuClick}>
-        </sl-icon-button>
+        <sl-tooltip>
+          <intl-message slot="content" label="ui:topBar:menu">
+            Menu
+          </intl-message>
+
+          <sl-icon-button name="list" label=${t('topBar.menu', { ns: 'ui' })} @click=${this.handleMenuClick}>
+          </sl-icon-button>
+        </sl-tooltip>
       </div>
 
       <div class="group">
@@ -43,12 +49,18 @@ export class TopBar extends LitElement {
       <div class="gutter"></div>
 
       <div class="group">
-        <sl-icon-button
-          name="chat-left-dots"
-          label=${t('topBar.messageLog', { ns: 'ui' })}
-          @click=${this.handleLogsClick}
-        >
-        </sl-icon-button>
+        <sl-tooltip>
+          <intl-message slot="content" label="ui:topBar:messageLog">
+            Message log
+          </intl-message>
+
+          <sl-icon-button
+            name="chat-left-dots"
+            label=${t('topBar.messageLog', { ns: 'ui' })}
+            @click=${this.handleLogsClick}
+          >
+          </sl-icon-button>
+        </sl-tooltip>
       </div>
     `;
   }

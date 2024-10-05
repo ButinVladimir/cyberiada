@@ -6,13 +6,13 @@ import { SettingsState, ISettingsState } from '@state/settings-state';
 import { CityState, ICityState } from '@state/city-state';
 import { IMessageLogState, MessageLogState } from '@state/message-log-state';
 import { IProgramFactory, ProgramFactory } from '@state/progam-factory';
-import { IMainframeHardwareState, MainframeHardwareState } from '@state/mainframe-hardware-state';
-import { IMainframeOwnedProgramsState, MainframeOwnedProgramsState } from '@state/mainframe-owned-programs-state';
-import { IMainframeProcessesState, MainframeProcessesState } from '@state/mainframe-processes-state';
+import { IMainframeHardwareState, MainframeHardwareState } from '@state/mainframe/mainframe-hardware-state';
+import { IMainframeOwnedProgramsState, MainframeOwnedProgramsState } from '@state/mainframe/mainframe-owned-programs-state';
+import { IMainframeProcessesState, MainframeProcessesState } from '@state/mainframe/mainframe-processes-state';
 import {
   IMainframeDevelopingProgramsState,
   MainframeDevelopingProgramsState,
-} from '@state/mainframe-developing-programs-state';
+} from '@state/mainframe/mainframe-developing-programs-state';
 import { Formatter } from '@shared/formatter';
 import { IFormatter } from '@shared/interfaces/formatter';
 import { TYPES } from './types';

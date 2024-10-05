@@ -1,6 +1,6 @@
-import { IMainframeHardwareState } from '@state/mainframe-hardware-state/interfaces/mainframe-hardware-state';
-import { IMainframeDevelopingProgramsState } from '@state/mainframe-developing-programs-state/interfaces/mainframe-developing-programs-state';
-import { MAINFRAME_HARDWARE_STATE_EVENTS } from '@state/mainframe-hardware-state/constants';
+import { IMainframeHardwareState } from '@state/mainframe/mainframe-hardware-state/interfaces/mainframe-hardware-state';
+import { IMainframeDevelopingProgramsState } from '@state/mainframe/mainframe-developing-programs-state/interfaces/mainframe-developing-programs-state';
+import { MAINFRAME_HARDWARE_STATE_EVENTS } from '@state/mainframe/mainframe-hardware-state/constants';
 import { IExponent } from '@shared/interfaces/exponent';
 import { calculatePow } from '@shared/helpers';
 import programs from '@configs/programs.json';

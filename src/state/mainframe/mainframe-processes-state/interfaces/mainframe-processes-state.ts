@@ -10,5 +10,6 @@ export interface IMainframeProcessesState extends ISerializeable<IMainframeProce
   getProcessByName(programName: ProgramName): IProcess | undefined;
   addProcess(programName: ProgramName, threads: number): boolean;
   deleteProcess(programName: ProgramName): void;
+  calculateCompletionDelta(passedTime: number, usedCores: number): number;
   processTick(): void;
 }

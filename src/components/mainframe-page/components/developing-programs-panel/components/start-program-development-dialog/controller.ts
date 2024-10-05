@@ -1,10 +1,10 @@
 import { GENERAL_STATE_UI_EVENTS } from '@state/general-state/constants';
-import { MAINFRAME_OWNED_PROGRAMES_STATE_UI_EVENTS } from '@state/mainframe-owned-programs-state';
+import { MAINFRAME_OWNED_PROGRAMES_STATE_UI_EVENTS } from '@state/mainframe/mainframe-owned-programs-state';
 import { PROGRAMS_UI_EVENTS } from '@state/progam-factory/constants';
 import { BaseController } from '@shared/base-controller';
 import { ProgramName } from '@state/progam-factory/types';
 import { IProgram } from '@state/progam-factory/interfaces/program';
-import { IDevelopingProgram } from '@state/mainframe-developing-programs-state';
+import { IDevelopingProgram } from '@state/mainframe/mainframe-developing-programs-state';
 
 export class StartProgramDevelopmentDialogController extends BaseController {
   private _selectedProgram?: IProgram;

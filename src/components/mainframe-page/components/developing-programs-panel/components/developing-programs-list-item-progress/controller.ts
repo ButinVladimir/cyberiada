@@ -1,9 +1,9 @@
 import { BaseController } from '@shared/base-controller';
 import { ProgramName } from '@state/progam-factory/types';
-import { MAINFRAME_DEVELOPING_PROGRAMS_STATE_UI_EVENTS } from '@state/mainframe-developing-programs-state/constants';
-import { IDevelopingProgram } from '@state/mainframe-developing-programs-state/interfaces/developing-program';
+import { MAINFRAME_DEVELOPING_PROGRAMS_STATE_UI_EVENTS } from '@state/mainframe/mainframe-developing-programs-state/constants';
+import { IDevelopingProgram } from '@state/mainframe/mainframe-developing-programs-state/interfaces/developing-program';
 import { CodeGeneratorProgram } from '@state/progam-factory/programs/code-generator';
-import { MAINFRAME_PROCESSES_STATE_UI_EVENTS } from '@state/mainframe-processes-state/constants';
+import { MAINFRAME_PROCESSES_STATE_UI_EVENTS } from '@state/mainframe/mainframe-processes-state/constants';
 
 export class DevelopingProgramsListItemProgressController extends BaseController {
   private _developingProgram?: IDevelopingProgram;
@@ -35,7 +35,8 @@ export class DevelopingProgramsListItemProgressController extends BaseController
     if (codeGeneratorProcess) {
       const codeGeneratorProgram = codeGeneratorProcess.program as CodeGeneratorProgram;
       const completionTime =
-        codeGeneratorProcess.maxCompletionPoints / codeGeneratorProcess.calculateCompletionDelta(1);
+        codeGeneratorProcess.maxCompletionPoints /
+        this.mainframeProcessesState.calculateCompletionDelta(1, codeGeneratorProcess.usedCores);
 
       delta += codeGeneratorProgram.calculateDelta(codeGeneratorProcess.threads) / completionTime;
     }

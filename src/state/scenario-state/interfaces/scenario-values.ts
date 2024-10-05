@@ -14,7 +14,10 @@ export interface IScenarioValues {
     coresPrice: IExponent;
     ramPrice: IExponent;
   };
-  startingPrograms: ProgramName[];
+  mainframeSoftware: {
+    performanceBoost: IExponent;
+    startingPrograms: ProgramName[];
+  }
   startingCityLevel: number;
   cityLevelRequirements: IExponent;
 }

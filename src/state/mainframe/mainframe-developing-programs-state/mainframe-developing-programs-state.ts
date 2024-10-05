@@ -1,7 +1,7 @@
 import { inject, injectable } from 'inversify';
 import { ProgramName } from '@state/progam-factory/types';
 import type { IGeneralState } from '@state/general-state/interfaces/general-state';
-import type { IMainframeOwnedProgramsState } from '@state/mainframe-owned-programs-state/interfaces/mainframe-owned-program-state';
+import type { IMainframeOwnedProgramsState } from '@state/mainframe/mainframe-owned-programs-state/interfaces/mainframe-owned-program-state';
 import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
 import type { IProgramFactory } from '@state/progam-factory/interfaces/program-factory';
 import type { IMakeProgramParameters } from '@state/progam-factory/interfaces/make-program-parameters';

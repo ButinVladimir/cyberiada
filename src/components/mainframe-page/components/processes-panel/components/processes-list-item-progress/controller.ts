@@ -1,6 +1,6 @@
 import { BaseController } from '@shared/base-controller';
-import { IProcess } from '@state/mainframe-processes-state/interfaces/process';
-import { MAINFRAME_PROCESSES_STATE_UI_EVENTS } from '@state/mainframe-processes-state/constants';
+import { IProcess } from '@state/mainframe/mainframe-processes-state/interfaces/process';
+import { MAINFRAME_PROCESSES_STATE_UI_EVENTS } from '@state/mainframe/mainframe-processes-state/constants';
 import { ProgramName } from '@state/progam-factory/types';
 
 export class ProcessesListItemProgressController extends BaseController {

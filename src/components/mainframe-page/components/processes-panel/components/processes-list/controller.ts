@@ -1,5 +1,5 @@
 import { APP_UI_EVENTS } from '@state/app/constants';
-import { MAINFRAME_PROCESSES_STATE_UI_EVENTS } from '@state/mainframe-processes-state/constants';
+import { MAINFRAME_PROCESSES_STATE_UI_EVENTS } from '@state/mainframe/mainframe-processes-state/constants';
 import { BaseController } from '@shared/base-controller';
 import { ProgramName } from '@state/progam-factory/types';
 

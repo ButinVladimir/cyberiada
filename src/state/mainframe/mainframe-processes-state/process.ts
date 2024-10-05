@@ -1,10 +1,5 @@
 import { EventEmitter } from 'eventemitter3';
 import { IProgram } from '@state/progam-factory/interfaces/program';
-import { IExponent } from '@shared/interfaces/exponent';
-import { calculatePow } from '@shared/helpers';
-import programs from '@configs/programs.json';
-import { IMainframeHardwareState } from '@state/mainframe-hardware-state/interfaces/mainframe-hardware-state';
-import { ISettingsState } from '@state/settings-state/interfaces/settings-state';
 import { EventBatcher } from '@shared/event-batcher';
 import { PROGRAMS_STATE_EVENTS } from '@state/progam-factory/constants';
 import { IProcess, IProcessParameters, ISerializedProcess } from './interfaces';
@@ -16,8 +11,6 @@ export class Process implements IProcess {
   private _threads: number;
   private _currentCompletionPoints: number;
   private _usedCores: number;
-  private _settingsState: ISettingsState;
-  private _mainframeHardwareState: IMainframeHardwareState;
 
   private readonly _uiEventBatcher: EventBatcher;
   private readonly _stateEventEmitter: EventEmitter;
@@ -27,8 +20,6 @@ export class Process implements IProcess {
     this._isActive = parameters.isActive;
     this._threads = parameters.threads;
     this._currentCompletionPoints = parameters.currentCompletionPoints;
-    this._settingsState = parameters.settingsState;
-    this._mainframeHardwareState = parameters.mainframeHardwareState;
     this._usedCores = 0;
 
     this._uiEventBatcher = new EventBatcher();
@@ -79,8 +70,8 @@ export class Process implements IProcess {
     this._stateEventEmitter.emit(MAINFRAME_PROCESSES_STATE_EVENTS.PROCESS_TOGGLED);
   }
 
-  increaseCompletion(): void {
-    this._currentCompletionPoints += this.calculateCompletionDelta(this._settingsState.updateInterval);
+  increaseCompletion(delta: number): void {
+    this._currentCompletionPoints += delta;
 
     const maxCompletionPoints = this.maxCompletionPoints;
 
@@ -94,17 +85,6 @@ export class Process implements IProcess {
   resetCompletion(): void {
     this._currentCompletionPoints = 0;
     this._uiEventBatcher.enqueueEvent(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESS_PROGRESS_UPDATED);
-  }
-
-  calculateCompletionDelta(passedTime: number): number {
-    const programData = programs[this._program.name];
-
-    return (
-      passedTime *
-      this.usedCores *
-      calculatePow(this._mainframeHardwareState.performance, programData.performanceBoost as IExponent) *
-      calculatePow(this._program.level, programData.completion as IExponent)
-    );
   }
 
   update(threads: number) {

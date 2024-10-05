@@ -1,7 +1,7 @@
 import { BaseController } from '@shared/base-controller';
-import { IProcess } from '@state/mainframe-processes-state/interfaces/process';
+import { IProcess } from '@state/mainframe/mainframe-processes-state/interfaces/process';
 import { ProgramName } from '@state/progam-factory/types';
-import { MAINFRAME_PROCESSES_STATE_UI_EVENTS } from '@state/mainframe-processes-state';
+import { MAINFRAME_PROCESSES_STATE_UI_EVENTS } from '@state/mainframe/mainframe-processes-state';
 
 export class ProcessDescriptionController extends BaseController {
   private _process?: IProcess;

@@ -56,13 +56,19 @@ export class GameSpeedButtons extends LitElement {
     const { label, gameSpeed, icon, className } = props;
 
     return html`
-      <sl-icon-button
-        name=${icon}
-        class=${className}
-        label=${t(`topBar.gameSpeedButtons.${label}`, { ns: 'ui' })}
-        @click=${this.handleChangeGameSpeed(gameSpeed)}
-      >
-      </sl-icon-button>
+      <sl-tooltip>
+        <intl-message slot="content" label="ui:topBar:gameSpeedButtons:${label}">
+          Game speed button
+        </intl-message>
+
+        <sl-icon-button
+          name=${icon}
+          class=${className}
+          label=${t(`topBar.gameSpeedButtons.${label}`, { ns: 'ui' })}
+          @click=${this.handleChangeGameSpeed(gameSpeed)}
+        >
+        </sl-icon-button>
+      </sl-tooltip>
     `;
   };
 

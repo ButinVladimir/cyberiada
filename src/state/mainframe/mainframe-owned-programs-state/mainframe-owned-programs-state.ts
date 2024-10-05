@@ -83,7 +83,7 @@ export class MainframeOwnedProgramsState implements IMainframeOwnedProgramsState
   async startNewState(): Promise<void> {
     this.clearState();
 
-    for (const programName of this._scenarioState.currentValues.startingPrograms) {
+    for (const programName of this._scenarioState.currentValues.mainframeSoftware.startingPrograms) {
       this.addProgram(
         this._programFactory.makeProgram({
           name: programName,

@@ -1,4 +1,4 @@
-import { MAINFRAME_HARDWARE_STATE_UI_EVENTS } from '@state/mainframe-hardware-state/constants';
+import { MAINFRAME_HARDWARE_STATE_UI_EVENTS } from '@state/mainframe/mainframe-hardware-state/constants';
 import { GENERAL_STATE_UI_EVENTS } from '@state/general-state/constants';
 import { BaseController } from '@shared/base-controller';
 

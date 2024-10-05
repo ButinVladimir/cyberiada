@@ -47,7 +47,10 @@
       "coresPrice": { "baseMultiplier": 1000, "base": 1.05 },
       "ramPrice": { "baseMultiplier": 1000, "base": 1.05 }
     },
-    "startingPrograms": ["shareServer"],
+    "mainframeSoftware": {
+      "performanceBoost": { "baseMultiplier": 1, "base": 1.01 },      
+      "startingPrograms": ["shareServer"]
+    },
     "startingCityLevel": 1,
     "cityLevelRequirements": { "baseMultiplier": 10000, "base": 1.2 }
   }

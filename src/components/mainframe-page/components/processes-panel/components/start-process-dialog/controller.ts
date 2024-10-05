@@ -1,9 +1,9 @@
-import { MAINFRAME_OWNED_PROGRAMES_STATE_UI_EVENTS } from '@state/mainframe-owned-programs-state/constants';
-import { MAINFRAME_HARDWARE_STATE_UI_EVENTS } from '@state/mainframe-hardware-state/constants';
+import { MAINFRAME_OWNED_PROGRAMES_STATE_UI_EVENTS } from '@state/mainframe/mainframe-owned-programs-state/constants';
+import { MAINFRAME_HARDWARE_STATE_UI_EVENTS } from '@state/mainframe/mainframe-hardware-state/constants';
 import { BaseController } from '@shared/base-controller';
 import { IProgram } from '@state/progam-factory/interfaces/program';
 import { ProgramName } from '@state/progam-factory/types';
-import { IProcess } from '@state/mainframe-processes-state/interfaces/process';
+import { IProcess } from '@state/mainframe/mainframe-processes-state/interfaces/process';
 
 export class StartProcessDialogController extends BaseController {
   hostConnected() {

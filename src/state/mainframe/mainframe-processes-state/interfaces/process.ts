@@ -13,9 +13,8 @@ export interface IProcess extends IUIEventEmitter, IStateEventEmitter {
   maxCompletionPoints: number;
   totalRam: number;
   toggleActive(active: boolean): void;
-  increaseCompletion(): void;
+  increaseCompletion(delta: number): void;
   resetCompletion(): void;
-  calculateCompletionDelta(passedTime: number): number;
   update(threads: number): void;
   serialize(): ISerializedProcess;
   removeEventListeners(): void;

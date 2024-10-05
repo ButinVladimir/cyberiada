@@ -1,5 +1,5 @@
 import { GENERAL_STATE_UI_EVENTS } from '@state/general-state/constants';
-import { MAINFRAME_OWNED_PROGRAMES_STATE_UI_EVENTS } from '@state/mainframe-owned-programs-state';
+import { MAINFRAME_OWNED_PROGRAMES_STATE_UI_EVENTS } from '@state/mainframe/mainframe-owned-programs-state';
 import { PROGRAMS_UI_EVENTS } from '@state/progam-factory/constants';
 import { BaseController } from '@shared/base-controller';
 import { IProgram } from '@state/progam-factory/interfaces/program';

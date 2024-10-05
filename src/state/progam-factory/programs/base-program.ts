@@ -4,6 +4,7 @@ import { IFormatter } from '@shared/interfaces/formatter';
 import { EventBatcher } from '@shared/event-batcher';
 import { IExponent } from '@shared/interfaces/exponent';
 import { calculatePow } from '@shared/helpers';
+import { IGeneralState } from '@state/general-state';
 import { ProgramName } from '../types';
 import { IProgram } from '../interfaces/program';
 import { IMakeProgramParameters } from '../interfaces/make-program-parameters';
@@ -11,6 +12,7 @@ import { IBaseProgramParameters } from '../interfaces/program-parameters/base-pr
 import { PROGRAMS_STATE_EVENTS, PROGRAMS_UI_EVENTS } from '../constants';
 
 export abstract class BaseProgram implements IProgram {
+  protected generalState: IGeneralState;
   protected formatter: IFormatter;
 
   private _level!: number;
@@ -22,6 +24,7 @@ export abstract class BaseProgram implements IProgram {
   abstract get name(): ProgramName;
 
   constructor(parameters: IBaseProgramParameters) {
+    this.generalState = parameters.generalState;
     this.formatter = parameters.formatter;
 
     this._level = parameters.level;
@@ -42,7 +45,7 @@ export abstract class BaseProgram implements IProgram {
   get completionPoints() {
     const programData = programs[this.name];
 
-    return calculatePow(0, programData.completionPoints as IExponent);
+    return calculatePow(this.generalState.cityLevel - this._level, programData.completionPoints as IExponent);
   }
 
   get developmentPoints() {

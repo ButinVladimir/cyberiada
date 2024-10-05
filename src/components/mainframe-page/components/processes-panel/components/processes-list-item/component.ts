@@ -106,20 +106,32 @@ export class ProcessesListItem extends LitElement {
         <div class="indicators-container">
           <ca-processes-list-item-progress program-name=${process.program.name}> </ca-processes-list-item-progress>
 
-          <sl-icon-button
-            name=${process.isActive ? 'play-fill' : 'pause-fill'}
-            label=${t('mainframe.processes.processToggle', { ns: 'ui' })}
-            @click=${this.handleToggleProcess}
-          >
-          </sl-icon-button>
+          <sl-tooltip>
+            <intl-message slot="content" label="ui:mainframe:processes:processToggle">
+              Toggle process
+            </intl-message>
 
-          <sl-icon-button
-            id="delete-btn"
-            name="x-lg"
-            label=${t('mainframe.processes.processDelete', { ns: 'ui' })}
-            @click=${this.handleOpenDeleteProcessDialog}
-          >
-          </sl-icon-button>
+            <sl-icon-button
+              name=${process.isActive ? 'play-fill' : 'pause-fill'}
+              label=${t('mainframe.processes.processToggle', { ns: 'ui' })}
+              @click=${this.handleToggleProcess}
+            >
+            </sl-icon-button>
+          </sl-tooltip>
+
+          <sl-tooltip>
+            <intl-message slot="content" label="ui:mainframe:processes:processDelete">
+              Delete process
+            </intl-message>
+
+            <sl-icon-button
+              id="delete-btn"
+              name="x-lg"
+              label=${t('mainframe.processes.processDelete', { ns: 'ui' })}
+              @click=${this.handleOpenDeleteProcessDialog}
+            >
+            </sl-icon-button>
+          </sl-tooltip>
         </div>
       </td>
     `;

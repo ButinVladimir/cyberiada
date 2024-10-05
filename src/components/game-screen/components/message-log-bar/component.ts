@@ -72,13 +72,19 @@ export class MessageLogBar extends LitElement {
 
         <div class="gutter"></div>
 
-        <sl-icon-button
-          id="clear-messages-btn"
-          name="x-circle"
-          label=${t('messageLog.clearMessages', { ns: 'ui' })}
-          @click=${this.handleClearMessages}
-        >
-        </sl-icon-button>
+        <sl-tooltip>
+          <intl-message slot="content" label="ui:messageLog:clearMessages">
+            Clear messages
+          </intl-message>
+
+          <sl-icon-button
+            id="clear-messages-btn"
+            name="x-circle"
+            label=${t('messageLog.clearMessages', { ns: 'ui' })}
+            @click=${this.handleClearMessages}
+          >
+          </sl-icon-button>
+        </sl-tooltip>
       </div>
 
       <ca-message-log-content></ca-message-log-content>

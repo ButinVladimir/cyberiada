@@ -86,12 +86,18 @@ export class MapCellZoomPanel extends LitElement {
       </div>
 
       <div class="zoom-button-container">
-        <sl-icon-button
-          name="zoom-in"
-          label=${t('city.cityOverview.toggleZoomPanel', { ns: 'ui' })}
-          @click=${this.handleToggleZoomPanel}
-        >
-        </sl-icon-button>
+        <sl-tooltip placement="bottom">
+          <intl-message slot="content" label="ui:city:cityOverview:toggleZoomPanel">
+            Toggle zoom panel
+          </intl-message>
+
+          <sl-icon-button
+            name="zoom-in"
+            label=${t('city.cityOverview.toggleZoomPanel', { ns: 'ui' })}
+            @click=${this.handleToggleZoomPanel}
+          >
+          </sl-icon-button>
+        </sl-tooltip>
       </div>
     `;
   }

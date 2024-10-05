@@ -1,7 +1,7 @@
 import { BaseController } from '@shared/base-controller';
 import { ProgramName } from '@state/progam-factory/types';
-import { IDevelopingProgram } from '@state/mainframe-developing-programs-state/interfaces/developing-program';
-import { MAINFRAME_DEVELOPING_PROGRAMS_STATE_UI_EVENTS } from '@state/mainframe-developing-programs-state/constants';
+import { IDevelopingProgram } from '@state/mainframe/mainframe-developing-programs-state/interfaces/developing-program';
+import { MAINFRAME_DEVELOPING_PROGRAMS_STATE_UI_EVENTS } from '@state/mainframe/mainframe-developing-programs-state/constants';
 
 export class DevelopingProgramsListItemController extends BaseController {
   private _developingProgram?: IDevelopingProgram;

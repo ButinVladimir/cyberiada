@@ -114,20 +114,32 @@ export class DevelopingProgramsListItem extends LitElement {
           <ca-developing-programs-list-item-progress program-name=${developingProgram.program.name}>
           </ca-developing-programs-list-item-progress>
 
-          <sl-icon-button
-            name=${developingProgram.isActive ? 'play-fill' : 'pause-fill'}
-            label=${t('mainframe.developingPrograms.developingProgramToggle', { ns: 'ui' })}
-            @click=${this.handleToggleDevelopingProgram}
-          >
-          </sl-icon-button>
+          <sl-tooltip>
+            <intl-message slot="content" label="ui:mainframe:developingPrograms:developingProgramToggle">
+              Toggle developing program
+            </intl-message>
 
-          <sl-icon-button
-            id="delete-btn"
-            name="x-lg"
-            label=${t('mainframe.developingPrograms.developingProgramDelete', { ns: 'ui' })}
-            @click=${this.handleOpenDeleteDevelopingProgramDialog}
-          >
-          </sl-icon-button>
+            <sl-icon-button
+              name=${developingProgram.isActive ? 'play-fill' : 'pause-fill'}
+              label=${t('mainframe.developingPrograms.developingProgramToggle', { ns: 'ui' })}
+              @click=${this.handleToggleDevelopingProgram}
+            >
+            </sl-icon-button>
+          </sl-tooltip>
+
+          <sl-tooltip>
+            <intl-message slot="content" label="ui:mainframe:developingPrograms:developingProgramDelete">
+              Delete developing program
+            </intl-message>
+
+            <sl-icon-button
+              id="delete-btn"
+              name="x-lg"
+              label=${t('mainframe.developingPrograms.developingProgramDelete', { ns: 'ui' })}
+              @click=${this.handleOpenDeleteDevelopingProgramDialog}
+            >
+            </sl-icon-button>
+          </sl-tooltip>
         </div>
       </td>
     `;

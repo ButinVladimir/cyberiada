@@ -1,9 +1,10 @@
 import { injectable } from 'inversify';
 import { decorators } from '@state/container';
 import { TYPES } from '@state/types';
+import type { IScenarioState } from '@state/scenario-state/interfaces/scenario-state';
 import type { IGeneralState } from '@state/general-state/interfaces/general-state';
-import type { IMainframeHardwareState } from '@state/mainframe-hardware-state/interfaces/mainframe-hardware-state';
-import type { IMainframeDevelopingProgramsState } from '@state/mainframe-developing-programs-state/interfaces/mainframe-developing-programs-state';
+import type { IMainframeHardwareState } from '@state/mainframe/mainframe-hardware-state/interfaces/mainframe-hardware-state';
+import type { IMainframeDevelopingProgramsState } from '@state/mainframe/mainframe-developing-programs-state/interfaces/mainframe-developing-programs-state';
 import type { ISettingsState } from '@state/settings-state/interfaces/settings-state';
 import type { IFormatter } from '@shared/interfaces/formatter';
 import { IProgramFactory } from './interfaces/program-factory';
@@ -15,6 +16,9 @@ const { lazyInject } = decorators;
 
 @injectable()
 export class ProgramFactory implements IProgramFactory {
+  @lazyInject(TYPES.ScenarioState)
+  private _scenarioState!: IScenarioState;
+
   @lazyInject(TYPES.GeneralState)
   private _generalState!: IGeneralState;
 
@@ -71,6 +75,7 @@ export class ProgramFactory implements IProgramFactory {
           generalState: this._generalState,
           settingsState: this._settingsState,
           mainframeHardwareState: this._mainframeHardwareState,
+          scenarioState: this._scenarioState,
           formatter: this._formatter,
           level: parameters.level,
           quality: parameters.quality,
@@ -78,6 +83,7 @@ export class ProgramFactory implements IProgramFactory {
 
       case ProgramName.codeGenerator:
         return new CodeGeneratorProgram({
+          generalState: this._generalState,
           mainframeHardwareState: this._mainframeHardwareState,
           mainframeDevelopingProgramsState: this._mainframeDevelopingProgramsState,
           formatter: this._formatter,

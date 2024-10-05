@@ -12,8 +12,8 @@ pages:
   mainframe: Mainframe
   settings: Settings
 topBar:
-  menu: Menu
-  messageLog: Message log
+  menu: Toggle menu
+  messageLog: Toggle message log
   gameSpeedButtons:
     pause: Pause
     playNormal: Play on normal speed (without offline time)

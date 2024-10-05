@@ -11,8 +11,8 @@ pages:
   mainframe: Мейнфрейм
   settings: Настройки
 topBar:
-  menu: Меню
-  messageLog: Сообщения
+  menu: Показать/скрыть меню
+  messageLog: Показать/скрыть сообщения
   gameSpeedButtons:
     pause: Пауза
     playNormal: Играть на нормальной скорости (без оффлайн времени)
