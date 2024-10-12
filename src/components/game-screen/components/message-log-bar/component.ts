@@ -73,9 +73,7 @@ export class MessageLogBar extends LitElement {
         <div class="gutter"></div>
 
         <sl-tooltip>
-          <intl-message slot="content" label="ui:messageLog:clearMessages">
-            Clear messages
-          </intl-message>
+          <intl-message slot="content" label="ui:messageLog:clearMessages"> Clear messages </intl-message>
 
           <sl-icon-button
             id="clear-messages-btn"

@@ -17,7 +17,7 @@ export interface IScenarioValues {
   mainframeSoftware: {
     performanceBoost: IExponent;
     startingPrograms: ProgramName[];
-  }
+  };
   startingCityLevel: number;
   cityLevelRequirements: IExponent;
 }

@@ -11,6 +11,16 @@
     "cityDevelopmentPoints": { "baseMultiplier": 1, "base": 1.1 },
     "cityDevelopmentPointsQualityMultiplier": 2
   },
+  "predictiveComputator": {
+    "ram": 0,
+    "completionPoints": { "baseMultiplier": 0, "base": 1 },
+    "developmentPoints": { "baseMultiplier": 30000, "base": 1.2 },
+    "developmentPointsQualityMultiplier": 2,
+    "cost": { "baseMultiplier": 5000, "base": 1.2 },
+    "costQualityMultiplier": 2,
+    "speedModifierLevelMultiplier": 1.0001,
+    "speedModifierQualityMultiplier": 1.1
+  },
   "codeGenerator": {
     "ram": 1,
     "completionPoints": { "baseMultiplier": 10000, "base": 1 },

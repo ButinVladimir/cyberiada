@@ -11,6 +11,7 @@ import { IProgramFactory } from './interfaces/program-factory';
 import { IMakeProgramParameters, IProgram } from './interfaces';
 import { ProgramName } from './types';
 import { ShareServerProgram, CodeGeneratorProgram } from './programs';
+import { PredictiveComputatorProgram } from './programs/predictive-computator';
 
 const { lazyInject } = decorators;
 
@@ -86,6 +87,16 @@ export class ProgramFactory implements IProgramFactory {
           generalState: this._generalState,
           mainframeHardwareState: this._mainframeHardwareState,
           mainframeDevelopingProgramsState: this._mainframeDevelopingProgramsState,
+          formatter: this._formatter,
+          level: parameters.level,
+          quality: parameters.quality,
+        });
+
+      case ProgramName.predictiveComputator:
+        return new PredictiveComputatorProgram({
+          generalState: this._generalState,
+          scenarioState: this._scenarioState,
+          mainframeHardwareState: this._mainframeHardwareState,
           formatter: this._formatter,
           level: parameters.level,
           quality: parameters.quality,

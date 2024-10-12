@@ -10,6 +10,7 @@ pages:
   cityOverview: City overview
   company: Company
   mainframe: Mainframe
+  statistics: Statistics
   settings: Settings
 topBar:
   menu: Toggle menu
@@ -131,3 +132,21 @@ mainframe:
     progressBarHintPaused: "Program development isn't active"
     developingProgramToggle: Enable / disable program development
     developingProgramDelete: Abort program development
+statistics:
+  statistics: Statistics
+  tabs:
+    growth: Growth
+    incomeExpenses: Income and expenses
+  growth:
+    programCompletionSpeed:
+      title: Program completion speed
+      multiplier: Predictive computator multiplier
+      pointsPerSecond: PCP per second
+    moneyIncome:
+      title: Money income per second
+      byProgram: By sharing server
+      total: Total
+    cityDevelopmentSpeed:
+      title: City development points per second
+      byProgram: By sharing server
+      total: Total

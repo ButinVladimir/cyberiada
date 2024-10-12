@@ -1,4 +1,5 @@
 import { EventEmitter } from 'eventemitter3';
+import { IGrowthState } from '@state/growth-state/interfaces/growth-state';
 import { IProgram } from '@state/progam-factory/interfaces/program';
 import { EventBatcher } from '@shared/event-batcher';
 import { PROGRAMS_STATE_EVENTS } from '@state/progam-factory/constants';
@@ -6,6 +7,7 @@ import { IProcess, IProcessParameters, ISerializedProcess } from './interfaces';
 import { MAINFRAME_PROCESSES_STATE_UI_EVENTS, MAINFRAME_PROCESSES_STATE_EVENTS } from './constants';
 
 export class Process implements IProcess {
+  private _growthState: IGrowthState;
   private _program: IProgram;
   private _isActive: boolean;
   private _threads: number;
@@ -16,6 +18,7 @@ export class Process implements IProcess {
   private readonly _stateEventEmitter: EventEmitter;
 
   constructor(parameters: IProcessParameters) {
+    this._growthState = parameters.growthState;
     this._program = parameters.program;
     this._isActive = parameters.isActive;
     this._threads = parameters.threads;
@@ -63,6 +66,10 @@ export class Process implements IProcess {
 
   get maxCores() {
     return this._threads * this.program.cores;
+  }
+
+  calculateCompletionDelta(passedTime: number): number {
+    return passedTime * this._usedCores * this._growthState.programCompletionSpeed;
   }
 
   toggleActive(active: boolean) {

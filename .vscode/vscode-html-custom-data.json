@@ -367,6 +367,16 @@
       "name": "ca-confirmation-alert",
       "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_gameAlertToggleRef` {`Ref<SlCheckbox>`} - \n\n  * `_gameAlert` - \n\n  * `_gameAlertKey` {`string | undefined`} - \n\n  * `_messageParams` {`string`} - \n\n  * `_isOpen` {`boolean`} - \n\n  * `_alertToggled` {`boolean`} - \n\n  * `handleOpen` - \n\n  * `handleClose` - \n\n  * `handleSubmit` - \n\n  * `handleToggleAlert` - \n\n  * `_confirmationAlertModalController` {`ConfirmationAlertController`} - ",
       "attributes": []
+    },
+    {
+      "name": "ca-statistics-page",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-statistics-growth-panel",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_statisticsGrowthPanelController` {`StatisticsGrowthPanelController`} - ",
+      "attributes": []
     }
   ],
   "globalAttributes": [],

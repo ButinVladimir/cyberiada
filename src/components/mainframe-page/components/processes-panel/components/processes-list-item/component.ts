@@ -107,9 +107,7 @@ export class ProcessesListItem extends LitElement {
           <ca-processes-list-item-progress program-name=${process.program.name}> </ca-processes-list-item-progress>
 
           <sl-tooltip>
-            <intl-message slot="content" label="ui:mainframe:processes:processToggle">
-              Toggle process
-            </intl-message>
+            <intl-message slot="content" label="ui:mainframe:processes:processToggle"> Toggle process </intl-message>
 
             <sl-icon-button
               name=${process.isActive ? 'play-fill' : 'pause-fill'}
@@ -120,9 +118,7 @@ export class ProcessesListItem extends LitElement {
           </sl-tooltip>
 
           <sl-tooltip>
-            <intl-message slot="content" label="ui:mainframe:processes:processDelete">
-              Delete process
-            </intl-message>
+            <intl-message slot="content" label="ui:mainframe:processes:processDelete"> Delete process </intl-message>
 
             <sl-icon-button
               id="delete-btn"

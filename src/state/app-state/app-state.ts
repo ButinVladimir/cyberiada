@@ -1,6 +1,7 @@
 import { inject, injectable } from 'inversify';
 import type { IScenarioState } from '@state/scenario-state/interfaces/scenario-state';
 import type { IGeneralState } from '@state/general-state/interfaces/general-state';
+import type { IGrowthState } from '@state/growth-state/interfaces/growth-state';
 import { GameSpeed } from '@state/general-state/types';
 import type { ISettingsState } from '@state/settings-state/interfaces/settings-state';
 import type { ICityState } from '@state/city-state/interfaces/city-state';
@@ -17,6 +18,7 @@ import { IAppState, ISerializedState } from './interfaces';
 export class AppState implements IAppState {
   private _scenarioState: IScenarioState;
   private _generalState: IGeneralState;
+  private _growthState: IGrowthState;
   private _settingsState: ISettingsState;
   private _cityState: ICityState;
   private _messageLogState: IMessageLogState;
@@ -29,6 +31,7 @@ export class AppState implements IAppState {
   constructor(
     @inject(TYPES.ScenarioState) _scenarioState: IScenarioState,
     @inject(TYPES.GeneralState) _generalState: IGeneralState,
+    @inject(TYPES.GrowthState) _growthState: IGrowthState,
     @inject(TYPES.SettingsState) _settingsState: ISettingsState,
     @inject(TYPES.CityState) _cityState: ICityState,
     @inject(TYPES.MessageLogState) _messageLogState: IMessageLogState,
@@ -41,6 +44,7 @@ export class AppState implements IAppState {
   ) {
     this._scenarioState = _scenarioState;
     this._generalState = _generalState;
+    this._growthState = _growthState;
     this._settingsState = _settingsState;
     this._cityState = _cityState;
     this._messageLogState = _messageLogState;
@@ -86,6 +90,8 @@ export class AppState implements IAppState {
     await this._mainframeHardwareState.startNewState();
     await this._mainframeOwnedProgramsState.startNewState();
     await this._mainframeProcessesState.startNewState();
+
+    this._growthState.recalculate();
   }
 
   serialize(): string {
@@ -118,6 +124,8 @@ export class AppState implements IAppState {
     await this._mainframeOwnedProgramsState.deserialize(parsedSaveData.mainframeOwnedPrograms);
     await this._mainframeProcessesState.deserialize(parsedSaveData.mainframeProcesses);
     await this._mainframeDevelopingProgramsState.deserialize(parsedSaveData.mainframeDevelopingPrograms);
+
+    this._growthState.recalculate();
   }
 
   addUiEventListener() {}
@@ -126,6 +134,7 @@ export class AppState implements IAppState {
 
   fireUiEvents() {
     this._generalState.fireUiEvents();
+    this._growthState.fireUiEvents();
     this._messageLogState.fireUiEvents();
     this._mainframeHardwareState.fireUiEvents();
     this._mainframeOwnedProgramsState.fireUiEvents();

@@ -24,3 +24,4 @@ import './game-screen';
 import './settings-page';
 import './city-page';
 import './mainframe-page';
+import './statistics-page';

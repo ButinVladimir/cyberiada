@@ -35,8 +35,7 @@ export class DevelopingProgramsListItemProgressController extends BaseController
     if (codeGeneratorProcess) {
       const codeGeneratorProgram = codeGeneratorProcess.program as CodeGeneratorProgram;
       const completionTime =
-        codeGeneratorProcess.maxCompletionPoints /
-        this.mainframeProcessesState.calculateCompletionDelta(1, codeGeneratorProcess.usedCores);
+        codeGeneratorProcess.maxCompletionPoints / codeGeneratorProcess.calculateCompletionDelta(1);
 
       delta += codeGeneratorProgram.calculateDelta(codeGeneratorProcess.threads) / completionTime;
     }

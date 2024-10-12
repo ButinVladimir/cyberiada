@@ -57,9 +57,7 @@ export class GameSpeedButtons extends LitElement {
 
     return html`
       <sl-tooltip>
-        <intl-message slot="content" label="ui:topBar:gameSpeedButtons:${label}">
-          Game speed button
-        </intl-message>
+        <intl-message slot="content" label="ui:topBar:gameSpeedButtons:${label}"> Game speed button </intl-message>
 
         <sl-icon-button
           name=${icon}

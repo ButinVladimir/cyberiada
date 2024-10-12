@@ -87,9 +87,7 @@ export class MapCellZoomPanel extends LitElement {
 
       <div class="zoom-button-container">
         <sl-tooltip placement="bottom">
-          <intl-message slot="content" label="ui:city:cityOverview:toggleZoomPanel">
-            Toggle zoom panel
-          </intl-message>
+          <intl-message slot="content" label="ui:city:cityOverview:toggleZoomPanel"> Toggle zoom panel </intl-message>
 
           <sl-icon-button
             name="zoom-in"

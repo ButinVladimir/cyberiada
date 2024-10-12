@@ -12,6 +12,7 @@ export enum OverviewMenuItem {
   cityOverview = 'cityOverview',
   company = 'company',
   mainframe = 'mainframe',
+  statistics = 'statistics',
 }
 
 export enum MiscMenuItem {

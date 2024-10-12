@@ -63,7 +63,7 @@ export class ShareServerProgram extends BaseProgram {
     };
   }
 
-  private calculateMoneyDelta(threads: number, usedRam: number, passedTime: number): number {
+  calculateMoneyDelta(threads: number, usedRam: number, passedTime: number): number {
     const programData = programs[this.name];
 
     return (
@@ -79,7 +79,7 @@ export class ShareServerProgram extends BaseProgram {
     );
   }
 
-  private calculateCityDevelopmentPointsDelta(threads: number, usedRam: number, passedTime: number): number {
+  calculateCityDevelopmentPointsDelta(threads: number, usedRam: number, passedTime: number): number {
     const programData = programs[this.name];
 
     return (

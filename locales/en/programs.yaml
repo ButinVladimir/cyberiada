@@ -8,3 +8,8 @@ codeGenerator:
   overview: Program to develop other programs.
   programDescription: Generates {{value.value}} PDP per completion.
   processDescription: Generates {{value.value}} PDP per completion.
+predictiveComputator:
+  name: Predictive computator
+  overview: Program to speed up completion of currently running processes.
+  programDescription: Can speed up currenty running processes by {{value.value}}.
+  processDescription: Speed up currenty running processes by {{value.value}}.

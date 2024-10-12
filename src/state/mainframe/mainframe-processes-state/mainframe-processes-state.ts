@@ -1,15 +1,16 @@
 import { inject, injectable } from 'inversify';
+import { EventEmitter } from 'eventemitter3';
+import { decorators } from '@state/container';
 import { ProgramName } from '@state/progam-factory/types';
-import type { IScenarioState } from '@state/scenario-state/interfaces/scenario-state';
 import type { IMainframeHardwareState } from '@state/mainframe/mainframe-hardware-state/interfaces/mainframe-hardware-state';
 import type { IMainframeOwnedProgramsState } from '@state/mainframe/mainframe-owned-programs-state/interfaces/mainframe-owned-program-state';
 import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
 import type { ISettingsState } from '@state/settings-state/interfaces/settings-state';
+import type { IGrowthState } from '@state/growth-state/interfaces/growth-state';
 import type { IFormatter } from '@shared/interfaces/formatter';
 import { TYPES } from '@state/types';
 import { EventBatcher } from '@shared/event-batcher';
 import { ProgramsEvent } from '@shared/types';
-import { calculatePow } from '@shared/helpers';
 import { MAINFRAME_HARDWARE_STATE_EVENTS } from '@state/mainframe/mainframe-hardware-state/constants';
 import {
   IMainframeProcessesSerializedState,
@@ -20,14 +21,18 @@ import {
 import { Process } from './process';
 import { MAINFRAME_PROCESSES_STATE_UI_EVENTS, MAINFRAME_PROCESSES_STATE_EVENTS } from './constants';
 
+const { lazyInject } = decorators;
+
 @injectable()
 export class MainframeProcessesState implements IMainframeProcessesState {
-  private _scenarioState: IScenarioState;
   private _settingsState: ISettingsState;
   private _mainframeHardwareState: IMainframeHardwareState;
   private _mainframeOwnedProgramsState: IMainframeOwnedProgramsState;
   private _messageLogState: IMessageLogState;
   private _formatter: IFormatter;
+
+  @lazyInject(TYPES.GrowthState)
+  private _growthState!: IGrowthState;
 
   private _processesList: ProgramName[];
   private _processesMap: Map<ProgramName, IProcess>;
@@ -36,17 +41,16 @@ export class MainframeProcessesState implements IMainframeProcessesState {
   private _availableRam: number;
   private _runningPassiveProgram?: ProgramName;
 
+  private readonly _stateEventEmitter: EventEmitter;
   private readonly _uiEventBatcher: EventBatcher;
 
   constructor(
-    @inject(TYPES.ScenarioState) _scenarioState: IScenarioState,
     @inject(TYPES.SettingsState) _settingsState: ISettingsState,
     @inject(TYPES.MainframeHardwareState) _mainframeHardwareState: IMainframeHardwareState,
     @inject(TYPES.MainframeOwnedProgramsState) _mainframeOwnedProgramsState: IMainframeOwnedProgramsState,
     @inject(TYPES.MessageLogState) _messageLogState: IMessageLogState,
     @inject(TYPES.Formatter) _formatter: IFormatter,
   ) {
-    this._scenarioState = _scenarioState;
     this._settingsState = _settingsState;
     this._mainframeHardwareState = _mainframeHardwareState;
     this._mainframeOwnedProgramsState = _mainframeOwnedProgramsState;
@@ -59,6 +63,7 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     this._availableCores = 0;
     this._availableRam = 0;
 
+    this._stateEventEmitter = new EventEmitter();
     this._uiEventBatcher = new EventBatcher();
 
     this._mainframeHardwareState.addStateEventListener(
@@ -164,14 +169,6 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     this.updateRunningProcesses();
   }
 
-  calculateCompletionDelta(passedTime: number, usedCores: number): number {
-    return (
-      passedTime *
-      usedCores *
-      calculatePow(this._mainframeHardwareState.performance, this._scenarioState.currentValues.mainframeSoftware.performanceBoost)
-    );
-  }
-
   processTick() {
     if (this._runningPassiveProgram) {
       const passiveProcess = this.getProcessByName(this._runningPassiveProgram);
@@ -182,12 +179,10 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     }
 
     let hasFinishedProcesses = false;
-    const completionPerCore = this.calculateCompletionDelta(this._settingsState.updateInterval, 1);
 
     for (const programName of this._runningProcesses) {
       const process = this.getProcessByName(programName)!;
-      const completionDelta = completionPerCore * process.usedCores;
-      process.increaseCompletion(completionDelta);
+      process.increaseCompletion(process.calculateCompletionDelta(this._settingsState.updateInterval));
 
       if (process.currentCompletionPoints >= process.maxCompletionPoints) {
         process.program.perform(process.threads, process.totalRam);
@@ -242,6 +237,14 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     }
   }
 
+  addStateEventListener(eventName: symbol, handler: (...args: any[]) => void) {
+    this._stateEventEmitter.addListener(eventName, handler);
+  }
+
+  removeStateEventListener(eventName: symbol, handler: (...args: any[]) => void) {
+    this._stateEventEmitter.removeListener(eventName, handler);
+  }
+
   private updateRunningProcesses = () => {
     this._availableCores = this._mainframeHardwareState.cores;
     this._availableRam = this._mainframeHardwareState.ram;
@@ -284,6 +287,7 @@ export class MainframeProcessesState implements IMainframeProcessesState {
       }
     }
 
+    this._stateEventEmitter.emit(MAINFRAME_PROCESSES_STATE_EVENTS.PROCESSES_UPDATED);
     this._uiEventBatcher.enqueueEvent(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESSES_UPDATED);
   };
 
@@ -321,6 +325,7 @@ export class MainframeProcessesState implements IMainframeProcessesState {
 
   private createProcess = (processParameters: ISerializedProcess): IProcess => {
     const process = new Process({
+      growthState: this._growthState,
       isActive: processParameters.isActive,
       threads: processParameters.threads,
       program: this._mainframeOwnedProgramsState.getOwnedProgramByName(processParameters.programName)!,
