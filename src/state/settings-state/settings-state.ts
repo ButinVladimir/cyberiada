@@ -1,14 +1,20 @@
 import { injectable } from 'inversify';
 import i18n from 'i18next';
-import { EventEmitter } from 'eventemitter3';
+import { decorators } from '@state/container';
 import { GameAlert, Language, LongNumberFormat, MessageEvent, Theme } from '@shared/types';
+import type { IApp } from '@state/app/interfaces/app';
+import { TYPES } from '@state/types';
 import themes from '@configs/themes.json';
 import constants from '@configs/constants.json';
 import { ISettingsState, ISettingsSerializedState } from './interfaces';
-import { SETTINGS_STATE_EVENTS } from './constants';
+
+const { lazyInject } = decorators;
 
 @injectable()
 export class SettingsState implements ISettingsState {
+  @lazyInject(TYPES.App)
+  private _app!: IApp;
+
   private _language: Language;
   private _theme: Theme;
   private _messageLogSize: number;
@@ -20,8 +26,6 @@ export class SettingsState implements ISettingsState {
   private _mapCellSize: number;
   private _enabledMessageEvents: Set<MessageEvent>;
   private _enabledGameAlerts: Set<GameAlert>;
-
-  private readonly _stateEventEmitter: EventEmitter;
 
   constructor() {
     this._language = Language.en;
@@ -35,8 +39,6 @@ export class SettingsState implements ISettingsState {
     this._mapCellSize = constants.defaultSettings.mapSize;
     this._enabledMessageEvents = new Set<MessageEvent>();
     this._enabledGameAlerts = new Set<GameAlert>();
-
-    this._stateEventEmitter = new EventEmitter();
   }
 
   get language() {
@@ -88,8 +90,6 @@ export class SettingsState implements ISettingsState {
 
     await i18n.changeLanguage(this.language);
     document.documentElement.lang = this.language;
-
-    this._stateEventEmitter.emit(SETTINGS_STATE_EVENTS.UPDATED_LANGUAGE);
   }
 
   setTheme(theme: Theme) {
@@ -104,17 +104,17 @@ export class SettingsState implements ISettingsState {
 
   setUpdateInterval(updateInterval: number) {
     this._updateInterval = updateInterval;
-    this._stateEventEmitter.emit(SETTINGS_STATE_EVENTS.UPDATED_UPDATE_INTERVAL);
+    this._app.restartUpdateTimer();
   }
 
   setAutosaveEnabled(autosaveEnabled: boolean) {
     this._autosaveEnabled = autosaveEnabled;
-    this._stateEventEmitter.emit(SETTINGS_STATE_EVENTS.UPDATED_AUTOSAVE_INTERVAL);
+    this._app.restartAutosaveTimer();
   }
 
   setAutosaveInterval(autosaveInterval: number) {
     this._autosaveInterval = autosaveInterval;
-    this._stateEventEmitter.emit(SETTINGS_STATE_EVENTS.UPDATED_AUTOSAVE_INTERVAL);
+    this._app.restartAutosaveTimer();
   }
 
   setMaxTicksPerUpdate(maxTicksPerUpdate: number) {
@@ -188,14 +188,6 @@ export class SettingsState implements ISettingsState {
       enabledMessageEvents: this.serializeMessageEvents(),
       enabledGameAlerts: this.serializeGameAlerts(),
     };
-  }
-
-  addStateEventListener(eventName: symbol, handler: (...args: any[]) => void) {
-    this._stateEventEmitter.addListener(eventName, handler);
-  }
-
-  removeStateEventListener(eventName: symbol, handler: (...args: any[]) => void) {
-    this._stateEventEmitter.removeListener(eventName, handler);
   }
 
   private serializeMessageEvents(): MessageEvent[] {

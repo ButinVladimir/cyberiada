@@ -20,17 +20,31 @@ export class StatisticsPage extends LitElement {
       </h3>
 
       <sl-tab-group>
+        <sl-tab slot="nav" panel="general">
+          <intl-message label="ui:statistics:tabs:general">General</intl-message>
+        </sl-tab>
         <sl-tab slot="nav" panel="growth">
           <intl-message label="ui:statistics:tabs:growth">Growth</intl-message>
         </sl-tab>
-        <sl-tab slot="nav" panel="incomeExpenses">
-          <intl-message label="ui:statistics:tabs:incomeExpenses">Income and expenses</intl-message>
+        <sl-tab slot="nav" panel="income">
+          <intl-message label="ui:statistics:tabs:income">Income</intl-message>
+        </sl-tab>
+        <sl-tab slot="nav" panel="expenses">
+          <intl-message label="ui:statistics:tabs:expenses">Expenses</intl-message>
         </sl-tab>
 
+        <sl-tab-panel name="general">
+          <ca-statistics-general-panel></ca-statistics-general-panel>
+        </sl-tab-panel>
         <sl-tab-panel name="growth">
           <ca-statistics-growth-panel></ca-statistics-growth-panel>
         </sl-tab-panel>
-        <sl-tab-panel name="incomeExpenses"> Income and expenses </sl-tab-panel>
+        <sl-tab-panel name="income">
+          <ca-statistics-income-panel></ca-statistics-income-panel>
+        </sl-tab-panel>
+        <sl-tab-panel name="expenses">
+          <ca-statistics-expenses-panel></ca-statistics-expenses-panel>
+        </sl-tab-panel>
       </sl-tab-group>
     `;
   }

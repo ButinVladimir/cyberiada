@@ -9,7 +9,6 @@ import type { IMessageLogState } from '@state/message-log-state/interfaces/messa
 import type { IMainframeHardwareState } from '@state/mainframe/mainframe-hardware-state/interfaces/mainframe-hardware-state';
 import type { IMainframeOwnedProgramsState } from '@state/mainframe/mainframe-owned-programs-state/interfaces/mainframe-owned-program-state';
 import type { IMainframeProcessesState } from '@state/mainframe/mainframe-processes-state/interfaces/mainframe-processes-state';
-import type { IMainframeDevelopingProgramsState } from '@state/mainframe/mainframe-developing-programs-state/interfaces/mainframe-developing-programs-state';
 import type { IProgramFactory } from '@state/progam-factory/interfaces/program-factory';
 import { TYPES } from '@state/types';
 import { IAppState, ISerializedState } from './interfaces';
@@ -25,7 +24,6 @@ export class AppState implements IAppState {
   private _mainframeHardwareState: IMainframeHardwareState;
   private _mainframeOwnedProgramsState: IMainframeOwnedProgramsState;
   private _mainframeProcessesState: IMainframeProcessesState;
-  private _mainframeDevelopingProgramsState: IMainframeDevelopingProgramsState;
   private _programFactory: IProgramFactory;
 
   constructor(
@@ -38,8 +36,6 @@ export class AppState implements IAppState {
     @inject(TYPES.MainframeHardwareState) _mainframeHardwareState: IMainframeHardwareState,
     @inject(TYPES.MainframeOwnedProgramsState) _mainframeOwnedProgramsState: IMainframeOwnedProgramsState,
     @inject(TYPES.MainframeProcessesState) _mainframeProcessesState: IMainframeProcessesState,
-    @inject(TYPES.MainframeDevelopingProgramsState)
-    _mainframeDevelopingProgramsState: IMainframeDevelopingProgramsState,
     @inject(TYPES.ProgramFactory) _programFactory: IProgramFactory,
   ) {
     this._scenarioState = _scenarioState;
@@ -51,7 +47,6 @@ export class AppState implements IAppState {
     this._mainframeHardwareState = _mainframeHardwareState;
     this._mainframeOwnedProgramsState = _mainframeOwnedProgramsState;
     this._mainframeProcessesState = _mainframeProcessesState;
-    this._mainframeDevelopingProgramsState = _mainframeDevelopingProgramsState;
     this._programFactory = _programFactory;
   }
 
@@ -78,12 +73,14 @@ export class AppState implements IAppState {
   }
 
   private processTick = () => {
+    this._generalState.increaseTime();
     this._mainframeProcessesState.processTick();
   };
 
   async startNewState(): Promise<void> {
     this._programFactory.deleteAllPrograms();
 
+    await this._scenarioState.startNewState();
     await this._generalState.startNewState();
     await this._settingsState.startNewState();
     await this._cityState.startNewState();
@@ -103,7 +100,6 @@ export class AppState implements IAppState {
       mainframeHardware: this._mainframeHardwareState.serialize(),
       mainframeOwnedPrograms: this._mainframeOwnedProgramsState.serialize(),
       mainframeProcesses: this._mainframeProcessesState.serialize(),
-      mainframeDevelopingPrograms: this._mainframeDevelopingProgramsState.serialize(),
     };
 
     const encodedSaveState = btoa(JSON.stringify(saveState));
@@ -123,7 +119,6 @@ export class AppState implements IAppState {
     await this._mainframeHardwareState.deserialize(parsedSaveData.mainframeHardware);
     await this._mainframeOwnedProgramsState.deserialize(parsedSaveData.mainframeOwnedPrograms);
     await this._mainframeProcessesState.deserialize(parsedSaveData.mainframeProcesses);
-    await this._mainframeDevelopingProgramsState.deserialize(parsedSaveData.mainframeDevelopingPrograms);
 
     this._growthState.recalculate();
   }
@@ -139,7 +134,6 @@ export class AppState implements IAppState {
     this._mainframeHardwareState.fireUiEvents();
     this._mainframeOwnedProgramsState.fireUiEvents();
     this._mainframeProcessesState.fireUiEvents();
-    this._mainframeDevelopingProgramsState.fireUiEvents();
     this._programFactory.fireUiEvents();
   }
 }

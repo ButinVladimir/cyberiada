@@ -1,24 +1,29 @@
 import { injectable, inject } from 'inversify';
-import { EventEmitter } from 'eventemitter3';
+import { decorators } from '@state/container';
 import type { IScenarioState } from '@state/scenario-state/interfaces/scenario-state';
 import type { IGeneralState } from '@state/general-state/interfaces/general-state';
 import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
+import type { IMainframeProcessesState } from '@state/mainframe/mainframe-processes-state/interfaces/mainframe-processes-state';
 import type { IFormatter } from '@shared/interfaces/formatter';
 import { TYPES } from '@state/types';
-import { PurchaseEvent } from '@shared/types';
+import { PurchaseEvent, PurchaseType } from '@shared/types';
 import { EventBatcher } from '@shared/event-batcher';
 import { calculatePow } from '@shared/helpers';
 import { IMainframeHardwareState, IMainframeHardwareSerializedState } from './interfaces';
-import { MAINFRAME_HARDWARE_STATE_EVENTS, MAINFRAME_HARDWARE_STATE_UI_EVENTS } from './constants';
+import { MAINFRAME_HARDWARE_STATE_UI_EVENTS } from './constants';
+
+const { lazyInject } = decorators;
 
 @injectable()
 export class MainframeHardwareState implements IMainframeHardwareState {
+  @lazyInject(TYPES.MainframeProcessesState)
+  private _mainframeProcessesState!: IMainframeProcessesState;
+
   private _scenarioState: IScenarioState;
   private _generalState: IGeneralState;
   private _messageLogState: IMessageLogState;
   private _formatter: IFormatter;
 
-  private readonly _stateEventEmitter: EventEmitter;
   private readonly _uiEventBatcher: EventBatcher;
 
   private _performance: number;
@@ -42,7 +47,6 @@ export class MainframeHardwareState implements IMainframeHardwareState {
     this._cores = scenarioValues.mainframeHardware.coresLevel;
     this._ram = scenarioValues.mainframeHardware.ramLevel;
 
-    this._stateEventEmitter = new EventEmitter();
     this._uiEventBatcher = new EventBatcher();
   }
 
@@ -73,7 +77,11 @@ export class MainframeHardwareState implements IMainframeHardwareState {
 
     const cost = this.getPerformanceIncreaseCost(increase);
 
-    return this._generalState.purchase(cost, this.handlePurchasePerformanceIncrease(increase));
+    return this._generalState.purchase(
+      cost,
+      PurchaseType.mainframeHardware,
+      this.handlePurchasePerformanceIncrease(increase),
+    );
   }
 
   getCoresIncreaseCost(increase: number): number {
@@ -91,7 +99,11 @@ export class MainframeHardwareState implements IMainframeHardwareState {
 
     const cost = this.getCoresIncreaseCost(increase);
 
-    return this._generalState.purchase(cost, this.handlePurchaseCoresIncrease(increase));
+    return this._generalState.purchase(
+      cost,
+      PurchaseType.mainframeHardware,
+      this.handlePurchaseCoresIncrease(increase),
+    );
   }
 
   getRamIncreaseCost(increase: number): number {
@@ -109,7 +121,7 @@ export class MainframeHardwareState implements IMainframeHardwareState {
 
     const cost = this.getRamIncreaseCost(increase);
 
-    return this._generalState.purchase(cost, this.handlePurchaseRamIncrease(increase));
+    return this._generalState.purchase(cost, PurchaseType.mainframeHardware, this.handlePurchaseRamIncrease(increase));
   }
 
   // eslint-disable-next-line @typescript-eslint/require-await
@@ -148,14 +160,6 @@ export class MainframeHardwareState implements IMainframeHardwareState {
     this._uiEventBatcher.fireEvents();
   }
 
-  addStateEventListener(eventName: symbol, handler: (...args: any[]) => void) {
-    this._stateEventEmitter.addListener(eventName, handler);
-  }
-
-  removeStateEventListener(eventName: symbol, handler: (...args: any[]) => void) {
-    this._stateEventEmitter.removeListener(eventName, handler);
-  }
-
   private handlePurchasePerformanceIncrease = (increase: number) => () => {
     this._performance += increase;
     this._messageLogState.postMessage(PurchaseEvent.performanceUpgraded, {
@@ -181,7 +185,7 @@ export class MainframeHardwareState implements IMainframeHardwareState {
   };
 
   private handlePostHardwareUpdate() {
-    this._stateEventEmitter.emit(MAINFRAME_HARDWARE_STATE_EVENTS.HARDWARE_UPDATED);
+    this._mainframeProcessesState.requestUpdateProcesses();
     this._uiEventBatcher.enqueueEvent(MAINFRAME_HARDWARE_STATE_UI_EVENTS.HARDWARE_UPDATED);
   }
 }

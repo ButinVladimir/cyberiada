@@ -5,11 +5,11 @@ shareServer:
   processDescription: Generates {{value.money}} money and {{value.cityDevelopmentPoints}} CDP per second.
 codeGenerator:
   name: Code generator
-  overview: Program to develop other programs.
-  programDescription: Generates {{value.value}} PDP per completion.
-  processDescription: Generates {{value.value}} PDP per completion.
+  overview: Program to develop other programs. Generates codebase points.
+  programDescription: Generates {{value.value}} CBP per completion.
+  processDescription: Generates {{value.value}} CBP per completion.
 predictiveComputator:
   name: Predictive computator
   overview: Program to speed up completion of currently running processes.
-  programDescription: Can speed up currenty running processes by {{value.value}}.
-  processDescription: Speed up currenty running processes by {{value.value}}.
+  programDescription: Can speed up currently running processes by up to {{value.value}}.
+  processDescription: Speed up currently running processes by {{value.value}}.

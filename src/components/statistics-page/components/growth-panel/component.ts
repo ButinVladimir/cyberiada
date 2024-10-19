@@ -1,36 +1,11 @@
-import { LitElement, css, html } from 'lit';
+import { LitElement, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { StatisticsGrowthPanelController } from './controller';
+import { statisticsPanelContentStyle } from '../../styles';
 
 @customElement('ca-statistics-growth-panel')
 export class StatisticsGrowthPanel extends LitElement {
-  static styles = css`
-    :host {
-      width: 60em;
-      max-width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-      justify-content: center;
-    }
-
-    h4.title {
-      font-size: var(--sl-font-size-large);
-      font-weight: var(--sl-font-weight-bold);
-      margin-top: 0;
-      margin-bottom: var(--sl-spacing-2x-small);
-      line-height: var(--sl-line-height-normal);
-    }
-
-    .parameters-table {
-      display: grid;
-      column-gap: var(--sl-spacing-3x-small);
-      row-gap: var(--sl-spacing-3x-small);
-      grid-template-columns: 40em 0fr;
-      grid-auto-rows: auto;
-      margin-bottom: var(--sl-spacing-small);
-    }
-  `;
+  static styles = statisticsPanelContentStyle;
 
   private _statisticsGrowthPanelController: StatisticsGrowthPanelController;
 
@@ -55,7 +30,7 @@ export class StatisticsGrowthPanel extends LitElement {
         <span> ${formatter.formatNumberLong(this._statisticsGrowthPanelController.moneyIncomeByPrograms)} </span>
 
         <span>
-          <intl-message label="ui:statistics:growth:moneyIncome:total">Total</intl-message>
+          <intl-message label="ui:statistics:total">Total</intl-message>
         </span>
         <span> ${formatter.formatNumberLong(this._statisticsGrowthPanelController.moneyIncomeTotal)} </span>
       </div>
@@ -75,7 +50,7 @@ export class StatisticsGrowthPanel extends LitElement {
         </span>
 
         <span>
-          <intl-message label="ui:statistics:growth:cityDevelopmentSpeed:total">Total</intl-message>
+          <intl-message label="ui:statistics:total">Total</intl-message>
         </span>
         <span> ${formatter.formatNumberLong(this._statisticsGrowthPanelController.cityDevelopmentSpeedTotal)} </span>
       </div>
@@ -85,15 +60,6 @@ export class StatisticsGrowthPanel extends LitElement {
       </h4>
 
       <div class="parameters-table">
-        <span>
-          <intl-message label="ui:statistics:growth:programCompletionSpeed:multiplier">
-            Program completion speed multiplier
-          </intl-message>
-        </span>
-        <span>
-          ${formatter.formatNumberFloat(this._statisticsGrowthPanelController.programCompletionSpeedMultiplier)}
-        </span>
-
         <span>
           <intl-message label="ui:statistics:growth:programCompletionSpeed:pointsPerSecond">
             Program completion speed

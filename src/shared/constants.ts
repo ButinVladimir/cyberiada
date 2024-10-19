@@ -10,6 +10,8 @@ import {
   LongNumberFormat,
   GameStateAlert,
   ProgramAlert,
+  PurchaseType,
+  IncomeSource,
 } from './types';
 
 export const LANGUAGES: Language[] = Object.values(Language);
@@ -37,3 +39,7 @@ export const QUALITIES: number[] = [0, 1, 2, 3, 4, 5, 6];
 export const LONG_NUMBER_FORMATS: LongNumberFormat[] = Object.values(LongNumberFormat);
 
 export const MS_IN_SECOND = 1000;
+
+export const PURCHASE_TYPES: PurchaseType[] = Object.values(PurchaseType);
+
+export const INCOME_SOURCES: IncomeSource[] = Object.values(IncomeSource);

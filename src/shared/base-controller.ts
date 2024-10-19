@@ -9,7 +9,6 @@ import { IMessageLogState } from '@state/message-log-state/interfaces/message-lo
 import { IMainframeHardwareState } from '@state/mainframe/mainframe-hardware-state/interfaces/mainframe-hardware-state';
 import { IMainframeOwnedProgramsState } from '@state/mainframe/mainframe-owned-programs-state/interfaces/mainframe-owned-program-state';
 import { IMainframeProcessesState } from '@state/mainframe/mainframe-processes-state/interfaces/mainframe-processes-state';
-import { IMainframeDevelopingProgramsState } from '@state/mainframe/mainframe-developing-programs-state/interfaces/mainframe-developing-programs-state';
 import { IProgramFactory } from '@state/progam-factory';
 import { container } from '@state/container';
 import { TYPES } from '@state/types';
@@ -74,10 +73,6 @@ export class BaseController<T extends ReactiveControllerHost = ReactiveControlle
 
   protected get mainframeProcessesState(): IMainframeProcessesState {
     return container.get<IMainframeProcessesState>(TYPES.MainframeProcessesState);
-  }
-
-  protected get mainframeDevelopingProgramsState(): IMainframeDevelopingProgramsState {
-    return container.get<IMainframeDevelopingProgramsState>(TYPES.MainframeDevelopingProgramsState);
   }
 
   protected get programFactory(): IProgramFactory {

@@ -39,9 +39,6 @@ export enum ProgramsEvent {
   processStarted = 'processStarted',
   processFinished = 'processFinished',
   processDeleted = 'processDeleted',
-  programDevelopmentStarted = 'programDevelopmentStarted',
-  programDevelopmentFinished = 'programDevelopmentFinished',
-  programDevelopmentAborted = 'programDevelopmentAborted',
 }
 
 export type MessageEvent = GameStateEvent | PurchaseEvent | ProgramsEvent;
@@ -53,9 +50,6 @@ export enum GameStateAlert {
 
 export enum ProgramAlert {
   purchaseProgramOverwrite = 'purchaseProgramOverwrite',
-  developingProgramDelete = 'developingProgramDelete',
-  developingProgramOverwrite = 'developingProgramOverwrite',
-  developingProgramReplace = 'developingProgramReplace',
   processDelete = 'processDelete',
   processReplace = 'processReplace',
   passiveProcessReplace = 'passiveProcessReplace',
@@ -66,4 +60,13 @@ export type GameAlert = GameStateAlert | ProgramAlert;
 export enum LongNumberFormat {
   builtIn = 'builtIn',
   scientific = 'scientific',
+}
+
+export enum PurchaseType {
+  mainframeHardware = 'mainframeHardware',
+  mainframePrograms = 'mainframePrograms',
+}
+
+export enum IncomeSource {
+  program = 'program',
 }

@@ -70,14 +70,13 @@ mainframe:
   threads: Threads
   cores: Cores
   programDescription:
-    cost: Costs {{value.cost}} money to purchase or {{value.developmentPoints}} PrDP to develop.
+    cost: Costs {{value.cost}} money to purchase.
     requirements: Requires {{value.ram}} RAM, up to {{value.cores}} cores to run {{value.threads}} threads and {{value.completionPoints}} PrCP to complete the process.
     requirementsScalable: Is scalable and uses all unused RAM and cores. It will run every tick.
   tabs:
     processes: Processes
     hardware: Hardware
     ownedPrograms: Owned programs
-    developingPrograms: Programs in development
   hardware:
     keyboardHint: Press either Ctrl or Shift to buy 10 levels. Press both Ctrl and Shift to buy 100 levels.
     performance: 'Performance level: {{value}}'
@@ -116,37 +115,41 @@ mainframe:
     processDescription:
       completionSpeed: Completion speed is {{value}} PCP per second.
       completionSpeedScalable: Completion speed is instant.
-  developingPrograms:
-    developingProgramsHint:
-      To develop a program, at least one company member should be assignined programming job and not have any primary tasks.
-      Alternatively, process to develop a program must be started and active.
-    startProgramDevelopment: Start program development
-    startDevelopment: Start development for {{value.developmentPoints}} PDP
-    startProgramDevelopmentDialogHint: Select program type, level and quality to start developing it.
-      Level cannot be above current city level.
-      Quality is limited depending on gained favors.
-      If you already have development for same program, old development will be replaced with new one.
-    emptyListNotification: You don't have any programs in development
-    progressBarLabel: "{{value.currentDevelopmentPoints}} \/ {{value.maxDevelopmentPoints}}"
-    progressBarHintActive: 'Program development will be completed in {{value}}'
-    progressBarHintPaused: "Program development isn't active"
-    developingProgramToggle: Enable / disable program development
-    developingProgramDelete: Abort program development
 statistics:
   statistics: Statistics
+  total: Total
   tabs:
+    general: General
     growth: Growth
-    incomeExpenses: Income and expenses
+    income: Income
+    expenses: Expenses
+  general:
+    time:
+      title: In-game passed time
+      timeThisRun: Since arrival to the city
+      timeTotal: Total time
+    multipliers:
+      title: Multipliers and discounts
+      programCompletionSpeed: Predictive computator multiplier
   growth:
     programCompletionSpeed:
       title: Program completion speed
-      multiplier: Predictive computator multiplier
       pointsPerSecond: PCP per second
     moneyIncome:
       title: Money income per second
       byProgram: By sharing server
-      total: Total
     cityDevelopmentSpeed:
       title: City development points per second
       byProgram: By sharing server
-      total: Total
+  income:
+    money:
+      title: Money income
+      program: By sharing server
+    cityDevelopmentPoints:
+      title: City development points
+      program: By sharing server
+  expenses:
+    money:
+      title: Money expenses
+      mainframeHardware: On mainframe hardware
+      mainframePrograms: On mainframe programs

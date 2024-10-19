@@ -2,7 +2,6 @@ import { inject, injectable } from 'inversify';
 import type { IAppState } from '@state/app-state/interfaces/app-state';
 import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
 import type { ISettingsState } from '@state/settings-state/interfaces/settings-state';
-import { SETTINGS_STATE_EVENTS } from '@state/settings-state/constants';
 import { TYPES } from '@state/types';
 import { EventBatcher } from '@shared/event-batcher';
 import { GameStateEvent } from '@shared/types';
@@ -33,12 +32,6 @@ export class App implements IApp {
     this._autosaveTimer = undefined;
 
     this._uiEventBatcher = new EventBatcher();
-
-    this._settingsState.addStateEventListener(
-      SETTINGS_STATE_EVENTS.UPDATED_AUTOSAVE_INTERVAL,
-      this.restartAutosaveTimer,
-    );
-    this._settingsState.addStateEventListener(SETTINGS_STATE_EVENTS.UPDATED_UPDATE_INTERVAL, this.restartUpdateTimer);
   }
 
   get appStage() {
@@ -46,6 +39,8 @@ export class App implements IApp {
   }
 
   async startUp(): Promise<void> {
+    this.startLoadingGame();
+
     const saveData = localStorage.getItem(LOCAL_STORAGE_KEY);
 
     if (saveData) {
@@ -133,18 +128,18 @@ export class App implements IApp {
     }
   }
 
-  private restartUpdateTimer = () => {
+  restartUpdateTimer() {
     this.stopUpdateTimer();
     this._updateTimer = setInterval(this.updateGame, this._settingsState.updateInterval);
-  };
+  }
 
-  private restartAutosaveTimer = () => {
+  restartAutosaveTimer() {
     this.stopAutosaveTimer();
 
     if (this._settingsState.autosaveEnabled) {
       this._autosaveTimer = setInterval(this.saveGame, this._settingsState.autosaveInterval);
     }
-  };
+  }
 
   private startLoadingGame = (): void => {
     this._appStage = AppStage.loading;

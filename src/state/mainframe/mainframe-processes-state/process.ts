@@ -1,12 +1,11 @@
-import { EventEmitter } from 'eventemitter3';
 import { IGrowthState } from '@state/growth-state/interfaces/growth-state';
 import { IProgram } from '@state/progam-factory/interfaces/program';
 import { EventBatcher } from '@shared/event-batcher';
-import { PROGRAMS_STATE_EVENTS } from '@state/progam-factory/constants';
-import { IProcess, IProcessParameters, ISerializedProcess } from './interfaces';
-import { MAINFRAME_PROCESSES_STATE_UI_EVENTS, MAINFRAME_PROCESSES_STATE_EVENTS } from './constants';
+import { IMainframeProcessesState, IProcess, IProcessParameters, ISerializedProcess } from './interfaces';
+import { MAINFRAME_PROCESSES_STATE_UI_EVENTS } from './constants';
 
 export class Process implements IProcess {
+  private _mainframeProcessesState: IMainframeProcessesState;
   private _growthState: IGrowthState;
   private _program: IProgram;
   private _isActive: boolean;
@@ -15,9 +14,9 @@ export class Process implements IProcess {
   private _usedCores: number;
 
   private readonly _uiEventBatcher: EventBatcher;
-  private readonly _stateEventEmitter: EventEmitter;
 
   constructor(parameters: IProcessParameters) {
+    this._mainframeProcessesState = parameters.mainframeProcessesState;
     this._growthState = parameters.growthState;
     this._program = parameters.program;
     this._isActive = parameters.isActive;
@@ -26,9 +25,6 @@ export class Process implements IProcess {
     this._usedCores = 0;
 
     this._uiEventBatcher = new EventBatcher();
-    this._stateEventEmitter = new EventEmitter();
-
-    this._program.addStateEventListener(PROGRAMS_STATE_EVENTS.PROGRAM_UPDATED, this.handleProgramUpdate);
   }
 
   get program() {
@@ -74,7 +70,7 @@ export class Process implements IProcess {
 
   toggleActive(active: boolean) {
     this._isActive = active;
-    this._stateEventEmitter.emit(MAINFRAME_PROCESSES_STATE_EVENTS.PROCESS_TOGGLED);
+    this._mainframeProcessesState.requestUpdateProcesses();
   }
 
   increaseCompletion(delta: number): void {
@@ -97,6 +93,7 @@ export class Process implements IProcess {
   update(threads: number) {
     this._threads = threads;
     this.resetCompletion();
+    this._mainframeProcessesState.requestUpdateProcesses();
     this._uiEventBatcher.enqueueEvent(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESS_UPDATED);
   }
 
@@ -121,22 +118,7 @@ export class Process implements IProcess {
     this._uiEventBatcher.fireEvents();
   }
 
-  addStateEventListener(eventName: symbol, handler: (...args: any[]) => void) {
-    this._stateEventEmitter.addListener(eventName, handler);
-  }
-
-  removeStateEventListener(eventName: symbol, handler: (...args: any[]) => void) {
-    this._stateEventEmitter.removeListener(eventName, handler);
-  }
-
   removeEventListeners() {
-    this._program.removeStateEventListener(PROGRAMS_STATE_EVENTS.PROGRAM_UPDATED, this.handleProgramUpdate);
     this._uiEventBatcher.removeAllListeners();
-    this._stateEventEmitter.removeAllListeners();
   }
-
-  private handleProgramUpdate = () => {
-    this._uiEventBatcher.enqueueEvent(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESS_UPDATED);
-    this._stateEventEmitter.emit(MAINFRAME_PROCESSES_STATE_EVENTS.PROCESS_PROGRAM_UPDATED);
-  };
 }

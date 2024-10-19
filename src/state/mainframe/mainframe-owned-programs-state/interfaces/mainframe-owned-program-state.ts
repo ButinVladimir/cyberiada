@@ -8,7 +8,6 @@ import { IMainframeOwnedProgramsSerializedState } from './mainframe-owned-progra
 export interface IMainframeOwnedProgramsState
   extends ISerializeable<IMainframeOwnedProgramsSerializedState>,
     IUIEventEmitter {
-  addProgram(newProgram: IProgram): void;
   purchaseProgram(programParameters: IMakeProgramParameters): boolean;
   listOwnedPrograms(): IProgram[];
   getOwnedProgramByName(name: ProgramName): IProgram | undefined;

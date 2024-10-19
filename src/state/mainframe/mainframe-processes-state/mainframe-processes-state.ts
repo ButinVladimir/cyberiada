@@ -1,5 +1,4 @@
 import { inject, injectable } from 'inversify';
-import { EventEmitter } from 'eventemitter3';
 import { decorators } from '@state/container';
 import { ProgramName } from '@state/progam-factory/types';
 import type { IMainframeHardwareState } from '@state/mainframe/mainframe-hardware-state/interfaces/mainframe-hardware-state';
@@ -11,7 +10,6 @@ import type { IFormatter } from '@shared/interfaces/formatter';
 import { TYPES } from '@state/types';
 import { EventBatcher } from '@shared/event-batcher';
 import { ProgramsEvent } from '@shared/types';
-import { MAINFRAME_HARDWARE_STATE_EVENTS } from '@state/mainframe/mainframe-hardware-state/constants';
 import {
   IMainframeProcessesSerializedState,
   IMainframeProcessesState,
@@ -19,7 +17,7 @@ import {
   ISerializedProcess,
 } from './interfaces';
 import { Process } from './process';
-import { MAINFRAME_PROCESSES_STATE_UI_EVENTS, MAINFRAME_PROCESSES_STATE_EVENTS } from './constants';
+import { MAINFRAME_PROCESSES_STATE_UI_EVENTS } from './constants';
 
 const { lazyInject } = decorators;
 
@@ -40,8 +38,8 @@ export class MainframeProcessesState implements IMainframeProcessesState {
   private _availableCores: number;
   private _availableRam: number;
   private _runningPassiveProgram?: ProgramName;
+  private _processUpdateRequested: boolean;
 
-  private readonly _stateEventEmitter: EventEmitter;
   private readonly _uiEventBatcher: EventBatcher;
 
   constructor(
@@ -62,14 +60,9 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     this._runningProcesses = [];
     this._availableCores = 0;
     this._availableRam = 0;
+    this._processUpdateRequested = false;
 
-    this._stateEventEmitter = new EventEmitter();
     this._uiEventBatcher = new EventBatcher();
-
-    this._mainframeHardwareState.addStateEventListener(
-      MAINFRAME_HARDWARE_STATE_EVENTS.HARDWARE_UPDATED,
-      this.updateRunningProcesses,
-    );
   }
 
   get availableCores() {
@@ -132,7 +125,7 @@ export class MainframeProcessesState implements IMainframeProcessesState {
       this._processesMap.set(programName, process);
     }
 
-    this.updateRunningProcesses();
+    this.requestUpdateProcesses();
 
     this._messageLogState.postMessage(ProgramsEvent.processStarted, {
       programName: program.name,
@@ -166,10 +159,18 @@ export class MainframeProcessesState implements IMainframeProcessesState {
       });
     }
 
-    this.updateRunningProcesses();
+    this.requestUpdateProcesses();
+  }
+
+  requestUpdateProcesses() {
+    this._processUpdateRequested = true;
   }
 
   processTick() {
+    if (this._processUpdateRequested) {
+      this.updateRunningProcesses();
+    }
+
     if (this._runningPassiveProgram) {
       const passiveProcess = this.getProcessByName(this._runningPassiveProgram);
 
@@ -200,7 +201,7 @@ export class MainframeProcessesState implements IMainframeProcessesState {
   async startNewState(): Promise<void> {
     this.clearState();
 
-    this.updateRunningProcesses();
+    this.requestUpdateProcesses();
   }
 
   // eslint-disable-next-line @typescript-eslint/require-await
@@ -212,7 +213,7 @@ export class MainframeProcessesState implements IMainframeProcessesState {
       this._processesList.push(serializedProcess.programName);
     });
 
-    this.updateRunningProcesses();
+    this.requestUpdateProcesses();
   }
 
   serialize(): IMainframeProcessesSerializedState {
@@ -237,15 +238,8 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     }
   }
 
-  addStateEventListener(eventName: symbol, handler: (...args: any[]) => void) {
-    this._stateEventEmitter.addListener(eventName, handler);
-  }
-
-  removeStateEventListener(eventName: symbol, handler: (...args: any[]) => void) {
-    this._stateEventEmitter.removeListener(eventName, handler);
-  }
-
   private updateRunningProcesses = () => {
+    this._processUpdateRequested = false;
     this._availableCores = this._mainframeHardwareState.cores;
     this._availableRam = this._mainframeHardwareState.ram;
     this._runningProcesses.splice(0);
@@ -287,7 +281,8 @@ export class MainframeProcessesState implements IMainframeProcessesState {
       }
     }
 
-    this._stateEventEmitter.emit(MAINFRAME_PROCESSES_STATE_EVENTS.PROCESSES_UPDATED);
+    this._growthState.recalculate();
+
     this._uiEventBatcher.enqueueEvent(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESSES_UPDATED);
   };
 
@@ -325,18 +320,13 @@ export class MainframeProcessesState implements IMainframeProcessesState {
 
   private createProcess = (processParameters: ISerializedProcess): IProcess => {
     const process = new Process({
+      mainframeProcessesState: this,
       growthState: this._growthState,
       isActive: processParameters.isActive,
       threads: processParameters.threads,
       program: this._mainframeOwnedProgramsState.getOwnedProgramByName(processParameters.programName)!,
       currentCompletionPoints: processParameters.currentCompletionPoints,
     });
-
-    process.addStateEventListener(MAINFRAME_PROCESSES_STATE_EVENTS.PROCESS_TOGGLED, this.updateRunningProcesses);
-    process.addStateEventListener(
-      MAINFRAME_PROCESSES_STATE_EVENTS.PROCESS_PROGRAM_UPDATED,
-      this.updateRunningProcesses,
-    );
 
     return process;
   };

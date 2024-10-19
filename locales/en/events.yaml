@@ -25,12 +25,3 @@ processFinished:
 processDeleted:
   name: Process deleted
   message: Process for program $t(programs:{{value.programName}}:name) with threads {{value.threads}} has been deleted
-programDevelopmentStarted:
-  name: Program development started
-  message: Development for program $t(programs:{{value.programName}}:name) with level {{value.level}} and quality {{value.quality}} has been started
-programDevelopmentFinished:
-  name: Program development finished
-  message: Development for program $t(programs:{{value.programName}}:name) with level {{value.level}} and quality {{value.quality}} has been finished
-programDevelopmentAborted:
-  name: Program development aborted
-  message: Development for program $t(programs:{{value.programName}}:name) with level {{value.level}} and quality {{value.quality}} has been aborted

@@ -1,10 +1,7 @@
-import { ISerializeable, IStateEventEmitter, IUIEventEmitter } from '@shared/interfaces';
+import { ISerializeable, IUIEventEmitter } from '@shared/interfaces';
 import { IMainframeHardwareSerializedState } from './mainframe-hardware-serialized-state';
 
-export interface IMainframeHardwareState
-  extends ISerializeable<IMainframeHardwareSerializedState>,
-    IUIEventEmitter,
-    IStateEventEmitter {
+export interface IMainframeHardwareState extends ISerializeable<IMainframeHardwareSerializedState>, IUIEventEmitter {
   performance: number;
   cores: number;
   ram: number;

@@ -1,37 +1,40 @@
-import { EventEmitter } from 'eventemitter3';
 import programs from '@configs/programs.json';
 import { IFormatter } from '@shared/interfaces/formatter';
 import { EventBatcher } from '@shared/event-batcher';
 import { IExponent } from '@shared/interfaces/exponent';
 import { calculatePow } from '@shared/helpers';
 import { IGeneralState } from '@state/general-state';
+import { IMainframeProcessesState } from '@state/mainframe/mainframe-processes-state/interfaces/mainframe-processes-state';
+import { IMainframeHardwareState } from '@state/mainframe/mainframe-hardware-state/interfaces/mainframe-hardware-state';
 import { ProgramName } from '../types';
 import { IProgram } from '../interfaces/program';
 import { IMakeProgramParameters } from '../interfaces/make-program-parameters';
 import { IBaseProgramParameters } from '../interfaces/program-parameters/base-program-parameters';
-import { PROGRAMS_STATE_EVENTS, PROGRAMS_UI_EVENTS } from '../constants';
+import { PROGRAMS_UI_EVENTS } from '../constants';
 
 export abstract class BaseProgram implements IProgram {
   protected generalState: IGeneralState;
+  protected mainframeProcessesState: IMainframeProcessesState;
+  protected mainframeHardwareState: IMainframeHardwareState;
   protected formatter: IFormatter;
 
   private _level!: number;
   private _quality!: number;
 
   protected readonly uiEventBatcher: EventBatcher;
-  protected readonly stateEventEmitter: EventEmitter;
 
   abstract get name(): ProgramName;
 
   constructor(parameters: IBaseProgramParameters) {
     this.generalState = parameters.generalState;
+    this.mainframeProcessesState = parameters.mainframeProcessesState;
+    this.mainframeHardwareState = parameters.mainframeHardwareState;
     this.formatter = parameters.formatter;
 
     this._level = parameters.level;
     this._quality = parameters.quality;
 
     this.uiEventBatcher = new EventBatcher();
-    this.stateEventEmitter = new EventEmitter();
   }
 
   get level() {
@@ -46,15 +49,6 @@ export abstract class BaseProgram implements IProgram {
     const programData = programs[this.name];
 
     return calculatePow(this.generalState.cityLevel - this._level, programData.completionPoints as IExponent);
-  }
-
-  get developmentPoints() {
-    const programData = programs[this.name];
-
-    return (
-      calculatePow(this._level - 1, programData.developmentPoints as IExponent) *
-      Math.pow(programData.developmentPointsQualityMultiplier, this.quality)
-    );
   }
 
   abstract get isRepeatable(): boolean;
@@ -88,11 +82,14 @@ export abstract class BaseProgram implements IProgram {
     this._level = newProgram.level;
     this._quality = newProgram.quality;
 
-    this.stateEventEmitter.emit(PROGRAMS_STATE_EVENTS.PROGRAM_UPDATED);
+    this.mainframeProcessesState.requestUpdateProcesses();
+
     this.uiEventBatcher.enqueueEvent(PROGRAMS_UI_EVENTS.PROGRAM_UPDATED);
   }
 
-  abstract removeEventListeners(): void;
+  removeEventListeners(): void {
+    this.uiEventBatcher.removeAllListeners();
+  }
 
   serialize(): IMakeProgramParameters {
     return {
@@ -114,18 +111,9 @@ export abstract class BaseProgram implements IProgram {
     this.uiEventBatcher.fireEvents();
   }
 
-  addStateEventListener(eventName: symbol, handler: (...args: any[]) => void) {
-    this.stateEventEmitter.addListener(eventName, handler);
-  }
-
-  removeStateEventListener(eventName: symbol, handler: (...args: any[]) => void) {
-    this.stateEventEmitter.removeListener(eventName, handler);
-  }
-
   buildCostParametersObject(): object {
     return {
       cost: this.formatter.formatNumberLong(this.cost),
-      developmentPoints: this.formatter.formatNumberLong(this.developmentPoints),
     };
   }
 

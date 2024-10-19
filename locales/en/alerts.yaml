@@ -7,15 +7,6 @@ saveDelete:
 purchaseProgramOverwrite:
   name: Purchase an already owned program
   message: Are you sure want to purchase program $t(programs:{{value.programName}}:name)? This will replace your current program with level {{value.level}} and quality {{value.quality}}.
-developingProgramDelete:
-  name: Delete a developing program
-  message: Are you sure want to delete developing program $t(programs:{{value.programName}}:name)? It's progress will be lost.
-developingProgramOverwrite:
-  name: Develop an already owned program
-  message: Are you sure want to develop program $t(programs:{{value.programName}}:name)? This will replace your current program with level {{value.level}} and quality {{value.quality}}.
-developingProgramReplace:
-  name: Replace a developing program
-  message: Are you sure want to develop program $t(programs:{{value.programName}}:name)? This will replace your current developing program with level {{value.level}} and quality {{value.quality}}.
 processDelete:
   name: Delete a process
   message: Are you sure want to delete process for program $t(programs:{{value.programName}}:name)? It's progress will be lost.

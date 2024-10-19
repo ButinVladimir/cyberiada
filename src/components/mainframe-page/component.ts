@@ -29,9 +29,6 @@ export class MainframePage extends LitElement {
         <sl-tab slot="nav" panel="ownedPrograms">
           <intl-message label="ui:mainframe:tabs:ownedPrograms">Owned programs</intl-message>
         </sl-tab>
-        <sl-tab slot="nav" panel="developingPrograms">
-          <intl-message label="ui:mainframe:tabs:developingPrograms">Developing programs</intl-message>
-        </sl-tab>
 
         <sl-tab-panel name="processes">
           <ca-mainframe-processes-panel></ca-mainframe-processes-panel>
@@ -41,9 +38,6 @@ export class MainframePage extends LitElement {
         </sl-tab-panel>
         <sl-tab-panel name="ownedPrograms">
           <ca-mainframe-owned-programs-panel></ca-mainframe-owned-programs-panel>
-        </sl-tab-panel>
-        <sl-tab-panel name="developingPrograms">
-          <ca-mainframe-developing-programs-panel></ca-mainframe-developing-programs-panel>
         </sl-tab-panel>
       </sl-tab-group>
     `;

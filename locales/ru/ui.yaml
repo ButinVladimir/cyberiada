@@ -67,14 +67,13 @@ mainframe:
   threads: Потоки
   cores: Ядра
   programDescription:
-    cost: Стоит {{value.cost}} для покупки или {{value.developmentPoints}} ОРП для разработки.
+    cost: Стоит {{value.cost}} для покупки.
     requirements: Требует {{value.ram}} памяти и до {{value.cores}} ядер для запуска {{value.threads}} потоков и {{value.completionPoints}} ОВП для завершения процесса.
     requirementsScalable: Масштабируется и использует все неиспользуемые ядра и память. Выполняется каждый тик.
   tabs:
     processes: Процессы
     hardware: Оборудование
     ownedPrograms: Имеющиеся программы
-    developingPrograms: Программы в разработке
   hardware:
     keyboardHint: Нажмите Ctrl или Shift для покупки 10 уровней. Нажмите вместе Ctrl и Shift для покупки 100 уровней.
     performance: 'Уровень производительности: {{value}}'
@@ -100,7 +99,7 @@ mainframe:
       Если у вас уже есть процесс для выбранной программы, старый процесс будет замене на новый.
       Потоки позволяют выполняться нескольким экземплярам программы одновременно, но дополнительные потоки требует больше памяти.
     emptyListNotification: У вас нет процессов
-    programSelectItem: $t(programs:{{value.programName}}:name), level {{value.level}}, quality {{value.quality}}
+    programSelectItem: $t(programs:{{value.programName}}:name), уровень {{value.level}}, качество {{value.quality}}
     progressBarLabel: "{{value.currentCompletionPoints}} \/ {{value.maxCompletionPoints}}"
     progressBarHintActive: 'Процесс будет выполнен через {{value}}'
     progressBarHintPaused: 'Процесс неактивен'
@@ -113,19 +112,3 @@ mainframe:
     processDescription:
       completionSpeed: Скорость выполнения - {{value}} ОВП в секунду.
       completionSpeedScalable: Скорость выполнения мгновенна.
-  developingPrograms:
-    developingProgramsHint:
-      Чтобы разработать программу, хотя бы один член компании должен работать программистом и не иметь основных задач.
-      Или, как вариант, процесс для разработки программ должен быть начат и активен.
-    startProgramDevelopment: Начать разработку программы
-    startDevelopment: Начать разработку программы за {{value.developmentPoints}} ОРП
-    startProgramDevelopmentDialogHint: Выберите тип программы, уровень и качество, чтобы начать её разработку.
-      Уровень не может быть выше текущего уровня города.
-      Качество зависит от полученных услуг.
-      Если у вас уже есть разработка для выбранной программы, старая разработка будет заменена на новую.
-    emptyListNotification: У вас нет программ в разработке
-    progressBarLabel: "{{value.currentDevelopmentPoints}} \/ {{value.maxDevelopmentPoints}}"
-    progressBarHintActive: 'Разработка программы будет завершена через {{value}}'
-    progressBarHintPaused: Разработка программы неактивна
-    developingProgramToggle: Включить / выключить разработку программы
-    developingProgramDelete: Отменить разработку программы

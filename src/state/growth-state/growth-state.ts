@@ -4,12 +4,9 @@ import { TYPES } from '@state/types';
 import type { IScenarioState } from '@state/scenario-state/interfaces/scenario-state';
 import type { IMainframeHardwareState } from '@state/mainframe/mainframe-hardware-state/interfaces/mainframe-hardware-state';
 import type { IMainframeProcessesState } from '@state/mainframe/mainframe-processes-state/interfaces/mainframe-processes-state';
-import { MAINFRAME_HARDWARE_STATE_EVENTS } from '@state/mainframe/mainframe-hardware-state/constants';
 import { ProgramName } from '@state/progam-factory/types';
-import { calculatePow } from '@shared/helpers';
 import { IGrowthState } from './interfaces';
 import { GROWTH_STATE_UI_EVENTS } from './constants';
-import { MAINFRAME_PROCESSES_STATE_EVENTS } from '../mainframe/mainframe-processes-state';
 import { PredictiveComputatorProgram, ShareServerProgram } from '../progam-factory/programs';
 
 @injectable()
@@ -43,15 +40,6 @@ export class GrowthState implements IGrowthState {
     this._cityDevelopmentSpeedTotal = 0;
 
     this._uiEventBatcher = new EventBatcher();
-
-    this._mainframeHardwareState.addStateEventListener(
-      MAINFRAME_HARDWARE_STATE_EVENTS.HARDWARE_UPDATED,
-      this.handleUpdateProgramCompletionSpeed,
-    );
-    this._mainframeProcessesState.addStateEventListener(
-      MAINFRAME_PROCESSES_STATE_EVENTS.PROCESSES_UPDATED,
-      this.handleUpdateProcesses,
-    );
   }
 
   get programCompletionSpeedModifier() {
@@ -119,10 +107,9 @@ export class GrowthState implements IGrowthState {
   private handleUpdateProgramCompletionSpeed = () => {
     const newValue =
       this._programCompletionSpeedModifier *
-      calculatePow(
-        this._mainframeHardwareState.performance,
-        this._scenarioState.currentValues.mainframeSoftware.performanceBoost,
-      );
+      (1 +
+        (this._mainframeHardwareState.performance - 1) *
+          this._scenarioState.currentValues.mainframeSoftware.performanceBoost);
 
     if (this._programCompletionSpeed !== newValue) {
       this._programCompletionSpeed = newValue;

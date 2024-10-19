@@ -1,8 +1,8 @@
-import { ISerializeable, IStateEventEmitter } from '@shared/interfaces';
+import { ISerializeable } from '@shared/interfaces';
 import { Language, Theme, MessageEvent, LongNumberFormat, GameAlert } from '@shared/types';
 import { ISettingsSerializedState } from './settings-serialized-state';
 
-export interface ISettingsState extends ISerializeable<ISettingsSerializedState>, IStateEventEmitter {
+export interface ISettingsState extends ISerializeable<ISettingsSerializedState> {
   language: Language;
   theme: Theme;
   messageLogSize: number;

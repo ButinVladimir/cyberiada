@@ -9,7 +9,6 @@ export const TYPES = {
   MainframeHardwareState: Symbol('MainframeHardwareState'),
   MainframeOwnedProgramsState: Symbol('MainframeOwnedProgramsState'),
   MainframeProcessesState: Symbol('MainframeProcessesState'),
-  MainframeDevelopingProgramsState: Symbol('MainframeDevelopingProgramsState'),
   ProgramFactory: Symbol('ProgramFactory'),
   Formatter: Symbol('Formatter'),
   GrowthState: Symbol('GrowthState'),

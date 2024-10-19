@@ -122,47 +122,6 @@
       "attributes": []
     },
     {
-      "name": "ca-mainframe-developing-programs-panel",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_isStartProgramDevelopmentDialogOpen` {`boolean`} - \n\n  * `handleStartProgramDevelopmentDialogOpen` - \n\n  * `handleStartProgramDevelopmentDialogClose` - ",
-      "attributes": []
-    },
-    {
-      "name": "ca-developing-programs-list-item-progress",
-      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `_developingProgramsListItemProgressController` {`DevelopingProgramsListItemProgressController`} - ",
-      "attributes": [
-        {
-          "name": "program-name",
-          "description": "`program-name` {`string`} - \n\nProperty: programName\n\nDefault: shareServer"
-        }
-      ]
-    },
-    {
-      "name": "ca-developing-programs-list-item",
-      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `handleToggleDevelopingProgram` - \n\n  * `handleOpenDeleteDevelopingProgramDialog` - \n\n  * `handleConfirmDeleteDevelopingProgramDialog` - \n\n  * `_developingProgramsListItemController` {`DevelopingProgramsListItemController`} - ",
-      "attributes": [
-        {
-          "name": "program-name",
-          "description": "`program-name` {`string`} - \n\nProperty: programName\n\nDefault: shareServer"
-        }
-      ]
-    },
-    {
-      "name": "ca-developing-programs-list",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderContent` - \n\n  * `renderEmptyListNotification` - \n\n  * `renderListItem` - \n\n  * `_developingProgramsListController` {`DevelopingProgramsListController`} - ",
-      "attributes": []
-    },
-    {
-      "name": "ca-start-program-development-dialog",
-      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_programInputRef` {`Ref<SlSelect>`} - \n\n  * `_levelInputRef` {`Ref<SlInput>`} - \n\n  * `_qualityInputRef` {`Ref<SlSelect>`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `_programName` - \n\n  * `_level` {`number`} - \n\n  * `_quality` {`number`} - \n\n  * `_confirmationAlertVisible` {`boolean`} - \n\n  * `handleClose` - \n\n  * `handleProgramChange` - \n\n  * `handleLevelChange` - \n\n  * `handleQualityChange` - \n\n  * `handleOpenConfirmationAlert` - \n\n  * `handleConfirmConfirmationAlert` - \n\n  * `startDevelopingProgram` - \n\n  * `handleCloseConfirmationAlert` - \n\n  * `_startProgramDevelopmentDialogController` {`StartProgramDevelopmentDialogController`} - ",
-      "attributes": [
-        {
-          "name": "is-open",
-          "description": "`is-open` {`boolean`} - \n\nProperty: isOpen\n\nDefault: false",
-          "valueSet": "v"
-        }
-      ]
-    },
-    {
       "name": "ca-mainframe-hardware-panel",
       "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_shiftPressed` {`boolean`} - \n\n  * `_ctrlPressed` {`boolean`} - \n\n  * `handlePurchasePerformanceIncrease` - \n\n  * `handlePurchaseCoresIncrease` - \n\n  * `handlePurchaseRamIncrease` - \n\n  * `handleKeypress` - \n\n  * `_mainframeHardwarePanelController` {`MainframeHardwarePanelController`} - ",
       "attributes": []
@@ -374,8 +333,23 @@
       "attributes": []
     },
     {
+      "name": "ca-statistics-expenses-panel",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderMoneyExpenseArticle` - \n\n  * `_statisticsExpensesPanelController` {`StatisticsExpensesPanelController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-statistics-general-panel",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_statisticsGeneralPanelController` {`StatisticsGeneralPanelController`} - ",
+      "attributes": []
+    },
+    {
       "name": "ca-statistics-growth-panel",
       "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_statisticsGrowthPanelController` {`StatisticsGrowthPanelController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-statistics-income-panel",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderIncomeSection` - \n\n  * `renderIncomeSource` - \n\n  * `_statisticsIncomePanelController` {`StatisticsIncomePanelController`} - ",
       "attributes": []
     }
   ],

@@ -11,10 +11,6 @@ export class StatisticsGrowthPanelController extends BaseController {
     this.growthState.removeUiEventListener(GROWTH_STATE_UI_EVENTS.VALUES_CHANGED, this.handleRefreshUI);
   }
 
-  get programCompletionSpeedMultiplier() {
-    return this.growthState.programCompletionSpeedModifier;
-  }
-
   get programCompletionSpeed() {
     return this.growthState.programCompletionSpeed * MS_IN_SECOND;
   }

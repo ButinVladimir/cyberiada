@@ -12,10 +12,6 @@ import {
   MainframeOwnedProgramsState,
 } from '@state/mainframe/mainframe-owned-programs-state';
 import { IMainframeProcessesState, MainframeProcessesState } from '@state/mainframe/mainframe-processes-state';
-import {
-  IMainframeDevelopingProgramsState,
-  MainframeDevelopingProgramsState,
-} from '@state/mainframe/mainframe-developing-programs-state';
 import { IGrowthState, GrowthState } from '@state/growth-state';
 import { Formatter } from '@shared/formatter';
 import { IFormatter } from '@shared/interfaces/formatter';
@@ -53,12 +49,6 @@ container
 container
   .bind<IMainframeProcessesState>(TYPES.MainframeProcessesState)
   .to(MainframeProcessesState)
-  .inSingletonScope()
-  .whenTargetIsDefault();
-
-container
-  .bind<IMainframeDevelopingProgramsState>(TYPES.MainframeDevelopingProgramsState)
-  .to(MainframeDevelopingProgramsState)
   .inSingletonScope()
   .whenTargetIsDefault();
 

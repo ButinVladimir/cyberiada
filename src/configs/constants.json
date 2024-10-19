@@ -48,7 +48,7 @@
       "ramPrice": { "baseMultiplier": 1000, "base": 1.05 }
     },
     "mainframeSoftware": {
-      "performanceBoost": { "baseMultiplier": 1, "base": 1.01 },
+      "performanceBoost": 0.01,
       "startingPrograms": ["shareServer"]
     },
     "startingCityLevel": 1,

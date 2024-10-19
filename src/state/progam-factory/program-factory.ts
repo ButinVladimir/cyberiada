@@ -4,7 +4,7 @@ import { TYPES } from '@state/types';
 import type { IScenarioState } from '@state/scenario-state/interfaces/scenario-state';
 import type { IGeneralState } from '@state/general-state/interfaces/general-state';
 import type { IMainframeHardwareState } from '@state/mainframe/mainframe-hardware-state/interfaces/mainframe-hardware-state';
-import type { IMainframeDevelopingProgramsState } from '@state/mainframe/mainframe-developing-programs-state/interfaces/mainframe-developing-programs-state';
+import type { IMainframeProcessesState } from '@state/mainframe/mainframe-processes-state/interfaces/mainframe-processes-state';
 import type { ISettingsState } from '@state/settings-state/interfaces/settings-state';
 import type { IFormatter } from '@shared/interfaces/formatter';
 import { IProgramFactory } from './interfaces/program-factory';
@@ -26,11 +26,11 @@ export class ProgramFactory implements IProgramFactory {
   @lazyInject(TYPES.SettingsState)
   private _settingsState!: ISettingsState;
 
+  @lazyInject(TYPES.MainframeProcessesState)
+  private _mainframeProcessesState!: IMainframeProcessesState;
+
   @lazyInject(TYPES.MainframeHardwareState)
   private _mainframeHardwareState!: IMainframeHardwareState;
-
-  @lazyInject(TYPES.MainframeDevelopingProgramsState)
-  private _mainframeDevelopingProgramsState!: IMainframeDevelopingProgramsState;
 
   @lazyInject(TYPES.Formatter)
   private _formatter!: IFormatter;
@@ -73,33 +73,35 @@ export class ProgramFactory implements IProgramFactory {
     switch (parameters.name) {
       case ProgramName.shareServer:
         return new ShareServerProgram({
-          generalState: this._generalState,
-          settingsState: this._settingsState,
-          mainframeHardwareState: this._mainframeHardwareState,
-          scenarioState: this._scenarioState,
           formatter: this._formatter,
           level: parameters.level,
           quality: parameters.quality,
+          generalState: this._generalState,
+          mainframeProcessesState: this._mainframeProcessesState,
+          mainframeHardwareState: this._mainframeHardwareState,
+          scenarioState: this._scenarioState,
+          settingsState: this._settingsState,
         });
 
       case ProgramName.codeGenerator:
         return new CodeGeneratorProgram({
-          generalState: this._generalState,
-          mainframeHardwareState: this._mainframeHardwareState,
-          mainframeDevelopingProgramsState: this._mainframeDevelopingProgramsState,
           formatter: this._formatter,
           level: parameters.level,
           quality: parameters.quality,
+          generalState: this._generalState,
+          mainframeProcessesState: this._mainframeProcessesState,
+          mainframeHardwareState: this._mainframeHardwareState,
         });
 
       case ProgramName.predictiveComputator:
         return new PredictiveComputatorProgram({
-          generalState: this._generalState,
-          scenarioState: this._scenarioState,
-          mainframeHardwareState: this._mainframeHardwareState,
           formatter: this._formatter,
           level: parameters.level,
           quality: parameters.quality,
+          generalState: this._generalState,
+          scenarioState: this._scenarioState,
+          mainframeProcessesState: this._mainframeProcessesState,
+          mainframeHardwareState: this._mainframeHardwareState,
         });
     }
   }

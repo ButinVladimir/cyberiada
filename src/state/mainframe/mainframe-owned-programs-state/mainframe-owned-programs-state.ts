@@ -8,7 +8,7 @@ import type { IMessageLogState } from '@state/message-log-state/interfaces/messa
 import type { IFormatter } from '@shared/interfaces/formatter';
 import { TYPES } from '@state/types';
 import { ProgramName } from '@state/progam-factory/types';
-import { PurchaseEvent } from '@shared/types';
+import { PurchaseEvent, PurchaseType } from '@shared/types';
 import { EventBatcher } from '@shared/event-batcher';
 import { IMainframeOwnedProgramsState, IMainframeOwnedProgramsSerializedState } from './interfaces';
 import { MAINFRAME_OWNED_PROGRAMES_STATE_UI_EVENTS } from './constants';
@@ -43,18 +43,6 @@ export class MainframeOwnedProgramsState implements IMainframeOwnedProgramsState
     this._uiEventBatcher = new EventBatcher();
   }
 
-  addProgram(newProgram: IProgram): void {
-    const existingProgram = this._ownedPrograms.get(newProgram.name);
-
-    if (existingProgram) {
-      existingProgram.update(newProgram);
-    } else {
-      this._ownedPrograms.set(newProgram.name, newProgram);
-    }
-
-    this._uiEventBatcher.enqueueEvent(MAINFRAME_OWNED_PROGRAMES_STATE_UI_EVENTS.OWNED_PROGRAMS_UPDATED);
-  }
-
   purchaseProgram(programParameters: IMakeProgramParameters): boolean {
     if (programParameters.level > this._generalState.cityLevel) {
       throw new Error(`Cannot purchase program ${programParameters.name} with level above city level`);
@@ -62,7 +50,11 @@ export class MainframeOwnedProgramsState implements IMainframeOwnedProgramsState
 
     const program = this._programFactory.makeProgram(programParameters);
 
-    const bought = this._generalState.purchase(program.cost, this.handlePurchaseProgram(program));
+    const bought = this._generalState.purchase(
+      program.cost,
+      PurchaseType.mainframePrograms,
+      this.handlePurchaseProgram(program),
+    );
 
     if (this.getOwnedProgramByName(programParameters.name) !== program) {
       this._programFactory.deleteProgram(program);
@@ -124,6 +116,18 @@ export class MainframeOwnedProgramsState implements IMainframeOwnedProgramsState
 
   fireUiEvents() {
     this._uiEventBatcher.fireEvents();
+  }
+
+  private addProgram(newProgram: IProgram): void {
+    const existingProgram = this._ownedPrograms.get(newProgram.name);
+
+    if (existingProgram) {
+      existingProgram.update(newProgram);
+    } else {
+      this._ownedPrograms.set(newProgram.name, newProgram);
+    }
+
+    this._uiEventBatcher.enqueueEvent(MAINFRAME_OWNED_PROGRAMES_STATE_UI_EVENTS.OWNED_PROGRAMS_UPDATED);
   }
 
   private handlePurchaseProgram = (newProgram: IProgram) => () => {

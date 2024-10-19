@@ -8,4 +8,6 @@ export interface IApp extends IUIEventEmitter {
   importSavefile(file: File): void;
   exportSavefile(): void;
   deleteSaveData(): Promise<void>;
+  restartUpdateTimer(): void;
+  restartAutosaveTimer(): void;
 }

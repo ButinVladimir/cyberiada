@@ -1,14 +1,12 @@
 import { IUIEventEmitter } from '@shared/interfaces/ui-event-emitter';
-import { IStateEventEmitter } from '@shared/interfaces/state-event-emitter';
 import { ProgramName } from '../types';
 import { IMakeProgramParameters } from './make-program-parameters';
 
-export interface IProgram extends IUIEventEmitter, IStateEventEmitter {
+export interface IProgram extends IUIEventEmitter {
   name: ProgramName;
   level: number;
   quality: number;
   completionPoints: number;
-  developmentPoints: number;
   isRepeatable: boolean;
   isAutoscalable: boolean;
   cost: number;
