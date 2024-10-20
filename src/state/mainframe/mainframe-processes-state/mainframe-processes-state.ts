@@ -281,7 +281,7 @@ export class MainframeProcessesState implements IMainframeProcessesState {
       }
     }
 
-    this._growthState.recalculate();
+    this._growthState.requestRecalculation();
 
     this._uiEventBatcher.enqueueEvent(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESSES_UPDATED);
   };

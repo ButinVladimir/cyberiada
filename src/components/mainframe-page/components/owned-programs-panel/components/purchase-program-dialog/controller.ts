@@ -1,4 +1,5 @@
 import { GENERAL_STATE_UI_EVENTS } from '@state/general-state/constants';
+import { GROWTH_STATE_UI_EVENTS } from '@state/growth-state/constants';
 import { MAINFRAME_OWNED_PROGRAMES_STATE_UI_EVENTS } from '@state/mainframe/mainframe-owned-programs-state';
 import { PROGRAMS_UI_EVENTS } from '@state/progam-factory/constants';
 import { BaseController } from '@shared/base-controller';
@@ -14,6 +15,7 @@ export class PurchaseProgramDialogController extends BaseController {
       MAINFRAME_OWNED_PROGRAMES_STATE_UI_EVENTS.OWNED_PROGRAMS_UPDATED,
       this.handleRefreshUI,
     );
+    this.growthState.addUiEventListener(GROWTH_STATE_UI_EVENTS.VALUES_CHANGED, this.handleRefreshUI);
   }
 
   hostDisconnected() {
@@ -22,6 +24,7 @@ export class PurchaseProgramDialogController extends BaseController {
       MAINFRAME_OWNED_PROGRAMES_STATE_UI_EVENTS.OWNED_PROGRAMS_UPDATED,
       this.handleRefreshUI,
     );
+    this.growthState.removeUiEventListener(GROWTH_STATE_UI_EVENTS.VALUES_CHANGED, this.handleRefreshUI);
 
     if (this._selectedProgram) {
       this.programFactory.deleteProgram(this._selectedProgram);

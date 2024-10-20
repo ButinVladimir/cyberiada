@@ -1,5 +1,7 @@
 import { LitElement, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
+import { IncomeSource } from '@shared/types';
+import { INCOME_SOURCES } from '@shared/constants';
 import { StatisticsGrowthPanelController } from './controller';
 import { statisticsPanelContentStyle } from '../../styles';
 
@@ -19,41 +21,16 @@ export class StatisticsGrowthPanel extends LitElement {
     const formatter = this._statisticsGrowthPanelController.formatter;
 
     return html`
-      <h4 class="title">
-        <intl-message label="ui:statistics:growth:moneyIncome:title">Money income per second</intl-message>
-      </h4>
-
-      <div class="parameters-table">
-        <span>
-          <intl-message label="ui:statistics:growth:moneyIncome:byProgram">By sharing server</intl-message>
-        </span>
-        <span> ${formatter.formatNumberLong(this._statisticsGrowthPanelController.moneyIncomeByPrograms)} </span>
-
-        <span>
-          <intl-message label="ui:statistics:total">Total</intl-message>
-        </span>
-        <span> ${formatter.formatNumberLong(this._statisticsGrowthPanelController.moneyIncomeTotal)} </span>
-      </div>
-
-      <h4 class="title">
-        <intl-message label="ui:statistics:growth:cityDevelopmentSpeed:title"
-          >City development points per second</intl-message
-        >
-      </h4>
-
-      <div class="parameters-table">
-        <span>
-          <intl-message label="ui:statistics:growth:cityDevelopmentSpeed:byProgram">By sharing server</intl-message>
-        </span>
-        <span>
-          ${formatter.formatNumberLong(this._statisticsGrowthPanelController.cityDevelopmentSpeedByPrograms)}
-        </span>
-
-        <span>
-          <intl-message label="ui:statistics:total">Total</intl-message>
-        </span>
-        <span> ${formatter.formatNumberLong(this._statisticsGrowthPanelController.cityDevelopmentSpeedTotal)} </span>
-      </div>
+      ${this.renderIncomeSection(
+        'money',
+        this._statisticsGrowthPanelController.moneyIncomeTotal,
+        this._statisticsGrowthPanelController.getMoneyIncome,
+      )}
+      ${this.renderIncomeSection(
+        'cityDevelopmentPoints',
+        this._statisticsGrowthPanelController.cityDevelopmentSpeedTotal,
+        this._statisticsGrowthPanelController.getCityDevelopmentSpeed,
+      )}
 
       <h4 class="title">
         <intl-message label="ui:statistics:growth:programCompletionSpeed:title">Program completion speed</intl-message>
@@ -67,6 +44,53 @@ export class StatisticsGrowthPanel extends LitElement {
         </span>
         <span> ${formatter.formatNumberLong(this._statisticsGrowthPanelController.programCompletionSpeed)} </span>
       </div>
+
+      <h4 class="title">
+        <intl-message label="ui:statistics:growth:pointsByPrograms:title">Points per second by programs</intl-message>
+      </h4>
+
+      <div class="parameters-table">
+        <span>
+          <intl-message label="ui:statistics:growth:pointsByPrograms:codebase">Codebase</intl-message>
+        </span>
+        <span> ${formatter.formatNumberLong(this._statisticsGrowthPanelController.codebaseByProgram)} </span>
+      </div>
     `;
   }
+
+  private renderIncomeSection = (
+    section: string,
+    totalValue: number,
+    valueGetter: (incomeSource: IncomeSource) => number,
+  ) => {
+    const formatter = this._statisticsGrowthPanelController.formatter;
+
+    return html`
+      <h4 class="title">
+        <intl-message label="ui:statistics:growth:${section}:title">Title</intl-message>
+      </h4>
+
+      <div class="parameters-table">
+        ${INCOME_SOURCES.map((incomeSource) =>
+          this.renderIncomeSource(section, incomeSource, valueGetter(incomeSource)),
+        )}
+
+        <span>
+          <intl-message label="ui:statistics:total">Total</intl-message>
+        </span>
+        <span> ${formatter.formatNumberLong(totalValue)} </span>
+      </div>
+    `;
+  };
+
+  private renderIncomeSource = (section: string, incomeSource: IncomeSource, value: number) => {
+    const formatter = this._statisticsGrowthPanelController.formatter;
+
+    return html`
+      <span>
+        <intl-message label="ui:statistics:growth:${section}:${incomeSource}">Income source</intl-message>
+      </span>
+      <span> ${formatter.formatNumberLong(value)} </span>
+    `;
+  };
 }

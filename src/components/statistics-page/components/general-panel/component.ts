@@ -41,13 +41,18 @@ export class StatisticsGeneralPanel extends LitElement {
 
       <div class="parameters-table">
         <span>
-          <intl-message label="ui:statistics:general:multipliers:programCompletionSpeed"
-            >Program completion speed</intl-message
-          >
+          <intl-message label="ui:statistics:general:multipliers:programCompletionSpeed">
+            Program completion speed
+          </intl-message>
         </span>
         <span>
           ${formatter.formatNumberFloat(this._statisticsGeneralPanelController.programCompletionSpeedMultiplier)}
         </span>
+
+        <span>
+          <intl-message label="ui:statistics:general:multipliers:programDiscount"> Program discount </intl-message>
+        </span>
+        <span> ${formatter.formatNumberFloat(this._statisticsGeneralPanelController.programDiscount)} </span>
       </div>
     `;
   }

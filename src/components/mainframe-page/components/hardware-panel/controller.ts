@@ -1,5 +1,6 @@
 import { MAINFRAME_HARDWARE_STATE_UI_EVENTS } from '@state/mainframe/mainframe-hardware-state/constants';
 import { GENERAL_STATE_UI_EVENTS } from '@state/general-state/constants';
+import { GROWTH_STATE_UI_EVENTS } from '@state/growth-state/constants';
 import { BaseController } from '@shared/base-controller';
 
 export class MainframeHardwarePanelController extends BaseController {
@@ -9,6 +10,7 @@ export class MainframeHardwarePanelController extends BaseController {
       this.handleRefreshUI,
     );
     this.generalState.addUiEventListener(GENERAL_STATE_UI_EVENTS.CITY_LEVEL_CHANGED, this.handleRefreshUI);
+    this.growthState.addUiEventListener(GROWTH_STATE_UI_EVENTS.VALUES_CHANGED, this.handleRefreshUI);
   }
 
   hostDisconnected() {
@@ -17,6 +19,7 @@ export class MainframeHardwarePanelController extends BaseController {
       this.handleRefreshUI,
     );
     this.generalState.removeUiEventListener(GENERAL_STATE_UI_EVENTS.CITY_LEVEL_CHANGED, this.handleRefreshUI);
+    this.growthState.removeUiEventListener(GROWTH_STATE_UI_EVENTS.VALUES_CHANGED, this.handleRefreshUI);
   }
 
   get performance(): number {

@@ -75,6 +75,7 @@ export class AppState implements IAppState {
   private processTick = () => {
     this._generalState.increaseTime();
     this._mainframeProcessesState.processTick();
+    this._growthState.recalculate();
   };
 
   async startNewState(): Promise<void> {
@@ -82,19 +83,19 @@ export class AppState implements IAppState {
 
     await this._scenarioState.startNewState();
     await this._generalState.startNewState();
+    await this._growthState.startNewState();
     await this._settingsState.startNewState();
     await this._cityState.startNewState();
     await this._mainframeHardwareState.startNewState();
     await this._mainframeOwnedProgramsState.startNewState();
     await this._mainframeProcessesState.startNewState();
-
-    this._growthState.recalculate();
   }
 
   serialize(): string {
     const saveState: ISerializedState = {
       scenario: this._scenarioState.serialize(),
       general: this._generalState.serialize(),
+      growth: this._growthState.serialize(),
       settings: this._settingsState.serialize(),
       city: this._cityState.serialize(),
       mainframeHardware: this._mainframeHardwareState.serialize(),
@@ -114,13 +115,12 @@ export class AppState implements IAppState {
 
     await this._scenarioState.deserialize(parsedSaveData.scenario);
     await this._generalState.deserialize(parsedSaveData.general);
+    await this._growthState.deserialize(parsedSaveData.growth);
     await this._settingsState.deserialize(parsedSaveData.settings);
     await this._cityState.deserialize(parsedSaveData.city);
     await this._mainframeHardwareState.deserialize(parsedSaveData.mainframeHardware);
     await this._mainframeOwnedProgramsState.deserialize(parsedSaveData.mainframeOwnedPrograms);
     await this._mainframeProcessesState.deserialize(parsedSaveData.mainframeProcesses);
-
-    this._growthState.recalculate();
   }
 
   addUiEventListener() {}

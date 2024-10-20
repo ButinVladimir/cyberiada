@@ -1,9 +1,9 @@
 import { LitElement, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import { StatisticsExpensesPanelController } from './controller';
-import { statisticsPanelContentStyle } from '../../styles';
 import { PurchaseType } from '@shared/types';
 import { PURCHASE_TYPES } from '@shared/constants';
+import { StatisticsExpensesPanelController } from './controller';
+import { statisticsPanelContentStyle } from '../../styles';
 
 @customElement('ca-statistics-expenses-panel')
 export class StatisticsExpensesPanel extends LitElement {

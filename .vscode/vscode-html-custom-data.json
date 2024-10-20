@@ -344,7 +344,7 @@
     },
     {
       "name": "ca-statistics-growth-panel",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_statisticsGrowthPanelController` {`StatisticsGrowthPanelController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderIncomeSection` - \n\n  * `renderIncomeSource` - \n\n  * `_statisticsGrowthPanelController` {`StatisticsGrowthPanelController`} - ",
       "attributes": []
     },
     {

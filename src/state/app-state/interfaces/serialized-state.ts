@@ -5,10 +5,12 @@ import { ICitySerializedState } from '@state/city-state/interfaces/city-serializ
 import { IMainframeHardwareSerializedState } from '@state/mainframe/mainframe-hardware-state/interfaces/mainframe-hardware-serialized-state';
 import { IMainframeOwnedProgramsSerializedState } from '@state/mainframe/mainframe-owned-programs-state/interfaces/mainframe-owned-programs-serialized-state';
 import { IMainframeProcessesSerializedState } from '@state/mainframe/mainframe-processes-state/interfaces/mainframe-processes-serialized-state';
+import { IGrowthSerializedState } from '@state/growth-state/interfaces/growth-serialized-state';
 
 export interface ISerializedState {
   scenario: IScenarioSerializedState;
   general: IGeneralSerializedState;
+  growth: IGrowthSerializedState;
   settings: ISettingsSerializedState;
   city: ICitySerializedState;
   mainframeHardware: IMainframeHardwareSerializedState;

@@ -29,5 +29,6 @@ export const statisticsPanelContentStyle = css`
 
   .parameters-table > span:nth-child(even) {
     text-align: end;
+    white-space: nowrap;
   }
 `;

@@ -20,4 +20,10 @@ export interface IScenarioValues {
   };
   startingCityLevel: number;
   cityLevelRequirements: IExponent;
+  pointsByProgramMultipliers: {
+    program: number;
+  };
+  discounts: {
+    program: number;
+  };
 }

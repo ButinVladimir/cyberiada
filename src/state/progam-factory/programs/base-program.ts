@@ -4,6 +4,7 @@ import { EventBatcher } from '@shared/event-batcher';
 import { IExponent } from '@shared/interfaces/exponent';
 import { calculatePow } from '@shared/helpers';
 import { IGeneralState } from '@state/general-state';
+import { IGrowthState } from '@state/growth-state/interfaces/growth-state';
 import { IMainframeProcessesState } from '@state/mainframe/mainframe-processes-state/interfaces/mainframe-processes-state';
 import { IMainframeHardwareState } from '@state/mainframe/mainframe-hardware-state/interfaces/mainframe-hardware-state';
 import { ProgramName } from '../types';
@@ -14,6 +15,7 @@ import { PROGRAMS_UI_EVENTS } from '../constants';
 
 export abstract class BaseProgram implements IProgram {
   protected generalState: IGeneralState;
+  protected growthState: IGrowthState;
   protected mainframeProcessesState: IMainframeProcessesState;
   protected mainframeHardwareState: IMainframeHardwareState;
   protected formatter: IFormatter;
@@ -27,6 +29,7 @@ export abstract class BaseProgram implements IProgram {
 
   constructor(parameters: IBaseProgramParameters) {
     this.generalState = parameters.generalState;
+    this.growthState = parameters.growthState;
     this.mainframeProcessesState = parameters.mainframeProcessesState;
     this.mainframeHardwareState = parameters.mainframeHardwareState;
     this.formatter = parameters.formatter;
@@ -59,6 +62,7 @@ export abstract class BaseProgram implements IProgram {
     const programData = programs[this.name];
 
     return (
+      (1 - this.growthState.programDiscount) *
       calculatePow(this._level - 1, programData.cost as IExponent) *
       Math.pow(programData.costQualityMultiplier, this.quality)
     );

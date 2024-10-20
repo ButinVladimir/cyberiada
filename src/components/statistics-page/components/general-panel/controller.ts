@@ -22,6 +22,10 @@ export class StatisticsGeneralPanelController extends BaseController {
     return this.growthState.programCompletionSpeedModifier;
   }
 
+  get programDiscount() {
+    return this.growthState.programDiscount;
+  }
+
   private handleRefreshUI = () => {
     this.host.requestUpdate();
   };

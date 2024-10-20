@@ -1,9 +1,9 @@
 import { LitElement, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import { StatisticsIncomePanelController } from './controller';
-import { statisticsPanelContentStyle } from '../../styles';
 import { IncomeSource } from '@shared/types';
 import { INCOME_SOURCES } from '@shared/constants';
+import { StatisticsIncomePanelController } from './controller';
+import { statisticsPanelContentStyle } from '../../styles';
 
 @customElement('ca-statistics-income-panel')
 export class StatisticsIncomePanel extends LitElement {
@@ -18,12 +18,25 @@ export class StatisticsIncomePanel extends LitElement {
   }
 
   render() {
+    const formatter = this._statisticsIncomePanelController.formatter;
+
     return html`
       ${this.renderIncomeSection('money', this._statisticsIncomePanelController.getMoneyIncome)}
       ${this.renderIncomeSection(
         'cityDevelopmentPoints',
         this._statisticsIncomePanelController.getCityDevelopmentPointsIncome,
       )}
+
+      <h4 class="title">
+        <intl-message label="ui:statistics:income:pointsByPrograms:title">Points by programs</intl-message>
+      </h4>
+
+      <div class="parameters-table">
+        <span>
+          <intl-message label="ui:statistics:income:pointsByPrograms:codebase">Codebase</intl-message>
+        </span>
+        <span> ${formatter.formatNumberLong(this._statisticsIncomePanelController.codebaseByProgram)} </span>
+      </div>
     `;
   }
 

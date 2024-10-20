@@ -13,6 +13,7 @@ export class ShareServerProgram extends BaseProgram {
   public readonly name = ProgramName.shareServer;
   public readonly isRepeatable = true;
   public readonly isAutoscalable = true;
+
   private _scenarioState: IScenarioState;
   private _settingsState: ISettingsState;
 

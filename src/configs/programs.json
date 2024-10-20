@@ -22,7 +22,7 @@
     "completionPoints": { "baseMultiplier": 10000, "base": 1 },
     "cost": { "baseMultiplier": 100000, "base": 1.2 },
     "costQualityMultiplier": 2,
-    "dpIncrease": { "baseMultiplier": 10000, "base": 1.1 },
-    "dpIncreaseQualityMultiplier": 2
+    "codebase": { "baseMultiplier": 1, "base": 1.01 },
+    "codebaseQualityMultiplier": 10
   }
 }
