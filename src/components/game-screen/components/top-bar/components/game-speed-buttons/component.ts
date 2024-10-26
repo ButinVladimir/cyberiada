@@ -1,7 +1,7 @@
 import { t } from 'i18next';
 import { LitElement, html, css, TemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import { GameSpeed } from '@state/general-state/types';
+import { GameSpeed } from '@state/global-state/types';
 import { GameSpeedButtonsController } from './controller';
 import { GameSpeedButtonProps } from './interfaces';
 
@@ -35,25 +35,27 @@ export class GameSpeedButtons extends LitElement {
         gameSpeed: GameSpeed.paused,
         label: 'pause',
         icon: gameSpeed === GameSpeed.paused ? 'pause-fill' : 'pause',
-        className: gameSpeed === GameSpeed.paused ? 'speed-button-active' : '',
+        isActive: gameSpeed === GameSpeed.paused,
       })}
       ${this.renderButton({
         gameSpeed: GameSpeed.normal,
         label: 'playNormal',
         icon: gameSpeed === GameSpeed.normal ? 'play-fill' : 'play',
-        className: gameSpeed === GameSpeed.normal ? 'speed-button-active' : '',
+        isActive: gameSpeed === GameSpeed.normal,
       })}
       ${this.renderButton({
         gameSpeed: GameSpeed.fast,
         label: 'playFast',
         icon: gameSpeed === GameSpeed.fast ? 'fast-forward-fill' : 'fast-forward',
-        className: gameSpeed === GameSpeed.fast ? 'speed-button-active' : '',
+        isActive: gameSpeed === GameSpeed.fast,
       })}
     `;
   }
 
   renderButton = (props: GameSpeedButtonProps): TemplateResult => {
-    const { label, gameSpeed, icon, className } = props;
+    const { label, gameSpeed, icon, isActive } = props;
+
+    const className = isActive ? 'speed-button-active' : '';
 
     return html`
       <sl-tooltip>

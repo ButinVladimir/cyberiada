@@ -3,8 +3,8 @@ import { IFormatter } from '@shared/interfaces/formatter';
 import { EventBatcher } from '@shared/event-batcher';
 import { IExponent } from '@shared/interfaces/exponent';
 import { calculatePow } from '@shared/helpers';
-import { IGeneralState } from '@state/general-state';
 import { IGrowthState } from '@state/growth-state/interfaces/growth-state';
+import { IGlobalState } from '@state/global-state/interfaces/global-state';
 import { IMainframeProcessesState } from '@state/mainframe/mainframe-processes-state/interfaces/mainframe-processes-state';
 import { IMainframeHardwareState } from '@state/mainframe/mainframe-hardware-state/interfaces/mainframe-hardware-state';
 import { ProgramName } from '../types';
@@ -14,8 +14,8 @@ import { IBaseProgramParameters } from '../interfaces/program-parameters/base-pr
 import { PROGRAMS_UI_EVENTS } from '../constants';
 
 export abstract class BaseProgram implements IProgram {
-  protected generalState: IGeneralState;
   protected growthState: IGrowthState;
+  protected globalState: IGlobalState;
   protected mainframeProcessesState: IMainframeProcessesState;
   protected mainframeHardwareState: IMainframeHardwareState;
   protected formatter: IFormatter;
@@ -28,8 +28,8 @@ export abstract class BaseProgram implements IProgram {
   abstract get name(): ProgramName;
 
   constructor(parameters: IBaseProgramParameters) {
-    this.generalState = parameters.generalState;
     this.growthState = parameters.growthState;
+    this.globalState = parameters.globalState;
     this.mainframeProcessesState = parameters.mainframeProcessesState;
     this.mainframeHardwareState = parameters.mainframeHardwareState;
     this.formatter = parameters.formatter;
@@ -51,7 +51,10 @@ export abstract class BaseProgram implements IProgram {
   get completionPoints() {
     const programData = programs[this.name];
 
-    return calculatePow(this.generalState.cityLevel - this._level, programData.completionPoints as IExponent);
+    return calculatePow(
+      this.globalState.cityDevelopment.level - this._level,
+      programData.completionPoints as IExponent,
+    );
   }
 
   abstract get isRepeatable(): boolean;

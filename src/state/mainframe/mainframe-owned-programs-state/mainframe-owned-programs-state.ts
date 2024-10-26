@@ -3,7 +3,7 @@ import { IMakeProgramParameters } from '@state/progam-factory/interfaces/make-pr
 import type { IProgramFactory } from '@state/progam-factory/interfaces/program-factory';
 import { IProgram } from '@state/progam-factory/interfaces/program';
 import type { IScenarioState } from '@state/scenario-state/interfaces/scenario-state';
-import type { IGeneralState } from '@state/general-state/interfaces/general-state';
+import type { IGlobalState } from '@state/global-state/interfaces/global-state';
 import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
 import type { IFormatter } from '@shared/interfaces/formatter';
 import { TYPES } from '@state/types';
@@ -17,7 +17,7 @@ import { MAINFRAME_OWNED_PROGRAMES_STATE_UI_EVENTS } from './constants';
 export class MainframeOwnedProgramsState implements IMainframeOwnedProgramsState {
   private _programFactory: IProgramFactory;
   private _scenarioState: IScenarioState;
-  private _generalState: IGeneralState;
+  private _globalState: IGlobalState;
   private _messageLogState: IMessageLogState;
   private _formatter: IFormatter;
 
@@ -28,13 +28,13 @@ export class MainframeOwnedProgramsState implements IMainframeOwnedProgramsState
   constructor(
     @inject(TYPES.ProgramFactory) _programFactory: IProgramFactory,
     @inject(TYPES.ScenarioState) _scenarioState: IScenarioState,
-    @inject(TYPES.GeneralState) _generalState: IGeneralState,
+    @inject(TYPES.GlobalState) _globalState: IGlobalState,
     @inject(TYPES.MessageLogState) _messageLogState: IMessageLogState,
     @inject(TYPES.Formatter) _formatter: IFormatter,
   ) {
     this._programFactory = _programFactory;
     this._scenarioState = _scenarioState;
-    this._generalState = _generalState;
+    this._globalState = _globalState;
     this._messageLogState = _messageLogState;
     this._formatter = _formatter;
 
@@ -44,13 +44,13 @@ export class MainframeOwnedProgramsState implements IMainframeOwnedProgramsState
   }
 
   purchaseProgram(programParameters: IMakeProgramParameters): boolean {
-    if (programParameters.level > this._generalState.cityLevel) {
+    if (programParameters.level > this._globalState.cityDevelopment.level) {
       throw new Error(`Cannot purchase program ${programParameters.name} with level above city level`);
     }
 
     const program = this._programFactory.makeProgram(programParameters);
 
-    const bought = this._generalState.purchase(
+    const bought = this._globalState.money.purchase(
       program.cost,
       PurchaseType.mainframePrograms,
       this.handlePurchaseProgram(program),

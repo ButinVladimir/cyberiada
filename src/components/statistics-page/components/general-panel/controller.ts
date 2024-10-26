@@ -1,21 +1,21 @@
+import { GLOBAL_STATE_UI_EVENTS } from '@state/global-state/constants';
 import { BaseController } from '@shared/base-controller';
-import { GENERAL_STATE_UI_EVENTS } from '@state/general-state/constants';
 
 export class StatisticsGeneralPanelController extends BaseController {
   hostConnected() {
-    this.generalState.addUiEventListener(GENERAL_STATE_UI_EVENTS.VALUES_CHANGED, this.handleRefreshUI);
+    this.globalState.time.addUiEventListener(GLOBAL_STATE_UI_EVENTS.OFFLINE_TIME_CHANGED, this.handleRefreshUI);
   }
 
   hostDisconnected() {
-    this.generalState.removeUiEventListener(GENERAL_STATE_UI_EVENTS.VALUES_CHANGED, this.handleRefreshUI);
+    this.globalState.time.removeUiEventListener(GLOBAL_STATE_UI_EVENTS.OFFLINE_TIME_CHANGED, this.handleRefreshUI);
   }
 
-  get timeThisRun() {
-    return this.generalState.timeThisRun;
+  get gameTime() {
+    return this.globalState.time.gameTime;
   }
 
-  get timeTotal() {
-    return this.generalState.timeTotal;
+  get gameTimeTotal() {
+    return this.globalState.time.gameTimeTotal;
   }
 
   get programCompletionSpeedMultiplier() {

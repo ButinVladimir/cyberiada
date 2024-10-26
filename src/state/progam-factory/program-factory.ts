@@ -2,8 +2,8 @@ import { injectable } from 'inversify';
 import { decorators } from '@state/container';
 import { TYPES } from '@state/types';
 import type { IScenarioState } from '@state/scenario-state/interfaces/scenario-state';
-import type { IGeneralState } from '@state/general-state/interfaces/general-state';
 import type { IGrowthState } from '@state/growth-state/interfaces/growth-state';
+import type { IGlobalState } from '@state/global-state/interfaces/global-state';
 import type { IMainframeHardwareState } from '@state/mainframe/mainframe-hardware-state/interfaces/mainframe-hardware-state';
 import type { IMainframeProcessesState } from '@state/mainframe/mainframe-processes-state/interfaces/mainframe-processes-state';
 import type { ISettingsState } from '@state/settings-state/interfaces/settings-state';
@@ -21,11 +21,11 @@ export class ProgramFactory implements IProgramFactory {
   @lazyInject(TYPES.ScenarioState)
   private _scenarioState!: IScenarioState;
 
-  @lazyInject(TYPES.GeneralState)
-  private _generalState!: IGeneralState;
-
   @lazyInject(TYPES.GrowthState)
   private _growthState!: IGrowthState;
+
+  @lazyInject(TYPES.GlobalState)
+  private _globalState!: IGlobalState;
 
   @lazyInject(TYPES.SettingsState)
   private _settingsState!: ISettingsState;
@@ -80,8 +80,8 @@ export class ProgramFactory implements IProgramFactory {
           formatter: this._formatter,
           level: parameters.level,
           quality: parameters.quality,
-          generalState: this._generalState,
           growthState: this._growthState,
+          globalState: this._globalState,
           mainframeProcessesState: this._mainframeProcessesState,
           mainframeHardwareState: this._mainframeHardwareState,
           scenarioState: this._scenarioState,
@@ -93,8 +93,8 @@ export class ProgramFactory implements IProgramFactory {
           formatter: this._formatter,
           level: parameters.level,
           quality: parameters.quality,
-          generalState: this._generalState,
           growthState: this._growthState,
+          globalState: this._globalState,
           mainframeProcessesState: this._mainframeProcessesState,
           mainframeHardwareState: this._mainframeHardwareState,
           scenarioState: this._scenarioState,
@@ -105,8 +105,8 @@ export class ProgramFactory implements IProgramFactory {
           formatter: this._formatter,
           level: parameters.level,
           quality: parameters.quality,
-          generalState: this._generalState,
           growthState: this._growthState,
+          globalState: this._globalState,
           scenarioState: this._scenarioState,
           mainframeProcessesState: this._mainframeProcessesState,
           mainframeHardwareState: this._mainframeHardwareState,

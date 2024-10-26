@@ -19,7 +19,7 @@ topBar:
     playFast: Играть на быстрой скорости (с оффлайн временем)
   offlineTime: Оффлайн время
   money: Деньги
-  cityLevel: Уровень города, очки разработки {{value}}
+  cityLevel: Уровень города
 messageLog:
   messageLog: Сообщения
   clearMessages: Удалить сообщения

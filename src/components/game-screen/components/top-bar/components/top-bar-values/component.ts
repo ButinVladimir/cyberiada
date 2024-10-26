@@ -47,9 +47,6 @@ export class TopBarValues extends LitElement {
     const offlineTimeFormatted = formatter.formatTimeShort(this._topBarValuesController.offlineTime);
     const moneyFormatted = formatter.formatNumberLong(this._topBarValuesController.money);
     const cityLevelFormatted = formatter.formatNumberDecimal(this._topBarValuesController.cityLevel);
-    const cityDevelopmentPointsFormatted = formatter.formatNumberLong(
-      this._topBarValuesController.cityDevelopmentPoints,
-    );
 
     return html`
       <div class="block">
@@ -74,9 +71,7 @@ export class TopBarValues extends LitElement {
 
       <div class="block">
         <sl-tooltip>
-          <intl-message slot="content" label="ui:topBar:cityLevel" value=${cityDevelopmentPointsFormatted}>
-            City level
-          </intl-message>
+          <intl-message slot="content" label="ui:topBar:cityLevel"> City level </intl-message>
 
           <sl-icon name="star"> </sl-icon>
 

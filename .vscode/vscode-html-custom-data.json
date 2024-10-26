@@ -127,20 +127,6 @@
       "attributes": []
     },
     {
-      "name": "ca-mainframe-hardware-panel-article-buy-button",
-      "description": "Attributes:\n\n  * `cost` {`number`} - \n\n  * `level` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `cost` {`number`} - \n\n  * `level` {`number`} - \n\n  * `_mainframeHardwarePanelArticleBuyButtonController` {`MainframeHardwarePanelArticleBuyButtonController`} - ",
-      "attributes": [
-        {
-          "name": "cost",
-          "description": "`cost` {`number`} - \n\nProperty: cost"
-        },
-        {
-          "name": "level",
-          "description": "`level` {`number`} - \n\nProperty: level"
-        }
-      ]
-    },
-    {
       "name": "ca-mainframe-hardware-panel-article",
       "description": "Attributes:\n\n  * `label` {`string`} - \n\n  * `increase` {`number`} - \n\n  * `money` {`number`} - \n\n  * `level` {`number`} - \n\n  * `cost` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `label` {`string`} - \n\n  * `increase` {`number`} - \n\n  * `money` {`number`} - \n\n  * `level` {`number`} - \n\n  * `cost` {`number`} - \n\n  * `handleBuy` - \n\n  * `_mainframeHardwarePanelArticleController` {`MainframeHardwarePanelArticleController`} - ",
       "attributes": [
@@ -185,21 +171,6 @@
       "name": "ca-owned-programs-list",
       "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderContent` - \n\n  * `renderEmptyListNotification` - \n\n  * `renderListItem` - \n\n  * `_ownedProgramsListController` {`OwnedProgramsListController`} - ",
       "attributes": []
-    },
-    {
-      "name": "ca-purchase-program-dialog-submit-button",
-      "description": "Attributes:\n\n  * `disabled` {`boolean`} - \n\n  * `cost` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `disabled` {`boolean`} - \n\n  * `cost` {`number`} - \n\n  * `_purchaseProgramDialogSubmitButtonController` {`PurchaseProgramDialogSubmitButtonController`} - ",
-      "attributes": [
-        {
-          "name": "disabled",
-          "description": "`disabled` {`boolean`} - \n\nProperty: disabled\n\nDefault: false",
-          "valueSet": "v"
-        },
-        {
-          "name": "cost",
-          "description": "`cost` {`number`} - \n\nProperty: cost\n\nDefault: 0"
-        }
-      ]
     },
     {
       "name": "ca-purchase-program-dialog",
@@ -333,8 +304,13 @@
       "attributes": []
     },
     {
+      "name": "ca-statistics-city-development-income",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderIncomeSource` - \n\n  * `_statisticsCityDevelopmentIncomePanelController` {`StatisticsCityDevelopmentIncomeController`} - ",
+      "attributes": []
+    },
+    {
       "name": "ca-statistics-expenses-panel",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderMoneyExpenseArticle` - \n\n  * `_statisticsExpensesPanelController` {`StatisticsExpensesPanelController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - ",
       "attributes": []
     },
     {
@@ -349,7 +325,17 @@
     },
     {
       "name": "ca-statistics-income-panel",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderIncomeSection` - \n\n  * `renderIncomeSource` - \n\n  * `_statisticsIncomePanelController` {`StatisticsIncomePanelController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-statistics-money-expenses",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderExpenseArticle` - \n\n  * `_statisticsMoneyExpensesController` {`StatisticsMoneyExpensesController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-statistics-money-income",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderIncomeSource` - \n\n  * `_statisticsMoneyIncomePanelController` {`StatisticsMoneyIncomeController`} - ",
       "attributes": []
     }
   ],

@@ -1,32 +1,38 @@
 import { BaseController } from '@shared/base-controller';
-import { APP_UI_EVENTS } from '@state/app/constants';
+import { GLOBAL_STATE_UI_EVENTS } from '@state/global-state/constants';
 
 export class TopBarValuesController extends BaseController {
   hostConnected() {
-    this.app.addUiEventListener(APP_UI_EVENTS.REFRESHED_UI, this.handleUpdatedUI);
+    this.globalState.money.addUiEventListener(GLOBAL_STATE_UI_EVENTS.MONEY_CHANGED, this.handleRefreshUI);
+    this.globalState.time.addUiEventListener(GLOBAL_STATE_UI_EVENTS.OFFLINE_TIME_CHANGED, this.handleRefreshUI);
+    this.globalState.cityDevelopment.addUiEventListener(
+      GLOBAL_STATE_UI_EVENTS.CITY_DEVELOPMENT_LEVEL_UPDATED,
+      this.handleRefreshUI,
+    );
   }
 
   hostDisconnected() {
-    this.app.removeUiEventListener(APP_UI_EVENTS.REFRESHED_UI, this.handleUpdatedUI);
+    this.globalState.money.removeUiEventListener(GLOBAL_STATE_UI_EVENTS.MONEY_CHANGED, this.handleRefreshUI);
+    this.globalState.time.removeUiEventListener(GLOBAL_STATE_UI_EVENTS.OFFLINE_TIME_CHANGED, this.handleRefreshUI);
+    this.globalState.cityDevelopment.removeUiEventListener(
+      GLOBAL_STATE_UI_EVENTS.CITY_DEVELOPMENT_LEVEL_UPDATED,
+      this.handleRefreshUI,
+    );
   }
 
   get offlineTime(): number {
-    return this.generalState.offlineTime;
+    return this.globalState.time.offlineTime;
   }
 
   get money(): number {
-    return this.generalState.money;
+    return this.globalState.money.money;
   }
 
   get cityLevel(): number {
-    return this.generalState.cityLevel;
+    return this.globalState.cityDevelopment.level;
   }
 
-  get cityDevelopmentPoints(): number {
-    return this.generalState.cityDevelopmentPoints;
-  }
-
-  private handleUpdatedUI = () => {
+  private handleRefreshUI = () => {
     this.host.requestUpdate();
   };
 }

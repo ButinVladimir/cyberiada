@@ -1,6 +1,6 @@
 import { injectable, inject } from 'inversify';
 import type { IScenarioState } from '@state/scenario-state/interfaces/scenario-state';
-import type { IGeneralState } from '@state/general-state/interfaces';
+import type { IGlobalState } from '@state/global-state/interfaces/global-state';
 import { IMapGeneratorResult } from '@workers/map-generator/interfaces';
 import { TYPES } from '@state/types';
 import { ICityState, ICitySerializedState, IDistrictInfo, IDistrictSerializedInfo } from './interfaces';
@@ -9,17 +9,17 @@ import { DistrictInfo } from './district-info';
 @injectable()
 export class CityState implements ICityState {
   private _scenarioState: IScenarioState;
-  private _generalState: IGeneralState;
+  private _globalState: IGlobalState;
 
   private _map: number[][];
   private _districts: Map<number, IDistrictInfo>;
 
   constructor(
     @inject(TYPES.ScenarioState) _scenarioState: IScenarioState,
-    @inject(TYPES.GeneralState) _generalState: IGeneralState,
+    @inject(TYPES.GlobalState) _globalState: IGlobalState,
   ) {
     this._scenarioState = _scenarioState;
-    this._generalState = _generalState;
+    this._globalState = _globalState;
 
     this._map = [];
     this._districts = new Map();
@@ -109,7 +109,7 @@ export class CityState implements ICityState {
         mapWidth: scenarioValues.mapWidth,
         mapHeight: scenarioValues.mapHeight,
         districtsNum: scenarioValues.districtsNum,
-        randomSeed: this._generalState.randomSeed,
+        randomSeed: this._globalState.randomSeed,
       });
     });
   }

@@ -119,7 +119,7 @@ export class GrowthState implements IGrowthState {
 
   // eslint-disable-next-line @typescript-eslint/require-await
   async startNewState(): Promise<void> {
-    this._codebasePointsByProgram = 0;
+    this._codebasePointsByProgram = 1;
 
     this.requestRecalculation();
   }

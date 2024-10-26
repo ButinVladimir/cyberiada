@@ -1,5 +1,14 @@
 import { css } from 'lit';
 
+export const statisticsPanelStyle = css`
+  :host {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+  }
+`;
+
 export const statisticsPanelContentStyle = css`
   :host {
     width: 60em;

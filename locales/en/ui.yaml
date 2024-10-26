@@ -21,7 +21,7 @@ topBar:
     playFast: Play on fast speed (with offline time)
   offlineTime: Offline time
   money: Money
-  cityLevel: City level, development points {{value}}
+  cityLevel: City level
 messageLog:
   messageLog: Message log
   clearMessages: Clear messages

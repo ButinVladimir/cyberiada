@@ -1,13 +1,18 @@
 import { BaseController } from '@shared/base-controller';
-import { GameSpeed } from '@state/general-state/types';
+import { GameSpeed } from '@state/global-state/types';
 
 export class GameSpeedButtonsController extends BaseController {
   get gameSpeed(): GameSpeed {
-    return this.generalState.gameSpeed;
+    return this.globalState.gameSpeed;
   }
 
   changeGameSpeed(gameSpeed: GameSpeed) {
-    this.generalState.changeGameSpeed(gameSpeed);
-    this.host.requestUpdate();
+    this.globalState.gameSpeed = gameSpeed;
+
+    this.handleUpdatedUI();
   }
+
+  private handleUpdatedUI = () => {
+    this.host.requestUpdate();
+  };
 }

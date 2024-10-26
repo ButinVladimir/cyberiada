@@ -1,8 +1,8 @@
 import { injectable, inject } from 'inversify';
 import { decorators } from '@state/container';
 import type { IScenarioState } from '@state/scenario-state/interfaces/scenario-state';
-import type { IGeneralState } from '@state/general-state/interfaces/general-state';
 import type { IGrowthState } from '@state/growth-state/interfaces/growth-state';
+import type { IGlobalState } from '@state/global-state/interfaces/global-state';
 import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
 import type { IMainframeProcessesState } from '@state/mainframe/mainframe-processes-state/interfaces/mainframe-processes-state';
 import type { IFormatter } from '@shared/interfaces/formatter';
@@ -24,7 +24,7 @@ export class MainframeHardwareState implements IMainframeHardwareState {
   private _growthState!: IGrowthState;
 
   private _scenarioState: IScenarioState;
-  private _generalState: IGeneralState;
+  private _globalState: IGlobalState;
   private _messageLogState: IMessageLogState;
   private _formatter: IFormatter;
 
@@ -36,12 +36,12 @@ export class MainframeHardwareState implements IMainframeHardwareState {
 
   constructor(
     @inject(TYPES.ScenarioState) _scenarioState: IScenarioState,
-    @inject(TYPES.GeneralState) _generalState: IGeneralState,
+    @inject(TYPES.GlobalState) _globalState: IGlobalState,
     @inject(TYPES.MessageLogState) _messageLogState: IMessageLogState,
     @inject(TYPES.Formatter) _formatter: IFormatter,
   ) {
     this._scenarioState = _scenarioState;
-    this._generalState = _generalState;
+    this._globalState = _globalState;
     this._messageLogState = _messageLogState;
     this._formatter = _formatter;
 
@@ -74,14 +74,14 @@ export class MainframeHardwareState implements IMainframeHardwareState {
   }
 
   purchasePerformanceIncrease(increase: number): boolean {
-    const maxIncrease = this._generalState.cityLevel - this.performance;
+    const maxIncrease = this._globalState.cityDevelopment.level - this.performance;
     if (increase > maxIncrease) {
       throw new Error('Mainframe hardware performance level cannot be above city level');
     }
 
     const cost = this.getPerformanceIncreaseCost(increase);
 
-    return this._generalState.purchase(
+    return this._globalState.money.purchase(
       cost,
       PurchaseType.mainframeHardware,
       this.handlePurchasePerformanceIncrease(increase),
@@ -96,14 +96,14 @@ export class MainframeHardwareState implements IMainframeHardwareState {
   }
 
   purchaseCoresIncrease(increase: number): boolean {
-    const maxIncrease = this._generalState.cityLevel - this.cores;
+    const maxIncrease = this._globalState.cityDevelopment.level - this.cores;
     if (increase > maxIncrease) {
       throw new Error('Mainframe hardware cores level cannot be above city level');
     }
 
     const cost = this.getCoresIncreaseCost(increase);
 
-    return this._generalState.purchase(
+    return this._globalState.money.purchase(
       cost,
       PurchaseType.mainframeHardware,
       this.handlePurchaseCoresIncrease(increase),
@@ -118,14 +118,18 @@ export class MainframeHardwareState implements IMainframeHardwareState {
   }
 
   purchaseRamIncrease(increase: number): boolean {
-    const maxIncrease = this._generalState.cityLevel - this.ram;
+    const maxIncrease = this._globalState.cityDevelopment.level - this.ram;
     if (increase > maxIncrease) {
       throw new Error('Mainframe hardware RAM level cannot be above city level');
     }
 
     const cost = this.getRamIncreaseCost(increase);
 
-    return this._generalState.purchase(cost, PurchaseType.mainframeHardware, this.handlePurchaseRamIncrease(increase));
+    return this._globalState.money.purchase(
+      cost,
+      PurchaseType.mainframeHardware,
+      this.handlePurchaseRamIncrease(increase),
+    );
   }
 
   // eslint-disable-next-line @typescript-eslint/require-await

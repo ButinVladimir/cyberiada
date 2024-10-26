@@ -27,12 +27,12 @@ export class StatisticsGeneralPanel extends LitElement {
         <span>
           <intl-message label="ui:statistics:general:time:timeThisRun">Time this run</intl-message>
         </span>
-        <span> ${formatter.formatTimeShort(this._statisticsGeneralPanelController.timeThisRun)} </span>
+        <span> ${formatter.formatTimeShort(this._statisticsGeneralPanelController.gameTime)} </span>
 
         <span>
           <intl-message label="ui:statistics:general:time:timeTotal">Total time</intl-message>
         </span>
-        <span> ${formatter.formatTimeShort(this._statisticsGeneralPanelController.timeTotal)} </span>
+        <span> ${formatter.formatTimeShort(this._statisticsGeneralPanelController.gameTimeTotal)} </span>
       </div>
 
       <h4 class="title">

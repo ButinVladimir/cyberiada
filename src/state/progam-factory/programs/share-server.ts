@@ -32,8 +32,8 @@ export class ShareServerProgram extends BaseProgram {
       this._settingsState.updateInterval,
     );
 
-    this.generalState.increaseMoney(moneyDelta, IncomeSource.program);
-    this.generalState.increaseCityDevelopmentPoints(cityDevelopmentPointsDelta, IncomeSource.program);
+    this.globalState.money.increase(moneyDelta, IncomeSource.program);
+    this.globalState.cityDevelopment.increase(cityDevelopmentPointsDelta, IncomeSource.program);
   }
 
   buildDescriptionParametersObject(threads: number, usedRam: number) {

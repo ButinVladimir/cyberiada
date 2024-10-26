@@ -1,5 +1,5 @@
-import { GENERAL_STATE_UI_EVENTS } from '@state/general-state/constants';
 import { GROWTH_STATE_UI_EVENTS } from '@state/growth-state/constants';
+import { GLOBAL_STATE_UI_EVENTS } from '@state/global-state/constants';
 import { MAINFRAME_OWNED_PROGRAMES_STATE_UI_EVENTS } from '@state/mainframe/mainframe-owned-programs-state';
 import { PROGRAMS_UI_EVENTS } from '@state/progam-factory/constants';
 import { BaseController } from '@shared/base-controller';
@@ -10,29 +10,41 @@ export class PurchaseProgramDialogController extends BaseController {
   private _selectedProgram?: IProgram;
 
   hostConnected() {
-    this.generalState.addUiEventListener(GENERAL_STATE_UI_EVENTS.CITY_LEVEL_CHANGED, this.handleRefreshUI);
     this.mainframeOwnedProgramState.addUiEventListener(
       MAINFRAME_OWNED_PROGRAMES_STATE_UI_EVENTS.OWNED_PROGRAMS_UPDATED,
       this.handleRefreshUI,
     );
     this.growthState.addUiEventListener(GROWTH_STATE_UI_EVENTS.VALUES_CHANGED, this.handleRefreshUI);
+    this.globalState.money.addUiEventListener(GLOBAL_STATE_UI_EVENTS.MONEY_CHANGED, this.handleRefreshUI);
+    this.globalState.cityDevelopment.addUiEventListener(
+      GLOBAL_STATE_UI_EVENTS.CITY_DEVELOPMENT_LEVEL_UPDATED,
+      this.handleRefreshUI,
+    );
   }
 
   hostDisconnected() {
-    this.generalState.removeUiEventListener(GENERAL_STATE_UI_EVENTS.CITY_LEVEL_CHANGED, this.handleRefreshUI);
     this.mainframeOwnedProgramState.removeUiEventListener(
       MAINFRAME_OWNED_PROGRAMES_STATE_UI_EVENTS.OWNED_PROGRAMS_UPDATED,
       this.handleRefreshUI,
     );
     this.growthState.removeUiEventListener(GROWTH_STATE_UI_EVENTS.VALUES_CHANGED, this.handleRefreshUI);
+    this.globalState.money.removeUiEventListener(GLOBAL_STATE_UI_EVENTS.MONEY_CHANGED, this.handleRefreshUI);
+    this.globalState.cityDevelopment.removeUiEventListener(
+      GLOBAL_STATE_UI_EVENTS.CITY_DEVELOPMENT_LEVEL_UPDATED,
+      this.handleRefreshUI,
+    );
 
     if (this._selectedProgram) {
       this.programFactory.deleteProgram(this._selectedProgram);
     }
   }
 
+  get money(): number {
+    return this.globalState.money.money;
+  }
+
   get cityLevel(): number {
-    return this.generalState.cityLevel;
+    return this.globalState.cityDevelopment.level;
   }
 
   getSelectedProgram(name: ProgramName, level: number, quality: number): IProgram {

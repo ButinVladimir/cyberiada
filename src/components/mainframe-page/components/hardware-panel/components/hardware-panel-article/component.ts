@@ -78,7 +78,10 @@ export class MainframeHardwarePanelArticle extends LitElement {
   }
 
   render() {
+    const { money, cityLevel } = this._mainframeHardwarePanelArticleController;
     const formatter = this._mainframeHardwarePanelArticleController.formatter;
+
+    const buttonDisabled = !(money >= this.cost && cityLevel > this.level);
 
     const buttonValue = JSON.stringify({
       cost: formatter.formatNumberLong(this.cost),
@@ -98,9 +101,9 @@ export class MainframeHardwarePanelArticle extends LitElement {
       </div>
 
       <div class="button-container">
-        <ca-mainframe-hardware-panel-article-buy-button cost=${this.cost} level=${this.level} @click=${this.handleBuy}>
+        <sl-button variant="primary" type="button" size="medium" ?disabled=${buttonDisabled} @click=${this.handleBuy}>
           <intl-message label="ui:mainframe:hardware:buy" value=${buttonValue}> Buy </intl-message>
-        </ca-mainframe-hardware-panel-article-buy-button>
+        </sl-button>
       </div>
     `;
   }

@@ -132,8 +132,7 @@ export class PurchaseProgramDialog extends LitElement {
   }
 
   render() {
-    const formatter = this._purchaseProgramDialogController.formatter;
-    const cityLevel = this._purchaseProgramDialogController.cityLevel;
+    const { formatter, money, cityLevel } = this._purchaseProgramDialogController;
 
     const program = this._programName
       ? this._purchaseProgramDialogController.getSelectedProgram(this._programName, this._level, this._quality)
@@ -142,7 +141,7 @@ export class PurchaseProgramDialog extends LitElement {
 
     const submitButtonValues = JSON.stringify({ cost: formatter.formatNumberLong(cost) });
 
-    const submitButtonDisabled = !(program && this._level <= cityLevel);
+    const submitButtonDisabled = !(program && this._level <= cityLevel && cost <= money);
 
     return html`
       <sl-dialog ?open=${this.isOpen && !this._confirmationAlertVisible} @sl-request-close=${this.handleClose}>
@@ -222,16 +221,17 @@ export class PurchaseProgramDialog extends LitElement {
           <intl-message label="ui:common:close"> Close </intl-message>
         </sl-button>
 
-        <ca-purchase-program-dialog-submit-button
+        <sl-button
           slot="footer"
+          size="medium"
+          variant="primary"
           ?disabled=${submitButtonDisabled}
-          cost=${cost}
           @click=${this.handleOpenConfirmationAlert}
         >
           <intl-message label="ui:mainframe:ownedPrograms:purchase" value=${submitButtonValues}>
             Purchase
           </intl-message>
-        </ca-purchase-program-dialog-submit-button>
+        </sl-button>
       </sl-dialog>
     `;
   }
