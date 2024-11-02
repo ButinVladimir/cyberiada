@@ -1,7 +1,6 @@
 import { injectable, inject } from 'inversify';
 import { decorators } from '@state/container';
 import type { IScenarioState } from '@state/scenario-state/interfaces/scenario-state';
-import type { IGrowthState } from '@state/growth-state/interfaces/growth-state';
 import type { IGlobalState } from '@state/global-state/interfaces/global-state';
 import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
 import type { IMainframeProcessesState } from '@state/mainframe/mainframe-processes-state/interfaces/mainframe-processes-state';
@@ -19,9 +18,6 @@ const { lazyInject } = decorators;
 export class MainframeHardwareState implements IMainframeHardwareState {
   @lazyInject(TYPES.MainframeProcessesState)
   private _mainframeProcessesState!: IMainframeProcessesState;
-
-  @lazyInject(TYPES.GrowthState)
-  private _growthState!: IGrowthState;
 
   private _scenarioState: IScenarioState;
   private _globalState: IGlobalState;
@@ -70,7 +66,10 @@ export class MainframeHardwareState implements IMainframeHardwareState {
     const exp = this._scenarioState.currentValues.mainframeHardware.performancePrice;
     const baseCost = calculatePow(this._performance - 1, exp);
 
-    return ((1 - this._growthState.programDiscount) * (baseCost * (Math.pow(exp.base, increase) - 1))) / (exp.base - 1);
+    return (
+      ((1 - this._globalState.computationalBase.discount) * (baseCost * (Math.pow(exp.base, increase) - 1))) /
+      (exp.base - 1)
+    );
   }
 
   purchasePerformanceIncrease(increase: number): boolean {
@@ -92,7 +91,10 @@ export class MainframeHardwareState implements IMainframeHardwareState {
     const exp = this._scenarioState.currentValues.mainframeHardware.coresPrice;
     const baseCost = calculatePow(this._performance - 1, exp);
 
-    return ((1 - this._growthState.programDiscount) * (baseCost * (Math.pow(exp.base, increase) - 1))) / (exp.base - 1);
+    return (
+      ((1 - this._globalState.computationalBase.discount) * (baseCost * (Math.pow(exp.base, increase) - 1))) /
+      (exp.base - 1)
+    );
   }
 
   purchaseCoresIncrease(increase: number): boolean {
@@ -114,7 +116,10 @@ export class MainframeHardwareState implements IMainframeHardwareState {
     const exp = this._scenarioState.currentValues.mainframeHardware.ramPrice;
     const baseCost = calculatePow(this._performance - 1, exp);
 
-    return ((1 - this._growthState.programDiscount) * (baseCost * (Math.pow(exp.base, increase) - 1))) / (exp.base - 1);
+    return (
+      ((1 - this._globalState.computationalBase.discount) * (baseCost * (Math.pow(exp.base, increase) - 1))) /
+      (exp.base - 1)
+    );
   }
 
   purchaseRamIncrease(increase: number): boolean {
@@ -194,7 +199,7 @@ export class MainframeHardwareState implements IMainframeHardwareState {
 
   private handlePostHardwareUpdate() {
     this._mainframeProcessesState.requestUpdateProcesses();
-    this._growthState.requestRecalculation();
+    this._globalState.requestGrowthRecalculation();
     this._uiEventBatcher.enqueueEvent(MAINFRAME_HARDWARE_STATE_UI_EVENTS.HARDWARE_UPDATED);
   }
 }

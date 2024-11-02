@@ -1,3 +1,0 @@
-export const GROWTH_STATE_UI_EVENTS = {
-  VALUES_CHANGED: Symbol('VALUES_CHANGED'),
-};

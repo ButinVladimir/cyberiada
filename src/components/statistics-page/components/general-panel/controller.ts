@@ -17,16 +17,4 @@ export class StatisticsGeneralPanelController extends BaseController {
   get gameTimeTotal() {
     return this.globalState.time.gameTimeTotal;
   }
-
-  get programCompletionSpeedMultiplier() {
-    return this.growthState.programCompletionSpeedModifier;
-  }
-
-  get programDiscount() {
-    return this.growthState.programDiscount;
-  }
-
-  private handleRefreshUI = () => {
-    this.host.requestUpdate();
-  };
 }

@@ -1,12 +1,12 @@
 import { inject, injectable } from 'inversify';
-import { decorators } from '@state/container';
 import { ProgramName } from '@state/progam-factory/types';
 import type { IMainframeHardwareState } from '@state/mainframe/mainframe-hardware-state/interfaces/mainframe-hardware-state';
 import type { IMainframeOwnedProgramsState } from '@state/mainframe/mainframe-owned-programs-state/interfaces/mainframe-owned-program-state';
 import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
 import type { ISettingsState } from '@state/settings-state/interfaces/settings-state';
-import type { IGrowthState } from '@state/growth-state/interfaces/growth-state';
 import type { IFormatter } from '@shared/interfaces/formatter';
+import type { IGlobalState } from '@state/global-state/interfaces/global-state';
+import type { IScenarioState } from '@state/scenario-state/interfaces/scenario-state';
 import { TYPES } from '@state/types';
 import { EventBatcher } from '@shared/event-batcher';
 import { ProgramsEvent } from '@shared/types';
@@ -19,18 +19,15 @@ import {
 import { Process } from './process';
 import { MAINFRAME_PROCESSES_STATE_UI_EVENTS } from './constants';
 
-const { lazyInject } = decorators;
-
 @injectable()
 export class MainframeProcessesState implements IMainframeProcessesState {
+  private _globalState: IGlobalState;
   private _settingsState: ISettingsState;
   private _mainframeHardwareState: IMainframeHardwareState;
   private _mainframeOwnedProgramsState: IMainframeOwnedProgramsState;
   private _messageLogState: IMessageLogState;
+  private _scenarioState: IScenarioState;
   private _formatter: IFormatter;
-
-  @lazyInject(TYPES.GrowthState)
-  private _growthState!: IGrowthState;
 
   private _processesList: ProgramName[];
   private _processesMap: Map<ProgramName, IProcess>;
@@ -43,16 +40,20 @@ export class MainframeProcessesState implements IMainframeProcessesState {
   private readonly _uiEventBatcher: EventBatcher;
 
   constructor(
+    @inject(TYPES.GlobalState) _globalState: IGlobalState,
     @inject(TYPES.SettingsState) _settingsState: ISettingsState,
     @inject(TYPES.MainframeHardwareState) _mainframeHardwareState: IMainframeHardwareState,
     @inject(TYPES.MainframeOwnedProgramsState) _mainframeOwnedProgramsState: IMainframeOwnedProgramsState,
     @inject(TYPES.MessageLogState) _messageLogState: IMessageLogState,
+    @inject(TYPES.ScenarioState) _scenarioState: IScenarioState,
     @inject(TYPES.Formatter) _formatter: IFormatter,
   ) {
+    this._globalState = _globalState;
     this._settingsState = _settingsState;
     this._mainframeHardwareState = _mainframeHardwareState;
     this._mainframeOwnedProgramsState = _mainframeOwnedProgramsState;
     this._messageLogState = _messageLogState;
+    this._scenarioState = _scenarioState;
     this._formatter = _formatter;
 
     this._processesMap = new Map<ProgramName, IProcess>();
@@ -281,7 +282,7 @@ export class MainframeProcessesState implements IMainframeProcessesState {
       }
     }
 
-    this._growthState.requestRecalculation();
+    this._globalState.requestGrowthRecalculation();
 
     this._uiEventBatcher.enqueueEvent(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESSES_UPDATED);
   };
@@ -321,7 +322,8 @@ export class MainframeProcessesState implements IMainframeProcessesState {
   private createProcess = (processParameters: ISerializedProcess): IProcess => {
     const process = new Process({
       mainframeProcessesState: this,
-      growthState: this._growthState,
+      globalState: this._globalState,
+      scenarioState: this._scenarioState,
       isActive: processParameters.isActive,
       threads: processParameters.threads,
       program: this._mainframeOwnedProgramsState.getOwnedProgramByName(processParameters.programName)!,

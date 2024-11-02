@@ -14,8 +14,4 @@ export class StatisticsMoneyIncomeController extends BaseController {
   getMoneyIncome = (incomeSource: IncomeSource) => {
     return this.globalState.money.getIncome(incomeSource);
   };
-
-  private handleRefreshUI = () => {
-    this.host.requestUpdate();
-  };
 }

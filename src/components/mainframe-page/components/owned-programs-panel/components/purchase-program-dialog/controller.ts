@@ -1,4 +1,3 @@
-import { GROWTH_STATE_UI_EVENTS } from '@state/growth-state/constants';
 import { GLOBAL_STATE_UI_EVENTS } from '@state/global-state/constants';
 import { MAINFRAME_OWNED_PROGRAMES_STATE_UI_EVENTS } from '@state/mainframe/mainframe-owned-programs-state';
 import { PROGRAMS_UI_EVENTS } from '@state/progam-factory/constants';
@@ -14,10 +13,13 @@ export class PurchaseProgramDialogController extends BaseController {
       MAINFRAME_OWNED_PROGRAMES_STATE_UI_EVENTS.OWNED_PROGRAMS_UPDATED,
       this.handleRefreshUI,
     );
-    this.growthState.addUiEventListener(GROWTH_STATE_UI_EVENTS.VALUES_CHANGED, this.handleRefreshUI);
+    this.globalState.computationalBase.addUiEventListener(
+      GLOBAL_STATE_UI_EVENTS.MAINFRAME_DISCOUNT_CHANGED,
+      this.handleRefreshUI,
+    );
     this.globalState.money.addUiEventListener(GLOBAL_STATE_UI_EVENTS.MONEY_CHANGED, this.handleRefreshUI);
     this.globalState.cityDevelopment.addUiEventListener(
-      GLOBAL_STATE_UI_EVENTS.CITY_DEVELOPMENT_LEVEL_UPDATED,
+      GLOBAL_STATE_UI_EVENTS.CITY_DEVELOPMENT_LEVEL_CHANGED,
       this.handleRefreshUI,
     );
   }
@@ -27,10 +29,13 @@ export class PurchaseProgramDialogController extends BaseController {
       MAINFRAME_OWNED_PROGRAMES_STATE_UI_EVENTS.OWNED_PROGRAMS_UPDATED,
       this.handleRefreshUI,
     );
-    this.growthState.removeUiEventListener(GROWTH_STATE_UI_EVENTS.VALUES_CHANGED, this.handleRefreshUI);
+    this.globalState.computationalBase.removeUiEventListener(
+      GLOBAL_STATE_UI_EVENTS.MAINFRAME_DISCOUNT_CHANGED,
+      this.handleRefreshUI,
+    );
     this.globalState.money.removeUiEventListener(GLOBAL_STATE_UI_EVENTS.MONEY_CHANGED, this.handleRefreshUI);
     this.globalState.cityDevelopment.removeUiEventListener(
-      GLOBAL_STATE_UI_EVENTS.CITY_DEVELOPMENT_LEVEL_UPDATED,
+      GLOBAL_STATE_UI_EVENTS.CITY_DEVELOPMENT_LEVEL_CHANGED,
       this.handleRefreshUI,
     );
 
@@ -80,8 +85,4 @@ export class PurchaseProgramDialogController extends BaseController {
       quality,
     });
   }
-
-  private handleRefreshUI = () => {
-    this.host.requestUpdate();
-  };
 }

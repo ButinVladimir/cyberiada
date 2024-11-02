@@ -1,6 +1,5 @@
 import { inject, injectable } from 'inversify';
 import type { IScenarioState } from '@state/scenario-state/interfaces/scenario-state';
-import type { IGrowthState } from '@state/growth-state/interfaces/growth-state';
 import type { ISettingsState } from '@state/settings-state/interfaces/settings-state';
 import type { ICityState } from '@state/city-state/interfaces/city-state';
 import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
@@ -16,7 +15,6 @@ import { IAppState, ISerializedState } from './interfaces';
 @injectable()
 export class AppState implements IAppState {
   private _scenarioState: IScenarioState;
-  private _growthState: IGrowthState;
   private _globalState: IGlobalState;
   private _settingsState: ISettingsState;
   private _cityState: ICityState;
@@ -28,7 +26,6 @@ export class AppState implements IAppState {
 
   constructor(
     @inject(TYPES.ScenarioState) _scenarioState: IScenarioState,
-    @inject(TYPES.GrowthState) _growthState: IGrowthState,
     @inject(TYPES.GlobalState) _globalState: IGlobalState,
     @inject(TYPES.SettingsState) _settingsState: ISettingsState,
     @inject(TYPES.CityState) _cityState: ICityState,
@@ -39,7 +36,6 @@ export class AppState implements IAppState {
     @inject(TYPES.ProgramFactory) _programFactory: IProgramFactory,
   ) {
     this._scenarioState = _scenarioState;
-    this._growthState = _growthState;
     this._globalState = _globalState;
     this._settingsState = _settingsState;
     this._cityState = _cityState;
@@ -74,14 +70,13 @@ export class AppState implements IAppState {
 
   private processTick = () => {
     this._mainframeProcessesState.processTick();
-    this._growthState.recalculate();
+    this._globalState.recalculate();
   };
 
   async startNewState(): Promise<void> {
     this._programFactory.deleteAllPrograms();
 
     await this._scenarioState.startNewState();
-    await this._growthState.startNewState();
     await this._globalState.startNewState();
     await this._settingsState.startNewState();
     await this._cityState.startNewState();
@@ -93,7 +88,6 @@ export class AppState implements IAppState {
   serialize(): string {
     const saveState: ISerializedState = {
       scenario: this._scenarioState.serialize(),
-      growth: this._growthState.serialize(),
       global: this._globalState.serialize(),
       settings: this._settingsState.serialize(),
       city: this._cityState.serialize(),
@@ -113,7 +107,6 @@ export class AppState implements IAppState {
     this._programFactory.deleteAllPrograms();
 
     await this._scenarioState.deserialize(parsedSaveData.scenario);
-    await this._growthState.deserialize(parsedSaveData.growth);
     await this._globalState.deserialize(parsedSaveData.global);
     await this._settingsState.deserialize(parsedSaveData.settings);
     await this._cityState.deserialize(parsedSaveData.city);
@@ -127,7 +120,6 @@ export class AppState implements IAppState {
   removeUiEventListener() {}
 
   fireUiEvents() {
-    this._growthState.fireUiEvents();
     this._globalState.fireUiEvents();
     this._messageLogState.fireUiEvents();
     this._mainframeHardwareState.fireUiEvents();

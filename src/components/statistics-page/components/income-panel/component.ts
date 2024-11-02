@@ -11,6 +11,8 @@ export class StatisticsIncomePanel extends LitElement {
       <ca-statistics-money-income></ca-statistics-money-income>
 
       <ca-statistics-city-development-income></ca-statistics-city-development-income>
+
+      <ca-statistics-programs-income></ca-statistics-programs-income>
     `;
   }
 }

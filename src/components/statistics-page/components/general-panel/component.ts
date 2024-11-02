@@ -35,25 +35,7 @@ export class StatisticsGeneralPanel extends LitElement {
         <span> ${formatter.formatTimeShort(this._statisticsGeneralPanelController.gameTimeTotal)} </span>
       </div>
 
-      <h4 class="title">
-        <intl-message label="ui:statistics:general:multipliers:title">Multipliers and discounts</intl-message>
-      </h4>
-
-      <div class="parameters-table">
-        <span>
-          <intl-message label="ui:statistics:general:multipliers:programCompletionSpeed">
-            Program completion speed
-          </intl-message>
-        </span>
-        <span>
-          ${formatter.formatNumberFloat(this._statisticsGeneralPanelController.programCompletionSpeedMultiplier)}
-        </span>
-
-        <span>
-          <intl-message label="ui:statistics:general:multipliers:programDiscount"> Program discount </intl-message>
-        </span>
-        <span> ${formatter.formatNumberFloat(this._statisticsGeneralPanelController.programDiscount)} </span>
-      </div>
+      <ca-statistics-multipliers></ca-statistics-multipliers>
     `;
   }
 }

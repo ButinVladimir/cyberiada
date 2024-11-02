@@ -12,7 +12,6 @@ import {
   MainframeOwnedProgramsState,
 } from '@state/mainframe/mainframe-owned-programs-state';
 import { IMainframeProcessesState, MainframeProcessesState } from '@state/mainframe/mainframe-processes-state';
-import { IGrowthState, GrowthState } from '@state/growth-state';
 import { Formatter } from '@shared/formatter';
 import { IFormatter } from '@shared/interfaces/formatter';
 import { TYPES } from './types';
@@ -53,5 +52,3 @@ container
   .whenTargetIsDefault();
 
 container.bind<IFormatter>(TYPES.Formatter).to(Formatter).inSingletonScope().whenTargetIsDefault();
-
-container.bind<IGrowthState>(TYPES.GrowthState).to(GrowthState).inSingletonScope().whenTargetIsDefault();

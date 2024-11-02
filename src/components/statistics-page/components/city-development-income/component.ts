@@ -6,7 +6,7 @@ import { StatisticsCityDevelopmentIncomeController } from './controller';
 import { statisticsPanelContentStyle } from '../../styles';
 
 @customElement('ca-statistics-city-development-income')
-export class StatisticsCityDevelopmentIncomePanel extends LitElement {
+export class StatisticsCityDevelopmentIncome extends LitElement {
   static styles = statisticsPanelContentStyle;
 
   private _statisticsCityDevelopmentIncomePanelController: StatisticsCityDevelopmentIncomeController;

@@ -39,7 +39,7 @@ export class ProcessesListItemProgressColumn extends LitElement {
       maxCompletionPoints: formatter.formatNumberLong(process.maxCompletionPoints),
     });
 
-    const processCompletionDelta = 1;
+    const processCompletionDelta = process.calculateCompletionDelta(1);
     let progressBarHintLabel: string;
     let progressBarHintValue: string;
 

@@ -20,8 +20,4 @@ export class OwnedProgramsListController extends BaseController {
   listOwnedPrograms(): IProgram[] {
     return this.mainframeOwnedProgramState.listOwnedPrograms();
   }
-
-  private handleRefreshUI = () => {
-    this.host.requestUpdate();
-  };
 }

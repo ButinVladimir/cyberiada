@@ -20,7 +20,7 @@ export class CodeGeneratorProgram extends BaseProgram {
   }
 
   perform(threads: number): void {
-    this.growthState.increaseCodebaseByProgram(this.calculateDelta(threads));
+    this.globalState.computationalBase.increaseByProgram(this.calculateDelta(threads));
   }
 
   buildDescriptionParametersObject(threads: number) {
@@ -37,8 +37,8 @@ export class CodeGeneratorProgram extends BaseProgram {
     return (
       this._scenarioState.currentValues.pointsByProgramMultipliers.program *
       threads *
-      calculatePow(this.level - 1, programData.codebase as IExponent) *
-      Math.pow(programData.codebaseQualityMultiplier, this.quality)
+      calculatePow(this.level - 1, programData.computationalBase as IExponent) *
+      Math.pow(programData.computationalBaseQualityMultiplier, this.quality)
     );
   }
 }

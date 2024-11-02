@@ -26,10 +26,6 @@ export class ProcessesListItemProgressController extends BaseController {
     return this._process;
   }
 
-  private handleRefreshUI = () => {
-    this.host.requestUpdate();
-  };
-
   private addProcessListeners() {
     this._process?.addUiEventListener(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESS_UPDATED, this.handleRefreshUI);
     this._process?.addUiEventListener(

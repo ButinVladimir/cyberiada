@@ -41,7 +41,7 @@ export class CityDevelopmentParameter implements ICityDevelopmentParameter {
 
     this.requestLevelRecalculation();
 
-    this._uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.CITY_DEVELOPMENT_POINTS_UPDATED);
+    this._uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.CITY_DEVELOPMENT_POINTS_CHANGED);
   }
 
   getIncome(incomeSource: IncomeSource): number {
@@ -65,7 +65,7 @@ export class CityDevelopmentParameter implements ICityDevelopmentParameter {
     if (newLevel > this._level) {
       this._level = newLevel;
 
-      this._uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.CITY_DEVELOPMENT_LEVEL_UPDATED);
+      this._uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.CITY_DEVELOPMENT_LEVEL_CHANGED);
     }
   }
 

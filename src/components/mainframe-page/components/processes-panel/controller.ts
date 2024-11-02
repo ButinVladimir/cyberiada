@@ -26,8 +26,4 @@ export class ProcessesPanelController extends BaseController {
   get availableRam(): number {
     return this.mainframeProcessesState.availableRam;
   }
-
-  handleRefreshUI = () => {
-    this.host.requestUpdate();
-  };
 }

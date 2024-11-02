@@ -49,7 +49,8 @@
     },
     "mainframeSoftware": {
       "performanceBoost": 0.01,
-      "startingPrograms": ["shareServer"]
+      "startingPrograms": ["shareServer"],
+      "minCompletionTime": 1000
     },
     "startingCityLevel": 1,
     "cityLevelRequirements": { "baseMultiplier": 10000, "base": 1.2 },

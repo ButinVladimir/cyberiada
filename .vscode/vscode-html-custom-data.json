@@ -304,6 +304,11 @@
       "attributes": []
     },
     {
+      "name": "ca-statistics-city-development-growth",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderIncomeSource` - \n\n  * `_statisticsCityDevelopmentGrowthPanelController` {`StatisticsCityDevelopmentGrowthController`} - ",
+      "attributes": []
+    },
+    {
       "name": "ca-statistics-city-development-income",
       "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderIncomeSource` - \n\n  * `_statisticsCityDevelopmentIncomePanelController` {`StatisticsCityDevelopmentIncomeController`} - ",
       "attributes": []
@@ -320,7 +325,7 @@
     },
     {
       "name": "ca-statistics-growth-panel",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderIncomeSection` - \n\n  * `renderIncomeSource` - \n\n  * `_statisticsGrowthPanelController` {`StatisticsGrowthPanelController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - ",
       "attributes": []
     },
     {
@@ -334,8 +339,33 @@
       "attributes": []
     },
     {
+      "name": "ca-statistics-money-growth",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderIncomeSource` - \n\n  * `_statisticsMoneyGrowthPanelController` {`StatisticsMoneyGrowthController`} - ",
+      "attributes": []
+    },
+    {
       "name": "ca-statistics-money-income",
       "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderIncomeSource` - \n\n  * `_statisticsMoneyIncomePanelController` {`StatisticsMoneyIncomeController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-statistics-multipliers",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_statisticsGeneralPanelController` {`StatisticsMultipliersController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-statistics-program-completion-speed",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_statisticsProgramCompletionSpeedController` {`StatisticsProgramCompletionSpeedController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-statistics-programs-growth",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_statisticsProgramsGrowthController` {`StatisticsProgramsGrowthController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-statistics-programs-income",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_statisticsProgramsIncomeController` {`StatisticsProgramsIncomeController`} - ",
       "attributes": []
     }
   ],

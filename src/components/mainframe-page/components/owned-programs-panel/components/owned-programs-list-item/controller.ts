@@ -26,10 +26,6 @@ export class OwnedProgramsListItemController extends BaseController {
     return this._ownedProgram;
   }
 
-  private handleRefreshUI = () => {
-    this.host.requestUpdate();
-  };
-
   private addProgramListeners() {
     this._ownedProgram?.addUiEventListener(PROGRAMS_UI_EVENTS.PROGRAM_UPDATED, this.handleRefreshUI);
   }

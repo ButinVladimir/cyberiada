@@ -65,8 +65,4 @@ export class StartProcessDialogController extends BaseController {
   startProcess(name: ProgramName, threads: number): boolean {
     return this.mainframeProcessesState.addProcess(name, threads);
   }
-
-  handleRefreshUI = () => {
-    this.host.requestUpdate();
-  };
 }

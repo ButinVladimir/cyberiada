@@ -1,5 +1,4 @@
 import { MAINFRAME_HARDWARE_STATE_UI_EVENTS } from '@state/mainframe/mainframe-hardware-state/constants';
-import { GROWTH_STATE_UI_EVENTS } from '@state/growth-state/constants';
 import { GLOBAL_STATE_UI_EVENTS } from '@state/global-state/constants';
 import { BaseController } from '@shared/base-controller';
 
@@ -9,9 +8,12 @@ export class MainframeHardwarePanelController extends BaseController {
       MAINFRAME_HARDWARE_STATE_UI_EVENTS.HARDWARE_UPDATED,
       this.handleRefreshUI,
     );
-    this.growthState.addUiEventListener(GROWTH_STATE_UI_EVENTS.VALUES_CHANGED, this.handleRefreshUI);
+    this.globalState.computationalBase.addUiEventListener(
+      GLOBAL_STATE_UI_EVENTS.MAINFRAME_DISCOUNT_CHANGED,
+      this.handleRefreshUI,
+    );
     this.globalState.cityDevelopment.addUiEventListener(
-      GLOBAL_STATE_UI_EVENTS.CITY_DEVELOPMENT_LEVEL_UPDATED,
+      GLOBAL_STATE_UI_EVENTS.CITY_DEVELOPMENT_LEVEL_CHANGED,
       this.handleRefreshUI,
     );
   }
@@ -21,9 +23,12 @@ export class MainframeHardwarePanelController extends BaseController {
       MAINFRAME_HARDWARE_STATE_UI_EVENTS.HARDWARE_UPDATED,
       this.handleRefreshUI,
     );
-    this.growthState.removeUiEventListener(GROWTH_STATE_UI_EVENTS.VALUES_CHANGED, this.handleRefreshUI);
+    this.globalState.computationalBase.removeUiEventListener(
+      GLOBAL_STATE_UI_EVENTS.MAINFRAME_DISCOUNT_CHANGED,
+      this.handleRefreshUI,
+    );
     this.globalState.cityDevelopment.removeUiEventListener(
-      GLOBAL_STATE_UI_EVENTS.CITY_DEVELOPMENT_LEVEL_UPDATED,
+      GLOBAL_STATE_UI_EVENTS.CITY_DEVELOPMENT_LEVEL_CHANGED,
       this.handleRefreshUI,
     );
   }
@@ -67,8 +72,4 @@ export class MainframeHardwarePanelController extends BaseController {
   purchaseRamIncrease(increase: number): void {
     this.mainframeHardwareState.purchaseRamIncrease(increase);
   }
-
-  private handleRefreshUI = () => {
-    this.host.requestUpdate();
-  };
 }

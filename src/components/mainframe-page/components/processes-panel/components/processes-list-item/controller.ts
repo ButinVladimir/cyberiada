@@ -26,18 +26,6 @@ export class ProcessesListItemController extends BaseController {
     return this._process;
   }
 
-  private handleRefreshUI = () => {
-    this.host.requestUpdate();
-  };
-
-  private addProcessListeners() {
-    this._process?.addUiEventListener(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESS_UPDATED, this.handleRefreshUI);
-  }
-
-  private removeProcessListeners() {
-    this._process?.removeUiEventListener(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESS_UPDATED, this.handleRefreshUI);
-  }
-
   toggleProcess(): void {
     this._process?.toggleActive(!this._process.isActive);
   }
@@ -46,5 +34,13 @@ export class ProcessesListItemController extends BaseController {
     if (this._process) {
       this.mainframeProcessesState.deleteProcess(this._process.program.name);
     }
+  }
+
+  private addProcessListeners() {
+    this._process?.addUiEventListener(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESS_UPDATED, this.handleRefreshUI);
+  }
+
+  private removeProcessListeners() {
+    this._process?.removeUiEventListener(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESS_UPDATED, this.handleRefreshUI);
   }
 }

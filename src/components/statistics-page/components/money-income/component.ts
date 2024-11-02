@@ -6,7 +6,7 @@ import { StatisticsMoneyIncomeController } from './controller';
 import { statisticsPanelContentStyle } from '../../styles';
 
 @customElement('ca-statistics-money-income')
-export class StatisticsMoneyIncomePanel extends LitElement {
+export class StatisticsMoneyIncome extends LitElement {
   static styles = statisticsPanelContentStyle;
 
   private _statisticsMoneyIncomePanelController: StatisticsMoneyIncomeController;

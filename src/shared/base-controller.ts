@@ -1,7 +1,6 @@
 import { ReactiveController, ReactiveControllerHost } from 'lit';
 import { IAppState } from '@state/app-state/interfaces/app-state';
 import { IScenarioState } from '@state/scenario-state/interfaces/scenario-state';
-import { IGrowthState } from '@state/growth-state/interfaces/growth-state';
 import { IGlobalState } from '@state/global-state/interfaces/global-state';
 import { ISettingsState } from '@state/settings-state/interfaces/settings-state';
 import { ICityState } from '@state/city-state/interfaces/city-state';
@@ -43,10 +42,6 @@ export class BaseController<T extends ReactiveControllerHost = ReactiveControlle
     return container.get<IScenarioState>(TYPES.ScenarioState);
   }
 
-  protected get growthState(): IGrowthState {
-    return container.get<IGrowthState>(TYPES.GrowthState);
-  }
-
   protected get globalState(): IGlobalState {
     return container.get<IGlobalState>(TYPES.GlobalState);
   }
@@ -78,4 +73,8 @@ export class BaseController<T extends ReactiveControllerHost = ReactiveControlle
   protected get programFactory(): IProgramFactory {
     return container.get<IProgramFactory>(TYPES.ProgramFactory);
   }
+
+  protected handleRefreshUI = (): void => {
+    this.host.requestUpdate();
+  };
 }

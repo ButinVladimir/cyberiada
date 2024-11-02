@@ -2,6 +2,7 @@ import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { ProgramName } from '@state/progam-factory/types';
 import { ProcessDescriptionController } from './controller';
+import { MS_IN_SECOND } from '@shared/constants';
 
 @customElement('ca-process-description')
 export class ProcessDescription extends LitElement {
@@ -59,7 +60,7 @@ export class ProcessDescription extends LitElement {
       requirementsKey = 'requirements';
 
       completionSpeedKey = 'completionSpeed';
-      completionSpeedValue = JSON.stringify(formatter.formatNumberLong(1));
+      completionSpeedValue = JSON.stringify(formatter.formatNumberLong(process.calculateCompletionDelta(MS_IN_SECOND)));
     }
 
     return html`<intl-message label="programs:${this.programName}:overview"> Program overview </intl-message>

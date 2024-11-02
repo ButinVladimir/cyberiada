@@ -14,8 +14,4 @@ export class StatisticsMoneyExpensesController extends BaseController {
   getMoneyExpenses = (purchaseType: PurchaseType) => {
     return this.globalState.money.getExpenses(purchaseType);
   };
-
-  private handleRefreshUI = () => {
-    this.host.requestUpdate();
-  };
 }

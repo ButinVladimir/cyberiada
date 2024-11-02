@@ -23,8 +23,4 @@ export class ProcessesListController extends BaseController {
   listProcesses(): ProgramName[] {
     return this.mainframeProcessesState.listProcesses();
   }
-
-  handleRefreshUI = () => {
-    this.host.requestUpdate();
-  };
 }

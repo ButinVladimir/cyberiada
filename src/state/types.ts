@@ -11,5 +11,4 @@ export const TYPES = {
   MainframeProcessesState: Symbol('MainframeProcessesState'),
   ProgramFactory: Symbol('ProgramFactory'),
   Formatter: Symbol('Formatter'),
-  GrowthState: Symbol('GrowthState'),
 };

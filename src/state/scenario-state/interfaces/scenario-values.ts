@@ -17,6 +17,7 @@ export interface IScenarioValues {
   mainframeSoftware: {
     performanceBoost: number;
     startingPrograms: ProgramName[];
+    minCompletionTime: number;
   };
   startingCityLevel: number;
   cityLevelRequirements: IExponent;

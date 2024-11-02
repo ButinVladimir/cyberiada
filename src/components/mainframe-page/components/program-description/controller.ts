@@ -2,13 +2,23 @@ import { BaseController } from '@shared/base-controller';
 import { IProgram } from '@state/progam-factory/interfaces/program';
 import { ProgramName } from '@state/progam-factory/types';
 import { PROGRAMS_UI_EVENTS } from '@state/progam-factory/constants';
+import { GLOBAL_STATE_UI_EVENTS } from '@state/global-state/constants';
 
 export class ProgramDescriptionController extends BaseController {
   private _program?: IProgram;
 
-  hostConnected() {}
+  hostConnected() {
+    this.globalState.computationalBase.addUiEventListener(
+      GLOBAL_STATE_UI_EVENTS.MAINFRAME_DISCOUNT_CHANGED,
+      this.handleRefreshUI,
+    );
+  }
 
   hostDisconnected() {
+    this.globalState.computationalBase.removeUiEventListener(
+      GLOBAL_STATE_UI_EVENTS.MAINFRAME_DISCOUNT_CHANGED,
+      this.handleRefreshUI,
+    );
     this.deleteOldProgram();
   }
 
@@ -35,10 +45,6 @@ export class ProgramDescriptionController extends BaseController {
 
     return this._program;
   }
-
-  private handleRefreshUI = () => {
-    this.host.requestUpdate();
-  };
 
   private deleteOldProgram() {
     if (this._program) {
