@@ -9,6 +9,7 @@ export interface ISettingsSerializedState {
   autosaveEnabled: boolean;
   autosaveInterval: number;
   maxTicksPerUpdate: number;
+  maxTicksPerFastForward: number;
   longNumberFormat: LongNumberFormat;
   enabledMessageEvents: MessageEvent[];
   enabledGameAlerts: GameAlert[];

@@ -48,6 +48,12 @@ export class CityDevelopmentParameter implements ICityDevelopmentParameter {
     return this._income.get(incomeSource) ?? 0;
   }
 
+  getNextLevelPoints(): number {
+    const { base, baseMultiplier } = this._scenarioState.currentValues.cityLevelRequirements;
+
+    return (baseMultiplier * (Math.pow(base, this._level) - 1)) / (base - 1);
+  }
+
   requestLevelRecalculation() {
     this._levelUpdateRequested = true;
   }
@@ -81,6 +87,7 @@ export class CityDevelopmentParameter implements ICityDevelopmentParameter {
   // eslint-disable-next-line @typescript-eslint/require-await
   async deserialize(serializedState: ICityDevelopmentSerializedParameter): Promise<void> {
     this._points = serializedState.points;
+    this._level = this._scenarioState.currentValues.startingCityLevel;
 
     this._income.clear();
     Object.entries(serializedState.income).forEach(([incomeSource, value]) => {

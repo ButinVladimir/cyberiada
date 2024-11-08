@@ -44,18 +44,27 @@ export class TopBarValues extends LitElement {
 
   render() {
     const formatter = this._topBarValuesController.formatter;
-    const offlineTimeFormatted = formatter.formatTimeShort(this._topBarValuesController.offlineTime);
+    const accumulatedTimeFormatted = formatter.formatTimeShort(this._topBarValuesController.accumulatedTime);
     const moneyFormatted = formatter.formatNumberLong(this._topBarValuesController.money);
     const cityLevelFormatted = formatter.formatNumberDecimal(this._topBarValuesController.cityLevel);
+
+    const isCityDevelopmentGrowing = this._topBarValuesController.cityDevelopmentGrowth > 0;
+    const timeUntilNextLevel = isCityDevelopmentGrowing
+      ? formatter.formatTimeShort(
+          this._topBarValuesController.cityDevelopmentPointsUntilNextLevel /
+            this._topBarValuesController.cityDevelopmentGrowth,
+        )
+      : '';
+    const cityDevelopmentLabel = isCityDevelopmentGrowing ? 'cityLevelNext' : 'cityLevel';
 
     return html`
       <div class="block">
         <sl-tooltip>
-          <intl-message slot="content" label="ui:topBar:offlineTime"> Offline time </intl-message>
+          <intl-message slot="content" label="ui:topBar:accumulatedTime"> Accumulated time </intl-message>
 
           <sl-icon name="clock"> </sl-icon>
 
-          <span class="text"> ${offlineTimeFormatted} </span>
+          <span class="text"> ${accumulatedTimeFormatted} </span>
         </sl-tooltip>
       </div>
 
@@ -71,7 +80,9 @@ export class TopBarValues extends LitElement {
 
       <div class="block">
         <sl-tooltip>
-          <intl-message slot="content" label="ui:topBar:cityLevel"> City level </intl-message>
+          <intl-message slot="content" label="ui:topBar:${cityDevelopmentLabel}" value=${timeUntilNextLevel}>
+            City level
+          </intl-message>
 
           <sl-icon name="star"> </sl-icon>
 

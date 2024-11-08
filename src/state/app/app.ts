@@ -141,6 +141,18 @@ export class App implements IApp {
     }
   }
 
+  fastForward() {
+    this._appStage = AppStage.fastForward;
+
+    this.emitChangedAppStageEvent();
+  }
+
+  stopFastForwarding() {
+    this._appStage = AppStage.running;
+    this._messageLogState.postMessage(GameStateEvent.fastForwared);
+    this.emitChangedAppStageEvent();
+  }
+
   private startLoadingGame = (): void => {
     this._appStage = AppStage.loading;
 
@@ -184,7 +196,19 @@ export class App implements IApp {
   }
 
   private updateGame = (): void => {
-    this._appState.updateState();
+    switch (this.appStage) {
+      case AppStage.running:
+        this._appState.updateState();
+        break;
+
+      case AppStage.fastForward:
+        if (!this._appState.fastForwardState()) {
+          this._appStage = AppStage.running;
+          this._messageLogState.postMessage(GameStateEvent.fastForwared);
+          this._uiEventBatcher.enqueueEvent(APP_UI_EVENTS.CHANGED_APP_STAGE);
+        }
+        break;
+    }
 
     this._uiEventBatcher.enqueueEvent(APP_UI_EVENTS.REFRESHED_UI);
     this.fireUiEvents();

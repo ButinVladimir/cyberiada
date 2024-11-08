@@ -3,18 +3,14 @@ import { BaseController } from '@shared/base-controller';
 
 export class MessageLogContentController extends BaseController {
   hostConnected() {
-    this.messageLogState.addUiEventListener(MESSAGE_LOG_UI_EVENTS.UPDATED_MESSAGES, this.handleUpdateMessages);
+    this.messageLogState.addUiEventListener(MESSAGE_LOG_UI_EVENTS.UPDATED_MESSAGES, this.handleRefreshUI);
   }
 
   hostDisconnected() {
-    this.messageLogState.removeUiEventListener(MESSAGE_LOG_UI_EVENTS.UPDATED_MESSAGES, this.handleUpdateMessages);
+    this.messageLogState.removeUiEventListener(MESSAGE_LOG_UI_EVENTS.UPDATED_MESSAGES, this.handleRefreshUI);
   }
 
   getMessages(): IMessage[] {
     return this.messageLogState.getMessages();
   }
-
-  private handleUpdateMessages = () => {
-    this.host.requestUpdate();
-  };
 }

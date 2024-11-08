@@ -3,11 +3,11 @@ import { BaseController } from '@shared/base-controller';
 
 export class StatisticsGeneralPanelController extends BaseController {
   hostConnected() {
-    this.globalState.time.addUiEventListener(GLOBAL_STATE_UI_EVENTS.OFFLINE_TIME_CHANGED, this.handleRefreshUI);
+    this.globalState.time.addUiEventListener(GLOBAL_STATE_UI_EVENTS.ACCUMULATED_TIME_CHANGED, this.handleRefreshUI);
   }
 
   hostDisconnected() {
-    this.globalState.time.removeUiEventListener(GLOBAL_STATE_UI_EVENTS.OFFLINE_TIME_CHANGED, this.handleRefreshUI);
+    this.globalState.time.removeUiEventListener(GLOBAL_STATE_UI_EVENTS.ACCUMULATED_TIME_CHANGED, this.handleRefreshUI);
   }
 
   get gameTime() {

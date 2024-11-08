@@ -10,6 +10,7 @@ export interface ICityDevelopmentParameter
   level: number;
   increase(pointsDelta: number, incomeSource: IncomeSource): void;
   getIncome(incomeSource: IncomeSource): number;
+  getNextLevelPoints(): number;
   requestLevelRecalculation(): void;
   recalculateLevel(): void;
 }

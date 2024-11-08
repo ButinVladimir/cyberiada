@@ -4,7 +4,7 @@ common:
   delete: Удалить
   close: Закрыть
   loading: Загрузка...
-  never: Никогда
+  continue: Продолжить
 pages:
   cityOverview: Обзор города
   company: Компания
@@ -15,14 +15,19 @@ topBar:
   messageLog: Показать/скрыть сообщения
   gameSpeedButtons:
     pause: Пауза
-    playNormal: Играть на нормальной скорости (без оффлайн времени)
-    playFast: Играть на быстрой скорости (с оффлайн временем)
-  offlineTime: Оффлайн время
+    playNormal: Играть на нормальной скорости (без накопленного времени)
+    playFast: Играть на быстрой скорости (с накопленным временем)
+    fastForward: Потратить все накопленное время
+  accumulatedTime: Накопленное время
   money: Деньги
   cityLevel: Уровень города
+  cityLevelNext: Уровень города, следующий уровень будет достигнут через {{value}}
 messageLog:
   messageLog: Сообщения
   clearMessages: Удалить сообщения
+fastForwardingScreen:
+  fastForwarding: Трата накопленного времени...
+  stop: Стоп
 settings:
   settings: Настройки
   language: Язык
@@ -32,8 +37,10 @@ settings:
   updateInterval: Интервал обновления (мс)
   autosaveEnabled: Включить автосохранение
   autosaveInterval: Интервал автосохранения (сек)
-  maxTicksPerUpdate: Максимальное количество тиков за обновление
-  maxTicksPerUpdateHint: Действительно только тогда, когда скорость игры быстрая
+  maxTicksPerUpdate: Максимальное количество обновлений за тик при быстрой скорости игры
+  maxTicksPerUpdateHint: Слишком большое значение может привести к нагрузке на процессор.
+  maxTicksPerFastForward: Максимальное количество обновлений за тик при трате накопленного времени
+  maxTicksPerFastForwardHint: Слишком большое значение может привести к нагрузке на процессор.
   longNumberFormat: Формат больших чисел
   languages:
     en: Английский
@@ -104,7 +111,9 @@ mainframe:
     progressBarHintActive: 'Процесс будет выполнен через {{value}}'
     progressBarHintPaused: 'Процесс неактивен'
     processToggle: Включить / выключить процесс
+    allProcessesToggle: Включить / выключить все процессы
     processDelete: Удалить процесс
+    allProcessesDelete: Удалить все процессы
     autoscalable: Автомасштабируется
     usesCores: "{{value.cores}} \/ {{value.maxCores}}"
     availableCores: 'Доступные ядра: {{value}}'

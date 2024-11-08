@@ -30,47 +30,56 @@ export class SettingsFormController extends BaseController {
     return this.settingsState.maxTicksPerUpdate;
   }
 
+  get maxTicksPerFastForward(): number {
+    return this.settingsState.maxTicksPerFastForward;
+  }
+
   get longNumberFormat(): LongNumberFormat {
     return this.settingsState.longNumberFormat;
   }
 
   async setLanguage(language: Language) {
     await this.settingsState.setLanguage(language);
-    this.host.requestUpdate();
+    this.handleRefreshUI();
   }
 
   setTheme(theme: Theme) {
     this.settingsState.setTheme(theme);
-    this.host.requestUpdate();
+    this.handleRefreshUI();
   }
 
   setMessageLogSize(messageLogSize: number) {
     this.settingsState.setMessageLogSize(messageLogSize);
-    this.host.requestUpdate();
+    this.handleRefreshUI();
   }
 
   setUpdateInterval(updateInterval: number) {
     this.settingsState.setUpdateInterval(updateInterval);
-    this.host.requestUpdate();
+    this.handleRefreshUI();
   }
 
   setAutosaveEnabled(autosaveEnabled: boolean) {
     this.settingsState.setAutosaveEnabled(autosaveEnabled);
-    this.host.requestUpdate();
+    this.handleRefreshUI();
   }
 
   setAutosaveInterval(autosaveInterval: number) {
     this.settingsState.setAutosaveInterval(autosaveInterval);
-    this.host.requestUpdate();
+    this.handleRefreshUI();
   }
 
   setMaxTicksPerUpdate(maxTicksPerUpdate: number) {
     this.settingsState.setMaxTicksPerUpdate(maxTicksPerUpdate);
-    this.host.requestUpdate();
+    this.handleRefreshUI();
+  }
+
+  setMaxTicksPerFastForward(maxTicksPerFastForward: number) {
+    this.settingsState.setMaxTicksPerFastForward(maxTicksPerFastForward);
+    this.handleRefreshUI();
   }
 
   setLongNumberFormat(longNumberFormat: LongNumberFormat) {
     this.settingsState.setLongNumberFormat(longNumberFormat);
-    this.host.requestUpdate();
+    this.handleRefreshUI();
   }
 }

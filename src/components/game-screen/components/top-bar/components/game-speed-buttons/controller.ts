@@ -9,10 +9,10 @@ export class GameSpeedButtonsController extends BaseController {
   changeGameSpeed(gameSpeed: GameSpeed) {
     this.globalState.gameSpeed = gameSpeed;
 
-    this.handleUpdatedUI();
+    this.handleRefreshUI();
   }
 
-  private handleUpdatedUI = () => {
-    this.host.requestUpdate();
-  };
+  fastForward() {
+    this.app.fastForward();
+  }
 }

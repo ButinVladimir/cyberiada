@@ -53,7 +53,7 @@ export class ProcessesListItemProgressColumn extends LitElement {
       progressBarHintValue = '';
     }
 
-    const progresBarValue = Math.round((process.currentCompletionPoints / process.maxCompletionPoints) * 100);
+    const progresBarValue = (process.currentCompletionPoints / process.maxCompletionPoints) * 100;
 
     return process.program.isAutoscalable
       ? html`<div class="progress-gap"></div>`

@@ -10,7 +10,7 @@ export class TimeParameter implements ITimeParameter {
   private readonly _uiEventBatcher: EventBatcher;
 
   private _lastUpdateTime: number;
-  private _offlineTime: number;
+  private _accumulatedTime: number;
   private _gameTime: number;
   private _gameTimeTotal: number;
 
@@ -18,7 +18,7 @@ export class TimeParameter implements ITimeParameter {
     this._settingsState = parameters.settingsState;
 
     this._lastUpdateTime = 0;
-    this._offlineTime = 0;
+    this._accumulatedTime = 0;
     this._gameTime = 0;
     this._gameTimeTotal = 0;
 
@@ -29,8 +29,8 @@ export class TimeParameter implements ITimeParameter {
     return this._lastUpdateTime;
   }
 
-  get offlineTime() {
-    return this._offlineTime;
+  get accumulatedTime() {
+    return this._accumulatedTime;
   }
 
   get gameTime() {
@@ -43,17 +43,17 @@ export class TimeParameter implements ITimeParameter {
 
   updateLastUpdateTime() {
     const updateTime = Date.now();
-    this._offlineTime += updateTime - this.lastUpdateTime;
+    this._accumulatedTime += updateTime - this.lastUpdateTime;
     this._lastUpdateTime = updateTime;
   }
 
   tryNextTick(): boolean {
-    if (this._offlineTime >= this._settingsState.updateInterval) {
-      this._offlineTime -= this._settingsState.updateInterval;
+    if (this._accumulatedTime >= this._settingsState.updateInterval) {
+      this._accumulatedTime -= this._settingsState.updateInterval;
       this._gameTime += this._settingsState.updateInterval;
       this._gameTimeTotal += this._settingsState.updateInterval;
 
-      this._uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.OFFLINE_TIME_CHANGED);
+      this._uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.ACCUMULATED_TIME_CHANGED);
 
       return true;
     }
@@ -64,7 +64,7 @@ export class TimeParameter implements ITimeParameter {
   // eslint-disable-next-line @typescript-eslint/require-await
   async startNewState(): Promise<void> {
     this._lastUpdateTime = Date.now();
-    this._offlineTime = 0;
+    this._accumulatedTime = 1000000000;
     this._gameTime = 0;
     this._gameTimeTotal = 0;
   }
@@ -72,7 +72,7 @@ export class TimeParameter implements ITimeParameter {
   // eslint-disable-next-line @typescript-eslint/require-await
   async deserialize(serializedState: ITimeSerializedParameter): Promise<void> {
     this._lastUpdateTime = serializedState.lastUpdateTime;
-    this._offlineTime = serializedState.offlineTime;
+    this._accumulatedTime = serializedState.accumulatedTime;
     this._gameTime = serializedState.gameTime;
     this._gameTimeTotal = serializedState.gameTimeTotal;
 
@@ -82,7 +82,7 @@ export class TimeParameter implements ITimeParameter {
   serialize(): ITimeSerializedParameter {
     return {
       lastUpdateTime: this._lastUpdateTime,
-      offlineTime: this._offlineTime,
+      accumulatedTime: this._accumulatedTime,
       gameTime: this._gameTime,
       gameTimeTotal: this._gameTimeTotal,
     };

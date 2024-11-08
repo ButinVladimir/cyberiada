@@ -4,6 +4,9 @@ gameStarted:
 gameSaved:
   name: Игра сохранена
   message: Игра сохранена
+fastForwarded:
+  name: Накопленное время потрачено
+  message: Накопленное время потрачено
 performanceUpgraded:
   name: Производительность мейнфрема улучшена
   message: Производительность мейнфрема улучшена до {{value.level}}

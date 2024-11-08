@@ -34,7 +34,7 @@ export class MainframeProcessesState implements IMainframeProcessesState {
   private _runningProcesses: ProgramName[];
   private _availableCores: number;
   private _availableRam: number;
-  private _runningPassiveProgram?: ProgramName;
+  private _runningScalableProgram?: ProgramName;
   private _processUpdateRequested: boolean;
 
   private readonly _uiEventBatcher: EventBatcher;
@@ -72,6 +72,10 @@ export class MainframeProcessesState implements IMainframeProcessesState {
 
   get availableRam() {
     return this._availableRam;
+  }
+
+  get runningScalableProgram() {
+    return this._runningScalableProgram;
   }
 
   listProcesses(): ProgramName[] {
@@ -122,7 +126,12 @@ export class MainframeProcessesState implements IMainframeProcessesState {
         programName: programName,
       });
 
-      this._processesList.push(programName);
+      if (program.isAutoscalable) {
+        this._processesList.unshift(programName);
+      } else {
+        this._processesList.push(programName);
+      }
+
       this._processesMap.set(programName, process);
     }
 
@@ -134,6 +143,14 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     });
 
     return true;
+  }
+
+  toggleAllProcesses(active: boolean): void {
+    for (const process of this._processesMap.values()) {
+      process.toggleActive(active);
+    }
+
+    this.requestUpdateProcesses();
   }
 
   deleteProcess(programName: ProgramName): void {
@@ -163,6 +180,14 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     this.requestUpdateProcesses();
   }
 
+  deleteAllProcesses() {
+    this.clearState();
+
+    this._messageLogState.postMessage(ProgramsEvent.allProcessesDeleted);
+
+    this.requestUpdateProcesses();
+  }
+
   requestUpdateProcesses() {
     this._processUpdateRequested = true;
   }
@@ -172,11 +197,11 @@ export class MainframeProcessesState implements IMainframeProcessesState {
       this.updateRunningProcesses();
     }
 
-    if (this._runningPassiveProgram) {
-      const passiveProcess = this.getProcessByName(this._runningPassiveProgram);
+    if (this._runningScalableProgram) {
+      const scalableProcess = this.getProcessByName(this._runningScalableProgram);
 
-      if (passiveProcess?.isActive) {
-        passiveProcess.program.perform(this._availableCores, this._availableRam);
+      if (scalableProcess?.isActive) {
+        scalableProcess.program.perform(this._availableCores, this._availableRam);
       }
     }
 
@@ -244,7 +269,7 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     this._availableCores = this._mainframeHardwareState.cores;
     this._availableRam = this._mainframeHardwareState.ram;
     this._runningProcesses.splice(0);
-    this._runningPassiveProgram = this._processesList.find(
+    this._runningScalableProgram = this._processesList.find(
       (programName) => this.getProcessByName(programName)?.program.isAutoscalable,
     );
 
@@ -334,12 +359,12 @@ export class MainframeProcessesState implements IMainframeProcessesState {
   };
 
   private deleteAutoscalableProcesses(): void {
-    const passiveProgram = this._runningPassiveProgram;
+    const scalableProgram = this._runningScalableProgram;
 
-    this._runningPassiveProgram = undefined;
+    this._runningScalableProgram = undefined;
 
-    if (passiveProgram) {
-      this.deleteProcess(passiveProgram);
+    if (scalableProgram) {
+      this.deleteProcess(scalableProgram);
     }
   }
 

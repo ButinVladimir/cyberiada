@@ -49,6 +49,16 @@ export class GameSpeedButtons extends LitElement {
         icon: gameSpeed === GameSpeed.fast ? 'fast-forward-fill' : 'fast-forward',
         isActive: gameSpeed === GameSpeed.fast,
       })}
+      <sl-tooltip>
+        <intl-message slot="content" label="ui:topBar:gameSpeedButtons:fastForward"> Game speed button </intl-message>
+
+        <sl-icon-button
+          name="skip-end"
+          label=${t(`topBar.gameSpeedButtons.fastForward`, { ns: 'ui' })}
+          @click=${this.handleFastForward}
+        >
+        </sl-icon-button>
+      </sl-tooltip>
     `;
   }
 
@@ -77,5 +87,9 @@ export class GameSpeedButtons extends LitElement {
     event.stopPropagation();
 
     this._gameSpeedButtonsController.changeGameSpeed(gameSpeed);
+  };
+
+  private handleFastForward = () => {
+    this._gameSpeedButtonsController.fastForward();
   };
 }

@@ -47,8 +47,6 @@ export class AppState implements IAppState {
   }
 
   updateState() {
-    this._globalState.time.updateLastUpdateTime();
-
     let maxTicks = 0;
 
     switch (this._globalState.gameSpeed) {
@@ -63,26 +61,15 @@ export class AppState implements IAppState {
         break;
     }
 
-    for (let tick = 0; tick < maxTicks && this._globalState.time.tryNextTick(); tick++) {
-      this.processTick();
-    }
+    this.processTicks(maxTicks);
   }
 
-  private processTick = () => {
-    this._mainframeProcessesState.processTick();
-    this._globalState.recalculate();
-  };
+  fastForwardState(): boolean {
+    const maxTicks = this._settingsState.maxTicksPerFastForward;
 
-  async startNewState(): Promise<void> {
-    this._programFactory.deleteAllPrograms();
+    const ticksProcessed = this.processTicks(maxTicks);
 
-    await this._scenarioState.startNewState();
-    await this._globalState.startNewState();
-    await this._settingsState.startNewState();
-    await this._cityState.startNewState();
-    await this._mainframeHardwareState.startNewState();
-    await this._mainframeOwnedProgramsState.startNewState();
-    await this._mainframeProcessesState.startNewState();
+    return ticksProcessed === maxTicks;
   }
 
   serialize(): string {
@@ -126,5 +113,34 @@ export class AppState implements IAppState {
     this._mainframeOwnedProgramsState.fireUiEvents();
     this._mainframeProcessesState.fireUiEvents();
     this._programFactory.fireUiEvents();
+  }
+
+  private processTicks(maxTicks: number): number {
+    let ticksProcessed = 0;
+
+    this._globalState.time.updateLastUpdateTime();
+
+    for (; ticksProcessed < maxTicks && this._globalState.time.tryNextTick(); ticksProcessed++) {
+      this.processSingleTick();
+    }
+
+    return ticksProcessed;
+  }
+
+  private processSingleTick = () => {
+    this._mainframeProcessesState.processTick();
+    this._globalState.recalculate();
+  };
+
+  async startNewState(): Promise<void> {
+    this._programFactory.deleteAllPrograms();
+
+    await this._scenarioState.startNewState();
+    await this._globalState.startNewState();
+    await this._settingsState.startNewState();
+    await this._cityState.startNewState();
+    await this._mainframeHardwareState.startNewState();
+    await this._mainframeOwnedProgramsState.startNewState();
+    await this._mainframeProcessesState.startNewState();
   }
 }

@@ -4,7 +4,7 @@ import { ITimeSerializedParameter } from './serialized-states/time-serialized-pa
 
 export interface ITimeParameter extends ISerializeable<ITimeSerializedParameter>, IUIEventEmitter {
   lastUpdateTime: number;
-  offlineTime: number;
+  accumulatedTime: number;
   gameTime: number;
   gameTimeTotal: number;
   updateLastUpdateTime(): void;

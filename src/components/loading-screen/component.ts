@@ -2,10 +2,10 @@ import { LitElement, html, css } from 'lit';
 import { customElement } from 'lit/decorators.js';
 
 @customElement('ca-loading-screen')
-export class GameScreen extends LitElement {
+export class LoadingScreen extends LitElement {
   static styles = css`
     :host {
-      width: 100wh;
+      width: 100vw;
       height: 100vh;
       display: flex;
       align-items: center;
@@ -23,9 +23,7 @@ export class GameScreen extends LitElement {
   render() {
     return html`
       <span>
-        <span>
-          <intl-message label="ui:common:loading"> Loading... </intl-message>
-        </span>
+        <intl-message label="ui:common:loading"> Loading... </intl-message>
       </span>
     `;
   }

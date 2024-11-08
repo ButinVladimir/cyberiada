@@ -47,6 +47,10 @@ export class OwnedProgramsList extends LitElement {
       text-align: center;
       border-bottom: var(--ca-border);
     }
+
+    tbody ca-owned-programs-list-item:nth-child(2n + 1) {
+      background-color: var(--ca-table-row-odd-color);
+    }
   `;
 
   private _ownedProgramsListController: OwnedProgramsListController;

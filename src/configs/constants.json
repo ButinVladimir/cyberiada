@@ -6,33 +6,9 @@
     "autosaveEnabled": true,
     "autosaveInterval": 60000,
     "maxTicksPerUpdate": 5,
+    "maxTicksPerFastForward": 100000,
     "longNumberFormat": "builtIn",
-    "mapSize": 3,
-    "messageEvents": [
-      "gameStarted",
-      "gameSaved",
-      "performanceUpgraded",
-      "coresUpgraded",
-      "ramUpgraded",
-      "programPurchased",
-      "processStarted",
-      "processFinished",
-      "processDeleted",
-      "programDevelopmentStarted",
-      "programDevelopmentFinished",
-      "programDevelopmentAborted"
-    ],
-    "gameAlerts": [
-      "saveImport",
-      "saveDelete",
-      "purchaseProgramOverwrite",
-      "developingProgramDelete",
-      "developingProgramOverwrite",
-      "developingProgramReplace",
-      "processDelete",
-      "processReplace",
-      "passiveProcessReplace"
-    ]
+    "mapSize": 3
   },
   "defaultScenarioSettings": {
     "mapWidth": 100,

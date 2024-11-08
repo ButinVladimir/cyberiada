@@ -13,6 +13,9 @@ processDelete:
 processReplace:
   name: Replace a process
   message: Are you sure want to overwrite process for program $t(programs:{{value.programName}}:name)? This will replace your current process with threads {{value.threads}}.
-passiveProcessReplace:
-  name: Replace a passive process
-  message: Are you sure want to replace passive process? This will delete your current process for program $t(programs:{{value.programName}}:name) with threads {{value.threads}}.
+scalableProcessReplace:
+  name: Replace a scalable process
+  message: Are you sure want to replace scalable process? This will delete your current process for program $t(programs:{{value.programName}}:name).
+deleteAllProcesses:
+  name: Delete all process
+  message: Are you sure want to delete all processes? Their progress will be lost.

@@ -1,7 +1,18 @@
 import { injectable } from 'inversify';
 import i18n from 'i18next';
 import { decorators } from '@state/container';
-import { GameAlert, Language, LongNumberFormat, MessageEvent, Theme } from '@shared/types';
+import {
+  GameAlert,
+  GameStateAlert,
+  ProgramAlert,
+  Language,
+  LongNumberFormat,
+  MessageEvent,
+  Theme,
+  ProgramsEvent,
+  PurchaseEvent,
+  GameStateEvent,
+} from '@shared/types';
 import type { IApp } from '@state/app/interfaces/app';
 import { TYPES } from '@state/types';
 import themes from '@configs/themes.json';
@@ -22,6 +33,7 @@ export class SettingsState implements ISettingsState {
   private _autosaveEnabled: boolean;
   private _autosaveInterval: number;
   private _maxTicksPerUpdate: number;
+  private _maxTicksPerFastForward: number;
   private _longNumberFormat: LongNumberFormat;
   private _mapCellSize: number;
   private _enabledMessageEvents: Set<MessageEvent>;
@@ -35,6 +47,7 @@ export class SettingsState implements ISettingsState {
     this._autosaveEnabled = constants.defaultSettings.autosaveEnabled;
     this._autosaveInterval = constants.defaultSettings.autosaveInterval;
     this._maxTicksPerUpdate = constants.defaultSettings.maxTicksPerUpdate;
+    this._maxTicksPerFastForward = constants.defaultSettings.maxTicksPerFastForward;
     this._longNumberFormat = constants.defaultSettings.longNumberFormat as LongNumberFormat;
     this._mapCellSize = constants.defaultSettings.mapSize;
     this._enabledMessageEvents = new Set<MessageEvent>();
@@ -67,6 +80,10 @@ export class SettingsState implements ISettingsState {
 
   get maxTicksPerUpdate() {
     return this._maxTicksPerUpdate;
+  }
+
+  get maxTicksPerFastForward() {
+    return this._maxTicksPerFastForward;
   }
 
   get longNumberFormat() {
@@ -121,6 +138,10 @@ export class SettingsState implements ISettingsState {
     this._maxTicksPerUpdate = maxTicksPerUpdate;
   }
 
+  setMaxTicksPerFastForward(maxTicksPerFastForward: number) {
+    this._maxTicksPerFastForward = maxTicksPerFastForward;
+  }
+
   setLongNumberFormat(longNumberFormat: LongNumberFormat) {
     this._longNumberFormat = longNumberFormat;
   }
@@ -154,10 +175,12 @@ export class SettingsState implements ISettingsState {
     this.setUpdateInterval(constants.defaultSettings.updateInterval);
     this.setAutosaveEnabled(constants.defaultSettings.autosaveEnabled);
     this.setAutosaveInterval(constants.defaultSettings.autosaveInterval);
+    this.setMaxTicksPerUpdate(constants.defaultSettings.maxTicksPerUpdate);
+    this.setMaxTicksPerFastForward(constants.defaultSettings.maxTicksPerFastForward);
     this.setLongNumberFormat(constants.defaultSettings.longNumberFormat as LongNumberFormat);
     this.setMapCellSize(constants.defaultSettings.mapSize);
-    this.deserializeMessageEvents(constants.defaultSettings.messageEvents as MessageEvent[]);
-    this.deserializeGameAlerts(constants.defaultSettings.gameAlerts as GameAlert[]);
+    this.deserializeMessageEvents(this.getAllMessageEvents());
+    this.deserializeGameAlerts(this.getAllGameAlerts());
   }
 
   async deserialize(serializedState: ISettingsSerializedState): Promise<void> {
@@ -168,6 +191,7 @@ export class SettingsState implements ISettingsState {
     this.setAutosaveEnabled(serializedState.autosaveEnabled);
     this.setAutosaveInterval(serializedState.autosaveInterval);
     this.setMaxTicksPerUpdate(serializedState.maxTicksPerUpdate);
+    this.setMaxTicksPerFastForward(serializedState.maxTicksPerFastForward);
     this.setLongNumberFormat(serializedState.longNumberFormat);
     this.setMapCellSize(serializedState.mapCellSize);
     this.deserializeMessageEvents(serializedState.enabledMessageEvents);
@@ -183,6 +207,7 @@ export class SettingsState implements ISettingsState {
       autosaveEnabled: this.autosaveEnabled,
       autosaveInterval: this.autosaveInterval,
       maxTicksPerUpdate: this.maxTicksPerUpdate,
+      maxTicksPerFastForward: this.maxTicksPerFastForward,
       longNumberFormat: this.longNumberFormat,
       mapCellSize: this.mapCellSize,
       enabledMessageEvents: this.serializeMessageEvents(),
@@ -206,5 +231,13 @@ export class SettingsState implements ISettingsState {
   private deserializeGameAlerts(gameAlerts: GameAlert[]) {
     this._enabledGameAlerts.clear();
     gameAlerts.forEach((gameAlert) => this._enabledGameAlerts.add(gameAlert));
+  }
+
+  private getAllMessageEvents(): MessageEvent[] {
+    return [...Object.values(GameStateEvent), ...Object.values(PurchaseEvent), ...Object.values(ProgramsEvent)];
+  }
+
+  private getAllGameAlerts(): GameAlert[] {
+    return [...Object.values(GameStateAlert), ...Object.values(ProgramAlert)];
   }
 }

@@ -26,6 +26,7 @@ export enum Scenario {
 export enum GameStateEvent {
   gameStarted = 'gameStarted',
   gameSaved = 'gameSaved',
+  fastForwared = 'fastForwarded',
 }
 
 export enum PurchaseEvent {
@@ -39,6 +40,7 @@ export enum ProgramsEvent {
   processStarted = 'processStarted',
   processFinished = 'processFinished',
   processDeleted = 'processDeleted',
+  allProcessesDeleted = 'allProcessesDeleted',
 }
 
 export type MessageEvent = GameStateEvent | PurchaseEvent | ProgramsEvent;
@@ -52,7 +54,8 @@ export enum ProgramAlert {
   purchaseProgramOverwrite = 'purchaseProgramOverwrite',
   processDelete = 'processDelete',
   processReplace = 'processReplace',
-  passiveProcessReplace = 'passiveProcessReplace',
+  scalableProcessReplace = 'scalableProcessReplace',
+  deleteAllProcesses = 'deleteAllProcesses',
 }
 
 export type GameAlert = GameStateAlert | ProgramAlert;

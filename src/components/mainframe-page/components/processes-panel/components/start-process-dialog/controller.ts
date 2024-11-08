@@ -58,6 +58,10 @@ export class StartProcessDialogController extends BaseController {
     return this.mainframeOwnedProgramState.getOwnedProgramByName(name)!;
   }
 
+  getRunningScalableProgram(): ProgramName | undefined {
+    return this.mainframeProcessesState.runningScalableProgram;
+  }
+
   getProcessByName(name: ProgramName): IProcess | undefined {
     return this.mainframeProcessesState.getProcessByName(name);
   }

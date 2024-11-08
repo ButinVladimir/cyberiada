@@ -249,6 +249,9 @@ export class StartProcessDialog extends LitElement {
       return;
     }
 
+    const program = this._startProcessDialogController.getProgram(this._programName);
+    const runningScalableProgram = this._startProcessDialogController.getRunningScalableProgram();
+
     const existingProcess = this._startProcessDialogController.getProcessByName(this._programName);
     const formatter = this._startProcessDialogController.formatter;
 
@@ -261,6 +264,18 @@ export class StartProcessDialog extends LitElement {
       this._confirmationAlertVisible = true;
 
       this.dispatchEvent(new ConfirmationAlertOpenEvent(ProgramAlert.processReplace, confirmationAlertParameters));
+    } else if (program?.isAutoscalable && runningScalableProgram) {
+      const scalableProcess = this._startProcessDialogController.getProcessByName(runningScalableProgram)!;
+
+      const confirmationAlertParameters = JSON.stringify({
+        programName: scalableProcess.program.name,
+      });
+
+      this._confirmationAlertVisible = true;
+
+      this.dispatchEvent(
+        new ConfirmationAlertOpenEvent(ProgramAlert.scalableProcessReplace, confirmationAlertParameters),
+      );
     } else {
       this.startProcess();
     }
@@ -269,7 +284,10 @@ export class StartProcessDialog extends LitElement {
   private handleConfirmConfirmationAlert = (event: Event) => {
     const convertedEvent = event as ConfirmationAlertSubmitEvent;
 
-    if (convertedEvent.gameAlert !== ProgramAlert.processReplace) {
+    if (
+      convertedEvent.gameAlert !== ProgramAlert.processReplace &&
+      convertedEvent.gameAlert !== ProgramAlert.scalableProcessReplace
+    ) {
       return;
     }
 
@@ -291,7 +309,10 @@ export class StartProcessDialog extends LitElement {
   private handleCloseConfirmationAlert = (event: Event) => {
     const convertedEvent = event as ConfirmationAlertCloseEvent;
 
-    if (convertedEvent.gameAlert !== ProgramAlert.processReplace) {
+    if (
+      convertedEvent.gameAlert !== ProgramAlert.processReplace &&
+      convertedEvent.gameAlert !== ProgramAlert.scalableProcessReplace
+    ) {
       return;
     }
 

@@ -10,4 +10,6 @@ export interface IApp extends IUIEventEmitter {
   deleteSaveData(): Promise<void>;
   restartUpdateTimer(): void;
   restartAutosaveTimer(): void;
+  fastForward(): void;
+  stopFastForwarding(): void;
 }

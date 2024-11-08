@@ -1,6 +1,6 @@
 export interface ITimeSerializedParameter {
   lastUpdateTime: number;
-  offlineTime: number;
+  accumulatedTime: number;
   gameTime: number;
   gameTimeTotal: number;
 }

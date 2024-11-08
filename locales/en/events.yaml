@@ -4,6 +4,9 @@ gameStarted:
 gameSaved:
   name: Game saved
   message: Game has been saved
+fastForwarded:
+  name: Accumulated time spent
+  message: Accumulated time has been spent
 performanceUpgraded:
   name: Mainframe performance upgraded
   message: Mainframe performance has been upgraded to {{value.level}}
@@ -25,3 +28,6 @@ processFinished:
 processDeleted:
   name: Process deleted
   message: Process for program $t(programs:{{value.programName}}:name) with threads {{value.threads}} has been deleted
+allProcessesDeleted:
+  name: All processes deleted
+  message: All process have been deleted

@@ -10,8 +10,8 @@ export class TopBarValuesController extends BaseController {
     this.app.removeUiEventListener(APP_UI_EVENTS.REFRESHED_UI, this.handleRefreshUI);
   }
 
-  get offlineTime(): number {
-    return this.globalState.time.offlineTime;
+  get accumulatedTime(): number {
+    return this.globalState.time.accumulatedTime;
   }
 
   get money(): number {
@@ -20,5 +20,13 @@ export class TopBarValuesController extends BaseController {
 
   get cityLevel(): number {
     return this.globalState.cityDevelopment.level;
+  }
+
+  get cityDevelopmentGrowth(): number {
+    return this.globalState.cityDevelopmentGrowth.totalGrowth;
+  }
+
+  get cityDevelopmentPointsUntilNextLevel(): number {
+    return this.globalState.cityDevelopment.getNextLevelPoints() - this.globalState.cityDevelopment.points;
   }
 }

@@ -60,6 +60,8 @@ export class SettingsForm extends LitElement {
 
   private _maxTicksPerUpdateInputRef = createRef<SlRange>();
 
+  private _maxTicksPerFastForwardInputRef = createRef<SlInput>();
+
   private _longNumberFormatInputRef = createRef<SlSelect>();
 
   @state()
@@ -203,7 +205,7 @@ export class SettingsForm extends LitElement {
       <sl-range
         ${ref(this._maxTicksPerUpdateInputRef)}
         min="2"
-        max="20"
+        max="100"
         step="1"
         name="maxTicksPerUpdate"
         value=${this._settingsFormController.maxTicksPerUpdate}
@@ -245,6 +247,27 @@ export class SettingsForm extends LitElement {
           <intl-message label="ui:settings:autosaveInterval">Autosave interval</intl-message>
         </span>
       </sl-range>
+
+      <sl-input
+        ${ref(this._maxTicksPerFastForwardInputRef)}
+        name="maxTicksPerFastForward"
+        value=${this._settingsFormController.maxTicksPerFastForward}
+        type="number"
+        min="1"
+        max="100000000"
+        step="1"
+        @sl-change=${this.handleChangeMaxTicksPerFastForward}
+      >
+        <span class="input-label" slot="label">
+          <intl-message label="ui:settings:maxTicksPerFastForward">Max ticks per fast forward</intl-message>
+        </span>
+
+        <span slot="help-text">
+          <intl-message label="ui:settings:maxTicksPerFastForwardHint">
+            Too high number can cause strain on CPU
+          </intl-message>
+        </span>
+      </sl-input>
 
       <ca-message-filter-dialog
         ?is-open=${this._isMessageFilterOpen}
@@ -349,6 +372,25 @@ export class SettingsForm extends LitElement {
     }
 
     this._settingsFormController.setMaxTicksPerUpdate(this._maxTicksPerUpdateInputRef.value.value);
+  };
+
+  private handleChangeMaxTicksPerFastForward = () => {
+    if (!this._maxTicksPerFastForwardInputRef.value) {
+      return;
+    }
+
+    let value = this._maxTicksPerFastForwardInputRef.value.valueAsNumber;
+
+    if (value < 1) {
+      value = 1;
+    }
+
+    if (value > 100000000) {
+      value = 100000000;
+    }
+
+    this._settingsFormController.setMaxTicksPerFastForward(value);
+    this._maxTicksPerFastForwardInputRef.value.valueAsNumber = value;
   };
 
   private handleChangeLongNumberFormat = () => {

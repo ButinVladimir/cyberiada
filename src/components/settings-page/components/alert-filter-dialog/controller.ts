@@ -8,6 +8,6 @@ export class AlertFilterDialogController extends BaseController {
 
   toggleMessageFilterEvent(gameAlert: GameAlert, enabled: boolean) {
     this.settingsState.toggleGameAlert(gameAlert, enabled);
-    this.host.requestUpdate();
+    this.handleRefreshUI();
   }
 }

@@ -17,8 +17,13 @@ export class AppRoot extends LitElement {
     switch (this._appRootController.appStage) {
       case AppStage.loading:
         return html`<ca-loading-screen></ca-loading-screen>`;
+
       case AppStage.running:
         return html`<ca-game-screen></ca-game-screen>`;
+
+      case AppStage.fastForward:
+        return html`<ca-fast-forwarding-screen></ca-fast-forwarding-screen>`;
+
       default:
         return null;
     }

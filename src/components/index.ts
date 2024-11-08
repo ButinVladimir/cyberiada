@@ -20,6 +20,7 @@ import '@shoelace-style/shoelace/dist/components/switch/switch.js';
 import './shared';
 import './app-root';
 import './loading-screen';
+import './fast-forwarding-screen';
 import './game-screen';
 import './settings-page';
 import './city-page';

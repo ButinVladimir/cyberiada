@@ -4,7 +4,6 @@ common:
   delete: Delete
   close: Close
   loading: Loading...
-  never: Never
   continue: Continue
 pages:
   cityOverview: City overview
@@ -17,14 +16,19 @@ topBar:
   messageLog: Toggle message log
   gameSpeedButtons:
     pause: Pause
-    playNormal: Play on normal speed (without offline time)
-    playFast: Play on fast speed (with offline time)
-  offlineTime: Offline time
+    playNormal: Play on normal speed (without accumulated time)
+    playFast: Play on fast speed (with accumulated time)
+    fastForward: Spend all accumulated time
+  accumulatedTime: Accumulated time
   money: Money
   cityLevel: City level
+  cityLevelNext: City level, next level will be reached in {{value}}
 messageLog:
   messageLog: Message log
   clearMessages: Clear messages
+fastForwardingScreen:
+  fastForwarding: Spending accumulated time...
+  stop: Stop
 settings:
   settings: Settings
   language: Language
@@ -34,8 +38,10 @@ settings:
   updateInterval: Update interval (ms)
   autosaveEnabled: Enable autosave
   autosaveInterval: Autosave interval (s)
-  maxTicksPerUpdate: Maximum amount of ticks per update
-  maxTicksPerUpdateHint: Applies only when game speed is fast
+  maxTicksPerUpdate: Maximum amount of updates per tick when game speed is fast
+  maxTicksPerUpdateHint: Too high number can cause strain on CPU
+  maxTicksPerFastForward: Maximum amount of update per tick when accumulated time is being spent
+  maxTicksPerFastForwardHint: Too high number can cause strain on CPU
   longNumberFormat: Long number format
   languages:
     en: English
@@ -95,7 +101,7 @@ mainframe:
     purchase: Purchase for {{value.cost}}
     emptyListNotification: You don't have any owned programs
   processes:
-    processesHint: To make program run, a process has to be start for it.
+    processesHint: To make a program run, a process has to be start for it.
       Topmost processes have more priority when cores are assigned to processes.
     startProcess: Start process
     startProcessDialogHint: Select one of owned programs to start process for it.
@@ -107,7 +113,9 @@ mainframe:
     progressBarHintActive: 'Process will be completed in {{value}}'
     progressBarHintPaused: "Process isn't active"
     processToggle: Enable / disable process
+    allProcessesToggle: Enable / disable all processes
     processDelete: Delete process
+    allProcessesDelete: Delete all process
     autoscalable: Autoscalable
     usesCores: "{{value.cores}} \/ {{value.maxCores}}"
     availableCores: 'Available cores: {{value}}'
