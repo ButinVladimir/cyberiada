@@ -104,7 +104,7 @@ export class ProcessesList extends LitElement {
                 </intl-message>
 
                 <sl-icon-button
-                  name=${processesActive ? 'pause-fill' : 'play-fill'}
+                  name=${processesActive ? 'play-fill' : 'pause-fill'}
                   label=${t('mainframe.processes.allProcessesToggle', { ns: 'ui' })}
                   @click=${this.handleToggleAllProcesses}
                 >

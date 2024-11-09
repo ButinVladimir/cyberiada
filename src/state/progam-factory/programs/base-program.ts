@@ -6,8 +6,10 @@ import { calculatePow } from '@shared/helpers';
 import { IGlobalState } from '@state/global-state/interfaces/global-state';
 import { IMainframeProcessesState } from '@state/mainframe/mainframe-processes-state/interfaces/mainframe-processes-state';
 import { IMainframeHardwareState } from '@state/mainframe/mainframe-hardware-state/interfaces/mainframe-hardware-state';
+import { IScenarioState } from '@state/scenario-state/interfaces/scenario-state';
 import { ProgramName } from '../types';
 import { IProgram } from '../interfaces/program';
+import { ICompletionTimeParameters } from '../interfaces/completion-time-parameters';
 import { IMakeProgramParameters } from '../interfaces/make-program-parameters';
 import { IBaseProgramParameters } from '../interfaces/program-parameters/base-program-parameters';
 import { PROGRAMS_UI_EVENTS } from '../constants';
@@ -16,6 +18,7 @@ export abstract class BaseProgram implements IProgram {
   protected globalState: IGlobalState;
   protected mainframeProcessesState: IMainframeProcessesState;
   protected mainframeHardwareState: IMainframeHardwareState;
+  protected scenarioState: IScenarioState;
   protected formatter: IFormatter;
 
   private _level!: number;
@@ -29,6 +32,7 @@ export abstract class BaseProgram implements IProgram {
     this.globalState = parameters.globalState;
     this.mainframeProcessesState = parameters.mainframeProcessesState;
     this.mainframeHardwareState = parameters.mainframeHardwareState;
+    this.scenarioState = parameters.scenarioState;
     this.formatter = parameters.formatter;
 
     this._level = parameters.level;
@@ -91,6 +95,21 @@ export abstract class BaseProgram implements IProgram {
     this.uiEventBatcher.enqueueEvent(PROGRAMS_UI_EVENTS.PROGRAM_UPDATED);
   }
 
+  calculateCompletionDelta(threads: number, usedCores: number, passedTime: number): number {
+    const currentSpeed = usedCores * this.globalState.programCompletionSpeed.speed;
+    const allowedSpeed =
+      (threads * this.completionPoints) / this.scenarioState.currentValues.mainframeSoftware.minCompletionTime;
+
+    return passedTime * Math.min(currentSpeed, allowedSpeed);
+  }
+
+  calculateCompletionTime(threads: number, usedCores: number): number {
+    const completionPoints = threads * this.completionPoints;
+    const completionDelta = this.calculateCompletionDelta(threads, usedCores, 1);
+
+    return completionPoints / completionDelta;
+  }
+
   removeEventListeners(): void {
     this.uiEventBatcher.removeAllListeners();
   }
@@ -125,10 +144,21 @@ export abstract class BaseProgram implements IProgram {
     return {
       cores: this.formatter.formatNumberDecimal(this.cores * threads),
       ram: this.formatter.formatNumberDecimal(this.ram * threads),
-      completionPoints: this.formatter.formatNumberLong(this.completionPoints * threads),
       threads: this.formatter.formatNumberDecimal(threads),
     };
   }
 
-  abstract buildDescriptionParametersObject(usedCores: number, usedRam: number): object;
+  buildCompletionTimeParametersObject(threads: number): ICompletionTimeParameters {
+    const minTime = this.calculateCompletionTime(threads, this.cores * threads);
+    const maxTime = this.calculateCompletionTime(threads, 1);
+
+    return {
+      minTime,
+      maxTime,
+    };
+  }
+
+  abstract buildProgramDescriptionParametersObject(threads: number, usedRam: number): object;
+
+  abstract buildProcessDescriptionParametersObject(threads: number, usedCores: number, usedRam: number): object;
 }

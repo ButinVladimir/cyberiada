@@ -1,15 +1,15 @@
 shareServer:
   name: Mainframe share server
   overview: Program to share your mainframe capabilities to city network. Passively generates income and city development points.
-  programDescription: Can generate up to {{value.money}} money and {{value.cityDevelopmentPoints}} CDP per second.
-  processDescription: Generates {{value.money}} money and {{value.cityDevelopmentPoints}} CDP per second.
+  programDescription: Can generate up to {{value.money}} money and {{value.cityDevelopmentPoints}} CDP per second
+  processDescription: Generates {{value.money}} money and {{value.cityDevelopmentPoints}} CDP per second
 codeGenerator:
   name: Code generator
   overview: Program to develop other programs. Generates computational base points.
-  programDescription: Generates {{value.value}} CBP per completion.
-  processDescription: Generates {{value.value}} CBP per completion.
+  programDescription: Generates {{value.value}} CBP per completion ({{value.minAvgValue}} - {{value.maxAvgValue}} CBP per second on average)
+  processDescription: Generates {{value.value}} CBP per completion ({{value.avgValue}} CBP per second on average)
 predictiveComputator:
   name: Predictive computator
   overview: Program to speed up completion of currently running processes.
-  programDescription: Can speed up currently running processes by up to {{value.value}}.
-  processDescription: Speed up currently running processes by {{value.value}}.
+  programDescription: Can speed up currently running processes by up to {{value.value}}
+  processDescription: Speed up currently running processes by {{value.value}}

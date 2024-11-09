@@ -221,17 +221,18 @@ export class PurchaseProgramDialog extends LitElement {
           <intl-message label="ui:common:close"> Close </intl-message>
         </sl-button>
 
-        <sl-button
-          slot="footer"
-          size="medium"
-          variant="primary"
-          ?disabled=${submitButtonDisabled}
-          @click=${this.handleOpenConfirmationAlert}
-        >
-          <intl-message label="ui:mainframe:ownedPrograms:purchase" value=${submitButtonValues}>
-            Purchase
-          </intl-message>
-        </sl-button>
+        <ca-purchase-tooltip cost=${cost} level=${this._level} slot="footer">
+          <sl-button
+            size="medium"
+            variant="primary"
+            ?disabled=${submitButtonDisabled}
+            @click=${this.handleOpenConfirmationAlert}
+          >
+            <intl-message label="ui:mainframe:ownedPrograms:purchase" value=${submitButtonValues}>
+              Purchase
+            </intl-message>
+          </sl-button>
+        </ca-purchase-tooltip>
       </sl-dialog>
     `;
   }

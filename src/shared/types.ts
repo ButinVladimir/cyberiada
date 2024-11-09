@@ -48,6 +48,8 @@ export type MessageEvent = GameStateEvent | PurchaseEvent | ProgramsEvent;
 export enum GameStateAlert {
   saveImport = 'saveImport',
   saveDelete = 'saveDelete',
+  clearMessages = 'clearMessages',
+  fastForward = 'fastForward',
 }
 
 export enum ProgramAlert {

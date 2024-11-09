@@ -121,6 +121,10 @@ export class ConfirmationAlert extends LitElement {
     if (this._gameAlert) {
       this._isOpen = false;
 
+      if (this._gameAlertToggleRef.value) {
+        this._confirmationAlertModalController.toggleGameAlert(this._gameAlert, this._alertToggled);
+      }
+
       this.dispatchEvent(new ConfirmationAlertSubmitEvent(this._gameAlert, this._gameAlertKey));
     }
   };
@@ -130,7 +134,6 @@ export class ConfirmationAlert extends LitElement {
 
     if (this._gameAlert && this._gameAlertToggleRef.value) {
       this._alertToggled = this._gameAlertToggleRef.value.checked;
-      this._confirmationAlertModalController.toggleGameAlert(this._gameAlert, this._gameAlertToggleRef.value.checked);
     }
   };
 }

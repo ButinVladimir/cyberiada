@@ -3,6 +3,7 @@ import { IProgram } from '@state/progam-factory/interfaces/program';
 import { ProgramName } from '@state/progam-factory/types';
 import { PROGRAMS_UI_EVENTS } from '@state/progam-factory/constants';
 import { GLOBAL_STATE_UI_EVENTS } from '@state/global-state/constants';
+import { MAINFRAME_HARDWARE_STATE_UI_EVENTS } from '@state/mainframe/mainframe-hardware-state/constants';
 
 export class ProgramDescriptionController extends BaseController {
   private _program?: IProgram;
@@ -12,11 +13,19 @@ export class ProgramDescriptionController extends BaseController {
       GLOBAL_STATE_UI_EVENTS.MAINFRAME_DISCOUNT_CHANGED,
       this.handleRefreshUI,
     );
+    this.mainframeHardwareState.addUiEventListener(
+      MAINFRAME_HARDWARE_STATE_UI_EVENTS.HARDWARE_UPDATED,
+      this.handleRefreshUI,
+    );
   }
 
   hostDisconnected() {
     this.globalState.computationalBase.removeUiEventListener(
       GLOBAL_STATE_UI_EVENTS.MAINFRAME_DISCOUNT_CHANGED,
+      this.handleRefreshUI,
+    );
+    this.mainframeHardwareState.removeUiEventListener(
+      MAINFRAME_HARDWARE_STATE_UI_EVENTS.HARDWARE_UPDATED,
       this.handleRefreshUI,
     );
     this.deleteOldProgram();

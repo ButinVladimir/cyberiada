@@ -101,9 +101,11 @@ export class MainframeHardwarePanelArticle extends LitElement {
       </div>
 
       <div class="button-container">
-        <sl-button variant="primary" type="button" size="medium" ?disabled=${buttonDisabled} @click=${this.handleBuy}>
-          <intl-message label="ui:mainframe:hardware:buy" value=${buttonValue}> Buy </intl-message>
-        </sl-button>
+        <ca-purchase-tooltip cost=${this.cost} level=${this.level + 1}>
+          <sl-button variant="primary" type="button" size="medium" ?disabled=${buttonDisabled} @click=${this.handleBuy}>
+            <intl-message label="ui:mainframe:hardware:buy" value=${buttonValue}> Buy </intl-message>
+          </sl-button>
+        </ca-purchase-tooltip>
       </div>
     `;
   }

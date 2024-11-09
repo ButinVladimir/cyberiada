@@ -2,7 +2,7 @@ import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { ProgramName } from '@state/progam-factory/types';
 import { ProcessDescriptionController } from './controller';
-import { MS_IN_SECOND } from '@shared/constants';
+import { IProcess } from '@state/mainframe/mainframe-processes-state/interfaces/process';
 
 @customElement('ca-process-description')
 export class ProcessDescription extends LitElement {
@@ -35,47 +35,62 @@ export class ProcessDescription extends LitElement {
       return html``;
     }
 
-    const formatter = this._processDescriptionController.formatter;
-
-    const availableCores = this._processDescriptionController.availableCores;
-    const availableRam = this._processDescriptionController.availableRam;
-
-    let descriptionValues: string;
-    let requirementsKey: string;
-    let completionSpeedKey: string;
-    let completionSpeedValue: string;
-
-    const requirementsValues = JSON.stringify(process.program.buildRequirementsParametersObject(process.threads));
-
-    if (process.program.isAutoscalable) {
-      descriptionValues = JSON.stringify(
-        process.program.buildDescriptionParametersObject(availableCores, availableRam),
-      );
-      requirementsKey = 'requirementsScalable';
-
-      completionSpeedKey = 'completionSpeedScalable';
-      completionSpeedValue = '';
-    } else {
-      descriptionValues = JSON.stringify(process.program.buildDescriptionParametersObject(process.threads, 1));
-      requirementsKey = 'requirements';
-
-      completionSpeedKey = 'completionSpeed';
-      completionSpeedValue = JSON.stringify(formatter.formatNumberLong(process.calculateCompletionDelta(MS_IN_SECOND)));
-    }
+    const description = process.program.isAutoscalable
+      ? this.renderScalableDescription(process)
+      : this.renderOrdinaryDescription(process);
 
     return html`<intl-message label="programs:${this.programName}:overview"> Program overview </intl-message>
 
-      <intl-message label="ui:mainframe:programDescription:${requirementsKey}" value=${requirementsValues}>
-        Requirements
-      </intl-message>
-      <intl-message
-        label="ui:mainframe:processes:processDescription:${completionSpeedKey}"
-        value=${completionSpeedValue}
-      >
-        Completion speed
+      ${description}`;
+  }
+
+  private renderScalableDescription = (process: IProcess) => {
+    const availableRam = this._processDescriptionController.availableRam;
+
+    const descriptionValues = JSON.stringify(
+      process.program.buildProcessDescriptionParametersObject(process.usedCores, process.usedCores, availableRam),
+    );
+
+    return html`<intl-message label="ui:mainframe:programDescription:requirementsScalable"> Requirements </intl-message>
+      <intl-message label="ui:mainframe:processes:processDescription:completionTimeScalable">
+        Completion time
       </intl-message>
       <intl-message label="programs:${this.programName}:processDescription" value=${descriptionValues}>
         Program description
       </intl-message>`;
-  }
+  };
+
+  private renderOrdinaryDescription = (process: IProcess) => {
+    const formatter = this._processDescriptionController.formatter;
+
+    const requirementsValues = JSON.stringify(process.program.buildRequirementsParametersObject(process.threads));
+
+    const completionDelta = process.calculateCompletionDelta(1);
+    let completionTime: number | undefined = undefined;
+    let completionTimeKey = 'completionTimeNoCores';
+    let formattedCompletionTime = '';
+
+    if (completionDelta > 0) {
+      completionTime = process.calculateCompletionTime();
+      completionTimeKey = 'completionTime';
+      formattedCompletionTime = formatter.formatTimeShort(completionTime);
+    }
+
+    const descriptionValues = JSON.stringify(
+      process.program.buildProcessDescriptionParametersObject(process.threads, process.usedCores, 1),
+    );
+
+    return html`<intl-message label="ui:mainframe:programDescription:requirements" value=${requirementsValues}>
+        Requirements
+      </intl-message>
+      <intl-message
+        label="ui:mainframe:processes:processDescription:${completionTimeKey}"
+        value=${formattedCompletionTime}
+      >
+        Completion time
+      </intl-message>
+      <intl-message label="programs:${this.programName}:processDescription" value=${descriptionValues}>
+        Program description
+      </intl-message>`;
+  };
 }

@@ -4,6 +4,12 @@ saveImport:
 saveDelete:
   name: Delete save data
   message: Are you sure want to delete save data? Your current progress will be lost.
+clearMessages:
+  name: Clear log messages
+  message: Are you sure want to clear log messages?
+fastForward:
+  name: Spend accumulated time
+  message: Are you sure want to spend accumulated time?
 purchaseProgramOverwrite:
   name: Purchase an already owned program
   message: Are you sure want to purchase program $t(programs:{{value.programName}}:name)? This will replace your current program with level {{value.level}} and quality {{value.quality}}.

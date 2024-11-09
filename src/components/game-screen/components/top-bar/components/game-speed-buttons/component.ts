@@ -2,6 +2,8 @@ import { t } from 'i18next';
 import { LitElement, html, css, TemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { GameSpeed } from '@state/global-state/types';
+import { ConfirmationAlertOpenEvent, ConfirmationAlertSubmitEvent } from '@components/shared/confirmation-alert/events';
+import { GameStateAlert } from '@shared/types';
 import { GameSpeedButtonsController } from './controller';
 import { GameSpeedButtonProps } from './interfaces';
 
@@ -25,6 +27,18 @@ export class GameSpeedButtons extends LitElement {
     super();
 
     this._gameSpeedButtonsController = new GameSpeedButtonsController(this);
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+
+    document.addEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmFastForwardDialog);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+
+    document.removeEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmFastForwardDialog);
   }
 
   render() {
@@ -55,7 +69,7 @@ export class GameSpeedButtons extends LitElement {
         <sl-icon-button
           name="skip-end"
           label=${t(`topBar.gameSpeedButtons.fastForward`, { ns: 'ui' })}
-          @click=${this.handleFastForward}
+          @click=${this.handleOpenFastForwardDialog}
         >
         </sl-icon-button>
       </sl-tooltip>
@@ -89,7 +103,19 @@ export class GameSpeedButtons extends LitElement {
     this._gameSpeedButtonsController.changeGameSpeed(gameSpeed);
   };
 
-  private handleFastForward = () => {
+  private handleOpenFastForwardDialog = (event: Event) => {
+    event.stopPropagation();
+
+    this.dispatchEvent(new ConfirmationAlertOpenEvent(GameStateAlert.fastForward, ''));
+  };
+
+  private handleConfirmFastForwardDialog = (event: Event) => {
+    const convertedEvent = event as ConfirmationAlertSubmitEvent;
+
+    if (convertedEvent.gameAlert !== GameStateAlert.fastForward) {
+      return;
+    }
+
     this._gameSpeedButtonsController.fastForward();
   };
 }

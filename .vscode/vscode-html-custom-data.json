@@ -83,7 +83,7 @@
     },
     {
       "name": "ca-message-log-bar",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `handleClearMessages` - \n\n  * `_messageLogBarController` {`MessageLogBarController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `handleOpenClearMessagesDialog` - \n\n  * `handleConfirmClearMessagesDialog` - \n\n  * `_messageLogBarController` {`MessageLogBarController`} - ",
       "attributes": []
     },
     {
@@ -98,7 +98,7 @@
     },
     {
       "name": "ca-game-speed-buttons",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderButton` - \n\n  * `handleChangeGameSpeed` - \n\n  * `handleFastForward` - \n\n  * `_gameSpeedButtonsController` {`GameSpeedButtonsController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderButton` - \n\n  * `handleChangeGameSpeed` - \n\n  * `handleOpenFastForwardDialog` - \n\n  * `handleConfirmFastForwardDialog` - \n\n  * `_gameSpeedButtonsController` {`GameSpeedButtonsController`} - ",
       "attributes": []
     },
     {
@@ -195,7 +195,7 @@
     },
     {
       "name": "ca-process-description",
-      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `_processDescriptionController` {`ProcessDescriptionController`} - ",
+      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `renderScalableDescription` - \n\n  * `renderOrdinaryDescription` - \n\n  * `_processDescriptionController` {`ProcessDescriptionController`} - ",
       "attributes": [
         {
           "name": "program-name",
@@ -241,7 +241,7 @@
     },
     {
       "name": "ca-program-description",
-      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\n  * `level` {`number`} - \n\n  * `quality` {`number`} - \n\n  * `threads` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `level` {`number`} - \n\n  * `quality` {`number`} - \n\n  * `threads` {`number`} - \n\n  * `_programDescriptionController` {`ProgramDescriptionController`} - ",
+      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\n  * `level` {`number`} - \n\n  * `quality` {`number`} - \n\n  * `threads` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `level` {`number`} - \n\n  * `quality` {`number`} - \n\n  * `threads` {`number`} - \n\n  * `renderScalableDescription` - \n\n  * `renderOrdinaryDescription` - \n\n  * `_programDescriptionController` {`ProgramDescriptionController`} - ",
       "attributes": [
         {
           "name": "program-name",
@@ -302,6 +302,20 @@
       "name": "ca-confirmation-alert",
       "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_gameAlertToggleRef` {`Ref<SlCheckbox>`} - \n\n  * `_gameAlert` - \n\n  * `_gameAlertKey` {`string | undefined`} - \n\n  * `_messageParams` {`string`} - \n\n  * `_isOpen` {`boolean`} - \n\n  * `_alertToggled` {`boolean`} - \n\n  * `handleOpen` - \n\n  * `handleClose` - \n\n  * `handleSubmit` - \n\n  * `handleToggleAlert` - \n\n  * `_confirmationAlertModalController` {`ConfirmationAlertController`} - ",
       "attributes": []
+    },
+    {
+      "name": "ca-purchase-tooltip",
+      "description": "Attributes:\n\n  * `cost` {`number`} - \n\n  * `level` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `cost` {`number`} - \n\n  * `level` {`number`} - \n\n  * `renderMessage` - \n\n  * `_purchaseTooltipController` {`PurchaseTooltipController`} - ",
+      "attributes": [
+        {
+          "name": "cost",
+          "description": "`cost` {`number`} - \n\nProperty: cost\n\nDefault: 0"
+        },
+        {
+          "name": "level",
+          "description": "`level` {`number`} - \n\nProperty: level\n\nDefault: 0"
+        }
+      ]
     },
     {
       "name": "ca-statistics-page",

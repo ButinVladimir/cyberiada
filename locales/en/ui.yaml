@@ -5,6 +5,10 @@ common:
   close: Close
   loading: Loading...
   continue: Continue
+  notEnoughMoney: Not enough money
+  available: Available
+  willBeAvailableIn: Will be available in {{value}}
+  higherCityDevelopmentLevelRequired: Higher city development level required
 pages:
   cityOverview: City overview
   company: Company
@@ -76,9 +80,11 @@ mainframe:
   threads: Threads
   cores: Cores
   programDescription:
-    cost: Costs {{value.cost}} money to purchase.
-    requirements: Requires {{value.ram}} RAM, up to {{value.cores}} cores to run {{value.threads}} threads and {{value.completionPoints}} PrCP to complete the process.
-    requirementsScalable: Is scalable and uses all unused RAM and cores. It will run every tick.
+    cost: Costs {{value.cost}} money to purchase
+    requirements: Requires {{value.ram}} RAM and up to {{value.cores}} cores to run {{value.threads}} threads
+    requirementsScalable: Scalable and uses all unused RAM and cores
+    completionTime: Can be completed in {{value.minTime}} - {{value.maxTime}}
+    completionTimeScalable: It will run every tick
   tabs:
     processes: Processes
     hardware: Hardware
@@ -86,11 +92,11 @@ mainframe:
   hardware:
     keyboardHint: Press either Ctrl or Shift to buy 10 levels. Press both Ctrl and Shift to buy 100 levels.
     performance: 'Performance level: {{value}}'
-    performanceHint: Higher performance level leads to faster running processes.
+    performanceHint: Higher performance level leads to faster running processes
     cores: 'Cores level: {{value}}'
-    coresHint: Additional cores allow better scalability and running more processes at same time.
+    coresHint: Additional cores allow better scalability and running more processes at same time
     ram: 'RAM level: {{value}}'
-    ramHint: Additional RAM allows to keep more processes in memory so they could ran later or in bigger batches.
+    ramHint: Additional RAM allows to keep more processes in memory so they could ran later or in bigger batches
     buy: Buy x{{value.increase}} for {{value.cost}}
   ownedPrograms:
     purchaseProgram: Purchase program
@@ -102,7 +108,10 @@ mainframe:
     emptyListNotification: You don't have any owned programs
   processes:
     processesHint: To make a program run, a process has to be start for it.
-      Topmost processes have more priority when cores are assigned to processes.
+      Topmost processes for non-scalable programs have more priority when cores are assigned to processes.
+      Process for scalable program has cores and RAM assigned last.
+      Only one process for scalable program can run at same time.
+      Process minimal completion time is limited.
     startProcess: Start process
     startProcessDialogHint: Select one of owned programs to start process for it.
       If you already have process for same program, old process will be replaced with new one.
@@ -121,8 +130,9 @@ mainframe:
     availableCores: 'Available cores: {{value}}'
     availableRam: 'Available RAM: {{value}}'
     processDescription:
-      completionSpeed: Completion speed is {{value}} PCP per second.
-      completionSpeedScalable: Completion speed is instant.
+      completionTime: Can be completed in {{value}}
+      completionTimeScalable: It will run every tick
+      completionTimeNoCores: Requires assigned cores to be completed
 statistics:
   statistics: Statistics
   total: Total
@@ -139,10 +149,10 @@ statistics:
     multipliers:
       title: Multipliers and discounts
       programCompletionSpeed: Predictive computator multiplier
-      programDiscount: Program discount (%)
+      mainframeDiscount: Mainframe products discount (%)
   growth:
     programCompletionSpeed:
-      title: Program completion speed
+      title: Process completion speed
       pointsPerSecond: PCP per second
     money:
       title: Money income per second

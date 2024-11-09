@@ -5,10 +5,15 @@ common:
   close: Закрыть
   loading: Загрузка...
   continue: Продолжить
+  notEnoughMoney: Не достаточно денег
+  available: Доступно
+  willBeAvailableIn: Будет доступно через {{value}}
+  higherCityDevelopmentLevelRequired: Требуется больший уровень развития города
 pages:
   cityOverview: Обзор города
   company: Компания
   mainframe: Мейнфрейм
+  statistics: Статистика
   settings: Настройки
 topBar:
   menu: Показать/скрыть меню
@@ -38,9 +43,9 @@ settings:
   autosaveEnabled: Включить автосохранение
   autosaveInterval: Интервал автосохранения (сек)
   maxTicksPerUpdate: Максимальное количество обновлений за тик при быстрой скорости игры
-  maxTicksPerUpdateHint: Слишком большое значение может привести к нагрузке на процессор.
+  maxTicksPerUpdateHint: Слишком большое значение может привести к нагрузке на процессор
   maxTicksPerFastForward: Максимальное количество обновлений за тик при трате накопленного времени
-  maxTicksPerFastForwardHint: Слишком большое значение может привести к нагрузке на процессор.
+  maxTicksPerFastForwardHint: Слишком большое значение может привести к нагрузке на процессор
   longNumberFormat: Формат больших чисел
   languages:
     en: Английский
@@ -59,6 +64,7 @@ settings:
   messageFilterHint: Включите события в фильтре, чтобы получать сообщения о них.
   alertFilter: Фильтр предупреждений
   alertFilterHint: Включите предупреждения в фильтре, чтобы они появлялись, когда соответствующее события произошли.
+  alertToggle: Показывать подобные предупреждения в будущем
 city:
   cityOverview:
     title: Обзор города
@@ -74,9 +80,11 @@ mainframe:
   threads: Потоки
   cores: Ядра
   programDescription:
-    cost: Стоит {{value.cost}} для покупки.
-    requirements: Требует {{value.ram}} памяти и до {{value.cores}} ядер для запуска {{value.threads}} потоков и {{value.completionPoints}} ОВП для завершения процесса.
-    requirementsScalable: Масштабируется и использует все неиспользуемые ядра и память. Выполняется каждый тик.
+    cost: Стоит {{value.cost}} для покупки
+    requirements: Требует {{value.ram}} памяти и до {{value.cores}} ядер для запуска {{value.threads}} потоков
+    requirementsScalable: Масштабируется и использует все неиспользуемые ядра и память
+    completionTime: Может быть выполнена за {{value.minTime}} - {{value.maxTime}}
+    completionTimeScalable: Выполняется каждый тик
   tabs:
     processes: Процессы
     hardware: Оборудование
@@ -84,11 +92,11 @@ mainframe:
   hardware:
     keyboardHint: Нажмите Ctrl или Shift для покупки 10 уровней. Нажмите вместе Ctrl и Shift для покупки 100 уровней.
     performance: 'Уровень производительности: {{value}}'
-    performanceHint: Высокие уровни производительности ведут к более быстрым процессам.
+    performanceHint: Высокие уровни производительности ведут к более быстрым процессам
     cores: 'Уровень ядер: {{value}}'
-    coresHint: Дополнительные ядра дают лучшее масштабирование и выполнение большего числа процессов одновременно.
+    coresHint: Дополнительные ядра дают лучшее масштабирование и выполнение большего числа процессов одновременно
     ram: 'Уровень памяти: {{value}}'
-    ramHint: Дополнительная память дает возможность держать больше процессов в памяти, чтобы они смогли выполниться позже или в больших группах.
+    ramHint: Дополнительная память дает возможность держать больше процессов в памяти, чтобы они смогли выполниться позже или в больших группах
     buy: Купить x{{value.increase}} за {{value.cost}}
   ownedPrograms:
     purchaseProgram: Купить программу
@@ -100,7 +108,10 @@ mainframe:
     emptyListNotification: У вас нет имеющихся програм
   processes:
     processesHint: Чтобы программа выполнялась, для неё должен быть начат процесс.
-      Процессы наверху списка имеют приоритет, когда ядра распределяются по процессам.
+      Процессы для немасштабируемых программ наверху списка имеют приоритет, когда ядра распределяются по процессам.
+      Ядра и память будут назначены для процесса с масштабируемой программой в последнюю очередь.
+      Только один процесс для масштабируемой программы может выполняться.
+      Минимальное время выполнения процесса ограничено.
     startProcess: Начать процесс
     startProcessDialogHint: Выберите одну из имеющихся программ, чтобы начать процесс для неё.
       Если у вас уже есть процесс для выбранной программы, старый процесс будет замене на новый.
@@ -119,5 +130,51 @@ mainframe:
     availableCores: 'Доступные ядра: {{value}}'
     availableRam: 'Доступная память: {{value}}'
     processDescription:
-      completionSpeed: Скорость выполнения - {{value}} ОВП в секунду.
-      completionSpeedScalable: Скорость выполнения мгновенна.
+      completionTime: Может быть выполнен через {{value}}
+      completionTimeScalable: Выполняется каждый тик
+      completionTimeNoCores: Для выполнения требуются назначенные ядра
+statistics:
+  statistics: Статистика
+  total: Всего
+  tabs:
+    general: Обшее
+    growth: Прирост
+    income: Накопления
+    expenses: Расходы
+  general:
+    time:
+      title: Внутриигровое прошедшее время
+      timeThisRun: С момента прибытия в город
+      timeTotal: Общее время
+    multipliers:
+      title: Множители и скидки
+      programCompletionSpeed: Скорость предсказательного вычислителя
+      mainframeDiscount: Скидка на продукты для мейнфрейма (%)
+  growth:
+    programCompletionSpeed:
+      title: Скорость выполнения процесса
+      pointsPerSecond: ОВП в секунду
+    money:
+      title: Деньги в секунду
+      program: Аренда сервера
+    cityDevelopmentPoints:
+      title: Очки развития города в секунду
+      program: Аренда сервера
+    pointsByPrograms:
+      title: Очки в секунду, сгенерированные программами
+      computationalBase: Вычислительная база
+  income:
+    money:
+      title: Деньги
+      program: Аренда сервера
+    cityDevelopmentPoints:
+      title: Очки развития города
+      program: Аренда сервера
+    pointsByPrograms:
+      title: Очки, сгенерированные программами
+      computationalBase: Вычислительная база
+  expenses:
+    money:
+      title: Расходы денег
+      mainframeHardware: На оборудование мейнфрейма
+      mainframePrograms: На программы мейнфрейма

@@ -1,5 +1,4 @@
 import { MS_IN_SECOND } from '@shared/constants';
-import { IScenarioState } from '@state/scenario-state/interfaces/scenario-state';
 import { ISettingsState } from '@state/settings-state/interfaces/settings-state';
 import { IExponent } from '@shared/interfaces/exponent';
 import { calculatePow } from '@shared/helpers';
@@ -14,13 +13,11 @@ export class ShareServerProgram extends BaseProgram {
   public readonly isRepeatable = true;
   public readonly isAutoscalable = true;
 
-  private _scenarioState: IScenarioState;
   private _settingsState: ISettingsState;
 
   constructor(parameters: IShareServerParameters) {
     super(parameters);
 
-    this._scenarioState = parameters.scenarioState;
     this._settingsState = parameters.settingsState;
   }
 
@@ -36,9 +33,19 @@ export class ShareServerProgram extends BaseProgram {
     this.globalState.cityDevelopment.increase(cityDevelopmentPointsDelta, IncomeSource.program);
   }
 
-  buildDescriptionParametersObject(threads: number, usedRam: number) {
+  buildProgramDescriptionParametersObject(threads: number, usedRam: number) {
     const moneyDelta = this.calculateMoneyDelta(threads, usedRam, MS_IN_SECOND);
     const cityDevelopmentPointsDelta = this.calculateCityDevelopmentPointsDelta(threads, usedRam, MS_IN_SECOND);
+
+    return {
+      money: this.formatter.formatNumberLong(moneyDelta),
+      cityDevelopmentPoints: this.formatter.formatNumberLong(cityDevelopmentPointsDelta),
+    };
+  }
+
+  buildProcessDescriptionParametersObject(threads: number, usedCores: number, usedRam: number) {
+    const moneyDelta = this.calculateMoneyDelta(usedCores, usedRam, MS_IN_SECOND);
+    const cityDevelopmentPointsDelta = this.calculateCityDevelopmentPointsDelta(usedCores, usedRam, MS_IN_SECOND);
 
     return {
       money: this.formatter.formatNumberLong(moneyDelta),
@@ -57,7 +64,7 @@ export class ShareServerProgram extends BaseProgram {
       Math.pow(programData.incomeQualityMultiplier, this.quality) *
       (1 +
         (this.mainframeHardwareState.performance - 1) *
-          this._scenarioState.currentValues.mainframeSoftware.performanceBoost)
+          this.scenarioState.currentValues.mainframeSoftware.performanceBoost)
     );
   }
 
@@ -72,7 +79,7 @@ export class ShareServerProgram extends BaseProgram {
       Math.pow(programData.cityDevelopmentPointsQualityMultiplier, this.quality) *
       (1 +
         (this.mainframeHardwareState.performance - 1) *
-          this._scenarioState.currentValues.mainframeSoftware.performanceBoost)
+          this.scenarioState.currentValues.mainframeSoftware.performanceBoost)
     );
   }
 }

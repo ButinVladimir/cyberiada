@@ -6,7 +6,6 @@ import type { IMessageLogState } from '@state/message-log-state/interfaces/messa
 import type { ISettingsState } from '@state/settings-state/interfaces/settings-state';
 import type { IFormatter } from '@shared/interfaces/formatter';
 import type { IGlobalState } from '@state/global-state/interfaces/global-state';
-import type { IScenarioState } from '@state/scenario-state/interfaces/scenario-state';
 import { TYPES } from '@state/types';
 import { EventBatcher } from '@shared/event-batcher';
 import { ProgramsEvent } from '@shared/types';
@@ -26,7 +25,6 @@ export class MainframeProcessesState implements IMainframeProcessesState {
   private _mainframeHardwareState: IMainframeHardwareState;
   private _mainframeOwnedProgramsState: IMainframeOwnedProgramsState;
   private _messageLogState: IMessageLogState;
-  private _scenarioState: IScenarioState;
   private _formatter: IFormatter;
 
   private _processesList: ProgramName[];
@@ -45,7 +43,6 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     @inject(TYPES.MainframeHardwareState) _mainframeHardwareState: IMainframeHardwareState,
     @inject(TYPES.MainframeOwnedProgramsState) _mainframeOwnedProgramsState: IMainframeOwnedProgramsState,
     @inject(TYPES.MessageLogState) _messageLogState: IMessageLogState,
-    @inject(TYPES.ScenarioState) _scenarioState: IScenarioState,
     @inject(TYPES.Formatter) _formatter: IFormatter,
   ) {
     this._globalState = _globalState;
@@ -53,7 +50,6 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     this._mainframeHardwareState = _mainframeHardwareState;
     this._mainframeOwnedProgramsState = _mainframeOwnedProgramsState;
     this._messageLogState = _messageLogState;
-    this._scenarioState = _scenarioState;
     this._formatter = _formatter;
 
     this._processesMap = new Map<ProgramName, IProcess>();
@@ -284,7 +280,6 @@ export class MainframeProcessesState implements IMainframeProcessesState {
       }
 
       if (process.program.isAutoscalable) {
-        process.usedCores = 0;
         continue;
       }
 
@@ -305,6 +300,11 @@ export class MainframeProcessesState implements IMainframeProcessesState {
       } else {
         process.usedCores = 0;
       }
+    }
+
+    if (this._runningScalableProgram) {
+      const scalableProcess = this.getProcessByName(this._runningScalableProgram)!;
+      scalableProcess.usedCores = scalableProcess.isActive ? this._availableCores : 0;
     }
 
     this._globalState.requestGrowthRecalculation();
@@ -347,8 +347,6 @@ export class MainframeProcessesState implements IMainframeProcessesState {
   private createProcess = (processParameters: ISerializedProcess): IProcess => {
     const process = new Process({
       mainframeProcessesState: this,
-      globalState: this._globalState,
-      scenarioState: this._scenarioState,
       isActive: processParameters.isActive,
       threads: processParameters.threads,
       program: this._mainframeOwnedProgramsState.getOwnedProgramByName(processParameters.programName)!,

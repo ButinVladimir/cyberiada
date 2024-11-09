@@ -28,12 +28,6 @@ processFinished:
 processDeleted:
   name: Процесс удален
   message: Процесс для программы $t(programs:{{value.programName}}:name) с числом потоков {{value.threads}} удален
-programDevelopmentStarted:
-  name: Разработка программы начата
-  message: Разработка программы $t(programs:{{value.programName}}:name) с уровнем {{value.level}} и качеством {{value.quality}} начата
-programDevelopmentFinished:
-  name: Разработка программы закончена
-  message: Разработка программы $t(programs:{{value.programName}}:name) с уровнем {{value.level}} и качеством {{value.quality}} закончена
-programDevelopmentAborted:
-  name: Разработка программы прекращена
-  message: Разработка программы $t(programs:{{value.programName}}:name) с уровнем {{value.level}} и качеством {{value.quality}} прекращена
+allProcessesDeleted:
+  name: Все процессы удалены
+  message: Все процессы удалены

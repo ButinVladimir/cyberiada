@@ -100,9 +100,9 @@ export class ProgramFactory implements IProgramFactory {
           level: parameters.level,
           quality: parameters.quality,
           globalState: this._globalState,
-          scenarioState: this._scenarioState,
           mainframeProcessesState: this._mainframeProcessesState,
           mainframeHardwareState: this._mainframeHardwareState,
+          scenarioState: this._scenarioState,
         });
     }
   }

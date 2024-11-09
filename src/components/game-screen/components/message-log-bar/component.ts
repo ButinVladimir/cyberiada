@@ -1,6 +1,8 @@
 import { t } from 'i18next';
 import { LitElement, html, css } from 'lit';
 import { customElement } from 'lit/decorators.js';
+import { ConfirmationAlertOpenEvent, ConfirmationAlertSubmitEvent } from '@components/shared/confirmation-alert/events';
+import { GameStateAlert } from '@shared/types';
 import { MessageLogBarController } from './controller';
 
 @customElement('ca-message-log-bar')
@@ -63,6 +65,18 @@ export class MessageLogBar extends LitElement {
     this._messageLogBarController = new MessageLogBarController(this);
   }
 
+  connectedCallback() {
+    super.connectedCallback();
+
+    document.addEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmClearMessagesDialog);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+
+    document.removeEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmClearMessagesDialog);
+  }
+
   render() {
     return html`
       <div class="title-bar">
@@ -79,7 +93,7 @@ export class MessageLogBar extends LitElement {
             id="clear-messages-btn"
             name="x-circle"
             label=${t('messageLog.clearMessages', { ns: 'ui' })}
-            @click=${this.handleClearMessages}
+            @click=${this.handleOpenClearMessagesDialog}
           >
           </sl-icon-button>
         </sl-tooltip>
@@ -89,9 +103,18 @@ export class MessageLogBar extends LitElement {
     `;
   }
 
-  private handleClearMessages = (event: Event) => {
-    event.preventDefault();
+  private handleOpenClearMessagesDialog = (event: Event) => {
     event.stopPropagation();
+
+    this.dispatchEvent(new ConfirmationAlertOpenEvent(GameStateAlert.clearMessages, ''));
+  };
+
+  private handleConfirmClearMessagesDialog = (event: Event) => {
+    const convertedEvent = event as ConfirmationAlertSubmitEvent;
+
+    if (convertedEvent.gameAlert !== GameStateAlert.clearMessages) {
+      return;
+    }
 
     this._messageLogBarController.clearMessages();
   };

@@ -12,6 +12,7 @@ export interface IProcess extends IUIEventEmitter {
   maxCompletionPoints: number;
   totalRam: number;
   calculateCompletionDelta(passedTime: number): number;
+  calculateCompletionTime(): number;
   toggleActive(active: boolean): void;
   increaseCompletion(delta: number): void;
   resetCompletion(): void;

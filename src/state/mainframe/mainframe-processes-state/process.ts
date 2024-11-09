@@ -1,14 +1,10 @@
-import { IGlobalState } from '@state/global-state/interfaces/global-state';
 import { IProgram } from '@state/progam-factory/interfaces/program';
 import { EventBatcher } from '@shared/event-batcher';
-import { IScenarioState } from '@state/scenario-state/interfaces/scenario-state';
 import { IMainframeProcessesState, IProcess, IProcessParameters, ISerializedProcess } from './interfaces';
 import { MAINFRAME_PROCESSES_STATE_UI_EVENTS } from './constants';
 
 export class Process implements IProcess {
   private _mainframeProcessesState: IMainframeProcessesState;
-  private _globalState: IGlobalState;
-  private _scenarioState: IScenarioState;
   private _program: IProgram;
   private _isActive: boolean;
   private _threads: number;
@@ -19,8 +15,6 @@ export class Process implements IProcess {
 
   constructor(parameters: IProcessParameters) {
     this._mainframeProcessesState = parameters.mainframeProcessesState;
-    this._globalState = parameters.globalState;
-    this._scenarioState = parameters.scenarioState;
     this._program = parameters.program;
     this._isActive = parameters.isActive;
     this._threads = parameters.threads;
@@ -68,11 +62,11 @@ export class Process implements IProcess {
   }
 
   calculateCompletionDelta(passedTime: number): number {
-    const currentSpeed = this._usedCores * this._globalState.programCompletionSpeed.speed;
-    const allowedSpeed =
-      this.maxCompletionPoints / this._scenarioState.currentValues.mainframeSoftware.minCompletionTime;
+    return this.program.calculateCompletionDelta(this._threads, this._usedCores, passedTime);
+  }
 
-    return passedTime * Math.min(currentSpeed, allowedSpeed);
+  calculateCompletionTime(): number {
+    return this.program.calculateCompletionTime(this._threads, this._usedCores);
   }
 
   toggleActive(active: boolean) {
