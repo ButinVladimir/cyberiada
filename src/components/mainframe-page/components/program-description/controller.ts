@@ -13,8 +13,12 @@ export class ProgramDescriptionController extends BaseController {
       GLOBAL_STATE_UI_EVENTS.MAINFRAME_DISCOUNT_CHANGED,
       this.handleRefreshUI,
     );
+    this.globalState.cityDevelopment.addUiEventListener(
+      GLOBAL_STATE_UI_EVENTS.CITY_DEVELOPMENT_LEVEL_CHANGED,
+      this.handleRefreshUI,
+    );
     this.mainframeHardwareState.addUiEventListener(
-      MAINFRAME_HARDWARE_STATE_UI_EVENTS.HARDWARE_UPDATED,
+      MAINFRAME_HARDWARE_STATE_UI_EVENTS.HARDWARE_UPGRADED,
       this.handleRefreshUI,
     );
   }
@@ -24,19 +28,23 @@ export class ProgramDescriptionController extends BaseController {
       GLOBAL_STATE_UI_EVENTS.MAINFRAME_DISCOUNT_CHANGED,
       this.handleRefreshUI,
     );
+    this.globalState.cityDevelopment.removeUiEventListener(
+      GLOBAL_STATE_UI_EVENTS.CITY_DEVELOPMENT_LEVEL_CHANGED,
+      this.handleRefreshUI,
+    );
     this.mainframeHardwareState.removeUiEventListener(
-      MAINFRAME_HARDWARE_STATE_UI_EVENTS.HARDWARE_UPDATED,
+      MAINFRAME_HARDWARE_STATE_UI_EVENTS.HARDWARE_UPGRADED,
       this.handleRefreshUI,
     );
     this.deleteOldProgram();
   }
 
   get ram(): number {
-    return this.mainframeHardwareState.ram;
+    return this.mainframeHardwareState.ram.level;
   }
 
   get cores(): number {
-    return this.mainframeHardwareState.cores;
+    return this.mainframeHardwareState.cores.level;
   }
 
   getProgram(name: ProgramName, level: number, quality: number): IProgram {
@@ -49,7 +57,7 @@ export class ProgramDescriptionController extends BaseController {
         quality,
       });
 
-      this._program.addUiEventListener(PROGRAMS_UI_EVENTS.PROGRAM_UPDATED, this.handleRefreshUI);
+      this._program.addUiEventListener(PROGRAMS_UI_EVENTS.PROGRAM_UPGRADED, this.handleRefreshUI);
     }
 
     return this._program;

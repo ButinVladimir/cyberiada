@@ -7,6 +7,21 @@
       "attributes": []
     },
     {
+      "name": "ca-automation-page",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-automation-autobuyers-panel",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-automation-mainframe-hardware-autobuyer",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_performanceShareRef` {`Ref<SlInput>`} - \n\n  * `_coresShareRef` {`Ref<SlInput>`} - \n\n  * `_ramShareRef` {`Ref<SlInput>`} - \n\n  * `handleChangePerformanceShare` - \n\n  * `handleChangeCoresShare` - \n\n  * `handleChangeRamShare` - \n\n  * `_automationMainframeHardwareAutobuyerController` {`AutomationMainframeHardwareAutobuyerController`} - ",
+      "attributes": []
+    },
+    {
       "name": "ca-city-page",
       "description": "Properties:\n\n  * `styles` {`CSSResult`} - ",
       "attributes": []
@@ -128,32 +143,31 @@
     },
     {
       "name": "ca-mainframe-hardware-panel",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_shiftPressed` {`boolean`} - \n\n  * `_ctrlPressed` {`boolean`} - \n\n  * `handlePurchasePerformanceIncrease` - \n\n  * `handlePurchaseCoresIncrease` - \n\n  * `handlePurchaseRamIncrease` - \n\n  * `handleKeypress` - \n\n  * `_mainframeHardwarePanelController` {`MainframeHardwarePanelController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_shiftPressed` {`boolean`} - \n\n  * `_ctrlPressed` {`boolean`} - \n\n  * `handleKeypress` - ",
       "attributes": []
     },
     {
       "name": "ca-mainframe-hardware-panel-article",
-      "description": "Attributes:\n\n  * `label` {`string`} - \n\n  * `increase` {`number`} - \n\n  * `money` {`number`} - \n\n  * `level` {`number`} - \n\n  * `cost` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `label` {`string`} - \n\n  * `increase` {`number`} - \n\n  * `money` {`number`} - \n\n  * `level` {`number`} - \n\n  * `cost` {`number`} - \n\n  * `handleBuy` - \n\n  * `_mainframeHardwarePanelArticleController` {`MainframeHardwarePanelArticleController`} - ",
+      "description": "Attributes:\n\n  * `type` {`HardwarePanelArticleType`} - \n\n  * `max-increase` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `type` {`HardwarePanelArticleType`} - \n\n  * `maxIncrease` {`number`} - \n\n  * `handleBuy` - \n\n  * `_mainframeHardwarePanelArticleController` {`MainframeHardwarePanelArticleController`} - ",
       "attributes": [
         {
-          "name": "label",
-          "description": "`label` {`string`} - \n\nProperty: label"
+          "name": "type",
+          "description": "`type` {`HardwarePanelArticleType`} - \n\nProperty: type",
+          "values": [
+            {
+              "name": "performance"
+            },
+            {
+              "name": "cores"
+            },
+            {
+              "name": "ram"
+            }
+          ]
         },
         {
-          "name": "increase",
-          "description": "`increase` {`number`} - \n\nProperty: increase"
-        },
-        {
-          "name": "money",
-          "description": "`money` {`number`} - \n\nProperty: money"
-        },
-        {
-          "name": "level",
-          "description": "`level` {`number`} - \n\nProperty: level"
-        },
-        {
-          "name": "cost",
-          "description": "`cost` {`number`} - \n\nProperty: cost"
+          "name": "max-increase",
+          "description": "`max-increase` {`number`} - \n\nProperty: maxIncrease"
         }
       ]
     },

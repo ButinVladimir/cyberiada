@@ -5,7 +5,7 @@ import { BaseController } from '@shared/base-controller';
 export class ProcessesPanelController extends BaseController {
   hostConnected() {
     this.mainframeProcessesState.addUiEventListener(
-      MAINFRAME_HARDWARE_STATE_UI_EVENTS.HARDWARE_UPDATED,
+      MAINFRAME_HARDWARE_STATE_UI_EVENTS.HARDWARE_UPGRADED,
       this.handleRefreshUI,
     );
     this.mainframeProcessesState.addUiEventListener(
@@ -16,7 +16,7 @@ export class ProcessesPanelController extends BaseController {
 
   hostDisconnected() {
     this.mainframeProcessesState.removeUiEventListener(
-      MAINFRAME_HARDWARE_STATE_UI_EVENTS.HARDWARE_UPDATED,
+      MAINFRAME_HARDWARE_STATE_UI_EVENTS.HARDWARE_UPGRADED,
       this.handleRefreshUI,
     );
     this.mainframeOwnedProgramState.removeUiEventListener(

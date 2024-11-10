@@ -8,6 +8,7 @@ import type { IMainframeOwnedProgramsState } from '@state/mainframe/mainframe-ow
 import type { IMainframeProcessesState } from '@state/mainframe/mainframe-processes-state/interfaces/mainframe-processes-state';
 import type { IProgramFactory } from '@state/progam-factory/interfaces/program-factory';
 import type { IGlobalState } from '@state/global-state/interfaces/global-state';
+import type { IMainframeHardwareAutomationState } from '@state/automation/mainframe-hardware-automation-state/interfaces/mainframe-hardware-automation-state';
 import { GameSpeed } from '@state/global-state/types';
 import { TYPES } from '@state/types';
 import { IAppState, ISerializedState } from './interfaces';
@@ -23,6 +24,7 @@ export class AppState implements IAppState {
   private _mainframeOwnedProgramsState: IMainframeOwnedProgramsState;
   private _mainframeProcessesState: IMainframeProcessesState;
   private _programFactory: IProgramFactory;
+  private _mainframeHardwareAutomationState: IMainframeHardwareAutomationState;
 
   constructor(
     @inject(TYPES.ScenarioState) _scenarioState: IScenarioState,
@@ -34,6 +36,8 @@ export class AppState implements IAppState {
     @inject(TYPES.MainframeOwnedProgramsState) _mainframeOwnedProgramsState: IMainframeOwnedProgramsState,
     @inject(TYPES.MainframeProcessesState) _mainframeProcessesState: IMainframeProcessesState,
     @inject(TYPES.ProgramFactory) _programFactory: IProgramFactory,
+    @inject(TYPES.MainframeHardwareAutomationState)
+    _mainframeHardwareAutomationState: IMainframeHardwareAutomationState,
   ) {
     this._scenarioState = _scenarioState;
     this._globalState = _globalState;
@@ -44,6 +48,7 @@ export class AppState implements IAppState {
     this._mainframeOwnedProgramsState = _mainframeOwnedProgramsState;
     this._mainframeProcessesState = _mainframeProcessesState;
     this._programFactory = _programFactory;
+    this._mainframeHardwareAutomationState = _mainframeHardwareAutomationState;
   }
 
   updateState() {
@@ -81,6 +86,7 @@ export class AppState implements IAppState {
       mainframeHardware: this._mainframeHardwareState.serialize(),
       mainframeOwnedPrograms: this._mainframeOwnedProgramsState.serialize(),
       mainframeProcesses: this._mainframeProcessesState.serialize(),
+      mainframeHardwareAutomationState: this._mainframeHardwareAutomationState.serialize(),
     };
 
     const encodedSaveState = btoa(JSON.stringify(saveState));
@@ -100,6 +106,7 @@ export class AppState implements IAppState {
     await this._mainframeHardwareState.deserialize(parsedSaveData.mainframeHardware);
     await this._mainframeOwnedProgramsState.deserialize(parsedSaveData.mainframeOwnedPrograms);
     await this._mainframeProcessesState.deserialize(parsedSaveData.mainframeProcesses);
+    await this._mainframeHardwareAutomationState.deserialize(parsedSaveData.mainframeHardwareAutomationState);
   }
 
   addUiEventListener() {}
@@ -142,5 +149,6 @@ export class AppState implements IAppState {
     await this._mainframeHardwareState.startNewState();
     await this._mainframeOwnedProgramsState.startNewState();
     await this._mainframeProcessesState.startNewState();
+    await this._mainframeHardwareAutomationState.startNewState();
   }
 }

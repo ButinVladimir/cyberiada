@@ -12,6 +12,10 @@ import {
   MainframeOwnedProgramsState,
 } from '@state/mainframe/mainframe-owned-programs-state';
 import { IMainframeProcessesState, MainframeProcessesState } from '@state/mainframe/mainframe-processes-state';
+import {
+  IMainframeHardwareAutomationState,
+  MainframeHardwareAutomationState,
+} from '@state/automation/mainframe-hardware-automation-state';
 import { Formatter } from '@shared/formatter';
 import { IFormatter } from '@shared/interfaces/formatter';
 import { TYPES } from './types';
@@ -48,6 +52,12 @@ container
 container
   .bind<IMainframeProcessesState>(TYPES.MainframeProcessesState)
   .to(MainframeProcessesState)
+  .inSingletonScope()
+  .whenTargetIsDefault();
+
+container
+  .bind<IMainframeHardwareAutomationState>(TYPES.MainframeHardwareAutomationState)
+  .to(MainframeHardwareAutomationState)
   .inSingletonScope()
   .whenTargetIsDefault();
 

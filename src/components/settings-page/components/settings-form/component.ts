@@ -14,10 +14,11 @@ export class SettingsForm extends LitElement {
   static styles = css`
     :host {
       width: 100%;
+      max-width: var(--ca-viewport-width);
       display: grid;
       column-gap: var(--sl-spacing-3x-large);
       row-gap: var(--sl-spacing-large);
-      grid-template-columns: repeat(2, minmax(0, 30rem));
+      grid-template-columns: repeat(2, 1fr);
       grid-auto-rows: auto;
       align-items: flex-start;
       margin-bottom: var(--sl-spacing-large);

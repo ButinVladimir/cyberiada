@@ -262,8 +262,8 @@ export class MainframeProcessesState implements IMainframeProcessesState {
 
   private updateRunningProcesses = () => {
     this._processUpdateRequested = false;
-    this._availableCores = this._mainframeHardwareState.cores;
-    this._availableRam = this._mainframeHardwareState.ram;
+    this._availableCores = this._mainframeHardwareState.cores.level;
+    this._availableRam = this._mainframeHardwareState.ram.level;
     this._runningProcesses.splice(0);
     this._runningScalableProgram = this._processesList.find(
       (programName) => this.getProcessByName(programName)?.program.isAutoscalable,

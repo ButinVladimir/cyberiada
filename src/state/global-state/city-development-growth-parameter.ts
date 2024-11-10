@@ -6,7 +6,7 @@ import { ShareServerProgram } from '@state/progam-factory/programs/share-server'
 import { ICityDevelopmentGrowthParameter } from './interfaces/city-development-growth-parameter';
 import { ICityDevelopmentGrowthConstructorParameters } from './interfaces/constructor-parameters/city-development-growth-constructor-parameters';
 import { GLOBAL_STATE_UI_EVENTS } from './constants';
-import { INCOME_SOURCES } from '@/shared';
+import { INCOME_SOURCES } from '@shared/constants';
 
 export class CityDevelopmentGrowthParameter implements ICityDevelopmentGrowthParameter {
   private _mainframeProcessesState: IMainframeProcessesState;

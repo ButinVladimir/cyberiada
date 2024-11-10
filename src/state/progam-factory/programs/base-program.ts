@@ -92,7 +92,7 @@ export abstract class BaseProgram implements IProgram {
 
     this.mainframeProcessesState.requestUpdateProcesses();
 
-    this.uiEventBatcher.enqueueEvent(PROGRAMS_UI_EVENTS.PROGRAM_UPDATED);
+    this.uiEventBatcher.enqueueEvent(PROGRAMS_UI_EVENTS.PROGRAM_UPGRADED);
   }
 
   calculateCompletionDelta(threads: number, usedCores: number, passedTime: number): number {

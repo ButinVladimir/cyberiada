@@ -6,11 +6,12 @@ import type { IMessageLogState } from '@state/message-log-state/interfaces/messa
 import type { IMainframeProcessesState } from '@state/mainframe/mainframe-processes-state/interfaces/mainframe-processes-state';
 import type { IFormatter } from '@shared/interfaces/formatter';
 import { TYPES } from '@state/types';
-import { PurchaseEvent, PurchaseType } from '@shared/types';
 import { EventBatcher } from '@shared/event-batcher';
-import { calculatePow } from '@shared/helpers';
 import { IMainframeHardwareState, IMainframeHardwareSerializedState } from './interfaces';
 import { MAINFRAME_HARDWARE_STATE_UI_EVENTS } from './constants';
+import { MainframeHardwarePerformance } from './mainframe-hardware-performance';
+import { MainframeHardwareCores } from './mainframe-hardware-cores';
+import { MainframeHardwareRam } from './mainframe-hardware-ram';
 
 const { lazyInject } = decorators;
 
@@ -26,9 +27,9 @@ export class MainframeHardwareState implements IMainframeHardwareState {
 
   private readonly _uiEventBatcher: EventBatcher;
 
-  private _performance: number;
-  private _cores: number;
-  private _ram: number;
+  private _performance: MainframeHardwarePerformance;
+  private _cores: MainframeHardwareCores;
+  private _ram: MainframeHardwareRam;
 
   constructor(
     @inject(TYPES.ScenarioState) _scenarioState: IScenarioState,
@@ -41,11 +42,27 @@ export class MainframeHardwareState implements IMainframeHardwareState {
     this._messageLogState = _messageLogState;
     this._formatter = _formatter;
 
-    const scenarioValues = this._scenarioState.currentValues;
-
-    this._performance = scenarioValues.mainframeHardware.performanceLevel;
-    this._cores = scenarioValues.mainframeHardware.coresLevel;
-    this._ram = scenarioValues.mainframeHardware.ramLevel;
+    this._performance = new MainframeHardwarePerformance({
+      mainframeHardwareState: this,
+      globalState: this._globalState,
+      messageLogState: this._messageLogState,
+      scenarioState: this._scenarioState,
+      formatter: this._formatter,
+    });
+    this._cores = new MainframeHardwareCores({
+      mainframeHardwareState: this,
+      globalState: this._globalState,
+      messageLogState: this._messageLogState,
+      scenarioState: this._scenarioState,
+      formatter: this._formatter,
+    });
+    this._ram = new MainframeHardwareRam({
+      mainframeHardwareState: this,
+      globalState: this._globalState,
+      messageLogState: this._messageLogState,
+      scenarioState: this._scenarioState,
+      formatter: this._formatter,
+    });
 
     this._uiEventBatcher = new EventBatcher();
   }
@@ -62,102 +79,29 @@ export class MainframeHardwareState implements IMainframeHardwareState {
     return this._ram;
   }
 
-  getPerformanceIncreaseCost(increase: number): number {
-    const exp = this._scenarioState.currentValues.mainframeHardware.performancePrice;
-    const baseCost = calculatePow(this._performance - 1, exp);
-
-    return (
-      ((1 - this._globalState.computationalBase.discount) * (baseCost * (Math.pow(exp.base, increase) - 1))) /
-      (exp.base - 1)
-    );
+  emitUpgradedEvent() {
+    this._mainframeProcessesState.requestUpdateProcesses();
+    this._globalState.requestGrowthRecalculation();
+    this._uiEventBatcher.enqueueEvent(MAINFRAME_HARDWARE_STATE_UI_EVENTS.HARDWARE_UPGRADED);
   }
 
-  purchasePerformanceIncrease(increase: number): boolean {
-    const maxIncrease = this._globalState.cityDevelopment.level - this.performance;
-    if (increase > maxIncrease) {
-      throw new Error('Mainframe hardware performance level cannot be above city level');
-    }
-
-    const cost = this.getPerformanceIncreaseCost(increase);
-
-    return this._globalState.money.purchase(
-      cost,
-      PurchaseType.mainframeHardware,
-      this.handlePurchasePerformanceIncrease(increase),
-    );
-  }
-
-  getCoresIncreaseCost(increase: number): number {
-    const exp = this._scenarioState.currentValues.mainframeHardware.coresPrice;
-    const baseCost = calculatePow(this._performance - 1, exp);
-
-    return (
-      ((1 - this._globalState.computationalBase.discount) * (baseCost * (Math.pow(exp.base, increase) - 1))) /
-      (exp.base - 1)
-    );
-  }
-
-  purchaseCoresIncrease(increase: number): boolean {
-    const maxIncrease = this._globalState.cityDevelopment.level - this.cores;
-    if (increase > maxIncrease) {
-      throw new Error('Mainframe hardware cores level cannot be above city level');
-    }
-
-    const cost = this.getCoresIncreaseCost(increase);
-
-    return this._globalState.money.purchase(
-      cost,
-      PurchaseType.mainframeHardware,
-      this.handlePurchaseCoresIncrease(increase),
-    );
-  }
-
-  getRamIncreaseCost(increase: number): number {
-    const exp = this._scenarioState.currentValues.mainframeHardware.ramPrice;
-    const baseCost = calculatePow(this._performance - 1, exp);
-
-    return (
-      ((1 - this._globalState.computationalBase.discount) * (baseCost * (Math.pow(exp.base, increase) - 1))) /
-      (exp.base - 1)
-    );
-  }
-
-  purchaseRamIncrease(increase: number): boolean {
-    const maxIncrease = this._globalState.cityDevelopment.level - this.ram;
-    if (increase > maxIncrease) {
-      throw new Error('Mainframe hardware RAM level cannot be above city level');
-    }
-
-    const cost = this.getRamIncreaseCost(increase);
-
-    return this._globalState.money.purchase(
-      cost,
-      PurchaseType.mainframeHardware,
-      this.handlePurchaseRamIncrease(increase),
-    );
-  }
-
-  // eslint-disable-next-line @typescript-eslint/require-await
   async startNewState(): Promise<void> {
-    const scenarioValues = this._scenarioState.currentValues;
-
-    this._performance = scenarioValues.mainframeHardware.performanceLevel;
-    this._cores = scenarioValues.mainframeHardware.coresLevel;
-    this._ram = scenarioValues.mainframeHardware.ramLevel;
+    await this.performance.startNewState();
+    await this.cores.startNewState();
+    await this.ram.startNewState();
   }
 
-  // eslint-disable-next-line @typescript-eslint/require-await
   async deserialize(serializedState: IMainframeHardwareSerializedState): Promise<void> {
-    this._performance = serializedState.performance;
-    this._cores = serializedState.cores;
-    this._ram = serializedState.ram;
+    await this.performance.deserialize(serializedState.performance);
+    await this.cores.deserialize(serializedState.cores);
+    await this.ram.deserialize(serializedState.ram);
   }
 
   serialize(): IMainframeHardwareSerializedState {
     return {
-      performance: this.performance,
-      cores: this.cores,
-      ram: this.ram,
+      performance: this.performance.serialize(),
+      cores: this.cores.serialize(),
+      ram: this.ram.serialize(),
     };
   }
 
@@ -171,35 +115,5 @@ export class MainframeHardwareState implements IMainframeHardwareState {
 
   fireUiEvents() {
     this._uiEventBatcher.fireEvents();
-  }
-
-  private handlePurchasePerformanceIncrease = (increase: number) => () => {
-    this._performance += increase;
-    this._messageLogState.postMessage(PurchaseEvent.performanceUpgraded, {
-      level: this._formatter.formatNumberDecimal(this._performance),
-    });
-    this.handlePostHardwareUpdate();
-  };
-
-  private handlePurchaseCoresIncrease = (increase: number) => () => {
-    this._cores += increase;
-    this._messageLogState.postMessage(PurchaseEvent.coresUpgraded, {
-      level: this._formatter.formatNumberDecimal(this._cores),
-    });
-    this.handlePostHardwareUpdate();
-  };
-
-  private handlePurchaseRamIncrease = (increase: number) => () => {
-    this._ram += increase;
-    this._messageLogState.postMessage(PurchaseEvent.ramUpgraded, {
-      level: this._formatter.formatNumberDecimal(this._ram),
-    });
-    this.handlePostHardwareUpdate();
-  };
-
-  private handlePostHardwareUpdate() {
-    this._mainframeProcessesState.requestUpdateProcesses();
-    this._globalState.requestGrowthRecalculation();
-    this._uiEventBatcher.enqueueEvent(MAINFRAME_HARDWARE_STATE_UI_EVENTS.HARDWARE_UPDATED);
   }
 }

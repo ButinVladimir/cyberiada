@@ -13,6 +13,7 @@ export enum OverviewMenuItem {
   company = 'company',
   mainframe = 'mainframe',
   statistics = 'statistics',
+  automation = 'automation',
 }
 
 export enum MiscMenuItem {

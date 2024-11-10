@@ -27,4 +27,5 @@ body {
   --ca-scrollbar-thumb-fill-color: var(--sl-color-neutral-400);
   --ca-scrollbar-thumb-fill-color-hover: var(--sl-color-neutral-700);
   --ca-table-row-odd-color: var(--sl-color-neutral-100);
+  --ca-viewport-width: 65rem;
 }

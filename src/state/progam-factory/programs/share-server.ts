@@ -57,14 +57,9 @@ export class ShareServerProgram extends BaseProgram {
     const programData = programs[this.name];
 
     return (
-      passedTime *
-      threads *
-      usedRam *
+      this.calculateModifier(threads, usedRam, passedTime) *
       calculatePow(this.level - 1, programData.income as IExponent) *
-      Math.pow(programData.incomeQualityMultiplier, this.quality) *
-      (1 +
-        (this.mainframeHardwareState.performance - 1) *
-          this.scenarioState.currentValues.mainframeSoftware.performanceBoost)
+      Math.pow(programData.incomeQualityMultiplier, this.quality)
     );
   }
 
@@ -72,13 +67,19 @@ export class ShareServerProgram extends BaseProgram {
     const programData = programs[this.name];
 
     return (
+      this.calculateModifier(threads, usedRam, passedTime) *
+      calculatePow(this.level - 1, programData.cityDevelopmentPoints as IExponent) *
+      Math.pow(programData.cityDevelopmentPointsQualityMultiplier, this.quality)
+    );
+  }
+
+  private calculateModifier(threads: number, usedRam: number, passedTime: number): number {
+    return (
       passedTime *
       threads *
       usedRam *
-      calculatePow(this.level - 1, programData.cityDevelopmentPoints as IExponent) *
-      Math.pow(programData.cityDevelopmentPointsQualityMultiplier, this.quality) *
       (1 +
-        (this.mainframeHardwareState.performance - 1) *
+        (this.mainframeHardwareState.performance.level - 1) *
           this.scenarioState.currentValues.mainframeSoftware.performanceBoost)
     );
   }

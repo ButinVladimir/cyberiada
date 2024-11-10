@@ -13,3 +13,8 @@ predictiveComputator:
   overview: Program to speed up completion of currently running processes.
   programDescription: Can speed up currently running processes by up to {{value.value}}
   processDescription: Speed up currently running processes by {{value.value}}
+mainframeHardwareAutobuyer:
+  name: Mainframe hardware autobuyer
+  overview: Program to automatically buy mainframe hardware.
+  programDescription: Buys new mainframe hardware {{value.value}} times per completion ({{value.minAvgValue}} - {{value.maxAvgValue}} times per second on average)
+  processDescription: Buys new mainframe hardware {{value.value}} times per completion ({{value.avgValue}} times per second on average)

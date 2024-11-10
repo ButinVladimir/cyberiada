@@ -68,7 +68,7 @@ export class PurchaseProgramDialogController extends BaseController {
         quality,
       });
 
-      this._selectedProgram.addUiEventListener(PROGRAMS_UI_EVENTS.PROGRAM_UPDATED, this.handleRefreshUI);
+      this._selectedProgram.addUiEventListener(PROGRAMS_UI_EVENTS.PROGRAM_UPGRADED, this.handleRefreshUI);
     }
 
     return this._selectedProgram;

@@ -6,12 +6,17 @@ import type { IGlobalState } from '@state/global-state/interfaces/global-state';
 import type { IMainframeHardwareState } from '@state/mainframe/mainframe-hardware-state/interfaces/mainframe-hardware-state';
 import type { IMainframeProcessesState } from '@state/mainframe/mainframe-processes-state/interfaces/mainframe-processes-state';
 import type { ISettingsState } from '@state/settings-state/interfaces/settings-state';
+import type { IMainframeHardwareAutomationState } from '@state/automation/mainframe-hardware-automation-state/interfaces/mainframe-hardware-automation-state';
 import type { IFormatter } from '@shared/interfaces/formatter';
 import { IProgramFactory } from './interfaces/program-factory';
 import { IMakeProgramParameters, IProgram } from './interfaces';
 import { ProgramName } from './types';
-import { ShareServerProgram, CodeGeneratorProgram } from './programs';
-import { PredictiveComputatorProgram } from './programs/predictive-computator';
+import {
+  ShareServerProgram,
+  CodeGeneratorProgram,
+  PredictiveComputatorProgram,
+  MainframeHardwareAutobuyerProgram,
+} from './programs';
 
 const { lazyInject } = decorators;
 
@@ -31,6 +36,9 @@ export class ProgramFactory implements IProgramFactory {
 
   @lazyInject(TYPES.MainframeHardwareState)
   private _mainframeHardwareState!: IMainframeHardwareState;
+
+  @lazyInject(TYPES.MainframeHardwareAutomationState)
+  private _mainframeHardwareAutomationState!: IMainframeHardwareAutomationState;
 
   @lazyInject(TYPES.Formatter)
   private _formatter!: IFormatter;
@@ -103,6 +111,18 @@ export class ProgramFactory implements IProgramFactory {
           mainframeProcessesState: this._mainframeProcessesState,
           mainframeHardwareState: this._mainframeHardwareState,
           scenarioState: this._scenarioState,
+        });
+
+      case ProgramName.mainframeHardwareAutobuyer:
+        return new MainframeHardwareAutobuyerProgram({
+          formatter: this._formatter,
+          level: parameters.level,
+          quality: parameters.quality,
+          globalState: this._globalState,
+          mainframeProcessesState: this._mainframeProcessesState,
+          mainframeHardwareState: this._mainframeHardwareState,
+          scenarioState: this._scenarioState,
+          mainframeHardwareAutomationState: this._mainframeHardwareAutomationState,
         });
     }
   }

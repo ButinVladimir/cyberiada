@@ -36,7 +36,7 @@ export class StatisticsMultipliers extends LitElement {
         <span>
           <intl-message label="ui:statistics:general:multipliers:mainframeDiscount"> Mainframe discount </intl-message>
         </span>
-        <span> ${formatter.formatNumberFloat(this._statisticsGeneralPanelController.mainframeDiscount)} </span>
+        <span> ${formatter.formatNumberFloat(this._statisticsGeneralPanelController.mainframeDiscount * 100)} </span>
       </div>
     `;
   }

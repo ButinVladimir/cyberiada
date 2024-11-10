@@ -1,4 +1,4 @@
-import { GLOBAL_STATE_UI_EVENTS } from '@/state/global-state/constants';
+import { GLOBAL_STATE_UI_EVENTS } from '@state/global-state/constants';
 import { BaseController } from '@shared/base-controller';
 
 export class PurchaseTooltipController extends BaseController {

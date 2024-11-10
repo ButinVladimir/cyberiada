@@ -36,5 +36,12 @@
     "discounts": {
       "program": 2
     }
+  },
+  "defaultAutomationSettings": {
+    "mainframeHardwareAutobuyer": {
+      "performanceShare": 5,
+      "coresShare": 5,
+      "ramShare": 5
+    }
   }
 }

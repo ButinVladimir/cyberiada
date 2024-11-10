@@ -9,6 +9,7 @@ import { IMainframeHardwareState } from '@state/mainframe/mainframe-hardware-sta
 import { IMainframeOwnedProgramsState } from '@state/mainframe/mainframe-owned-programs-state/interfaces/mainframe-owned-program-state';
 import { IMainframeProcessesState } from '@state/mainframe/mainframe-processes-state/interfaces/mainframe-processes-state';
 import { IProgramFactory } from '@state/progam-factory';
+import { IMainframeHardwareAutomationState } from '@state/automation/mainframe-hardware-automation-state/interfaces/mainframe-hardware-automation-state';
 import { container } from '@state/container';
 import { TYPES } from '@state/types';
 import { IApp } from '@state/app';
@@ -72,6 +73,10 @@ export class BaseController<T extends ReactiveControllerHost = ReactiveControlle
 
   protected get programFactory(): IProgramFactory {
     return container.get<IProgramFactory>(TYPES.ProgramFactory);
+  }
+
+  protected get mainframeHardwareAutomationState(): IMainframeHardwareAutomationState {
+    return container.get<IMainframeHardwareAutomationState>(TYPES.MainframeHardwareAutomationState);
   }
 
   protected handleRefreshUI = (): void => {

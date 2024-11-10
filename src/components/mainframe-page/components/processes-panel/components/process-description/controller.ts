@@ -14,8 +14,12 @@ export class ProcessDescriptionController extends BaseController {
       GLOBAL_STATE_UI_EVENTS.PROGRAM_COMPLETION_SPEED_CHANGED,
       this.handleRefreshUI,
     );
+    this.globalState.cityDevelopment.addUiEventListener(
+      GLOBAL_STATE_UI_EVENTS.CITY_DEVELOPMENT_LEVEL_CHANGED,
+      this.handleRefreshUI,
+    );
     this.mainframeHardwareState.addUiEventListener(
-      MAINFRAME_HARDWARE_STATE_UI_EVENTS.HARDWARE_UPDATED,
+      MAINFRAME_HARDWARE_STATE_UI_EVENTS.HARDWARE_UPGRADED,
       this.handleRefreshUI,
     );
   }
@@ -25,8 +29,12 @@ export class ProcessDescriptionController extends BaseController {
       GLOBAL_STATE_UI_EVENTS.PROGRAM_COMPLETION_SPEED_CHANGED,
       this.handleRefreshUI,
     );
+    this.globalState.cityDevelopment.removeUiEventListener(
+      GLOBAL_STATE_UI_EVENTS.CITY_DEVELOPMENT_LEVEL_CHANGED,
+      this.handleRefreshUI,
+    );
     this.mainframeHardwareState.removeUiEventListener(
-      MAINFRAME_HARDWARE_STATE_UI_EVENTS.HARDWARE_UPDATED,
+      MAINFRAME_HARDWARE_STATE_UI_EVENTS.HARDWARE_UPGRADED,
       this.handleRefreshUI,
     );
     this.unsubscribeFromProcess();
@@ -48,7 +56,7 @@ export class ProcessDescriptionController extends BaseController {
 
       if (this._process) {
         this._process.addUiEventListener(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESS_UPDATED, this.handleRefreshUI);
-        this._process.program.addUiEventListener(PROGRAMS_UI_EVENTS.PROGRAM_UPDATED, this.handleRefreshUI);
+        this._process.program.addUiEventListener(PROGRAMS_UI_EVENTS.PROGRAM_UPGRADED, this.handleRefreshUI);
       }
     }
 
@@ -58,7 +66,7 @@ export class ProcessDescriptionController extends BaseController {
   private unsubscribeFromProcess() {
     if (this._process) {
       this._process.removeUiEventListener(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESS_UPDATED, this.handleRefreshUI);
-      this._process.program.removeUiEventListener(PROGRAMS_UI_EVENTS.PROGRAM_UPDATED, this.handleRefreshUI);
+      this._process.program.removeUiEventListener(PROGRAMS_UI_EVENTS.PROGRAM_UPGRADED, this.handleRefreshUI);
     }
   }
 }

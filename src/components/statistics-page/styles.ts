@@ -11,8 +11,8 @@ export const statisticsPanelStyle = css`
 
 export const statisticsPanelContentStyle = css`
   :host {
-    width: 60em;
-    max-width: 100%;
+    max-width: var(--ca-viewport-width);
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: stretch;

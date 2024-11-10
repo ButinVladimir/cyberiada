@@ -15,6 +15,7 @@ pages:
   mainframe: Mainframe
   statistics: Statistics
   settings: Settings
+  automation: Automation
 topBar:
   menu: Toggle menu
   messageLog: Toggle message log
@@ -178,3 +179,13 @@ statistics:
       title: Money expenses
       mainframeHardware: On mainframe hardware
       mainframePrograms: On mainframe programs
+automation:
+  automation: Automation
+  tabs:
+    autobuyers: Autobuyers
+  mainframeHardwareAutobuyer:
+    mainframeHardwareAutobuyer: Mainframe hardware autobuyer
+    percentageHint: Percentages of available money reserved for upgrading mainframe hardware
+    performance: Performance share
+    cores: Cores share
+    ram: RAM share

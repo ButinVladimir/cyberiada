@@ -88,7 +88,7 @@ export class ProgramCompletionSpeedParameter implements IProgramCompletionSpeedP
     this._speed =
       this._multiplier *
       (1 +
-        (this._mainframeHardwareState.performance - 1) *
+        (this._mainframeHardwareState.performance.level - 1) *
           this._scenarioState.currentValues.mainframeSoftware.performanceBoost);
   }
 }

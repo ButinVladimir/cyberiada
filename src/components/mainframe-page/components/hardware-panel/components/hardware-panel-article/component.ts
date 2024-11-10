@@ -1,7 +1,7 @@
 import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { BuyHardwareUpgradeEvent } from './events';
 import { MainframeHardwarePanelArticleController } from './controller';
+import type { HardwarePanelArticleType } from './types';
 
 @customElement('ca-mainframe-hardware-panel-article')
 export class MainframeHardwarePanelArticle extends LitElement {
@@ -40,34 +40,16 @@ export class MainframeHardwarePanelArticle extends LitElement {
   `;
 
   @property({
-    attribute: 'label',
+    attribute: 'type',
     type: String,
   })
-  label!: string;
+  type!: HardwarePanelArticleType;
 
   @property({
-    attribute: 'increase',
+    attribute: 'max-increase',
     type: Number,
   })
-  increase!: number;
-
-  @property({
-    attribute: 'money',
-    type: Number,
-  })
-  money!: number;
-
-  @property({
-    attribute: 'level',
-    type: Number,
-  })
-  level!: number;
-
-  @property({
-    attribute: 'cost',
-    type: Number,
-  })
-  cost!: number;
+  maxIncrease!: number;
 
   private _mainframeHardwarePanelArticleController: MainframeHardwarePanelArticleController;
 
@@ -78,30 +60,32 @@ export class MainframeHardwarePanelArticle extends LitElement {
   }
 
   render() {
-    const { money, cityLevel } = this._mainframeHardwarePanelArticleController;
+    const increase = this.calculateIncrease();
     const formatter = this._mainframeHardwarePanelArticleController.formatter;
 
-    const buttonDisabled = !(money >= this.cost && cityLevel > this.level);
+    const level = this._mainframeHardwarePanelArticleController.getLevel(this.type);
+    const buttonDisabled = !this._mainframeHardwarePanelArticleController.checkCanPurchase(increase, this.type);
+    const cost = this._mainframeHardwarePanelArticleController.getPurchaseCost(increase, this.type);
 
     const buttonValue = JSON.stringify({
-      cost: formatter.formatNumberLong(this.cost),
-      increase: formatter.formatNumberDecimal(this.increase),
+      cost: formatter.formatNumberLong(cost),
+      increase: formatter.formatNumberDecimal(increase),
     });
 
     return html`
       <div class="text-container">
         <h4 class="title">
-          <intl-message label="ui:mainframe:hardware:${this.label}" value=${formatter.formatNumberDecimal(this.level)}
+          <intl-message label="ui:mainframe:hardware:${this.type}" value=${formatter.formatNumberDecimal(level)}
             >Level</intl-message
           >
         </h4>
         <p class="hint">
-          <intl-message label="ui:mainframe:hardware:${this.label}Hint"> Higher level leads to profit. </intl-message>
+          <intl-message label="ui:mainframe:hardware:${this.type}Hint"> Higher level leads to profit. </intl-message>
         </p>
       </div>
 
       <div class="button-container">
-        <ca-purchase-tooltip cost=${this.cost} level=${this.level + 1}>
+        <ca-purchase-tooltip cost=${cost} level=${level + 1}>
           <sl-button variant="primary" type="button" size="medium" ?disabled=${buttonDisabled} @click=${this.handleBuy}>
             <intl-message label="ui:mainframe:hardware:buy" value=${buttonValue}> Buy </intl-message>
           </sl-button>
@@ -114,6 +98,18 @@ export class MainframeHardwarePanelArticle extends LitElement {
     event.stopPropagation();
     event.preventDefault();
 
-    this.dispatchEvent(new BuyHardwareUpgradeEvent());
+    const increase = this.calculateIncrease();
+    this._mainframeHardwarePanelArticleController.purchase(increase, this.type);
   };
+
+  private calculateIncrease(): number {
+    return Math.max(
+      Math.min(
+        this.maxIncrease,
+        this._mainframeHardwarePanelArticleController.cityDevelopmentLevel -
+          this._mainframeHardwarePanelArticleController.getLevel(this.type),
+      ),
+      1,
+    );
+  }
 }

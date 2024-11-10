@@ -27,10 +27,10 @@ export class OwnedProgramsListItemController extends BaseController {
   }
 
   private addProgramListeners() {
-    this._ownedProgram?.addUiEventListener(PROGRAMS_UI_EVENTS.PROGRAM_UPDATED, this.handleRefreshUI);
+    this._ownedProgram?.addUiEventListener(PROGRAMS_UI_EVENTS.PROGRAM_UPGRADED, this.handleRefreshUI);
   }
 
   private removeProgramListeners() {
-    this._ownedProgram?.removeUiEventListener(PROGRAMS_UI_EVENTS.PROGRAM_UPDATED, this.handleRefreshUI);
+    this._ownedProgram?.removeUiEventListener(PROGRAMS_UI_EVENTS.PROGRAM_UPGRADED, this.handleRefreshUI);
   }
 }

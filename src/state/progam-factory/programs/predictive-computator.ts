@@ -33,7 +33,7 @@ export class PredictiveComputatorProgram extends BaseProgram {
           this.level *
           Math.pow(programData.speedModifierQualityMultiplier, this.quality) *
           (1 +
-            (this.mainframeHardwareState.performance - 1) *
+            (this.mainframeHardwareState.performance.level - 1) *
               this.scenarioState.currentValues.mainframeSoftware.performanceBoost),
     );
   }

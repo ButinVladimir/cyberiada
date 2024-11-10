@@ -50,6 +50,9 @@ export class Viewport extends LitElement {
       case OverviewMenuItem.statistics:
         return html`<ca-statistics-page></ca-statistics-page>`;
 
+      case OverviewMenuItem.automation:
+        return html`<ca-automation-page></ca-automation-page>`;
+
       case MiscMenuItem.settings:
         return html`<ca-settings-page></ca-settings-page>`;
 

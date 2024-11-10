@@ -12,7 +12,7 @@ export class StartProcessDialogController extends BaseController {
       this.handleRefreshUI,
     );
     this.mainframeHardwareState.addUiEventListener(
-      MAINFRAME_HARDWARE_STATE_UI_EVENTS.HARDWARE_UPDATED,
+      MAINFRAME_HARDWARE_STATE_UI_EVENTS.HARDWARE_UPGRADED,
       this.handleRefreshUI,
     );
   }
@@ -23,17 +23,17 @@ export class StartProcessDialogController extends BaseController {
       this.handleRefreshUI,
     );
     this.mainframeHardwareState.removeUiEventListener(
-      MAINFRAME_HARDWARE_STATE_UI_EVENTS.HARDWARE_UPDATED,
+      MAINFRAME_HARDWARE_STATE_UI_EVENTS.HARDWARE_UPGRADED,
       this.handleRefreshUI,
     );
   }
 
   get ram(): number {
-    return this.mainframeHardwareState.ram;
+    return this.mainframeHardwareState.ram.level;
   }
 
   get cores(): number {
-    return this.mainframeHardwareState.cores;
+    return this.mainframeHardwareState.cores.level;
   }
 
   getAvailableRamForProgram(programName?: ProgramName): number {

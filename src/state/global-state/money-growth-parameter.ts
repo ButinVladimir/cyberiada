@@ -6,7 +6,7 @@ import { ShareServerProgram } from '@state/progam-factory/programs/share-server'
 import { IMoneyGrowthParameter } from './interfaces/money-growth-parameter';
 import { IMoneyGrowthConstructorParameters } from './interfaces/constructor-parameters/money-growth-constructor-parameters';
 import { GLOBAL_STATE_UI_EVENTS } from './constants';
-import { INCOME_SOURCES } from '@/shared';
+import { INCOME_SOURCES } from '@shared/constants';
 
 export class MoneyGrowthParameter implements IMoneyGrowthParameter {
   private _mainframeProcessesState: IMainframeProcessesState;
