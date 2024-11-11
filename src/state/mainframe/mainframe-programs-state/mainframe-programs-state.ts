@@ -10,11 +10,11 @@ import { TYPES } from '@state/types';
 import { ProgramName } from '@state/progam-factory/types';
 import { PurchaseEvent, PurchaseType } from '@shared/types';
 import { EventBatcher } from '@shared/event-batcher';
-import { IMainframeOwnedProgramsState, IMainframeOwnedProgramsSerializedState } from './interfaces';
-import { MAINFRAME_OWNED_PROGRAMES_STATE_UI_EVENTS } from './constants';
+import { IMainframeProgramsState, IMainframeProgramsSerializedState } from './interfaces';
+import { MAINFRAME_PROGRAMS_STATE_UI_EVENTS } from './constants';
 
 @injectable()
-export class MainframeOwnedProgramsState implements IMainframeOwnedProgramsState {
+export class MainframeProgramsState implements IMainframeProgramsState {
   private _programFactory: IProgramFactory;
   private _scenarioState: IScenarioState;
   private _globalState: IGlobalState;
@@ -48,6 +48,7 @@ export class MainframeOwnedProgramsState implements IMainframeOwnedProgramsState
       throw new Error(`Cannot purchase program ${programParameters.name} with level above city level`);
     }
 
+    const existingProgram = this.getOwnedProgramByName(programParameters.name);
     const program = this._programFactory.makeProgram(programParameters);
 
     const bought = this._globalState.money.purchase(
@@ -56,7 +57,7 @@ export class MainframeOwnedProgramsState implements IMainframeOwnedProgramsState
       this.handlePurchaseProgram(program),
     );
 
-    if (this.getOwnedProgramByName(programParameters.name) !== program) {
+    if (!bought || existingProgram) {
       this._programFactory.deleteProgram(program);
     }
 
@@ -71,6 +72,18 @@ export class MainframeOwnedProgramsState implements IMainframeOwnedProgramsState
     return this._ownedPrograms.get(name);
   }
 
+  toggleProgramsAutoUpgrade(active: boolean) {
+    for (const program of this._ownedPrograms.values()) {
+      program.autoUpgradeEnabled = active;
+    }
+
+    this.requestUiUpdate();
+  }
+
+  requestUiUpdate() {
+    this._uiEventBatcher.enqueueEvent(MAINFRAME_PROGRAMS_STATE_UI_EVENTS.OWNED_PROGRAMS_UPDATED);
+  }
+
   // eslint-disable-next-line @typescript-eslint/require-await
   async startNewState(): Promise<void> {
     this.clearState();
@@ -81,15 +94,16 @@ export class MainframeOwnedProgramsState implements IMainframeOwnedProgramsState
           name: programName,
           level: 1,
           quality: 0,
+          autoUpgradeEnabled: true,
         }),
       );
     }
 
-    this._uiEventBatcher.enqueueEvent(MAINFRAME_OWNED_PROGRAMES_STATE_UI_EVENTS.OWNED_PROGRAMS_UPDATED);
+    this.requestUiUpdate();
   }
 
   // eslint-disable-next-line @typescript-eslint/require-await
-  async deserialize(serializedState: IMainframeOwnedProgramsSerializedState): Promise<void> {
+  async deserialize(serializedState: IMainframeProgramsSerializedState): Promise<void> {
     this.clearState();
 
     serializedState.ownedPrograms.forEach((programParameters) => {
@@ -97,10 +111,10 @@ export class MainframeOwnedProgramsState implements IMainframeOwnedProgramsState
       this._ownedPrograms.set(programParameters.name, program);
     });
 
-    this._uiEventBatcher.enqueueEvent(MAINFRAME_OWNED_PROGRAMES_STATE_UI_EVENTS.OWNED_PROGRAMS_UPDATED);
+    this.requestUiUpdate();
   }
 
-  serialize(): IMainframeOwnedProgramsSerializedState {
+  serialize(): IMainframeProgramsSerializedState {
     return {
       ownedPrograms: this.listOwnedPrograms().map((program) => program.serialize()),
     };
@@ -127,7 +141,7 @@ export class MainframeOwnedProgramsState implements IMainframeOwnedProgramsState
       this._ownedPrograms.set(newProgram.name, newProgram);
     }
 
-    this._uiEventBatcher.enqueueEvent(MAINFRAME_OWNED_PROGRAMES_STATE_UI_EVENTS.OWNED_PROGRAMS_UPDATED);
+    this.requestUiUpdate();
   }
 
   private handlePurchaseProgram = (newProgram: IProgram) => () => {

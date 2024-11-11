@@ -15,10 +15,6 @@ export class GameSpeedButtons extends LitElement {
       box-sizing: border-box;
       align-items: center;
     }
-
-    .speed-button-active {
-      color: var(--sl-color-primary-600);
-    }
   `;
 
   private _gameSpeedButtonsController: GameSpeedButtonsController;
@@ -49,19 +45,16 @@ export class GameSpeedButtons extends LitElement {
         gameSpeed: GameSpeed.paused,
         label: 'pause',
         icon: gameSpeed === GameSpeed.paused ? 'pause-fill' : 'pause',
-        isActive: gameSpeed === GameSpeed.paused,
       })}
       ${this.renderButton({
         gameSpeed: GameSpeed.normal,
         label: 'playNormal',
         icon: gameSpeed === GameSpeed.normal ? 'play-fill' : 'play',
-        isActive: gameSpeed === GameSpeed.normal,
       })}
       ${this.renderButton({
         gameSpeed: GameSpeed.fast,
         label: 'playFast',
         icon: gameSpeed === GameSpeed.fast ? 'fast-forward-fill' : 'fast-forward',
-        isActive: gameSpeed === GameSpeed.fast,
       })}
       <sl-tooltip>
         <intl-message slot="content" label="ui:topBar:gameSpeedButtons:fastForward"> Game speed button </intl-message>
@@ -77,9 +70,7 @@ export class GameSpeedButtons extends LitElement {
   }
 
   renderButton = (props: GameSpeedButtonProps): TemplateResult => {
-    const { label, gameSpeed, icon, isActive } = props;
-
-    const className = isActive ? 'speed-button-active' : '';
+    const { label, gameSpeed, icon } = props;
 
     return html`
       <sl-tooltip>
@@ -87,7 +78,6 @@ export class GameSpeedButtons extends LitElement {
 
         <sl-icon-button
           name=${icon}
-          class=${className}
           label=${t(`topBar.gameSpeedButtons.${label}`, { ns: 'ui' })}
           @click=${this.handleChangeGameSpeed(gameSpeed)}
         >

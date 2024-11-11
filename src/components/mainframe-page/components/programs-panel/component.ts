@@ -1,8 +1,8 @@
 import { LitElement, css, html } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 
-@customElement('ca-mainframe-owned-programs-panel')
-export class MainframeOwnedProgramsPanel extends LitElement {
+@customElement('ca-mainframe-programs-panel')
+export class MainframeProgramsPanel extends LitElement {
   static styles = css`
     :host {
       display: flex;
@@ -21,7 +21,7 @@ export class MainframeOwnedProgramsPanel extends LitElement {
   render() {
     return html`
       <sl-button variant="primary" size="medium" @click=${this.handlePurchaseProgramDialogOpen}>
-        <intl-message label="ui:mainframe:ownedPrograms:purchaseProgram"> Purchase a program </intl-message>
+        <intl-message label="ui:mainframe:programs:purchaseProgram"> Purchase a program </intl-message>
       </sl-button>
 
       <ca-purchase-program-dialog

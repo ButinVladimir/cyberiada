@@ -88,7 +88,7 @@ mainframe:
   tabs:
     processes: Процессы
     hardware: Оборудование
-    ownedPrograms: Имеющиеся программы
+    programs: Программы
   hardware:
     keyboardHint: Нажмите Ctrl или Shift для покупки 10 уровней. Нажмите вместе Ctrl и Shift для покупки 100 уровней.
     performance: 'Уровень производительности: {{value}}'
@@ -98,7 +98,7 @@ mainframe:
     ram: 'Уровень памяти: {{value}}'
     ramHint: Дополнительная память дает возможность держать больше процессов в памяти, чтобы они смогли выполниться позже или в больших группах
     buy: Купить x{{value.increase}} за {{value.cost}}
-  ownedPrograms:
+  programs:
     purchaseProgram: Купить программу
     purchaseProgramDialogHint: Выберите тип программы, уровень и качество, чтобы купить её.
       Уровень не может быть выше текущего уровня развития города.

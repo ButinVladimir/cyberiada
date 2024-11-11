@@ -42,6 +42,9 @@
       "performanceShare": 5,
       "coresShare": 5,
       "ramShare": 5
+    },
+    "mainframeProgramsAutobuyer": {
+      "moneyShare": 10
     }
   }
 }

@@ -4,9 +4,11 @@ import { TYPES } from '@state/types';
 import type { IScenarioState } from '@state/scenario-state/interfaces/scenario-state';
 import type { IGlobalState } from '@state/global-state/interfaces/global-state';
 import type { IMainframeHardwareState } from '@state/mainframe/mainframe-hardware-state/interfaces/mainframe-hardware-state';
+import type { IMainframeProgramsState } from '@state/mainframe/mainframe-programs-state/interfaces/mainframe-programs-state';
 import type { IMainframeProcessesState } from '@state/mainframe/mainframe-processes-state/interfaces/mainframe-processes-state';
 import type { ISettingsState } from '@state/settings-state/interfaces/settings-state';
 import type { IMainframeHardwareAutomationState } from '@state/automation/mainframe-hardware-automation-state/interfaces/mainframe-hardware-automation-state';
+import type { IMainframeProgramsAutomationState } from '@state/automation/mainframe-programs-automation-state/interfaces/mainframe-programs-automation-state';
 import type { IFormatter } from '@shared/interfaces/formatter';
 import { IProgramFactory } from './interfaces/program-factory';
 import { IMakeProgramParameters, IProgram } from './interfaces';
@@ -16,6 +18,7 @@ import {
   CodeGeneratorProgram,
   PredictiveComputatorProgram,
   MainframeHardwareAutobuyerProgram,
+  MainframeProgramsAutobuyerProgram,
 } from './programs';
 
 const { lazyInject } = decorators;
@@ -31,6 +34,9 @@ export class ProgramFactory implements IProgramFactory {
   @lazyInject(TYPES.SettingsState)
   private _settingsState!: ISettingsState;
 
+  @lazyInject(TYPES.MainframeProgramsState)
+  private _mainframeProgramsState!: IMainframeProgramsState;
+
   @lazyInject(TYPES.MainframeProcessesState)
   private _mainframeProcessesState!: IMainframeProcessesState;
 
@@ -39,6 +45,9 @@ export class ProgramFactory implements IProgramFactory {
 
   @lazyInject(TYPES.MainframeHardwareAutomationState)
   private _mainframeHardwareAutomationState!: IMainframeHardwareAutomationState;
+
+  @lazyInject(TYPES.MainframeProgramsAutomationState)
+  private _mainframeProgramsAutomationState!: IMainframeProgramsAutomationState;
 
   @lazyInject(TYPES.Formatter)
   private _formatter!: IFormatter;
@@ -84,7 +93,9 @@ export class ProgramFactory implements IProgramFactory {
           formatter: this._formatter,
           level: parameters.level,
           quality: parameters.quality,
+          autoUpgradeEnabled: parameters.autoUpgradeEnabled,
           globalState: this._globalState,
+          mainframeProgramsState: this._mainframeProgramsState,
           mainframeProcessesState: this._mainframeProcessesState,
           mainframeHardwareState: this._mainframeHardwareState,
           scenarioState: this._scenarioState,
@@ -96,7 +107,9 @@ export class ProgramFactory implements IProgramFactory {
           formatter: this._formatter,
           level: parameters.level,
           quality: parameters.quality,
+          autoUpgradeEnabled: parameters.autoUpgradeEnabled,
           globalState: this._globalState,
+          mainframeProgramsState: this._mainframeProgramsState,
           mainframeProcessesState: this._mainframeProcessesState,
           mainframeHardwareState: this._mainframeHardwareState,
           scenarioState: this._scenarioState,
@@ -107,7 +120,9 @@ export class ProgramFactory implements IProgramFactory {
           formatter: this._formatter,
           level: parameters.level,
           quality: parameters.quality,
+          autoUpgradeEnabled: parameters.autoUpgradeEnabled,
           globalState: this._globalState,
+          mainframeProgramsState: this._mainframeProgramsState,
           mainframeProcessesState: this._mainframeProcessesState,
           mainframeHardwareState: this._mainframeHardwareState,
           scenarioState: this._scenarioState,
@@ -118,11 +133,28 @@ export class ProgramFactory implements IProgramFactory {
           formatter: this._formatter,
           level: parameters.level,
           quality: parameters.quality,
+          autoUpgradeEnabled: parameters.autoUpgradeEnabled,
           globalState: this._globalState,
+          mainframeProgramsState: this._mainframeProgramsState,
           mainframeProcessesState: this._mainframeProcessesState,
           mainframeHardwareState: this._mainframeHardwareState,
           scenarioState: this._scenarioState,
           mainframeHardwareAutomationState: this._mainframeHardwareAutomationState,
+        });
+
+      case ProgramName.mainframeProgramsAutobuyer:
+        return new MainframeProgramsAutobuyerProgram({
+          formatter: this._formatter,
+          level: parameters.level,
+          quality: parameters.quality,
+          autoUpgradeEnabled: parameters.autoUpgradeEnabled,
+          globalState: this._globalState,
+          mainframeProgramsState: this._mainframeProgramsState,
+          mainframeProcessesState: this._mainframeProcessesState,
+          mainframeHardwareState: this._mainframeHardwareState,
+          scenarioState: this._scenarioState,
+          programFactory: this,
+          mainframeProgramsAutomationState: this._mainframeProgramsAutomationState,
         });
     }
   }

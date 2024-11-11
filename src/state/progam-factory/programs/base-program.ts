@@ -4,6 +4,7 @@ import { EventBatcher } from '@shared/event-batcher';
 import { IExponent } from '@shared/interfaces/exponent';
 import { calculatePow } from '@shared/helpers';
 import { IGlobalState } from '@state/global-state/interfaces/global-state';
+import { IMainframeProgramsState } from '@state/mainframe/mainframe-programs-state/interfaces/mainframe-programs-state';
 import { IMainframeProcessesState } from '@state/mainframe/mainframe-processes-state/interfaces/mainframe-processes-state';
 import { IMainframeHardwareState } from '@state/mainframe/mainframe-hardware-state/interfaces/mainframe-hardware-state';
 import { IScenarioState } from '@state/scenario-state/interfaces/scenario-state';
@@ -16,6 +17,7 @@ import { PROGRAMS_UI_EVENTS } from '../constants';
 
 export abstract class BaseProgram implements IProgram {
   protected globalState: IGlobalState;
+  protected mainframeProgramsState: IMainframeProgramsState;
   protected mainframeProcessesState: IMainframeProcessesState;
   protected mainframeHardwareState: IMainframeHardwareState;
   protected scenarioState: IScenarioState;
@@ -23,6 +25,7 @@ export abstract class BaseProgram implements IProgram {
 
   private _level!: number;
   private _quality!: number;
+  private _autoUpgradeEnabled: boolean;
 
   protected readonly uiEventBatcher: EventBatcher;
 
@@ -30,6 +33,7 @@ export abstract class BaseProgram implements IProgram {
 
   constructor(parameters: IBaseProgramParameters) {
     this.globalState = parameters.globalState;
+    this.mainframeProgramsState = parameters.mainframeProgramsState;
     this.mainframeProcessesState = parameters.mainframeProcessesState;
     this.mainframeHardwareState = parameters.mainframeHardwareState;
     this.scenarioState = parameters.scenarioState;
@@ -37,6 +41,8 @@ export abstract class BaseProgram implements IProgram {
 
     this._level = parameters.level;
     this._quality = parameters.quality;
+
+    this._autoUpgradeEnabled = parameters.autoUpgradeEnabled;
 
     this.uiEventBatcher = new EventBatcher();
   }
@@ -56,6 +62,17 @@ export abstract class BaseProgram implements IProgram {
       this.globalState.cityDevelopment.level - this._level,
       programData.completionPoints as IExponent,
     );
+  }
+
+  get autoUpgradeEnabled() {
+    return this._autoUpgradeEnabled;
+  }
+
+  set autoUpgradeEnabled(value: boolean) {
+    this._autoUpgradeEnabled = value;
+
+    this.uiEventBatcher.enqueueEvent(PROGRAMS_UI_EVENTS.PROGRAM_UPGRADED);
+    this.mainframeProgramsState.requestUiUpdate();
   }
 
   abstract get isRepeatable(): boolean;
@@ -119,6 +136,7 @@ export abstract class BaseProgram implements IProgram {
       name: this.name,
       level: this.level,
       quality: this.quality,
+      autoUpgradeEnabled: this.autoUpgradeEnabled,
     };
   }
 

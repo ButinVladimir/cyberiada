@@ -6,10 +6,11 @@ import { ISettingsState } from '@state/settings-state/interfaces/settings-state'
 import { ICityState } from '@state/city-state/interfaces/city-state';
 import { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
 import { IMainframeHardwareState } from '@state/mainframe/mainframe-hardware-state/interfaces/mainframe-hardware-state';
-import { IMainframeOwnedProgramsState } from '@state/mainframe/mainframe-owned-programs-state/interfaces/mainframe-owned-program-state';
+import { IMainframeProgramsState } from '@/state/mainframe/mainframe-programs-state/interfaces/mainframe-programs-state';
 import { IMainframeProcessesState } from '@state/mainframe/mainframe-processes-state/interfaces/mainframe-processes-state';
 import { IProgramFactory } from '@state/progam-factory';
 import { IMainframeHardwareAutomationState } from '@state/automation/mainframe-hardware-automation-state/interfaces/mainframe-hardware-automation-state';
+import { IMainframeProgramsAutomationState } from '@state/automation/mainframe-programs-automation-state/interfaces/mainframe-programs-automation-state';
 import { container } from '@state/container';
 import { TYPES } from '@state/types';
 import { IApp } from '@state/app';
@@ -63,8 +64,8 @@ export class BaseController<T extends ReactiveControllerHost = ReactiveControlle
     return container.get<IMainframeHardwareState>(TYPES.MainframeHardwareState);
   }
 
-  protected get mainframeOwnedProgramState(): IMainframeOwnedProgramsState {
-    return container.get<IMainframeOwnedProgramsState>(TYPES.MainframeOwnedProgramsState);
+  protected get mainframeProgramsState(): IMainframeProgramsState {
+    return container.get<IMainframeProgramsState>(TYPES.MainframeProgramsState);
   }
 
   protected get mainframeProcessesState(): IMainframeProcessesState {
@@ -77,6 +78,10 @@ export class BaseController<T extends ReactiveControllerHost = ReactiveControlle
 
   protected get mainframeHardwareAutomationState(): IMainframeHardwareAutomationState {
     return container.get<IMainframeHardwareAutomationState>(TYPES.MainframeHardwareAutomationState);
+  }
+
+  protected get mainframeProgramsAutomationState(): IMainframeProgramsAutomationState {
+    return container.get<IMainframeProgramsAutomationState>(TYPES.MainframeProgramsAutomationState);
   }
 
   protected handleRefreshUI = (): void => {

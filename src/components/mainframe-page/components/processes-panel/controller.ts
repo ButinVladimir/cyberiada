@@ -19,7 +19,7 @@ export class ProcessesPanelController extends BaseController {
       MAINFRAME_HARDWARE_STATE_UI_EVENTS.HARDWARE_UPGRADED,
       this.handleRefreshUI,
     );
-    this.mainframeOwnedProgramState.removeUiEventListener(
+    this.mainframeProgramsState.removeUiEventListener(
       MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESSES_UPDATED,
       this.handleRefreshUI,
     );

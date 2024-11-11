@@ -1,6 +1,6 @@
 import { IExponent } from './interfaces/exponent';
 
-export const calculatePow = (exponent: number, params: IExponent) => {
+export const calculatePow = (exponent: number, params: IExponent): number => {
   return params.baseMultiplier * Math.pow(params.base, exponent);
 };
 
@@ -24,4 +24,20 @@ export const binarySearchDecimal = (
   }
 
   return value;
+};
+
+export const normalizePercentage = (value: number): number => {
+  if (value < 0) {
+    return 0;
+  }
+
+  if (value > 100) {
+    return 100;
+  }
+
+  return Math.floor(value);
+};
+
+export const checkPercentage = (value: number): boolean => {
+  return value >= 0 && value <= 100;
 };

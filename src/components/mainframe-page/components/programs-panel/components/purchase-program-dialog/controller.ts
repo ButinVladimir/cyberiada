@@ -1,5 +1,5 @@
 import { GLOBAL_STATE_UI_EVENTS } from '@state/global-state/constants';
-import { MAINFRAME_OWNED_PROGRAMES_STATE_UI_EVENTS } from '@state/mainframe/mainframe-owned-programs-state';
+import { MAINFRAME_PROGRAMS_STATE_UI_EVENTS } from '@/state/mainframe/mainframe-programs-state';
 import { PROGRAMS_UI_EVENTS } from '@state/progam-factory/constants';
 import { BaseController } from '@shared/base-controller';
 import { IProgram } from '@state/progam-factory/interfaces/program';
@@ -9,8 +9,8 @@ export class PurchaseProgramDialogController extends BaseController {
   private _selectedProgram?: IProgram;
 
   hostConnected() {
-    this.mainframeOwnedProgramState.addUiEventListener(
-      MAINFRAME_OWNED_PROGRAMES_STATE_UI_EVENTS.OWNED_PROGRAMS_UPDATED,
+    this.mainframeProgramsState.addUiEventListener(
+      MAINFRAME_PROGRAMS_STATE_UI_EVENTS.OWNED_PROGRAMS_UPDATED,
       this.handleRefreshUI,
     );
     this.globalState.computationalBase.addUiEventListener(
@@ -25,8 +25,8 @@ export class PurchaseProgramDialogController extends BaseController {
   }
 
   hostDisconnected() {
-    this.mainframeOwnedProgramState.removeUiEventListener(
-      MAINFRAME_OWNED_PROGRAMES_STATE_UI_EVENTS.OWNED_PROGRAMS_UPDATED,
+    this.mainframeProgramsState.removeUiEventListener(
+      MAINFRAME_PROGRAMS_STATE_UI_EVENTS.OWNED_PROGRAMS_UPDATED,
       this.handleRefreshUI,
     );
     this.globalState.computationalBase.removeUiEventListener(
@@ -66,6 +66,7 @@ export class PurchaseProgramDialogController extends BaseController {
         name,
         level,
         quality,
+        autoUpgradeEnabled: true,
       });
 
       this._selectedProgram.addUiEventListener(PROGRAMS_UI_EVENTS.PROGRAM_UPGRADED, this.handleRefreshUI);
@@ -75,14 +76,15 @@ export class PurchaseProgramDialogController extends BaseController {
   }
 
   getOwnedProgram(name: ProgramName): IProgram | undefined {
-    return this.mainframeOwnedProgramState.getOwnedProgramByName(name);
+    return this.mainframeProgramsState.getOwnedProgramByName(name);
   }
 
   purchaseProgram(name: ProgramName, level: number, quality: number): boolean {
-    return this.mainframeOwnedProgramState.purchaseProgram({
+    return this.mainframeProgramsState.purchaseProgram({
       name,
       level,
       quality,
+      autoUpgradeEnabled: true,
     });
   }
 }

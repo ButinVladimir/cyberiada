@@ -10,10 +10,14 @@ export class AutomationAutobuyersPanel extends LitElement {
       display: flex;
       align-items: stretch;
       flex-direction: column;
+      gap: var(--sl-spacing-medium);
     }
   `;
 
   render() {
-    return html` <ca-automation-mainframe-hardware-autobuyer></ca-automation-mainframe-hardware-autobuyer> `;
+    return html`
+      <ca-automation-mainframe-hardware-autobuyer></ca-automation-mainframe-hardware-autobuyer>
+      <ca-automation-mainframe-programs-autobuyer></ca-automation-mainframe-programs-autobuyer>
+    `;
   }
 }

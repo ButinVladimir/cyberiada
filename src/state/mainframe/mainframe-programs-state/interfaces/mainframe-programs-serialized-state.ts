@@ -1,5 +1,5 @@
 import { IMakeProgramParameters } from '@state/progam-factory/interfaces/make-program-parameters';
 
-export interface IMainframeOwnedProgramsSerializedState {
+export interface IMainframeProgramsSerializedState {
   ownedPrograms: IMakeProgramParameters[];
 }

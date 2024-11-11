@@ -18,3 +18,8 @@ mainframeHardwareAutobuyer:
   overview: Program to automatically buy mainframe hardware.
   programDescription: Buys new mainframe hardware {{value.value}} times per completion ({{value.minAvgValue}} - {{value.maxAvgValue}} times per second on average)
   processDescription: Buys new mainframe hardware {{value.value}} times per completion ({{value.avgValue}} times per second on average)
+mainframeProgramsAutobuyer:
+  name: Mainframe programs autobuyer
+  overview: Program to automatically buy mainframe programs.
+  programDescription: Buys new mainframe programs {{value.value}} times per completion ({{value.minAvgValue}} - {{value.maxAvgValue}} times per second on average)
+  processDescription: Buys new mainframe programs {{value.value}} times per completion ({{value.avgValue}} times per second on average)

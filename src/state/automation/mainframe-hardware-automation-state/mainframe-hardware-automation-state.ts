@@ -1,5 +1,6 @@
 import { injectable } from 'inversify';
 import constants from '@configs/constants.json';
+import { checkPercentage } from '@shared/helpers';
 import { IMainframeHardwareAutomationSerializedState, IMainframeHardwareAutomationState } from './interfaces';
 
 @injectable()
@@ -19,10 +20,8 @@ export class MainframeHardwareAutomationState implements IMainframeHardwareAutom
   }
 
   set performanceShare(value: number) {
-    const roundedValue = Math.floor(value);
-
-    if (this.checkValue(roundedValue)) {
-      this._performanceShare = roundedValue;
+    if (checkPercentage(value)) {
+      this._performanceShare = value;
     }
   }
 
@@ -31,10 +30,8 @@ export class MainframeHardwareAutomationState implements IMainframeHardwareAutom
   }
 
   set coresShare(value: number) {
-    const roundedValue = Math.floor(value);
-
-    if (this.checkValue(roundedValue)) {
-      this._coresShare = roundedValue;
+    if (checkPercentage(value)) {
+      this._coresShare = value;
     }
   }
 
@@ -43,10 +40,8 @@ export class MainframeHardwareAutomationState implements IMainframeHardwareAutom
   }
 
   set ramShare(value: number) {
-    const roundedValue = Math.floor(value);
-
-    if (this.checkValue(roundedValue)) {
-      this._ramShare = roundedValue;
+    if (checkPercentage(value)) {
+      this._ramShare = value;
     }
   }
 
@@ -70,9 +65,5 @@ export class MainframeHardwareAutomationState implements IMainframeHardwareAutom
       coresShare: this._coresShare,
       ramShare: this._ramShare,
     };
-  }
-
-  private checkValue(value: number): boolean {
-    return value >= 0 && value <= 100;
   }
 }

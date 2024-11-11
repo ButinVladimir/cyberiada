@@ -12,7 +12,7 @@ export class ProcessesListController extends BaseController {
   }
 
   hostDisconnected() {
-    this.mainframeOwnedProgramState.removeUiEventListener(
+    this.mainframeProgramsState.removeUiEventListener(
       MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESSES_UPDATED,
       this.handleRefreshUI,
     );

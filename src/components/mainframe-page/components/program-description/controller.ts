@@ -55,6 +55,7 @@ export class ProgramDescriptionController extends BaseController {
         name,
         level,
         quality,
+        autoUpgradeEnabled: true,
       });
 
       this._program.addUiEventListener(PROGRAMS_UI_EVENTS.PROGRAM_UPGRADED, this.handleRefreshUI);
@@ -65,7 +66,6 @@ export class ProgramDescriptionController extends BaseController {
 
   private deleteOldProgram() {
     if (this._program) {
-      this._program.removeEventListeners();
       this.programFactory.deleteProgram(this._program);
     }
   }

@@ -1,4 +1,4 @@
 import './hardware-panel';
-import './owned-programs-panel';
+import './programs-panel';
 import './processes-panel';
 import './program-description';

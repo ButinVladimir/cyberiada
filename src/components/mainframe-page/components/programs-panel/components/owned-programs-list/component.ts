@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { LitElement, css, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
@@ -23,15 +24,21 @@ export class OwnedProgramsList extends LitElement {
     }
 
     th.program {
-      width: 32%;
+      width: 40%;
     }
 
     th.level {
-      width: 17%;
+      width: 25%;
     }
 
     th.quality {
-      width: 17%;
+      width: 25%;
+    }
+
+    th.autoupgrade {
+      width: auto;
+      text-align: right;
+      font-size: var(--sl-font-size-large);
     }
 
     thead th {
@@ -62,6 +69,10 @@ export class OwnedProgramsList extends LitElement {
   }
 
   render() {
+    const autoupgradeActive = this.checkSomeProgramsAutoupgradeActive();
+
+    const autoupgradeIcon = autoupgradeActive ? 'arrow-up-circle-fill' : 'arrow-up-circle';
+
     return html`
       <table>
         <thead>
@@ -74,6 +85,21 @@ export class OwnedProgramsList extends LitElement {
           <th class="quality">
             <intl-message label="ui:mainframe:quality">Quality</intl-message>
           </th>
+          <th class="autoupgrade">
+            <sl-tooltip>
+              <intl-message slot="content" label="ui:mainframe:programs:toggleAutoupgradeAll">
+                Toggle autoupgrade
+              </intl-message>
+
+              <sl-icon-button
+                id="toggle-autoupgrade-btn"
+                name=${autoupgradeIcon}
+                label=${t('mainframe.programs.toggleAutoupgradeAll', { ns: 'ui' })}
+                @click=${this.handleToggleAutoupgrade}
+              >
+              </sl-icon-button>
+            </sl-tooltip>
+          </th>
         </thead>
 
         <tbody>
@@ -83,7 +109,7 @@ export class OwnedProgramsList extends LitElement {
     `;
   }
 
-  renderContent = () => {
+  private renderContent = () => {
     const ownedPrograms = this._ownedProgramsListController.listOwnedPrograms();
 
     if (ownedPrograms.length === 0) {
@@ -93,19 +119,32 @@ export class OwnedProgramsList extends LitElement {
     return repeat(ownedPrograms, (program) => program.name, this.renderListItem);
   };
 
-  renderEmptyListNotification = () => {
+  private renderEmptyListNotification = () => {
     return html`
       <tr class="notification">
         <td colspan="4">
-          <intl-message label="ui:mainframe:ownedPrograms:emptyListNotification">
-            You don't have any programs
-          </intl-message>
+          <intl-message label="ui:mainframe:programs:emptyListNotification"> You don't have any programs </intl-message>
         </td>
       </tr>
     `;
   };
 
-  renderListItem = (program: IProgram) => {
+  private renderListItem = (program: IProgram) => {
     return html` <ca-owned-programs-list-item program-name=${program.name}> </ca-owned-programs-list-item> `;
+  };
+
+  private checkSomeProgramsAutoupgradeActive(): boolean {
+    const programs = this._ownedProgramsListController.listOwnedPrograms();
+
+    return programs.some((program) => program.autoUpgradeEnabled);
+  }
+
+  private handleToggleAutoupgrade = (event: Event) => {
+    event.stopPropagation();
+    event.preventDefault();
+
+    const active = this.checkSomeProgramsAutoupgradeActive();
+
+    this._ownedProgramsListController.toggleAutoupgrade(!active);
   };
 }

@@ -7,9 +7,10 @@ export const TYPES = {
   SettingsState: Symbol('SettingsState'),
   MessageLogState: Symbol('MessageLogState'),
   MainframeHardwareState: Symbol('MainframeHardwareState'),
-  MainframeOwnedProgramsState: Symbol('MainframeOwnedProgramsState'),
+  MainframeProgramsState: Symbol('MainframeProgramsState'),
   MainframeProcessesState: Symbol('MainframeProcessesState'),
   ProgramFactory: Symbol('ProgramFactory'),
   MainframeHardwareAutomationState: Symbol('MainframeHardwareAutomationState'),
+  MainframeProgramsAutomationState: Symbol('MainframeProgramsAutomationState'),
   Formatter: Symbol('Formatter'),
 };

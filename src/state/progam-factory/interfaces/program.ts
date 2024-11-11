@@ -13,6 +13,7 @@ export interface IProgram extends IUIEventEmitter {
   cost: number;
   ram: number;
   cores: number;
+  autoUpgradeEnabled: boolean;
   update(newProgram: IProgram): void;
   removeEventListeners(): void;
   perform(threads: number, usedRam: number): void;

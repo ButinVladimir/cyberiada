@@ -7,15 +7,16 @@ import { CityState, ICityState } from '@state/city-state';
 import { IMessageLogState, MessageLogState } from '@state/message-log-state';
 import { IProgramFactory, ProgramFactory } from '@state/progam-factory';
 import { IMainframeHardwareState, MainframeHardwareState } from '@state/mainframe/mainframe-hardware-state';
-import {
-  IMainframeOwnedProgramsState,
-  MainframeOwnedProgramsState,
-} from '@state/mainframe/mainframe-owned-programs-state';
+import { IMainframeProgramsState, MainframeProgramsState } from '@/state/mainframe/mainframe-programs-state';
 import { IMainframeProcessesState, MainframeProcessesState } from '@state/mainframe/mainframe-processes-state';
 import {
   IMainframeHardwareAutomationState,
   MainframeHardwareAutomationState,
 } from '@state/automation/mainframe-hardware-automation-state';
+import {
+  IMainframeProgramsAutomationState,
+  MainframeProgramsAutomationState,
+} from '@state/automation/mainframe-programs-automation-state';
 import { Formatter } from '@shared/formatter';
 import { IFormatter } from '@shared/interfaces/formatter';
 import { TYPES } from './types';
@@ -44,8 +45,8 @@ container
   .whenTargetIsDefault();
 
 container
-  .bind<IMainframeOwnedProgramsState>(TYPES.MainframeOwnedProgramsState)
-  .to(MainframeOwnedProgramsState)
+  .bind<IMainframeProgramsState>(TYPES.MainframeProgramsState)
+  .to(MainframeProgramsState)
   .inSingletonScope()
   .whenTargetIsDefault();
 
@@ -58,6 +59,12 @@ container
 container
   .bind<IMainframeHardwareAutomationState>(TYPES.MainframeHardwareAutomationState)
   .to(MainframeHardwareAutomationState)
+  .inSingletonScope()
+  .whenTargetIsDefault();
+
+container
+  .bind<IMainframeProgramsAutomationState>(TYPES.MainframeProgramsAutomationState)
+  .to(MainframeProgramsAutomationState)
   .inSingletonScope()
   .whenTargetIsDefault();
 

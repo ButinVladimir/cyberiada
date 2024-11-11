@@ -146,12 +146,12 @@ export class PurchaseProgramDialog extends LitElement {
     return html`
       <sl-dialog ?open=${this.isOpen && !this._confirmationAlertVisible} @sl-request-close=${this.handleClose}>
         <h4 slot="label" class="title">
-          <intl-message label="ui:mainframe:ownedPrograms:purchaseProgram"> Purchase a program </intl-message>
+          <intl-message label="ui:mainframe:programs:purchaseProgram"> Purchase a program </intl-message>
         </h4>
 
         <div class="body">
           <p class="hint">
-            <intl-message label="ui:mainframe:ownedPrograms:purchaseProgramDialogHint">
+            <intl-message label="ui:mainframe:programs:purchaseProgramDialogHint">
               Select program type, level and quality to purchase it.
             </intl-message>
           </p>
@@ -228,9 +228,7 @@ export class PurchaseProgramDialog extends LitElement {
             ?disabled=${submitButtonDisabled}
             @click=${this.handleOpenConfirmationAlert}
           >
-            <intl-message label="ui:mainframe:ownedPrograms:purchase" value=${submitButtonValues}>
-              Purchase
-            </intl-message>
+            <intl-message label="ui:mainframe:programs:purchase" value=${submitButtonValues}> Purchase </intl-message>
           </sl-button>
         </ca-purchase-tooltip>
       </sl-dialog>

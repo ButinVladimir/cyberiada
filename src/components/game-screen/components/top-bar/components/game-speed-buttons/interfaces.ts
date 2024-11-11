@@ -4,5 +4,4 @@ export interface GameSpeedButtonProps {
   label: string;
   gameSpeed: GameSpeed;
   icon: string;
-  isActive: boolean;
 }

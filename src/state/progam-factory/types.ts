@@ -3,4 +3,5 @@ export enum ProgramName {
   codeGenerator = 'codeGenerator',
   predictiveComputator = 'predictiveComputator',
   mainframeHardwareAutobuyer = 'mainframeHardwareAutobuyer',
+  mainframeProgramsAutobuyer = 'mainframeProgramsAutobuyer',
 }

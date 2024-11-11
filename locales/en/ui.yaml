@@ -89,7 +89,7 @@ mainframe:
   tabs:
     processes: Processes
     hardware: Hardware
-    ownedPrograms: Owned programs
+    programs: Programs
   hardware:
     keyboardHint: Press either Ctrl or Shift to buy 10 levels. Press both Ctrl and Shift to buy 100 levels.
     performance: 'Performance level: {{value}}'
@@ -99,7 +99,7 @@ mainframe:
     ram: 'RAM level: {{value}}'
     ramHint: Additional RAM allows to keep more processes in memory so they could ran later or in bigger batches
     buy: Buy x{{value.increase}} for {{value.cost}}
-  ownedPrograms:
+  programs:
     purchaseProgram: Purchase program
     purchaseProgramDialogHint: Select program type, level and quality to purchase it.
       Level cannot be above current city development level.
@@ -107,6 +107,8 @@ mainframe:
       If you already have program with same name, old one will be replaced with new one.
     purchase: Purchase for {{value.cost}}
     emptyListNotification: You don't have any owned programs
+    toggleAutoupgrade: Toggle autoupgrade
+    toggleAutoupgradeAll: Toggle autoupgrade for all programs
   processes:
     processesHint: To make a program run, a process has to be start for it.
       Topmost processes for non-scalable programs have more priority when cores are assigned to processes.
@@ -189,3 +191,7 @@ automation:
     performance: Performance share
     cores: Cores share
     ram: RAM share
+  mainframeProgramsAutobuyer:
+    mainframeProgramsAutobuyer: Mainframe programs autobuyer
+    percentageHint: Percentage of available money reserved for buying programs
+    moneyShare: Money share

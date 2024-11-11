@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { OwnedProgramsListItemController } from './controller';
@@ -12,15 +13,21 @@ export class OwnedProgramsListItem extends LitElement {
     }
 
     td.program {
-      width: 32%;
+      width: 40%;
     }
 
     td.level {
-      width: 17%;
+      width: 25%;
     }
 
     td.quality {
-      width: 17%;
+      width: 25%;
+    }
+
+    td.autoupgrade {
+      width: auto;
+      text-align: right;
+      font-size: var(--sl-font-size-large);
     }
 
     td {
@@ -61,6 +68,8 @@ export class OwnedProgramsListItem extends LitElement {
       return html``;
     }
 
+    const autoupgradeIcon = program.autoUpgradeEnabled ? 'arrow-up-circle-fill' : 'arrow-up-circle';
+
     return html`
       <td class="program">
         <intl-message label="programs:${program.name}:name">Progam name</intl-message>
@@ -82,6 +91,33 @@ export class OwnedProgramsListItem extends LitElement {
       <td class="level">${formatter.formatNumberDecimal(program.level)}</td>
 
       <td class="quality">${formatter.formatQuality(program.quality)}</td>
+
+      <td class="autoupgrade">
+        <sl-tooltip>
+          <intl-message slot="content" label="ui:mainframe:programs:toggleAutoupgrade">
+            Toggle autoupgrade
+          </intl-message>
+
+          <sl-icon-button
+            id="toggle-autoupgrade-btn"
+            name=${autoupgradeIcon}
+            label=${t('mainframe.programs.toggleAutoupgrade', { ns: 'ui' })}
+            @click=${this.handleToggleAutoupgrade}
+          >
+          </sl-icon-button>
+        </sl-tooltip>
+      </td>
     `;
   }
+
+  private handleToggleAutoupgrade = (event: Event) => {
+    event.stopPropagation();
+    event.preventDefault();
+
+    const program = this._ownedProgramsListItemController.getProgram(this.programName as ProgramName);
+
+    if (program) {
+      program.autoUpgradeEnabled = !program.autoUpgradeEnabled;
+    }
+  };
 }

@@ -2,6 +2,7 @@ import { LitElement, css, html } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { customElement } from 'lit/decorators.js';
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.component.js';
+import { normalizePercentage } from '@shared/helpers';
 import { AutomationMainframeHardwareAutobuyerController } from './controller';
 
 @customElement('ca-automation-mainframe-hardware-autobuyer')
@@ -27,10 +28,10 @@ export class AutomationMainframeHardwareAutobuyer extends LitElement {
     }
 
     div.inputs {
-      display: flex;
+      display: grid;
       align-items: center;
-      justify-content: space-between;
-      gap: var(--sl-spacing-3x-large);
+      column-gap: var(--sl-spacing-3x-large);
+      grid-template-columns: repeat(3, 1fr);
     }
 
     p.hint {
@@ -42,10 +43,6 @@ export class AutomationMainframeHardwareAutobuyer extends LitElement {
     span.input-label {
       font-size: var(--sl-font-size-medium);
       line-height: var(--sl-line-height-dense);
-    }
-
-    sl-input {
-      flex: 1 1 auto;
     }
   `;
 
@@ -131,7 +128,7 @@ export class AutomationMainframeHardwareAutobuyer extends LitElement {
       return;
     }
 
-    const value = this.normalizeValue(this._performanceShareRef.value.valueAsNumber);
+    const value = normalizePercentage(this._performanceShareRef.value.valueAsNumber);
 
     this._automationMainframeHardwareAutobuyerController.performanceShare = value;
     this._performanceShareRef.value.valueAsNumber = value;
@@ -142,7 +139,7 @@ export class AutomationMainframeHardwareAutobuyer extends LitElement {
       return;
     }
 
-    const value = this.normalizeValue(this._coresShareRef.value.valueAsNumber);
+    const value = normalizePercentage(this._coresShareRef.value.valueAsNumber);
 
     this._automationMainframeHardwareAutobuyerController.coresShare = value;
     this._coresShareRef.value.valueAsNumber = value;
@@ -153,21 +150,9 @@ export class AutomationMainframeHardwareAutobuyer extends LitElement {
       return;
     }
 
-    const value = this.normalizeValue(this._ramShareRef.value.valueAsNumber);
+    const value = normalizePercentage(this._ramShareRef.value.valueAsNumber);
 
     this._automationMainframeHardwareAutobuyerController.ramShare = value;
     this._ramShareRef.value.valueAsNumber = value;
   };
-
-  private normalizeValue(value: number): number {
-    if (value < 0) {
-      return 0;
-    }
-
-    if (value > 100) {
-      return 100;
-    }
-
-    return value;
-  }
 }

@@ -4,7 +4,7 @@ import { IMainframeHardwareParameter } from '@state/mainframe/mainframe-hardware
 import { IMainframeHardwareAutomationState } from '@state/automation/mainframe-hardware-automation-state/interfaces/mainframe-hardware-automation-state';
 import { ProgramName } from '../types';
 import { BaseProgram } from './base-program';
-import { IMainframeHardwareAutobuyerParameters } from '../interfaces';
+import { IMainframeHardwareAutobuyerParameters } from '../interfaces/program-parameters/mainframe-hardware-autobuyer-parameters';
 
 export class MainframeHardwareAutobuyerProgram extends BaseProgram {
   public readonly name = ProgramName.mainframeHardwareAutobuyer;

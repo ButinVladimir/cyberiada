@@ -3,12 +3,12 @@ import { IProgram } from '@state/progam-factory/interfaces/program';
 import { IMakeProgramParameters } from '@state/progam-factory/interfaces/make-program-parameters';
 import { ProgramName } from '@state/progam-factory/types';
 import { IUIEventEmitter } from '@shared/interfaces/ui-event-emitter';
-import { IMainframeOwnedProgramsSerializedState } from './mainframe-owned-programs-serialized-state';
+import { IMainframeProgramsSerializedState } from './mainframe-programs-serialized-state';
 
-export interface IMainframeOwnedProgramsState
-  extends ISerializeable<IMainframeOwnedProgramsSerializedState>,
-    IUIEventEmitter {
+export interface IMainframeProgramsState extends ISerializeable<IMainframeProgramsSerializedState>, IUIEventEmitter {
   purchaseProgram(programParameters: IMakeProgramParameters): boolean;
   listOwnedPrograms(): IProgram[];
   getOwnedProgramByName(name: ProgramName): IProgram | undefined;
+  toggleProgramsAutoUpgrade(active: boolean): void;
+  requestUiUpdate(): void;
 }

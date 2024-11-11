@@ -18,7 +18,7 @@ export class OwnedProgramsListItemController extends BaseController {
     if (this._ownedProgram?.name !== programName) {
       this.removeProgramListeners();
 
-      this._ownedProgram = this.mainframeOwnedProgramState.getOwnedProgramByName(programName);
+      this._ownedProgram = this.mainframeProgramsState.getOwnedProgramByName(programName);
 
       this.addProgramListeners();
     }
