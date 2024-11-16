@@ -1,8 +1,9 @@
-import { LitElement, css, html } from 'lit';
+import { css, html } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
+import { BaseComponent } from '@shared/base-component';
 
 @customElement('ca-mainframe-hardware-panel')
-export class MainframeHardwarePanel extends LitElement {
+export class MainframeHardwarePanel extends BaseComponent {
   static styles = css`
     :host {
       width: 100%;
@@ -41,7 +42,7 @@ export class MainframeHardwarePanel extends LitElement {
     window.removeEventListener('keyup', this.handleKeypress);
   }
 
-  render() {
+  renderContent() {
     const maxIncrease = this.getMaxIncrease();
 
     return html`

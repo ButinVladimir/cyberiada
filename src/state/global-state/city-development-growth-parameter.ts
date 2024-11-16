@@ -1,5 +1,6 @@
 import { IncomeSource } from '@shared/types';
 import { EventBatcher } from '@shared/event-batcher';
+import { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import { IMainframeProcessesState } from '@state/mainframe/mainframe-processes-state/interfaces/mainframe-processes-state';
 import { ProgramName } from '@state/progam-factory/types';
 import { ShareServerProgram } from '@state/progam-factory/programs/share-server';
@@ -9,15 +10,17 @@ import { GLOBAL_STATE_UI_EVENTS } from './constants';
 import { INCOME_SOURCES } from '@shared/constants';
 
 export class CityDevelopmentGrowthParameter implements ICityDevelopmentGrowthParameter {
-  private _mainframeProcessesState: IMainframeProcessesState;
+  readonly uiEventBatcher: EventBatcher;
 
-  private readonly _uiEventBatcher: EventBatcher;
+  private _stateUiConnector: IStateUIConnector;
+  private _mainframeProcessesState: IMainframeProcessesState;
 
   private _totalGrowth: number;
   private _growth: Map<IncomeSource, number>;
   private _updateRequested: boolean;
 
   constructor(parameters: ICityDevelopmentGrowthConstructorParameters) {
+    this._stateUiConnector = parameters.stateUiConnector;
     this._mainframeProcessesState = parameters.mainframeProcessesState;
 
     this._totalGrowth = 0;
@@ -25,14 +28,19 @@ export class CityDevelopmentGrowthParameter implements ICityDevelopmentGrowthPar
 
     this._updateRequested = true;
 
-    this._uiEventBatcher = new EventBatcher();
+    this.uiEventBatcher = new EventBatcher();
+    this._stateUiConnector.registerEventEmitter(this);
   }
 
   get totalGrowth() {
+    this._stateUiConnector.connectEventHandler(this, GLOBAL_STATE_UI_EVENTS.CITY_DEVELOPMENT_GROWTH_CHANGED);
+
     return this._totalGrowth;
   }
 
   getGrowth(incomeSource: IncomeSource): number {
+    this._stateUiConnector.connectEventHandler(this, GLOBAL_STATE_UI_EVENTS.CITY_DEVELOPMENT_GROWTH_CHANGED);
+
     return this._growth.get(incomeSource) ?? 0;
   }
 
@@ -50,19 +58,7 @@ export class CityDevelopmentGrowthParameter implements ICityDevelopmentGrowthPar
     this.updateGrowthByProgram();
     this.updateTotalGrowth();
 
-    this._uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.CITY_DEVELOPMENT_GROWTH_CHANGED);
-  }
-
-  addUiEventListener(eventName: symbol, handler: (...args: any[]) => void): void {
-    this._uiEventBatcher.addListener(eventName, handler);
-  }
-
-  removeUiEventListener(eventName: symbol, handler: (...args: any[]) => void): void {
-    this._uiEventBatcher.removeListener(eventName, handler);
-  }
-
-  fireUiEvents(): void {
-    this._uiEventBatcher.fireEvents();
+    this.uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.CITY_DEVELOPMENT_GROWTH_CHANGED);
   }
 
   private updateGrowthByProgram() {

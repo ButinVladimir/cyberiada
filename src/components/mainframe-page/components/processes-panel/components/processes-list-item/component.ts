@@ -1,13 +1,14 @@
 import { t } from 'i18next';
-import { LitElement, css, html } from 'lit';
+import { css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { BaseComponent } from '@shared/base-component';
 import { ConfirmationAlertOpenEvent, ConfirmationAlertSubmitEvent } from '@components/shared/confirmation-alert/events';
 import { ProgramAlert } from '@shared/types';
 import { ProcessesListItemController } from './controller';
 import { ProgramName } from '@state/progam-factory/types';
 
 @customElement('ca-processes-list-item')
-export class ProcessesListItem extends LitElement {
+export class ProcessesListItem extends BaseComponent<ProcessesListItemController> {
   static styles = css`
     :host {
       display: table-row;
@@ -52,12 +53,12 @@ export class ProcessesListItem extends LitElement {
   })
   programName: string = ProgramName.shareServer;
 
-  private _processesListItemController: ProcessesListItemController;
+  protected controller: ProcessesListItemController;
 
   constructor() {
     super();
 
-    this._processesListItemController = new ProcessesListItemController(this);
+    this.controller = new ProcessesListItemController(this);
   }
 
   connectedCallback() {
@@ -72,9 +73,9 @@ export class ProcessesListItem extends LitElement {
     document.removeEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmDeleteProcessDialog);
   }
 
-  render() {
-    const formatter = this._processesListItemController.formatter;
-    const process = this._processesListItemController.getProcess(this.programName as ProgramName);
+  renderContent() {
+    const formatter = this.controller.formatter;
+    const process = this.controller.getProcess(this.programName as ProgramName);
 
     if (!process) {
       return html``;
@@ -137,7 +138,7 @@ export class ProcessesListItem extends LitElement {
     event.preventDefault();
     event.stopPropagation();
 
-    this._processesListItemController.toggleProcess();
+    this.controller.toggleProcess();
   };
 
   private handleOpenDeleteProcessDialog = (event: Event) => {
@@ -160,6 +161,6 @@ export class ProcessesListItem extends LitElement {
       return;
     }
 
-    this._processesListItemController.deleteProcess();
+    this.controller.deleteProcess();
   };
 }

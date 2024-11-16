@@ -1,12 +1,13 @@
-import { LitElement, css, html } from 'lit';
+import { css, html } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { customElement } from 'lit/decorators.js';
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.component.js';
+import { BaseComponent } from '@shared/base-component';
 import { normalizePercentage } from '@shared/helpers';
 import { AutomationMainframeHardwareAutobuyerController } from './controller';
 
 @customElement('ca-automation-mainframe-hardware-autobuyer')
-export class AutomationMainframeHardwareAutobuyer extends LitElement {
+export class AutomationMainframeHardwareAutobuyer extends BaseComponent<AutomationMainframeHardwareAutobuyerController> {
   static styles = css`
     :host {
       display: flex;
@@ -46,7 +47,7 @@ export class AutomationMainframeHardwareAutobuyer extends LitElement {
     }
   `;
 
-  private _automationMainframeHardwareAutobuyerController: AutomationMainframeHardwareAutobuyerController;
+  protected controller: AutomationMainframeHardwareAutobuyerController;
 
   private _performanceShareRef = createRef<SlInput>();
 
@@ -57,11 +58,11 @@ export class AutomationMainframeHardwareAutobuyer extends LitElement {
   constructor() {
     super();
 
-    this._automationMainframeHardwareAutobuyerController = new AutomationMainframeHardwareAutobuyerController(this);
+    this.controller = new AutomationMainframeHardwareAutobuyerController(this);
   }
 
-  render() {
-    const { performanceShare, coresShare, ramShare } = this._automationMainframeHardwareAutobuyerController;
+  renderContent() {
+    const { performanceShare, coresShare, ramShare } = this.controller;
 
     return html`
       <h4 class="title">
@@ -130,7 +131,7 @@ export class AutomationMainframeHardwareAutobuyer extends LitElement {
 
     const value = normalizePercentage(this._performanceShareRef.value.valueAsNumber);
 
-    this._automationMainframeHardwareAutobuyerController.performanceShare = value;
+    this.controller.performanceShare = value;
     this._performanceShareRef.value.valueAsNumber = value;
   };
 
@@ -141,7 +142,7 @@ export class AutomationMainframeHardwareAutobuyer extends LitElement {
 
     const value = normalizePercentage(this._coresShareRef.value.valueAsNumber);
 
-    this._automationMainframeHardwareAutobuyerController.coresShare = value;
+    this.controller.coresShare = value;
     this._coresShareRef.value.valueAsNumber = value;
   };
 
@@ -152,7 +153,7 @@ export class AutomationMainframeHardwareAutobuyer extends LitElement {
 
     const value = normalizePercentage(this._ramShareRef.value.valueAsNumber);
 
-    this._automationMainframeHardwareAutobuyerController.ramShare = value;
+    this.controller.ramShare = value;
     this._ramShareRef.value.valueAsNumber = value;
   };
 }

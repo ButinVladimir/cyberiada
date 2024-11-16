@@ -1,11 +1,12 @@
-import { LitElement, css, html } from 'lit';
+import { css, html } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { customElement } from 'lit/decorators.js';
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.component.js';
+import { BaseComponent } from '@shared/base-component';
 import { AutomationMainframeProgramsAutobuyerController } from './controller';
 
 @customElement('ca-automation-mainframe-programs-autobuyer')
-export class AutomationMainframeProgramsAutobuyer extends LitElement {
+export class AutomationMainframeProgramsAutobuyer extends BaseComponent<AutomationMainframeProgramsAutobuyerController> {
   static styles = css`
     :host {
       display: flex;
@@ -45,18 +46,18 @@ export class AutomationMainframeProgramsAutobuyer extends LitElement {
     }
   `;
 
-  private _automationMainframeProgramsAutobuyerController: AutomationMainframeProgramsAutobuyerController;
+  protected controller: AutomationMainframeProgramsAutobuyerController;
 
   private _moneyShareRef = createRef<SlInput>();
 
   constructor() {
     super();
 
-    this._automationMainframeProgramsAutobuyerController = new AutomationMainframeProgramsAutobuyerController(this);
+    this.controller = new AutomationMainframeProgramsAutobuyerController(this);
   }
 
-  render() {
-    const { moneyShare } = this._automationMainframeProgramsAutobuyerController;
+  renderContent() {
+    const { moneyShare } = this.controller;
 
     return html`
       <h4 class="title">
@@ -95,7 +96,7 @@ export class AutomationMainframeProgramsAutobuyer extends LitElement {
 
     const value = this.normalizeValue(this._moneyShareRef.value.valueAsNumber);
 
-    this._automationMainframeProgramsAutobuyerController.moneyShare = value;
+    this.controller.moneyShare = value;
     this._moneyShareRef.value.valueAsNumber = value;
   };
 

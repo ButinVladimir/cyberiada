@@ -1,12 +1,13 @@
 import { t } from 'i18next';
-import { LitElement, html, css } from 'lit';
+import { html, css } from 'lit';
 import { customElement } from 'lit/decorators.js';
+import { BaseComponent } from '@shared/base-component';
 import { ConfirmationAlertOpenEvent, ConfirmationAlertSubmitEvent } from '@components/shared/confirmation-alert/events';
 import { GameStateAlert } from '@shared/types';
 import { MessageLogBarController } from './controller';
 
 @customElement('ca-message-log-bar')
-export class MessageLogBar extends LitElement {
+export class MessageLogBar extends BaseComponent<MessageLogBarController> {
   static styles = css`
     :host {
       width: 100%;
@@ -57,12 +58,12 @@ export class MessageLogBar extends LitElement {
     }
   `;
 
-  private _messageLogBarController: MessageLogBarController;
+  protected controller: MessageLogBarController;
 
   constructor() {
     super();
 
-    this._messageLogBarController = new MessageLogBarController(this);
+    this.controller = new MessageLogBarController(this);
   }
 
   connectedCallback() {
@@ -77,7 +78,7 @@ export class MessageLogBar extends LitElement {
     document.removeEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmClearMessagesDialog);
   }
 
-  render() {
+  renderContent() {
     return html`
       <div class="title-bar">
         <h4 class="title">
@@ -116,6 +117,6 @@ export class MessageLogBar extends LitElement {
       return;
     }
 
-    this._messageLogBarController.clearMessages();
+    this.controller.clearMessages();
   };
 }

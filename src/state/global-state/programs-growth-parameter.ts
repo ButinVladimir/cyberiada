@@ -1,30 +1,36 @@
 import { EventBatcher } from '@shared/event-batcher';
+import { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import { IMainframeProcessesState } from '@state/mainframe/mainframe-processes-state/interfaces/mainframe-processes-state';
 import { ProgramName } from '@state/progam-factory/types';
 import { CodeGeneratorProgram } from '../progam-factory/programs/code-generator';
 import { IProgramsGrowthParameter } from './interfaces/programs-growth-parameter';
-import { IMoneyGrowthConstructorParameters } from './interfaces/constructor-parameters/money-growth-constructor-parameters';
+import { IProgramsGrowthConstructorParameters } from './interfaces/constructor-parameters/programs-growth-constructor-parameters';
 import { GLOBAL_STATE_UI_EVENTS } from './constants';
 
 export class ProgramsGrowthParameter implements IProgramsGrowthParameter {
-  private _mainframeProcessesState: IMainframeProcessesState;
+  readonly uiEventBatcher: EventBatcher;
 
-  private readonly _uiEventBatcher: EventBatcher;
+  private _stateUiConnector: IStateUIConnector;
+  private _mainframeProcessesState: IMainframeProcessesState;
 
   private _computationalBase: number;
   private _updateRequested: boolean;
 
-  constructor(parameters: IMoneyGrowthConstructorParameters) {
+  constructor(parameters: IProgramsGrowthConstructorParameters) {
+    this._stateUiConnector = parameters.stateUiConnector;
     this._mainframeProcessesState = parameters.mainframeProcessesState;
 
     this._computationalBase = 0;
 
     this._updateRequested = true;
 
-    this._uiEventBatcher = new EventBatcher();
+    this.uiEventBatcher = new EventBatcher();
+    this._stateUiConnector.registerEventEmitter(this);
   }
 
   get computationalBase() {
+    this._stateUiConnector.connectEventHandler(this, GLOBAL_STATE_UI_EVENTS.GROWTH_BY_PROGRAM_CHANGED);
+
     return this._computationalBase;
   }
 
@@ -41,19 +47,7 @@ export class ProgramsGrowthParameter implements IProgramsGrowthParameter {
 
     this.updateComputationalBase();
 
-    this._uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.GROWTH_BY_PROGRAM_CHANGED);
-  }
-
-  addUiEventListener(eventName: symbol, handler: (...args: any[]) => void): void {
-    this._uiEventBatcher.addListener(eventName, handler);
-  }
-
-  removeUiEventListener(eventName: symbol, handler: (...args: any[]) => void): void {
-    this._uiEventBatcher.removeListener(eventName, handler);
-  }
-
-  fireUiEvents(): void {
-    this._uiEventBatcher.fireEvents();
+    this.uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.GROWTH_BY_PROGRAM_CHANGED);
   }
 
   private updateComputationalBase(): void {

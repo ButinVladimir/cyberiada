@@ -1,12 +1,13 @@
 import { t } from 'i18next';
-import { LitElement, css, html } from 'lit';
+import { css, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
+import { BaseComponent } from '@shared/base-component';
 import { IProgram } from '@state/progam-factory/interfaces/program';
 import { OwnedProgramsListController } from './controller';
 
 @customElement('ca-owned-programs-list')
-export class OwnedProgramsList extends LitElement {
+export class OwnedProgramsList extends BaseComponent<OwnedProgramsListController> {
   static styles = css`
     :host {
       width: 100%;
@@ -60,15 +61,15 @@ export class OwnedProgramsList extends LitElement {
     }
   `;
 
-  private _ownedProgramsListController: OwnedProgramsListController;
+  protected controller: OwnedProgramsListController;
 
   constructor() {
     super();
 
-    this._ownedProgramsListController = new OwnedProgramsListController(this);
+    this.controller = new OwnedProgramsListController(this);
   }
 
-  render() {
+  renderContent() {
     const autoupgradeActive = this.checkSomeProgramsAutoupgradeActive();
 
     const autoupgradeIcon = autoupgradeActive ? 'arrow-up-circle-fill' : 'arrow-up-circle';
@@ -103,14 +104,14 @@ export class OwnedProgramsList extends LitElement {
         </thead>
 
         <tbody>
-          ${this.renderContent()}
+          ${this.renderList()}
         </tbody>
       </table>
     `;
   }
 
-  private renderContent = () => {
-    const ownedPrograms = this._ownedProgramsListController.listOwnedPrograms();
+  private renderList = () => {
+    const ownedPrograms = this.controller.listOwnedPrograms();
 
     if (ownedPrograms.length === 0) {
       return this.renderEmptyListNotification();
@@ -134,7 +135,7 @@ export class OwnedProgramsList extends LitElement {
   };
 
   private checkSomeProgramsAutoupgradeActive(): boolean {
-    const programs = this._ownedProgramsListController.listOwnedPrograms();
+    const programs = this.controller.listOwnedPrograms();
 
     return programs.some((program) => program.autoUpgradeEnabled);
   }
@@ -145,6 +146,6 @@ export class OwnedProgramsList extends LitElement {
 
     const active = this.checkSomeProgramsAutoupgradeActive();
 
-    this._ownedProgramsListController.toggleAutoupgrade(!active);
+    this.controller.toggleAutoupgrade(!active);
   };
 }

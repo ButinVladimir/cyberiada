@@ -1,26 +1,27 @@
-import { LitElement, html } from 'lit';
+import { html } from 'lit';
 import { customElement } from 'lit/decorators.js';
+import { BaseComponent } from '@shared/base-component';
 import { PurchaseType } from '@shared/types';
 import { PURCHASE_TYPES } from '@shared/constants';
 import { StatisticsMoneyExpensesController } from './controller';
 import { statisticsPanelContentStyle } from '../../styles';
 
 @customElement('ca-statistics-money-expenses')
-export class StatisticsMoneyExpenses extends LitElement {
+export class StatisticsMoneyExpenses extends BaseComponent<StatisticsMoneyExpensesController> {
   static styles = statisticsPanelContentStyle;
 
-  private _statisticsMoneyExpensesController: StatisticsMoneyExpensesController;
+  protected controller: StatisticsMoneyExpensesController;
 
   constructor() {
     super();
 
-    this._statisticsMoneyExpensesController = new StatisticsMoneyExpensesController(this);
+    this.controller = new StatisticsMoneyExpensesController(this);
   }
 
-  render() {
-    const formatter = this._statisticsMoneyExpensesController.formatter;
+  renderContent() {
+    const formatter = this.controller.formatter;
     const moneyTotal = PURCHASE_TYPES.reduce(
-      (sum, purchaseType) => sum + this._statisticsMoneyExpensesController.getMoneyExpenses(purchaseType),
+      (sum, purchaseType) => sum + this.controller.getMoneyExpenses(purchaseType),
       0,
     );
 
@@ -31,10 +32,7 @@ export class StatisticsMoneyExpenses extends LitElement {
 
       <div class="parameters-table">
         ${PURCHASE_TYPES.map((purchaseType) =>
-          this.renderExpenseArticle(
-            purchaseType,
-            this._statisticsMoneyExpensesController.getMoneyExpenses(purchaseType),
-          ),
+          this.renderExpenseArticle(purchaseType, this.controller.getMoneyExpenses(purchaseType)),
         )}
 
         <span>
@@ -50,7 +48,7 @@ export class StatisticsMoneyExpenses extends LitElement {
       return '';
     }
 
-    const formatter = this._statisticsMoneyExpensesController.formatter;
+    const formatter = this.controller.formatter;
 
     return html`
       <span>

@@ -1,28 +1,26 @@
-import { LitElement, html } from 'lit';
+import { html } from 'lit';
 import { customElement } from 'lit/decorators.js';
+import { BaseComponent } from '@shared/base-component';
 import { IncomeSource } from '@shared/types';
 import { INCOME_SOURCES } from '@shared/constants';
 import { StatisticsMoneyIncomeController } from './controller';
 import { statisticsPanelContentStyle } from '../../styles';
 
 @customElement('ca-statistics-money-income')
-export class StatisticsMoneyIncome extends LitElement {
+export class StatisticsMoneyIncome extends BaseComponent<StatisticsMoneyIncomeController> {
   static styles = statisticsPanelContentStyle;
 
-  private _statisticsMoneyIncomePanelController: StatisticsMoneyIncomeController;
+  protected controller: StatisticsMoneyIncomeController;
 
   constructor() {
     super();
 
-    this._statisticsMoneyIncomePanelController = new StatisticsMoneyIncomeController(this);
+    this.controller = new StatisticsMoneyIncomeController(this);
   }
 
-  render() {
-    const formatter = this._statisticsMoneyIncomePanelController.formatter;
-    const total = INCOME_SOURCES.reduce(
-      (sum, incomeSource) => sum + this._statisticsMoneyIncomePanelController.getMoneyIncome(incomeSource),
-      0,
-    );
+  renderContent() {
+    const formatter = this.controller.formatter;
+    const total = INCOME_SOURCES.reduce((sum, incomeSource) => sum + this.controller.getMoneyIncome(incomeSource), 0);
 
     return html`
       <h4 class="title">
@@ -31,10 +29,7 @@ export class StatisticsMoneyIncome extends LitElement {
 
       <div class="parameters-table">
         ${INCOME_SOURCES.map((incomeSource) =>
-          this.renderIncomeSource(
-            incomeSource,
-            this._statisticsMoneyIncomePanelController.getMoneyIncome(incomeSource),
-          ),
+          this.renderIncomeSource(incomeSource, this.controller.getMoneyIncome(incomeSource)),
         )}
 
         <span>
@@ -50,7 +45,7 @@ export class StatisticsMoneyIncome extends LitElement {
       return '';
     }
 
-    const formatter = this._statisticsMoneyIncomePanelController.formatter;
+    const formatter = this.controller.formatter;
 
     return html`
       <span>

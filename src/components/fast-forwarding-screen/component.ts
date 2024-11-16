@@ -1,9 +1,10 @@
-import { LitElement, html, css } from 'lit';
+import { html, css } from 'lit';
 import { customElement } from 'lit/decorators.js';
+import { BaseComponent } from '@shared/base-component';
 import { FastForwardingScreenController } from './controller';
 
 @customElement('ca-fast-forwarding-screen')
-export class FastForwardingScreen extends LitElement {
+export class FastForwardingScreen extends BaseComponent<FastForwardingScreenController> {
   static styles = css`
     :host {
       width: 100vw;
@@ -30,18 +31,18 @@ export class FastForwardingScreen extends LitElement {
 
   private _maxTime = 1;
 
-  private _fastForwardingScreenController: FastForwardingScreenController;
+  protected controller: FastForwardingScreenController;
 
   constructor() {
     super();
 
-    this._fastForwardingScreenController = new FastForwardingScreenController(this);
+    this.controller = new FastForwardingScreenController(this);
   }
 
-  render() {
-    const formatter = this._fastForwardingScreenController.formatter;
+  renderContent() {
+    const formatter = this.controller.formatter;
 
-    const accumulatedTime = this._fastForwardingScreenController.accumulatedTime;
+    const accumulatedTime = this.controller.accumulatedTime;
     this._maxTime = Math.max(this._maxTime, accumulatedTime);
 
     const progressBarValue = ((this._maxTime - accumulatedTime) / this._maxTime) * 100;
@@ -65,6 +66,6 @@ export class FastForwardingScreen extends LitElement {
     event.stopPropagation();
     event.preventDefault();
 
-    this._fastForwardingScreenController.stopFastForwarding();
+    this.controller.stopFastForwarding();
   };
 }

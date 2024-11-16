@@ -1,18 +1,19 @@
-import { LitElement, css, html } from 'lit';
+import { css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { BaseComponent } from '@shared/base-component';
 import { ProgramName } from '@state/progam-factory/types';
-import { ProcessDescriptionController } from './controller';
 import { IProcess } from '@state/mainframe/mainframe-processes-state/interfaces/process';
+import { ProcessDescriptionController } from './controller';
 
 @customElement('ca-process-description')
-export class ProcessDescription extends LitElement {
+export class ProcessDescription extends BaseComponent<ProcessDescriptionController> {
   static styles = css`
     :host {
       white-space: pre-line;
     }
   `;
 
-  private _processDescriptionController: ProcessDescriptionController;
+  protected controller: ProcessDescriptionController;
 
   @property({
     attribute: 'program-name',
@@ -23,13 +24,11 @@ export class ProcessDescription extends LitElement {
   constructor() {
     super();
 
-    this._processDescriptionController = new ProcessDescriptionController(this);
+    this.controller = new ProcessDescriptionController(this);
   }
 
-  render() {
-    const process = this.programName
-      ? this._processDescriptionController.getProcess(this.programName as ProgramName)
-      : undefined;
+  renderContent() {
+    const process = this.programName ? this.controller.getProcess(this.programName as ProgramName) : undefined;
 
     if (!process) {
       return html``;
@@ -45,7 +44,7 @@ export class ProcessDescription extends LitElement {
   }
 
   private renderScalableDescription = (process: IProcess) => {
-    const availableRam = this._processDescriptionController.availableRam;
+    const availableRam = this.controller.availableRam;
 
     const descriptionValues = JSON.stringify(
       process.program.buildProcessDescriptionParametersObject(process.usedCores, process.usedCores, availableRam),
@@ -61,7 +60,7 @@ export class ProcessDescription extends LitElement {
   };
 
   private renderOrdinaryDescription = (process: IProcess) => {
-    const formatter = this._processDescriptionController.formatter;
+    const formatter = this.controller.formatter;
 
     const requirementsValues = JSON.stringify(process.program.buildRequirementsParametersObject(process.threads));
 

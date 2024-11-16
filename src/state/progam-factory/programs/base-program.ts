@@ -1,4 +1,5 @@
 import programs from '@configs/programs.json';
+import { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import { IFormatter } from '@shared/interfaces/formatter';
 import { EventBatcher } from '@shared/event-batcher';
 import { IExponent } from '@shared/interfaces/exponent';
@@ -16,6 +17,9 @@ import { IBaseProgramParameters } from '../interfaces/program-parameters/base-pr
 import { PROGRAMS_UI_EVENTS } from '../constants';
 
 export abstract class BaseProgram implements IProgram {
+  readonly uiEventBatcher: EventBatcher;
+
+  protected stateUiConnector: IStateUIConnector;
   protected globalState: IGlobalState;
   protected mainframeProgramsState: IMainframeProgramsState;
   protected mainframeProcessesState: IMainframeProcessesState;
@@ -27,11 +31,10 @@ export abstract class BaseProgram implements IProgram {
   private _quality!: number;
   private _autoUpgradeEnabled: boolean;
 
-  protected readonly uiEventBatcher: EventBatcher;
-
   abstract get name(): ProgramName;
 
   constructor(parameters: IBaseProgramParameters) {
+    this.stateUiConnector = parameters.stateUiConnector;
     this.globalState = parameters.globalState;
     this.mainframeProgramsState = parameters.mainframeProgramsState;
     this.mainframeProcessesState = parameters.mainframeProcessesState;
@@ -45,26 +48,30 @@ export abstract class BaseProgram implements IProgram {
     this._autoUpgradeEnabled = parameters.autoUpgradeEnabled;
 
     this.uiEventBatcher = new EventBatcher();
+    this.stateUiConnector.registerEventEmitter(this);
   }
 
   get level() {
+    this.stateUiConnector.connectEventHandler(this, PROGRAMS_UI_EVENTS.PROGRAM_UPGRADED);
+
     return this._level;
   }
 
   get quality() {
+    this.stateUiConnector.connectEventHandler(this, PROGRAMS_UI_EVENTS.PROGRAM_UPGRADED);
+
     return this._quality;
   }
 
   get completionPoints() {
     const programData = programs[this.name];
 
-    return calculatePow(
-      this.globalState.cityDevelopment.level - this._level,
-      programData.completionPoints as IExponent,
-    );
+    return calculatePow(this.globalState.cityDevelopment.level - this.level, programData.completionPoints as IExponent);
   }
 
   get autoUpgradeEnabled() {
+    this.stateUiConnector.connectEventHandler(this, PROGRAMS_UI_EVENTS.PROGRAM_UPGRADED);
+
     return this._autoUpgradeEnabled;
   }
 
@@ -84,7 +91,7 @@ export abstract class BaseProgram implements IProgram {
 
     return (
       (1 - this.globalState.computationalBase.discount) *
-      calculatePow(this._level - 1, programData.cost as IExponent) *
+      calculatePow(this.level - 1, programData.cost as IExponent) *
       Math.pow(programData.costQualityMultiplier, this.quality)
     );
   }
@@ -128,7 +135,7 @@ export abstract class BaseProgram implements IProgram {
   }
 
   removeEventListeners(): void {
-    this.uiEventBatcher.removeAllListeners();
+    this.stateUiConnector.unregisterEventEmitter(this);
   }
 
   serialize(): IMakeProgramParameters {
@@ -138,18 +145,6 @@ export abstract class BaseProgram implements IProgram {
       quality: this.quality,
       autoUpgradeEnabled: this.autoUpgradeEnabled,
     };
-  }
-
-  addUiEventListener(eventName: symbol, handler: (...args: any[]) => void) {
-    this.uiEventBatcher.addListener(eventName, handler);
-  }
-
-  removeUiEventListener(eventName: symbol, handler: (...args: any[]) => void) {
-    this.uiEventBatcher.removeListener(eventName, handler);
-  }
-
-  fireUiEvents() {
-    this.uiEventBatcher.fireEvents();
   }
 
   buildCostParametersObject(): object {

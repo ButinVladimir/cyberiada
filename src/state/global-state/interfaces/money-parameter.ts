@@ -1,5 +1,5 @@
-import { ISerializeable } from '@shared/interfaces/serializable';
 import { IUIEventEmitter } from '@shared/interfaces/ui-event-emitter';
+import { ISerializeable } from '@shared/interfaces/serializable';
 import { IncomeSource, PurchaseType } from '@shared/types';
 import { IMoneySerializedParameter } from './serialized-states/money-serialized-parameter';
 

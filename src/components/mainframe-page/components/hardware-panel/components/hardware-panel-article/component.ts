@@ -1,10 +1,11 @@
-import { LitElement, css, html } from 'lit';
+import { css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { BaseComponent } from '@shared/base-component';
 import { MainframeHardwarePanelArticleController } from './controller';
 import type { HardwarePanelArticleType } from './types';
 
 @customElement('ca-mainframe-hardware-panel-article')
-export class MainframeHardwarePanelArticle extends LitElement {
+export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwarePanelArticleController> {
   static styles = css`
     :host {
       padding: var(--sl-spacing-large);
@@ -51,21 +52,21 @@ export class MainframeHardwarePanelArticle extends LitElement {
   })
   maxIncrease!: number;
 
-  private _mainframeHardwarePanelArticleController: MainframeHardwarePanelArticleController;
+  protected controller: MainframeHardwarePanelArticleController;
 
   constructor() {
     super();
 
-    this._mainframeHardwarePanelArticleController = new MainframeHardwarePanelArticleController(this);
+    this.controller = new MainframeHardwarePanelArticleController(this);
   }
 
-  render() {
+  renderContent() {
     const increase = this.calculateIncrease();
-    const formatter = this._mainframeHardwarePanelArticleController.formatter;
+    const formatter = this.controller.formatter;
 
-    const level = this._mainframeHardwarePanelArticleController.getLevel(this.type);
-    const buttonDisabled = !this._mainframeHardwarePanelArticleController.checkCanPurchase(increase, this.type);
-    const cost = this._mainframeHardwarePanelArticleController.getPurchaseCost(increase, this.type);
+    const level = this.controller.getLevel(this.type);
+    const buttonDisabled = !this.controller.checkCanPurchase(increase, this.type);
+    const cost = this.controller.getPurchaseCost(increase, this.type);
 
     const buttonValue = JSON.stringify({
       cost: formatter.formatNumberLong(cost),
@@ -99,16 +100,12 @@ export class MainframeHardwarePanelArticle extends LitElement {
     event.preventDefault();
 
     const increase = this.calculateIncrease();
-    this._mainframeHardwarePanelArticleController.purchase(increase, this.type);
+    this.controller.purchase(increase, this.type);
   };
 
   private calculateIncrease(): number {
     return Math.max(
-      Math.min(
-        this.maxIncrease,
-        this._mainframeHardwarePanelArticleController.cityDevelopmentLevel -
-          this._mainframeHardwarePanelArticleController.getLevel(this.type),
-      ),
+      Math.min(this.maxIncrease, this.controller.cityDevelopmentLevel - this.controller.getLevel(this.type)),
       1,
     );
   }

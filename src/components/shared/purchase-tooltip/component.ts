@@ -1,9 +1,10 @@
-import { LitElement, css, html } from 'lit';
+import { css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { BaseComponent } from '@shared/base-component';
 import { PurchaseTooltipController } from './controller';
 
 @customElement('ca-purchase-tooltip')
-export class PurchaseTooltip extends LitElement {
+export class PurchaseTooltip extends BaseComponent<PurchaseTooltipController> {
   static styles = css``;
 
   @property({
@@ -18,15 +19,15 @@ export class PurchaseTooltip extends LitElement {
   })
   level = 0;
 
-  private _purchaseTooltipController: PurchaseTooltipController;
+  protected controller: PurchaseTooltipController;
 
   constructor() {
     super();
 
-    this._purchaseTooltipController = new PurchaseTooltipController(this);
+    this.controller = new PurchaseTooltipController(this);
   }
 
-  render() {
+  renderContent() {
     return html`
       <sl-tooltip>
         ${this.renderMessage()}
@@ -36,8 +37,8 @@ export class PurchaseTooltip extends LitElement {
     `;
   }
 
-  renderMessage = () => {
-    if (this.level > this._purchaseTooltipController.cityDevelopmentLevel) {
+  private renderMessage = () => {
+    if (this.level > this.controller.cityDevelopmentLevel) {
       return html`
         <intl-message slot="content" label="ui:common:higherCityDevelopmentLevelRequired">
           Higher city development level required
@@ -45,13 +46,13 @@ export class PurchaseTooltip extends LitElement {
       `;
     }
 
-    if (this.cost <= this._purchaseTooltipController.money) {
+    if (this.cost <= this.controller.money) {
       return html` <intl-message slot="content" label="ui:common:available"> Available </intl-message> `;
     }
 
-    if (this._purchaseTooltipController.growth > 0) {
-      const time = this._purchaseTooltipController.formatter.formatTimeShort(
-        (this.cost - this._purchaseTooltipController.money) / this._purchaseTooltipController.growth,
+    if (this.controller.growth > 0) {
+      const time = this.controller.formatter.formatTimeShort(
+        (this.cost - this.controller.money) / this.controller.growth,
       );
 
       return html`

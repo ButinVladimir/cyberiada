@@ -1,9 +1,10 @@
-import { LitElement, css, html } from 'lit';
+import { css, html } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
+import { BaseComponent } from '@shared/base-component';
 import { ProcessesPanelController } from './controller';
 
 @customElement('ca-mainframe-processes-panel')
-export class MainframeHardwarePanel extends LitElement {
+export class MainframeHardwarePanel extends BaseComponent<ProcessesPanelController> {
   static styles = css`
     :host {
       display: flex;
@@ -29,7 +30,7 @@ export class MainframeHardwarePanel extends LitElement {
     }
   `;
 
-  private _processesPanelController: ProcessesPanelController;
+  protected controller: ProcessesPanelController;
 
   @state()
   private _isStartProcessDialogOpen = false;
@@ -37,11 +38,11 @@ export class MainframeHardwarePanel extends LitElement {
   constructor() {
     super();
 
-    this._processesPanelController = new ProcessesPanelController(this);
+    this.controller = new ProcessesPanelController(this);
   }
 
-  render() {
-    const formatter = this._processesPanelController.formatter;
+  renderContent() {
+    const formatter = this.controller.formatter;
 
     return html`
       <p class="hint">
@@ -55,7 +56,7 @@ export class MainframeHardwarePanel extends LitElement {
         <div>
           <intl-message
             label="ui:mainframe:processes:availableCores"
-            value=${formatter.formatNumberDecimal(this._processesPanelController.availableCores)}
+            value=${formatter.formatNumberDecimal(this.controller.availableCores)}
           >
             Available cores
           </intl-message>
@@ -63,7 +64,7 @@ export class MainframeHardwarePanel extends LitElement {
         <div>
           <intl-message
             label="ui:mainframe:processes:availableRam"
-            value=${formatter.formatNumberDecimal(this._processesPanelController.availableRam)}
+            value=${formatter.formatNumberDecimal(this.controller.availableRam)}
           >
             Available ram
           </intl-message>

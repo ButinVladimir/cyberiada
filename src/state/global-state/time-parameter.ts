@@ -1,4 +1,5 @@
 import { EventBatcher } from '@shared/event-batcher';
+import { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import { ISettingsState } from '@state/settings-state/interfaces/settings-state';
 import { ITimeParameter } from './interfaces/time-parameter';
 import { ITimeSerializedParameter } from './interfaces/serialized-states/time-serialized-parameter';
@@ -6,8 +7,10 @@ import { ITimeConstructorParameters } from './interfaces/constructor-parameters/
 import { GLOBAL_STATE_UI_EVENTS } from './constants';
 
 export class TimeParameter implements ITimeParameter {
+  readonly uiEventBatcher: EventBatcher;
+
+  private _stateUiConnector: IStateUIConnector;
   private _settingsState: ISettingsState;
-  private readonly _uiEventBatcher: EventBatcher;
 
   private _lastUpdateTime: number;
   private _accumulatedTime: number;
@@ -15,6 +18,7 @@ export class TimeParameter implements ITimeParameter {
   private _gameTimeTotal: number;
 
   constructor(parameters: ITimeConstructorParameters) {
+    this._stateUiConnector = parameters.stateUiConnector;
     this._settingsState = parameters.settingsState;
 
     this._lastUpdateTime = 0;
@@ -22,7 +26,8 @@ export class TimeParameter implements ITimeParameter {
     this._gameTime = 0;
     this._gameTimeTotal = 0;
 
-    this._uiEventBatcher = new EventBatcher();
+    this.uiEventBatcher = new EventBatcher();
+    this._stateUiConnector.registerEventEmitter(this);
   }
 
   get lastUpdateTime() {
@@ -30,14 +35,20 @@ export class TimeParameter implements ITimeParameter {
   }
 
   get accumulatedTime() {
+    this._stateUiConnector.connectEventHandler(this, GLOBAL_STATE_UI_EVENTS.ACCUMULATED_TIME_CHANGED);
+
     return this._accumulatedTime;
   }
 
   get gameTime() {
+    this._stateUiConnector.connectEventHandler(this, GLOBAL_STATE_UI_EVENTS.ACCUMULATED_TIME_CHANGED);
+
     return this._gameTime;
   }
 
   get gameTimeTotal() {
+    this._stateUiConnector.connectEventHandler(this, GLOBAL_STATE_UI_EVENTS.ACCUMULATED_TIME_CHANGED);
+
     return this._gameTimeTotal;
   }
 
@@ -53,7 +64,7 @@ export class TimeParameter implements ITimeParameter {
       this._gameTime += this._settingsState.updateInterval;
       this._gameTimeTotal += this._settingsState.updateInterval;
 
-      this._uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.ACCUMULATED_TIME_CHANGED);
+      this.uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.ACCUMULATED_TIME_CHANGED);
 
       return true;
     }
@@ -86,17 +97,5 @@ export class TimeParameter implements ITimeParameter {
       gameTime: this._gameTime,
       gameTimeTotal: this._gameTimeTotal,
     };
-  }
-
-  addUiEventListener(eventName: symbol, handler: (...args: any[]) => void): void {
-    this._uiEventBatcher.addListener(eventName, handler);
-  }
-
-  removeUiEventListener(eventName: symbol, handler: (...args: any[]) => void): void {
-    this._uiEventBatcher.removeListener(eventName, handler);
-  }
-
-  fireUiEvents(): void {
-    this._uiEventBatcher.fireEvents();
   }
 }

@@ -1,13 +1,14 @@
-import SlCheckbox from '@shoelace-style/shoelace/dist/components/checkbox/checkbox.component.js';
-import { LitElement, css, html } from 'lit';
+import { css, html } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
+import SlCheckbox from '@shoelace-style/shoelace/dist/components/checkbox/checkbox.component.js';
+import { BaseComponent } from '@shared/base-component';
 import type { GameAlert } from '@shared/types';
 import { ConfirmationAlertOpenEvent, ConfirmationAlertCloseEvent, ConfirmationAlertSubmitEvent } from './events';
 import { ConfirmationAlertController } from './controller';
 
 @customElement('ca-confirmation-alert')
-export class ConfirmationAlert extends LitElement {
+export class ConfirmationAlert extends BaseComponent<ConfirmationAlertController> {
   static styles = css`
     sl-dialog::part(footer) {
       width: 100%;
@@ -23,7 +24,7 @@ export class ConfirmationAlert extends LitElement {
     }
   `;
 
-  private _confirmationAlertModalController: ConfirmationAlertController;
+  protected controller: ConfirmationAlertController;
 
   private _gameAlertToggleRef = createRef<SlCheckbox>();
 
@@ -45,7 +46,7 @@ export class ConfirmationAlert extends LitElement {
   constructor() {
     super();
 
-    this._confirmationAlertModalController = new ConfirmationAlertController(this);
+    this.controller = new ConfirmationAlertController(this);
   }
 
   connectedCallback() {
@@ -60,7 +61,7 @@ export class ConfirmationAlert extends LitElement {
     document.removeEventListener(ConfirmationAlertOpenEvent.type, this.handleOpen);
   }
 
-  render() {
+  renderContent() {
     return html`
       <sl-dialog no-header ?open=${this._isOpen} @sl-request-close=${this.handleClose}>
         <p>
@@ -95,7 +96,7 @@ export class ConfirmationAlert extends LitElement {
     this._messageParams = convertedEvent.messageParams;
     this._gameAlertKey = convertedEvent.gameAlertKey;
 
-    if (this._confirmationAlertModalController.isGameAlertEnabled(this._gameAlert)) {
+    if (this.controller.isGameAlertEnabled(this._gameAlert)) {
       this._isOpen = true;
       this._alertToggled = true;
     } else {
@@ -122,7 +123,7 @@ export class ConfirmationAlert extends LitElement {
       this._isOpen = false;
 
       if (this._gameAlertToggleRef.value) {
-        this._confirmationAlertModalController.toggleGameAlert(this._gameAlert, this._alertToggled);
+        this.controller.toggleGameAlert(this._gameAlert, this._alertToggled);
       }
 
       this.dispatchEvent(new ConfirmationAlertSubmitEvent(this._gameAlert, this._gameAlertKey));

@@ -1,9 +1,10 @@
-import { LitElement, css, html } from 'lit';
+import { css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { BaseComponent } from '@shared/base-component';
 
 @customElement('ca-menu-item')
-export class MenuItem extends LitElement {
+export class MenuItem extends BaseComponent {
   static styles = css`
     :host {
       width: 100%;
@@ -49,7 +50,7 @@ export class MenuItem extends LitElement {
   })
   selected = false;
 
-  render() {
+  renderContent() {
     const classes = classMap({
       selected: this.selected,
     });

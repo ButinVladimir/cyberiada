@@ -1,8 +1,9 @@
-import { LitElement, css, html } from 'lit';
+import { css, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
+import { BaseComponent } from '@shared/base-component';
 
 @customElement('ca-mainframe-page')
-export class MainframePage extends LitElement {
+export class MainframePage extends BaseComponent {
   static styles = css`
     h3.title {
       font-size: var(--sl-font-size-2x-large);
@@ -13,7 +14,7 @@ export class MainframePage extends LitElement {
     }
   `;
 
-  render() {
+  renderContent() {
     return html`
       <h3 class="title">
         <intl-message label="ui:mainframe:mainframe">Mainframe</intl-message>

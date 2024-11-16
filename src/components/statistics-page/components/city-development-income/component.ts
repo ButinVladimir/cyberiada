@@ -1,27 +1,27 @@
-import { LitElement, html } from 'lit';
+import { html } from 'lit';
 import { customElement } from 'lit/decorators.js';
+import { BaseComponent } from '@/shared/base-component';
 import { IncomeSource } from '@shared/types';
 import { INCOME_SOURCES } from '@shared/constants';
 import { StatisticsCityDevelopmentIncomeController } from './controller';
 import { statisticsPanelContentStyle } from '../../styles';
 
 @customElement('ca-statistics-city-development-income')
-export class StatisticsCityDevelopmentIncome extends LitElement {
+export class StatisticsCityDevelopmentIncome extends BaseComponent<StatisticsCityDevelopmentIncomeController> {
   static styles = statisticsPanelContentStyle;
 
-  private _statisticsCityDevelopmentIncomePanelController: StatisticsCityDevelopmentIncomeController;
+  protected controller: StatisticsCityDevelopmentIncomeController;
 
   constructor() {
     super();
 
-    this._statisticsCityDevelopmentIncomePanelController = new StatisticsCityDevelopmentIncomeController(this);
+    this.controller = new StatisticsCityDevelopmentIncomeController(this);
   }
 
-  render() {
-    const formatter = this._statisticsCityDevelopmentIncomePanelController.formatter;
+  renderContent() {
+    const formatter = this.controller.formatter;
     const total = INCOME_SOURCES.reduce(
-      (sum, incomeSource) =>
-        sum + this._statisticsCityDevelopmentIncomePanelController.getCityDevelopmentIncome(incomeSource),
+      (sum, incomeSource) => sum + this.controller.getCityDevelopmentIncome(incomeSource),
       0,
     );
 
@@ -32,10 +32,7 @@ export class StatisticsCityDevelopmentIncome extends LitElement {
 
       <div class="parameters-table">
         ${INCOME_SOURCES.map((incomeSource) =>
-          this.renderIncomeSource(
-            incomeSource,
-            this._statisticsCityDevelopmentIncomePanelController.getCityDevelopmentIncome(incomeSource),
-          ),
+          this.renderIncomeSource(incomeSource, this.controller.getCityDevelopmentIncome(incomeSource)),
         )}
 
         <span>
@@ -51,7 +48,7 @@ export class StatisticsCityDevelopmentIncome extends LitElement {
       return '';
     }
 
-    const formatter = this._statisticsCityDevelopmentIncomePanelController.formatter;
+    const formatter = this.controller.formatter;
 
     return html`
       <span>

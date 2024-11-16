@@ -1,25 +1,26 @@
-import { LitElement, html } from 'lit';
+import { html } from 'lit';
 import { customElement } from 'lit/decorators.js';
+import { BaseComponent } from '@shared/base-component';
 import { IncomeSource } from '@shared/types';
 import { INCOME_SOURCES } from '@shared/constants';
 import { StatisticsCityDevelopmentGrowthController } from './controller';
 import { statisticsPanelContentStyle } from '../../styles';
 
 @customElement('ca-statistics-city-development-growth')
-export class StatisticsCityDevelopmentGrowth extends LitElement {
+export class StatisticsCityDevelopmentGrowth extends BaseComponent<StatisticsCityDevelopmentGrowthController> {
   static styles = statisticsPanelContentStyle;
 
-  private _statisticsCityDevelopmentGrowthPanelController: StatisticsCityDevelopmentGrowthController;
+  protected controller: StatisticsCityDevelopmentGrowthController;
 
   constructor() {
     super();
 
-    this._statisticsCityDevelopmentGrowthPanelController = new StatisticsCityDevelopmentGrowthController(this);
+    this.controller = new StatisticsCityDevelopmentGrowthController(this);
   }
 
-  render() {
-    const formatter = this._statisticsCityDevelopmentGrowthPanelController.formatter;
-    const total = this._statisticsCityDevelopmentGrowthPanelController.cityDevelopmentTotalGrowth;
+  renderContent() {
+    const formatter = this.controller.formatter;
+    const total = this.controller.cityDevelopmentTotalGrowth;
 
     return html`
       <h4 class="title">
@@ -28,10 +29,7 @@ export class StatisticsCityDevelopmentGrowth extends LitElement {
 
       <div class="parameters-table">
         ${INCOME_SOURCES.map((incomeSource) =>
-          this.renderIncomeSource(
-            incomeSource,
-            this._statisticsCityDevelopmentGrowthPanelController.getCityDevelopmentGrowth(incomeSource),
-          ),
+          this.renderIncomeSource(incomeSource, this.controller.getCityDevelopmentGrowth(incomeSource)),
         )}
 
         <span>
@@ -47,7 +45,7 @@ export class StatisticsCityDevelopmentGrowth extends LitElement {
       return '';
     }
 
-    const formatter = this._statisticsCityDevelopmentGrowthPanelController.formatter;
+    const formatter = this.controller.formatter;
 
     return html`
       <span>

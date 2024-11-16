@@ -1,5 +1,6 @@
 import { IncomeSource, PurchaseType } from '@shared/types';
 import { EventBatcher } from '@shared/event-batcher';
+import { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import { IScenarioState } from '@state/scenario-state/interfaces/scenario-state';
 import { IMoneyParameter } from './interfaces/money-parameter';
 import { IMoneySerializedParameter } from './interfaces/serialized-states/money-serialized-parameter';
@@ -7,24 +8,30 @@ import { IMoneyConstructorParameters } from './interfaces/constructor-parameters
 import { GLOBAL_STATE_UI_EVENTS } from './constants';
 
 export class MoneyParameter implements IMoneyParameter {
+  readonly uiEventBatcher: EventBatcher;
+
+  private _stateUiConnector: IStateUIConnector;
   private _scenarioState: IScenarioState;
-  private readonly _uiEventBatcher: EventBatcher;
 
   private _money: number;
   private _income: Map<IncomeSource, number>;
   private _expenses: Map<PurchaseType, number>;
 
   constructor(parameters: IMoneyConstructorParameters) {
+    this._stateUiConnector = parameters.stateUiConnector;
     this._scenarioState = parameters.scenarioState;
 
     this._money = 0;
     this._income = new Map<IncomeSource, number>();
     this._expenses = new Map<PurchaseType, number>();
 
-    this._uiEventBatcher = new EventBatcher();
+    this.uiEventBatcher = new EventBatcher();
+    this._stateUiConnector.registerEventEmitter(this);
   }
 
   get money() {
+    this._stateUiConnector.connectEventHandler(this, GLOBAL_STATE_UI_EVENTS.MONEY_CHANGED);
+
     return this._money;
   }
 
@@ -33,8 +40,8 @@ export class MoneyParameter implements IMoneyParameter {
     const prevIncome = this.getIncome(incomeSource);
     this._income.set(incomeSource, prevIncome + moneyDelta);
 
-    this._uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.MONEY_INCREASED);
-    this._uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.MONEY_CHANGED);
+    this.uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.MONEY_INCREASED);
+    this.uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.MONEY_CHANGED);
   }
 
   purchase(cost: number, purchaseType: PurchaseType, handler: () => void): boolean {
@@ -45,8 +52,8 @@ export class MoneyParameter implements IMoneyParameter {
       const prevExpenses = this.getExpenses(purchaseType);
       this._expenses.set(purchaseType, prevExpenses + cost);
 
-      this._uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.MONEY_SPENT);
-      this._uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.MONEY_CHANGED);
+      this.uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.MONEY_SPENT);
+      this.uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.MONEY_CHANGED);
 
       return true;
     }
@@ -55,10 +62,14 @@ export class MoneyParameter implements IMoneyParameter {
   }
 
   getIncome(incomeSource: IncomeSource): number {
+    this._stateUiConnector.connectEventHandler(this, GLOBAL_STATE_UI_EVENTS.MONEY_INCREASED);
+
     return this._income.get(incomeSource) ?? 0;
   }
 
   getExpenses(purchaseType: PurchaseType): number {
+    this._stateUiConnector.connectEventHandler(this, GLOBAL_STATE_UI_EVENTS.MONEY_SPENT);
+
     return this._expenses.get(purchaseType) ?? 0;
   }
 
@@ -90,17 +101,5 @@ export class MoneyParameter implements IMoneyParameter {
       income: Object.fromEntries(this._income.entries()) as Record<IncomeSource, number>,
       expenses: Object.fromEntries(this._expenses.entries()) as Record<PurchaseType, number>,
     };
-  }
-
-  addUiEventListener(eventName: symbol, handler: (...args: any[]) => void): void {
-    this._uiEventBatcher.addListener(eventName, handler);
-  }
-
-  removeUiEventListener(eventName: symbol, handler: (...args: any[]) => void): void {
-    this._uiEventBatcher.removeListener(eventName, handler);
-  }
-
-  fireUiEvents(): void {
-    this._uiEventBatcher.fireEvents();
   }
 }

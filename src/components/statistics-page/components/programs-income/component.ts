@@ -1,22 +1,23 @@
-import { LitElement, html } from 'lit';
+import { html } from 'lit';
 import { customElement } from 'lit/decorators.js';
+import { BaseComponent } from '@shared/base-component';
 import { StatisticsProgramsIncomeController } from './controller';
 import { statisticsPanelContentStyle } from '../../styles';
 
 @customElement('ca-statistics-programs-income')
-export class StatisticsProgramsIncome extends LitElement {
+export class StatisticsProgramsIncome extends BaseComponent<StatisticsProgramsIncomeController> {
   static styles = statisticsPanelContentStyle;
 
-  private _statisticsProgramsIncomeController: StatisticsProgramsIncomeController;
+  protected controller: StatisticsProgramsIncomeController;
 
   constructor() {
     super();
 
-    this._statisticsProgramsIncomeController = new StatisticsProgramsIncomeController(this);
+    this.controller = new StatisticsProgramsIncomeController(this);
   }
 
-  render() {
-    const formatter = this._statisticsProgramsIncomeController.formatter;
+  renderContent() {
+    const formatter = this.controller.formatter;
 
     return html`
       <h4 class="title">
@@ -29,9 +30,7 @@ export class StatisticsProgramsIncome extends LitElement {
             >Computational base</intl-message
           >
         </span>
-        <span>
-          ${formatter.formatNumberLong(this._statisticsProgramsIncomeController.computationalBaseByProgram)}
-        </span>
+        <span> ${formatter.formatNumberLong(this.controller.computationalBaseByProgram)} </span>
       </div>
     `;
   }

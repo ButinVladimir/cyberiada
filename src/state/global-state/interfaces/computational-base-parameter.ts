@@ -1,5 +1,5 @@
-import { ISerializeable } from '@shared/interfaces/serializable';
 import { IUIEventEmitter } from '@shared/interfaces/ui-event-emitter';
+import { ISerializeable } from '@shared/interfaces/serializable';
 import { IComputationalBaseSerializedParameter } from './serialized-states/computational-base-serialized-parameter';
 
 export interface IComputationalBaseParameter

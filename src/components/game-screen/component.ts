@@ -1,10 +1,11 @@
-import { LitElement, html, css, nothing } from 'lit';
+import { html, css, nothing } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
+import { BaseComponent } from '@shared/base-component';
 import { OverviewMenuItem } from '@shared/types';
 import { MenuItemSelectedEvent } from './components/menu-bar/events';
 
 @customElement('ca-game-screen')
-export class GameScreen extends LitElement {
+export class GameScreen extends BaseComponent {
   static styles = css`
     :host {
       width: 100vw;
@@ -85,7 +86,7 @@ export class GameScreen extends LitElement {
   @state()
   private _selectedMenuItem = OverviewMenuItem.cityOverview;
 
-  render() {
+  renderContent() {
     return html`
       <div class="top-bar-outer-container">
         <div class="top-bar-inner-container">

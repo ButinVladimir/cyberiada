@@ -1,15 +1,13 @@
-import { LitElement, css, html } from 'lit';
+import { css, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
+import { BaseComponent } from '@shared/base-component';
 import { GameStateAlert } from '@shared/types';
+import { ConfirmationAlertOpenEvent, ConfirmationAlertSubmitEvent } from '@components/shared/confirmation-alert/events';
 import { SavefilePanelController } from './controller';
-import {
-  ConfirmationAlertOpenEvent,
-  ConfirmationAlertSubmitEvent,
-} from '@/components/shared/confirmation-alert/events';
 
 @customElement('ca-savefile-panel')
-export class SavefilePanel extends LitElement {
+export class SavefilePanel extends BaseComponent<SavefilePanelController> {
   static styles = css`
     :host {
       display: flex;
@@ -24,14 +22,14 @@ export class SavefilePanel extends LitElement {
     }
   `;
 
-  private _savefilePanelController: SavefilePanelController;
+  protected controller: SavefilePanelController;
 
   private _importInputRef = createRef<HTMLInputElement>();
 
   constructor() {
     super();
 
-    this._savefilePanelController = new SavefilePanelController(this);
+    this.controller = new SavefilePanelController(this);
   }
 
   connectedCallback() {
@@ -48,7 +46,7 @@ export class SavefilePanel extends LitElement {
     document.removeEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmDeleteSaveDataDialog);
   }
 
-  render() {
+  renderContent() {
     return html`
       <input ${ref(this._importInputRef)} type="file" id="import-file" @change=${this.handleChangeImportSavefile} />
 
@@ -73,7 +71,7 @@ export class SavefilePanel extends LitElement {
   private handleSaveGame = (event: Event) => {
     event.stopPropagation();
 
-    this._savefilePanelController.saveGame();
+    this.controller.saveGame();
   };
 
   private handleOpenImportSavefileDialog = (event: Event) => {
@@ -104,14 +102,14 @@ export class SavefilePanel extends LitElement {
     const importedSavefile = this._importInputRef.value.files?.item(0);
 
     if (importedSavefile) {
-      this._savefilePanelController.importSavefile(importedSavefile);
+      this.controller.importSavefile(importedSavefile);
     }
   };
 
   private handleExportSavefile = (event: Event) => {
     event.stopPropagation();
 
-    this._savefilePanelController.exportSavefile();
+    this.controller.exportSavefile();
   };
 
   private handleOpenDeleteSaveDataDialog = (event: Event) => {
@@ -127,7 +125,7 @@ export class SavefilePanel extends LitElement {
       return;
     }
 
-    this._savefilePanelController.deleteSaveData().catch((e) => {
+    this.controller.deleteSaveData().catch((e) => {
       console.error(e);
     });
   };

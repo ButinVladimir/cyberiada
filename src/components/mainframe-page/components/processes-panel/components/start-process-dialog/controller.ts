@@ -1,32 +1,10 @@
-import { MAINFRAME_PROGRAMS_STATE_UI_EVENTS } from '@/state/mainframe/mainframe-programs-state/constants';
-import { MAINFRAME_HARDWARE_STATE_UI_EVENTS } from '@state/mainframe/mainframe-hardware-state/constants';
 import { BaseController } from '@shared/base-controller';
 import { IProgram } from '@state/progam-factory/interfaces/program';
 import { ProgramName } from '@state/progam-factory/types';
 import { IProcess } from '@state/mainframe/mainframe-processes-state/interfaces/process';
 
 export class StartProcessDialogController extends BaseController {
-  hostConnected() {
-    this.mainframeProgramsState.addUiEventListener(
-      MAINFRAME_PROGRAMS_STATE_UI_EVENTS.OWNED_PROGRAMS_UPDATED,
-      this.handleRefreshUI,
-    );
-    this.mainframeHardwareState.addUiEventListener(
-      MAINFRAME_HARDWARE_STATE_UI_EVENTS.HARDWARE_UPGRADED,
-      this.handleRefreshUI,
-    );
-  }
-
-  hostDisconnected() {
-    this.mainframeProgramsState.removeUiEventListener(
-      MAINFRAME_PROGRAMS_STATE_UI_EVENTS.OWNED_PROGRAMS_UPDATED,
-      this.handleRefreshUI,
-    );
-    this.mainframeHardwareState.removeUiEventListener(
-      MAINFRAME_HARDWARE_STATE_UI_EVENTS.HARDWARE_UPGRADED,
-      this.handleRefreshUI,
-    );
-  }
+  private _program?: IProgram;
 
   get ram(): number {
     return this.mainframeHardwareState.ram.level;
@@ -55,7 +33,13 @@ export class StartProcessDialogController extends BaseController {
   }
 
   getProgram(name: ProgramName): IProgram | undefined {
-    return this.mainframeProgramsState.getOwnedProgramByName(name)!;
+    if (this._program?.name !== name && this._program) {
+      this.removeEventListenersByEmitter(this._program);
+    }
+
+    this._program = this.mainframeProgramsState.getOwnedProgramByName(name)!;
+
+    return this._program;
   }
 
   getRunningScalableProgram(): ProgramName | undefined {

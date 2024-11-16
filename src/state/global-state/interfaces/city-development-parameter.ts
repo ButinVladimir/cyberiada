@@ -1,5 +1,5 @@
-import { ISerializeable } from '@shared/interfaces/serializable';
 import { IUIEventEmitter } from '@shared/interfaces/ui-event-emitter';
+import { ISerializeable } from '@shared/interfaces/serializable';
 import { IncomeSource } from '@shared/types';
 import { ICityDevelopmentSerializedParameter } from './serialized-states/city-development-serialized-parameter';
 

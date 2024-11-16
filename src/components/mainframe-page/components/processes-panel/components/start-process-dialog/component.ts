@@ -1,9 +1,10 @@
-import { LitElement, css, html } from 'lit';
+import { css, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.component.js';
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.component.js';
+import { BaseComponent } from '@shared/base-component';
 import { ProgramName } from '@state/progam-factory/types';
 import { IProgram } from '@state/progam-factory/interfaces/program';
 import {
@@ -16,7 +17,7 @@ import { StartProcessDialogCloseEvent } from './events';
 import { StartProcessDialogController } from './controller';
 
 @customElement('ca-start-process-dialog')
-export class StartProcessDialog extends LitElement {
+export class StartProcessDialog extends BaseComponent<StartProcessDialogController> {
   static styles = css`
     sl-dialog {
       --width: 40rem;
@@ -75,7 +76,7 @@ export class StartProcessDialog extends LitElement {
     }
   `;
 
-  private _startProcessDialogController: StartProcessDialogController;
+  protected controller: StartProcessDialogController;
 
   private _programInputRef = createRef<SlSelect>();
 
@@ -102,7 +103,7 @@ export class StartProcessDialog extends LitElement {
   constructor() {
     super();
 
-    this._startProcessDialogController = new StartProcessDialogController(this);
+    this.controller = new StartProcessDialogController(this);
   }
 
   connectedCallback() {
@@ -120,6 +121,8 @@ export class StartProcessDialog extends LitElement {
   }
 
   updated(_changedProperties: Map<string, any>) {
+    super.updated(_changedProperties);
+
     if (_changedProperties.get('isOpen') === false) {
       this._programName = undefined;
       this._threads = 1;
@@ -127,10 +130,10 @@ export class StartProcessDialog extends LitElement {
     }
   }
 
-  render() {
-    const program = this._programName ? this._startProcessDialogController.getProgram(this._programName) : undefined;
+  renderContent() {
+    const program = this._programName ? this.controller.getProgram(this._programName) : undefined;
 
-    const threads = program?.isAutoscalable ? this._startProcessDialogController.cores : this._threads;
+    const threads = program?.isAutoscalable ? this.controller.cores : this._threads;
 
     const threadsInputDisabled = !(program && !program.isAutoscalable);
     const submitButtonDisabled = !(
@@ -157,7 +160,7 @@ export class StartProcessDialog extends LitElement {
                 <intl-message label="ui:mainframe:program">Program</intl-message>
               </span>
 
-              ${this._startProcessDialogController.listPrograms().map(this.formatProgramSelectItem)}
+              ${this.controller.listPrograms().map(this.formatProgramSelectItem)}
             </sl-select>
 
             <sl-input
@@ -212,13 +215,13 @@ export class StartProcessDialog extends LitElement {
 
     this._programName = this._programInputRef.value.value as ProgramName;
 
-    const program = this._startProcessDialogController.getProgram(this._programName);
-    const availableRam = this._startProcessDialogController.getAvailableRamForProgram(this._programName);
+    const program = this.controller.getProgram(this._programName);
+    const availableRam = this.controller.getAvailableRamForProgram(this._programName);
 
     this._maxThreads = 1;
 
     if (program && !program.isAutoscalable) {
-      this._maxThreads = Math.max(Math.floor(availableRam / program.ram), 1);
+      this._maxThreads = Math.max(Math.floor(availableRam / program.ram), 0);
     }
   };
 
@@ -249,11 +252,11 @@ export class StartProcessDialog extends LitElement {
       return;
     }
 
-    const program = this._startProcessDialogController.getProgram(this._programName);
-    const runningScalableProgram = this._startProcessDialogController.getRunningScalableProgram();
+    const program = this.controller.getProgram(this._programName);
+    const runningScalableProgram = this.controller.getRunningScalableProgram();
 
-    const existingProcess = this._startProcessDialogController.getProcessByName(this._programName);
-    const formatter = this._startProcessDialogController.formatter;
+    const existingProcess = this.controller.getProcessByName(this._programName);
+    const formatter = this.controller.formatter;
 
     if (existingProcess) {
       const confirmationAlertParameters = JSON.stringify({
@@ -265,7 +268,7 @@ export class StartProcessDialog extends LitElement {
 
       this.dispatchEvent(new ConfirmationAlertOpenEvent(ProgramAlert.processReplace, confirmationAlertParameters));
     } else if (program?.isAutoscalable && runningScalableProgram) {
-      const scalableProcess = this._startProcessDialogController.getProcessByName(runningScalableProgram)!;
+      const scalableProcess = this.controller.getProcessByName(runningScalableProgram)!;
 
       const confirmationAlertParameters = JSON.stringify({
         programName: scalableProcess.program.name,
@@ -298,7 +301,7 @@ export class StartProcessDialog extends LitElement {
 
   private startProcess = () => {
     if (this._programName) {
-      const isStarted = this._startProcessDialogController.startProcess(this._programName, this._threads);
+      const isStarted = this.controller.startProcess(this._programName, this._threads);
 
       if (isStarted) {
         this.dispatchEvent(new StartProcessDialogCloseEvent());
@@ -320,7 +323,7 @@ export class StartProcessDialog extends LitElement {
   };
 
   private formatProgramSelectItem = (program: IProgram) => {
-    const formatter = this._startProcessDialogController.formatter;
+    const formatter = this.controller.formatter;
     const value = JSON.stringify({
       programName: program.name,
       level: formatter.formatNumberDecimal(program.level),

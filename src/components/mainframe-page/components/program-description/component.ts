@@ -1,18 +1,19 @@
-import { LitElement, css, html } from 'lit';
+import { css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { BaseComponent } from '@shared/base-component';
 import { ProgramName } from '@state/progam-factory/types';
-import { ProgramDescriptionController } from './controller';
 import { IProgram } from '@state/progam-factory/interfaces/program';
+import { ProgramDescriptionController } from './controller';
 
 @customElement('ca-program-description')
-export class ProgramDescription extends LitElement {
+export class ProgramDescription extends BaseComponent<ProgramDescriptionController> {
   static styles = css`
     :host {
       white-space: pre-line;
     }
   `;
 
-  private _programDescriptionController: ProgramDescriptionController;
+  protected controller: ProgramDescriptionController;
 
   @property({
     attribute: 'program-name',
@@ -41,12 +42,12 @@ export class ProgramDescription extends LitElement {
   constructor() {
     super();
 
-    this._programDescriptionController = new ProgramDescriptionController(this);
+    this.controller = new ProgramDescriptionController(this);
   }
 
-  render() {
+  renderContent() {
     const program = this.programName
-      ? this._programDescriptionController.getProgram(this.programName as ProgramName, this.level, this.quality)
+      ? this.controller.getProgram(this.programName as ProgramName, this.level, this.quality)
       : undefined;
 
     if (!program) {
@@ -66,8 +67,8 @@ export class ProgramDescription extends LitElement {
   }
 
   private renderScalableDescription = (program: IProgram) => {
-    const cores = this._programDescriptionController.cores;
-    const ram = this._programDescriptionController.ram;
+    const cores = this.controller.cores;
+    const ram = this.controller.ram;
 
     const descriptionValues = JSON.stringify(program.buildProgramDescriptionParametersObject(cores, ram));
 
@@ -79,7 +80,7 @@ export class ProgramDescription extends LitElement {
   };
 
   private renderOrdinaryDescription = (program: IProgram) => {
-    const formatter = this._programDescriptionController.formatter;
+    const formatter = this.controller.formatter;
 
     const requirementsValues = JSON.stringify(program.buildRequirementsParametersObject(this.threads));
     const descriptionValues = JSON.stringify(program.buildProgramDescriptionParametersObject(this.threads, 1));

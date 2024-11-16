@@ -1,6 +1,7 @@
 import { injectable } from 'inversify';
 import { decorators } from '@state/container';
 import { TYPES } from '@state/types';
+import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import type { IScenarioState } from '@state/scenario-state/interfaces/scenario-state';
 import type { ISettingsState } from '@state/settings-state/interfaces/settings-state';
 import type { IMainframeProcessesState } from '@state/mainframe/mainframe-processes-state/interfaces/mainframe-processes-state';
@@ -31,6 +32,9 @@ const { lazyInject } = decorators;
 
 @injectable()
 export class GlobalState implements IGlobalState {
+  @lazyInject(TYPES.StateUIConnector)
+  private _stateUiConnector!: IStateUIConnector;
+
   @lazyInject(TYPES.ScenarioState)
   private _scenarioState!: IScenarioState;
 
@@ -74,6 +78,7 @@ export class GlobalState implements IGlobalState {
   get money(): IMoneyParameter {
     if (!this._money) {
       this._money = new MoneyParameter({
+        stateUiConnector: this._stateUiConnector,
         scenarioState: this._scenarioState,
       });
     }
@@ -84,6 +89,7 @@ export class GlobalState implements IGlobalState {
   get time(): ITimeParameter {
     if (!this._time) {
       this._time = new TimeParameter({
+        stateUiConnector: this._stateUiConnector,
         settingsState: this._settingsState,
       });
     }
@@ -94,6 +100,7 @@ export class GlobalState implements IGlobalState {
   get cityDevelopment(): ICityDevelopmentParameter {
     if (!this._cityDevelopment) {
       this._cityDevelopment = new CityDevelopmentParameter({
+        stateUiConnector: this._stateUiConnector,
         scenarioState: this._scenarioState,
       });
     }
@@ -104,6 +111,7 @@ export class GlobalState implements IGlobalState {
   get computationalBase(): IComputationalBaseParameter {
     if (!this._computationalBase) {
       this._computationalBase = new ComputationalBaseParameter({
+        stateUiConnector: this._stateUiConnector,
         scenarioState: this._scenarioState,
       });
     }
@@ -114,6 +122,7 @@ export class GlobalState implements IGlobalState {
   get programCompletionSpeed(): IProgramCompletionSpeedParameter {
     if (!this._programCompletionSpeed) {
       this._programCompletionSpeed = new ProgramCompletionSpeedParameter({
+        stateUiConnector: this._stateUiConnector,
         mainframeProcessesState: this._mainframeProcessesState,
         mainframeHardwareState: this._mainframeHardwareState,
         scenarioState: this._scenarioState,
@@ -126,6 +135,7 @@ export class GlobalState implements IGlobalState {
   get moneyGrowth(): IMoneyGrowthParameter {
     if (!this._moneyGrowth) {
       this._moneyGrowth = new MoneyGrowthParameter({
+        stateUiConnector: this._stateUiConnector,
         mainframeProcessesState: this._mainframeProcessesState,
       });
     }
@@ -136,6 +146,7 @@ export class GlobalState implements IGlobalState {
   get cityDevelopmentGrowth(): ICityDevelopmentGrowthParameter {
     if (!this._cityDevelopmentGrowth) {
       this._cityDevelopmentGrowth = new CityDevelopmentGrowthParameter({
+        stateUiConnector: this._stateUiConnector,
         mainframeProcessesState: this._mainframeProcessesState,
       });
     }
@@ -146,6 +157,7 @@ export class GlobalState implements IGlobalState {
   get programsGrowth(): IProgramsGrowthParameter {
     if (!this._programsGrowthParameter) {
       this._programsGrowthParameter = new ProgramsGrowthParameter({
+        stateUiConnector: this._stateUiConnector,
         mainframeProcessesState: this._mainframeProcessesState,
       });
     }
@@ -200,19 +212,5 @@ export class GlobalState implements IGlobalState {
       cityDevelopment: this.cityDevelopment.serialize(),
       computationalBase: this.computationalBase.serialize(),
     };
-  }
-
-  addUiEventListener(): void {}
-
-  removeUiEventListener(): void {}
-
-  fireUiEvents() {
-    this.money.fireUiEvents();
-    this.time.fireUiEvents();
-    this.cityDevelopment.fireUiEvents();
-    this.computationalBase.fireUiEvents();
-    this.programCompletionSpeed.fireUiEvents();
-    this.moneyGrowth.fireUiEvents();
-    this.cityDevelopmentGrowth.fireUiEvents();
   }
 }

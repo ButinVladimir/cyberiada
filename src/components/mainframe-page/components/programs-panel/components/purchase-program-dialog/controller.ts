@@ -1,6 +1,3 @@
-import { GLOBAL_STATE_UI_EVENTS } from '@state/global-state/constants';
-import { MAINFRAME_PROGRAMS_STATE_UI_EVENTS } from '@/state/mainframe/mainframe-programs-state';
-import { PROGRAMS_UI_EVENTS } from '@state/progam-factory/constants';
 import { BaseController } from '@shared/base-controller';
 import { IProgram } from '@state/progam-factory/interfaces/program';
 import { ProgramName } from '@state/progam-factory/types';
@@ -8,40 +5,10 @@ import { ProgramName } from '@state/progam-factory/types';
 export class PurchaseProgramDialogController extends BaseController {
   private _selectedProgram?: IProgram;
 
-  hostConnected() {
-    this.mainframeProgramsState.addUiEventListener(
-      MAINFRAME_PROGRAMS_STATE_UI_EVENTS.OWNED_PROGRAMS_UPDATED,
-      this.handleRefreshUI,
-    );
-    this.globalState.computationalBase.addUiEventListener(
-      GLOBAL_STATE_UI_EVENTS.MAINFRAME_DISCOUNT_CHANGED,
-      this.handleRefreshUI,
-    );
-    this.globalState.money.addUiEventListener(GLOBAL_STATE_UI_EVENTS.MONEY_CHANGED, this.handleRefreshUI);
-    this.globalState.cityDevelopment.addUiEventListener(
-      GLOBAL_STATE_UI_EVENTS.CITY_DEVELOPMENT_LEVEL_CHANGED,
-      this.handleRefreshUI,
-    );
-  }
-
   hostDisconnected() {
-    this.mainframeProgramsState.removeUiEventListener(
-      MAINFRAME_PROGRAMS_STATE_UI_EVENTS.OWNED_PROGRAMS_UPDATED,
-      this.handleRefreshUI,
-    );
-    this.globalState.computationalBase.removeUiEventListener(
-      GLOBAL_STATE_UI_EVENTS.MAINFRAME_DISCOUNT_CHANGED,
-      this.handleRefreshUI,
-    );
-    this.globalState.money.removeUiEventListener(GLOBAL_STATE_UI_EVENTS.MONEY_CHANGED, this.handleRefreshUI);
-    this.globalState.cityDevelopment.removeUiEventListener(
-      GLOBAL_STATE_UI_EVENTS.CITY_DEVELOPMENT_LEVEL_CHANGED,
-      this.handleRefreshUI,
-    );
+    super.hostDisconnected();
 
-    if (this._selectedProgram) {
-      this.programFactory.deleteProgram(this._selectedProgram);
-    }
+    this.deleteSelectedProgram();
   }
 
   get money(): number {
@@ -58,9 +25,7 @@ export class PurchaseProgramDialogController extends BaseController {
       this._selectedProgram.level !== level ||
       this._selectedProgram.quality !== quality
     ) {
-      if (this._selectedProgram) {
-        this.programFactory.deleteProgram(this._selectedProgram);
-      }
+      this.deleteSelectedProgram();
 
       this._selectedProgram = this.programFactory.makeProgram({
         name,
@@ -68,8 +33,6 @@ export class PurchaseProgramDialogController extends BaseController {
         quality,
         autoUpgradeEnabled: true,
       });
-
-      this._selectedProgram.addUiEventListener(PROGRAMS_UI_EVENTS.PROGRAM_UPGRADED, this.handleRefreshUI);
     }
 
     return this._selectedProgram;
@@ -86,5 +49,12 @@ export class PurchaseProgramDialogController extends BaseController {
       quality,
       autoUpgradeEnabled: true,
     });
+  }
+
+  private deleteSelectedProgram() {
+    if (this._selectedProgram) {
+      this.removeEventListenersByEmitter(this._selectedProgram);
+      this.programFactory.deleteProgram(this._selectedProgram);
+    }
   }
 }

@@ -1,14 +1,15 @@
 import { ScrollableComponentElement } from 'scrollable-component';
-import { LitElement, html, css, TemplateResult } from 'lit';
+import { html, css, TemplateResult } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { BaseComponent } from '@shared/base-component';
 import { IMessage } from '@state/message-log-state/interfaces/message';
 import { MessageLogContentController } from './controller';
 
 @customElement('ca-message-log-content')
-export class MessageLogContent extends LitElement {
+export class MessageLogContent extends BaseComponent<MessageLogContentController> {
   static styles = css`
     :host {
       display: block;
@@ -38,9 +39,9 @@ export class MessageLogContent extends LitElement {
     }
   `;
 
-  private static SCROLL_EPS = 1;
+  protected controller: MessageLogContentController;
 
-  private _messageLogContentController: MessageLogContentController;
+  private static SCROLL_EPS = 1;
 
   private _scrollableComponentRef = createRef<ScrollableComponentElement>();
 
@@ -50,7 +51,7 @@ export class MessageLogContent extends LitElement {
   constructor() {
     super();
 
-    this._messageLogContentController = new MessageLogContentController(this);
+    this.controller = new MessageLogContentController(this);
   }
 
   firstUpdated() {
@@ -67,15 +68,17 @@ export class MessageLogContent extends LitElement {
     }
   }
 
-  updated() {
+  updated(_changedProperties: Map<string, any>) {
+    super.updated(_changedProperties);
+
     if (this._scrollSticky && this._scrollableComponentRef.value) {
       const viewport = this._scrollableComponentRef.value.viewport;
       viewport.scrollTo({ top: viewport.scrollHeight, behavior: 'instant' });
     }
   }
 
-  render() {
-    const messages = this._messageLogContentController.getMessages();
+  renderContent() {
+    const messages = this.controller.getMessages();
 
     return html`
       <scrollable-component ${ref(this._scrollableComponentRef)}>

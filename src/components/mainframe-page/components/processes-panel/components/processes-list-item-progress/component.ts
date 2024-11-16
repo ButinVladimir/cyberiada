@@ -1,10 +1,11 @@
-import { LitElement, css, html } from 'lit';
+import { css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { BaseComponent } from '@shared/base-component';
 import { ProgramName } from '@state/progam-factory/types';
 import { ProcessesListItemProgressController } from './controller';
 
 @customElement('ca-processes-list-item-progress')
-export class ProcessesListItemProgressColumn extends LitElement {
+export class ProcessesListItemProgressColumn extends BaseComponent<ProcessesListItemProgressController> {
   static styles = css`
     :host {
       flex: 1 1 auto;
@@ -17,18 +18,18 @@ export class ProcessesListItemProgressColumn extends LitElement {
   })
   programName: string = ProgramName.shareServer;
 
-  private _processesListItemProgressController: ProcessesListItemProgressController;
+  protected controller: ProcessesListItemProgressController;
 
   constructor() {
     super();
 
-    this._processesListItemProgressController = new ProcessesListItemProgressController(this);
+    this.controller = new ProcessesListItemProgressController(this);
   }
 
-  render() {
-    const formatter = this._processesListItemProgressController.formatter;
+  renderContent() {
+    const formatter = this.controller.formatter;
 
-    const process = this._processesListItemProgressController.getProcess(this.programName as ProgramName);
+    const process = this.controller.getProcess(this.programName as ProgramName);
 
     if (!process) {
       return html``;

@@ -5,3 +5,5 @@ export * from './queue';
 export * from './random-queue';
 export * from './formatter';
 export * from './helpers';
+export * from './base-component';
+export * from './base-controller';

@@ -2,6 +2,7 @@ import { inject, injectable } from 'inversify';
 import type { IAppState } from '@state/app-state/interfaces/app-state';
 import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
 import type { ISettingsState } from '@state/settings-state/interfaces/settings-state';
+import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import { TYPES } from '@state/types';
 import { EventBatcher } from '@shared/event-batcher';
 import { GameStateEvent } from '@shared/types';
@@ -11,18 +12,21 @@ import { AppStage } from './types';
 
 @injectable()
 export class App implements IApp {
+  readonly uiEventBatcher: EventBatcher;
+
   private _appState: IAppState;
   private _settingsState: ISettingsState;
   private _messageLogState: IMessageLogState;
   private _appStage: AppStage;
   private _updateTimer?: NodeJS.Timeout;
   private _autosaveTimer?: NodeJS.Timeout;
-  private readonly _uiEventBatcher: EventBatcher;
+  private _stateUIConnector: IStateUIConnector;
 
   constructor(
     @inject(TYPES.AppState) _appState: IAppState,
     @inject(TYPES.SettingsState) _settingsState: ISettingsState,
     @inject(TYPES.MessageLogState) _messageLogState: IMessageLogState,
+    @inject(TYPES.StateUIConnector) _stateUiConnector: IStateUIConnector,
   ) {
     this._appState = _appState;
     this._settingsState = _settingsState;
@@ -30,11 +34,15 @@ export class App implements IApp {
     this._appStage = AppStage.loading;
     this._updateTimer = undefined;
     this._autosaveTimer = undefined;
+    this._stateUIConnector = _stateUiConnector;
 
-    this._uiEventBatcher = new EventBatcher();
+    this.uiEventBatcher = new EventBatcher();
+    this._stateUIConnector.registerEventEmitter(this);
   }
 
   get appStage() {
+    this._stateUIConnector.connectEventHandler(this, APP_UI_EVENTS.CHANGED_APP_STAGE);
+
     return this._appStage;
   }
 
@@ -63,19 +71,6 @@ export class App implements IApp {
     localStorage.setItem(LOCAL_STORAGE_KEY, encodedSaveData);
     this._messageLogState.postMessage(GameStateEvent.gameSaved);
   };
-
-  addUiEventListener(eventName: symbol, handler: () => void): void {
-    this._uiEventBatcher.addListener(eventName, handler);
-  }
-
-  removeUiEventListener(eventName: symbol, handler: () => void): void {
-    this._uiEventBatcher.removeListener(eventName, handler);
-  }
-
-  fireUiEvents() {
-    this._uiEventBatcher.fireEvents();
-    this._appState.fireUiEvents();
-  }
 
   importSavefile(file: File): void {
     this.startLoadingGame();
@@ -175,8 +170,8 @@ export class App implements IApp {
   };
 
   private emitChangedAppStageEvent() {
-    this._uiEventBatcher.enqueueEvent(APP_UI_EVENTS.CHANGED_APP_STAGE);
-    this.fireUiEvents();
+    this.uiEventBatcher.enqueueEvent(APP_UI_EVENTS.CHANGED_APP_STAGE);
+    this._stateUIConnector.fireUIEvents();
   }
 
   private stopUpdateTimer() {
@@ -205,12 +200,12 @@ export class App implements IApp {
         if (!this._appState.fastForwardState()) {
           this._appStage = AppStage.running;
           this._messageLogState.postMessage(GameStateEvent.fastForwared);
-          this._uiEventBatcher.enqueueEvent(APP_UI_EVENTS.CHANGED_APP_STAGE);
+          this.uiEventBatcher.enqueueEvent(APP_UI_EVENTS.CHANGED_APP_STAGE);
         }
         break;
     }
 
-    this._uiEventBatcher.enqueueEvent(APP_UI_EVENTS.REFRESHED_UI);
-    this.fireUiEvents();
+    this.uiEventBatcher.enqueueEvent(APP_UI_EVENTS.REFRESHED_UI);
+    this._stateUIConnector.fireUIEvents();
   };
 }

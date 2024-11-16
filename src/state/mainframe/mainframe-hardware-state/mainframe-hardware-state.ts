@@ -1,5 +1,6 @@
 import { injectable, inject } from 'inversify';
 import { decorators } from '@state/container';
+import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import type { IScenarioState } from '@state/scenario-state/interfaces/scenario-state';
 import type { IGlobalState } from '@state/global-state/interfaces/global-state';
 import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
@@ -17,26 +18,29 @@ const { lazyInject } = decorators;
 
 @injectable()
 export class MainframeHardwareState implements IMainframeHardwareState {
+  readonly uiEventBatcher: EventBatcher;
+
   @lazyInject(TYPES.MainframeProcessesState)
   private _mainframeProcessesState!: IMainframeProcessesState;
 
+  private _stateUiConnector: IStateUIConnector;
   private _scenarioState: IScenarioState;
   private _globalState: IGlobalState;
   private _messageLogState: IMessageLogState;
   private _formatter: IFormatter;
-
-  private readonly _uiEventBatcher: EventBatcher;
 
   private _performance: MainframeHardwarePerformance;
   private _cores: MainframeHardwareCores;
   private _ram: MainframeHardwareRam;
 
   constructor(
+    @inject(TYPES.StateUIConnector) _stateUiConnector: IStateUIConnector,
     @inject(TYPES.ScenarioState) _scenarioState: IScenarioState,
     @inject(TYPES.GlobalState) _globalState: IGlobalState,
     @inject(TYPES.MessageLogState) _messageLogState: IMessageLogState,
     @inject(TYPES.Formatter) _formatter: IFormatter,
   ) {
+    this._stateUiConnector = _stateUiConnector;
     this._scenarioState = _scenarioState;
     this._globalState = _globalState;
     this._messageLogState = _messageLogState;
@@ -64,25 +68,32 @@ export class MainframeHardwareState implements IMainframeHardwareState {
       formatter: this._formatter,
     });
 
-    this._uiEventBatcher = new EventBatcher();
+    this.uiEventBatcher = new EventBatcher();
+    this._stateUiConnector.registerEventEmitter(this);
   }
 
   get performance() {
+    this._stateUiConnector.connectEventHandler(this, MAINFRAME_HARDWARE_STATE_UI_EVENTS.HARDWARE_UPGRADED);
+
     return this._performance;
   }
 
   get cores() {
+    this._stateUiConnector.connectEventHandler(this, MAINFRAME_HARDWARE_STATE_UI_EVENTS.HARDWARE_UPGRADED);
+
     return this._cores;
   }
 
   get ram() {
+    this._stateUiConnector.connectEventHandler(this, MAINFRAME_HARDWARE_STATE_UI_EVENTS.HARDWARE_UPGRADED);
+
     return this._ram;
   }
 
   emitUpgradedEvent() {
     this._mainframeProcessesState.requestUpdateProcesses();
     this._globalState.requestGrowthRecalculation();
-    this._uiEventBatcher.enqueueEvent(MAINFRAME_HARDWARE_STATE_UI_EVENTS.HARDWARE_UPGRADED);
+    this.uiEventBatcher.enqueueEvent(MAINFRAME_HARDWARE_STATE_UI_EVENTS.HARDWARE_UPGRADED);
   }
 
   async startNewState(): Promise<void> {
@@ -103,17 +114,5 @@ export class MainframeHardwareState implements IMainframeHardwareState {
       cores: this.cores.serialize(),
       ram: this.ram.serialize(),
     };
-  }
-
-  addUiEventListener(eventName: symbol, handler: (...args: any[]) => void) {
-    this._uiEventBatcher.addListener(eventName, handler);
-  }
-
-  removeUiEventListener(eventName: symbol, handler: (...args: any[]) => void) {
-    this._uiEventBatcher.removeListener(eventName, handler);
-  }
-
-  fireUiEvents() {
-    this._uiEventBatcher.fireEvents();
   }
 }

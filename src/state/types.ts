@@ -1,4 +1,5 @@
 export const TYPES = {
+  StateUIConnector: Symbol('StateUIConnector'),
   App: Symbol('App'),
   AppState: Symbol('AppState'),
   ScenarioState: Symbol('ScenarioState'),

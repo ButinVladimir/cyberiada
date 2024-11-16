@@ -1,14 +1,15 @@
-import { LitElement, TemplateResult, css, html } from 'lit';
+import { TemplateResult, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import SlCheckbox from '@shoelace-style/shoelace/dist/components/checkbox/checkbox.component.js';
+import { BaseComponent } from '@shared/base-component';
 import { GAME_STATE_ALERTS, PROGRAM_ALERTS } from '@shared/constants';
 import { GameAlert } from '@shared/types';
 import { AlertFilterDialogCloseEvent } from './events';
 import { AlertFilterDialogController } from './controller';
 
 @customElement('ca-alert-filter-dialog')
-export class AlertFilterDialog extends LitElement {
+export class AlertFilterDialog extends BaseComponent<AlertFilterDialogController> {
   static styles = css`
     sl-dialog {
       --width: 50rem;
@@ -51,7 +52,7 @@ export class AlertFilterDialog extends LitElement {
     }
   `;
 
-  private _alertFilterDialogController: AlertFilterDialogController;
+  protected controller: AlertFilterDialogController;
 
   @property({
     attribute: 'is-open',
@@ -62,10 +63,10 @@ export class AlertFilterDialog extends LitElement {
   constructor() {
     super();
 
-    this._alertFilterDialogController = new AlertFilterDialogController(this);
+    this.controller = new AlertFilterDialogController(this);
   }
 
-  render() {
+  renderContent() {
     return html`
       <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
         <h4 slot="label" class="title">
@@ -101,7 +102,7 @@ export class AlertFilterDialog extends LitElement {
         size="medium"
         name="event"
         value=${gameAlert}
-        ?checked=${this._alertFilterDialogController.isGameAlertEnabled(gameAlert)}
+        ?checked=${this.controller.isGameAlertEnabled(gameAlert)}
         @sl-change=${this.handleToggleAlert}
       >
         <intl-message label=${`alerts:${gameAlert}:name`}> Alert </intl-message>
@@ -119,6 +120,6 @@ export class AlertFilterDialog extends LitElement {
   private handleToggleAlert = (event: Event) => {
     const target = event.target as SlCheckbox;
 
-    this._alertFilterDialogController.toggleMessageFilterEvent(target.value as GameAlert, target.checked);
+    this.controller.toggleMessageFilterEvent(target.value as GameAlert, target.checked);
   };
 }

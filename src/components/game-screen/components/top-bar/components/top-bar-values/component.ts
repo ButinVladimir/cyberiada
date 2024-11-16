@@ -1,9 +1,10 @@
-import { LitElement, html, css } from 'lit';
+import { html, css } from 'lit';
 import { customElement } from 'lit/decorators.js';
+import { BaseComponent } from '@shared/base-component';
 import { TopBarValuesController } from './controller';
 
 @customElement('ca-top-bar-values')
-export class TopBarValues extends LitElement {
+export class TopBarValues extends BaseComponent<TopBarValuesController> {
   static styles = css`
     :host {
       height: 100%;
@@ -34,25 +35,24 @@ export class TopBarValues extends LitElement {
     }
   `;
 
-  private _topBarValuesController: TopBarValuesController;
+  protected controller: TopBarValuesController;
 
   constructor() {
     super();
 
-    this._topBarValuesController = new TopBarValuesController(this);
+    this.controller = new TopBarValuesController(this);
   }
 
-  render() {
-    const formatter = this._topBarValuesController.formatter;
-    const accumulatedTimeFormatted = formatter.formatTimeShort(this._topBarValuesController.accumulatedTime);
-    const moneyFormatted = formatter.formatNumberLong(this._topBarValuesController.money);
-    const cityLevelFormatted = formatter.formatNumberDecimal(this._topBarValuesController.cityLevel);
+  renderContent() {
+    const formatter = this.controller.formatter;
+    const accumulatedTimeFormatted = formatter.formatTimeShort(this.controller.accumulatedTime);
+    const moneyFormatted = formatter.formatNumberLong(this.controller.money);
+    const cityLevelFormatted = formatter.formatNumberDecimal(this.controller.cityLevel);
 
-    const isCityDevelopmentGrowing = this._topBarValuesController.cityDevelopmentGrowth > 0;
+    const isCityDevelopmentGrowing = this.controller.cityDevelopmentGrowth > 0;
     const timeUntilNextLevel = isCityDevelopmentGrowing
       ? formatter.formatTimeShort(
-          this._topBarValuesController.cityDevelopmentPointsUntilNextLevel /
-            this._topBarValuesController.cityDevelopmentGrowth,
+          this.controller.cityDevelopmentPointsUntilNextLevel / this.controller.cityDevelopmentGrowth,
         )
       : '';
     const cityDevelopmentLabel = isCityDevelopmentGrowing ? 'cityLevelNext' : 'cityLevel';

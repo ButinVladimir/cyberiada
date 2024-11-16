@@ -130,19 +130,6 @@ export class AppState implements IAppState {
     await this._mainframeProgramsAutomationState.deserialize(parsedSaveData.mainframeProgramsAutomationState);
   }
 
-  addUiEventListener() {}
-
-  removeUiEventListener() {}
-
-  fireUiEvents() {
-    this._globalState.fireUiEvents();
-    this._messageLogState.fireUiEvents();
-    this._mainframeHardwareState.fireUiEvents();
-    this._mainframeProgramsState.fireUiEvents();
-    this._mainframeProcessesState.fireUiEvents();
-    this._programFactory.fireUiEvents();
-  }
-
   private processTicks(maxTicks: number): number {
     let ticksProcessed = 0;
 

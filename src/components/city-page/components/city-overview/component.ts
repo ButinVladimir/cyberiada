@@ -1,12 +1,13 @@
-import { LitElement, css, html } from 'lit';
+import { css, html } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { BaseComponent } from '@shared/base-component';
 import { CityOverviewController } from './controller';
 import { CityMapDistrictSelectEvent } from './components/city-map-canvas/events';
 import { MapCellZoomChangeEvent } from './components/map-cell-zoom-panel/events';
 
 @customElement('ca-city-overview')
-export class CityOverview extends LitElement {
+export class CityOverview extends BaseComponent<CityOverviewController> {
   static styles = css`
     :host {
       display: flex;
@@ -52,7 +53,7 @@ export class CityOverview extends LitElement {
     }
   `;
 
-  private _cityOverviewController: CityOverviewController;
+  protected controller: CityOverviewController;
 
   @state()
   private _selectedDistrict?: number;
@@ -60,10 +61,10 @@ export class CityOverview extends LitElement {
   constructor() {
     super();
 
-    this._cityOverviewController = new CityOverviewController(this);
+    this.controller = new CityOverviewController(this);
   }
 
-  render() {
+  renderContent() {
     return html`
       <h3 class="title">
         <intl-message label="ui:city:cityOverview:title">City overview</intl-message>
@@ -73,23 +74,20 @@ export class CityOverview extends LitElement {
         <intl-message label="ui:city:cityOverview:hint">City overview hint</intl-message>
       </p>
 
-      <ca-map-cell-zoom-panel
-        zoom=${this._cityOverviewController.mapCellSize}
-        @map-cell-zoom-change=${this.handleChangeZoom}
-      >
+      <ca-map-cell-zoom-panel zoom=${this.controller.mapCellSize} @map-cell-zoom-change=${this.handleChangeZoom}>
       </ca-map-cell-zoom-panel>
 
       <div class="content">
         <ca-city-map-canvas
           selected-district=${ifDefined(this._selectedDistrict)}
-          map-cell-zoom=${this._cityOverviewController.mapCellSize}
+          map-cell-zoom=${this.controller.mapCellSize}
           @city-map-district-select=${this.handleSelectDistrict}
         >
         </ca-city-map-canvas>
 
         <ca-city-district-info-panel
           .districtInfo=${this._selectedDistrict !== undefined
-            ? this._cityOverviewController.getDistrictInfo(this._selectedDistrict)
+            ? this.controller.getDistrictInfo(this._selectedDistrict)
             : undefined}
         >
         </ca-city-district-info-panel>
@@ -107,6 +105,6 @@ export class CityOverview extends LitElement {
     const mapCellZoomChangeEvent = event as MapCellZoomChangeEvent;
 
     const { zoom } = mapCellZoomChangeEvent;
-    this._cityOverviewController.setMapCellSize(zoom);
+    this.controller.setMapCellSize(zoom);
   };
 }

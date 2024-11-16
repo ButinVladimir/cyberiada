@@ -1,9 +1,10 @@
-import { LitElement, css, html } from 'lit';
+import { css, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.component.js';
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.component.js';
+import { BaseComponent } from '@shared/base-component';
 import { PROGRAMS } from '@state/progam-factory/constants';
 import { ProgramName } from '@state/progam-factory/types';
 import {
@@ -17,7 +18,7 @@ import { PurchaseProgramDialogCloseEvent } from './events';
 import { PurchaseProgramDialogController } from './controller';
 
 @customElement('ca-purchase-program-dialog')
-export class PurchaseProgramDialog extends LitElement {
+export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogController> {
   static styles = css`
     sl-dialog {
       --width: 50rem;
@@ -76,7 +77,7 @@ export class PurchaseProgramDialog extends LitElement {
     }
   `;
 
-  private _purchaseProgramDialogController: PurchaseProgramDialogController;
+  protected controller: PurchaseProgramDialogController;
 
   private _programInputRef = createRef<SlSelect>();
 
@@ -105,7 +106,7 @@ export class PurchaseProgramDialog extends LitElement {
   constructor() {
     super();
 
-    this._purchaseProgramDialogController = new PurchaseProgramDialogController(this);
+    this.controller = new PurchaseProgramDialogController(this);
   }
 
   connectedCallback() {
@@ -123,6 +124,8 @@ export class PurchaseProgramDialog extends LitElement {
   }
 
   updated(_changedProperties: Map<string, any>) {
+    super.updated(_changedProperties);
+
     if (_changedProperties.get('isOpen') === false) {
       this._programName = undefined;
       this._level = 1;
@@ -131,11 +134,11 @@ export class PurchaseProgramDialog extends LitElement {
     }
   }
 
-  render() {
-    const { formatter, money, cityLevel } = this._purchaseProgramDialogController;
+  renderContent() {
+    const { formatter, money, cityLevel } = this.controller;
 
     const program = this._programName
-      ? this._purchaseProgramDialogController.getSelectedProgram(this._programName, this._level, this._quality)
+      ? this.controller.getSelectedProgram(this._programName, this._level, this._quality)
       : undefined;
     const cost = program ? program.cost : 0;
 
@@ -261,8 +264,8 @@ export class PurchaseProgramDialog extends LitElement {
       level = 1;
     }
 
-    if (level > this._purchaseProgramDialogController.cityLevel) {
-      level = this._purchaseProgramDialogController.cityLevel;
+    if (level > this.controller.cityLevel) {
+      level = this.controller.cityLevel;
     }
 
     this._level = level;
@@ -285,10 +288,10 @@ export class PurchaseProgramDialog extends LitElement {
       return;
     }
 
-    const ownedProgram = this._purchaseProgramDialogController.getOwnedProgram(this._programName);
+    const ownedProgram = this.controller.getOwnedProgram(this._programName);
 
     if (ownedProgram) {
-      const formatter = this._purchaseProgramDialogController.formatter;
+      const formatter = this.controller.formatter;
 
       const confirmationAlertParameters = JSON.stringify({
         programName: this._programName,
@@ -323,11 +326,7 @@ export class PurchaseProgramDialog extends LitElement {
       return;
     }
 
-    const isBought = this._purchaseProgramDialogController.purchaseProgram(
-      this._programName,
-      this._level,
-      this._quality,
-    );
+    const isBought = this.controller.purchaseProgram(this._programName, this._level, this._quality);
 
     if (isBought) {
       this.dispatchEvent(new PurchaseProgramDialogCloseEvent());

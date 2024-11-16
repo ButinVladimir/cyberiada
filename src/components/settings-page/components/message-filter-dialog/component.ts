@@ -1,6 +1,7 @@
-import { LitElement, TemplateResult, css, html } from 'lit';
+import { TemplateResult, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
+import { BaseComponent } from '@shared/base-component';
 import SlCheckbox from '@shoelace-style/shoelace/dist/components/checkbox/checkbox.component.js';
 import { GAME_STATE_EVENTS, PURCHASE_EVENTS, PROGRAM_EVENTS } from '@shared/constants';
 import { MessageEvent } from '@shared/types';
@@ -8,7 +9,7 @@ import { MessageFilterDialogCloseEvent } from './events';
 import { MessageFilterDialogController } from './controller';
 
 @customElement('ca-message-filter-dialog')
-export class MessageFilterDialog extends LitElement {
+export class MessageFilterDialog extends BaseComponent<MessageFilterDialogController> {
   static styles = css`
     sl-dialog {
       --width: 50rem;
@@ -51,7 +52,7 @@ export class MessageFilterDialog extends LitElement {
     }
   `;
 
-  private _messageFilterDialogController: MessageFilterDialogController;
+  protected controller: MessageFilterDialogController;
 
   @property({
     attribute: 'is-open',
@@ -62,10 +63,10 @@ export class MessageFilterDialog extends LitElement {
   constructor() {
     super();
 
-    this._messageFilterDialogController = new MessageFilterDialogController(this);
+    this.controller = new MessageFilterDialogController(this);
   }
 
-  render() {
+  renderContent() {
     return html`
       <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
         <h4 slot="label" class="title">
@@ -103,7 +104,7 @@ export class MessageFilterDialog extends LitElement {
         size="medium"
         name="event"
         value=${event}
-        ?checked=${this._messageFilterDialogController.isMessageEventEnabled(event)}
+        ?checked=${this.controller.isMessageEventEnabled(event)}
         @sl-change=${this.handleToggleEvent}
       >
         <intl-message label=${`events:${event}:name`}> Event </intl-message>
@@ -122,6 +123,6 @@ export class MessageFilterDialog extends LitElement {
     event.stopPropagation();
     const target = event.target as SlCheckbox;
 
-    this._messageFilterDialogController.toggleMessageEvent(target.value as MessageEvent, target.checked);
+    this.controller.toggleMessageEvent(target.value as MessageEvent, target.checked);
   };
 }

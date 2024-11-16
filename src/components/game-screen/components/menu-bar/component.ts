@@ -1,11 +1,12 @@
-import { LitElement, html, css } from 'lit';
+import { html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { BaseComponent } from '@shared/base-component';
 import { OVERVIEW_MENU_ITEMS, MISC_MENU_ITEMS } from '@shared/constants';
 import { MenuItem } from './components/menu-item/component';
 import { MenuItemSelectedEvent } from './events/menu-item-selected-event';
 
 @customElement('ca-menu-bar')
-export class MenuBar extends LitElement {
+export class MenuBar extends BaseComponent {
   static styles = css`
     :host {
       display: block;
@@ -38,7 +39,7 @@ export class MenuBar extends LitElement {
   @property({ attribute: 'selected-menu-item', type: String })
   selectedMenuItem = '';
 
-  render() {
+  renderContent() {
     return html`
       <scrollable-component>
         <nav>

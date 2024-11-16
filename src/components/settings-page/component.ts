@@ -1,8 +1,9 @@
-import { LitElement, css, html } from 'lit';
+import { css, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
+import { BaseComponent } from '@shared/base-component';
 
 @customElement('ca-settings-page')
-export class SettingsPage extends LitElement {
+export class SettingsPage extends BaseComponent {
   static styles = css`
     :host {
       display: flex;
@@ -23,7 +24,7 @@ export class SettingsPage extends LitElement {
     }
   `;
 
-  render() {
+  renderContent() {
     return html`
       <h3 class="title">
         <intl-message label="ui:settings:settings">Settings</intl-message>

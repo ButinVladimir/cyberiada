@@ -3,7 +3,7 @@
   "tags": [
     {
       "name": "ca-app-root",
-      "description": "Properties:\n\n  * `_appRootController` {`AppRootController`} - ",
+      "description": "Properties:\n\n  * `controller` {`AppRootController`} - ",
       "attributes": []
     },
     {
@@ -18,12 +18,12 @@
     },
     {
       "name": "ca-automation-mainframe-hardware-autobuyer",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_performanceShareRef` {`Ref<SlInput>`} - \n\n  * `_coresShareRef` {`Ref<SlInput>`} - \n\n  * `_ramShareRef` {`Ref<SlInput>`} - \n\n  * `handleChangePerformanceShare` - \n\n  * `handleChangeCoresShare` - \n\n  * `handleChangeRamShare` - \n\n  * `_automationMainframeHardwareAutobuyerController` {`AutomationMainframeHardwareAutobuyerController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_performanceShareRef` {`Ref<SlInput>`} - \n\n  * `_coresShareRef` {`Ref<SlInput>`} - \n\n  * `_ramShareRef` {`Ref<SlInput>`} - \n\n  * `handleChangePerformanceShare` - \n\n  * `handleChangeCoresShare` - \n\n  * `handleChangeRamShare` - \n\n  * `controller` {`AutomationMainframeHardwareAutobuyerController`} - ",
       "attributes": []
     },
     {
       "name": "ca-automation-mainframe-programs-autobuyer",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_moneyShareRef` {`Ref<SlInput>`} - \n\n  * `handleChangeMoneyShare` - \n\n  * `_automationMainframeProgramsAutobuyerController` {`AutomationMainframeProgramsAutobuyerController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_moneyShareRef` {`Ref<SlInput>`} - \n\n  * `handleChangeMoneyShare` - \n\n  * `controller` {`AutomationMainframeProgramsAutobuyerController`} - ",
       "attributes": []
     },
     {
@@ -33,7 +33,7 @@
     },
     {
       "name": "ca-city-overview",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_selectedDistrict` {`number | undefined`} - \n\n  * `handleSelectDistrict` - \n\n  * `handleChangeZoom` - \n\n  * `_cityOverviewController` {`CityOverviewController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_selectedDistrict` {`number | undefined`} - \n\n  * `handleSelectDistrict` - \n\n  * `handleChangeZoom` - \n\n  * `controller` {`CityOverviewController`} - ",
       "attributes": []
     },
     {
@@ -43,7 +43,7 @@
     },
     {
       "name": "ca-city-map-canvas",
-      "description": "Attributes:\n\n  * `map-cell-zoom` {`number`} - \n\n  * `selected-district` {`number | undefined`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_canvasRef` {`Ref<HTMLCanvasElement>`} - \n\n  * `mapCellZoom` {`number`} - \n\n  * `selectedDistrict` {`number | undefined`} - \n\n  * `cellSizeWithBorder` {`number`} - \n\n  * `map` {`number[][]`} - \n\n  * `handleMouseLeave` - \n\n  * `handleMouseMove` - \n\n  * `_cityMapController` {`CityMapController`} - ",
+      "description": "Attributes:\n\n  * `map-cell-zoom` {`number`} - \n\n  * `selected-district` {`number | undefined`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_canvasRef` {`Ref<HTMLCanvasElement>`} - \n\n  * `mapCellZoom` {`number`} - \n\n  * `selectedDistrict` {`number | undefined`} - \n\n  * `cellSizeWithBorder` {`number`} - \n\n  * `map` {`number[][]`} - \n\n  * `handleMouseLeave` - \n\n  * `handleMouseMove` - \n\n  * `controller` {`CityMapController`} - ",
       "attributes": [
         {
           "name": "map-cell-zoom",
@@ -58,7 +58,7 @@
     },
     {
       "name": "ca-map-cell-zoom-panel",
-      "description": "Attributes:\n\n  * `zoom` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `zoom` {`number`} - \n\n  * `_showRange` {`boolean`} - \n\n  * `_rangeElementRef` {`Ref<SlRange>`} - \n\n  * `handleToggleZoomPanel` - \n\n  * `handleChangeZoom` - \n\n  * `decimalNumberFormatter` - \n\n  * `_mapCellZoomPanelController` {`MapCellZoomPanelController`} - ",
+      "description": "Attributes:\n\n  * `zoom` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `zoom` {`number`} - \n\n  * `_showRange` {`boolean`} - \n\n  * `_rangeElementRef` {`Ref<SlRange>`} - \n\n  * `handleToggleZoomPanel` - \n\n  * `handleChangeZoom` - \n\n  * `decimalNumberFormatter` - \n\n  * `controller` {`MapCellZoomPanelController`} - ",
       "attributes": [
         {
           "name": "zoom",
@@ -68,7 +68,7 @@
     },
     {
       "name": "ca-fast-forwarding-screen",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_maxTime` {`number`} - \n\n  * `handleStopFastForwarding` - \n\n  * `_fastForwardingScreenController` {`FastForwardingScreenController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_maxTime` {`number`} - \n\n  * `handleStopFastForwarding` - \n\n  * `controller` {`FastForwardingScreenController`} - ",
       "attributes": []
     },
     {
@@ -103,12 +103,12 @@
     },
     {
       "name": "ca-message-log-bar",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `handleOpenClearMessagesDialog` - \n\n  * `handleConfirmClearMessagesDialog` - \n\n  * `_messageLogBarController` {`MessageLogBarController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `handleOpenClearMessagesDialog` - \n\n  * `handleConfirmClearMessagesDialog` - \n\n  * `controller` {`MessageLogBarController`} - ",
       "attributes": []
     },
     {
       "name": "ca-message-log-content",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `SCROLL_EPS` {`number`} - \n\n  * `_scrollableComponentRef` {`Ref<ScrollableComponentElement>`} - \n\n  * `_scrollSticky` {`boolean`} - \n\n  * `renderMessage` - \n\n  * `handleScroll` - \n\n  * `_messageLogContentController` {`MessageLogContentController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `SCROLL_EPS` {`number`} - \n\n  * `_scrollableComponentRef` {`Ref<ScrollableComponentElement>`} - \n\n  * `_scrollSticky` {`boolean`} - \n\n  * `renderMessage` - \n\n  * `handleScroll` - \n\n  * `controller` {`MessageLogContentController`} - ",
       "attributes": []
     },
     {
@@ -118,17 +118,17 @@
     },
     {
       "name": "ca-game-speed-buttons",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderButton` - \n\n  * `handleChangeGameSpeed` - \n\n  * `handleOpenFastForwardDialog` - \n\n  * `handleConfirmFastForwardDialog` - \n\n  * `_gameSpeedButtonsController` {`GameSpeedButtonsController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderButton` - \n\n  * `handleChangeGameSpeed` - \n\n  * `handleOpenFastForwardDialog` - \n\n  * `handleConfirmFastForwardDialog` - \n\n  * `controller` {`GameSpeedButtonsController`} - ",
       "attributes": []
     },
     {
       "name": "ca-top-bar-values",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_topBarValuesController` {`TopBarValuesController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `controller` {`TopBarValuesController`} - ",
       "attributes": []
     },
     {
       "name": "ca-viewport",
-      "description": "Attributes:\n\n  * `selected-menu-item` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `selectedMenuItem` {`string`} - ",
+      "description": "Attributes:\n\n  * `selected-menu-item` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `selectedMenuItem` {`string`} - \n\n  * `renderPage` - ",
       "attributes": [
         {
           "name": "selected-menu-item",
@@ -153,7 +153,7 @@
     },
     {
       "name": "ca-mainframe-hardware-panel-article",
-      "description": "Attributes:\n\n  * `type` {`HardwarePanelArticleType`} - \n\n  * `max-increase` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `type` {`HardwarePanelArticleType`} - \n\n  * `maxIncrease` {`number`} - \n\n  * `handleBuy` - \n\n  * `_mainframeHardwarePanelArticleController` {`MainframeHardwarePanelArticleController`} - ",
+      "description": "Attributes:\n\n  * `type` {`HardwarePanelArticleType`} - \n\n  * `max-increase` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `type` {`HardwarePanelArticleType`} - \n\n  * `maxIncrease` {`number`} - \n\n  * `handleBuy` - \n\n  * `controller` {`MainframeHardwarePanelArticleController`} - ",
       "attributes": [
         {
           "name": "type",
@@ -178,12 +178,12 @@
     },
     {
       "name": "ca-mainframe-processes-panel",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_isStartProcessDialogOpen` {`boolean`} - \n\n  * `handleStartProcessDialogOpen` - \n\n  * `handleStartProcessDialogClose` - \n\n  * `_processesPanelController` {`ProcessesPanelController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_isStartProcessDialogOpen` {`boolean`} - \n\n  * `handleStartProcessDialogOpen` - \n\n  * `handleStartProcessDialogClose` - \n\n  * `controller` {`ProcessesPanelController`} - ",
       "attributes": []
     },
     {
       "name": "ca-process-description",
-      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `renderScalableDescription` - \n\n  * `renderOrdinaryDescription` - \n\n  * `_processDescriptionController` {`ProcessDescriptionController`} - ",
+      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `renderScalableDescription` - \n\n  * `renderOrdinaryDescription` - \n\n  * `controller` {`ProcessDescriptionController`} - ",
       "attributes": [
         {
           "name": "program-name",
@@ -193,7 +193,7 @@
     },
     {
       "name": "ca-processes-list-item-progress",
-      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `_processesListItemProgressController` {`ProcessesListItemProgressController`} - ",
+      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `controller` {`ProcessesListItemProgressController`} - ",
       "attributes": [
         {
           "name": "program-name",
@@ -203,7 +203,7 @@
     },
     {
       "name": "ca-processes-list-item",
-      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `handleToggleProcess` - \n\n  * `handleOpenDeleteProcessDialog` - \n\n  * `handleConfirmDeleteProcessDialog` - \n\n  * `_processesListItemController` {`ProcessesListItemController`} - ",
+      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `handleToggleProcess` - \n\n  * `handleOpenDeleteProcessDialog` - \n\n  * `handleConfirmDeleteProcessDialog` - \n\n  * `controller` {`ProcessesListItemController`} - ",
       "attributes": [
         {
           "name": "program-name",
@@ -213,12 +213,12 @@
     },
     {
       "name": "ca-processes-list",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderContent` - \n\n  * `renderEmptyListNotification` - \n\n  * `renderListItem` - \n\n  * `handleToggleAllProcesses` - \n\n  * `handleOpenDeleteAllProcessesDialog` - \n\n  * `handleConfirmAllDeleteProcessesDialog` - \n\n  * `_processesListController` {`ProcessesListController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderList` - \n\n  * `renderEmptyListNotification` - \n\n  * `renderListItem` - \n\n  * `handleToggleAllProcesses` - \n\n  * `handleOpenDeleteAllProcessesDialog` - \n\n  * `handleConfirmAllDeleteProcessesDialog` - \n\n  * `controller` {`ProcessesListController`} - ",
       "attributes": []
     },
     {
       "name": "ca-start-process-dialog",
-      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_programInputRef` {`Ref<SlSelect>`} - \n\n  * `_threadsInputRef` {`Ref<SlInput>`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `_programName` - \n\n  * `_threads` {`number`} - \n\n  * `_maxThreads` {`number`} - \n\n  * `_confirmationAlertVisible` {`boolean`} - \n\n  * `handleClose` - \n\n  * `handleProgramChange` - \n\n  * `handleThreadsChange` - \n\n  * `handleOpenConfirmationAlert` - \n\n  * `handleConfirmConfirmationAlert` - \n\n  * `startProcess` - \n\n  * `handleCloseConfirmationAlert` - \n\n  * `formatProgramSelectItem` - \n\n  * `_startProcessDialogController` {`StartProcessDialogController`} - ",
+      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_programInputRef` {`Ref<SlSelect>`} - \n\n  * `_threadsInputRef` {`Ref<SlInput>`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `_programName` - \n\n  * `_threads` {`number`} - \n\n  * `_maxThreads` {`number`} - \n\n  * `_confirmationAlertVisible` {`boolean`} - \n\n  * `handleClose` - \n\n  * `handleProgramChange` - \n\n  * `handleThreadsChange` - \n\n  * `handleOpenConfirmationAlert` - \n\n  * `handleConfirmConfirmationAlert` - \n\n  * `startProcess` - \n\n  * `handleCloseConfirmationAlert` - \n\n  * `formatProgramSelectItem` - \n\n  * `controller` {`StartProcessDialogController`} - ",
       "attributes": [
         {
           "name": "is-open",
@@ -229,7 +229,7 @@
     },
     {
       "name": "ca-program-description",
-      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\n  * `level` {`number`} - \n\n  * `quality` {`number`} - \n\n  * `threads` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `level` {`number`} - \n\n  * `quality` {`number`} - \n\n  * `threads` {`number`} - \n\n  * `renderScalableDescription` - \n\n  * `renderOrdinaryDescription` - \n\n  * `_programDescriptionController` {`ProgramDescriptionController`} - ",
+      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\n  * `level` {`number`} - \n\n  * `quality` {`number`} - \n\n  * `threads` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `level` {`number`} - \n\n  * `quality` {`number`} - \n\n  * `threads` {`number`} - \n\n  * `renderScalableDescription` - \n\n  * `renderOrdinaryDescription` - \n\n  * `controller` {`ProgramDescriptionController`} - ",
       "attributes": [
         {
           "name": "program-name",
@@ -256,7 +256,7 @@
     },
     {
       "name": "ca-owned-programs-list-item",
-      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `handleToggleAutoupgrade` - \n\n  * `_ownedProgramsListItemController` {`OwnedProgramsListItemController`} - ",
+      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `handleToggleAutoupgrade` - \n\n  * `controller` {`OwnedProgramsListItemController`} - ",
       "attributes": [
         {
           "name": "program-name",
@@ -266,12 +266,12 @@
     },
     {
       "name": "ca-owned-programs-list",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderContent` - \n\n  * `renderEmptyListNotification` - \n\n  * `renderListItem` - \n\n  * `handleToggleAutoupgrade` - \n\n  * `_ownedProgramsListController` {`OwnedProgramsListController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderList` - \n\n  * `renderEmptyListNotification` - \n\n  * `renderListItem` - \n\n  * `handleToggleAutoupgrade` - \n\n  * `controller` {`OwnedProgramsListController`} - ",
       "attributes": []
     },
     {
       "name": "ca-purchase-program-dialog",
-      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_programInputRef` {`Ref<SlSelect>`} - \n\n  * `_levelInputRef` {`Ref<SlInput>`} - \n\n  * `_qualityInputRef` {`Ref<SlSelect>`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `_programName` - \n\n  * `_level` {`number`} - \n\n  * `_quality` {`number`} - \n\n  * `_confirmationAlertVisible` {`boolean`} - \n\n  * `handleClose` - \n\n  * `handleProgramChange` - \n\n  * `handleLevelChange` - \n\n  * `handleQualityChange` - \n\n  * `handleOpenConfirmationAlert` - \n\n  * `handleConfirmConfirmationAlert` - \n\n  * `purchase` - \n\n  * `handleCloseConfirmationAlert` - \n\n  * `_purchaseProgramDialogController` {`PurchaseProgramDialogController`} - ",
+      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_programInputRef` {`Ref<SlSelect>`} - \n\n  * `_levelInputRef` {`Ref<SlInput>`} - \n\n  * `_qualityInputRef` {`Ref<SlSelect>`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `_programName` - \n\n  * `_level` {`number`} - \n\n  * `_quality` {`number`} - \n\n  * `_confirmationAlertVisible` {`boolean`} - \n\n  * `handleClose` - \n\n  * `handleProgramChange` - \n\n  * `handleLevelChange` - \n\n  * `handleQualityChange` - \n\n  * `handleOpenConfirmationAlert` - \n\n  * `handleConfirmConfirmationAlert` - \n\n  * `purchase` - \n\n  * `handleCloseConfirmationAlert` - \n\n  * `controller` {`PurchaseProgramDialogController`} - ",
       "attributes": [
         {
           "name": "is-open",
@@ -287,7 +287,7 @@
     },
     {
       "name": "ca-alert-filter-dialog",
-      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `renderGameAlertCheckbox` - \n\n  * `handleClose` - \n\n  * `handleToggleAlert` - \n\n  * `_alertFilterDialogController` {`AlertFilterDialogController`} - ",
+      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `renderGameAlertCheckbox` - \n\n  * `handleClose` - \n\n  * `handleToggleAlert` - \n\n  * `controller` {`AlertFilterDialogController`} - ",
       "attributes": [
         {
           "name": "is-open",
@@ -298,7 +298,7 @@
     },
     {
       "name": "ca-message-filter-dialog",
-      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `renderEventCheckbox` - \n\n  * `handleClose` - \n\n  * `handleToggleEvent` - \n\n  * `_messageFilterDialogController` {`MessageFilterDialogController`} - ",
+      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `renderEventCheckbox` - \n\n  * `handleClose` - \n\n  * `handleToggleEvent` - \n\n  * `controller` {`MessageFilterDialogController`} - ",
       "attributes": [
         {
           "name": "is-open",
@@ -309,22 +309,22 @@
     },
     {
       "name": "ca-savefile-panel",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_importInputRef` {`Ref<HTMLInputElement>`} - \n\n  * `handleSaveGame` - \n\n  * `handleOpenImportSavefileDialog` - \n\n  * `handleConfirmImportSavefileDialog` - \n\n  * `handleChangeImportSavefile` - \n\n  * `handleExportSavefile` - \n\n  * `handleOpenDeleteSaveDataDialog` - \n\n  * `handleConfirmDeleteSaveDataDialog` - \n\n  * `_savefilePanelController` {`SavefilePanelController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_importInputRef` {`Ref<HTMLInputElement>`} - \n\n  * `handleSaveGame` - \n\n  * `handleOpenImportSavefileDialog` - \n\n  * `handleConfirmImportSavefileDialog` - \n\n  * `handleChangeImportSavefile` - \n\n  * `handleExportSavefile` - \n\n  * `handleOpenDeleteSaveDataDialog` - \n\n  * `handleConfirmDeleteSaveDataDialog` - \n\n  * `controller` {`SavefilePanelController`} - ",
       "attributes": []
     },
     {
       "name": "ca-settings-form",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_languageInputRef` {`Ref<SlSelect>`} - \n\n  * `_themeInputRef` {`Ref<SlSelect>`} - \n\n  * `_messageLogSizeInputRef` {`Ref<SlInput>`} - \n\n  * `_updateIntervalInputRef` {`Ref<SlRange>`} - \n\n  * `_autosaveEnabledSwitchRef` {`Ref<SlSwitch>`} - \n\n  * `_autosaveIntervalInputRef` {`Ref<SlRange>`} - \n\n  * `_maxTicksPerUpdateInputRef` {`Ref<SlRange>`} - \n\n  * `_maxTicksPerFastForwardInputRef` {`Ref<SlInput>`} - \n\n  * `_longNumberFormatInputRef` {`Ref<SlSelect>`} - \n\n  * `_isSaving` {`boolean`} - \n\n  * `_isMessageFilterOpen` {`boolean`} - \n\n  * `_isAlertFilterOpen` {`boolean`} - \n\n  * `startSaving` - \n\n  * `stopSaving` - \n\n  * `handleChangeLanguage` - \n\n  * `handleChangeTheme` - \n\n  * `handleChangeMessageLogSize` - \n\n  * `handleChangeUpdateInterval` - \n\n  * `handleChangeAutosaveEnabled` - \n\n  * `handleChangeAutosaveInterval` - \n\n  * `handleChangeMaxTicksPerUpdate` - \n\n  * `handleChangeMaxTicksPerFastForward` - \n\n  * `handleChangeLongNumberFormat` - \n\n  * `handleMessageFilterDialogOpen` - \n\n  * `handleMessageFilterDialogClose` - \n\n  * `handleAlertFilterDialogOpen` - \n\n  * `handleAlertFilterDialogClose` - \n\n  * `autosaveIntervalFormatter` - \n\n  * `decimalNumberFormatter` - \n\n  * `_settingsFormController` {`SettingsFormController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_languageInputRef` {`Ref<SlSelect>`} - \n\n  * `_themeInputRef` {`Ref<SlSelect>`} - \n\n  * `_messageLogSizeInputRef` {`Ref<SlInput>`} - \n\n  * `_updateIntervalInputRef` {`Ref<SlRange>`} - \n\n  * `_autosaveEnabledSwitchRef` {`Ref<SlSwitch>`} - \n\n  * `_autosaveIntervalInputRef` {`Ref<SlRange>`} - \n\n  * `_maxTicksPerUpdateInputRef` {`Ref<SlRange>`} - \n\n  * `_maxTicksPerFastForwardInputRef` {`Ref<SlInput>`} - \n\n  * `_longNumberFormatInputRef` {`Ref<SlSelect>`} - \n\n  * `_isSaving` {`boolean`} - \n\n  * `_isMessageFilterOpen` {`boolean`} - \n\n  * `_isAlertFilterOpen` {`boolean`} - \n\n  * `startSaving` - \n\n  * `stopSaving` - \n\n  * `handleChangeLanguage` - \n\n  * `handleChangeTheme` - \n\n  * `handleChangeMessageLogSize` - \n\n  * `handleChangeUpdateInterval` - \n\n  * `handleChangeAutosaveEnabled` - \n\n  * `handleChangeAutosaveInterval` - \n\n  * `handleChangeMaxTicksPerUpdate` - \n\n  * `handleChangeMaxTicksPerFastForward` - \n\n  * `handleChangeLongNumberFormat` - \n\n  * `handleMessageFilterDialogOpen` - \n\n  * `handleMessageFilterDialogClose` - \n\n  * `handleAlertFilterDialogOpen` - \n\n  * `handleAlertFilterDialogClose` - \n\n  * `autosaveIntervalFormatter` - \n\n  * `decimalNumberFormatter` - \n\n  * `controller` {`SettingsFormController`} - ",
       "attributes": []
     },
     {
       "name": "ca-confirmation-alert",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_gameAlertToggleRef` {`Ref<SlCheckbox>`} - \n\n  * `_gameAlert` - \n\n  * `_gameAlertKey` {`string | undefined`} - \n\n  * `_messageParams` {`string`} - \n\n  * `_isOpen` {`boolean`} - \n\n  * `_alertToggled` {`boolean`} - \n\n  * `handleOpen` - \n\n  * `handleClose` - \n\n  * `handleSubmit` - \n\n  * `handleToggleAlert` - \n\n  * `_confirmationAlertModalController` {`ConfirmationAlertController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_gameAlertToggleRef` {`Ref<SlCheckbox>`} - \n\n  * `_gameAlert` - \n\n  * `_gameAlertKey` {`string | undefined`} - \n\n  * `_messageParams` {`string`} - \n\n  * `_isOpen` {`boolean`} - \n\n  * `_alertToggled` {`boolean`} - \n\n  * `handleOpen` - \n\n  * `handleClose` - \n\n  * `handleSubmit` - \n\n  * `handleToggleAlert` - \n\n  * `controller` {`ConfirmationAlertController`} - ",
       "attributes": []
     },
     {
       "name": "ca-purchase-tooltip",
-      "description": "Attributes:\n\n  * `cost` {`number`} - \n\n  * `level` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `cost` {`number`} - \n\n  * `level` {`number`} - \n\n  * `renderMessage` - \n\n  * `_purchaseTooltipController` {`PurchaseTooltipController`} - ",
+      "description": "Attributes:\n\n  * `cost` {`number`} - \n\n  * `level` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `cost` {`number`} - \n\n  * `level` {`number`} - \n\n  * `renderMessage` - \n\n  * `controller` {`PurchaseTooltipController`} - ",
       "attributes": [
         {
           "name": "cost",
@@ -343,12 +343,12 @@
     },
     {
       "name": "ca-statistics-city-development-growth",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderIncomeSource` - \n\n  * `_statisticsCityDevelopmentGrowthPanelController` {`StatisticsCityDevelopmentGrowthController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderIncomeSource` - \n\n  * `controller` {`StatisticsCityDevelopmentGrowthController`} - ",
       "attributes": []
     },
     {
       "name": "ca-statistics-city-development-income",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderIncomeSource` - \n\n  * `_statisticsCityDevelopmentIncomePanelController` {`StatisticsCityDevelopmentIncomeController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderIncomeSource` - \n\n  * `controller` {`StatisticsCityDevelopmentIncomeController`} - ",
       "attributes": []
     },
     {
@@ -358,7 +358,7 @@
     },
     {
       "name": "ca-statistics-general-panel",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_statisticsGeneralPanelController` {`StatisticsGeneralPanelController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `controller` {`StatisticsGeneralPanelController`} - ",
       "attributes": []
     },
     {
@@ -373,37 +373,37 @@
     },
     {
       "name": "ca-statistics-money-expenses",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderExpenseArticle` - \n\n  * `_statisticsMoneyExpensesController` {`StatisticsMoneyExpensesController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderExpenseArticle` - \n\n  * `controller` {`StatisticsMoneyExpensesController`} - ",
       "attributes": []
     },
     {
       "name": "ca-statistics-money-growth",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderIncomeSource` - \n\n  * `_statisticsMoneyGrowthPanelController` {`StatisticsMoneyGrowthController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderIncomeSource` - \n\n  * `controller` {`StatisticsMoneyGrowthController`} - ",
       "attributes": []
     },
     {
       "name": "ca-statistics-money-income",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderIncomeSource` - \n\n  * `_statisticsMoneyIncomePanelController` {`StatisticsMoneyIncomeController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderIncomeSource` - \n\n  * `controller` {`StatisticsMoneyIncomeController`} - ",
       "attributes": []
     },
     {
       "name": "ca-statistics-multipliers",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_statisticsGeneralPanelController` {`StatisticsMultipliersController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `controller` {`StatisticsMultipliersController`} - ",
       "attributes": []
     },
     {
       "name": "ca-statistics-program-completion-speed",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_statisticsProgramCompletionSpeedController` {`StatisticsProgramCompletionSpeedController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `controller` {`StatisticsProgramCompletionSpeedController`} - ",
       "attributes": []
     },
     {
       "name": "ca-statistics-programs-growth",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_statisticsProgramsGrowthController` {`StatisticsProgramsGrowthController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `controller` {`StatisticsProgramsGrowthController`} - ",
       "attributes": []
     },
     {
       "name": "ca-statistics-programs-income",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_statisticsProgramsIncomeController` {`StatisticsProgramsIncomeController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `controller` {`StatisticsProgramsIncomeController`} - ",
       "attributes": []
     }
   ],

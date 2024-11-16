@@ -1,14 +1,15 @@
 import { t } from 'i18next';
-import { LitElement, css, html } from 'lit';
+import { css, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
+import { classMap } from 'lit/directives/class-map.js';
 import SlRange from '@shoelace-style/shoelace/dist/components/range/range.component.js';
+import { BaseComponent } from '@shared/base-component';
 import { MapCellZoomPanelController } from './controller';
 import { MapCellZoomChangeEvent } from './events';
-import { classMap } from 'lit/directives/class-map.js';
 
 @customElement('ca-map-cell-zoom-panel')
-export class MapCellZoomPanel extends LitElement {
+export class MapCellZoomPanel extends BaseComponent<MapCellZoomPanelController> {
   static styles = css`
     :host {
       display: flex;
@@ -46,7 +47,7 @@ export class MapCellZoomPanel extends LitElement {
     }
   `;
 
-  private _mapCellZoomPanelController: MapCellZoomPanelController;
+  protected controller: MapCellZoomPanelController;
 
   @property({
     attribute: true,
@@ -62,10 +63,10 @@ export class MapCellZoomPanel extends LitElement {
   constructor() {
     super();
 
-    this._mapCellZoomPanelController = new MapCellZoomPanelController(this);
+    this.controller = new MapCellZoomPanelController(this);
   }
 
-  render() {
+  renderContent() {
     const rangeContainerClasses = classMap({
       'range-container': true,
       'show-range': this._showRange,
@@ -100,7 +101,9 @@ export class MapCellZoomPanel extends LitElement {
     `;
   }
 
-  updated() {
+  updated(_changedProperties: Map<string, any>) {
+    super.updated(_changedProperties);
+
     if (this._rangeElementRef.value) {
       this._rangeElementRef.value.tooltipFormatter = this.decimalNumberFormatter;
     }
@@ -121,6 +124,6 @@ export class MapCellZoomPanel extends LitElement {
   };
 
   private decimalNumberFormatter = (value: number): string => {
-    return this._mapCellZoomPanelController.formatter.formatNumberDecimal(value);
+    return this.controller.formatter.formatNumberDecimal(value);
   };
 }

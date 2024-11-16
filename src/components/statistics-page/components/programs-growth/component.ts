@@ -1,22 +1,23 @@
-import { LitElement, html } from 'lit';
+import { html } from 'lit';
 import { customElement } from 'lit/decorators.js';
+import { BaseComponent } from '@shared/base-component';
 import { StatisticsProgramsGrowthController } from './controller';
 import { statisticsPanelContentStyle } from '../../styles';
 
 @customElement('ca-statistics-programs-growth')
-export class StatisticsProgramsGrowth extends LitElement {
+export class StatisticsProgramsGrowth extends BaseComponent<StatisticsProgramsGrowthController> {
   static styles = statisticsPanelContentStyle;
 
-  private _statisticsProgramsGrowthController: StatisticsProgramsGrowthController;
+  protected controller: StatisticsProgramsGrowthController;
 
   constructor() {
     super();
 
-    this._statisticsProgramsGrowthController = new StatisticsProgramsGrowthController(this);
+    this.controller = new StatisticsProgramsGrowthController(this);
   }
 
-  render() {
-    const formatter = this._statisticsProgramsGrowthController.formatter;
+  renderContent() {
+    const formatter = this.controller.formatter;
 
     return html`
       <h4 class="title">
@@ -25,13 +26,11 @@ export class StatisticsProgramsGrowth extends LitElement {
 
       <div class="parameters-table">
         <span>
-          <intl-message label="ui:statistics:growth:pointsByPrograms:computationalBase"
-            >Computational base</intl-message
-          >
+          <intl-message label="ui:statistics:growth:pointsByPrograms:computationalBase">
+            Computational base
+          </intl-message>
         </span>
-        <span>
-          ${formatter.formatNumberLong(this._statisticsProgramsGrowthController.computationalBaseByProgram)}
-        </span>
+        <span> ${formatter.formatNumberLong(this.controller.computationalBaseByProgram)} </span>
       </div>
     `;
   }

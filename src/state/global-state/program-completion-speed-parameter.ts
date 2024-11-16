@@ -1,4 +1,5 @@
 import { EventBatcher } from '@shared/event-batcher';
+import { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import { IMainframeProcessesState } from '@state/mainframe/mainframe-processes-state/interfaces/mainframe-processes-state';
 import { IMainframeHardwareState } from '@state/mainframe/mainframe-hardware-state/interfaces/mainframe-hardware-state';
 import { IScenarioState } from '@state/scenario-state/interfaces/scenario-state';
@@ -9,16 +10,19 @@ import { IProgramCompletionSpeedParameter } from './interfaces/program-completio
 import { IProgramCompletionSpeedConstructorParameters } from './interfaces/constructor-parameters/program-completion-speed-constructor-parameters';
 
 export class ProgramCompletionSpeedParameter implements IProgramCompletionSpeedParameter {
+  readonly uiEventBatcher: EventBatcher;
+
+  private _stateUiConnector: IStateUIConnector;
   private _mainframeProcessesState: IMainframeProcessesState;
   private _mainframeHardwareState: IMainframeHardwareState;
   private _scenarioState: IScenarioState;
-  private readonly _uiEventBatcher: EventBatcher;
 
   private _multiplier: number;
   private _speed: number;
   private _updateRequested: boolean;
 
   constructor(parameters: IProgramCompletionSpeedConstructorParameters) {
+    this._stateUiConnector = parameters.stateUiConnector;
     this._mainframeProcessesState = parameters.mainframeProcessesState;
     this._mainframeHardwareState = parameters.mainframeHardwareState;
     this._scenarioState = parameters.scenarioState;
@@ -27,14 +31,19 @@ export class ProgramCompletionSpeedParameter implements IProgramCompletionSpeedP
     this._speed = 1;
     this._updateRequested = false;
 
-    this._uiEventBatcher = new EventBatcher();
+    this.uiEventBatcher = new EventBatcher();
+    this._stateUiConnector.registerEventEmitter(this);
   }
 
   get multiplier() {
+    this._stateUiConnector.connectEventHandler(this, GLOBAL_STATE_UI_EVENTS.PROGRAM_COMPLETION_SPEED_CHANGED);
+
     return this._multiplier;
   }
 
   get speed() {
+    this._stateUiConnector.connectEventHandler(this, GLOBAL_STATE_UI_EVENTS.PROGRAM_COMPLETION_SPEED_CHANGED);
+
     return this._speed;
   }
 
@@ -51,19 +60,7 @@ export class ProgramCompletionSpeedParameter implements IProgramCompletionSpeedP
     this.updateMultiplier();
     this.updateSpeed();
 
-    this._uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.PROGRAM_COMPLETION_SPEED_CHANGED);
-  }
-
-  addUiEventListener(eventName: symbol, handler: (...args: any[]) => void): void {
-    this._uiEventBatcher.addListener(eventName, handler);
-  }
-
-  removeUiEventListener(eventName: symbol, handler: (...args: any[]) => void): void {
-    this._uiEventBatcher.removeListener(eventName, handler);
-  }
-
-  fireUiEvents(): void {
-    this._uiEventBatcher.fireEvents();
+    this.uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.PROGRAM_COMPLETION_SPEED_CHANGED);
   }
 
   private updateMultiplier() {

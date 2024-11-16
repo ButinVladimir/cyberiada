@@ -1,9 +1,10 @@
-import { LitElement, css, html } from 'lit';
+import { css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { BaseComponent } from '@shared/base-component';
 import { OverviewMenuItem, MiscMenuItem } from '@shared/types';
 
 @customElement('ca-viewport')
-export class Viewport extends LitElement {
+export class Viewport extends BaseComponent {
   static styles = css`
     :host {
       display: block;
@@ -31,15 +32,15 @@ export class Viewport extends LitElement {
   })
   selectedMenuItem = '';
 
-  render() {
+  renderContent() {
     return html`
       <scrollable-component>
-        <div class="content-wrapper">${this.renderContent()}</div>
+        <div class="content-wrapper">${this.renderPage()}</div>
       </scrollable-component>
     `;
   }
 
-  renderContent() {
+  private renderPage = () => {
     switch (this.selectedMenuItem) {
       case OverviewMenuItem.cityOverview:
         return html`<ca-city-page></ca-city-page>`;
@@ -56,8 +57,11 @@ export class Viewport extends LitElement {
       case MiscMenuItem.settings:
         return html`<ca-settings-page></ca-settings-page>`;
 
+      case OverviewMenuItem.company:
+        return html`<ca-outer-component></ca-outer-component>`;
+
       default:
         return null;
     }
-  }
+  };
 }

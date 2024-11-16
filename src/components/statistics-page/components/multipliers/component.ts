@@ -1,22 +1,23 @@
-import { LitElement, html } from 'lit';
+import { html } from 'lit';
 import { customElement } from 'lit/decorators.js';
+import { BaseComponent } from '@shared/base-component';
 import { StatisticsMultipliersController } from './controller';
 import { statisticsPanelContentStyle } from '../../styles';
 
 @customElement('ca-statistics-multipliers')
-export class StatisticsMultipliers extends LitElement {
+export class StatisticsMultipliers extends BaseComponent<StatisticsMultipliersController> {
   static styles = statisticsPanelContentStyle;
 
-  private _statisticsGeneralPanelController: StatisticsMultipliersController;
+  protected controller: StatisticsMultipliersController;
 
   constructor() {
     super();
 
-    this._statisticsGeneralPanelController = new StatisticsMultipliersController(this);
+    this.controller = new StatisticsMultipliersController(this);
   }
 
-  render() {
-    const formatter = this._statisticsGeneralPanelController.formatter;
+  renderContent() {
+    const formatter = this.controller.formatter;
 
     return html`
       <h4 class="title">
@@ -29,14 +30,12 @@ export class StatisticsMultipliers extends LitElement {
             Program completion speed
           </intl-message>
         </span>
-        <span>
-          ${formatter.formatNumberFloat(this._statisticsGeneralPanelController.programCompletionSpeedMultiplier)}
-        </span>
+        <span> ${formatter.formatNumberFloat(this.controller.programCompletionSpeedMultiplier)} </span>
 
         <span>
           <intl-message label="ui:statistics:general:multipliers:mainframeDiscount"> Mainframe discount </intl-message>
         </span>
-        <span> ${formatter.formatNumberFloat(this._statisticsGeneralPanelController.mainframeDiscount * 100)} </span>
+        <span> ${formatter.formatNumberFloat(this.controller.mainframeDiscount * 100)} </span>
       </div>
     `;
   }

@@ -1,3 +1,4 @@
+import { IStateUIConnector, StateUIConnector } from '@state/state-ui-connector';
 import { App, IApp } from '@state/app';
 import { AppState, IAppState } from '@state/app-state';
 import { ScenarioState, IScenarioState } from '@state/scenario-state';
@@ -21,6 +22,8 @@ import { Formatter } from '@shared/formatter';
 import { IFormatter } from '@shared/interfaces/formatter';
 import { TYPES } from './types';
 import { container } from './container';
+
+container.bind<IStateUIConnector>(TYPES.StateUIConnector).to(StateUIConnector).inSingletonScope().whenTargetIsDefault();
 
 container.bind<IApp>(TYPES.App).to(App).inSingletonScope().whenTargetIsDefault();
 

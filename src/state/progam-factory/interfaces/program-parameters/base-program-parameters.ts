@@ -1,3 +1,4 @@
+import { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import { IGlobalState } from '@state/global-state/interfaces/global-state';
 import { IFormatter } from '@shared/interfaces/formatter';
 import { IMainframeProcessesState } from '@state/mainframe/mainframe-processes-state/interfaces/mainframe-processes-state';
@@ -10,6 +11,7 @@ export interface IBaseProgramParameters {
   level: number;
   quality: number;
   autoUpgradeEnabled: boolean;
+  stateUiConnector: IStateUIConnector;
   globalState: IGlobalState;
   mainframeProgramsState: IMainframeProgramsState;
   mainframeProcessesState: IMainframeProcessesState;

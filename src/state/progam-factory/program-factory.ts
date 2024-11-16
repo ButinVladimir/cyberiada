@@ -1,6 +1,7 @@
 import { injectable } from 'inversify';
 import { decorators } from '@state/container';
 import { TYPES } from '@state/types';
+import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import type { IScenarioState } from '@state/scenario-state/interfaces/scenario-state';
 import type { IGlobalState } from '@state/global-state/interfaces/global-state';
 import type { IMainframeHardwareState } from '@state/mainframe/mainframe-hardware-state/interfaces/mainframe-hardware-state';
@@ -25,6 +26,9 @@ const { lazyInject } = decorators;
 
 @injectable()
 export class ProgramFactory implements IProgramFactory {
+  @lazyInject(TYPES.StateUIConnector)
+  private _stateUiConnector!: IStateUIConnector;
+
   @lazyInject(TYPES.ScenarioState)
   private _scenarioState!: IScenarioState;
 
@@ -80,12 +84,6 @@ export class ProgramFactory implements IProgramFactory {
     this._programRepository.clear();
   }
 
-  fireUiEvents() {
-    for (const program of this._programRepository.values()) {
-      program.fireUiEvents();
-    }
-  }
-
   private makeProgramImplementation(parameters: IMakeProgramParameters): IProgram {
     switch (parameters.name) {
       case ProgramName.shareServer:
@@ -94,6 +92,7 @@ export class ProgramFactory implements IProgramFactory {
           level: parameters.level,
           quality: parameters.quality,
           autoUpgradeEnabled: parameters.autoUpgradeEnabled,
+          stateUiConnector: this._stateUiConnector,
           globalState: this._globalState,
           mainframeProgramsState: this._mainframeProgramsState,
           mainframeProcessesState: this._mainframeProcessesState,
@@ -108,6 +107,7 @@ export class ProgramFactory implements IProgramFactory {
           level: parameters.level,
           quality: parameters.quality,
           autoUpgradeEnabled: parameters.autoUpgradeEnabled,
+          stateUiConnector: this._stateUiConnector,
           globalState: this._globalState,
           mainframeProgramsState: this._mainframeProgramsState,
           mainframeProcessesState: this._mainframeProcessesState,
@@ -121,6 +121,7 @@ export class ProgramFactory implements IProgramFactory {
           level: parameters.level,
           quality: parameters.quality,
           autoUpgradeEnabled: parameters.autoUpgradeEnabled,
+          stateUiConnector: this._stateUiConnector,
           globalState: this._globalState,
           mainframeProgramsState: this._mainframeProgramsState,
           mainframeProcessesState: this._mainframeProcessesState,
@@ -134,6 +135,7 @@ export class ProgramFactory implements IProgramFactory {
           level: parameters.level,
           quality: parameters.quality,
           autoUpgradeEnabled: parameters.autoUpgradeEnabled,
+          stateUiConnector: this._stateUiConnector,
           globalState: this._globalState,
           mainframeProgramsState: this._mainframeProgramsState,
           mainframeProcessesState: this._mainframeProcessesState,
@@ -148,6 +150,7 @@ export class ProgramFactory implements IProgramFactory {
           level: parameters.level,
           quality: parameters.quality,
           autoUpgradeEnabled: parameters.autoUpgradeEnabled,
+          stateUiConnector: this._stateUiConnector,
           globalState: this._globalState,
           mainframeProgramsState: this._mainframeProgramsState,
           mainframeProcessesState: this._mainframeProcessesState,

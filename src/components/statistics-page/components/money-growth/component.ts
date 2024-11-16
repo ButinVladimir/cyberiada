@@ -1,25 +1,26 @@
-import { LitElement, html } from 'lit';
+import { html } from 'lit';
 import { customElement } from 'lit/decorators.js';
+import { BaseComponent } from '@shared/base-component';
 import { IncomeSource } from '@shared/types';
 import { INCOME_SOURCES } from '@shared/constants';
 import { StatisticsMoneyGrowthController } from './controller';
 import { statisticsPanelContentStyle } from '../../styles';
 
 @customElement('ca-statistics-money-growth')
-export class StatisticsMoneyGrowth extends LitElement {
+export class StatisticsMoneyGrowth extends BaseComponent<StatisticsMoneyGrowthController> {
   static styles = statisticsPanelContentStyle;
 
-  private _statisticsMoneyGrowthPanelController: StatisticsMoneyGrowthController;
+  protected controller: StatisticsMoneyGrowthController;
 
   constructor() {
     super();
 
-    this._statisticsMoneyGrowthPanelController = new StatisticsMoneyGrowthController(this);
+    this.controller = new StatisticsMoneyGrowthController(this);
   }
 
-  render() {
-    const formatter = this._statisticsMoneyGrowthPanelController.formatter;
-    const total = this._statisticsMoneyGrowthPanelController.moneyTotalGrowth;
+  renderContent() {
+    const formatter = this.controller.formatter;
+    const total = this.controller.moneyTotalGrowth;
 
     return html`
       <h4 class="title">
@@ -28,10 +29,7 @@ export class StatisticsMoneyGrowth extends LitElement {
 
       <div class="parameters-table">
         ${INCOME_SOURCES.map((incomeSource) =>
-          this.renderIncomeSource(
-            incomeSource,
-            this._statisticsMoneyGrowthPanelController.getMoneyGrowth(incomeSource),
-          ),
+          this.renderIncomeSource(incomeSource, this.controller.getMoneyGrowth(incomeSource)),
         )}
 
         <span>
@@ -47,7 +45,7 @@ export class StatisticsMoneyGrowth extends LitElement {
       return '';
     }
 
-    const formatter = this._statisticsMoneyGrowthPanelController.formatter;
+    const formatter = this.controller.formatter;
 
     return html`
       <span>

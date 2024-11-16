@@ -1,4 +1,5 @@
 import { inject, injectable } from 'inversify';
+import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import { IMakeProgramParameters } from '@state/progam-factory/interfaces/make-program-parameters';
 import type { IProgramFactory } from '@state/progam-factory/interfaces/program-factory';
 import { IProgram } from '@state/progam-factory/interfaces/program';
@@ -15,23 +16,26 @@ import { MAINFRAME_PROGRAMS_STATE_UI_EVENTS } from './constants';
 
 @injectable()
 export class MainframeProgramsState implements IMainframeProgramsState {
+  readonly uiEventBatcher: EventBatcher;
+
+  private _stateUiConnector: IStateUIConnector;
   private _programFactory: IProgramFactory;
   private _scenarioState: IScenarioState;
   private _globalState: IGlobalState;
   private _messageLogState: IMessageLogState;
   private _formatter: IFormatter;
 
-  private readonly _uiEventBatcher: EventBatcher;
-
   private _ownedPrograms: Map<ProgramName, IProgram>;
 
   constructor(
+    @inject(TYPES.StateUIConnector) _stateUiConnector: IStateUIConnector,
     @inject(TYPES.ProgramFactory) _programFactory: IProgramFactory,
     @inject(TYPES.ScenarioState) _scenarioState: IScenarioState,
     @inject(TYPES.GlobalState) _globalState: IGlobalState,
     @inject(TYPES.MessageLogState) _messageLogState: IMessageLogState,
     @inject(TYPES.Formatter) _formatter: IFormatter,
   ) {
+    this._stateUiConnector = _stateUiConnector;
     this._programFactory = _programFactory;
     this._scenarioState = _scenarioState;
     this._globalState = _globalState;
@@ -40,7 +44,8 @@ export class MainframeProgramsState implements IMainframeProgramsState {
 
     this._ownedPrograms = new Map();
 
-    this._uiEventBatcher = new EventBatcher();
+    this.uiEventBatcher = new EventBatcher();
+    this._stateUiConnector.registerEventEmitter(this);
   }
 
   purchaseProgram(programParameters: IMakeProgramParameters): boolean {
@@ -65,6 +70,8 @@ export class MainframeProgramsState implements IMainframeProgramsState {
   }
 
   listOwnedPrograms(): IProgram[] {
+    this._stateUiConnector.connectEventHandler(this, MAINFRAME_PROGRAMS_STATE_UI_EVENTS.OWNED_PROGRAMS_UPDATED);
+
     return Array.from(this._ownedPrograms.values());
   }
 
@@ -81,7 +88,7 @@ export class MainframeProgramsState implements IMainframeProgramsState {
   }
 
   requestUiUpdate() {
-    this._uiEventBatcher.enqueueEvent(MAINFRAME_PROGRAMS_STATE_UI_EVENTS.OWNED_PROGRAMS_UPDATED);
+    this.uiEventBatcher.enqueueEvent(MAINFRAME_PROGRAMS_STATE_UI_EVENTS.OWNED_PROGRAMS_UPDATED);
   }
 
   // eslint-disable-next-line @typescript-eslint/require-await
@@ -121,15 +128,15 @@ export class MainframeProgramsState implements IMainframeProgramsState {
   }
 
   addUiEventListener(eventName: symbol, handler: (...args: any[]) => void) {
-    this._uiEventBatcher.addListener(eventName, handler);
+    this.uiEventBatcher.addListener(eventName, handler);
   }
 
   removeUiEventListener(eventName: symbol, handler: (...args: any[]) => void) {
-    this._uiEventBatcher.removeListener(eventName, handler);
+    this.uiEventBatcher.removeListener(eventName, handler);
   }
 
   fireUiEvents() {
-    this._uiEventBatcher.fireEvents();
+    this.uiEventBatcher.fireEvents();
   }
 
   private addProgram(newProgram: IProgram): void {

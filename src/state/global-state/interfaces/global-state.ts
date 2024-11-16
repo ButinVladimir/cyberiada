@@ -1,5 +1,4 @@
 import { ISerializeable } from '@shared/interfaces/serializable';
-import { IUIEventEmitter } from '@shared/interfaces/ui-event-emitter';
 import { IGlobalSerializedState } from './serialized-states/global-serialized-state';
 import { GameSpeed } from '../types';
 import { IMoneyParameter } from './money-parameter';
@@ -11,7 +10,7 @@ import { ICityDevelopmentGrowthParameter } from './city-development-growth-param
 import { IComputationalBaseParameter } from './computational-base-parameter';
 import { IProgramsGrowthParameter } from './programs-growth-parameter';
 
-export interface IGlobalState extends ISerializeable<IGlobalSerializedState>, IUIEventEmitter {
+export interface IGlobalState extends ISerializeable<IGlobalSerializedState> {
   randomSeed: number;
   gameSpeed: GameSpeed;
   money: IMoneyParameter;

@@ -1,6 +1,7 @@
-import { LitElement, html, css, TemplateResult } from 'lit';
+import { html, css, TemplateResult } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
+import { BaseComponent } from '@shared/base-component';
 import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.component.js';
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.component.js';
 import SlRange from '@shoelace-style/shoelace/dist/components/range/range.component.js';
@@ -10,7 +11,7 @@ import { Language, LongNumberFormat, Theme } from '@shared/types';
 import { SettingsFormController } from './controller';
 
 @customElement('ca-settings-form')
-export class SettingsForm extends LitElement {
+export class SettingsForm extends BaseComponent<SettingsFormController> {
   static styles = css`
     :host {
       width: 100%;
@@ -45,7 +46,7 @@ export class SettingsForm extends LitElement {
     }
   `;
 
-  private _settingsFormController: SettingsFormController;
+  protected controller: SettingsFormController;
 
   private _languageInputRef = createRef<SlSelect>();
 
@@ -77,16 +78,18 @@ export class SettingsForm extends LitElement {
   constructor() {
     super();
 
-    this._settingsFormController = new SettingsFormController(this);
+    this.controller = new SettingsFormController(this);
   }
 
-  render() {
+  renderContent() {
     const content = this._isSaving ? this.renderSpinner() : this.renderForm();
 
     return html`${content}`;
   }
 
-  updated() {
+  updated(_changedProperties: Map<string, any>) {
+    super.updated(_changedProperties);
+
     if (this._autosaveIntervalInputRef.value) {
       this._autosaveIntervalInputRef.value.tooltipFormatter = this.autosaveIntervalFormatter;
     }
@@ -115,7 +118,7 @@ export class SettingsForm extends LitElement {
       <sl-select
         ${ref(this._languageInputRef)}
         name="language"
-        value=${this._settingsFormController.language}
+        value=${this.controller.language}
         @sl-change=${this.handleChangeLanguage}
       >
         <span class="input-label" slot="label">
@@ -133,7 +136,7 @@ export class SettingsForm extends LitElement {
       <sl-select
         ${ref(this._themeInputRef)}
         name="theme"
-        value=${this._settingsFormController.theme}
+        value=${this.controller.theme}
         @sl-change=${this.handleChangeTheme}
       >
         <span class="input-label" slot="label">
@@ -151,7 +154,7 @@ export class SettingsForm extends LitElement {
       <sl-input
         ${ref(this._messageLogSizeInputRef)}
         name="messageLogSize"
-        value=${this._settingsFormController.messageLogSize}
+        value=${this.controller.messageLogSize}
         type="number"
         min="1"
         max="100"
@@ -172,7 +175,7 @@ export class SettingsForm extends LitElement {
       <sl-select
         ${ref(this._longNumberFormatInputRef)}
         name="longNumberFormat"
-        value=${this._settingsFormController.longNumberFormat}
+        value=${this.controller.longNumberFormat}
         @sl-change=${this.handleChangeLongNumberFormat}
       >
         <span class="input-label" slot="label">
@@ -195,7 +198,7 @@ export class SettingsForm extends LitElement {
         max="1000"
         step="1"
         name="updateInterval"
-        value=${this._settingsFormController.updateInterval}
+        value=${this.controller.updateInterval}
         @sl-change=${this.handleChangeUpdateInterval}
       >
         <span class="input-label" slot="label">
@@ -209,7 +212,7 @@ export class SettingsForm extends LitElement {
         max="100"
         step="1"
         name="maxTicksPerUpdate"
-        value=${this._settingsFormController.maxTicksPerUpdate}
+        value=${this.controller.maxTicksPerUpdate}
         @sl-change=${this.handleChangeMaxTicksPerUpdate}
       >
         <span class="input-label" slot="label">
@@ -227,7 +230,7 @@ export class SettingsForm extends LitElement {
         ${ref(this._autosaveEnabledSwitchRef)}
         size="large"
         name="autosaveEnabled"
-        ?checked=${this._settingsFormController.autosaveEnabled}
+        ?checked=${this.controller.autosaveEnabled}
         @sl-change=${this.handleChangeAutosaveEnabled}
       >
         <span class="input-label">
@@ -241,7 +244,7 @@ export class SettingsForm extends LitElement {
         max="600000"
         step="1000"
         name="autosaveInterval"
-        value=${this._settingsFormController.autosaveInterval}
+        value=${this.controller.autosaveInterval}
         @sl-change=${this.handleChangeAutosaveInterval}
       >
         <span class="input-label" slot="label">
@@ -252,7 +255,7 @@ export class SettingsForm extends LitElement {
       <sl-input
         ${ref(this._maxTicksPerFastForwardInputRef)}
         name="maxTicksPerFastForward"
-        value=${this._settingsFormController.maxTicksPerFastForward}
+        value=${this.controller.maxTicksPerFastForward}
         type="number"
         min="1"
         max="100000000"
@@ -308,7 +311,7 @@ export class SettingsForm extends LitElement {
     this.startSaving();
 
     try {
-      await this._settingsFormController.setLanguage(this._languageInputRef.value.value as Language);
+      await this.controller.setLanguage(this._languageInputRef.value.value as Language);
     } catch (e) {
       console.error(e);
     } finally {
@@ -321,7 +324,7 @@ export class SettingsForm extends LitElement {
       return;
     }
 
-    this._settingsFormController.setTheme(this._themeInputRef.value.value as Theme);
+    this.controller.setTheme(this._themeInputRef.value.value as Theme);
   };
 
   private handleChangeMessageLogSize = () => {
@@ -339,7 +342,7 @@ export class SettingsForm extends LitElement {
       value = 100;
     }
 
-    this._settingsFormController.setMessageLogSize(value);
+    this.controller.setMessageLogSize(value);
     this._messageLogSizeInputRef.value.valueAsNumber = value;
   };
 
@@ -348,7 +351,7 @@ export class SettingsForm extends LitElement {
       return;
     }
 
-    this._settingsFormController.setUpdateInterval(this._updateIntervalInputRef.value.value);
+    this.controller.setUpdateInterval(this._updateIntervalInputRef.value.value);
   };
 
   private handleChangeAutosaveEnabled = () => {
@@ -356,7 +359,7 @@ export class SettingsForm extends LitElement {
       return;
     }
 
-    this._settingsFormController.setAutosaveEnabled(this._autosaveEnabledSwitchRef.value.checked);
+    this.controller.setAutosaveEnabled(this._autosaveEnabledSwitchRef.value.checked);
   };
 
   private handleChangeAutosaveInterval = () => {
@@ -364,7 +367,7 @@ export class SettingsForm extends LitElement {
       return;
     }
 
-    this._settingsFormController.setAutosaveInterval(this._autosaveIntervalInputRef.value.value);
+    this.controller.setAutosaveInterval(this._autosaveIntervalInputRef.value.value);
   };
 
   private handleChangeMaxTicksPerUpdate = () => {
@@ -372,7 +375,7 @@ export class SettingsForm extends LitElement {
       return;
     }
 
-    this._settingsFormController.setMaxTicksPerUpdate(this._maxTicksPerUpdateInputRef.value.value);
+    this.controller.setMaxTicksPerUpdate(this._maxTicksPerUpdateInputRef.value.value);
   };
 
   private handleChangeMaxTicksPerFastForward = () => {
@@ -390,7 +393,7 @@ export class SettingsForm extends LitElement {
       value = 100000000;
     }
 
-    this._settingsFormController.setMaxTicksPerFastForward(value);
+    this.controller.setMaxTicksPerFastForward(value);
     this._maxTicksPerFastForwardInputRef.value.valueAsNumber = value;
   };
 
@@ -399,7 +402,7 @@ export class SettingsForm extends LitElement {
       return;
     }
 
-    this._settingsFormController.setLongNumberFormat(this._longNumberFormatInputRef.value.value as LongNumberFormat);
+    this.controller.setLongNumberFormat(this._longNumberFormatInputRef.value.value as LongNumberFormat);
   };
 
   private handleMessageFilterDialogOpen = (event: Event) => {
@@ -431,10 +434,10 @@ export class SettingsForm extends LitElement {
   };
 
   private autosaveIntervalFormatter = (value: number): string => {
-    return this._settingsFormController.formatter.formatNumberDecimal(value / 1000);
+    return this.controller.formatter.formatNumberDecimal(value / 1000);
   };
 
   private decimalNumberFormatter = (value: number): string => {
-    return this._settingsFormController.formatter.formatNumberDecimal(value);
+    return this.controller.formatter.formatNumberDecimal(value);
   };
 }

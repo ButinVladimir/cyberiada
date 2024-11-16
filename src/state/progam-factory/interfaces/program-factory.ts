@@ -5,5 +5,4 @@ export interface IProgramFactory {
   makeProgram(parameters: IMakeProgramParameters): IProgram;
   deleteProgram(program: IProgram): void;
   deleteAllPrograms(): void;
-  fireUiEvents(): void;
 }

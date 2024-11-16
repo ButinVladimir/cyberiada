@@ -1,22 +1,23 @@
-import { LitElement, html } from 'lit';
+import { html } from 'lit';
 import { customElement } from 'lit/decorators.js';
+import { BaseComponent } from '@shared/base-component';
 import { StatisticsProgramCompletionSpeedController } from './controller';
 import { statisticsPanelContentStyle } from '../../styles';
 
 @customElement('ca-statistics-program-completion-speed')
-export class StatisticsProgramCompletionSpeed extends LitElement {
+export class StatisticsProgramCompletionSpeed extends BaseComponent<StatisticsProgramCompletionSpeedController> {
   static styles = statisticsPanelContentStyle;
 
-  private _statisticsProgramCompletionSpeedController: StatisticsProgramCompletionSpeedController;
+  protected controller: StatisticsProgramCompletionSpeedController;
 
   constructor() {
     super();
 
-    this._statisticsProgramCompletionSpeedController = new StatisticsProgramCompletionSpeedController(this);
+    this.controller = new StatisticsProgramCompletionSpeedController(this);
   }
 
-  render() {
-    const formatter = this._statisticsProgramCompletionSpeedController.formatter;
+  renderContent() {
+    const formatter = this.controller.formatter;
 
     return html`
       <h4 class="title">
@@ -29,9 +30,7 @@ export class StatisticsProgramCompletionSpeed extends LitElement {
             Program completion speed
           </intl-message>
         </span>
-        <span>
-          ${formatter.formatNumberLong(this._statisticsProgramCompletionSpeedController.programCompletionSpeed)}
-        </span>
+        <span> ${formatter.formatNumberLong(this.controller.programCompletionSpeed)} </span>
       </div>
     `;
   }

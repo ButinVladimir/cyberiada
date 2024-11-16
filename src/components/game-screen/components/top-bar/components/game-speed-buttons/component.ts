@@ -1,6 +1,7 @@
 import { t } from 'i18next';
-import { LitElement, html, css, TemplateResult } from 'lit';
+import { html, css, TemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';
+import { BaseComponent } from '@shared/base-component';
 import { GameSpeed } from '@state/global-state/types';
 import { ConfirmationAlertOpenEvent, ConfirmationAlertSubmitEvent } from '@components/shared/confirmation-alert/events';
 import { GameStateAlert } from '@shared/types';
@@ -8,7 +9,7 @@ import { GameSpeedButtonsController } from './controller';
 import { GameSpeedButtonProps } from './interfaces';
 
 @customElement('ca-game-speed-buttons')
-export class GameSpeedButtons extends LitElement {
+export class GameSpeedButtons extends BaseComponent<GameSpeedButtonsController> {
   static styles = css`
     :host {
       display: flex;
@@ -17,12 +18,12 @@ export class GameSpeedButtons extends LitElement {
     }
   `;
 
-  private _gameSpeedButtonsController: GameSpeedButtonsController;
+  protected controller: GameSpeedButtonsController;
 
   constructor() {
     super();
 
-    this._gameSpeedButtonsController = new GameSpeedButtonsController(this);
+    this.controller = new GameSpeedButtonsController(this);
   }
 
   connectedCallback() {
@@ -37,8 +38,8 @@ export class GameSpeedButtons extends LitElement {
     document.removeEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmFastForwardDialog);
   }
 
-  render() {
-    const gameSpeed = this._gameSpeedButtonsController.gameSpeed;
+  renderContent() {
+    const gameSpeed = this.controller.gameSpeed;
 
     return html`
       ${this.renderButton({
@@ -90,7 +91,7 @@ export class GameSpeedButtons extends LitElement {
     event.preventDefault();
     event.stopPropagation();
 
-    this._gameSpeedButtonsController.changeGameSpeed(gameSpeed);
+    this.controller.changeGameSpeed(gameSpeed);
   };
 
   private handleOpenFastForwardDialog = (event: Event) => {
@@ -106,6 +107,6 @@ export class GameSpeedButtons extends LitElement {
       return;
     }
 
-    this._gameSpeedButtonsController.fastForward();
+    this.controller.fastForward();
   };
 }

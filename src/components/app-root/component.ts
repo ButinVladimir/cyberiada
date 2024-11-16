@@ -1,20 +1,21 @@
-import { LitElement, html } from 'lit';
+import { html } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import { AppRootController } from './controller';
 import { AppStage } from '@state/app/types';
+import { BaseComponent } from '@shared/base-component';
+import { AppRootController } from './controller';
 
 @customElement('ca-app-root')
-export class AppRoot extends LitElement {
-  private _appRootController: AppRootController;
+export class AppRoot extends BaseComponent<AppRootController> {
+  protected controller: AppRootController;
 
   constructor() {
     super();
 
-    this._appRootController = new AppRootController(this);
+    this.controller = new AppRootController(this);
   }
 
-  render() {
-    switch (this._appRootController.appStage) {
+  renderContent() {
+    switch (this.controller.appStage) {
       case AppStage.loading:
         return html`<ca-loading-screen></ca-loading-screen>`;
 

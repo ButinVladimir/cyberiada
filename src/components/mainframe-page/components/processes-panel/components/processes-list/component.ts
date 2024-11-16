@@ -1,14 +1,15 @@
 import { t } from 'i18next';
-import { LitElement, css, html } from 'lit';
+import { css, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
+import { BaseComponent } from '@shared/base-component';
 import { ProgramName } from '@state/progam-factory/types';
-import { ProcessesListController } from './controller';
 import { ProgramAlert } from '@shared/types';
 import { ConfirmationAlertOpenEvent, ConfirmationAlertSubmitEvent } from '@components/shared/confirmation-alert/events';
+import { ProcessesListController } from './controller';
 
 @customElement('ca-processes-list')
-export class ProcessesList extends LitElement {
+export class ProcessesList extends BaseComponent<ProcessesListController> {
   static styles = css`
     :host {
       width: 100%;
@@ -64,12 +65,12 @@ export class ProcessesList extends LitElement {
     }
   `;
 
-  private _processesListController: ProcessesListController;
+  protected controller: ProcessesListController;
 
   constructor() {
     super();
 
-    this._processesListController = new ProcessesListController(this);
+    this.controller = new ProcessesListController(this);
   }
 
   connectedCallback() {
@@ -84,7 +85,7 @@ export class ProcessesList extends LitElement {
     document.removeEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmAllDeleteProcessesDialog);
   }
 
-  render() {
+  renderContent() {
     const processesActive = this.checkSomeProcessesActive();
 
     return html`
@@ -129,14 +130,14 @@ export class ProcessesList extends LitElement {
         </thead>
 
         <tbody>
-          ${this.renderContent()}
+          ${this.renderList()}
         </tbody>
       </table>
     `;
   }
 
-  private renderContent = () => {
-    const processes = this._processesListController.listProcesses();
+  private renderList = () => {
+    const processes = this.controller.listProcesses();
 
     if (processes.length === 0) {
       return this.renderEmptyListNotification();
@@ -162,11 +163,9 @@ export class ProcessesList extends LitElement {
   };
 
   private checkSomeProcessesActive(): boolean {
-    const programNames = this._processesListController.listProcesses();
+    const programNames = this.controller.listProcesses();
 
-    return programNames.some(
-      (programName) => this._processesListController.getProcessByProgramName(programName)!.isActive,
-    );
+    return programNames.some((programName) => this.controller.getProcessByProgramName(programName)!.isActive);
   }
 
   private handleToggleAllProcesses = (event: Event) => {
@@ -175,7 +174,7 @@ export class ProcessesList extends LitElement {
 
     const processesActive = this.checkSomeProcessesActive();
 
-    this._processesListController.toggleAllProcesses(!processesActive);
+    this.controller.toggleAllProcesses(!processesActive);
   };
 
   private handleOpenDeleteAllProcessesDialog = (event: Event) => {
@@ -192,6 +191,6 @@ export class ProcessesList extends LitElement {
       return;
     }
 
-    this._processesListController.deleteAllProcesses();
+    this.controller.deleteAllProcesses();
   };
 }

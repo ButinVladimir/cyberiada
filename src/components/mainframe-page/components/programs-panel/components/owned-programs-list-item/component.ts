@@ -1,11 +1,12 @@
 import { t } from 'i18next';
-import { LitElement, css, html } from 'lit';
+import { css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { OwnedProgramsListItemController } from './controller';
+import { BaseComponent } from '@shared/base-component';
 import { ProgramName } from '@state/progam-factory/types';
+import { OwnedProgramsListItemController } from './controller';
 
 @customElement('ca-owned-programs-list-item')
-export class OwnedProgramsListItem extends LitElement {
+export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemController> {
   static styles = css`
     :host {
       display: table-row;
@@ -51,18 +52,18 @@ export class OwnedProgramsListItem extends LitElement {
   })
   programName: string = ProgramName.shareServer;
 
-  private _ownedProgramsListItemController: OwnedProgramsListItemController;
+  protected controller: OwnedProgramsListItemController;
 
   constructor() {
     super();
 
-    this._ownedProgramsListItemController = new OwnedProgramsListItemController(this);
+    this.controller = new OwnedProgramsListItemController(this);
   }
 
-  render() {
-    const formatter = this._ownedProgramsListItemController.formatter;
+  renderContent() {
+    const formatter = this.controller.formatter;
 
-    const program = this._ownedProgramsListItemController.getProgram(this.programName as ProgramName);
+    const program = this.controller.getProgram(this.programName as ProgramName);
 
     if (!program) {
       return html``;
@@ -114,7 +115,7 @@ export class OwnedProgramsListItem extends LitElement {
     event.stopPropagation();
     event.preventDefault();
 
-    const program = this._ownedProgramsListItemController.getProgram(this.programName as ProgramName);
+    const program = this.controller.getProgram(this.programName as ProgramName);
 
     if (program) {
       program.autoUpgradeEnabled = !program.autoUpgradeEnabled;

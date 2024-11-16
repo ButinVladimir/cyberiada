@@ -1,10 +1,11 @@
 import { t } from 'i18next';
-import { LitElement, html, css } from 'lit';
+import { html, css } from 'lit';
 import { customElement } from 'lit/decorators.js';
+import { BaseComponent } from '@shared/base-component';
 import { MenuToggledEvent, LogsToggledEvent } from './events';
 
 @customElement('ca-top-bar')
-export class TopBar extends LitElement {
+export class TopBar extends BaseComponent {
   static styles = css`
     :host {
       display: flex;
@@ -25,7 +26,7 @@ export class TopBar extends LitElement {
     }
   `;
 
-  render() {
+  renderContent() {
     return html`
       <div class="group">
         <sl-tooltip>
