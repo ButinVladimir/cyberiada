@@ -11,4 +11,5 @@ export interface IMainframeProgramsState extends ISerializeable<IMainframeProgra
   getOwnedProgramByName(name: ProgramName): IProgram | undefined;
   toggleProgramsAutoUpgrade(active: boolean): void;
   requestUiUpdate(): void;
+  moveProgram(programName: ProgramName, newPosition: number): void;
 }

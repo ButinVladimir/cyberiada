@@ -41,3 +41,29 @@ export const normalizePercentage = (value: number): number => {
 export const checkPercentage = (value: number): boolean => {
   return value >= 0 && value <= 100;
 };
+
+export function moveElementInArray<T>(array: T[], fromIndex: number, toIndex: number): void {
+  let fixedToIndex = toIndex;
+
+  if (fixedToIndex < 0) {
+    fixedToIndex = 0;
+  }
+
+  if (fixedToIndex >= array.length) {
+    fixedToIndex = array.length - 1;
+  }
+
+  const movedElement = array[fromIndex];
+
+  if (fromIndex < fixedToIndex) {
+    for (let i = fromIndex; i < fixedToIndex; i++) {
+      array[i] = array[i + 1];
+    }
+  } else {
+    for (let i = fromIndex; i > fixedToIndex; i--) {
+      array[i] = array[i - 1];
+    }
+  }
+
+  array[fixedToIndex] = movedElement;
+}

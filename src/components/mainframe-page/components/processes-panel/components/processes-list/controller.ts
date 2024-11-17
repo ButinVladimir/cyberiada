@@ -1,14 +1,10 @@
 import { BaseController } from '@shared/base-controller';
-import { ProgramName } from '@state/progam-factory/types';
 import { IProcess } from '@state/mainframe/mainframe-processes-state/interfaces/process';
+import { ProgramName } from '@state/progam-factory/types';
 
 export class ProcessesListController extends BaseController {
-  listProcesses(): ProgramName[] {
+  listProcesses(): IProcess[] {
     return this.mainframeProcessesState.listProcesses();
-  }
-
-  getProcessByProgramName(programName: ProgramName): IProcess | undefined {
-    return this.mainframeProcessesState.getProcessByName(programName);
   }
 
   toggleAllProcesses(active: boolean) {
@@ -17,5 +13,9 @@ export class ProcessesListController extends BaseController {
 
   deleteAllProcesses() {
     this.mainframeProcessesState.deleteAllProcesses();
+  }
+
+  moveProcess(programName: ProgramName, newPosition: number) {
+    this.mainframeProcessesState.moveProcess(programName, newPosition);
   }
 }

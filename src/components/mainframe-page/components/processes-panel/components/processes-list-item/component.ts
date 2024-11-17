@@ -17,6 +17,7 @@ export class ProcessesListItem extends BaseComponent<ProcessesListItemController
 
     td.program {
       width: 32%;
+      cursor: grab;
     }
 
     td.cores {
@@ -27,6 +28,8 @@ export class ProcessesListItem extends BaseComponent<ProcessesListItemController
       text-align: left;
       vertical-align: middle;
       padding: var(--sl-spacing-small);
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
 
     sl-icon[name='question-circle'] {
@@ -91,7 +94,7 @@ export class ProcessesListItem extends BaseComponent<ProcessesListItemController
       : html`<intl-message label="ui:mainframe:processes:usesCores" value=${coresValue}>Cores</intl-message>`;
 
     return html`
-      <td class="program">
+      <td class="program" draggable="true" @dragstart=${this.handleDragStart}>
         <intl-message label="programs:${process.program.name}:name">Progam name</intl-message>
 
         <sl-tooltip>
@@ -162,5 +165,11 @@ export class ProcessesListItem extends BaseComponent<ProcessesListItemController
     }
 
     this.controller.deleteProcess();
+  };
+
+  private handleDragStart = (event: DragEvent) => {
+    if (event.dataTransfer) {
+      event.dataTransfer.setData('text/plain', this.programName);
+    }
   };
 }

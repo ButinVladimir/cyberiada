@@ -10,6 +10,7 @@ import type { IGlobalState } from '@state/global-state/interfaces/global-state';
 import { TYPES } from '@state/types';
 import { EventBatcher } from '@shared/event-batcher';
 import { ProgramsEvent } from '@shared/types';
+import { moveElementInArray } from '@shared/helpers';
 import {
   IMainframeProcessesSerializedState,
   IMainframeProcessesState,
@@ -31,12 +32,12 @@ export class MainframeProcessesState implements IMainframeProcessesState {
   private _messageLogState: IMessageLogState;
   private _formatter: IFormatter;
 
-  private _processesList: ProgramName[];
+  private _processesList: IProcess[];
   private _processesMap: Map<ProgramName, IProcess>;
-  private _runningProcesses: ProgramName[];
+  private _runningProcesses: IProcess[];
   private _availableCores: number;
   private _availableRam: number;
-  private _runningScalableProgram?: ProgramName;
+  private _runningScalableProcess?: IProcess;
   private _processUpdateRequested: boolean;
 
   constructor(
@@ -79,13 +80,13 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     return this._availableRam;
   }
 
-  get runningScalableProgram() {
+  get runningScalableProcess() {
     this._stateUiConnector.connectEventHandler(this, MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESSES_UPDATED);
 
-    return this._runningScalableProgram;
+    return this._runningScalableProcess;
   }
 
-  listProcesses(): ProgramName[] {
+  listProcesses(): IProcess[] {
     this._stateUiConnector.connectEventHandler(this, MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESSES_UPDATED);
 
     return this._processesList;
@@ -136,9 +137,9 @@ export class MainframeProcessesState implements IMainframeProcessesState {
       });
 
       if (program.isAutoscalable) {
-        this._processesList.unshift(programName);
+        this._processesList.unshift(process);
       } else {
-        this._processesList.push(programName);
+        this._processesList.push(process);
       }
 
       this._processesMap.set(programName, process);
@@ -168,7 +169,7 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     let index = 0;
 
     while (index < this._processesList.length) {
-      if (this._processesList[index] === programName) {
+      if (this._processesList[index].program.name === programName) {
         this._processesList.splice(index, 1);
       } else {
         index++;
@@ -206,18 +207,13 @@ export class MainframeProcessesState implements IMainframeProcessesState {
       this.updateRunningProcesses();
     }
 
-    if (this._runningScalableProgram) {
-      const scalableProcess = this.getProcessByName(this._runningScalableProgram);
-
-      if (scalableProcess?.isActive) {
-        scalableProcess.program.perform(this._availableCores, this._availableRam);
-      }
+    if (this._runningScalableProcess?.isActive) {
+      this._runningScalableProcess.program.perform(this._availableCores, this._availableRam);
     }
 
     let hasFinishedProcesses = false;
 
-    for (const programName of this._runningProcesses) {
-      const process = this.getProcessByName(programName)!;
+    for (const process of this._runningProcesses) {
       process.increaseCompletion(process.calculateCompletionDelta(this._settingsState.updateInterval));
 
       if (process.currentCompletionPoints >= process.maxCompletionPoints) {
@@ -232,6 +228,18 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     }
   }
 
+  moveProcess(programName: ProgramName, newPosition: number) {
+    const oldPosition = this._processesList.findIndex((process) => process.program.name === programName);
+
+    if (oldPosition === -1) {
+      return;
+    }
+
+    moveElementInArray(this._processesList, oldPosition, newPosition);
+
+    this.requestUpdateProcesses();
+  }
+
   // eslint-disable-next-line @typescript-eslint/require-await
   async startNewState(): Promise<void> {
     this.clearState();
@@ -244,8 +252,9 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     this.clearState();
 
     serializedState.processes.forEach((serializedProcess) => {
-      this._processesMap.set(serializedProcess.programName, this.createProcess(serializedProcess));
-      this._processesList.push(serializedProcess.programName);
+      const process = this.createProcess(serializedProcess);
+      this._processesMap.set(serializedProcess.programName, process);
+      this._processesList.push(process);
     });
 
     this.requestUpdateProcesses();
@@ -253,7 +262,7 @@ export class MainframeProcessesState implements IMainframeProcessesState {
 
   serialize(): IMainframeProcessesSerializedState {
     return {
-      processes: this._processesList.map((programName) => this.getProcessByName(programName)!.serialize()),
+      processes: this._processesList.map((process) => process.serialize()),
     };
   }
 
@@ -262,20 +271,12 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     this._availableCores = this._mainframeHardwareState.cores.level;
     this._availableRam = this._mainframeHardwareState.ram.level;
     this._runningProcesses.splice(0);
-    this._runningScalableProgram = this._processesList.find(
-      (programName) => this.getProcessByName(programName)?.program.isAutoscalable,
-    );
+    this._runningScalableProcess = this._processesList.find((process) => process.program.isAutoscalable);
 
     let processRam = 0;
     let usedCores = 0;
 
-    for (const programName of this._processesList) {
-      const process = this.getProcessByName(programName);
-
-      if (!process) {
-        continue;
-      }
-
+    for (const process of this._processesList) {
       if (process.program.isAutoscalable) {
         continue;
       }
@@ -292,16 +293,15 @@ export class MainframeProcessesState implements IMainframeProcessesState {
 
       if (usedCores > 0) {
         process.usedCores = usedCores;
-        this._runningProcesses.push(programName);
+        this._runningProcesses.push(process);
         this._availableCores -= usedCores;
       } else {
         process.usedCores = 0;
       }
     }
 
-    if (this._runningScalableProgram) {
-      const scalableProcess = this.getProcessByName(this._runningScalableProgram)!;
-      scalableProcess.usedCores = scalableProcess.isActive ? this._availableCores : 0;
+    if (this._runningScalableProcess) {
+      this._runningScalableProcess.usedCores = this._runningScalableProcess.isActive ? this._availableCores : 0;
     }
 
     this._globalState.requestGrowthRecalculation();
@@ -311,23 +311,16 @@ export class MainframeProcessesState implements IMainframeProcessesState {
 
   private updateFinishedProcesses(): void {
     let index = 0;
-    let programName: ProgramName;
 
     while (index < this._processesList.length) {
-      programName = this._processesList[index];
-      const process = this.getProcessByName(programName);
-
-      if (!process) {
-        index++;
-        continue;
-      }
+      const process = this._processesList[index];
 
       if (!process.program.isAutoscalable && process.currentCompletionPoints >= process.maxCompletionPoints) {
         this._processesList.splice(index, 1);
 
         if (process.program.isRepeatable) {
           process.resetCompletion();
-          this._processesList.push(programName);
+          this._processesList.push(process);
         } else {
           process.removeEventListeners();
           this._messageLogState.postMessage(ProgramsEvent.processDeleted, {
@@ -355,12 +348,12 @@ export class MainframeProcessesState implements IMainframeProcessesState {
   };
 
   private deleteAutoscalableProcesses(): void {
-    const scalableProgram = this._runningScalableProgram;
+    const scalableProgram = this._runningScalableProcess;
 
-    this._runningScalableProgram = undefined;
+    this._runningScalableProcess = undefined;
 
     if (scalableProgram) {
-      this.deleteProcess(scalableProgram);
+      this.deleteProcess(scalableProgram.program.name);
     }
   }
 

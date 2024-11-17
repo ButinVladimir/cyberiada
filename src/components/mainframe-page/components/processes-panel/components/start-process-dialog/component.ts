@@ -169,7 +169,7 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
               value=${this._threads}
               type="number"
               min="1"
-              max=${this._maxThreads}
+              max=${Math.max(this._maxThreads, 1)}
               step="1"
               ?disabled=${threadsInputDisabled}
               @sl-change=${this.handleThreadsChange}
@@ -232,12 +232,12 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
 
     let threads = this._threadsInputRef.value.valueAsNumber;
 
-    if (threads < 1) {
-      threads = 1;
-    }
-
     if (threads > this._maxThreads) {
       threads = this._maxThreads;
+    }
+
+    if (threads < 1) {
+      threads = 1;
     }
 
     this._threads = threads;
@@ -268,10 +268,8 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
 
       this.dispatchEvent(new ConfirmationAlertOpenEvent(ProgramAlert.processReplace, confirmationAlertParameters));
     } else if (program?.isAutoscalable && runningScalableProgram) {
-      const scalableProcess = this.controller.getProcessByName(runningScalableProgram)!;
-
       const confirmationAlertParameters = JSON.stringify({
-        programName: scalableProcess.program.name,
+        programName: runningScalableProgram.program.name,
       });
 
       this._confirmationAlertVisible = true;

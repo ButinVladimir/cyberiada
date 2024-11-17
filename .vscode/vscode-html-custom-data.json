@@ -203,7 +203,7 @@
     },
     {
       "name": "ca-processes-list-item",
-      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `handleToggleProcess` - \n\n  * `handleOpenDeleteProcessDialog` - \n\n  * `handleConfirmDeleteProcessDialog` - \n\n  * `controller` {`ProcessesListItemController`} - ",
+      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `handleToggleProcess` - \n\n  * `handleOpenDeleteProcessDialog` - \n\n  * `handleConfirmDeleteProcessDialog` - \n\n  * `handleDragStart` - \n\n  * `controller` {`ProcessesListItemController`} - ",
       "attributes": [
         {
           "name": "program-name",
@@ -213,7 +213,7 @@
     },
     {
       "name": "ca-processes-list",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderList` - \n\n  * `renderEmptyListNotification` - \n\n  * `renderListItem` - \n\n  * `handleToggleAllProcesses` - \n\n  * `handleOpenDeleteAllProcessesDialog` - \n\n  * `handleConfirmAllDeleteProcessesDialog` - \n\n  * `controller` {`ProcessesListController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_tbodyRef` {`Ref<HTMLTableSectionElement>`} - \n\n  * `_draggedItemName` - \n\n  * `_draggedItemPosition` {`number | undefined`} - \n\n  * `renderList` - \n\n  * `renderEmptyListNotification` - \n\n  * `renderListItem` - \n\n  * `handleToggleAllProcesses` - \n\n  * `handleOpenDeleteAllProcessesDialog` - \n\n  * `handleConfirmAllDeleteProcessesDialog` - \n\n  * `handleDragStart` - \n\n  * `handleDragOver` - \n\n  * `handleDragEnd` - \n\n  * `controller` {`ProcessesListController`} - ",
       "attributes": []
     },
     {
@@ -256,7 +256,7 @@
     },
     {
       "name": "ca-owned-programs-list-item",
-      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `handleToggleAutoupgrade` - \n\n  * `controller` {`OwnedProgramsListItemController`} - ",
+      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `handleToggleAutoupgrade` - \n\n  * `handleDragStart` - \n\n  * `controller` {`OwnedProgramsListItemController`} - ",
       "attributes": [
         {
           "name": "program-name",
@@ -266,7 +266,7 @@
     },
     {
       "name": "ca-owned-programs-list",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderList` - \n\n  * `renderEmptyListNotification` - \n\n  * `renderListItem` - \n\n  * `handleToggleAutoupgrade` - \n\n  * `controller` {`OwnedProgramsListController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_tbodyRef` {`Ref<HTMLTableSectionElement>`} - \n\n  * `_draggedItemName` - \n\n  * `_draggedItemPosition` {`number | undefined`} - \n\n  * `renderList` - \n\n  * `renderEmptyListNotification` - \n\n  * `renderListItem` - \n\n  * `handleToggleAutoupgrade` - \n\n  * `handleDragStart` - \n\n  * `handleDragOver` - \n\n  * `handleDragEnd` - \n\n  * `controller` {`OwnedProgramsListController`} - ",
       "attributes": []
     },
     {

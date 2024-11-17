@@ -15,6 +15,7 @@ export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemCo
 
     td.program {
       width: 40%;
+      cursor: grab;
     }
 
     td.level {
@@ -35,6 +36,8 @@ export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemCo
       text-align: left;
       vertical-align: middle;
       padding: var(--sl-spacing-small);
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
 
     sl-icon[name='question-circle'] {
@@ -72,8 +75,8 @@ export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemCo
     const autoupgradeIcon = program.autoUpgradeEnabled ? 'arrow-up-circle-fill' : 'arrow-up-circle';
 
     return html`
-      <td class="program">
-        <intl-message label="programs:${program.name}:name">Progam name</intl-message>
+      <td class="program" draggable="true" @dragstart=${this.handleDragStart}>
+        <intl-message id="title" label="programs:${program.name}:name"> Progam name </intl-message>
 
         <sl-tooltip>
           <sl-icon name="question-circle"></sl-icon>
@@ -119,6 +122,12 @@ export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemCo
 
     if (program) {
       program.autoUpgradeEnabled = !program.autoUpgradeEnabled;
+    }
+  };
+
+  private handleDragStart = (event: DragEvent) => {
+    if (event.dataTransfer) {
+      event.dataTransfer.setData('text/plain', this.programName);
     }
   };
 }

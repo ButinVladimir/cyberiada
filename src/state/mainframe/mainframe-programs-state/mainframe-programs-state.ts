@@ -11,6 +11,7 @@ import { TYPES } from '@state/types';
 import { ProgramName } from '@state/progam-factory/types';
 import { PurchaseEvent, PurchaseType } from '@shared/types';
 import { EventBatcher } from '@shared/event-batcher';
+import { moveElementInArray } from '@shared/helpers';
 import { IMainframeProgramsState, IMainframeProgramsSerializedState } from './interfaces';
 import { MAINFRAME_PROGRAMS_STATE_UI_EVENTS } from './constants';
 
@@ -25,6 +26,7 @@ export class MainframeProgramsState implements IMainframeProgramsState {
   private _messageLogState: IMessageLogState;
   private _formatter: IFormatter;
 
+  private _programsList: IProgram[];
   private _ownedPrograms: Map<ProgramName, IProgram>;
 
   constructor(
@@ -42,6 +44,7 @@ export class MainframeProgramsState implements IMainframeProgramsState {
     this._messageLogState = _messageLogState;
     this._formatter = _formatter;
 
+    this._programsList = [];
     this._ownedPrograms = new Map();
 
     this.uiEventBatcher = new EventBatcher();
@@ -72,7 +75,7 @@ export class MainframeProgramsState implements IMainframeProgramsState {
   listOwnedPrograms(): IProgram[] {
     this._stateUiConnector.connectEventHandler(this, MAINFRAME_PROGRAMS_STATE_UI_EVENTS.OWNED_PROGRAMS_UPDATED);
 
-    return Array.from(this._ownedPrograms.values());
+    return this._programsList;
   }
 
   getOwnedProgramByName(name: ProgramName): IProgram | undefined {
@@ -89,6 +92,18 @@ export class MainframeProgramsState implements IMainframeProgramsState {
 
   requestUiUpdate() {
     this.uiEventBatcher.enqueueEvent(MAINFRAME_PROGRAMS_STATE_UI_EVENTS.OWNED_PROGRAMS_UPDATED);
+  }
+
+  moveProgram(programName: ProgramName, newPosition: number) {
+    const oldPosition = this._programsList.findIndex((program) => program.name === programName);
+
+    if (oldPosition === -1) {
+      return;
+    }
+
+    moveElementInArray(this._programsList, oldPosition, newPosition);
+
+    this.requestUiUpdate();
   }
 
   // eslint-disable-next-line @typescript-eslint/require-await
@@ -116,6 +131,7 @@ export class MainframeProgramsState implements IMainframeProgramsState {
     serializedState.ownedPrograms.forEach((programParameters) => {
       const program = this._programFactory.makeProgram(programParameters);
       this._ownedPrograms.set(programParameters.name, program);
+      this._programsList.push(program);
     });
 
     this.requestUiUpdate();
@@ -123,7 +139,7 @@ export class MainframeProgramsState implements IMainframeProgramsState {
 
   serialize(): IMainframeProgramsSerializedState {
     return {
-      ownedPrograms: this.listOwnedPrograms().map((program) => program.serialize()),
+      ownedPrograms: this._programsList.map((program) => program.serialize()),
     };
   }
 
@@ -146,6 +162,7 @@ export class MainframeProgramsState implements IMainframeProgramsState {
       existingProgram.update(newProgram);
     } else {
       this._ownedPrograms.set(newProgram.name, newProgram);
+      this._programsList.push(newProgram);
     }
 
     this.requestUiUpdate();
@@ -162,10 +179,11 @@ export class MainframeProgramsState implements IMainframeProgramsState {
   };
 
   private clearState() {
-    for (const ownedProgram of this._ownedPrograms.values()) {
+    for (const ownedProgram of this._programsList) {
       this._programFactory.deleteProgram(ownedProgram);
     }
 
     this._ownedPrograms.clear();
+    this._programsList = [];
   }
 }

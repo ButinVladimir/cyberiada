@@ -43,3 +43,5 @@ export const MS_IN_SECOND = 1000;
 export const PURCHASE_TYPES: PurchaseType[] = Object.values(PurchaseType);
 
 export const INCOME_SOURCES: IncomeSource[] = Object.values(IncomeSource);
+
+export const EMPTY_IMAGE = new Image();

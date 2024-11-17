@@ -25,6 +25,7 @@ export class ComputationalBaseParameter implements IComputationalBaseParameter {
     this._discountUpdateRequested = false;
 
     this.uiEventBatcher = new EventBatcher();
+    this._stateUiConnector.registerEventEmitter(this);
   }
 
   get pointsByProgram() {

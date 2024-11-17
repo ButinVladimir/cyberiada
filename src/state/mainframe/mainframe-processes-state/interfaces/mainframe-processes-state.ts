@@ -6,8 +6,8 @@ import { IMainframeProcessesSerializedState } from './mainframe-processes-serial
 export interface IMainframeProcessesState extends ISerializeable<IMainframeProcessesSerializedState>, IUIEventEmitter {
   availableCores: number;
   availableRam: number;
-  runningScalableProgram: ProgramName | undefined;
-  listProcesses(): ProgramName[];
+  runningScalableProcess: IProcess | undefined;
+  listProcesses(): IProcess[];
   getProcessByName(programName: ProgramName): IProcess | undefined;
   addProcess(programName: ProgramName, threads: number): boolean;
   toggleAllProcesses(active: boolean): void;
@@ -15,4 +15,5 @@ export interface IMainframeProcessesState extends ISerializeable<IMainframeProce
   deleteAllProcesses(): void;
   requestUpdateProcesses(): void;
   processTick(): void;
+  moveProcess(programName: ProgramName, newPosition: number): void;
 }

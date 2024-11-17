@@ -2,32 +2,31 @@ import { EventEmitter } from 'eventemitter3';
 import { IEventBatcher } from './interfaces/event-batcher';
 
 export class EventBatcher implements IEventBatcher {
-  private readonly _eventMap: Map<string | symbol, any[]>;
+  private readonly _eventSet: Set<symbol>;
   private readonly _eventEmitter: EventEmitter;
 
   constructor() {
-    this._eventMap = new Map<string | symbol, any[]>();
+    this._eventSet = new Set<symbol>();
     this._eventEmitter = new EventEmitter();
   }
 
   fireEvents(): void {
-    for (const [eventType, args] of this._eventMap.entries()) {
-      //eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      this._eventEmitter.emit(eventType, ...args);
+    for (const eventType of this._eventSet.values()) {
+      this._eventEmitter.emit(eventType);
     }
 
-    this._eventMap.clear();
+    this._eventSet.clear();
   }
 
-  enqueueEvent(eventType: string | symbol, ...args: any[]): void {
-    this._eventMap.set(eventType, args);
+  enqueueEvent(eventType: symbol): void {
+    this._eventSet.add(eventType);
   }
 
-  addListener(eventType: string | symbol, listener: (...args: any[]) => void): void {
+  addListener(eventType: symbol, listener: () => void): void {
     this._eventEmitter.addListener(eventType, listener);
   }
 
-  removeListener(eventType: string | symbol, listener: (...args: any[]) => void): void {
+  removeListener(eventType: symbol, listener: () => void): void {
     this._eventEmitter.removeListener(eventType, listener);
   }
 

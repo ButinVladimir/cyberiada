@@ -30,10 +30,18 @@ export class BaseController<T extends ReactiveControllerHost = ReactiveControlle
     this.eventsEmitterMap = new Map<IUIEventEmitter, Set<symbol>>();
   }
 
-  hostConnected() {}
+  hostConnected() {
+    for (const [eventEmitter, eventSet] of this.eventsEmitterMap.entries()) {
+      for (const event of eventSet.values()) {
+        eventEmitter.uiEventBatcher.addListener(event, this.handleRefreshUI);
+      }
+    }
+  }
 
   hostDisconnected() {
-    this.removeAllEventListeners();
+    for (const [eventEmitter, eventSet] of this.eventsEmitterMap.entries()) {
+      this.clearEventSet(eventEmitter, eventSet);
+    }
   }
 
   addEventListener(eventEmitter: IUIEventEmitter, event: symbol) {

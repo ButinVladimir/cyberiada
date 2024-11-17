@@ -1,12 +1,17 @@
 import { t } from 'i18next';
 import { css, html } from 'lit';
-import { customElement } from 'lit/decorators.js';
+import { customElement, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
+import { createRef, ref } from 'lit/directives/ref.js';
 import { BaseComponent } from '@shared/base-component';
-import { ProgramName } from '@state/progam-factory/types';
 import { ProgramAlert } from '@shared/types';
 import { ConfirmationAlertOpenEvent, ConfirmationAlertSubmitEvent } from '@components/shared/confirmation-alert/events';
+import { IProcess } from '@state/mainframe/mainframe-processes-state/interfaces/process';
+import { ProgramName } from '@state/progam-factory/types';
+import { moveElementInArray } from '@shared/helpers';
+import { EMPTY_IMAGE } from '@shared/constants';
 import { ProcessesListController } from './controller';
+import { TABLE_ROW_HEIGHT } from './constants';
 
 @customElement('ca-processes-list')
 export class ProcessesList extends BaseComponent<ProcessesListController> {
@@ -54,6 +59,14 @@ export class ProcessesList extends BaseComponent<ProcessesListController> {
       background-color: var(--ca-table-row-odd-color);
     }
 
+    tbody ca-processes-list-item {
+      height: ${TABLE_ROW_HEIGHT}px;
+    }
+
+    tbody ca-processes-list-item.dragged {
+      background-color: var(--ca-dragged-color);
+    }
+
     div.buttons-container {
       width: 100%;
       display: flex;
@@ -66,6 +79,14 @@ export class ProcessesList extends BaseComponent<ProcessesListController> {
   `;
 
   protected controller: ProcessesListController;
+
+  private _tbodyRef = createRef<HTMLTableSectionElement>();
+
+  @state()
+  private _draggedItemName: ProgramName | undefined;
+
+  @state()
+  private _draggedItemPosition: number | undefined;
 
   constructor() {
     super();
@@ -129,7 +150,7 @@ export class ProcessesList extends BaseComponent<ProcessesListController> {
           </th>
         </thead>
 
-        <tbody>
+        <tbody ${ref(this._tbodyRef)} @dragover=${this.handleDragOver}>
           ${this.renderList()}
         </tbody>
       </table>
@@ -137,10 +158,19 @@ export class ProcessesList extends BaseComponent<ProcessesListController> {
   }
 
   private renderList = () => {
-    const processes = this.controller.listProcesses();
+    let processes = this.controller.listProcesses();
 
     if (processes.length === 0) {
       return this.renderEmptyListNotification();
+    }
+
+    if (this._draggedItemName && this._draggedItemPosition !== undefined) {
+      const oldPosition = processes.findIndex((process) => process.program.name === this._draggedItemName);
+
+      const reorderedProcesses = [...processes];
+      moveElementInArray(reorderedProcesses, oldPosition, this._draggedItemPosition);
+
+      processes = reorderedProcesses;
     }
 
     return repeat(processes, (programName) => programName, this.renderListItem);
@@ -158,14 +188,20 @@ export class ProcessesList extends BaseComponent<ProcessesListController> {
     `;
   };
 
-  private renderListItem = (programName: ProgramName) => {
-    return html` <ca-processes-list-item draggable="true" program-name=${programName}> </ca-processes-list-item> `;
+  private renderListItem = (process: IProcess) => {
+    return html`
+      <ca-processes-list-item
+        class=${process.program.name === this._draggedItemName ? 'dragged' : ''}
+        program-name=${process.program.name}
+        @dragstart=${this.handleDragStart}
+        @dragend=${this.handleDragEnd}
+      >
+      </ca-processes-list-item>
+    `;
   };
 
   private checkSomeProcessesActive(): boolean {
-    const programNames = this.controller.listProcesses();
-
-    return programNames.some((programName) => this.controller.getProcessByProgramName(programName)!.isActive);
+    return this.controller.listProcesses().some((process) => process.isActive);
   }
 
   private handleToggleAllProcesses = (event: Event) => {
@@ -192,5 +228,43 @@ export class ProcessesList extends BaseComponent<ProcessesListController> {
     }
 
     this.controller.deleteAllProcesses();
+  };
+
+  private handleDragStart = (event: DragEvent) => {
+    event.stopPropagation();
+
+    if (event.dataTransfer) {
+      event.dataTransfer.effectAllowed = 'move';
+      event.dataTransfer.dropEffect = 'move';
+      event.dataTransfer.setDragImage(EMPTY_IMAGE, 0, 0);
+
+      this._draggedItemName = event.dataTransfer.getData('text/plain') as ProgramName;
+    }
+  };
+
+  private handleDragOver = (event: DragEvent) => {
+    event.stopPropagation();
+    event.preventDefault();
+
+    if (this._tbodyRef.value) {
+      const boundingRect = this._tbodyRef.value.getBoundingClientRect();
+      const relativeTop = Math.max(event.clientY - boundingRect.top, 0);
+
+      this._draggedItemPosition = Math.min(
+        Math.floor(relativeTop / TABLE_ROW_HEIGHT),
+        this.controller.listProcesses().length - 1,
+      );
+    }
+  };
+
+  private handleDragEnd = (event: Event) => {
+    event.stopPropagation();
+
+    if (this._draggedItemName && this._draggedItemPosition !== undefined) {
+      this.controller.moveProcess(this._draggedItemName, this._draggedItemPosition);
+    }
+
+    this._draggedItemName = undefined;
+    this._draggedItemPosition = undefined;
   };
 }

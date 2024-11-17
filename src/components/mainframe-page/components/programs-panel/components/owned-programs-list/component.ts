@@ -1,10 +1,15 @@
 import { t } from 'i18next';
 import { css, html } from 'lit';
-import { customElement } from 'lit/decorators.js';
+import { customElement, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
+import { createRef, ref } from 'lit/directives/ref.js';
 import { BaseComponent } from '@shared/base-component';
 import { IProgram } from '@state/progam-factory/interfaces/program';
+import { ProgramName } from '@state/progam-factory/types';
+import { moveElementInArray } from '@shared/helpers';
+import { EMPTY_IMAGE } from '@shared/constants';
 import { OwnedProgramsListController } from './controller';
+import { TABLE_ROW_HEIGHT } from './constants';
 
 @customElement('ca-owned-programs-list')
 export class OwnedProgramsList extends BaseComponent<OwnedProgramsListController> {
@@ -18,6 +23,7 @@ export class OwnedProgramsList extends BaseComponent<OwnedProgramsListController
       width: 100%;
       border-collapse: collapse;
       border-spacing: 0;
+      position: relative;
     }
 
     th {
@@ -26,6 +32,7 @@ export class OwnedProgramsList extends BaseComponent<OwnedProgramsListController
 
     th.program {
       width: 40%;
+      cursor: grab;
     }
 
     th.level {
@@ -59,9 +66,25 @@ export class OwnedProgramsList extends BaseComponent<OwnedProgramsListController
     tbody ca-owned-programs-list-item:nth-child(2n + 1) {
       background-color: var(--ca-table-row-odd-color);
     }
+
+    tbody ca-owned-programs-list-item {
+      height: ${TABLE_ROW_HEIGHT}px;
+    }
+
+    tbody ca-owned-programs-list-item.dragged {
+      background-color: var(--ca-dragged-color);
+    }
   `;
 
   protected controller: OwnedProgramsListController;
+
+  private _tbodyRef = createRef<HTMLTableSectionElement>();
+
+  @state()
+  private _draggedItemName: ProgramName | undefined;
+
+  @state()
+  private _draggedItemPosition: number | undefined;
 
   constructor() {
     super();
@@ -103,7 +126,7 @@ export class OwnedProgramsList extends BaseComponent<OwnedProgramsListController
           </th>
         </thead>
 
-        <tbody>
+        <tbody ${ref(this._tbodyRef)} @dragover=${this.handleDragOver}>
           ${this.renderList()}
         </tbody>
       </table>
@@ -111,10 +134,19 @@ export class OwnedProgramsList extends BaseComponent<OwnedProgramsListController
   }
 
   private renderList = () => {
-    const ownedPrograms = this.controller.listOwnedPrograms();
+    let ownedPrograms = this.controller.listOwnedPrograms();
 
     if (ownedPrograms.length === 0) {
       return this.renderEmptyListNotification();
+    }
+
+    if (this._draggedItemName && this._draggedItemPosition !== undefined) {
+      const oldPosition = ownedPrograms.findIndex((program) => program.name === this._draggedItemName);
+
+      const reorderedPrograms = [...ownedPrograms];
+      moveElementInArray(reorderedPrograms, oldPosition, this._draggedItemPosition);
+
+      ownedPrograms = reorderedPrograms;
     }
 
     return repeat(ownedPrograms, (program) => program.name, this.renderListItem);
@@ -131,7 +163,15 @@ export class OwnedProgramsList extends BaseComponent<OwnedProgramsListController
   };
 
   private renderListItem = (program: IProgram) => {
-    return html` <ca-owned-programs-list-item program-name=${program.name}> </ca-owned-programs-list-item> `;
+    return html`
+      <ca-owned-programs-list-item
+        class=${program.name === this._draggedItemName ? 'dragged' : ''}
+        program-name=${program.name}
+        @dragstart=${this.handleDragStart}
+        @dragend=${this.handleDragEnd}
+      >
+      </ca-owned-programs-list-item>
+    `;
   };
 
   private checkSomeProgramsAutoupgradeActive(): boolean {
@@ -147,5 +187,43 @@ export class OwnedProgramsList extends BaseComponent<OwnedProgramsListController
     const active = this.checkSomeProgramsAutoupgradeActive();
 
     this.controller.toggleAutoupgrade(!active);
+  };
+
+  private handleDragStart = (event: DragEvent) => {
+    event.stopPropagation();
+
+    if (event.dataTransfer) {
+      event.dataTransfer.effectAllowed = 'move';
+      event.dataTransfer.dropEffect = 'move';
+      event.dataTransfer.setDragImage(EMPTY_IMAGE, 0, 0);
+
+      this._draggedItemName = event.dataTransfer.getData('text/plain') as ProgramName;
+    }
+  };
+
+  private handleDragOver = (event: DragEvent) => {
+    event.stopPropagation();
+    event.preventDefault();
+
+    if (this._tbodyRef.value) {
+      const boundingRect = this._tbodyRef.value.getBoundingClientRect();
+      const relativeTop = Math.max(event.clientY - boundingRect.top, 0);
+
+      this._draggedItemPosition = Math.min(
+        Math.floor(relativeTop / TABLE_ROW_HEIGHT),
+        this.controller.listOwnedPrograms().length - 1,
+      );
+    }
+  };
+
+  private handleDragEnd = (event: Event) => {
+    event.stopPropagation();
+
+    if (this._draggedItemName && this._draggedItemPosition !== undefined) {
+      this.controller.moveProgram(this._draggedItemName, this._draggedItemPosition);
+    }
+
+    this._draggedItemName = undefined;
+    this._draggedItemPosition = undefined;
   };
 }
