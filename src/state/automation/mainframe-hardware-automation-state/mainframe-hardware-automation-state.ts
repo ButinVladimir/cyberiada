@@ -5,65 +5,35 @@ import { IMainframeHardwareAutomationSerializedState, IMainframeHardwareAutomati
 
 @injectable()
 export class MainframeHardwareAutomationState implements IMainframeHardwareAutomationState {
-  private _performanceShare: number;
-  private _coresShare: number;
-  private _ramShare: number;
+  private _moneyShare: number;
 
   constructor() {
-    this._performanceShare = constants.defaultAutomationSettings.mainframeHardwareAutobuyer.performanceShare;
-    this._coresShare = constants.defaultAutomationSettings.mainframeHardwareAutobuyer.coresShare;
-    this._ramShare = constants.defaultAutomationSettings.mainframeHardwareAutobuyer.ramShare;
+    this._moneyShare = constants.defaultAutomationSettings.mainframeHardwareAutobuyer.moneyShare;
   }
 
-  get performanceShare() {
-    return this._performanceShare;
+  get moneyShare() {
+    return this._moneyShare;
   }
 
-  set performanceShare(value: number) {
+  set moneyShare(value: number) {
     if (checkPercentage(value)) {
-      this._performanceShare = value;
-    }
-  }
-
-  get coresShare() {
-    return this._coresShare;
-  }
-
-  set coresShare(value: number) {
-    if (checkPercentage(value)) {
-      this._coresShare = value;
-    }
-  }
-
-  get ramShare() {
-    return this._ramShare;
-  }
-
-  set ramShare(value: number) {
-    if (checkPercentage(value)) {
-      this._ramShare = value;
+      this._moneyShare = value;
     }
   }
 
   // eslint-disable-next-line @typescript-eslint/require-await
   async startNewState(): Promise<void> {
-    this._performanceShare = constants.defaultAutomationSettings.mainframeHardwareAutobuyer.performanceShare;
-    this._coresShare = constants.defaultAutomationSettings.mainframeHardwareAutobuyer.coresShare;
-    this._ramShare = constants.defaultAutomationSettings.mainframeHardwareAutobuyer.ramShare;
+    this._moneyShare = constants.defaultAutomationSettings.mainframeHardwareAutobuyer.moneyShare;
   }
 
   // eslint-disable-next-line @typescript-eslint/require-await
   async deserialize(serializedState: IMainframeHardwareAutomationSerializedState): Promise<void> {
-    this._performanceShare = serializedState.performanceShare;
-    this._coresShare = serializedState.coresShare;
-    this._ramShare = serializedState.ramShare;
+    this._moneyShare = serializedState.moneyShare;
   }
 
   serialize(): IMainframeHardwareAutomationSerializedState {
     return {
-      performanceShare: this._performanceShare,
-      coresShare: this._coresShare,
-      ramShare: this._ramShare,
+      moneyShare: this._moneyShare,
     };
   }
 }

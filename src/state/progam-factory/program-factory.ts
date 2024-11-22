@@ -12,7 +12,7 @@ import type { IMainframeHardwareAutomationState } from '@state/automation/mainfr
 import type { IMainframeProgramsAutomationState } from '@state/automation/mainframe-programs-automation-state/interfaces/mainframe-programs-automation-state';
 import type { IFormatter } from '@shared/interfaces/formatter';
 import { IProgramFactory } from './interfaces/program-factory';
-import { IMakeProgramParameters, IProgram } from './interfaces';
+import { IBaseProgramParameters, IMakeProgramParameters, IProgram } from './interfaces';
 import { ProgramName } from './types';
 import {
   ShareServerProgram,
@@ -85,77 +85,45 @@ export class ProgramFactory implements IProgramFactory {
   }
 
   private makeProgramImplementation(parameters: IMakeProgramParameters): IProgram {
+    const baseParameters: IBaseProgramParameters = {
+      formatter: this._formatter,
+      level: parameters.level,
+      quality: parameters.quality,
+      autoUpgradeEnabled: parameters.autoUpgradeEnabled,
+      stateUiConnector: this._stateUiConnector,
+      globalState: this._globalState,
+      mainframeProgramsState: this._mainframeProgramsState,
+      mainframeProcessesState: this._mainframeProcessesState,
+      mainframeHardwareState: this._mainframeHardwareState,
+      scenarioState: this._scenarioState,
+    };
+
     switch (parameters.name) {
       case ProgramName.shareServer:
         return new ShareServerProgram({
-          formatter: this._formatter,
-          level: parameters.level,
-          quality: parameters.quality,
-          autoUpgradeEnabled: parameters.autoUpgradeEnabled,
-          stateUiConnector: this._stateUiConnector,
-          globalState: this._globalState,
-          mainframeProgramsState: this._mainframeProgramsState,
-          mainframeProcessesState: this._mainframeProcessesState,
-          mainframeHardwareState: this._mainframeHardwareState,
-          scenarioState: this._scenarioState,
+          ...baseParameters,
           settingsState: this._settingsState,
         });
 
       case ProgramName.codeGenerator:
         return new CodeGeneratorProgram({
-          formatter: this._formatter,
-          level: parameters.level,
-          quality: parameters.quality,
-          autoUpgradeEnabled: parameters.autoUpgradeEnabled,
-          stateUiConnector: this._stateUiConnector,
-          globalState: this._globalState,
-          mainframeProgramsState: this._mainframeProgramsState,
-          mainframeProcessesState: this._mainframeProcessesState,
-          mainframeHardwareState: this._mainframeHardwareState,
-          scenarioState: this._scenarioState,
+          ...baseParameters,
         });
 
       case ProgramName.predictiveComputator:
         return new PredictiveComputatorProgram({
-          formatter: this._formatter,
-          level: parameters.level,
-          quality: parameters.quality,
-          autoUpgradeEnabled: parameters.autoUpgradeEnabled,
-          stateUiConnector: this._stateUiConnector,
-          globalState: this._globalState,
-          mainframeProgramsState: this._mainframeProgramsState,
-          mainframeProcessesState: this._mainframeProcessesState,
-          mainframeHardwareState: this._mainframeHardwareState,
-          scenarioState: this._scenarioState,
+          ...baseParameters,
         });
 
       case ProgramName.mainframeHardwareAutobuyer:
         return new MainframeHardwareAutobuyerProgram({
-          formatter: this._formatter,
-          level: parameters.level,
-          quality: parameters.quality,
-          autoUpgradeEnabled: parameters.autoUpgradeEnabled,
-          stateUiConnector: this._stateUiConnector,
-          globalState: this._globalState,
-          mainframeProgramsState: this._mainframeProgramsState,
-          mainframeProcessesState: this._mainframeProcessesState,
-          mainframeHardwareState: this._mainframeHardwareState,
-          scenarioState: this._scenarioState,
+          ...baseParameters,
           mainframeHardwareAutomationState: this._mainframeHardwareAutomationState,
         });
 
       case ProgramName.mainframeProgramsAutobuyer:
         return new MainframeProgramsAutobuyerProgram({
-          formatter: this._formatter,
-          level: parameters.level,
-          quality: parameters.quality,
-          autoUpgradeEnabled: parameters.autoUpgradeEnabled,
-          stateUiConnector: this._stateUiConnector,
-          globalState: this._globalState,
-          mainframeProgramsState: this._mainframeProgramsState,
-          mainframeProcessesState: this._mainframeProcessesState,
-          mainframeHardwareState: this._mainframeHardwareState,
-          scenarioState: this._scenarioState,
+          ...baseParameters,
           programFactory: this,
           mainframeProgramsAutomationState: this._mainframeProgramsAutomationState,
         });

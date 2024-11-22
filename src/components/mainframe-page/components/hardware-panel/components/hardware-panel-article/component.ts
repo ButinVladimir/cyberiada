@@ -1,24 +1,31 @@
+import { t } from 'i18next';
 import { css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
+import type { MainframeHardwareParameterType } from '@state/mainframe/mainframe-hardware-state/types';
 import { MainframeHardwarePanelArticleController } from './controller';
-import type { HardwarePanelArticleType } from './types';
 
 @customElement('ca-mainframe-hardware-panel-article')
 export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwarePanelArticleController> {
   static styles = css`
     :host {
+      width: 100%;
       padding: var(--sl-spacing-large);
       box-sizing: border-box;
       border: var(--ca-border);
       border-radius: var(--sl-border-radius-small);
       display: flex;
       align-items: center;
-      gap: var(--sl-spacing-small);
+      gap: var(--sl-spacing-3x-large);
     }
 
     div.text-container {
       flex: 1 1 auto;
+      overflow: hidden;
+    }
+
+    div.text-container-inner {
+      max-width: 100%;
     }
 
     div.button-container {
@@ -26,17 +33,31 @@ export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwa
     }
 
     h4.title {
+      width: 100%;
       font-size: var(--sl-font-size-large);
       font-weight: var(--sl-font-weight-bold);
       margin-top: 0;
       margin-bottom: var(--sl-spacing-medium);
       line-height: var(--sl-line-height-denser);
+      cursor: grab;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
 
     p.hint {
+      width: 100%;
       margin: 0;
       color: var(--ca-hint-color);
       font-size: var(--ca-hint-font-size);
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    h4.title sl-icon-button {
+      position: relative;
+      top: 0.1em;
     }
   `;
 
@@ -44,7 +65,7 @@ export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwa
     attribute: 'type',
     type: String,
   })
-  type!: HardwarePanelArticleType;
+  type!: MainframeHardwareParameterType;
 
   @property({
     attribute: 'max-increase',
@@ -73,16 +94,36 @@ export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwa
       increase: formatter.formatNumberDecimal(increase),
     });
 
+    const autoupgradeIcon = this.controller.isAutoUpgradeEnabled(this.type)
+      ? 'arrow-up-circle-fill'
+      : 'arrow-up-circle';
+
     return html`
       <div class="text-container">
-        <h4 class="title">
-          <intl-message label="ui:mainframe:hardware:${this.type}" value=${formatter.formatNumberDecimal(level)}
-            >Level</intl-message
-          >
-        </h4>
-        <p class="hint">
-          <intl-message label="ui:mainframe:hardware:${this.type}Hint"> Higher level leads to profit. </intl-message>
-        </p>
+        <div class="text-container-inner">
+          <h4 class="title" draggable="true" @dragstart=${this.handleDragStart}>
+            <intl-message label="ui:mainframe:hardware:${this.type}" value=${formatter.formatNumberDecimal(level)}>
+              Level
+            </intl-message>
+
+            <sl-tooltip>
+              <intl-message slot="content" label="ui:mainframe:programs:toggleAutoupgrade">
+                Toggle autoupgrade
+              </intl-message>
+
+              <sl-icon-button
+                id="toggle-autoupgrade-btn"
+                name=${autoupgradeIcon}
+                label=${t('mainframe.programs.toggleAutoupgrade', { ns: 'ui' })}
+                @click=${this.handleToggleAutoUpgrade}
+              >
+              </sl-icon-button>
+            </sl-tooltip>
+          </h4>
+          <p class="hint">
+            <intl-message label="ui:mainframe:hardware:${this.type}Hint"> Higher level leads to profit. </intl-message>
+          </p>
+        </div>
       </div>
 
       <div class="button-container">
@@ -95,7 +136,7 @@ export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwa
     `;
   }
 
-  handleBuy = (event: Event) => {
+  private handleBuy = (event: Event) => {
     event.stopPropagation();
     event.preventDefault();
 
@@ -109,4 +150,18 @@ export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwa
       1,
     );
   }
+
+  private handleToggleAutoUpgrade = (event: Event) => {
+    event.stopPropagation();
+    event.preventDefault();
+
+    const active = this.controller.isAutoUpgradeEnabled(this.type);
+    this.controller.toggleAutoUpdateEnabled(this.type, !active);
+  };
+
+  private handleDragStart = (event: DragEvent) => {
+    if (event.dataTransfer) {
+      event.dataTransfer.setData('text/plain', this.type);
+    }
+  };
 }

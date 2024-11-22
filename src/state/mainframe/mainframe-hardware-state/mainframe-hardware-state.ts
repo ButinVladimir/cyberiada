@@ -1,4 +1,5 @@
 import { injectable, inject } from 'inversify';
+import constants from '@configs/constants.json';
 import { decorators } from '@state/container';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import type { IScenarioState } from '@state/scenario-state/interfaces/scenario-state';
@@ -8,11 +9,18 @@ import type { IMainframeProcessesState } from '@state/mainframe/mainframe-proces
 import type { IFormatter } from '@shared/interfaces/formatter';
 import { TYPES } from '@state/types';
 import { EventBatcher } from '@shared/event-batcher';
-import { IMainframeHardwareState, IMainframeHardwareSerializedState } from './interfaces';
+import { moveElementInArray } from '@shared/helpers';
+import {
+  IMainframeHardwareState,
+  IMainframeHardwareSerializedState,
+  IMainframeHardwareParameterArguments,
+  IMainframeHardwareParameter,
+} from './interfaces';
 import { MAINFRAME_HARDWARE_STATE_UI_EVENTS } from './constants';
 import { MainframeHardwarePerformance } from './mainframe-hardware-performance';
 import { MainframeHardwareCores } from './mainframe-hardware-cores';
 import { MainframeHardwareRam } from './mainframe-hardware-ram';
+import { MainframeHardwareParameterType } from './types';
 
 const { lazyInject } = decorators;
 
@@ -29,6 +37,7 @@ export class MainframeHardwareState implements IMainframeHardwareState {
   private _messageLogState: IMessageLogState;
   private _formatter: IFormatter;
 
+  private _parametersList!: IMainframeHardwareParameter[];
   private _performance: MainframeHardwarePerformance;
   private _cores: MainframeHardwareCores;
   private _ram: MainframeHardwareRam;
@@ -46,27 +55,22 @@ export class MainframeHardwareState implements IMainframeHardwareState {
     this._messageLogState = _messageLogState;
     this._formatter = _formatter;
 
-    this._performance = new MainframeHardwarePerformance({
+    const parameterArguments: IMainframeHardwareParameterArguments = {
+      stateUiConnector: this._stateUiConnector,
       mainframeHardwareState: this,
       globalState: this._globalState,
       messageLogState: this._messageLogState,
       scenarioState: this._scenarioState,
       formatter: this._formatter,
-    });
-    this._cores = new MainframeHardwareCores({
-      mainframeHardwareState: this,
-      globalState: this._globalState,
-      messageLogState: this._messageLogState,
-      scenarioState: this._scenarioState,
-      formatter: this._formatter,
-    });
-    this._ram = new MainframeHardwareRam({
-      mainframeHardwareState: this,
-      globalState: this._globalState,
-      messageLogState: this._messageLogState,
-      scenarioState: this._scenarioState,
-      formatter: this._formatter,
-    });
+    };
+
+    this._performance = new MainframeHardwarePerformance(parameterArguments);
+    this._cores = new MainframeHardwareCores(parameterArguments);
+    this._ram = new MainframeHardwareRam(parameterArguments);
+
+    this.buildParametersList(
+      constants.defaultAutomationSettings.mainframeHardwareAutobuyer.priority as MainframeHardwareParameterType[],
+    );
 
     this.uiEventBatcher = new EventBatcher();
     this._stateUiConnector.registerEventEmitter(this);
@@ -90,29 +94,73 @@ export class MainframeHardwareState implements IMainframeHardwareState {
     return this._ram;
   }
 
+  listParameters(): IMainframeHardwareParameter[] {
+    this._stateUiConnector.connectEventHandler(this, MAINFRAME_HARDWARE_STATE_UI_EVENTS.AUTOBUYER_UPDATED);
+
+    return this._parametersList;
+  }
+
+  moveParameter(parameterType: MainframeHardwareParameterType, newPosition: number) {
+    const oldPosition = this._parametersList.findIndex((parameter) => parameter.type === parameterType);
+
+    if (oldPosition === -1) {
+      return;
+    }
+
+    moveElementInArray(this._parametersList, oldPosition, newPosition);
+
+    this.emitAutobuyerUpdatedEvent();
+  }
+
   emitUpgradedEvent() {
     this._mainframeProcessesState.requestUpdateProcesses();
     this._globalState.requestGrowthRecalculation();
     this.uiEventBatcher.enqueueEvent(MAINFRAME_HARDWARE_STATE_UI_EVENTS.HARDWARE_UPGRADED);
   }
 
+  emitAutobuyerUpdatedEvent() {
+    this.uiEventBatcher.enqueueEvent(MAINFRAME_HARDWARE_STATE_UI_EVENTS.AUTOBUYER_UPDATED);
+  }
+
   async startNewState(): Promise<void> {
-    await this.performance.startNewState();
-    await this.cores.startNewState();
-    await this.ram.startNewState();
+    await this._performance.startNewState();
+    await this._cores.startNewState();
+    await this._ram.startNewState();
+
+    this.buildParametersList(
+      constants.defaultAutomationSettings.mainframeHardwareAutobuyer.priority as MainframeHardwareParameterType[],
+    );
   }
 
   async deserialize(serializedState: IMainframeHardwareSerializedState): Promise<void> {
-    await this.performance.deserialize(serializedState.performance);
-    await this.cores.deserialize(serializedState.cores);
-    await this.ram.deserialize(serializedState.ram);
+    await this._performance.deserialize(serializedState.performance);
+    await this._cores.deserialize(serializedState.cores);
+    await this._ram.deserialize(serializedState.ram);
+
+    this.buildParametersList(serializedState.parametersList);
   }
 
   serialize(): IMainframeHardwareSerializedState {
     return {
-      performance: this.performance.serialize(),
-      cores: this.cores.serialize(),
-      ram: this.ram.serialize(),
+      performance: this._performance.serialize(),
+      cores: this._cores.serialize(),
+      ram: this._ram.serialize(),
+      parametersList: this._parametersList.map((parameter) => parameter.type),
     };
   }
+
+  private buildParametersList(parameterTypes: MainframeHardwareParameterType[]) {
+    this._parametersList = parameterTypes.map(this.getParameterByType);
+  }
+
+  private getParameterByType = (type: MainframeHardwareParameterType): IMainframeHardwareParameter => {
+    switch (type) {
+      case 'performance':
+        return this.performance;
+      case 'cores':
+        return this.cores;
+      case 'ram':
+        return this.ram;
+    }
+  };
 }

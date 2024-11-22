@@ -21,22 +21,27 @@ export class MainframeHardwareAutobuyerProgram extends BaseProgram {
 
   perform(threads: number): void {
     let actionsLeft = threads;
+    let availableMoney = (this.globalState.money.money * this._mainframeHardwareAutomationState.moneyShare) / 100;
 
-    actionsLeft -= this.handleParameterIncrease(
-      actionsLeft,
-      this.mainframeHardwareState.performance,
-      this._mainframeHardwareAutomationState.performanceShare,
-    );
-    actionsLeft -= this.handleParameterIncrease(
-      actionsLeft,
-      this.mainframeHardwareState.cores,
-      this._mainframeHardwareAutomationState.coresShare,
-    );
-    this.handleParameterIncrease(
-      actionsLeft,
-      this.mainframeHardwareState.ram,
-      this._mainframeHardwareAutomationState.ramShare,
-    );
+    for (const parameter of this.mainframeHardwareState.listParameters()) {
+      if (actionsLeft === 0) {
+        break;
+      }
+
+      if (!parameter.autoUpgradeEnabled) {
+        continue;
+      }
+
+      const checkParameter = this.makeCheckParameterFunction(parameter, availableMoney);
+
+      const increase = binarySearchDecimal(0, actionsLeft, checkParameter);
+      const cost = parameter.getIncreaseCost(increase);
+
+      if (increase > 0 && parameter.purchase(increase)) {
+        actionsLeft -= increase;
+        availableMoney -= cost;
+      }
+    }
   }
 
   buildProgramDescriptionParametersObject(threads: number) {
@@ -63,18 +68,7 @@ export class MainframeHardwareAutobuyerProgram extends BaseProgram {
     };
   }
 
-  private handleParameterIncrease(maxIncrease: number, parameter: IMainframeHardwareParameter, share: number): number {
-    const availableMoney = (this.globalState.money.money * share) / 100;
-
-    const handleCheck = (increase: number) =>
+  private makeCheckParameterFunction =
+    (parameter: IMainframeHardwareParameter, availableMoney: number) => (increase: number) =>
       parameter.checkCanPurchase(increase) && parameter.getIncreaseCost(increase) <= availableMoney;
-
-    const increase = binarySearchDecimal(0, maxIncrease, handleCheck);
-
-    if (increase > 0 && parameter.purchase(increase)) {
-      return increase;
-    }
-
-    return 0;
-  }
 }

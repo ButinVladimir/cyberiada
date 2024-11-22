@@ -7,6 +7,9 @@ gameSaved:
 fastForwarded:
   name: Accumulated time spent
   message: Accumulated time has been spent
+levelReached:
+  name: Level reached
+  message: Level {{value.level}} has been reached
 performanceUpgraded:
   name: Mainframe performance upgraded
   message: Mainframe performance has been upgraded to {{value.level}}

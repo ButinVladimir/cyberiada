@@ -1,3 +1,4 @@
+import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import type { IScenarioState } from '@state/scenario-state/interfaces/scenario-state';
 import type { IGlobalState } from '@state/global-state/interfaces/global-state';
 import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
@@ -9,9 +10,13 @@ import {
   IMainframeHardwareParameter,
   IMainframeHardwareParameterArguments,
   IMainframeHardwareState,
+  IMainframeHardwareParameterSerializedState,
 } from './interfaces';
+import { MainframeHardwareParameterType } from './types';
+import { MAINFRAME_HARDWARE_STATE_UI_EVENTS } from './constants';
 
 export abstract class MainframeHardwareParameter implements IMainframeHardwareParameter {
+  protected stateUiConnector: IStateUIConnector;
   protected mainframeHardwareState: IMainframeHardwareState;
   protected scenarioState: IScenarioState;
   protected globalState: IGlobalState;
@@ -19,8 +24,10 @@ export abstract class MainframeHardwareParameter implements IMainframeHardwarePa
   protected formatter: IFormatter;
 
   protected _level: number;
+  protected _autoUpgradeEnabled: boolean;
 
   constructor(parameters: IMainframeHardwareParameterArguments) {
+    this.stateUiConnector = parameters.stateUiConnector;
     this.mainframeHardwareState = parameters.mainframeHardwareState;
     this.scenarioState = parameters.scenarioState;
     this.globalState = parameters.globalState;
@@ -28,11 +35,29 @@ export abstract class MainframeHardwareParameter implements IMainframeHardwarePa
     this.formatter = parameters.formatter;
 
     this._level = 0;
+    this._autoUpgradeEnabled = true;
   }
 
   get level() {
     return this._level;
   }
+
+  get autoUpgradeEnabled() {
+    this.stateUiConnector.connectEventHandler(
+      this.mainframeHardwareState,
+      MAINFRAME_HARDWARE_STATE_UI_EVENTS.AUTOBUYER_UPDATED,
+    );
+
+    return this._autoUpgradeEnabled;
+  }
+
+  set autoUpgradeEnabled(value: boolean) {
+    this._autoUpgradeEnabled = value;
+
+    this.mainframeHardwareState.emitAutobuyerUpdatedEvent();
+  }
+
+  abstract get type(): MainframeHardwareParameterType;
 
   protected abstract get priceExp(): IExponent;
 
@@ -70,15 +95,22 @@ export abstract class MainframeHardwareParameter implements IMainframeHardwarePa
     return cost <= this.globalState.money.money;
   }
 
-  abstract startNewState(): Promise<void>;
-
   // eslint-disable-next-line @typescript-eslint/require-await
-  async deserialize(serializedState: number): Promise<void> {
-    this._level = serializedState;
+  async startNewState(): Promise<void> {
+    this._autoUpgradeEnabled = true;
   }
 
-  serialize(): number {
-    return this._level;
+  // eslint-disable-next-line @typescript-eslint/require-await
+  async deserialize(serializedState: IMainframeHardwareParameterSerializedState): Promise<void> {
+    this._level = serializedState.level;
+    this._autoUpgradeEnabled = serializedState.autoUpgradeEnabled;
+  }
+
+  serialize(): IMainframeHardwareParameterSerializedState {
+    return {
+      level: this._level,
+      autoUpgradeEnabled: this._autoUpgradeEnabled,
+    };
   }
 
   private handlePurchaseIncrease = (increase: number) => () => {

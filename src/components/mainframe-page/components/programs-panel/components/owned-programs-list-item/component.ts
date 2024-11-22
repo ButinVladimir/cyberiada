@@ -106,7 +106,7 @@ export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemCo
             id="toggle-autoupgrade-btn"
             name=${autoupgradeIcon}
             label=${t('mainframe.programs.toggleAutoupgrade', { ns: 'ui' })}
-            @click=${this.handleToggleAutoupgrade}
+            @click=${this.handleToggleAutoUpgrade}
           >
           </sl-icon-button>
         </sl-tooltip>
@@ -114,7 +114,7 @@ export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemCo
     `;
   }
 
-  private handleToggleAutoupgrade = (event: Event) => {
+  private handleToggleAutoUpgrade = (event: Event) => {
     event.stopPropagation();
     event.preventDefault();
 

@@ -39,9 +39,8 @@
   },
   "defaultAutomationSettings": {
     "mainframeHardwareAutobuyer": {
-      "performanceShare": 5,
-      "coresShare": 5,
-      "ramShare": 5
+      "moneyShare": 5,
+      "priority": ["ram", "cores", "performance"]
     },
     "mainframeProgramsAutobuyer": {
       "moneyShare": 10

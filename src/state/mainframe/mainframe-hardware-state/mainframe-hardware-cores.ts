@@ -1,8 +1,11 @@
 import { IExponent } from '@shared/interfaces';
 import { PurchaseEvent } from '@shared/types';
 import { MainframeHardwareParameter } from './mainframe-hardware-parameter';
+import { MainframeHardwareParameterType } from './types';
 
 export class MainframeHardwareCores extends MainframeHardwareParameter {
+  readonly type: MainframeHardwareParameterType = 'cores';
+
   protected get priceExp(): IExponent {
     return this.scenarioState.currentValues.mainframeHardware.coresPrice;
   }
@@ -11,8 +14,9 @@ export class MainframeHardwareCores extends MainframeHardwareParameter {
     return PurchaseEvent.coresUpgraded;
   }
 
-  // eslint-disable-next-line @typescript-eslint/require-await
   async startNewState(): Promise<void> {
+    await super.startNewState();
+
     this._level = this.scenarioState.currentValues.mainframeHardware.coresLevel;
   }
 }

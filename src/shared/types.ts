@@ -28,6 +28,7 @@ export enum GameStateEvent {
   gameStarted = 'gameStarted',
   gameSaved = 'gameSaved',
   fastForwared = 'fastForwarded',
+  levelReached = 'levelReached',
 }
 
 export enum PurchaseEvent {

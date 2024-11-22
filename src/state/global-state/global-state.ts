@@ -6,6 +6,7 @@ import type { IScenarioState } from '@state/scenario-state/interfaces/scenario-s
 import type { ISettingsState } from '@state/settings-state/interfaces/settings-state';
 import type { IMainframeProcessesState } from '@state/mainframe/mainframe-processes-state/interfaces/mainframe-processes-state';
 import type { IMainframeHardwareState } from '@state/mainframe/mainframe-hardware-state/interfaces/mainframe-hardware-state';
+import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
 import {
   IMoneyParameter,
   IGlobalSerializedState,
@@ -46,6 +47,9 @@ export class GlobalState implements IGlobalState {
 
   @lazyInject(TYPES.MainframeHardwareState)
   private _mainframeHardwareState!: IMainframeHardwareState;
+
+  @lazyInject(TYPES.MessageLogState)
+  private _messageLogState!: IMessageLogState;
 
   private _randomSeed: number;
   private _gameSpeed: GameSpeed;
@@ -102,6 +106,7 @@ export class GlobalState implements IGlobalState {
       this._cityDevelopment = new CityDevelopmentParameter({
         stateUiConnector: this._stateUiConnector,
         scenarioState: this._scenarioState,
+        messageLogState: this._messageLogState,
       });
     }
 

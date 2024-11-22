@@ -1,5 +1,9 @@
+import { MainframeHardwareParameterType } from '../types';
+import { IMainframeHardwareParameterSerializedState } from './mainframe-hardware-parameter-serialized-state';
+
 export interface IMainframeHardwareSerializedState {
-  performance: number;
-  cores: number;
-  ram: number;
+  performance: IMainframeHardwareParameterSerializedState;
+  cores: IMainframeHardwareParameterSerializedState;
+  ram: IMainframeHardwareParameterSerializedState;
+  parametersList: MainframeHardwareParameterType[];
 }

@@ -1,29 +1,37 @@
 import { BaseController } from '@shared/base-controller';
 import { IMainframeHardwareParameter } from '@state/mainframe/mainframe-hardware-state/interfaces/mainframe-hardware-parameter';
-import { HardwarePanelArticleType } from './types';
+import { MainframeHardwareParameterType } from '@state/mainframe/mainframe-hardware-state/types';
 
 export class MainframeHardwarePanelArticleController extends BaseController {
   get cityDevelopmentLevel() {
     return this.globalState.cityDevelopment.level;
   }
 
-  getLevel(type: HardwarePanelArticleType): number {
+  isAutoUpgradeEnabled(type: MainframeHardwareParameterType): boolean {
+    return this.getParameter(type).autoUpgradeEnabled;
+  }
+
+  toggleAutoUpdateEnabled(type: MainframeHardwareParameterType, active: boolean) {
+    this.getParameter(type).autoUpgradeEnabled = active;
+  }
+
+  getLevel(type: MainframeHardwareParameterType): number {
     return this.getParameter(type).level;
   }
 
-  purchase(increase: number, type: HardwarePanelArticleType) {
+  purchase(increase: number, type: MainframeHardwareParameterType) {
     this.getParameter(type).purchase(increase);
   }
 
-  checkCanPurchase(increase: number, type: HardwarePanelArticleType): boolean {
+  checkCanPurchase(increase: number, type: MainframeHardwareParameterType): boolean {
     return this.getParameter(type).checkCanPurchase(increase);
   }
 
-  getPurchaseCost(increase: number, type: HardwarePanelArticleType): number {
+  getPurchaseCost(increase: number, type: MainframeHardwareParameterType): number {
     return this.getParameter(type).getIncreaseCost(increase);
   }
 
-  private getParameter(type: HardwarePanelArticleType): IMainframeHardwareParameter {
+  private getParameter(type: MainframeHardwareParameterType): IMainframeHardwareParameter {
     switch (type) {
       case 'performance':
         return this.mainframeHardwareState.performance;

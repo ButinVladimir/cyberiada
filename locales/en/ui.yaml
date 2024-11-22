@@ -187,11 +187,7 @@ automation:
     autobuyers: Autobuyers
   mainframeHardwareAutobuyer:
     mainframeHardwareAutobuyer: Mainframe hardware autobuyer
-    percentageHint: Percentages of available money reserved for upgrading mainframe hardware
-    performance: Performance share
-    cores: Cores share
-    ram: RAM share
+    percentageHint: Percentage of available money reserved for upgrading mainframe hardware
   mainframeProgramsAutobuyer:
     mainframeProgramsAutobuyer: Mainframe programs autobuyer
     percentageHint: Percentage of available money reserved for buying programs
-    moneyShare: Money share

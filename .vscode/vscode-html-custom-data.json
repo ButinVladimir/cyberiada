@@ -18,7 +18,7 @@
     },
     {
       "name": "ca-automation-mainframe-hardware-autobuyer",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_performanceShareRef` {`Ref<SlInput>`} - \n\n  * `_coresShareRef` {`Ref<SlInput>`} - \n\n  * `_ramShareRef` {`Ref<SlInput>`} - \n\n  * `handleChangePerformanceShare` - \n\n  * `handleChangeCoresShare` - \n\n  * `handleChangeRamShare` - \n\n  * `controller` {`AutomationMainframeHardwareAutobuyerController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_moneyShareRef` {`Ref<SlInput>`} - \n\n  * `handleChangeMoneyShare` - \n\n  * `controller` {`AutomationMainframeHardwareAutobuyerController`} - ",
       "attributes": []
     },
     {
@@ -148,27 +148,16 @@
     },
     {
       "name": "ca-mainframe-hardware-panel",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_shiftPressed` {`boolean`} - \n\n  * `_ctrlPressed` {`boolean`} - \n\n  * `handleKeypress` - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_articlesListRef` {`Ref<HTMLDivElement>`} - \n\n  * `_shiftPressed` {`boolean`} - \n\n  * `_ctrlPressed` {`boolean`} - \n\n  * `_draggedParameterType` - \n\n  * `_draggedParameterPosition` {`number | undefined`} - \n\n  * `renderParametersList` - \n\n  * `renderParameter` - \n\n  * `handleKeypress` - \n\n  * `handleDragStart` - \n\n  * `handleDragOver` - \n\n  * `handleDragEnd` - \n\n  * `controller` {`MainframeHardwarePanelController`} - ",
       "attributes": []
     },
     {
       "name": "ca-mainframe-hardware-panel-article",
-      "description": "Attributes:\n\n  * `type` {`HardwarePanelArticleType`} - \n\n  * `max-increase` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `type` {`HardwarePanelArticleType`} - \n\n  * `maxIncrease` {`number`} - \n\n  * `handleBuy` - \n\n  * `controller` {`MainframeHardwarePanelArticleController`} - ",
+      "description": "Attributes:\n\n  * `type` - \n\n  * `max-increase` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `type` - \n\n  * `maxIncrease` {`number`} - \n\n  * `handleBuy` - \n\n  * `handleToggleAutoUpgrade` - \n\n  * `handleDragStart` - \n\n  * `controller` {`MainframeHardwarePanelArticleController`} - ",
       "attributes": [
         {
           "name": "type",
-          "description": "`type` {`HardwarePanelArticleType`} - \n\nProperty: type",
-          "values": [
-            {
-              "name": "performance"
-            },
-            {
-              "name": "cores"
-            },
-            {
-              "name": "ram"
-            }
-          ]
+          "description": "`type` - \n\nProperty: type"
         },
         {
           "name": "max-increase",
@@ -256,7 +245,7 @@
     },
     {
       "name": "ca-owned-programs-list-item",
-      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `handleToggleAutoupgrade` - \n\n  * `handleDragStart` - \n\n  * `controller` {`OwnedProgramsListItemController`} - ",
+      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `handleToggleAutoUpgrade` - \n\n  * `handleDragStart` - \n\n  * `controller` {`OwnedProgramsListItemController`} - ",
       "attributes": [
         {
           "name": "program-name",

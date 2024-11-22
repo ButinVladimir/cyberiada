@@ -1,7 +1,8 @@
-import { IncomeSource } from '@shared/types';
+import { GameStateEvent, IncomeSource } from '@shared/types';
 import { EventBatcher } from '@shared/event-batcher';
 import { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import { IScenarioState } from '@state/scenario-state/interfaces/scenario-state';
+import { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
 import { ICityDevelopmentParameter } from './interfaces/city-development-parameter';
 import { ICityDevelopmentSerializedParameter } from './interfaces/serialized-states/city-development-serialized-parameter';
 import { ICityDevelopmentConstructorParameters } from './interfaces/constructor-parameters/city-development-constructor-parameters';
@@ -12,6 +13,7 @@ export class CityDevelopmentParameter implements ICityDevelopmentParameter {
 
   private _stateUiConnector: IStateUIConnector;
   private _scenarioState: IScenarioState;
+  private _messageLogState: IMessageLogState;
 
   private _points: number;
   private _level: number;
@@ -21,6 +23,7 @@ export class CityDevelopmentParameter implements ICityDevelopmentParameter {
   constructor(parameters: ICityDevelopmentConstructorParameters) {
     this._stateUiConnector = parameters.stateUiConnector;
     this._scenarioState = parameters.scenarioState;
+    this._messageLogState = parameters.messageLogState;
 
     this._points = 0;
     this._level = 1;
@@ -82,6 +85,7 @@ export class CityDevelopmentParameter implements ICityDevelopmentParameter {
     if (newLevel > this._level) {
       this._level = newLevel;
 
+      this._messageLogState.postMessage(GameStateEvent.levelReached, { level: newLevel });
       this.uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.CITY_DEVELOPMENT_LEVEL_CHANGED);
     }
   }
