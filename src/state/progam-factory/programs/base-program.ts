@@ -9,6 +9,7 @@ import { IMainframeProgramsState } from '@state/mainframe/mainframe-programs-sta
 import { IMainframeProcessesState } from '@state/mainframe/mainframe-processes-state/interfaces/mainframe-processes-state';
 import { IMainframeHardwareState } from '@state/mainframe/mainframe-hardware-state/interfaces/mainframe-hardware-state';
 import { IScenarioState } from '@state/scenario-state/interfaces/scenario-state';
+import { Feature } from '@shared/types';
 import { ProgramName } from '../types';
 import { IProgram } from '../interfaces/program';
 import { ICompletionTimeParameters } from '../interfaces/completion-time-parameters';
@@ -76,6 +77,10 @@ export abstract class BaseProgram implements IProgram {
   }
 
   set autoUpgradeEnabled(value: boolean) {
+    if (!this.globalState.unlockedFeatures.isFeatureUnlocked(Feature.automationMainframePrograms)) {
+      throw new Error('Mainframe program automation is not unlocked');
+    }
+
     this._autoUpgradeEnabled = value;
 
     this.uiEventBatcher.enqueueEvent(PROGRAMS_UI_EVENTS.PROGRAM_UPGRADED);
@@ -102,6 +107,10 @@ export abstract class BaseProgram implements IProgram {
 
   get cores() {
     return this.quality + 1;
+  }
+
+  get unlockFeatures() {
+    return programs[this.name].unlockFeatures as Feature[];
   }
 
   abstract perform(usedCores: number, usedRam: number): void;

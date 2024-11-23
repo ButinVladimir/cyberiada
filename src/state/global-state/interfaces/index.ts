@@ -9,3 +9,5 @@ export * from './program-completion-speed-parameter';
 export * from './money-growth-parameter';
 export * from './city-development-growth-parameter';
 export * from './programs-growth-parameter';
+export * from './unlocked-features-parameter';
+export * from './story-events-parameter';

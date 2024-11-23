@@ -96,21 +96,25 @@ export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemCo
 
       <td class="quality">${formatter.formatQuality(program.quality)}</td>
 
-      <td class="autoupgrade">
-        <sl-tooltip>
-          <intl-message slot="content" label="ui:mainframe:programs:toggleAutoupgrade">
-            Toggle autoupgrade
-          </intl-message>
+      ${this.controller.isProgramsAutomationUnlocked()
+        ? html`
+            <td class="autoupgrade">
+              <sl-tooltip>
+                <intl-message slot="content" label="ui:mainframe:programs:toggleAutoupgrade">
+                  Toggle autoupgrade
+                </intl-message>
 
-          <sl-icon-button
-            id="toggle-autoupgrade-btn"
-            name=${autoupgradeIcon}
-            label=${t('mainframe.programs.toggleAutoupgrade', { ns: 'ui' })}
-            @click=${this.handleToggleAutoUpgrade}
-          >
-          </sl-icon-button>
-        </sl-tooltip>
-      </td>
+                <sl-icon-button
+                  id="toggle-autoupgrade-btn"
+                  name=${autoupgradeIcon}
+                  label=${t('mainframe.programs.toggleAutoupgrade', { ns: 'ui' })}
+                  @click=${this.handleToggleAutoUpgrade}
+                >
+                </sl-icon-button>
+              </sl-tooltip>
+            </td>
+          `
+        : null}
     `;
   }
 

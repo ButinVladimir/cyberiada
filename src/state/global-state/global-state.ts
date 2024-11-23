@@ -17,6 +17,8 @@ import {
   ICityDevelopmentGrowthParameter,
   IComputationalBaseParameter,
   IProgramsGrowthParameter,
+  IUnlockedFeaturesParameter,
+  IStoryEventsParameter,
 } from './interfaces';
 import { IGlobalState } from './interfaces/global-state';
 import { GameSpeed } from './types';
@@ -28,6 +30,8 @@ import { MoneyGrowthParameter } from './money-growth-parameter';
 import { CityDevelopmentGrowthParameter } from './city-development-growth-parameter';
 import { ComputationalBaseParameter } from './computational-base-parameter';
 import { ProgramsGrowthParameter } from './programs-growth-parameter';
+import { UnlockedFeaturesParameter } from './unlocked-features-parameter';
+import { StoryEventsParameter } from './story-events-parameter';
 
 const { lazyInject } = decorators;
 
@@ -60,7 +64,9 @@ export class GlobalState implements IGlobalState {
   private _programCompletionSpeed: IProgramCompletionSpeedParameter | undefined;
   private _moneyGrowth: IMoneyGrowthParameter | undefined;
   private _cityDevelopmentGrowth: ICityDevelopmentGrowthParameter | undefined;
-  private _programsGrowthParameter: IProgramsGrowthParameter | undefined;
+  private _programsGrowth: IProgramsGrowthParameter | undefined;
+  private _unlockedFeatures: IUnlockedFeaturesParameter | undefined;
+  private _storyEvents: IStoryEventsParameter | undefined;
 
   constructor() {
     this._randomSeed = 0;
@@ -107,6 +113,7 @@ export class GlobalState implements IGlobalState {
         stateUiConnector: this._stateUiConnector,
         scenarioState: this._scenarioState,
         messageLogState: this._messageLogState,
+        globalState: this,
       });
     }
 
@@ -160,14 +167,37 @@ export class GlobalState implements IGlobalState {
   }
 
   get programsGrowth(): IProgramsGrowthParameter {
-    if (!this._programsGrowthParameter) {
-      this._programsGrowthParameter = new ProgramsGrowthParameter({
+    if (!this._programsGrowth) {
+      this._programsGrowth = new ProgramsGrowthParameter({
         stateUiConnector: this._stateUiConnector,
         mainframeProcessesState: this._mainframeProcessesState,
       });
     }
 
-    return this._programsGrowthParameter;
+    return this._programsGrowth;
+  }
+
+  get unlockedFeatures(): IUnlockedFeaturesParameter {
+    if (!this._unlockedFeatures) {
+      this._unlockedFeatures = new UnlockedFeaturesParameter({
+        stateUiConnector: this._stateUiConnector,
+        messageLogState: this._messageLogState,
+      });
+    }
+
+    return this._unlockedFeatures;
+  }
+
+  get storyEvents(): IStoryEventsParameter {
+    if (!this._storyEvents) {
+      this._storyEvents = new StoryEventsParameter({
+        globalState: this,
+        scenarioState: this._scenarioState,
+        messageLogState: this._messageLogState,
+      });
+    }
+
+    return this._storyEvents;
   }
 
   requestGrowthRecalculation() {
@@ -193,6 +223,8 @@ export class GlobalState implements IGlobalState {
     await this.time.startNewState();
     await this.cityDevelopment.startNewState();
     await this.computationalBase.startNewState();
+    await this.unlockedFeatures.startNewState();
+    await this.storyEvents.startNewState();
 
     this.requestGrowthRecalculation();
   }
@@ -204,6 +236,8 @@ export class GlobalState implements IGlobalState {
     await this.time.deserialize(serializedState.time);
     await this.cityDevelopment.deserialize(serializedState.cityDevelopment);
     await this.computationalBase.deserialize(serializedState.computationalBase);
+    await this.unlockedFeatures.deserialize(serializedState.unlockedFeatures);
+    await this.storyEvents.deserialize(serializedState.storyEvents);
 
     this.requestGrowthRecalculation();
   }
@@ -216,6 +250,8 @@ export class GlobalState implements IGlobalState {
       time: this.time.serialize(),
       cityDevelopment: this.cityDevelopment.serialize(),
       computationalBase: this.computationalBase.serialize(),
+      unlockedFeatures: this.unlockedFeatures.serialize(),
+      storyEvents: this.storyEvents.serialize(),
     };
   }
 }

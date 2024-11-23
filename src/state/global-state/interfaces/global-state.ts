@@ -9,6 +9,8 @@ import { IMoneyGrowthParameter } from './money-growth-parameter';
 import { ICityDevelopmentGrowthParameter } from './city-development-growth-parameter';
 import { IComputationalBaseParameter } from './computational-base-parameter';
 import { IProgramsGrowthParameter } from './programs-growth-parameter';
+import { IUnlockedFeaturesParameter } from './unlocked-features-parameter';
+import { IStoryEventsParameter } from './story-events-parameter';
 
 export interface IGlobalState extends ISerializeable<IGlobalSerializedState> {
   randomSeed: number;
@@ -21,6 +23,8 @@ export interface IGlobalState extends ISerializeable<IGlobalSerializedState> {
   moneyGrowth: IMoneyGrowthParameter;
   cityDevelopmentGrowth: ICityDevelopmentGrowthParameter;
   programsGrowth: IProgramsGrowthParameter;
+  unlockedFeatures: IUnlockedFeaturesParameter;
+  storyEvents: IStoryEventsParameter;
   requestGrowthRecalculation(): void;
   recalculate(): void;
 }

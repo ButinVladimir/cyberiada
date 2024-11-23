@@ -5,7 +5,7 @@ import type { IMessageLogState } from '@state/message-log-state/interfaces/messa
 import type { IFormatter } from '@shared/interfaces/formatter';
 import { calculatePow } from '@shared/helpers';
 import { IExponent } from '@shared/interfaces/exponent';
-import { PurchaseEvent, PurchaseType } from '@shared/types';
+import { Feature, PurchaseEvent, PurchaseType } from '@shared/types';
 import {
   IMainframeHardwareParameter,
   IMainframeHardwareParameterArguments,
@@ -52,6 +52,10 @@ export abstract class MainframeHardwareParameter implements IMainframeHardwarePa
   }
 
   set autoUpgradeEnabled(value: boolean) {
+    if (!this.globalState.unlockedFeatures.isFeatureUnlocked(Feature.automationMainframeHardware)) {
+      throw new Error('Mainframe program automation is not unlocked');
+    }
+
     this._autoUpgradeEnabled = value;
 
     this.mainframeHardwareState.emitAutobuyerUpdatedEvent();
@@ -84,6 +88,10 @@ export abstract class MainframeHardwareParameter implements IMainframeHardwarePa
   }
 
   checkCanPurchase(increase: number): boolean {
+    if (!this.globalState.unlockedFeatures.isFeatureUnlocked(Feature.mainframeHardware)) {
+      return false;
+    }
+
     const maxIncrease = this.globalState.cityDevelopment.level - this.level;
 
     if (increase > maxIncrease) {

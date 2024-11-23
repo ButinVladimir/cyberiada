@@ -1,5 +1,6 @@
 import { IExponent } from '@shared/interfaces/exponent';
 import { ProgramName } from '@state/progam-factory/types';
+import { IStoryEvent } from './story-event';
 
 export interface IScenarioValues {
   mapWidth: number;
@@ -27,4 +28,5 @@ export interface IScenarioValues {
   discounts: {
     program: number;
   };
+  storyEvents: IStoryEvent[];
 }

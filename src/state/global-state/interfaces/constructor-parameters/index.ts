@@ -6,3 +6,5 @@ export * from './program-completion-speed-constructor-parameters';
 export * from './money-growth-constructor-parameters';
 export * from './city-development-growth-constructor-parameters';
 export * from './programs-growth-constructor-parameters';
+export * from './unlocked-features-constructor-parameters';
+export * from './story-events-constructor-parameters';

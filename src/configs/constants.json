@@ -35,7 +35,8 @@
     },
     "discounts": {
       "program": 2
-    }
+    },
+    "storyEvents": []
   },
   "defaultAutomationSettings": {
     "mainframeHardwareAutobuyer": {
@@ -45,5 +46,10 @@
     "mainframeProgramsAutobuyer": {
       "moneyShare": 10
     }
+  },
+  "menuUnlockRequirements": {
+    "cityOverview": "cityOverview",
+    "company": "companyManagement",
+    "automation": "automation"
   }
 }

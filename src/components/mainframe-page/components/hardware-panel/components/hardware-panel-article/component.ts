@@ -111,13 +111,17 @@ export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwa
                 Toggle autoupgrade
               </intl-message>
 
-              <sl-icon-button
-                id="toggle-autoupgrade-btn"
-                name=${autoupgradeIcon}
-                label=${t('mainframe.programs.toggleAutoupgrade', { ns: 'ui' })}
-                @click=${this.handleToggleAutoUpgrade}
-              >
-              </sl-icon-button>
+              ${this.controller.isHardwareAutomationUnlocked()
+                ? html`
+                    <sl-icon-button
+                      id="toggle-autoupgrade-btn"
+                      name=${autoupgradeIcon}
+                      label=${t('mainframe.programs.toggleAutoupgrade', { ns: 'ui' })}
+                      @click=${this.handleToggleAutoUpgrade}
+                    >
+                    </sl-icon-button>
+                  `
+                : null}
             </sl-tooltip>
           </h4>
           <p class="hint">

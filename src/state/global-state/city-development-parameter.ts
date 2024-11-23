@@ -6,6 +6,7 @@ import { IMessageLogState } from '@state/message-log-state/interfaces/message-lo
 import { ICityDevelopmentParameter } from './interfaces/city-development-parameter';
 import { ICityDevelopmentSerializedParameter } from './interfaces/serialized-states/city-development-serialized-parameter';
 import { ICityDevelopmentConstructorParameters } from './interfaces/constructor-parameters/city-development-constructor-parameters';
+import { IGlobalState } from './interfaces/global-state';
 import { GLOBAL_STATE_UI_EVENTS } from './constants';
 
 export class CityDevelopmentParameter implements ICityDevelopmentParameter {
@@ -14,6 +15,7 @@ export class CityDevelopmentParameter implements ICityDevelopmentParameter {
   private _stateUiConnector: IStateUIConnector;
   private _scenarioState: IScenarioState;
   private _messageLogState: IMessageLogState;
+  private _globalState: IGlobalState;
 
   private _points: number;
   private _level: number;
@@ -24,6 +26,7 @@ export class CityDevelopmentParameter implements ICityDevelopmentParameter {
     this._stateUiConnector = parameters.stateUiConnector;
     this._scenarioState = parameters.scenarioState;
     this._messageLogState = parameters.messageLogState;
+    this._globalState = parameters.globalState;
 
     this._points = 0;
     this._level = 1;
@@ -86,6 +89,7 @@ export class CityDevelopmentParameter implements ICityDevelopmentParameter {
       this._level = newLevel;
 
       this._messageLogState.postMessage(GameStateEvent.levelReached, { level: newLevel });
+      this._globalState.storyEvents.visitEvents();
       this.uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.CITY_DEVELOPMENT_LEVEL_CHANGED);
     }
   }

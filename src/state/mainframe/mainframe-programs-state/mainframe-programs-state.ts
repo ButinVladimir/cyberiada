@@ -9,7 +9,7 @@ import type { IMessageLogState } from '@state/message-log-state/interfaces/messa
 import type { IFormatter } from '@shared/interfaces/formatter';
 import { TYPES } from '@state/types';
 import { ProgramName } from '@state/progam-factory/types';
-import { PurchaseEvent, PurchaseType } from '@shared/types';
+import { Feature, PurchaseEvent, PurchaseType } from '@shared/types';
 import { EventBatcher } from '@shared/event-batcher';
 import { moveElementInArray } from '@shared/helpers';
 import { IMainframeProgramsState, IMainframeProgramsSerializedState } from './interfaces';
@@ -52,8 +52,12 @@ export class MainframeProgramsState implements IMainframeProgramsState {
   }
 
   purchaseProgram(programParameters: IMakeProgramParameters): boolean {
+    if (!this._globalState.unlockedFeatures.isFeatureUnlocked(Feature.mainframePrograms)) {
+      return false;
+    }
+
     if (programParameters.level > this._globalState.cityDevelopment.level) {
-      throw new Error(`Cannot purchase program ${programParameters.name} with level above city level`);
+      return false;
     }
 
     const existingProgram = this.getOwnedProgramByName(programParameters.name);
@@ -176,6 +180,10 @@ export class MainframeProgramsState implements IMainframeProgramsState {
       level: this._formatter.formatNumberDecimal(newProgram.level),
       quality: this._formatter.formatQuality(newProgram.quality),
     });
+
+    for (const feature of newProgram.unlockFeatures) {
+      this._globalState.unlockedFeatures.unlockFeature(feature);
+    }
   };
 
   private clearState() {

@@ -1,9 +1,11 @@
 import { css, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
+import { Feature } from '@shared/types';
+import { AutomationAutobuyersPanelController } from './controller';
 
 @customElement('ca-automation-autobuyers-panel')
-export class AutomationAutobuyersPanel extends BaseComponent {
+export class AutomationAutobuyersPanel extends BaseComponent<AutomationAutobuyersPanelController> {
   static styles = css`
     :host {
       max-width: var(--ca-viewport-width);
@@ -15,10 +17,22 @@ export class AutomationAutobuyersPanel extends BaseComponent {
     }
   `;
 
+  protected controller: AutomationAutobuyersPanelController;
+
+  constructor() {
+    super();
+
+    this.controller = new AutomationAutobuyersPanelController(this);
+  }
+
   renderContent() {
     return html`
-      <ca-automation-mainframe-hardware-autobuyer></ca-automation-mainframe-hardware-autobuyer>
-      <ca-automation-mainframe-programs-autobuyer></ca-automation-mainframe-programs-autobuyer>
+      ${this.controller.isFeatureUnlocked(Feature.automationMainframeHardware)
+        ? html`<ca-automation-mainframe-hardware-autobuyer></ca-automation-mainframe-hardware-autobuyer>`
+        : null}
+      ${this.controller.isFeatureUnlocked(Feature.automationMainframePrograms)
+        ? html`<ca-automation-mainframe-programs-autobuyer></ca-automation-mainframe-programs-autobuyer>`
+        : null}
     `;
   }
 }

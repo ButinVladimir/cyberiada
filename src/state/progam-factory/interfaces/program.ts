@@ -1,4 +1,5 @@
 import { IUIEventEmitter } from '@shared/interfaces/ui-event-emitter';
+import { Feature } from '@shared/types';
 import { ProgramName } from '../types';
 import { IMakeProgramParameters } from './make-program-parameters';
 import { ICompletionTimeParameters } from './completion-time-parameters';
@@ -14,6 +15,7 @@ export interface IProgram extends IUIEventEmitter {
   ram: number;
   cores: number;
   autoUpgradeEnabled: boolean;
+  unlockFeatures: Feature[];
   update(newProgram: IProgram): void;
   removeEventListeners(): void;
   perform(threads: number, usedRam: number): void;

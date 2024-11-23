@@ -13,7 +13,7 @@
     },
     {
       "name": "ca-automation-autobuyers-panel",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `controller` {`AutomationAutobuyersPanelController`} - ",
       "attributes": []
     },
     {
@@ -78,7 +78,7 @@
     },
     {
       "name": "ca-menu-bar",
-      "description": "Attributes:\n\n  * `selected-menu-item` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `selectedMenuItem` {`string`} - \n\n  * `renderMenuItem` - \n\n  * `handleMenuItemClick` - ",
+      "description": "Attributes:\n\n  * `selected-menu-item` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `selectedMenuItem` {`string`} - \n\n  * `renderMenuItem` - \n\n  * `handleMenuItemClick` - \n\n  * `controller` {`MenuBarController`} - ",
       "attributes": [
         {
           "name": "selected-menu-item",
@@ -143,7 +143,7 @@
     },
     {
       "name": "ca-mainframe-page",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `controller` {`MainframePageController`} - ",
       "attributes": []
     },
     {

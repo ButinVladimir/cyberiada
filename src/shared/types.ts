@@ -29,6 +29,8 @@ export enum GameStateEvent {
   gameSaved = 'gameSaved',
   fastForwared = 'fastForwarded',
   levelReached = 'levelReached',
+  featureUnlocked = 'featureUnlocked',
+  storyEvent = 'storyEvent',
 }
 
 export enum PurchaseEvent {
@@ -76,4 +78,14 @@ export enum PurchaseType {
 
 export enum IncomeSource {
   program = 'program',
+}
+
+export enum Feature {
+  automation = 'automation',
+  automationMainframeHardware = 'automationMainframeHardware',
+  automationMainframePrograms = 'automationMainframePrograms',
+  mainframeHardware = 'mainframeHardware',
+  mainframePrograms = 'mainframePrograms',
+  cityOverview = 'cityOverview',
+  companyManagement = 'companyManagement',
 }

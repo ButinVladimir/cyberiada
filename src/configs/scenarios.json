@@ -1,5 +1,24 @@
 {
   "tutorial1": {
-    "districtsNum": 5
+    "districtsNum": 5,
+    "storyEvents": [
+      {
+        "key": "tutorial1_level_1",
+        "level": 1,
+        "messages": ["tutorial1_level_1"]
+      },
+      {
+        "key": "tutorial1_level_2",
+        "level": 2,
+        "unlockFeatures": ["mainframeHardware", "mainframePrograms"],
+        "messages": ["tutorial1_level_2"]
+      },
+      {
+        "key": "tutorial1_level_100",
+        "level": 100,
+        "unlockFeatures": ["cityOverview", "companyManagement"],
+        "messages": ["tutorial1_level_100"]
+      }
+    ]
   }
 }

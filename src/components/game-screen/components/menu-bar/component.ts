@@ -1,12 +1,15 @@
 import { html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import constants from '@configs/constants.json';
 import { BaseComponent } from '@shared/base-component';
 import { OVERVIEW_MENU_ITEMS, MISC_MENU_ITEMS } from '@shared/constants';
+import { Feature } from '@shared/types';
 import { MenuItem } from './components/menu-item/component';
 import { MenuItemSelectedEvent } from './events/menu-item-selected-event';
+import { MenuBarController } from './controller';
 
 @customElement('ca-menu-bar')
-export class MenuBar extends BaseComponent {
+export class MenuBar extends BaseComponent<MenuBarController> {
   static styles = css`
     :host {
       display: block;
@@ -39,6 +42,14 @@ export class MenuBar extends BaseComponent {
   @property({ attribute: 'selected-menu-item', type: String })
   selectedMenuItem = '';
 
+  protected controller: MenuBarController;
+
+  constructor() {
+    super();
+
+    this.controller = new MenuBarController(this);
+  }
+
   renderContent() {
     return html`
       <scrollable-component>
@@ -54,6 +65,12 @@ export class MenuBar extends BaseComponent {
   }
 
   private renderMenuItem = (menuItem: string) => {
+    const feature = constants.menuUnlockRequirements[menuItem] as Feature | undefined;
+
+    if (feature && !this.controller.isFeatureUnlocked(feature)) {
+      return null;
+    }
+
     return html`
       <ca-menu-item
         key=${menuItem}

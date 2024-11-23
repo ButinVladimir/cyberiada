@@ -154,6 +154,8 @@ export class App implements IApp {
     this.stopUpdateTimer();
     this.stopAutosaveTimer();
 
+    this._messageLogState.clearMessages();
+
     this.emitChangedAppStageEvent();
   };
 
@@ -163,7 +165,6 @@ export class App implements IApp {
     this.restartUpdateTimer();
     this.restartAutosaveTimer();
 
-    this._messageLogState.clearMessages();
     this._messageLogState.postMessage(GameStateEvent.gameStarted);
 
     this.emitChangedAppStageEvent();
