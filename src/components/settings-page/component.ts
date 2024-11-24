@@ -32,6 +32,8 @@ export class SettingsPage extends BaseComponent {
 
       <ca-savefile-panel></ca-savefile-panel>
       <sl-divider></sl-divider>
+      <ca-events-filter-panel></ca-events-filter-panel>
+      <sl-divider></sl-divider>
       <ca-settings-form></ca-settings-form>
     `;
   }

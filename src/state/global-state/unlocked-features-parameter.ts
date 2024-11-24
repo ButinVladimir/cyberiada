@@ -1,7 +1,8 @@
-import { Feature, GameStateEvent } from '@shared/types';
+import { Feature, GameStateEvent, NotificationType } from '@shared/types';
 import { EventBatcher } from '@shared/event-batcher';
 import { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
+import { INotificationsState } from '@state/notifications-state/interfaces/notifications-state';
 import { IUnlockedFeaturesParameter } from './interfaces/unlocked-features-parameter';
 import { IUnlockedFeaturesSerializedParameter } from './interfaces/serialized-states/unlocked-features-serialized-parameter';
 import { IUnlockedFeaturesConstructorParameters } from './interfaces/constructor-parameters/unlocked-features-constructor-parameters';
@@ -12,12 +13,14 @@ export class UnlockedFeaturesParameter implements IUnlockedFeaturesParameter {
 
   private _stateUiConnector: IStateUIConnector;
   private _messageLogState: IMessageLogState;
+  private _notificationsState: INotificationsState;
 
   private _unlockedFeatures: Set<Feature>;
 
   constructor(parameters: IUnlockedFeaturesConstructorParameters) {
     this._stateUiConnector = parameters.stateUiConnector;
     this._messageLogState = parameters.messageLogState;
+    this._notificationsState = parameters.notificationsState;
 
     this._unlockedFeatures = new Set<Feature>();
 
@@ -37,6 +40,7 @@ export class UnlockedFeaturesParameter implements IUnlockedFeaturesParameter {
 
       this._unlockedFeatures.add(feature);
 
+      this._notificationsState.pushNotification(NotificationType.featureUnlocked, { feature });
       this._messageLogState.postMessage(GameStateEvent.featureUnlocked, { feature });
     }
   }

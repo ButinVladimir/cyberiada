@@ -2,7 +2,10 @@ import { t } from 'i18next';
 import { css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
-import { ConfirmationAlertOpenEvent, ConfirmationAlertSubmitEvent } from '@components/shared/confirmation-alert/events';
+import {
+  ConfirmationAlertOpenEvent,
+  ConfirmationAlertSubmitEvent,
+} from '@/components/shared/confirmation-alert/events';
 import { ProgramAlert } from '@shared/types';
 import { ProcessesListItemController } from './controller';
 import { ProgramName } from '@state/progam-factory/types';

@@ -5,7 +5,10 @@ import { repeat } from 'lit/directives/repeat.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { BaseComponent } from '@shared/base-component';
 import { ProgramAlert } from '@shared/types';
-import { ConfirmationAlertOpenEvent, ConfirmationAlertSubmitEvent } from '@components/shared/confirmation-alert/events';
+import {
+  ConfirmationAlertOpenEvent,
+  ConfirmationAlertSubmitEvent,
+} from '@/components/shared/confirmation-alert/events';
 import { IProcess } from '@state/mainframe/mainframe-processes-state/interfaces/process';
 import { ProgramName } from '@state/progam-factory/types';
 import { moveElementInArray } from '@shared/helpers';

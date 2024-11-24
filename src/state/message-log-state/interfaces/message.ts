@@ -1,8 +1,8 @@
-import { GameStateEvent } from '@shared/types';
+import { MessageEvent } from '@shared/types';
 
 export interface IMessage {
   id: string;
   date: Date;
-  event: GameStateEvent;
+  event: MessageEvent;
   parameters?: Record<string, any>;
 }

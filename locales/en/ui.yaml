@@ -66,6 +66,9 @@ settings:
   alertFilter: Alert filter
   alertFilterHint: Enable alerts in filter to make them visible when event happens.
   alertToggle: Show alerts like this in the future
+  notificationTypeFilter: Notification type filter
+  notificationTypeFilterHint: Enable notification types in filter to make them visible when event happens.
+  notificationTypeToggle: Show notifications like this in the future
 city:
   cityOverview:
     title: City overview

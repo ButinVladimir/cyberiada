@@ -12,6 +12,7 @@ import {
   ProgramAlert,
   PurchaseType,
   IncomeSource,
+  NotificationType,
 } from './types';
 
 export const LANGUAGES: Language[] = Object.values(Language);
@@ -33,6 +34,8 @@ export const PROGRAM_EVENTS: ProgramsEvent[] = Object.values(ProgramsEvent);
 export const GAME_STATE_ALERTS: GameStateAlert[] = Object.values(GameStateAlert);
 
 export const PROGRAM_ALERTS: ProgramAlert[] = Object.values(ProgramAlert);
+
+export const NOTIFICATION_TYPES: NotificationType[] = Object.values(NotificationType);
 
 export const QUALITIES: number[] = [0, 1, 2, 3, 4, 5, 6];
 

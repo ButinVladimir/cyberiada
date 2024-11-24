@@ -1,0 +1,6 @@
+storyEvent:
+  name: Story event
+  message: $t(story:{{value.messageKey}})
+featureUnlocked:
+  name: New feature unlocked
+  message: New feature "$t(features:{{value.feature}})" has been unlocked

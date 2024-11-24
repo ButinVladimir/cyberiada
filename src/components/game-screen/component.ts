@@ -84,7 +84,7 @@ export class GameScreen extends BaseComponent {
   private _messageLogOpened = true;
 
   @state()
-  private _selectedMenuItem = OverviewMenuItem.cityOverview;
+  private _selectedMenuItem = OverviewMenuItem.mainframe;
 
   renderContent() {
     return html`
@@ -123,6 +123,7 @@ export class GameScreen extends BaseComponent {
       </div>
 
       <ca-confirmation-alert></ca-confirmation-alert>
+      <ca-notification-modal></ca-notification-modal>
     `;
   }
 

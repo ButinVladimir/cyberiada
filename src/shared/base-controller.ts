@@ -12,6 +12,7 @@ import { IMainframeProcessesState } from '@state/mainframe/mainframe-processes-s
 import { IProgramFactory } from '@state/progam-factory';
 import { IMainframeHardwareAutomationState } from '@state/automation/mainframe-hardware-automation-state/interfaces/mainframe-hardware-automation-state';
 import { IMainframeProgramsAutomationState } from '@state/automation/mainframe-programs-automation-state/interfaces/mainframe-programs-automation-state';
+import { INotificationsState } from '@state/notifications-state/interfaces/notifications-state';
 import { container } from '@state/container';
 import { TYPES } from '@state/types';
 import { IApp } from '@state/app';
@@ -118,6 +119,10 @@ export class BaseController<T extends ReactiveControllerHost = ReactiveControlle
 
   protected get messageLogState(): IMessageLogState {
     return container.get<IMessageLogState>(TYPES.MessageLogState);
+  }
+
+  protected get notificationsState(): INotificationsState {
+    return container.get<INotificationsState>(TYPES.NotificationsState);
   }
 
   protected get mainframeHardwareState(): IMainframeHardwareState {

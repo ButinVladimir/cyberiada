@@ -12,6 +12,7 @@ import {
   ProgramsEvent,
   PurchaseEvent,
   GameStateEvent,
+  NotificationType,
 } from '@shared/types';
 import type { IApp } from '@state/app/interfaces/app';
 import { TYPES } from '@state/types';
@@ -38,6 +39,7 @@ export class SettingsState implements ISettingsState {
   private _mapCellSize: number;
   private _enabledMessageEvents: Set<MessageEvent>;
   private _enabledGameAlerts: Set<GameAlert>;
+  private _enabledNotificationTypes: Set<NotificationType>;
 
   constructor() {
     this._language = Language.en;
@@ -52,6 +54,7 @@ export class SettingsState implements ISettingsState {
     this._mapCellSize = constants.defaultSettings.mapSize;
     this._enabledMessageEvents = new Set<MessageEvent>();
     this._enabledGameAlerts = new Set<GameAlert>();
+    this._enabledNotificationTypes = new Set<NotificationType>();
   }
 
   get language() {
@@ -100,6 +103,10 @@ export class SettingsState implements ISettingsState {
 
   isGameAlertEnabled(gameAlert: GameAlert): boolean {
     return this._enabledGameAlerts.has(gameAlert);
+  }
+
+  isNotificationTypeEnabled(notificationType: NotificationType): boolean {
+    return this._enabledNotificationTypes.has(notificationType);
   }
 
   async setLanguage(language: Language): Promise<void> {
@@ -166,6 +173,14 @@ export class SettingsState implements ISettingsState {
     }
   }
 
+  toggleNotificationType(notificationType: NotificationType, enabled: boolean) {
+    if (enabled) {
+      this._enabledNotificationTypes.add(notificationType);
+    } else {
+      this._enabledNotificationTypes.delete(notificationType);
+    }
+  }
+
   async startNewState(): Promise<void> {
     await i18n.changeLanguage();
 
@@ -181,6 +196,7 @@ export class SettingsState implements ISettingsState {
     this.setMapCellSize(constants.defaultSettings.mapSize);
     this.deserializeMessageEvents(this.getAllMessageEvents());
     this.deserializeGameAlerts(this.getAllGameAlerts());
+    this.deserializeNotificationTypes(this.getAllNotificationTypes());
   }
 
   async deserialize(serializedState: ISettingsSerializedState): Promise<void> {
@@ -196,6 +212,7 @@ export class SettingsState implements ISettingsState {
     this.setMapCellSize(serializedState.mapCellSize);
     this.deserializeMessageEvents(serializedState.enabledMessageEvents);
     this.deserializeGameAlerts(serializedState.enabledGameAlerts);
+    this.deserializeNotificationTypes(serializedState.enabledNotificationTypes);
   }
 
   serialize(): ISettingsSerializedState {
@@ -212,6 +229,7 @@ export class SettingsState implements ISettingsState {
       mapCellSize: this.mapCellSize,
       enabledMessageEvents: this.serializeMessageEvents(),
       enabledGameAlerts: this.serializeGameAlerts(),
+      enabledNotificationTypes: this.serializeNotificationTypes(),
     };
   }
 
@@ -233,11 +251,24 @@ export class SettingsState implements ISettingsState {
     gameAlerts.forEach((gameAlert) => this._enabledGameAlerts.add(gameAlert));
   }
 
+  private serializeNotificationTypes(): NotificationType[] {
+    return Array.from(this._enabledNotificationTypes.values());
+  }
+
+  private deserializeNotificationTypes(notificationTypes: NotificationType[]) {
+    this._enabledNotificationTypes.clear();
+    notificationTypes.forEach((notificationType) => this._enabledNotificationTypes.add(notificationType));
+  }
+
   private getAllMessageEvents(): MessageEvent[] {
     return [...Object.values(GameStateEvent), ...Object.values(PurchaseEvent), ...Object.values(ProgramsEvent)];
   }
 
   private getAllGameAlerts(): GameAlert[] {
     return [...Object.values(GameStateAlert), ...Object.values(ProgramAlert)];
+  }
+
+  private getAllNotificationTypes(): NotificationType[] {
+    return Object.values(NotificationType);
   }
 }

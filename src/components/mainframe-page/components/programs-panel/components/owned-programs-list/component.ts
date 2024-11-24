@@ -23,7 +23,6 @@ export class OwnedProgramsList extends BaseComponent<OwnedProgramsListController
       width: 100%;
       border-collapse: collapse;
       border-spacing: 0;
-      position: relative;
     }
 
     th {

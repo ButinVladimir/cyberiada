@@ -85,9 +85,9 @@ export class AppState implements IAppState {
   async startNewState(): Promise<void> {
     this._programFactory.deleteAllPrograms();
 
+    await this._settingsState.startNewState();
     await this._scenarioState.startNewState();
     await this._globalState.startNewState();
-    await this._settingsState.startNewState();
     await this._cityState.startNewState();
     await this._mainframeHardwareState.startNewState();
     await this._mainframeProgramsState.startNewState();

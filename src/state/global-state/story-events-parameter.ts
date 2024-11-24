@@ -1,5 +1,6 @@
-import { Scenario, GameStateEvent } from '@shared/types';
+import { Scenario, GameStateEvent, NotificationType } from '@shared/types';
 import { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
+import { INotificationsState } from '@state/notifications-state/interfaces/notifications-state';
 import { IScenarioState } from '@state/scenario-state/interfaces/scenario-state';
 import { IGlobalState } from './interfaces/global-state';
 import { IStoryEventsParameter } from './interfaces/story-events-parameter';
@@ -8,6 +9,7 @@ import { IStoryEventsConstructorParameters } from './interfaces/constructor-para
 
 export class StoryEventsParameter implements IStoryEventsParameter {
   private _messageLogState: IMessageLogState;
+  private _notificationsState: INotificationsState;
   private _scenarioState: IScenarioState;
   private _globalState: IGlobalState;
 
@@ -15,6 +17,7 @@ export class StoryEventsParameter implements IStoryEventsParameter {
 
   constructor(parameters: IStoryEventsConstructorParameters) {
     this._messageLogState = parameters.messageLogState;
+    this._notificationsState = parameters.notificationsState;
     this._scenarioState = parameters.scenarioState;
     this._globalState = parameters.globalState;
 
@@ -53,6 +56,7 @@ export class StoryEventsParameter implements IStoryEventsParameter {
 
       if (storyEvent.messages) {
         storyEvent.messages.forEach((messageKey) => {
+          this._notificationsState.pushNotification(NotificationType.storyEvent, { messageKey });
           this._messageLogState.postMessage(GameStateEvent.storyEvent, { messageKey });
         });
       }

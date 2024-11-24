@@ -3,13 +3,13 @@ import { customElement, property } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import SlCheckbox from '@shoelace-style/shoelace/dist/components/checkbox/checkbox.component.js';
 import { BaseComponent } from '@shared/base-component';
-import { GAME_STATE_ALERTS, PROGRAM_ALERTS } from '@shared/constants';
-import { GameAlert } from '@shared/types';
-import { AlertFilterDialogCloseEvent } from './events';
-import { AlertFilterDialogController } from './controller';
+import { NOTIFICATION_TYPES } from '@shared/constants';
+import { NotificationType } from '@shared/types';
+import { NotificationTypeFilterDialogCloseEvent } from './events';
+import { NotificationTypeFilterDialogController } from './controller';
 
-@customElement('ca-alert-filter-dialog')
-export class AlertFilterDialog extends BaseComponent<AlertFilterDialogController> {
+@customElement('ca-notification-type-filter-dialog')
+export class NotificationTypeFilterDialog extends BaseComponent<NotificationTypeFilterDialogController> {
   static styles = css`
     sl-dialog {
       --width: 50rem;
@@ -52,7 +52,7 @@ export class AlertFilterDialog extends BaseComponent<AlertFilterDialogController
     }
   `;
 
-  protected controller: AlertFilterDialogController;
+  protected controller: NotificationTypeFilterDialogController;
 
   @property({
     attribute: 'is-open',
@@ -63,30 +63,26 @@ export class AlertFilterDialog extends BaseComponent<AlertFilterDialogController
   constructor() {
     super();
 
-    this.controller = new AlertFilterDialogController(this);
+    this.controller = new NotificationTypeFilterDialogController(this);
   }
 
   renderContent() {
     return html`
       <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
         <h4 slot="label" class="title">
-          <intl-message label="ui:settings:alertFilter"> Alert filter </intl-message>
+          <intl-message label="ui:settings:notificationTypeFilter"> Notification type filter </intl-message>
         </h4>
 
         <div class="body">
           <p class="hint">
-            <intl-message label="ui:settings:alertFilterHint">
-              Enable alerts in filter to make them visible when event happens.
+            <intl-message label="ui:settings:notificationTypeFilterHint">
+              Enable notification types in filter to see notifications for those events.
             </intl-message>
           </p>
 
           <div class="events-container">
-            ${repeat(GAME_STATE_ALERTS, (gameAlert) => gameAlert, this.renderGameAlertCheckbox)}
+            ${repeat(NOTIFICATION_TYPES, (gameAlert) => gameAlert, this.renderGameAlertCheckbox)}
           </div>
-
-          <sl-divider></sl-divider>
-
-          <div class="events-container">${repeat(PROGRAM_ALERTS, (event) => event, this.renderGameAlertCheckbox)}</div>
         </div>
 
         <sl-button slot="footer" size="medium" variant="default" outline @click=${this.handleClose}>
@@ -96,16 +92,16 @@ export class AlertFilterDialog extends BaseComponent<AlertFilterDialogController
     `;
   }
 
-  private renderGameAlertCheckbox = (gameAlert: GameAlert): TemplateResult => {
+  private renderGameAlertCheckbox = (notificationType: NotificationType): TemplateResult => {
     return html`
       <sl-checkbox
         size="medium"
         name="event"
-        value=${gameAlert}
-        ?checked=${this.controller.isAlertEnabled(gameAlert)}
+        value=${notificationType}
+        ?checked=${this.controller.isNotificationTypeEnabled(notificationType)}
         @sl-change=${this.handleToggleAlert}
       >
-        <intl-message label=${`alerts:${gameAlert}:name`}> Alert </intl-message>
+        <intl-message label=${`notifications:${notificationType}:name`}> Alert </intl-message>
       </sl-checkbox>
     `;
   };
@@ -114,12 +110,12 @@ export class AlertFilterDialog extends BaseComponent<AlertFilterDialogController
     event.preventDefault();
     event.stopPropagation();
 
-    this.dispatchEvent(new AlertFilterDialogCloseEvent());
+    this.dispatchEvent(new NotificationTypeFilterDialogCloseEvent());
   };
 
   private handleToggleAlert = (event: Event) => {
     const target = event.target as SlCheckbox;
 
-    this.controller.toggleAlertFilterEvent(target.value as GameAlert, target.checked);
+    this.controller.toggleNotificationTypeFilter(target.value as NotificationType, target.checked);
   };
 }

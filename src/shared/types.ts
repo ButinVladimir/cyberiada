@@ -66,6 +66,11 @@ export enum ProgramAlert {
 
 export type GameAlert = GameStateAlert | ProgramAlert;
 
+export enum NotificationType {
+  storyEvent = 'storyEvent',
+  featureUnlocked = 'featureUnlocked',
+}
+
 export enum LongNumberFormat {
   builtIn = 'builtIn',
   scientific = 'scientific',

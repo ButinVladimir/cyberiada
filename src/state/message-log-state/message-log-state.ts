@@ -6,7 +6,7 @@ import type { ISettingsState } from '@state/settings-state/interfaces/settings-s
 import { TYPES } from '@state/types';
 import { IMessageLogState, IMessage } from './interfaces';
 import { MESSAGE_LOG_UI_EVENTS } from './constants';
-import { GameStateEvent } from '@shared/types';
+import { MessageEvent } from '@shared/types';
 
 @injectable()
 export class MessageLogState implements IMessageLogState {
@@ -29,7 +29,7 @@ export class MessageLogState implements IMessageLogState {
     this._stateUiConnector.registerEventEmitter(this);
   }
 
-  postMessage(event: GameStateEvent, parameters?: Record<string, any>) {
+  postMessage(event: MessageEvent, parameters?: Record<string, any>) {
     if (!this._settingsState.isMessageEventEnabled(event)) {
       return;
     }

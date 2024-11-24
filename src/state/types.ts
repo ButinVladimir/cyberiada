@@ -7,6 +7,7 @@ export const TYPES = {
   CityState: Symbol('CityState'),
   SettingsState: Symbol('SettingsState'),
   MessageLogState: Symbol('MessageLogState'),
+  NotificationsState: Symbol('NotificationsState'),
   MainframeHardwareState: Symbol('MainframeHardwareState'),
   MainframeProgramsState: Symbol('MainframeProgramsState'),
   MainframeProcessesState: Symbol('MainframeProcessesState'),

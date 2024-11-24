@@ -1,4 +1,4 @@
-import { GameAlert, Language, LongNumberFormat, MessageEvent, Theme } from '@shared/types';
+import { GameAlert, Language, LongNumberFormat, MessageEvent, NotificationType, Theme } from '@shared/types';
 
 export interface ISettingsSerializedState {
   language: Language;
@@ -13,4 +13,5 @@ export interface ISettingsSerializedState {
   longNumberFormat: LongNumberFormat;
   enabledMessageEvents: MessageEvent[];
   enabledGameAlerts: GameAlert[];
+  enabledNotificationTypes: NotificationType[];
 }

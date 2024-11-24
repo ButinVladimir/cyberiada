@@ -1,5 +1,5 @@
 import { ISerializeable } from '@shared/interfaces';
-import { Language, Theme, MessageEvent, LongNumberFormat, GameAlert } from '@shared/types';
+import { Language, Theme, MessageEvent, LongNumberFormat, GameAlert, NotificationType } from '@shared/types';
 import { ISettingsSerializedState } from './settings-serialized-state';
 
 export interface ISettingsState extends ISerializeable<ISettingsSerializedState> {
@@ -15,6 +15,7 @@ export interface ISettingsState extends ISerializeable<ISettingsSerializedState>
   mapCellSize: number;
   isMessageEventEnabled(event: MessageEvent): boolean;
   isGameAlertEnabled(gameAlert: GameAlert): boolean;
+  isNotificationTypeEnabled(notificationType: NotificationType): boolean;
   setLanguage(language: Language): Promise<void>;
   setTheme(theme: Theme): void;
   setMessageLogSize(messageLogSize: number): void;
@@ -27,4 +28,5 @@ export interface ISettingsState extends ISerializeable<ISettingsSerializedState>
   setMapCellSize(mapSize: number): void;
   toggleMessageEvent(event: MessageEvent, enabled: boolean): void;
   toggleGameAlert(gameAlert: GameAlert, enabled: boolean): void;
+  toggleNotificationType(notificationType: NotificationType, enabled: boolean): void;
 }

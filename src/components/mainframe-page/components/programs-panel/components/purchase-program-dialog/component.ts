@@ -11,7 +11,7 @@ import {
   ConfirmationAlertOpenEvent,
   ConfirmationAlertCloseEvent,
   ConfirmationAlertSubmitEvent,
-} from '@components/shared/confirmation-alert/events';
+} from '@/components/shared/confirmation-alert/events';
 import { QUALITIES } from '@shared/constants';
 import { ProgramAlert } from '@shared/types';
 import { PurchaseProgramDialogCloseEvent } from './events';

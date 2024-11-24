@@ -7,6 +7,7 @@ import type { ISettingsState } from '@state/settings-state/interfaces/settings-s
 import type { IMainframeProcessesState } from '@state/mainframe/mainframe-processes-state/interfaces/mainframe-processes-state';
 import type { IMainframeHardwareState } from '@state/mainframe/mainframe-hardware-state/interfaces/mainframe-hardware-state';
 import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
+import type { INotificationsState } from '@state/notifications-state/interfaces/notifications-state';
 import {
   IMoneyParameter,
   IGlobalSerializedState,
@@ -54,6 +55,9 @@ export class GlobalState implements IGlobalState {
 
   @lazyInject(TYPES.MessageLogState)
   private _messageLogState!: IMessageLogState;
+
+  @lazyInject(TYPES.NotificationsState)
+  private _notificationsState!: INotificationsState;
 
   private _randomSeed: number;
   private _gameSpeed: GameSpeed;
@@ -182,6 +186,7 @@ export class GlobalState implements IGlobalState {
       this._unlockedFeatures = new UnlockedFeaturesParameter({
         stateUiConnector: this._stateUiConnector,
         messageLogState: this._messageLogState,
+        notificationsState: this._notificationsState,
       });
     }
 
@@ -194,6 +199,7 @@ export class GlobalState implements IGlobalState {
         globalState: this,
         scenarioState: this._scenarioState,
         messageLogState: this._messageLogState,
+        notificationsState: this._notificationsState,
       });
     }
 

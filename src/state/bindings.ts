@@ -18,6 +18,7 @@ import {
   IMainframeProgramsAutomationState,
   MainframeProgramsAutomationState,
 } from '@state/automation/mainframe-programs-automation-state';
+import { INotificationsState, NotificationsState } from '@state/notifications-state';
 import { Formatter } from '@shared/formatter';
 import { IFormatter } from '@shared/interfaces/formatter';
 import { TYPES } from './types';
@@ -38,6 +39,12 @@ container.bind<ISettingsState>(TYPES.SettingsState).to(SettingsState).inSingleto
 container.bind<ICityState>(TYPES.CityState).to(CityState).inSingletonScope().whenTargetIsDefault();
 
 container.bind<IMessageLogState>(TYPES.MessageLogState).to(MessageLogState).inSingletonScope().whenTargetIsDefault();
+
+container
+  .bind<INotificationsState>(TYPES.NotificationsState)
+  .to(NotificationsState)
+  .inSingletonScope()
+  .whenTargetIsDefault();
 
 container.bind<IProgramFactory>(TYPES.ProgramFactory).to(ProgramFactory).inSingletonScope().whenTargetIsDefault();
 
