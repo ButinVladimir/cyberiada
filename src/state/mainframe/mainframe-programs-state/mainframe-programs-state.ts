@@ -56,7 +56,7 @@ export class MainframeProgramsState implements IMainframeProgramsState {
       return false;
     }
 
-    if (programParameters.level > this._globalState.cityDevelopment.level) {
+    if (programParameters.level > this._globalState.development.level) {
       return false;
     }
 
@@ -114,7 +114,7 @@ export class MainframeProgramsState implements IMainframeProgramsState {
   async startNewState(): Promise<void> {
     this.clearState();
 
-    for (const programName of this._scenarioState.currentValues.mainframeSoftware.startingPrograms) {
+    for (const programName of this._scenarioState.currentValues.mainframeSoftware.programs) {
       this.addProgram(
         this._programFactory.makeProgram({
           name: programName,

@@ -15,8 +15,8 @@ export class PurchaseProgramDialogController extends BaseController {
     return this.globalState.money.money;
   }
 
-  get cityLevel(): number {
-    return this.globalState.cityDevelopment.level;
+  get developmentLevel(): number {
+    return this.globalState.development.level;
   }
 
   getSelectedProgram(name: ProgramName, level: number, quality: number): IProgram {

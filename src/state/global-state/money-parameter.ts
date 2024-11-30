@@ -75,7 +75,7 @@ export class MoneyParameter implements IMoneyParameter {
 
   // eslint-disable-next-line @typescript-eslint/require-await
   async startNewState(): Promise<void> {
-    this._money = this._scenarioState.currentValues.startingMoney;
+    this._money = this._scenarioState.currentValues.money;
     this._income.clear();
     this._expenses.clear();
   }

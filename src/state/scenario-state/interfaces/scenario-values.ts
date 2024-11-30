@@ -6,7 +6,9 @@ export interface IScenarioValues {
   mapWidth: number;
   mapHeight: number;
   districtsNum: number;
-  startingMoney: number;
+  money: number;
+  developmentLevel: number;
+  accumulatedTime: number;
   mainframeHardware: {
     performanceLevel: number;
     coresLevel: number;
@@ -17,11 +19,10 @@ export interface IScenarioValues {
   };
   mainframeSoftware: {
     performanceBoost: number;
-    startingPrograms: ProgramName[];
+    programs: ProgramName[];
     minCompletionTime: number;
   };
-  startingCityLevel: number;
-  cityLevelRequirements: IExponent;
+  developmentLevelRequirements: IExponent;
   pointsByProgramMultipliers: {
     program: number;
   };

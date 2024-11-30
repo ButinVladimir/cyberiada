@@ -122,6 +122,11 @@
       "attributes": []
     },
     {
+      "name": "ca-top-bar-available-goals",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderTooltipContent` - \n\n  * `renderGoal` - \n\n  * `controller` {`TopBarAvailableGoalsController`} - ",
+      "attributes": []
+    },
+    {
       "name": "ca-game-speed-buttons",
       "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderButton` - \n\n  * `handleChangeGameSpeed` - \n\n  * `handleOpenFastForwardDialog` - \n\n  * `handleConfirmFastForwardDialog` - \n\n  * `controller` {`GameSpeedButtonsController`} - ",
       "attributes": []
@@ -352,13 +357,13 @@
       "attributes": []
     },
     {
-      "name": "ca-statistics-city-development-growth",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderIncomeSource` - \n\n  * `controller` {`StatisticsCityDevelopmentGrowthController`} - ",
+      "name": "ca-statistics-development-growth",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderIncomeSource` - \n\n  * `controller` {`StatisticsDevelopmentGrowthController`} - ",
       "attributes": []
     },
     {
-      "name": "ca-statistics-city-development-income",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderIncomeSource` - \n\n  * `controller` {`StatisticsCityDevelopmentIncomeController`} - ",
+      "name": "ca-statistics-development-income",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderIncomeSource` - \n\n  * `controller` {`StatisticsDevelopmentIncomeController`} - ",
       "attributes": []
     },
     {
@@ -414,6 +419,11 @@
     {
       "name": "ca-statistics-programs-income",
       "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `controller` {`StatisticsProgramsIncomeController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-statistics-unlocked-features-panel",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderFeature` - \n\n  * `controller` {`StatisticsUnlockedFeaturesPanelController`} - ",
       "attributes": []
     }
   ],

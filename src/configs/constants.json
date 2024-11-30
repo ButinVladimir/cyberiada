@@ -14,7 +14,9 @@
     "mapWidth": 100,
     "mapHeight": 100,
     "districtsNum": 1,
-    "startingMoney": 0,
+    "money": 0,
+    "developmentLevel": 1,
+    "accumulatedTime": 0,
     "mainframeHardware": {
       "performanceLevel": 1,
       "coresLevel": 1,
@@ -25,11 +27,10 @@
     },
     "mainframeSoftware": {
       "performanceBoost": 0.01,
-      "startingPrograms": ["shareServer"],
+      "programs": ["shareServer"],
       "minCompletionTime": 1000
     },
-    "startingCityLevel": 1,
-    "cityLevelRequirements": { "baseMultiplier": 10000, "base": 1.2 },
+    "developmentLevelRequirements": { "baseMultiplier": 10000, "base": 1.2 },
     "pointsByProgramMultipliers": {
       "program": 1
     },
@@ -49,7 +50,7 @@
   },
   "menuUnlockRequirements": {
     "cityOverview": "cityOverview",
-    "company": "companyManagement",
+    "companyManagement": "companyManagement",
     "automation": "automation"
   }
 }

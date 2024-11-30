@@ -11,7 +11,7 @@ export class StatisticsIncomePanel extends BaseComponent {
     return html`
       <ca-statistics-money-income></ca-statistics-money-income>
 
-      <ca-statistics-city-development-income></ca-statistics-city-development-income>
+      <ca-statistics-development-income></ca-statistics-development-income>
 
       <ca-statistics-programs-income></ca-statistics-programs-income>
     `;

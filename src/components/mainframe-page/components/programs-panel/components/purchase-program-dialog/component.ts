@@ -128,14 +128,14 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
 
     if (_changedProperties.get('isOpen') === false) {
       this._programName = undefined;
-      this._level = 1;
+      this._level = this.controller.developmentLevel;
       this._quality = 0;
       this._confirmationAlertVisible = false;
     }
   }
 
   renderContent() {
-    const { formatter, money, cityLevel } = this.controller;
+    const { formatter, money, developmentLevel } = this.controller;
 
     const program = this._programName
       ? this.controller.getSelectedProgram(this._programName, this._level, this._quality)
@@ -144,7 +144,7 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
 
     const submitButtonValues = JSON.stringify({ cost: formatter.formatNumberLong(cost) });
 
-    const submitButtonDisabled = !(program && this._level <= cityLevel && cost <= money);
+    const submitButtonDisabled = !(program && this._level <= developmentLevel && cost <= money);
 
     return html`
       <sl-dialog ?open=${this.isOpen && !this._confirmationAlertVisible} @sl-request-close=${this.handleClose}>
@@ -185,7 +185,7 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
               value=${this._level}
               type="number"
               min="1"
-              max=${cityLevel}
+              max=${developmentLevel}
               step="1"
               @sl-change=${this.handleLevelChange}
             >
@@ -264,8 +264,8 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
       level = 1;
     }
 
-    if (level > this.controller.cityLevel) {
-      level = this.controller.cityLevel;
+    if (level > this.controller.developmentLevel) {
+      level = this.controller.developmentLevel;
     }
 
     this._level = level;

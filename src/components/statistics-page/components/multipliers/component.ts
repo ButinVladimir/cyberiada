@@ -19,23 +19,35 @@ export class StatisticsMultipliers extends BaseComponent<StatisticsMultipliersCo
   renderContent() {
     const formatter = this.controller.formatter;
 
+    const programCompletionSpeedMultiplier = this.controller.programCompletionSpeedMultiplier;
+    const mainframeDiscount = this.controller.mainframeDiscount * 100;
+
     return html`
       <h4 class="title">
         <intl-message label="ui:statistics:general:multipliers:title">Multipliers and discounts</intl-message>
       </h4>
 
       <div class="parameters-table">
-        <span>
-          <intl-message label="ui:statistics:general:multipliers:programCompletionSpeed">
-            Program completion speed
-          </intl-message>
-        </span>
-        <span> ${formatter.formatNumberFloat(this.controller.programCompletionSpeedMultiplier)} </span>
-
-        <span>
-          <intl-message label="ui:statistics:general:multipliers:mainframeDiscount"> Mainframe discount </intl-message>
-        </span>
-        <span> ${formatter.formatNumberFloat(this.controller.mainframeDiscount * 100)} </span>
+        ${programCompletionSpeedMultiplier > 1
+          ? html`
+              <span>
+                <intl-message label="ui:statistics:general:multipliers:programCompletionSpeed">
+                  Program completion speed
+                </intl-message>
+              </span>
+              <span> ${formatter.formatNumberFloat(programCompletionSpeedMultiplier)} </span>
+            `
+          : null}
+        ${mainframeDiscount > 0
+          ? html`
+              <span>
+                <intl-message label="ui:statistics:general:multipliers:mainframeDiscount">
+                  Mainframe discount
+                </intl-message>
+              </span>
+              <span> ${formatter.formatNumberFloat(mainframeDiscount)} </span>
+            `
+          : null}
       </div>
     `;
   }

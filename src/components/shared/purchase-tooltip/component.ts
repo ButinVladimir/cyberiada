@@ -38,10 +38,10 @@ export class PurchaseTooltip extends BaseComponent<PurchaseTooltipController> {
   }
 
   private renderMessage = () => {
-    if (this.level > this.controller.cityDevelopmentLevel) {
+    if (this.level > this.controller.developmentLevel) {
       return html`
-        <intl-message slot="content" label="ui:common:higherCityDevelopmentLevelRequired">
-          Higher city development level required
+        <intl-message slot="content" label="ui:common:higherDevelopmentLevelRequired">
+          Higher development level required
         </intl-message>
       `;
     }

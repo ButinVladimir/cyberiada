@@ -33,6 +33,9 @@ export class StatisticsPage extends BaseComponent {
         <sl-tab slot="nav" panel="expenses">
           <intl-message label="ui:statistics:tabs:expenses">Expenses</intl-message>
         </sl-tab>
+        <sl-tab slot="nav" panel="unlocked-features">
+          <intl-message label="ui:statistics:tabs:unlockedFeatures">Unlocked features</intl-message>
+        </sl-tab>
 
         <sl-tab-panel name="general">
           <ca-statistics-general-panel></ca-statistics-general-panel>
@@ -45,6 +48,9 @@ export class StatisticsPage extends BaseComponent {
         </sl-tab-panel>
         <sl-tab-panel name="expenses">
           <ca-statistics-expenses-panel></ca-statistics-expenses-panel>
+        </sl-tab-panel>
+        <sl-tab-panel name="unlocked-features">
+          <ca-statistics-unlocked-features-panel></ca-statistics-unlocked-features-panel>
         </sl-tab-panel>
       </sl-tab-group>
     `;

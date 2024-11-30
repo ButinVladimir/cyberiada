@@ -67,7 +67,7 @@ export abstract class BaseProgram implements IProgram {
   get completionPoints() {
     const programData = programs[this.name];
 
-    return calculatePow(this.globalState.cityDevelopment.level - this.level, programData.completionPoints as IExponent);
+    return calculatePow(this.globalState.development.level - this.level, programData.completionPoints as IExponent);
   }
 
   get autoUpgradeEnabled() {

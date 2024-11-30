@@ -1,5 +1,5 @@
 import { GameSpeed } from '../../types';
-import { ICityDevelopmentSerializedParameter } from './city-development-serialized-parameter';
+import { IDevelopmentSerializedParameter } from './development-serialized-parameter';
 import { IComputationalBaseSerializedParameter } from './computational-base-serialized-parameter';
 import { IMoneySerializedParameter } from './money-serialized-parameter';
 import { IStoryEventsSerializedParameter } from './story-events-serialized-parameter';
@@ -11,7 +11,7 @@ export interface IGlobalSerializedState {
   gameSpeed: GameSpeed;
   money: IMoneySerializedParameter;
   time: ITimeSerializedParameter;
-  cityDevelopment: ICityDevelopmentSerializedParameter;
+  development: IDevelopmentSerializedParameter;
   computationalBase: IComputationalBaseSerializedParameter;
   unlockedFeatures: IUnlockedFeaturesSerializedParameter;
   storyEvents: IStoryEventsSerializedParameter;

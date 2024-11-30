@@ -92,7 +92,7 @@ export abstract class MainframeHardwareParameter implements IMainframeHardwarePa
       return false;
     }
 
-    const maxIncrease = this.globalState.cityDevelopment.level - this.level;
+    const maxIncrease = this.globalState.development.level - this.level;
 
     if (increase > maxIncrease) {
       return false;

@@ -18,6 +18,10 @@ export class TopBarValues extends BaseComponent<TopBarValuesController> {
       align-items: center;
     }
 
+    sl-icon {
+      color: var(--ca-hint-color);
+    }
+
     sl-icon[name='clock'] {
       margin-right: var(--sl-spacing-small);
     }
@@ -47,15 +51,13 @@ export class TopBarValues extends BaseComponent<TopBarValuesController> {
     const formatter = this.controller.formatter;
     const accumulatedTimeFormatted = formatter.formatTimeShort(this.controller.accumulatedTime);
     const moneyFormatted = formatter.formatNumberLong(this.controller.money);
-    const cityLevelFormatted = formatter.formatNumberDecimal(this.controller.cityLevel);
+    const developmentLevelFormatted = formatter.formatNumberDecimal(this.controller.developmentLevel);
 
-    const isCityDevelopmentGrowing = this.controller.cityDevelopmentGrowth > 0;
-    const timeUntilNextLevel = isCityDevelopmentGrowing
-      ? formatter.formatTimeShort(
-          this.controller.cityDevelopmentPointsUntilNextLevel / this.controller.cityDevelopmentGrowth,
-        )
+    const isDevelopmentGrowing = this.controller.developmentGrowth > 0;
+    const timeUntilNextLevel = isDevelopmentGrowing
+      ? formatter.formatTimeShort(this.controller.developmentPointsUntilNextLevel / this.controller.developmentGrowth)
       : '';
-    const cityDevelopmentLabel = isCityDevelopmentGrowing ? 'cityLevelNext' : 'cityLevel';
+    const developmentLabel = isDevelopmentGrowing ? 'developmentLevelNext' : 'developmentLevel';
 
     return html`
       <div class="block">
@@ -80,13 +82,13 @@ export class TopBarValues extends BaseComponent<TopBarValuesController> {
 
       <div class="block">
         <sl-tooltip>
-          <intl-message slot="content" label="ui:topBar:${cityDevelopmentLabel}" value=${timeUntilNextLevel}>
-            City level
+          <intl-message slot="content" label="ui:topBar:${developmentLabel}" value=${timeUntilNextLevel}>
+            Development level
           </intl-message>
 
           <sl-icon name="star"> </sl-icon>
 
-          <span class="text"> ${cityLevelFormatted} </span>
+          <span class="text"> ${developmentLevelFormatted} </span>
         </sl-tooltip>
       </div>
     `;

@@ -48,6 +48,10 @@ export class TopBar extends BaseComponent {
       <div class="gutter"></div>
 
       <div class="group">
+        <ca-top-bar-available-goals></ca-top-bar-available-goals>
+      </div>
+
+      <div class="group">
         <sl-tooltip>
           <intl-message slot="content" label="ui:topBar:messageLog"> Message log </intl-message>
 

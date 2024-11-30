@@ -1,6 +1,7 @@
 import { EventBatcher } from '@shared/event-batcher';
 import { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import { ISettingsState } from '@state/settings-state/interfaces/settings-state';
+import { IScenarioState } from '@state/scenario-state/interfaces/scenario-state';
 import { ITimeParameter } from './interfaces/time-parameter';
 import { ITimeSerializedParameter } from './interfaces/serialized-states/time-serialized-parameter';
 import { ITimeConstructorParameters } from './interfaces/constructor-parameters/time-constructor-parameters';
@@ -11,6 +12,7 @@ export class TimeParameter implements ITimeParameter {
 
   private _stateUiConnector: IStateUIConnector;
   private _settingsState: ISettingsState;
+  private _scenarioState: IScenarioState;
 
   private _lastUpdateTime: number;
   private _accumulatedTime: number;
@@ -20,6 +22,7 @@ export class TimeParameter implements ITimeParameter {
   constructor(parameters: ITimeConstructorParameters) {
     this._stateUiConnector = parameters.stateUiConnector;
     this._settingsState = parameters.settingsState;
+    this._scenarioState = parameters.scenarioState;
 
     this._lastUpdateTime = 0;
     this._accumulatedTime = 0;
@@ -75,7 +78,7 @@ export class TimeParameter implements ITimeParameter {
   // eslint-disable-next-line @typescript-eslint/require-await
   async startNewState(): Promise<void> {
     this._lastUpdateTime = Date.now();
-    this._accumulatedTime = 1000000000;
+    this._accumulatedTime = this._scenarioState.currentValues.accumulatedTime;
     this._gameTime = 0;
     this._gameTimeTotal = 0;
   }

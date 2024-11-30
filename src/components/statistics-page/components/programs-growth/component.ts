@@ -19,19 +19,25 @@ export class StatisticsProgramsGrowth extends BaseComponent<StatisticsProgramsGr
   renderContent() {
     const formatter = this.controller.formatter;
 
+    const computationalBase = this.controller.computationalBase;
+
     return html`
       <h4 class="title">
         <intl-message label="ui:statistics:growth:pointsByPrograms:title">Points per second by programs</intl-message>
       </h4>
 
-      <div class="parameters-table">
-        <span>
-          <intl-message label="ui:statistics:growth:pointsByPrograms:computationalBase">
-            Computational base
-          </intl-message>
-        </span>
-        <span> ${formatter.formatNumberLong(this.controller.computationalBaseByProgram)} </span>
-      </div>
+      ${computationalBase > 0
+        ? html`
+            <div class="parameters-table">
+              <span>
+                <intl-message label="ui:statistics:growth:pointsByPrograms:computationalBase">
+                  Computational base
+                </intl-message>
+              </span>
+              <span> ${formatter.formatNumberLong(computationalBase)} </span>
+            </div>
+          `
+        : null}
     `;
   }
 }

@@ -1,11 +1,9 @@
 import { IUIEventEmitter } from '@shared/interfaces/ui-event-emitter';
 import { ISerializeable } from '@shared/interfaces/serializable';
 import { IncomeSource } from '@shared/types';
-import { ICityDevelopmentSerializedParameter } from './serialized-states/city-development-serialized-parameter';
+import { IDevelopmentSerializedParameter } from './serialized-states/development-serialized-parameter';
 
-export interface ICityDevelopmentParameter
-  extends ISerializeable<ICityDevelopmentSerializedParameter>,
-    IUIEventEmitter {
+export interface IDevelopmentParameter extends ISerializeable<IDevelopmentSerializedParameter>, IUIEventEmitter {
   points: number;
   level: number;
   increase(pointsDelta: number, incomeSource: IncomeSource): void;

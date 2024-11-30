@@ -19,18 +19,24 @@ export class StatisticsProgramsIncome extends BaseComponent<StatisticsProgramsIn
   renderContent() {
     const formatter = this.controller.formatter;
 
+    const computationalBase = this.controller.computationalBase;
+
     return html`
       <h4 class="title">
         <intl-message label="ui:statistics:income:pointsByPrograms:title">Points by programs</intl-message>
       </h4>
 
       <div class="parameters-table">
-        <span>
-          <intl-message label="ui:statistics:income:pointsByPrograms:computationalBase">
-            Computational base
-          </intl-message>
-        </span>
-        <span> ${formatter.formatNumberLong(this.controller.computationalBaseByProgram)} </span>
+        ${computationalBase > 1
+          ? html`
+              <span>
+                <intl-message label="ui:statistics:income:pointsByPrograms:computationalBase">
+                  Computational base
+                </intl-message>
+              </span>
+              <span> ${formatter.formatNumberLong(this.controller.computationalBase)} </span>
+            `
+          : null}
       </div>
     `;
   }

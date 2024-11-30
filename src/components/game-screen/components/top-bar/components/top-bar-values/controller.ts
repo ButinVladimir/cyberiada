@@ -9,15 +9,15 @@ export class TopBarValuesController extends BaseController {
     return this.globalState.money.money;
   }
 
-  get cityLevel(): number {
-    return this.globalState.cityDevelopment.level;
+  get developmentLevel(): number {
+    return this.globalState.development.level;
   }
 
-  get cityDevelopmentGrowth(): number {
-    return this.globalState.cityDevelopmentGrowth.totalGrowth;
+  get developmentGrowth(): number {
+    return this.globalState.developmentGrowth.totalGrowth;
   }
 
-  get cityDevelopmentPointsUntilNextLevel(): number {
-    return this.globalState.cityDevelopment.getNextLevelPoints() - this.globalState.cityDevelopment.points;
+  get developmentPointsUntilNextLevel(): number {
+    return this.globalState.development.getNextLevelPoints() - this.globalState.development.points;
   }
 }

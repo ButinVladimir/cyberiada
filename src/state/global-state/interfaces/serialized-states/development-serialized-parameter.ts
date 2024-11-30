@@ -1,6 +1,6 @@
 import { IncomeSource } from '@shared/types';
 
-export interface ICityDevelopmentSerializedParameter {
+export interface IDevelopmentSerializedParameter {
   points: number;
   income: Record<IncomeSource, number>;
 }

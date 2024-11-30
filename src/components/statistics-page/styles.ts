@@ -2,6 +2,8 @@ import { css } from 'lit';
 
 export const statisticsPanelStyle = css`
   :host {
+    max-width: var(--ca-viewport-width);
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: stretch;

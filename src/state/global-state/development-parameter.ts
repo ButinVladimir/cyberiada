@@ -3,13 +3,13 @@ import { EventBatcher } from '@shared/event-batcher';
 import { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import { IScenarioState } from '@state/scenario-state/interfaces/scenario-state';
 import { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
-import { ICityDevelopmentParameter } from './interfaces/city-development-parameter';
-import { ICityDevelopmentSerializedParameter } from './interfaces/serialized-states/city-development-serialized-parameter';
-import { ICityDevelopmentConstructorParameters } from './interfaces/constructor-parameters/city-development-constructor-parameters';
+import { IDevelopmentParameter } from './interfaces/development-parameter';
+import { IDevelopmentSerializedParameter } from './interfaces/serialized-states/development-serialized-parameter';
+import { IDevelopmentConstructorParameters } from './interfaces/constructor-parameters/development-constructor-parameters';
 import { IGlobalState } from './interfaces/global-state';
 import { GLOBAL_STATE_UI_EVENTS } from './constants';
 
-export class CityDevelopmentParameter implements ICityDevelopmentParameter {
+export class DevelopmentParameter implements IDevelopmentParameter {
   readonly uiEventBatcher: EventBatcher;
 
   private _stateUiConnector: IStateUIConnector;
@@ -22,7 +22,7 @@ export class CityDevelopmentParameter implements ICityDevelopmentParameter {
   private _levelUpdateRequested: boolean;
   private _income: Map<IncomeSource, number>;
 
-  constructor(parameters: ICityDevelopmentConstructorParameters) {
+  constructor(parameters: IDevelopmentConstructorParameters) {
     this._stateUiConnector = parameters.stateUiConnector;
     this._scenarioState = parameters.scenarioState;
     this._messageLogState = parameters.messageLogState;
@@ -38,13 +38,13 @@ export class CityDevelopmentParameter implements ICityDevelopmentParameter {
   }
 
   get points() {
-    this._stateUiConnector.connectEventHandler(this, GLOBAL_STATE_UI_EVENTS.CITY_DEVELOPMENT_POINTS_CHANGED);
+    this._stateUiConnector.connectEventHandler(this, GLOBAL_STATE_UI_EVENTS.DEVELOPMENT_POINTS_CHANGED);
 
     return this._points;
   }
 
   get level() {
-    this._stateUiConnector.connectEventHandler(this, GLOBAL_STATE_UI_EVENTS.CITY_DEVELOPMENT_LEVEL_CHANGED);
+    this._stateUiConnector.connectEventHandler(this, GLOBAL_STATE_UI_EVENTS.DEVELOPMENT_LEVEL_CHANGED);
 
     return this._level;
   }
@@ -56,17 +56,17 @@ export class CityDevelopmentParameter implements ICityDevelopmentParameter {
 
     this.requestLevelRecalculation();
 
-    this.uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.CITY_DEVELOPMENT_POINTS_CHANGED);
+    this.uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.DEVELOPMENT_POINTS_CHANGED);
   }
 
   getIncome(incomeSource: IncomeSource): number {
-    this._stateUiConnector.connectEventHandler(this, GLOBAL_STATE_UI_EVENTS.CITY_DEVELOPMENT_POINTS_CHANGED);
+    this._stateUiConnector.connectEventHandler(this, GLOBAL_STATE_UI_EVENTS.DEVELOPMENT_POINTS_CHANGED);
 
     return this._income.get(incomeSource) ?? 0;
   }
 
   getNextLevelPoints(): number {
-    const { base, baseMultiplier } = this._scenarioState.currentValues.cityLevelRequirements;
+    const { base, baseMultiplier } = this._scenarioState.currentValues.developmentLevelRequirements;
 
     return (baseMultiplier * (Math.pow(base, this._level) - 1)) / (base - 1);
   }
@@ -82,7 +82,7 @@ export class CityDevelopmentParameter implements ICityDevelopmentParameter {
 
     this._levelUpdateRequested = false;
 
-    const { base, baseMultiplier } = this._scenarioState.currentValues.cityLevelRequirements;
+    const { base, baseMultiplier } = this._scenarioState.currentValues.developmentLevelRequirements;
     const newLevel = Math.floor(Math.log(1 + (this._points * (base - 1)) / baseMultiplier) / Math.log(base)) + 1;
 
     if (newLevel > this._level) {
@@ -90,23 +90,23 @@ export class CityDevelopmentParameter implements ICityDevelopmentParameter {
 
       this._messageLogState.postMessage(GameStateEvent.levelReached, { level: newLevel });
       this._globalState.storyEvents.visitEvents();
-      this.uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.CITY_DEVELOPMENT_LEVEL_CHANGED);
+      this.uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.DEVELOPMENT_LEVEL_CHANGED);
     }
   }
 
   // eslint-disable-next-line @typescript-eslint/require-await
   async startNewState(): Promise<void> {
     this._points = 0;
-    this._level = this._scenarioState.currentValues.startingCityLevel;
+    this._level = this._scenarioState.currentValues.developmentLevel;
     this._income.clear();
 
     this.requestLevelRecalculation();
   }
 
   // eslint-disable-next-line @typescript-eslint/require-await
-  async deserialize(serializedState: ICityDevelopmentSerializedParameter): Promise<void> {
+  async deserialize(serializedState: IDevelopmentSerializedParameter): Promise<void> {
     this._points = serializedState.points;
-    this._level = this._scenarioState.currentValues.startingCityLevel;
+    this._level = this._scenarioState.currentValues.developmentLevel;
 
     this._income.clear();
     Object.entries(serializedState.income).forEach(([incomeSource, value]) => {
@@ -116,7 +116,7 @@ export class CityDevelopmentParameter implements ICityDevelopmentParameter {
     this.requestLevelRecalculation();
   }
 
-  serialize(): ICityDevelopmentSerializedParameter {
+  serialize(): IDevelopmentSerializedParameter {
     return {
       points: this._points,
       income: Object.fromEntries(this._income.entries()) as Record<IncomeSource, number>,

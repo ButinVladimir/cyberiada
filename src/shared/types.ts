@@ -10,7 +10,7 @@ export enum Theme {
 
 export enum OverviewMenuItem {
   cityOverview = 'cityOverview',
-  company = 'company',
+  companyManagement = 'companyManagement',
   mainframe = 'mainframe',
   statistics = 'statistics',
   automation = 'automation',

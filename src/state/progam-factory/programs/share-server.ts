@@ -23,33 +23,33 @@ export class ShareServerProgram extends BaseProgram {
 
   perform(threads: number, usedRam: number): void {
     const moneyDelta = this.calculateMoneyDelta(threads, usedRam, this._settingsState.updateInterval);
-    const cityDevelopmentPointsDelta = this.calculateCityDevelopmentPointsDelta(
+    const developmentPointsDelta = this.calculateDevelopmentPointsDelta(
       threads,
       usedRam,
       this._settingsState.updateInterval,
     );
 
     this.globalState.money.increase(moneyDelta, IncomeSource.program);
-    this.globalState.cityDevelopment.increase(cityDevelopmentPointsDelta, IncomeSource.program);
+    this.globalState.development.increase(developmentPointsDelta, IncomeSource.program);
   }
 
   buildProgramDescriptionParametersObject(threads: number, usedRam: number) {
     const moneyDelta = this.calculateMoneyDelta(threads, usedRam, MS_IN_SECOND);
-    const cityDevelopmentPointsDelta = this.calculateCityDevelopmentPointsDelta(threads, usedRam, MS_IN_SECOND);
+    const developmentPointsDelta = this.calculateDevelopmentPointsDelta(threads, usedRam, MS_IN_SECOND);
 
     return {
       money: this.formatter.formatNumberLong(moneyDelta),
-      cityDevelopmentPoints: this.formatter.formatNumberLong(cityDevelopmentPointsDelta),
+      developmentPoints: this.formatter.formatNumberLong(developmentPointsDelta),
     };
   }
 
   buildProcessDescriptionParametersObject(threads: number, usedCores: number, usedRam: number) {
     const moneyDelta = this.calculateMoneyDelta(usedCores, usedRam, MS_IN_SECOND);
-    const cityDevelopmentPointsDelta = this.calculateCityDevelopmentPointsDelta(usedCores, usedRam, MS_IN_SECOND);
+    const developmentPointsDelta = this.calculateDevelopmentPointsDelta(usedCores, usedRam, MS_IN_SECOND);
 
     return {
       money: this.formatter.formatNumberLong(moneyDelta),
-      cityDevelopmentPoints: this.formatter.formatNumberLong(cityDevelopmentPointsDelta),
+      developmentPoints: this.formatter.formatNumberLong(developmentPointsDelta),
     };
   }
 
@@ -63,13 +63,13 @@ export class ShareServerProgram extends BaseProgram {
     );
   }
 
-  calculateCityDevelopmentPointsDelta(threads: number, usedRam: number, passedTime: number): number {
+  calculateDevelopmentPointsDelta(threads: number, usedRam: number, passedTime: number): number {
     const programData = programs[this.name];
 
     return (
       this.calculateModifier(threads, usedRam, passedTime) *
-      calculatePow(this.level - 1, programData.cityDevelopmentPoints as IExponent) *
-      Math.pow(programData.cityDevelopmentPointsQualityMultiplier, this.quality)
+      calculatePow(this.level - 1, programData.developmentPoints as IExponent) *
+      Math.pow(programData.developmentPointsQualityMultiplier, this.quality)
     );
   }
 

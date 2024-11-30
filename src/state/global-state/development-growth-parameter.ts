@@ -4,12 +4,12 @@ import { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui
 import { IMainframeProcessesState } from '@state/mainframe/mainframe-processes-state/interfaces/mainframe-processes-state';
 import { ProgramName } from '@state/progam-factory/types';
 import { ShareServerProgram } from '@state/progam-factory/programs/share-server';
-import { ICityDevelopmentGrowthParameter } from './interfaces/city-development-growth-parameter';
-import { ICityDevelopmentGrowthConstructorParameters } from './interfaces/constructor-parameters/city-development-growth-constructor-parameters';
+import { IDevelopmentGrowthParameter } from './interfaces/development-growth-parameter';
+import { IDevelopmentGrowthConstructorParameters } from './interfaces/constructor-parameters/development-growth-constructor-parameters';
 import { GLOBAL_STATE_UI_EVENTS } from './constants';
 import { INCOME_SOURCES } from '@shared/constants';
 
-export class CityDevelopmentGrowthParameter implements ICityDevelopmentGrowthParameter {
+export class DevelopmentGrowthParameter implements IDevelopmentGrowthParameter {
   readonly uiEventBatcher: EventBatcher;
 
   private _stateUiConnector: IStateUIConnector;
@@ -19,7 +19,7 @@ export class CityDevelopmentGrowthParameter implements ICityDevelopmentGrowthPar
   private _growth: Map<IncomeSource, number>;
   private _updateRequested: boolean;
 
-  constructor(parameters: ICityDevelopmentGrowthConstructorParameters) {
+  constructor(parameters: IDevelopmentGrowthConstructorParameters) {
     this._stateUiConnector = parameters.stateUiConnector;
     this._mainframeProcessesState = parameters.mainframeProcessesState;
 
@@ -33,13 +33,13 @@ export class CityDevelopmentGrowthParameter implements ICityDevelopmentGrowthPar
   }
 
   get totalGrowth() {
-    this._stateUiConnector.connectEventHandler(this, GLOBAL_STATE_UI_EVENTS.CITY_DEVELOPMENT_GROWTH_CHANGED);
+    this._stateUiConnector.connectEventHandler(this, GLOBAL_STATE_UI_EVENTS.DEVELOPMENT_GROWTH_CHANGED);
 
     return this._totalGrowth;
   }
 
   getGrowth(incomeSource: IncomeSource): number {
-    this._stateUiConnector.connectEventHandler(this, GLOBAL_STATE_UI_EVENTS.CITY_DEVELOPMENT_GROWTH_CHANGED);
+    this._stateUiConnector.connectEventHandler(this, GLOBAL_STATE_UI_EVENTS.DEVELOPMENT_GROWTH_CHANGED);
 
     return this._growth.get(incomeSource) ?? 0;
   }
@@ -58,7 +58,7 @@ export class CityDevelopmentGrowthParameter implements ICityDevelopmentGrowthPar
     this.updateGrowthByProgram();
     this.updateTotalGrowth();
 
-    this.uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.CITY_DEVELOPMENT_GROWTH_CHANGED);
+    this.uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.DEVELOPMENT_GROWTH_CHANGED);
   }
 
   private updateGrowthByProgram() {
@@ -66,7 +66,7 @@ export class CityDevelopmentGrowthParameter implements ICityDevelopmentGrowthPar
     let incomeByProgram = 0;
 
     if (shareServerProcess?.isActive) {
-      incomeByProgram = (shareServerProcess.program as ShareServerProgram).calculateCityDevelopmentPointsDelta(
+      incomeByProgram = (shareServerProcess.program as ShareServerProgram).calculateDevelopmentPointsDelta(
         this._mainframeProcessesState.availableCores,
         this._mainframeProcessesState.availableRam,
         1,

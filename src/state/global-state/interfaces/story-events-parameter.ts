@@ -1,7 +1,8 @@
 import { ISerializeable } from '@shared/interfaces/serializable';
 import { IStoryEventsSerializedParameter } from './serialized-states';
+import { IStoryEvent } from '@state/scenario-state';
 
 export interface IStoryEventsParameter extends ISerializeable<IStoryEventsSerializedParameter> {
-  isEventVisited(eventKey: string): boolean;
   visitEvents(): void;
+  listAvailableGoals(): IStoryEvent[];
 }

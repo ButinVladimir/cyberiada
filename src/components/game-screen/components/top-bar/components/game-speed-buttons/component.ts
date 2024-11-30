@@ -15,6 +15,7 @@ import { GameSpeedButtonProps } from './interfaces';
 export class GameSpeedButtons extends BaseComponent<GameSpeedButtonsController> {
   static styles = css`
     :host {
+      height: 100%;
       display: flex;
       box-sizing: border-box;
       align-items: center;

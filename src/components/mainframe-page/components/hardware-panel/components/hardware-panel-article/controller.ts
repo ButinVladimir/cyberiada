@@ -4,8 +4,8 @@ import { IMainframeHardwareParameter } from '@state/mainframe/mainframe-hardware
 import { MainframeHardwareParameterType } from '@state/mainframe/mainframe-hardware-state/types';
 
 export class MainframeHardwarePanelArticleController extends BaseController {
-  get cityDevelopmentLevel() {
-    return this.globalState.cityDevelopment.level;
+  get developmentLevel() {
+    return this.globalState.development.level;
   }
 
   isAutoUpgradeEnabled(type: MainframeHardwareParameterType): boolean {

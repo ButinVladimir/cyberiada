@@ -7,8 +7,8 @@
     "unlockFeatures": [],
     "income": { "baseMultiplier": 1, "base": 1.1 },
     "incomeQualityMultiplier": 2,
-    "cityDevelopmentPoints": { "baseMultiplier": 1, "base": 1.1 },
-    "cityDevelopmentPointsQualityMultiplier": 2
+    "developmentPoints": { "baseMultiplier": 1, "base": 1.1 },
+    "developmentPointsQualityMultiplier": 2
   },
   "predictiveComputator": {
     "ram": 0,

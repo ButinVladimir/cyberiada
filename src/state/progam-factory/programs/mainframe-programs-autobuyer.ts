@@ -40,7 +40,7 @@ export class MainframeProgramsAutobuyerProgram extends BaseProgram {
 
       const checkProgram = this.makeCheckProgramFunction(existingProgram, availableMoney);
 
-      const newLevel = binarySearchDecimal(existingProgram.level, this.globalState.cityDevelopment.level, checkProgram);
+      const newLevel = binarySearchDecimal(existingProgram.level, this.globalState.development.level, checkProgram);
 
       if (newLevel > existingProgram.level) {
         const programParameters: IMakeProgramParameters = {

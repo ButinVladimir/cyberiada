@@ -12,10 +12,10 @@ import {
   IMoneyParameter,
   IGlobalSerializedState,
   ITimeParameter,
-  ICityDevelopmentParameter,
+  IDevelopmentParameter,
   IProgramCompletionSpeedParameter,
   IMoneyGrowthParameter,
-  ICityDevelopmentGrowthParameter,
+  IDevelopmentGrowthParameter,
   IComputationalBaseParameter,
   IProgramsGrowthParameter,
   IUnlockedFeaturesParameter,
@@ -25,10 +25,10 @@ import { IGlobalState } from './interfaces/global-state';
 import { GameSpeed } from './types';
 import { MoneyParameter } from './money-parameter';
 import { TimeParameter } from './time-parameter';
-import { CityDevelopmentParameter } from './city-development-parameter';
+import { DevelopmentParameter } from './development-parameter';
 import { ProgramCompletionSpeedParameter } from './program-completion-speed-parameter';
 import { MoneyGrowthParameter } from './money-growth-parameter';
-import { CityDevelopmentGrowthParameter } from './city-development-growth-parameter';
+import { DevelopmentGrowthParameter } from './development-growth-parameter';
 import { ComputationalBaseParameter } from './computational-base-parameter';
 import { ProgramsGrowthParameter } from './programs-growth-parameter';
 import { UnlockedFeaturesParameter } from './unlocked-features-parameter';
@@ -63,11 +63,11 @@ export class GlobalState implements IGlobalState {
   private _gameSpeed: GameSpeed;
   private _money: IMoneyParameter | undefined;
   private _time: ITimeParameter | undefined;
-  private _cityDevelopment: ICityDevelopmentParameter | undefined;
+  private _development: IDevelopmentParameter | undefined;
   private _computationalBase: IComputationalBaseParameter | undefined;
   private _programCompletionSpeed: IProgramCompletionSpeedParameter | undefined;
   private _moneyGrowth: IMoneyGrowthParameter | undefined;
-  private _cityDevelopmentGrowth: ICityDevelopmentGrowthParameter | undefined;
+  private _developmentGrowth: IDevelopmentGrowthParameter | undefined;
   private _programsGrowth: IProgramsGrowthParameter | undefined;
   private _unlockedFeatures: IUnlockedFeaturesParameter | undefined;
   private _storyEvents: IStoryEventsParameter | undefined;
@@ -105,15 +105,16 @@ export class GlobalState implements IGlobalState {
       this._time = new TimeParameter({
         stateUiConnector: this._stateUiConnector,
         settingsState: this._settingsState,
+        scenarioState: this._scenarioState,
       });
     }
 
     return this._time;
   }
 
-  get cityDevelopment(): ICityDevelopmentParameter {
-    if (!this._cityDevelopment) {
-      this._cityDevelopment = new CityDevelopmentParameter({
+  get development(): IDevelopmentParameter {
+    if (!this._development) {
+      this._development = new DevelopmentParameter({
         stateUiConnector: this._stateUiConnector,
         scenarioState: this._scenarioState,
         messageLogState: this._messageLogState,
@@ -121,7 +122,7 @@ export class GlobalState implements IGlobalState {
       });
     }
 
-    return this._cityDevelopment;
+    return this._development;
   }
 
   get computationalBase(): IComputationalBaseParameter {
@@ -159,15 +160,15 @@ export class GlobalState implements IGlobalState {
     return this._moneyGrowth;
   }
 
-  get cityDevelopmentGrowth(): ICityDevelopmentGrowthParameter {
-    if (!this._cityDevelopmentGrowth) {
-      this._cityDevelopmentGrowth = new CityDevelopmentGrowthParameter({
+  get developmentGrowth(): IDevelopmentGrowthParameter {
+    if (!this._developmentGrowth) {
+      this._developmentGrowth = new DevelopmentGrowthParameter({
         stateUiConnector: this._stateUiConnector,
         mainframeProcessesState: this._mainframeProcessesState,
       });
     }
 
-    return this._cityDevelopmentGrowth;
+    return this._developmentGrowth;
   }
 
   get programsGrowth(): IProgramsGrowthParameter {
@@ -209,16 +210,16 @@ export class GlobalState implements IGlobalState {
   requestGrowthRecalculation() {
     this.programCompletionSpeed.requestRecalculation();
     this.moneyGrowth.requestRecalculation();
-    this.cityDevelopmentGrowth.requestRecalculation();
+    this.developmentGrowth.requestRecalculation();
     this.programsGrowth.requestRecalculation();
   }
 
   recalculate() {
-    this.cityDevelopment.recalculateLevel();
+    this.development.recalculateLevel();
     this.computationalBase.recalculateDiscount();
     this.programCompletionSpeed.recalculate();
     this.moneyGrowth.recalculate();
-    this.cityDevelopmentGrowth.recalculate();
+    this.developmentGrowth.recalculate();
     this.programsGrowth.recalculate();
   }
 
@@ -227,7 +228,7 @@ export class GlobalState implements IGlobalState {
     this._gameSpeed = GameSpeed.normal;
     await this.money.startNewState();
     await this.time.startNewState();
-    await this.cityDevelopment.startNewState();
+    await this.development.startNewState();
     await this.computationalBase.startNewState();
     await this.unlockedFeatures.startNewState();
     await this.storyEvents.startNewState();
@@ -240,7 +241,7 @@ export class GlobalState implements IGlobalState {
     this._gameSpeed = serializedState.gameSpeed;
     await this.money.deserialize(serializedState.money);
     await this.time.deserialize(serializedState.time);
-    await this.cityDevelopment.deserialize(serializedState.cityDevelopment);
+    await this.development.deserialize(serializedState.development);
     await this.computationalBase.deserialize(serializedState.computationalBase);
     await this.unlockedFeatures.deserialize(serializedState.unlockedFeatures);
     await this.storyEvents.deserialize(serializedState.storyEvents);
@@ -254,7 +255,7 @@ export class GlobalState implements IGlobalState {
       gameSpeed: this._gameSpeed,
       money: this.money.serialize(),
       time: this.time.serialize(),
-      cityDevelopment: this.cityDevelopment.serialize(),
+      development: this.development.serialize(),
       computationalBase: this.computationalBase.serialize(),
       unlockedFeatures: this.unlockedFeatures.serialize(),
       storyEvents: this.storyEvents.serialize(),

@@ -150,7 +150,7 @@ export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwa
 
   private calculateIncrease(): number {
     return Math.max(
-      Math.min(this.maxIncrease, this.controller.cityDevelopmentLevel - this.controller.getLevel(this.type)),
+      Math.min(this.maxIncrease, this.controller.developmentLevel - this.controller.getLevel(this.type)),
       1,
     );
   }

@@ -11,7 +11,7 @@ export class StatisticsGrowthPanel extends BaseComponent {
     return html`
       <ca-statistics-money-growth></ca-statistics-money-growth>
 
-      <ca-statistics-city-development-growth></ca-statistics-city-development-growth>
+      <ca-statistics-development-growth></ca-statistics-development-growth>
 
       <ca-statistics-program-completion-speed></ca-statistics-program-completion-speed>
 
