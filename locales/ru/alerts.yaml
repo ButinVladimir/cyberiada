@@ -18,9 +18,9 @@ processDelete:
   message: Вы действительно хотите удалить процесс для программы $t(programs:{{value.programName}}:name)? Его прогресс будет утерян.
 processReplace:
   name: Замена процесса
-  message: Вы действительно хотите заменить процесс для программы $t(programs:{{value.programName}}:name)? Это заменит текущий процесс с потоками {{value.threads}}.
+  message: Вы действительно хотите заменить процесс для программы $t(programs:{{value.programName}}:name)? Это заменит текущий процесс с {{value.threads}} потоками.
 scalableProcessReplace:
-  name: Замена автомасштабируемого процесса
+  name: Замена табируемого процесса
   message: Вы действительно хотите заменить автомасштабируемый процесс? Это удалит текущий процесс для программы $t(programs:{{value.programName}}:name).
 deleteAllProcesses:
   name: Удаление всех процессов

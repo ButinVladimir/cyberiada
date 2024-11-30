@@ -67,6 +67,11 @@
       ]
     },
     {
+      "name": "ca-credits-page",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - ",
+      "attributes": []
+    },
+    {
       "name": "ca-fast-forwarding-screen",
       "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_maxTime` {`number`} - \n\n  * `handleStopFastForwarding` - \n\n  * `controller` {`FastForwardingScreenController`} - ",
       "attributes": []

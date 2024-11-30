@@ -64,11 +64,11 @@ export class Formatter implements IFormatter {
   }
 
   formatNumberFloat(value: number): string {
-    return 'F' + this._floatBuiltInFormatter.format(value);
+    return this._floatBuiltInFormatter.format(value);
   }
 
   formatNumberDecimal(value: number): string {
-    return 'D' + this._decimalBuiltInFormatter.format(value);
+    return this._decimalBuiltInFormatter.format(value);
   }
 
   formatNumberLong(value: number): string {
@@ -102,6 +102,6 @@ export class Formatter implements IFormatter {
   };
 
   private formatNumberExponential(value: number) {
-    return 'E' + value.toExponential(2);
+    return value.toExponential(2);
   }
 }

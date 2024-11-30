@@ -18,6 +18,7 @@ export enum OverviewMenuItem {
 
 export enum MiscMenuItem {
   settings = 'settings',
+  credits = 'credits',
 }
 
 export enum Scenario {

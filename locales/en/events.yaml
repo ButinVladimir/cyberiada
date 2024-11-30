@@ -8,8 +8,8 @@ fastForwarded:
   name: Accumulated time spent
   message: Accumulated time has been spent
 levelReached:
-  name: Level reached
-  message: Level {{value.level}} has been reached
+  name: Development level reached
+  message: Development level {{value.level}} has been reached
 featureUnlocked:
   name: New feature unlocked
   message: New feature "$t(features:{{value.feature}})" has been unlocked

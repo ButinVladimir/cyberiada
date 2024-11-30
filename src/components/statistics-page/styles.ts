@@ -42,4 +42,12 @@ export const statisticsPanelContentStyle = css`
     text-align: end;
     white-space: nowrap;
   }
+
+  sl-icon[name='question-circle'] {
+    position: relative;
+    top: 0.25em;
+    margin-left: 0.5em;
+    color: var(--ca-hint-color);
+    font-size: var(--sl-font-size-large);
+  }
 `;

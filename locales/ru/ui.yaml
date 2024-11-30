@@ -11,10 +11,12 @@ common:
   higherDevelopmentLevelRequired: Требуется больший уровень развития
 pages:
   cityOverview: Обзор города
-  company: Компания
+  companyManagement: Управление компанией
   mainframe: Мейнфрейм
   statistics: Статистика
   settings: Настройки
+  automation: Автоматизация
+  credits: Титры
 topBar:
   menu: Показать/скрыть меню
   messageLog: Показать/скрыть сообщения
@@ -25,8 +27,12 @@ topBar:
     fastForward: Потратить все накопленное время
   accumulatedTime: Накопленное время
   money: Деньги
-  developmentLevel: Уровень города
-  developmentLevelNext: Уровень города, следующий уровень будет достигнут через {{value}}
+  developmentLevel: Уровень развития
+  developmentLevelNext: Уровень развития, следующий уровень будет достигнут через {{value}}
+  availableGoals:
+    titleGoalsExist: 'Доступные цели уровня развития:'
+    titleNoGoals: Доступных целей уроня развития нет
+    reachLevel: Достичь уровень развития {{value}}
 messageLog:
   messageLog: Сообщения
   clearMessages: Удалить сообщения
@@ -65,6 +71,9 @@ settings:
   alertFilter: Фильтр предупреждений
   alertFilterHint: Включите предупреждения в фильтре, чтобы они появлялись, когда соответствующее события произошли.
   alertToggle: Показывать подобные предупреждения в будущем
+  notificationTypeFilter: Фильтр уведомлений
+  notificationTypeFilterHint: Включите уведомления в фильтре, чтобы они появлялись, когда соответствующее события произошли.
+  notificationTypeToggle: Показывать подобные уведомления в будущем
 city:
   cityOverview:
     title: Обзор города
@@ -82,7 +91,7 @@ mainframe:
   programDescription:
     cost: Стоит {{value.cost}} для покупки
     requirements: Требует {{value.ram}} памяти и до {{value.cores}} ядер для запуска {{value.threads}} потоков
-    requirementsScalable: Масштабируется и использует все неиспользуемые ядра и память
+    requirementsScalable: Автомасштабируется и использует все неиспользуемые ядра и память
     completionTime: Может быть выполнена за {{value.minTime}} - {{value.maxTime}}
     completionTimeScalable: Выполняется каждый тик
   tabs:
@@ -90,7 +99,9 @@ mainframe:
     hardware: Оборудование
     programs: Программы
   hardware:
-    keyboardHint: Нажмите Ctrl или Shift для покупки 10 уровней. Нажмите вместе Ctrl и Shift для покупки 100 уровней.
+    hardwareHint: Нажмите Ctrl или Shift для покупки 10 уровней. Нажмите вместе Ctrl и Shift для покупки 100 уровней.
+      Приоритет улучшения оборудования может быть изменен путем его перетаскивания за название.
+      Улучшения наверху имеют больший приоритет.
     performance: 'Уровень производительности: {{value}}'
     performanceHint: Высокие уровни производительности ведут к более быстрым процессам
     cores: 'Уровень ядер: {{value}}'
@@ -99,24 +110,29 @@ mainframe:
     ramHint: Дополнительная память дает возможность держать больше процессов в памяти, чтобы они смогли выполниться позже или в больших группах
     buy: Купить x{{value.increase}} за {{value.cost}}
   programs:
+    programsHint: Приоритет улучшения программы может быть изменен путем его перетаскивания за название.
+      Программы наверху имеют больший приоритет.
     purchaseProgram: Купить программу
     purchaseProgramDialogHint: Выберите тип программы, уровень и качество, чтобы купить её.
       Уровень не может быть выше текущего уровня развития города.
       Качество зависит от полученных услуг.
-      Если у вас уже есть программа с тем же именем, старая будет заменена на новую.
+      Если у тебя уже есть программа с тем же именем, старая будет заменена на новую.
     purchase: Купить за {{value.cost}}
-    emptyListNotification: У вас нет имеющихся програм
+    emptyListNotification: У тебя нет имеющихся програм
+    toggleAutoupgrade: Включить/выключить автопокупку
+    toggleAutoupgradeAll: Включить/выключить автопокупку для всех программ
   processes:
     processesHint: Чтобы программа выполнялась, для неё должен быть начат процесс.
       Процессы для немасштабируемых программ наверху списка имеют приоритет, когда ядра распределяются по процессам.
       Ядра и память будут назначены для процесса с масштабируемой программой в последнюю очередь.
       Только один процесс для масштабируемой программы может выполняться.
       Минимальное время выполнения процесса ограничено.
+      Порядок процессов можно поменять перетаскиванием их за названия.
     startProcess: Начать процесс
     startProcessDialogHint: Выберите одну из имеющихся программ, чтобы начать процесс для неё.
-      Если у вас уже есть процесс для выбранной программы, старый процесс будет замене на новый.
+      Если у тебя уже есть процесс для выбранной программы, старый процесс будет замене на новый.
       Потоки позволяют выполняться нескольким экземплярам программы одновременно, но дополнительные потоки требует больше памяти.
-    emptyListNotification: У вас нет процессов
+    emptyListNotification: У тебя нет процессов
     programSelectItem: $t(programs:{{value.programName}}:name), уровень {{value.level}}, качество {{value.quality}}
     progressBarLabel: "{{value.currentCompletionPoints}} \/ {{value.maxCompletionPoints}}"
     progressBarHintActive: 'Процесс будет выполнен через {{value}}'
@@ -141,6 +157,10 @@ statistics:
     growth: Прирост
     income: Накопления
     expenses: Расходы
+    unlockedFeatures: Разблокированные возможности
+  hints:
+    mainframeDiscount: Скидка на продукты для мейнфрейма мультипликативно зависит от очков вычистельной базы, сгенерированных программами и членами команды
+    computationalBase: Вычислительная база влияет на скидку на оборудование и программы для мейнфрейма
   general:
     time:
       title: Внутриигровое прошедшее время
@@ -178,3 +198,17 @@ statistics:
       title: Расходы денег
       mainframeHardware: На оборудование мейнфрейма
       mainframePrograms: На программы мейнфрейма
+  unlockedFeatures:
+    title: Разблокированные возможности
+automation:
+  automation: Автоматизация
+  tabs:
+    autobuyers: Автопокупка
+  mainframeHardwareAutobuyer:
+    mainframeHardwareAutobuyer: Автопокупка оборудования мейнфрейма
+    percentageHint: Процент доступных денег, зарезервированный для улучшения оборудования мейнфрейма
+  mainframeProgramsAutobuyer:
+    mainframeProgramsAutobuyer: Автопокупка программ для мейнфрейма
+    percentageHint: Процент доступных денег, зарезервированный для улучшения программ для мейнфрейма
+credits:
+  OmniLRenegadE: Идея, код, дизайн, баланс

@@ -18,7 +18,7 @@ processDelete:
   message: Are you sure want to delete process for "program $t(programs:{{value.programName}}:name)"? It's progress will be lost.
 processReplace:
   name: Replace a process
-  message: Are you sure want to overwrite process for "program $t(programs:{{value.programName}}:name)"? This will replace your current process with threads {{value.threads}}.
+  message: Are you sure want to overwrite process for "program $t(programs:{{value.programName}}:name)"? This will replace your current process with {{value.threads}} threads.
 scalableProcessReplace:
   name: Replace a scalable process
   message: Are you sure want to replace scalable process? This will delete your current process for program "$t(programs:{{value.programName}}:name)".

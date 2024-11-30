@@ -57,6 +57,9 @@ export class Viewport extends BaseComponent {
       case MiscMenuItem.settings:
         return html`<ca-settings-page></ca-settings-page>`;
 
+      case MiscMenuItem.credits:
+        return html`<ca-credits-page></ca-credits-page>`;
+
       default:
         return null;
     }

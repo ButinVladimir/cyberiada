@@ -44,6 +44,14 @@ export class StatisticsMultipliers extends BaseComponent<StatisticsMultipliersCo
                 <intl-message label="ui:statistics:general:multipliers:mainframeDiscount">
                   Mainframe discount
                 </intl-message>
+
+                <sl-tooltip>
+                  <intl-message slot="content" label="ui:statistics:hints:mainframeDiscount">
+                    Mainframe discount hint
+                  </intl-message>
+
+                  <sl-icon name="question-circle"></sl-icon>
+                </sl-tooltip>
               </span>
               <span> ${formatter.formatNumberFloat(mainframeDiscount)} </span>
             `

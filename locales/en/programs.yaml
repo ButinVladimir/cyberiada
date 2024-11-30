@@ -5,7 +5,7 @@ shareServer:
   processDescription: Generates {{value.money}} money and {{value.developmentPoints}} CDP per second
 codeGenerator:
   name: Code generator
-  overview: Program to develop other programs. Generates computational base points.
+  overview: Program to develop other programs. Generates computational base points and improves mainframe products discount.
   programDescription: Generates {{value.value}} CBP per completion ({{value.minAvgValue}} - {{value.maxAvgValue}} CBP per second on average)
   processDescription: Generates {{value.value}} CBP per completion ({{value.avgValue}} CBP per second on average)
 predictiveComputator:

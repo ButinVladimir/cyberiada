@@ -83,7 +83,7 @@ export class MainframeHardwarePanel extends BaseComponent<MainframeHardwarePanel
   renderContent() {
     return html`
       <p class="hint">
-        <intl-message label="ui:mainframe:hardware:keyboardHint">
+        <intl-message label="ui:mainframe:hardware:hardwareHint">
           Press either ctrl or shift to buy 10 levels. Press both ctrl and shift to buy 100 levels.
         </intl-message>
       </p>

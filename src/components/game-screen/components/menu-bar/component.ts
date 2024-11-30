@@ -65,7 +65,8 @@ export class MenuBar extends BaseComponent<MenuBarController> {
   }
 
   private renderMenuItem = (menuItem: string) => {
-    const feature = constants.menuUnlockRequirements[menuItem] as Feature | undefined;
+    const requirements = constants.menuUnlockRequirements as Record<string, Feature>;
+    const feature = requirements[menuItem] as Feature | undefined;
 
     if (feature && !this.controller.isFeatureUnlocked(feature)) {
       return null;

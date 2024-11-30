@@ -33,6 +33,14 @@ export class StatisticsProgramsGrowth extends BaseComponent<StatisticsProgramsGr
                 <intl-message label="ui:statistics:growth:pointsByPrograms:computationalBase">
                   Computational base
                 </intl-message>
+
+                <sl-tooltip>
+                  <intl-message slot="content" label="ui:statistics:hints:computationalBase">
+                    Computational base hint
+                  </intl-message>
+
+                  <sl-icon name="question-circle"></sl-icon>
+                </sl-tooltip>
               </span>
               <span> ${formatter.formatNumberLong(computationalBase)} </span>
             </div>
