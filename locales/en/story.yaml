@@ -1,8 +1,8 @@
-tutorial1_level_1:
+tutorial_level_1:
   You have been tasked with creating new company. However, the only resource you have is some low tier mainframe.
   Perhaps, you can share it to get some money?
-tutorial1_level_2: The more you share, the harder it becomes to raise your development level.
+tutorial_level_2: The more you share, the harder it becomes to raise your development level.
   You need to upgrade what you already have.
-tutorial1_level_100: Now that you raised your development high enough, it's time to operate in the city.
+tutorial_level_15: Now that you raised your development high enough, it's time to operate in the city.
   You'll need to hire mercenaries for that. However, you cannot get too much attention,
-  so you need to focus on non-combat activities. Perphaps, diplomacy will be good?
+  so you need to focus on non-combat activities. Perhaps, diplomacy will be good?

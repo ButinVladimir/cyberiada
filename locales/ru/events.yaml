@@ -30,13 +30,13 @@ programPurchased:
   message: Программа "$t(programs:{{value.programName}}:name)" с уровнем {{value.level}} и качеством {{value.quality}} приобретена
 processStarted:
   name: Процесс начат
-  message: Процесс для программы "$t(programs:{{value.programName}}:name)" с числом потоков {{value.threads}} начат
+  message: Процесс для программы "$t(programs:{{value.programName}}:name)" с {{value.threads}} потоками начат
 processFinished:
   name: Процесс закончен
-  message: Процесс для программы "$t(programs:{{value.programName}}:name)" с числом потоков {{value.threads}} закончен
+  message: Процесс для программы "$t(programs:{{value.programName}}:name)" с {{value.threads}} потоками закончен
 processDeleted:
   name: Процесс удален
-  message: Процесс для программы "$t(programs:{{value.programName}}:name)" с числом потоков {{value.threads}} удален
+  message: Процесс для программы "$t(programs:{{value.programName}}:name)" с {{value.threads}} потоками удален
 allProcessesDeleted:
   name: Все процессы удалены
   message: Все процессы удалены

@@ -27,8 +27,7 @@ export class PredictiveComputatorProgram extends BaseProgram {
     return Math.max(
       1,
       1 +
-        threads *
-          usedRam *
+        Math.pow(threads * usedRam, programData.scalableResourcesModifier) *
           programData.speedModifierLevelMultiplier *
           this.level *
           Math.pow(programData.speedModifierQualityMultiplier, this.quality) *

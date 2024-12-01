@@ -22,7 +22,7 @@ export enum MiscMenuItem {
 }
 
 export enum Scenario {
-  tutorial1 = 'tutorial1',
+  tutorial = 'tutorial',
 }
 
 export enum GameStateEvent {

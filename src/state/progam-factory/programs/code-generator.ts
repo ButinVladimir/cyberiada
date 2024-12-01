@@ -1,5 +1,3 @@
-import { IExponent } from '@shared/interfaces/exponent';
-import { calculatePow } from '@shared/helpers';
 import programs from '@configs/programs.json';
 import { MS_IN_SECOND } from '@shared/constants';
 import { ProgramName } from '../types';
@@ -46,7 +44,8 @@ export class CodeGeneratorProgram extends BaseProgram {
     return (
       this.scenarioState.currentValues.pointsByProgramMultipliers.program *
       threads *
-      calculatePow(this.level - 1, programData.computationalBase as IExponent) *
+      programData.computationalBaseLevelMultiplier *
+      this.level *
       Math.pow(programData.computationalBaseQualityMultiplier, this.quality)
     );
   }

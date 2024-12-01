@@ -30,13 +30,13 @@ programPurchased:
   message: Program "$t(programs:{{value.programName}}:name)" with level {{value.level}} and quality {{value.quality}} has been purchased
 processStarted:
   name: Process started
-  message: Process for program "$t(programs:{{value.programName}}:name)" with threads {{value.threads}} has been started
+  message: Process for program "$t(programs:{{value.programName}}:name)" with {{value.threads}} threads has been started
 processFinished:
   name: Process finished
-  message: Process for program "$t(programs:{{value.programName}}:name)" with threads {{value.threads}} has been finished
+  message: Process for program "$t(programs:{{value.programName}}:name)" with {{value.threads}} threads has been finished
 processDeleted:
   name: Process deleted
-  message: Process for program "$t(programs:{{value.programName}}:name)" with threads {{value.threads}} has been deleted
+  message: Process for program "$t(programs:{{value.programName}}:name)" with {{value.threads}} threads has been deleted
 allProcessesDeleted:
   name: All processes deleted
   message: All process have been deleted

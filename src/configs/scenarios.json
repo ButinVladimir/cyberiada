@@ -1,23 +1,41 @@
 {
-  "tutorial1": {
+  "tutorial": {
     "districtsNum": 5,
+    "mainframeHardware": {
+      "performanceLevel": 1,
+      "coresLevel": 1,
+      "ramLevel": 1,
+      "performancePrice": { "baseMultiplier": 10000, "base": 1.3 },
+      "coresPrice": { "baseMultiplier": 60000, "base": 1.3 },
+      "ramPrice": { "baseMultiplier": 120000, "base": 1.3 }
+    },
+    "mainframeSoftware": {
+      "performanceBoost": 0.1
+    },
+    "developmentLevelRequirements": { "baseMultiplier": 30000, "base": 1.5 },
+    "pointsByProgramMultipliers": {
+      "program": 2
+    },
+    "discounts": {
+      "program": 4e6
+    },
     "storyEvents": [
       {
-        "key": "tutorial1_level_1",
+        "key": "tutorial_level_1",
         "level": 1,
-        "messages": ["tutorial1_level_1"]
+        "messages": ["tutorial_level_1"]
       },
       {
-        "key": "tutorial1_level_2",
+        "key": "tutorial_level_2",
         "level": 2,
         "unlockFeatures": ["mainframeHardware", "mainframePrograms"],
-        "messages": ["tutorial1_level_2"]
+        "messages": ["tutorial_level_2"]
       },
       {
-        "key": "tutorial1_level_100",
-        "level": 100,
+        "key": "tutorial_level_15",
+        "level": 15,
         "unlockFeatures": ["cityOverview", "companyManagement"],
-        "messages": ["tutorial1_level_100"]
+        "messages": ["tutorial_level_15"]
       }
     ]
   }

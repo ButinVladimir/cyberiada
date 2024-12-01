@@ -1,7 +1,5 @@
 import { MS_IN_SECOND } from '@shared/constants';
 import { ISettingsState } from '@state/settings-state/interfaces/settings-state';
-import { IExponent } from '@shared/interfaces/exponent';
-import { calculatePow } from '@shared/helpers';
 import { IncomeSource } from '@shared/types';
 import programs from '@configs/programs.json';
 import { ProgramName } from '../types';
@@ -58,8 +56,8 @@ export class ShareServerProgram extends BaseProgram {
 
     return (
       this.calculateModifier(threads, usedRam, passedTime) *
-      calculatePow(this.level - 1, programData.income as IExponent) *
-      Math.pow(programData.incomeQualityMultiplier, this.quality)
+      programData.money *
+      Math.pow(programData.moneyQualityMultiplier, this.quality)
     );
   }
 
@@ -68,16 +66,18 @@ export class ShareServerProgram extends BaseProgram {
 
     return (
       this.calculateModifier(threads, usedRam, passedTime) *
-      calculatePow(this.level - 1, programData.developmentPoints as IExponent) *
+      programData.developmentPoints *
       Math.pow(programData.developmentPointsQualityMultiplier, this.quality)
     );
   }
 
   private calculateModifier(threads: number, usedRam: number, passedTime: number): number {
+    const programData = programs[this.name];
+
     return (
       passedTime *
-      threads *
-      usedRam *
+      Math.pow(threads * usedRam, programData.scalableResourcesModifier) *
+      this.level *
       (1 +
         (this.mainframeHardwareState.performance.level - 1) *
           this.scenarioState.currentValues.mainframeSoftware.performanceBoost)
