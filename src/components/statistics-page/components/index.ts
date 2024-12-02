@@ -1,0 +1,14 @@
+import './general-panel';
+import './growth-panel';
+import './income-panel';
+import './expenses-panel';
+import './money-expenses';
+import './money-income';
+import './development-income';
+import './programs-income';
+import './program-completion-speed';
+import './money-growth';
+import './development-growth';
+import './multipliers';
+import './programs-growth';
+import './unlocked-features-panel';

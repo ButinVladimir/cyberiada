@@ -1,0 +1,42 @@
+gameStarted:
+  name: Game started
+  message: Game has been started
+gameSaved:
+  name: Game saved
+  message: Game has been saved
+fastForwarded:
+  name: Accumulated time spent
+  message: Accumulated time has been spent
+levelReached:
+  name: Development level reached
+  message: Development level {{value.level}} has been reached
+featureUnlocked:
+  name: New feature unlocked
+  message: New feature "$t(features:{{value.feature}})" has been unlocked
+storyEvent:
+  name: Story event
+  message: $t(story:{{value.messageKey}})
+performanceUpgraded:
+  name: Mainframe performance upgraded
+  message: Mainframe performance has been upgraded to {{value.level}}
+coresUpgraded:
+  name: Mainframe cores upgraded
+  message: Mainframe cores has been upgraded to {{value.level}}
+ramUpgraded:
+  name: Mainframe ram upgraded
+  message: Mainframe RAM has been upgraded to {{value.level}}
+programPurchased:
+  name: Program purchased
+  message: Program "$t(programs:{{value.programName}}:name)" with level {{value.level}} and quality {{value.quality}} has been purchased
+processStarted:
+  name: Process started
+  message: Process for program "$t(programs:{{value.programName}}:name)" with {{value.threads}} threads has been started
+processFinished:
+  name: Process finished
+  message: Process for program "$t(programs:{{value.programName}}:name)" with {{value.threads}} threads has been finished
+processDeleted:
+  name: Process deleted
+  message: Process for program "$t(programs:{{value.programName}}:name)" with {{value.threads}} threads has been deleted
+allProcessesDeleted:
+  name: All processes deleted
+  message: All process have been deleted

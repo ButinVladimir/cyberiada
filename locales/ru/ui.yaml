@@ -1,0 +1,214 @@
+common:
+  cancel: Отмена
+  save: Сохранить
+  delete: Удалить
+  close: Закрыть
+  loading: Загрузка...
+  continue: Продолжить
+  notEnoughMoney: Не достаточно денег
+  available: Доступно
+  willBeAvailableIn: Будет доступно через {{value}}
+  higherDevelopmentLevelRequired: Требуется больший уровень развития
+pages:
+  cityOverview: Обзор города
+  companyManagement: Управление компанией
+  mainframe: Мейнфрейм
+  statistics: Статистика
+  settings: Настройки
+  automation: Автоматизация
+  credits: Титры
+topBar:
+  menu: Показать/скрыть меню
+  messageLog: Показать/скрыть сообщения
+  gameSpeedButtons:
+    pause: Пауза
+    playNormal: Играть на нормальной скорости (без накопленного времени)
+    playFast: Играть на быстрой скорости (с накопленным временем)
+    fastForward: Потратить все накопленное время
+  accumulatedTime: Накопленное время
+  money: Деньги
+  developmentLevel: Уровень развития
+  developmentLevelNext: Уровень развития, следующий уровень будет достигнут через {{value}}
+  availableGoals:
+    titleGoalsExist: 'Доступные цели уровня развития:'
+    titleNoGoals: Доступных целей уроня развития нет
+    reachLevel: Достичь уровень развития {{value}}
+messageLog:
+  messageLog: Сообщения
+  clearMessages: Удалить сообщения
+fastForwardingScreen:
+  fastForwarding: Трата накопленного времени...
+  stop: Стоп
+settings:
+  settings: Настройки
+  language: Язык
+  theme: Тема
+  messageLogSize: Максимальное количество сообщений
+  messageLogSizeHint: Лишние сообщения не будут удалены, пока не будет получено новое сообщение
+  updateInterval: Интервал обновления (мс)
+  autosaveEnabled: Включить автосохранение
+  autosaveInterval: Интервал автосохранения (сек)
+  maxTicksPerUpdate: Максимальное количество обновлений за тик при быстрой скорости игры
+  maxTicksPerUpdateHint: Слишком большое значение может привести к нагрузке на процессор
+  maxTicksPerFastForward: Максимальное количество обновлений за тик при трате накопленного времени
+  maxTicksPerFastForwardHint: Слишком большое значение может привести к нагрузке на процессор
+  longNumberFormat: Формат больших чисел
+  languages:
+    en: Английский
+    ru: Русский
+  themes:
+    light: Светлая
+    dark: Темная
+  longNumberFormats:
+    scientific: Научный
+    builtIn: Встроенный
+  saveGame: Сохранить игру
+  importSavefile: Импорт сохранения
+  exportSavefile: Экспорт сохранения
+  deleteSaveData: Удалить сохраненные данные
+  messageFilter: Фильтр сообщений
+  messageFilterHint: Включите события в фильтре, чтобы получать сообщения о них.
+  alertFilter: Фильтр предупреждений
+  alertFilterHint: Включите предупреждения в фильтре, чтобы они появлялись, когда соответствующее события произошли.
+  alertToggle: Показывать подобные предупреждения в будущем
+  notificationTypeFilter: Фильтр уведомлений
+  notificationTypeFilterHint: Включите уведомления в фильтре, чтобы они появлялись, когда соответствующее события произошли.
+  notificationTypeToggle: Показывать подобные уведомления в будущем
+city:
+  cityOverview:
+    title: Обзор города
+    hint: Кликните на подсвеченный район, чтобы просмотреть информацию о нем и доступные с ним действия.
+    toggleZoomPanel: Показать/скрыть панель масштабирования
+    zoom: Масштаб
+    name: Название
+mainframe:
+  mainframe: Мейнфрейм
+  program: Программа
+  level: Уровень
+  quality: Качество
+  threads: Потоки
+  cores: Ядра
+  programDescription:
+    cost: Стоит {{value.cost}} для покупки
+    requirements: Требует {{value.ram}} памяти и до {{value.cores}} ядер для запуска {{value.threads}} потоков
+    requirementsScalable: Автомасштабируется и использует все неиспользуемые ядра и память
+    completionTime: Может быть выполнена за {{value.minTime}} - {{value.maxTime}}
+    completionTimeScalable: Выполняется каждый тик
+  tabs:
+    processes: Процессы
+    hardware: Оборудование
+    programs: Программы
+  hardware:
+    hardwareHint: Нажмите Ctrl или Shift для покупки 10 уровней. Нажмите вместе Ctrl и Shift для покупки 100 уровней.
+      Приоритет улучшения оборудования может быть изменен путем его перетаскивания за название.
+      Улучшения наверху имеют больший приоритет.
+    performance: 'Уровень производительности: {{value}}'
+    performanceHint: Высокие уровни производительности ведут к более быстрым процессам
+    cores: 'Уровень ядер: {{value}}'
+    coresHint: Дополнительные ядра дают лучшее масштабирование и выполнение большего числа процессов одновременно
+    ram: 'Уровень памяти: {{value}}'
+    ramHint: Дополнительная память дает возможность держать больше процессов в памяти, чтобы они смогли выполниться позже или в больших группах
+    buy: Купить x{{value.increase}} за {{value.cost}}
+  programs:
+    programsHint: Приоритет улучшения программы может быть изменен путем его перетаскивания за название.
+      Программы наверху имеют больший приоритет.
+    purchaseProgram: Купить программу
+    purchaseProgramDialogHint: Выберите тип программы, уровень и качество, чтобы купить её.
+      Уровень не может быть выше текущего уровня развития города.
+      Качество зависит от полученных услуг.
+      Если у тебя уже есть программа с тем же именем, старая будет заменена на новую.
+    purchase: Купить за {{value.cost}}
+    emptyListNotification: У тебя нет имеющихся програм
+    toggleAutoupgrade: Включить/выключить автопокупку
+    toggleAutoupgradeAll: Включить/выключить автопокупку для всех программ
+  processes:
+    processesHint: Чтобы программа выполнялась, для неё должен быть начат процесс.
+      Процессы для немасштабируемых программ наверху списка имеют приоритет, когда ядра распределяются по процессам.
+      Ядра и память будут назначены для процесса с масштабируемой программой в последнюю очередь.
+      Только один процесс для масштабируемой программы может выполняться.
+      Минимальное время выполнения процесса ограничено.
+      Порядок процессов можно поменять перетаскиванием их за названия.
+    startProcess: Начать процесс
+    startProcessDialogHint: Выберите одну из имеющихся программ, чтобы начать процесс для неё.
+      Если у тебя уже есть процесс для выбранной программы, старый процесс будет замене на новый.
+      Потоки позволяют выполняться нескольким экземплярам программы одновременно, но дополнительные потоки требует больше памяти.
+    emptyListNotification: У тебя нет процессов
+    programSelectItem: $t(programs:{{value.programName}}:name), уровень {{value.level}}, качество {{value.quality}}
+    progressBarLabel: "{{value.currentCompletionPoints}} \/ {{value.maxCompletionPoints}}"
+    progressBarHintActive: 'Процесс будет выполнен через {{value}}'
+    progressBarHintPaused: 'Процесс неактивен'
+    processToggle: Включить / выключить процесс
+    allProcessesToggle: Включить / выключить все процессы
+    processDelete: Удалить процесс
+    allProcessesDelete: Удалить все процессы
+    autoscalable: Автомасштабируется
+    usesCores: "{{value.cores}} \/ {{value.maxCores}}"
+    availableCores: 'Доступные ядра: {{value}}'
+    availableRam: 'Доступная память: {{value}}'
+    processDescription:
+      completionTime: Может быть выполнен через {{value}}
+      completionTimeScalable: Выполняется каждый тик
+      completionTimeNoCores: Для выполнения требуются назначенные ядра
+statistics:
+  statistics: Статистика
+  total: Всего
+  tabs:
+    general: Обшее
+    growth: Прирост
+    income: Накопления
+    expenses: Расходы
+    unlockedFeatures: Разблокированные возможности
+  hints:
+    mainframeDiscount: Скидка на продукты для мейнфрейма мультипликативно зависит от очков вычистельной базы, сгенерированных программами и членами команды
+    computationalBase: Вычислительная база влияет на скидку на оборудование и программы для мейнфрейма
+  general:
+    time:
+      title: Внутриигровое прошедшее время
+      timeThisRun: С момента прибытия в город
+      timeTotal: Общее время
+    multipliers:
+      title: Множители и скидки
+      programCompletionSpeed: Скорость предсказательного вычислителя
+      mainframeDiscount: Скидка на продукты для мейнфрейма (%)
+  growth:
+    programCompletionSpeed:
+      title: Скорость выполнения процесса
+      pointsPerSecond: ОВП в секунду
+    money:
+      title: Деньги в секунду
+      program: Аренда сервера
+    developmentPoints:
+      title: Очки развития города в секунду
+      program: Аренда сервера
+    pointsByPrograms:
+      title: Очки в секунду, сгенерированные программами
+      computationalBase: Вычислительная база
+  income:
+    money:
+      title: Деньги
+      program: Аренда сервера
+    developmentPoints:
+      title: Очки развития города
+      program: Аренда сервера
+    pointsByPrograms:
+      title: Очки, сгенерированные программами
+      computationalBase: Вычислительная база
+  expenses:
+    money:
+      title: Расходы денег
+      mainframeHardware: На оборудование мейнфрейма
+      mainframePrograms: На программы мейнфрейма
+  unlockedFeatures:
+    title: Разблокированные возможности
+automation:
+  automation: Автоматизация
+  tabs:
+    autobuyers: Автопокупка
+  mainframeHardwareAutobuyer:
+    mainframeHardwareAutobuyer: Автопокупка оборудования мейнфрейма
+    percentageHint: Процент доступных денег, зарезервированный для улучшения оборудования мейнфрейма
+  mainframeProgramsAutobuyer:
+    mainframeProgramsAutobuyer: Автопокупка программ для мейнфрейма
+    percentageHint: Процент доступных денег, зарезервированный для улучшения программ для мейнфрейма
+credits:
+  OmniLRenegadE: Идея, код, дизайн, баланс

@@ -4,29 +4,29 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/strict-type-checked',
-    'plugin:react-hooks/recommended',
     'plugin:@typescript-eslint/stylistic-type-checked',
-    'plugin:react/recommended',
-    'plugin:react/jsx-runtime',
+    'plugin:wc/recommended',
+    'plugin:lit/recommended',
+    'prettier'
   ],
-  ignorePatterns: ['dist', '.eslintrc.cjs', 'vite.config.ts', '*.d.ts'],
+  ignorePatterns: [
+    'dist',
+    '.eslintrc.cjs',
+    'vite.config.ts',
+    '*.d.ts',
+    'postcss.config.js',
+  ],
   parser: '@typescript-eslint/parser',
-  plugins: ['react-refresh'],
+  plugins: ['@typescript-eslint'],
   rules: {
-    'react-refresh/only-export-components': [
-      'warn',
-      { allowConstantExport: true },
-    ],
     'semi-style': ['error', 'last'],
     '@typescript-eslint/no-non-null-assertion': 'off',
     '@typescript-eslint/no-empty-function': 'off',
-  },
-  settings: {
-    react: {
-      version: 'detect',
-    },
+    '@typescript-eslint/no-explicit-any': 'off',
   },
   parserOptions: {
-    project: 'tsconfig.json',
+    parser: '@typescript-eslint/parser',
+    project: './tsconfig.json',
+    tsconfigRootDir: __dirname,
   },
 };

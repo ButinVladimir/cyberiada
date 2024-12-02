@@ -1,0 +1,6 @@
+storyEvent:
+  name: Сюжетное событие
+  message: $t(story:{{value.messageKey}})
+featureUnlocked:
+  name: Новая возможность разблокирована
+  message: Новая возможность "$t(features:{{value.feature}})" разблокирована

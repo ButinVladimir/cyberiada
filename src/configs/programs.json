@@ -1,0 +1,47 @@
+{
+  "shareServer": {
+    "ram": 0,
+    "completionPoints": { "baseMultiplier": 0, "base": 1 },
+    "cost": { "baseMultiplier": 30000, "base": 1.15 },
+    "costQualityMultiplier": 10,
+    "unlockFeatures": [],
+    "scalableResourcesModifier": 0.5,
+    "money": 1,
+    "moneyQualityMultiplier": 2,
+    "developmentPoints": 1,
+    "developmentPointsQualityMultiplier": 2
+  },
+  "predictiveComputator": {
+    "ram": 0,
+    "completionPoints": { "baseMultiplier": 0, "base": 1 },
+    "cost": { "baseMultiplier": 60000, "base": 1.15 },
+    "costQualityMultiplier": 10,
+    "unlockFeatures": [],
+    "scalableResourcesModifier": 0.5,
+    "speedModifierLevelMultiplier": 0.001,
+    "speedModifierQualityMultiplier": 1.3
+  },
+  "codeGenerator": {
+    "ram": 1,
+    "completionPoints": { "baseMultiplier": 120000, "base": 1 },
+    "cost": { "baseMultiplier": 60000, "base": 1.15 },
+    "costQualityMultiplier": 10,
+    "unlockFeatures": [],
+    "computationalBaseLevelMultiplier": 1,
+    "computationalBaseQualityMultiplier": 900
+  },
+  "mainframeHardwareAutobuyer": {
+    "ram": 3,
+    "completionPoints": { "baseMultiplier": 300000, "base": 1.01 },
+    "cost": { "baseMultiplier": 900000, "base": 1.15 },
+    "costQualityMultiplier": 10,
+    "unlockFeatures": ["automation", "automationMainframeHardware"]
+  },
+  "mainframeProgramsAutobuyer": {
+    "ram": 5,
+    "completionPoints": { "baseMultiplier": 900000, "base": 1.01 },
+    "cost": { "baseMultiplier": 1800000, "base": 1.15 },
+    "costQualityMultiplier": 10,
+    "unlockFeatures": ["automation", "automationMainframePrograms"]
+  }
+}

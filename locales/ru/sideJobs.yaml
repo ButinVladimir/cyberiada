@@ -1,0 +1,12 @@
+activities:
+  fullTemplate:
+    title: Образец подработки
+    description: Только для разработки
+  oddjob:
+    title: Мелкая подработка
+    description: Низкооплачиваемая подработка без особых требований
+  writeSimpleScripts:
+    title: Написание простых скриптов
+    description: Написание простых скриптов и програм
+groups:
+  basic: Обычные

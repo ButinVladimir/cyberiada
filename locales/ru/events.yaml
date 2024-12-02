@@ -1,0 +1,42 @@
+gameStarted:
+  name: Игра началась
+  message: Игра началась
+gameSaved:
+  name: Игра сохранена
+  message: Игра сохранена
+fastForwarded:
+  name: Накопленное время потрачено
+  message: Накопленное время потрачено
+levelReached:
+  name: Уровень развития достигнут
+  message: Уровень развития {{value.level}} достигнут
+featureUnlocked:
+  name: Новая возможность разблокирована
+  message: Новая возможность "$t(features:{{value.feature}})" разблокирована
+storyEvent:
+  name: Сюжетное событие
+  message: $t(story:{{value.messageKey}})
+performanceUpgraded:
+  name: Производительность мейнфрема улучшена
+  message: Производительность мейнфрема улучшена до {{value.level}}
+coresUpgraded:
+  name: Ядра мейнфрейма улучшены
+  message: Ядра мейнфрейма улучшены до {{value.level}}
+ramUpgraded:
+  name: Память мейнфрейма улучшена
+  message: Память мейнфрейма улучшена до {{value.level}}
+programPurchased:
+  name: Программа приобретена
+  message: Программа "$t(programs:{{value.programName}}:name)" с уровнем {{value.level}} и качеством {{value.quality}} приобретена
+processStarted:
+  name: Процесс начат
+  message: Процесс для программы "$t(programs:{{value.programName}}:name)" с {{value.threads}} потоками начат
+processFinished:
+  name: Процесс закончен
+  message: Процесс для программы "$t(programs:{{value.programName}}:name)" с {{value.threads}} потоками закончен
+processDeleted:
+  name: Процесс удален
+  message: Процесс для программы "$t(programs:{{value.programName}}:name)" с {{value.threads}} потоками удален
+allProcessesDeleted:
+  name: Все процессы удалены
+  message: Все процессы удалены

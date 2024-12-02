@@ -1,0 +1,32 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--sl-font-sans);
+  font-size: var(--sl-font-size-medium);
+  font-weight: var(--sl-font-weight-normal);
+  letter-spacing: var(--sl-letter-spacing-normal);
+  line-height: var(--sl-line-height-normal);
+  color: var(--sl-color-neutral-950);
+}
+
+:root,
+:host,
+.sl-theme-light,
+.sl-theme-dark {
+  --ca-max-width: 1920px;
+  --ca-max-content-width: 78rem;
+  --sl-input-font-family: var(--sl-font-sans);
+  --sl-input-help-text-color: var(--sl-color-neutral-700);
+  --ca-hint-color: var(--sl-input-help-text-color);
+  --ca-hint-font-size: var(--sl-font-size-small);
+  --ca-border: var(--sl-panel-border-width) solid var(--sl-panel-border-color);
+  --ca-table-header-font-weight: var(--sl-font-weight-bold);
+  --ca-top-bar-height: 61px;
+  --ca-message-log-top-bar: 55px;
+  --ca-scrollbar-width: 0.7rem;
+  --ca-scrollbar-thumb-fill-color: var(--sl-color-neutral-400);
+  --ca-scrollbar-thumb-fill-color-hover: var(--sl-color-neutral-700);
+  --ca-table-row-odd-color: var(--sl-color-neutral-100);
+  --ca-dragged-color: var(--sl-color-primary-100);
+  --ca-viewport-width: 65rem;
+}
