@@ -1,27 +1,33 @@
-# React + TypeScript + Vite
+# Cyberiada
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## About
 
-Currently, two official plugins are available:
+Cybariada is an idle management game where player controls mainframe and group of up to 10 mercenaries to establish private security company. Player visits different cities, which cover different scenarios, and by working for various factions unlocks new features. Mainframe provides various support buffs, performs hacking and automates gameplay which mercenaries perform sidejobs, contracts and operations.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Cyberiada is currenly under development. It has roadmap available but info here may be outdated.
 
-## Expanding the ESLint configuration
+Discord for discussions and feedback is available here: https://discord.gg/CmsTxU2EMw
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Local development and contribution
 
-- Configure the top-level `parserOptions` property like this:
+Currently, game doesn't have development page but it can be ran locally. To start development server, install dependencies first by running this command:
 
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
+```
+npm i
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+and then run following command in console:
+
+```
+npm run dev
+```
+
+Game uses [Lit](https://github.com/lit/lit) and [Shoelace](https://github.com/shoelace-style/shoelace) for frontend. Unit tests for state and UI are planned but currently on hold.
+
+Before commiting changes, run following commands to fix formatting and find linting issues:
+
+```
+npm run wca
+npm run prettier
+npm run lint
+```

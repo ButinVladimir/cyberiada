@@ -1,0 +1,2 @@
+export const ARTICLE_HEIGHT_WITHOUT_GAP = 120;
+export const ARTICLE_HEIGHT_WITH_GAP = 140;

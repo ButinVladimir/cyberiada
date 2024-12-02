@@ -1,73 +1,68 @@
 # Description
 
-Cyberiada is an idle cyberpunk-themed RPG inspired by Bitburner. In this game player control crew of up to 10 members by giving them various orders to perform. Crew can travel between different cities which have different conditions and unique rewards.
+Cyberiada is an idle cyberpunk-themed management game inspired by Bitburner. In this game player control mainframe and team of up to 10 members by giving them various orders to perform. Company can travel between cities, representing different scenarios, which have different conditions and unique rewards.
 
 # Terms
 
 ## Money
 
-Money is a resource which can be spend on performing various actions such as completing searches faster, hiring new crew members, buying equipment, boosters and augmentations etc. Later in a game can be converted to credibility.
+Money is a resource which can be spend on performing various actions such as hiring new company members, buying equipment, boosters and augmentations etc.
 
-## Credibility
+## Development points
 
-Credibility is a main resource in the game. It show how much progress is done in particaluar city. Unlocking equipment, boosters, augmentations, works, contracts, missions etc. requires reaching certain levels of credibility. Once all rewards are exhausted, credibility will give attributes and skills points.
+Development points are main resource in the game. It show how much progress is done in particaluar city. Unlocking equipment, boosters, augmentations, works, contracts, operations etc. requires reaching certain levels of respect.
 
-## Wanted level
+## Development level
 
-Wanted level is modifier to all requirements, experience and credibility gains. It allows higher rewards at cost of making actions harder to perform. 
+Development level shows how developed player is. Higher development levels allow purchasing items with higher level and unlocks new sidejobs and contracts. Development level increases after reaching certain development points thresholds. Most cities have upper limit on development level. After relocating development level is reset. Each city has it's own development level factors.
 
-Unavailable in beginning, can be unlocked in specific city.
+## Favors
 
-## Difficulty level
+Favors are faction-specific currency. Favors are earned by completing operations, capturing more districts, by increasing development level, by hacking or can be bought by money. Favors can be spent on purchasing faction designs, negating prestige effects, decreasing prices or using faction specific perks.
 
-Each city has it's own difficulty level. Higher difficulty levels leads to higher requirements but also to higher credibility and experience gains. Difficulty level increases after reaching certain credibility thresholds and then relocating.
+## Qualities and difficulties
 
-## Qualities
+Various objects have different quality or difficulty. It's marked as number from I to VII.
 
-Various objects have different quality. Currently available qualities:
-- Common
-- Uncommon
-- Rare
-- Superb
-- Awesome
-- Excellent
-- Perfect
+## Company
 
-## Crew
+Game revolves around managing company. Company members are managed by giving them orders.
 
-Game revolves around managing crew. Crew members is managed by giving them orders. Various orders have different priorities.
+Moving to another city will result in losing current company but certain favors allow to retain company members.
 
-Moving to another city will result in losing current crew but certain favors allow to retain crew members.
+## Company member
 
-If all crew members are lost, crew will restart in starting city but previously unlocked features will remain unlocked.
+Each company member has their own set of attributes, skills, equipment and augmentations. Certain actions can incapacitate them. Depending on quality, company members have different starting equipment, augmentations, attributes and skills. Attributes, skills and equipment of newhires depend on level which is capped by current development level. Each district may unlock new company member template as reward for capturing it.
 
-## Crew member
-
-Each crew member has their own set of attributes, skills, equipment and augmentations. They can be boosted by boosters. Certain actions can kill them. To hire new crew members, special actions should be perform to find and hire new one with money. Depending on quality, crew members have different starting equipment, augmentations, attributes and skills. Attributes and skills cannot be above difficulty level.
+Company members to be hired are generated depending on templates. There are templates for each faction and for neutral.
 
 ## Stats
 
 ### Level
 
-Each crew member has their own level. Level requirements do no depend on current city or difficulty level and are exponential. Reacing new level gives crew member one attribute and one skill points.
+Each company member has their own level. Level requirements do not depend on current city or development level and are exponential. Reaching new level gives company member one attribute and one skill points.
 
 ### Experience
 
-To get new levels, crew members must reach certain thresholds of experience. Experience gain can be increased by increasing intellect and using certain items.
+To get new levels, company members must reach certain thresholds of experience. Experience gain can be increased by increasing intellect and using certain items.
+
+### Shock
+
+Shock accumulates when member is incapacitated or receives a new augmentation. Installing augmentation gives some amount of shock for each. Incapacitation maxes shock out. Shock will gradually decrease over 1 hour if member is alive and restored. Until shock reaches 0, member is unable to participate in combat. Shock will also decrease attributes and skills linearly. Max amount of shock depends on endurance.
 
 ### HP
 
-HP indicates how much damage can crew member take. If HP reaches 0 or lower, crew member dies, to be removed from crew and all actions related to him are cancelled. Can be increased by certain items and endurance.
+HP indicates how much damage can company member take. When HP reaches 0 or lower, company member is incapacitated and all actions related to them are cancelled. Incapacitated company members have to be paid to be restored manually or by program. After restoration, member shock is maxed out.
 
-If crew member is not engaged in combat or hacking order, they can be healed for some amount of money.
+Can be increased by certain items and endurance. After finished each combat contract or operation, HP is restored immediately.
 
 ### Damage
 
-Damage is used in combat. Each time someone receives a hit, damage is selected from certain range, reduced by opponent defense and then applied. Damage depends on equipment.
+Damage is used in combat. Each time someone receives a hit, damage is selected from certain range, reduced by opponent defense and then applied. Damage depends on equipment. Melee equpment damage depends on strength and some skills.
 
 ### Critical rate
 
-Each time damage is dealt, it may deal critical hit. Critical rate indicates how often these critical hits happen. Critical rate bonuses depend on equipped weapon, attributes and skills.
+Each time damage is dealt, it may deal critical hit. Critical rate indicates how often these critical hits happen. Critical rate is converted from hit rate.
 
 ### Critical multiplier
 
@@ -75,13 +70,13 @@ Whenever critical hit happens, damage is multiplied by critical multiplier. Mult
 
 ### Defense
 
-This parameter reduces all incoming damage. Depends on equipment.
+This parameter reduces all incoming damage. Depends on equipment. Ranged equipment will provide defense.
 
 ### Hit number
 
 This parameter affects how many attacks will be dealt per turn. Can be increased by agility.
 
-### Precision.
+### Precision
 
 This parameter affects how it's likely to make a hit. It depends on equipment, attributes and skills.
 
@@ -91,39 +86,47 @@ This parameter affects how it's likely to dodge the attack. Can be increased by 
 
 ### Regeneration
 
-This parameters affects how fast crew member HP will regenerate.
+This parameters affects how fast company member HP will regenerate.
+
+### Experience bonus
+
+This parameter affects how fast company member gets experience.
+
+### Initiative
+
+This parameter affects how soon company member can have their turn in combat.
 
 ## Attributes
 
 ### Strength
 
-Strength is used mostly in weapon requirements and for critical rate bonuses for melee weapons.
+Strength is used mostly in weapon requirements and for damage bonuses for melee weapons.
 
 ### Endurance
 
-Endurance affects crew member HP and how fast augmentations can be installed in them.
+Endurance affects company member HP and how fast augmentations can be installed in them.
 
 ### Perception
 
-Perception is used in determining whether opponent is hit or not. It's another usage is for critical rate bonuses.
+Perception is used in determining whether opponent is hit or not.
 
 ### Agility
 
-Agility is used for dodging attacks and increasing hits number in combat.
+Agility is used for dodging attacks in combat.
 
 ### Intellect
 
-Intellect affects how much experience crew member gets after completing orders. It also used in weapon requirements, for decreasing search requirements.
+Intellect affects how much experience company member gets after completing orders. It also used in weapon requirements, for decreasing search requirements.
 
 ### Charisma
 
-Charisma gives bonuses related to money and credibility.
+Charisma affects sidejobs to generate more connections.
 
 ## Skills
 
 ### Close combat
 
-Close combat affects critical rate for close combat weapons such as knifes and SMGs.
+Close combat affects damage and critical rate for close combat weapons such as knifes and SMGs.
 
 ### Ranged combat
 
@@ -135,33 +138,34 @@ Stealth is used for dodging attacks.
 
 ### Hacking
 
-Hacking is used for hacking and using smart weapons such as mechs and combat drones.
+Hacking is used for hacking and using smart weapons such as combat drones.
 
 ### Crafting
 
-Crafting is used for crafting and using complex equipment such as power armor and mechs.
+Crafting is used for crafting and using complex equipment such as power armor.
 
-### Persuasion
+### Diplomacy
 
-Persuasion gives additional money and credibility bonuses.
+Diplomacy gives additional money and respect bonuses and gives discount to hiring mercenaries and looking for new contracts.
 
-### Info gathering
+## Training programs
 
-Info gathering affects searches times.
+Training programs are alternative to leveling mercenary. It allows to buy skills and attributes. It's max level is capped, depending on development level and program quality. There are training programs for each skill and attribute, attribute programs are unlocked initially, skill programs has to be earned as reward from capturing districts.
 
 ## Equipment
 
-Each crew member has three different equipment slots: weapon, armor and utility. Weapon equipment deals damage, armor provides defense and utility gives buffs. Each equipment item has level and quality. Higher the level or quality, higher the requirements and stats. Equipment can be switched instantly without interrupting current order if crew member is not in combat or in hacking. It can be bought from weapon shop or be crafted. Some equipments are faction-specific and require crafting or capturing weapon shop district for faction.
+Each company member has three different equipment slots: weapon, armor and utility. Weapon equipment deals damage, armor provides defense and utility gives buffs or debuffs. Each equipment item has level and quality. Higher the level or quality, higher the requirements and stats. Equipment can be changed only between contracts. Equipment can be bought from weapon shop. Capturing districts can unlock more equipment types.
 
-Equipment will be lost after moving to another city unless specific favors are earned.
+Equipped items will be lost after moving to another city unless specific favors are earned.
 
-Unavailable in beginning, can be unlocked in specific city.
+Unlocked in specific city after joining certain faction.
 
 ## Augmentations
 
-Augmentations are another way to buff crew members. Like equipment, each augmentation has level and quality, which affect requirements and stats. Unlike equipment, augmentations cannot be switched instantly, instead each augmentation has time wall to install which can be reduced by endurance. Augmentations are installed in hospitals.
+Augmentations are another way to buff company members. Like equipment, each augmentation has level and quality, which affect requirements and stats. Augmentation is not free, each augmentation costs money and adds shock which prevents from participating in combat.
 
-Each crew member has following augmentations slots:
+Each company member has following augmentations slots:
+
 - Skin
 - Nerve system
 - Eyes
@@ -172,272 +176,242 @@ Each crew member has following augmentations slots:
 
 Augmentations are not affected by moving to another city.
 
-Unavailable in beginning, can be unlocked in specific city.
+Unlocked in specific city after joining certain faction.
 
-## Boosters
+## Designs
 
-Boosters give buffs and debuffs for limited amount of time. Must be applied manually, cannot be applied in combat or in hacking, application happens instantly. Each booster has level and quality affecting it's stats.
-
-Unavailable in beginning, can be unlocked in specific city.
-
-## Inventory
-
-Inventory has equipment and boosters which can be sold for money. Inventory space is limited. After relocating inventory will be emptied.
-
-## Crafting blueprints
-
-Crafting blueprints allows crafting equipment or boosters. Level of resulting item is limited by level of crafting. Quality can be selected and will affect crafting time, but crafting level can decrease it. Getting blueprints for same item increases max quality with what item can be crafted.
-
-Crafting rectipes are unlocked in specific city by repeated runs.
+Designs allow creating programs and equipment without relying on faction and . Level of resulting item is capped by development level. Quality can be selected. Getting designs for same item increases max quality with what item can be crafted. Designs can be bought by favors or captured by hacking or in operations.
 
 ## City
 
-Each city is described as square map of 100x100 cells. City is divided into districts. Each district may have it's own one main facility: weapon shop, pharmacy, hospital, faction HQ, player HQ or training facility. In addition, each district has it's own multipliers to requirements and gain multipliers.
+Each city is described as rectangular map, composed of cells. City is divided into districts. Each district can reward player with additional item to buy. In addition, each district has it's own set of multipliers, depending on district template and scenario multipliers. Some districts may contrain player or faction HQs.
 
-Each city has it's own line of rewards, each reward requires increasing amount of credibility. These rewards are **not** reset after revisiting city with one exception. Getting each new reward will increase difficulty level of the city after relocating. Player can achieve multiple rewards in same run.
+Each city district has it's own set of contract counters. In addition, each district has connection, computational base and tech base points which provide bonuses and discounts in this district.
 
-Each city district has it's own set of order counters.
+### Districts
 
-## Facilities
+Each district has it's own set of multipliers. These multipliers increase chance of getting contract, increase reputation and money rewards, decrease cost of buying items and mercenaries. These multipliers can be increased by specific actions and are retained. However, spending more on these multipliers will result in diminishing returns.
 
-Arms shop, pharmacy, hostpitals and training facilities have quality. Shops can sell items limited by quality. Training facilities can increase skill or attribute to level depending on difficulty level and quality. Quality can be increased by working for them.
+Player can use contracts and bonuses from district without capturing it if district contains player HQ or belongs to the player selected faction. Initial amount of points in district is 0 which means that there will be no discounts. Player can increase points for selected district.
+Each 10 minutes new batch of contracts will be generated, maximum 1 contract for each district, contract type and quality.
 
-Training facilities can increase only one selected attribute or skill.
+After generating city, for each district will be assigned faction for combat. If it's same as player faction, neutral faction will be used.
 
-## Factions
+Each district has reward for capturing it for player selected faction. This rewards can unlock new equipment, company hires, training programs, etc.
 
-Each city has it's own set factions that try to claim city for themself. Player can join one faction if credibility requirements are met. Once faction is joined, player cannot leave it unless they relocate.
+### Factions
 
-Each faction HQ has physical and virtual bank accounts so they can be robbed in specific missions.
+Each city has it's own set factions that try to claim city for themself. Player can join one faction if development level requirements are met. Once faction is joined, player cannot leave it unless they relocate.
 
-Faction specific equipment, boosters and blueprints can be achieved by doing certain missions or by participating in turf war.
+Each factions has it's own starting power level, affecting initial distribution of districts.
 
-Player can control faction HQ by performing certain missions, allowing moving money from their accounts.
+Faction specific equipment and augmentations can be obtained by capturing districts or getting designs. Each faction have one or more perks which can be purchased by favors.
 
-Faction district type is locked.
+Each faction has it's own set of requirement modifiers, affecting operations and contracts.
 
-## Turf war
+### Turf war
 
-Turf war allows factions capture districts depending on faction power level. Depending on what has been captured, faction will receive different bonuses:
+Turf war allows factions capture districts depending on current faction power level. Capturing opposing faction HQ unlocks operations to raid it.
 
-- Capturing arms shops, pharmacies and hospitals unlock faction specific items in these facilities
-- Capturing training facilities will give substantial discount for faction members
-- Capturing opposing faction HQ will prevent it from capturing additional districts
-- Capturing player HQ will prevent player crew from operating in different districts
+Capturing districts allows company to perform activities here and will affect speed of changing power level.
 
-Capturing districts allows crew to perform activities here.
+Requirements to capture will increase with each owned distict. Player can assist their selected faction by increase it's power level.
 
-Requirements to capture will increase with each owned distict. Player can assist their selected faction by increase it's power level or decrease power levels of it's opponents by performing certain orders.
-
-If district is not controlled by faction that player choosed, player cannot use this district and it's facility. Player can perform action in district with player HQ no matter who captured it.
-
-By default, turf war is disabled and can be enabled by finishing specific city. Initially, all districts with factions HQs are belong to their factions, other districts are neutral.
-
-## Retaliations
-
-Performing certain actions will trigger retaliations. Amount of retaliations that are about to happen is limited. Retaliations can have different quality, requiring different stats to locate it. Before retaliation happens, certain large amount of time should pass, allowing player to find it. After retaliation is found out, a mission can be assigned to deal with it.
-
-By default, retaliations are disabled and can be enabled by finishing specific city.
-
-### Hunting party
-
-Hunting party will kill one of player crew member.
-
-### Raid
-
-Raid will reduce player money and some items from inventory will be lost.
-
-### Defamation
-
-Defamation will reduce player credibility.
-
-### Assault
-
-Assault will target player faction and reduce it's power level.
-
-### Hacking
-
-Hacking will affect player server and programs.
-
-### Slander
-
-Slander will reduce amount of orders available in all districts.
+When map is generated, district are split between neutral forces and factions. After joining faction, player will start increasing it's power level by performing actions.
 
 ## Relocation
 
-Relocation is the prestige. After relocating, almost everything but one crew member will be lost. Certain favors allow to keep money, credibility, crew members and their equipment at a price or by earning credibility rewards repeatedly. If player achieved new reward in the city, it's difficulty level will be increased for the next visit. Player unable to receive reward unless they relocate.
+Relocation is the prestige. After relocating, almost everything will be lost. Certain favors allow to keep money, company members, their equipment and programs at a price. Each city has it's own price to relocate.
 
-Relocation losses can be mitigated by performing certain actions or by buying favors.
+Relocation losses can be mitigated by getting favors, either by buying, capturing districts, performing operations or reaching certaing thresholds of respect.
 
 Relocation favors include
-- Retaining money after relocations (10 tiers, each tier retain 10% more)
-- Retaining credibility after relocation (4 tiers, each tier retain 5% more)
-- Keep weapons
-- Keep armors
-- Keep utility
-- Keep additional crew members (9 tiers, each tier allow to keep 1 more)
 
-Augmentations and blueprints are not affected by relocation.
+- Retaining money after relocations (10 tiers, each tier retain 10% more)
+- Keep weapons (7 tiers, each tier will allow to keep weapons with quality not above it's corresponding tier)
+- Keep armors (7 tiers, each tier will allow to keep armors with quality not above it's corresponding tier)
+- Keep utility items (7 tiers, each tier will allow to keep items with quality not above it's corresponding tier)
+- Keep additional company members (10 tiers, each tier allow to keep 1 more)
+- Keep programs (7 tiers, each tier will allow to keep programs with quality not above it's corresponding tier)
+
+Augmentations and designs are not affected by relocation.
 
 ## Orders
 
-All orders that require searches, can have their searches paid. It allows to finish it instantly. Additionally, each minute each district can receive new orders to perform.
+Company member can be assigned two types of orders: completable orders are will yield result after finishing them and side jobs will yield as member works on it, possibly with side effects. Completable orders will be finished first, if there is no completables, company member will work on their side job. Only one side job and one completable is available for each company member. Assigning new side job/completable will result in cancelling previous one.
 
-If order has hacking or combat, it is time limited instead of time walled.
-
-Each order type has a priority. If crew member is engaged in order with fighting, hacking or augmenting themselves, crew member unable to switch to different order. Otherwise, crew members will try to perform highest priority orders first.
-
-Rough list of priorities:
-- Improvement (augmentation, training)
-- Completable orders (searches, contracts, missions, program writing, etc.)
-- Side jobs
-
-### Crew member searches
-
-Crew member searches are independent from district. It generates an paid offer after finishing it. Each new hire may have it's own set of equipment and augmentations, which are included in hire price. Search can be finished 
-
-Quality increases search time, price, equipment and augmentations qualities, attributes and skills points. New crew member hire attributes and skill points are limited by difficulty level. Equipment and augmentations qualities are limited by search quality.
+Contracts and operations are capped for each district, contracts have separated caps for various types and qualities. Amount of actions available depends on type, district and faction multipliers.
 
 ### Side jobs
 
-Side jobs are basic orders. Each district has it's own set of counters for each side job of each quality. Each minute districts can receive new random side jobs. Player can also manually increase counters by performing searches. Then, if district has side job available, player can assign one crew member to perform it. Cancelling side job will increase counter so it won't be lost and player doesn't need to perform search again.
+Side jobs are basic orders. There are no limits on available side jobs for any district. Player can assign one company member to perform it. Some side jobs can increase certain points, such as connections for better rewards and discounts for hiring mercenaries and getting new contracts, tech base for better discounts on augmentations and equipment, connection base for discount on mainframe hardware and programs.
 
-Side jobs don't have time limit, always depend on one performer, have lowest requirements and will give rewards immediately, without time walling. On other hand, side jobs have weakest multipliers. They are useful in the beginning of game and when contracts are blocked by search.
+Side jobs don't have time limit, always depend on one performer, have lowest requirements and will give rewards immediately, without time walling. They may have useful side effects. On other hand, side jobs have weakest multipliers. They are useful mostly in the beginning of game and as a support.
 
-Quality increases search time, requirements and gains. Maximal concurrent amounts of side job searches and side job orders is 10. Each district unable to have more than 10 of each side job.
+Quality increases requirements and gains. Each quality also has it's own required minimal development level.
 
 ### Contracts
 
-Main way to gain resources. Each district has it's own set of counters for each contract type of each quality. Each minute districts can receive new random contracts. Player can also manually increase counters by performing searches. Then, if district has contract available, player can assign multiple crew members to perform it. Cancelling contract will increase counter so it won't be lost and player doesn't need to perform search again.
+Main way to gain resources. Each district has it's own set of counters for each contract type of each quality. Each 10 minutes districts can receive new random contracts. If district has contract available, player can assign multiple company members to perform it. Contracts have maximal caps.
 
-Unlike side jobs, contracts require some time, combat or hacking to be finished first and can be done one time only. Performance bonuses are summed from all team members for contract. Contracts require 2-5 members and unlocked once crew has 2 or more members.
+Unlike side jobs, contracts require some time. Contracts are unlocked after joining faction in starting city and can be done only after joining faction. Each faction has it's own set of contracts and multipliers for contracts.
 
-Quality increases search time, requirements and gains. Maximal concurrent amounts of contract searches and contract orders is 100. Each district unable to have more than 100 of each contract.
+Quality increases requirements and gains.
 
-### Missions
+Each 10 minutes each district may have receive new contracts.
 
-Missions affect map and global state. Each district has it's own set of available missions, depending on faction and facility. Missions first must be found by search. Only one crew member can perform search. After that, team perform the work. Missions work like contracts, but once mission objective is done, they cannot be retried. Missions may require up to 10 members and are unlocked in specific cities.
+### Operations
 
-Quality increases search time and gains, decreases requirements. Cancelling mission will return it to the set of available missions, allowing player to retry it. Retailation missions are limited by quality of search, ie. search with quality Average can find retailations with quality Average or lower.
+Operations are issued to you by joined faction and can affect global state. Player can get operation at random points. After that, player can assemble a team to perform the work. Operations work like contracts, but once operation objective is done, they cannot be retried. Operations are unlocked in specific cities. Operations can have enemy factions assigned.
 
-Non-retailation missions are limited by 1 for each mission type and district. Only one retailation mission available for each retailation.
+Quality increases gains and requirements. Total amount of operations available at same time for same district is capped. Some actions can make operations disappear. Faction and, if assigned, enemy faction will apply both their respective multipliers to requirements. Operations usually can be done in multiple ways. Operation diffuculty scales with development level.
 
-Missions allow feats such as:
-- Squeezing shops for money and equipment. After robbing shop, it cease to deal with player. Can be done stealthely, by combat, by threatening or by hacking.
-- Preventing retailations. Can be done in multiple ways, maybe depending on retailation type. Can be done in player district.
-- Raiding enemy faction HQ for money, decreasing power level and relocation bonuses. Can be done in multiple ways.
-- Seizing control of allied faction HQ, allowing transferring their money directly to player account or spending additional funds for increased power level or credibility. Ditto.
+Operations allow feats such as:
 
-### Augmentation
-
-Augmentation will install augmentations in selected crew member. After installing augmentations, crew member will be in recovery for sum of every augmentation recovery time. During recovery, crew member is unable to work, re-equip, apply boosters and cannot be assigned to work. Augmentation won't be started unless it can be paid fully.
-
-### Training
-
-Training will increase skill or attribute by one depending on which facility is used for selected crew member. For each increase, price will increase exponentially. Training won't be started unless it can be paid fully. In addition, each increase require small amount of time. Depending on facility quality, limit for training can be increased.
+- Raid enemy territory. Will not capture it, but will increase power level and resources. If it's captured before operation is finished, operation will be cancelled. Will give favors
+- Capturing enemy territory with assist of player. Same as above, but will capture territory and will give favors
+- Raiding enemy faction HQ for money, favors and designs. Only one operation can be succeeded for each quality level and for each enemy faction HQ. Possibly not time-gated and completing one will lead to another for same enemy HQ with higher quality. Will give favors
 
 ## Combat
 
-Specific orders require combat to finish. These orders have bosses with combat stats. Each second turn occurs, during which remaining team members and boss will exchange hits. Team members will attack first. Once boss HP is equal or lower than 0, combat is passed. After that, order will checked if it's requirements are still passable. If yes, then order is completed. Combat allows finishing orders faster at cost of potential crew loss.
+Specific orders require combat to finish. These orders have selected company members opposing enemy boss. Each second turn occurs, during which next person will perform their turn. Order of persons performing depends on their initiative. Once enemy boss have their HP 0 or lower, combat is passed. Operations in addition may require certain skills and attributes like contracts. Company members and enemy bosses both can use debuffs on their first respective turn or heal once by using items in utility slots.
 
-To prevent combat from dragging, it also has time limit.
+Enemy boss depends on faction of district.
 
-Combat is unavailable initially, unlocking it requires finishing specific city. Combat contracts and missions can be cancelled. All crew members participating in it unable to switch to other activities unless order is done, failed or cancelled.
+Combat is performed automatically. Enemy boss will retaliate after each turn.
 
-## Server
+To prevent combat from dragging, damage cannot be negated completely for both sides.
 
-Player can purchase or write server for running programs. Server has three parameters:
+Combat is unlocked at some point. Combat contracts and operations can be cancelled but won't be compensated.
+
+### Debuffs
+
+#### Explosive
+
+Deals damage. Affected by defense. May hit multiple times.
+
+#### Flashbang/smoke grenade
+
+Reduces critical rate, precision and dodge.
+
+#### Corrosion
+
+Reduces regeneration and defense.
+
+### Healing
+
+If company member has medkit, they can heal themselves during ther turn. Medkit will give fixed amount of HP depending on quality.
+
+### Shield
+
+If company member has shield, they have chance to draw enemy fire on themselves during enemy selection.
+
+## Mainframe
+
+Mainframe is used to run processes for owned programs. Mainframe has three parameters:
 
 - Level increases perfomance of running programs
-- RAM allows to store more and larger programs
+- RAM allows to run more and larger programs
 - Cores allow to run more programs simultaneously
 
-Server is unavailable initially, unlocking it requires finishing specific city.
+Only one program of each type can be owned at any time. Purchasing or writing new one will replace old one. Mainframe is available from the beginning of the game.
 
 ## Programs
 
-Programs allow to perform some actions automatically without crew member input. Each program must be written first by crew member, program level depends on crew member hacking level. Programs also have quality and higher quality leads to higher production time.
+Programs allow to perform some actions automatically without player input. Program must be bought, program level and quality can be selected. Program level is capped by development level. Higher quality leads to higher requirements. Computational base for each district and for programs will affect mainframe products discount.
 
-Programs are unavailable initially, unlocking them requires finishing specific city.
+Only few programs are available initially. Player starts with program and design to share mainframe to get some money and development points.
 
 To prevent wasting resources, special program can be purchased/made to generate money depending on unused RAM/cores.
 
 Examples of programs:
-- Spoofing programs, for passive money generation
-- Hacking programs, for performing hacking orders
-- Side job/contract searching programs, for increasing passive side job/contract generation in particular district
-- Mission searching programs, for generating missions in districts
+
+- Share server, for passive money generation. Will use unused RAM and cores. Mainframe level will increase rewards.
+- Predictive computator, for passive increase of other processes speed. Will use unused RAM and cores. Cannot be ran at same time with share server.
+- Code generator, for generating computational base points.
+- Info searching programs, for generating connectivity points.
+- Automatic action assignment, to assign contracts and operations, it will act as looping queue.
+- Hacking programs.
 
 ## Hacking
 
-Specific orders require hacking to finish. Hacking requires filling specific scale within time limit while hacking program is active. After that, order will continue as usual.
+Hacking is done only by mainframe. Each district has it's own server, hacking it will yield money and, possibly, designs (only for enemy factions, first time only). Faction servers cannot be hacked until faction is joined.
 
-Hacking is unavailable initially, unlocking it requires finishing specific city.
+Hacking requires filling completion scale and avoid filling alert scale while hacking is active.
+
+Hacking is unavailable initially, unlocking it requires finishing respect milestone in specific city. 
 
 # Content
 
 ## Cities
 
+Cities have upper limit on development level unless noted. Each city also has different starting of power level sum, divided by factions, allowing them to have some territory during map generation. Each city save highest achieved development level, speeding up the progress on subsequent runs.
+Each city has it's own rewards for neutral faction.
+
 ### Starting city
 
-Starting city has only one faction - **Neighbourwatch**. Player begins here after starting the game. Initially, shopping facilities are unavailable here, player unable to perform mission, contracts with combat or hacking and augmentation. Only few regions are available.
+Starting city has only one faction - **Global security agency**. Player begins here after starting the game. Has small size and designed to learn how to use basic mechanics.
 
-Completing starting city will reward player will additional region for each level of completion. Maximum 6 levels are available.
+Has following unlocks:
 
-### City of Dreams
+- Mainframe
+- Sidejobs
+- Contracts
+- Factions
+- Relocation
 
-City of Dreams has every faction in the game. If player unlocked turf war or retailations, it will be enabled there. Unlike other cities, relocating from City of Dreams will reset rewards here, allowing farming them by getting previous levels of credibility repeatedly.
+### Proving grounds
 
-City of Dreams will reward player with blueprint of player selected factions. If player didn't select faction, it will reward them with blueprints of common equipment. If no more blueprints are available (crafting quality for all available items is maxed), it will reward player with 1 skill and 1 attribute points for each crew member after relocation.
+Proving grounds has 4 random factions and a lot of regions. Unlike most other cities, Proving grounds has no cap on development level.
 
 ### Science city
 
-Science city has only one faction - **Gamma security**. Training facilities of max quality are available here from the start.
+Science city has two factions: **Gamma security** and **Steelmen**. It has large number of training facilities.
 
-Completing science city will unlock training facility usage and reward player with additional training facilities for each level of completion. Maximum 6 levels are available.
+Completing science city will reward player with unlocking factions. Maximum 6 levels are available.
 
 ### Smuggler's city
 
-Smuggler's city has only one faction. Crew members here can be hired with equipment of max quality and arms shops are available immediately with max quality.
+Smuggler's city has two factions: **placeholder** and random.
 
-Completing smuggler's city will unlock arms shops and reward player with ability to hire crew members with higher quality of equipment. Maximum 7 levels are available.
+Completing smuggler's city will increase starting quality cap of weapons to purchase. Maximum 6 levels are available.
 
-### Cyborg city
+### Slums
 
-Cyborg city has only one faction. Crew members here can be hired with augmentations of max quality and hospitals are available immediately with max quality.
+Slums has three-four factions - **Jackals** and **Militia**. Size is medium. Designed to be a tutorial .
 
-Completing cyborg city will unlock hospitals and reward player with ability to hire crew members with higher quality of augmentations. Maximum 7 levels are available.
+Has following unlocks:
 
-### Junkie's city
+- Wanted level and crimes, which will increase level, requirements and rewards of almost all orders.
+- Combat
 
-Junkie's city has only one faction. Pharmacies are available immediately with max quality. Player crew can use multiple boosters at same time.
+### Android city
 
-Completin junkie's city will unlock pharmacies and reward player with ability to more boosters for each level of completion. Maximum 3 levels are available.
+Android city has multiple factions. Size is medium.
 
-### Crime city
+Has following unlocks:
 
-Crime city has two factions - **Neighbourwatch** and **Anarks**. Wanted level, crimes and combat are available from the start.
+- Mainframe automation
+- Hacking
 
-Completing crime city will unlock wanted level, crime-related and combat-related orders. Maximum 1 level is available.
+### Combat zone
 
-### Corpo city
-
-Corpo city has two factions. Retailation is always enabled there. Missions are available from the start.
-
-Completing corpo city will unlock missions and will enable retailations in the City of Dreams. Maximum 1 level is available.
-
-### Warzone
-
-Warzone has multiple factions. Turf war is always enabled there.
-
-Completing corpo city will enable turf war in the City of Dreams. Maximum 1 level is available.
-
-### Hacking city
-
-Hacking city has multiple factions. Player starts there with hacking server? All hacking orders are available here from the start.
-
-Completing hacking city will unlock hacking orders, servers and programs in other cities. Maximum 1 level is available.
+Combat zone is hard level, with 3-4 random or criminal factions. Completing development levels here unlocks retaining acquired programs, equipment, company members etc and starting with better equipment unlocked.
 
 ## Districts
 
 ## Factions
+
+### Vigil
+
+#### Items
+
+Shield
+
+#### Favors
+
+Vigil can increase level of all new defensive equipment without increasing requirements.
+
+#### Mercenaries
+
+Defense oriented, with ranged weapons
