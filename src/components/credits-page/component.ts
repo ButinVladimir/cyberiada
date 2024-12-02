@@ -25,7 +25,7 @@ export class CreditsPage extends BaseComponent {
   renderContent() {
     return html`
       <p class="server-link">
-        <a target="_blank" href="https://discord.gg/ZsCft65r">Discord</a>
+        <a target="_blank" href="https://discord.gg/CmsTxU2EMw">Discord</a>
       </p>
       <p class="contributors">
         Vladimir Butin (OmniLRenegade) - <intl-message label="ui:credits:OmniLRenegadE"></intl-message>

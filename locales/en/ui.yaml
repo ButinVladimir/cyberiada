@@ -50,7 +50,7 @@ settings:
   autosaveInterval: Autosave interval (s)
   maxTicksPerUpdate: Maximum amount of updates per tick when game speed is fast
   maxTicksPerUpdateHint: Too high number can cause strain on CPU
-  maxTicksPerFastForward: Maximum amount of update per tick when accumulated time is being spent
+  maxTicksPerFastForward: Maximum amount of updates per tick when accumulated time is being spent
   maxTicksPerFastForwardHint: Too high number can cause strain on CPU
   longNumberFormat: Long number format
   languages:
