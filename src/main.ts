@@ -9,7 +9,7 @@ import '@shoelace-style/shoelace/dist/themes/light.css';
 import '@shoelace-style/shoelace/dist/themes/dark.css';
 import './index.css';
 
-setBasePath('/shoelace');
+setBasePath('/cyberiada/shoelace');
 
 window.i18next = i18n;
 
