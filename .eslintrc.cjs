@@ -13,6 +13,7 @@ module.exports = {
     'dist',
     '.eslintrc.cjs',
     'vite.config.ts',
+    'vitest.config.ts',
     '*.d.ts',
     'postcss.config.js',
   ],
