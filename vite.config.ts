@@ -58,5 +58,5 @@ export default defineConfig({
       plugins: [],
     },
   },
-  base: '/cyberiada',
+  base: '/cyberiada/',
 });
