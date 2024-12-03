@@ -2,7 +2,7 @@
 
 ## About
 
-Cybariada is an idle management game where player controls mainframe and group of up to 10 mercenaries to establish private security company. Player visits different cities, which cover different scenarios, and by working for various factions unlocks new features. Mainframe provides various support buffs, performs hacking and automates gameplay which mercenaries perform sidejobs, contracts and operations.
+Cybariada is an idle management game, heavily inspired by Bitburner, in which player controls mainframe and group of up to 10 mercenaries to establish private security company. Player visits different cities, which cover different scenarios, and by working for various factions unlocks new features. Mainframe provides various support buffs, performs hacking and automates gameplay which mercenaries perform sidejobs, contracts and operations.
 
 Cyberiada is currenly under development. It has roadmap available but info here may be outdated.
 
