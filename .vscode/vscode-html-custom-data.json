@@ -2,6 +2,40 @@
   "version": 1,
   "tags": [
     {
+      "name": "intl-datetime",
+      "attributes": []
+    },
+    {
+      "name": "intl-message",
+      "attributes": []
+    },
+    {
+      "name": "intl-number",
+      "attributes": []
+    },
+    {
+      "name": "intl-relative-time",
+      "attributes": []
+    },
+    {
+      "name": "scrollable-component",
+      "description": "Attributes:\n\n  * `scrollbar-visibility` {} - \n\n  * `vertical-scrollbar-position` {} - \n\n  * `horizontal-scrollbar-position` {} - ",
+      "attributes": [
+        {
+          "name": "scrollbar-visibility",
+          "description": "`scrollbar-visibility` {} - \n\n"
+        },
+        {
+          "name": "vertical-scrollbar-position",
+          "description": "`vertical-scrollbar-position` {} - \n\n"
+        },
+        {
+          "name": "horizontal-scrollbar-position",
+          "description": "`horizontal-scrollbar-position` {} - \n\n"
+        }
+      ]
+    },
+    {
       "name": "ca-app-root",
       "description": "Properties:\n\n  * `controller` {`AppRootController`} - ",
       "attributes": []

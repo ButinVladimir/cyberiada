@@ -5,8 +5,11 @@ import { ITimeSerializedParameter } from './serialized-states/time-serialized-pa
 export interface ITimeParameter extends ISerializeable<ITimeSerializedParameter>, IUIEventEmitter {
   lastUpdateTime: number;
   accumulatedTime: number;
+  activeTime: number;
   gameTime: number;
   gameTimeTotal: number;
-  updateLastUpdateTime(): void;
-  tryNextTick(): boolean;
+  updateAccumulatedTime(showNotification: boolean): void;
+  updateActiveTime(): void;
+  checkTimeForNextTick(): boolean;
+  recalculate(): void;
 }
