@@ -192,7 +192,7 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
 
       <sl-range
         ${ref(this._maxTicksPerUpdateInputRef)}
-        min="2"
+        min="1"
         max="100"
         step="1"
         name="maxTicksPerUpdate"

@@ -22,6 +22,8 @@ export class App implements IApp {
   private _autosaveTimer?: NodeJS.Timeout;
   private _stateUIConnector: IStateUIConnector;
 
+  private _uiVisible: boolean;
+
   constructor(
     @inject(TYPES.AppState) _appState: IAppState,
     @inject(TYPES.SettingsState) _settingsState: ISettingsState,
@@ -35,9 +37,12 @@ export class App implements IApp {
     this._updateTimer = undefined;
     this._autosaveTimer = undefined;
     this._stateUIConnector = _stateUiConnector;
+    this._uiVisible = true;
 
     this.uiEventBatcher = new EventBatcher();
     this._stateUIConnector.registerEventEmitter(this);
+
+    document.addEventListener('visibilitychange', this.handleVisibilityChange);
   }
 
   get appStage() {
@@ -206,7 +211,12 @@ export class App implements IApp {
         break;
     }
 
-    this.uiEventBatcher.enqueueEvent(APP_UI_EVENTS.REFRESHED_UI);
-    this._stateUIConnector.fireUIEvents();
+    if (this._uiVisible) {
+      this._stateUIConnector.fireUIEvents();
+    }
+  };
+
+  private handleVisibilityChange = (): void => {
+    this._uiVisible = !document.hidden;
   };
 }

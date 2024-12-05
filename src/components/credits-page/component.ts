@@ -28,7 +28,7 @@ export class CreditsPage extends BaseComponent {
         <a target="_blank" href="https://discord.gg/CmsTxU2EMw">Discord</a>
       </p>
       <p class="contributors">
-        Vladimir Butin (OmniLRenegade) - <intl-message label="ui:credits:OmniLRenegadE"></intl-message>
+        Vladimir Butin (OmniLRenegadE) - <intl-message label="ui:credits:OmniLRenegadE"></intl-message>
       </p>
     `;
   }
