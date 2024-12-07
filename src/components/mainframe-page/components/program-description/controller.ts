@@ -37,7 +37,7 @@ export class ProgramDescriptionController extends BaseController {
   private deleteOldProgram() {
     if (this._program) {
       this.removeEventListenersByEmitter(this._program);
-      this.programFactory.deleteProgram(this._program);
+      this._program.removeEventListeners();
     }
   }
 }

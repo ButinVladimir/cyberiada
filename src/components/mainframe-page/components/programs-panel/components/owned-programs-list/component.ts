@@ -108,25 +108,21 @@ export class OwnedProgramsList extends BaseComponent<OwnedProgramsListController
           <th class="quality">
             <intl-message label="ui:mainframe:quality">Quality</intl-message>
           </th>
-          ${this.controller.isProgramsAutomationUnlocked()
-            ? html`
-                <th class="autoupgrade">
-                  <sl-tooltip>
-                    <intl-message slot="content" label="ui:mainframe:programs:toggleAutoupgradeAll">
-                      Toggle autoupgrade
-                    </intl-message>
+          <th class="autoupgrade">
+            <sl-tooltip>
+              <intl-message slot="content" label="ui:mainframe:programs:toggleAutoupgradeAll">
+                Toggle autoupgrade
+              </intl-message>
 
-                    <sl-icon-button
-                      id="toggle-autoupgrade-btn"
-                      name=${autoupgradeIcon}
-                      label=${t('mainframe.programs.toggleAutoupgradeAll', { ns: 'ui' })}
-                      @click=${this.handleToggleAutoupgrade}
-                    >
-                    </sl-icon-button>
-                  </sl-tooltip>
-                </th>
-              `
-            : null}
+              <sl-icon-button
+                id="toggle-autoupgrade-btn"
+                name=${autoupgradeIcon}
+                label=${t('mainframe.programs.toggleAutoupgradeAll', { ns: 'ui' })}
+                @click=${this.handleToggleAutoupgrade}
+              >
+              </sl-icon-button>
+            </sl-tooltip>
+          </th>
         </thead>
 
         <tbody ${ref(this._tbodyRef)} @dragover=${this.handleDragOver}>

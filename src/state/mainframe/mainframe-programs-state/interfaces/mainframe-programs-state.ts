@@ -7,6 +7,8 @@ import { IMainframeProgramsSerializedState } from './mainframe-programs-serializ
 
 export interface IMainframeProgramsState extends ISerializeable<IMainframeProgramsSerializedState>, IUIEventEmitter {
   purchaseProgram(programParameters: IMakeProgramParameters): boolean;
+  upgradeMaxProgram(name: ProgramName): boolean;
+  upgradeMaxAllPrograms(): void;
   listOwnedPrograms(): IProgram[];
   getOwnedProgramByName(name: ProgramName): IProgram | undefined;
   toggleProgramsAutoUpgrade(active: boolean): void;

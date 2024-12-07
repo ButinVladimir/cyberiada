@@ -16,7 +16,7 @@ export interface IProgram extends IUIEventEmitter {
   cores: number;
   autoUpgradeEnabled: boolean;
   unlockFeatures: Feature[];
-  update(newProgram: IProgram): void;
+  upgrade(newProgram: IProgram): void;
   removeEventListeners(): void;
   perform(threads: number, usedRam: number): void;
   calculateCompletionDelta(threads: number, usedCores: number, passedTime: number): number;

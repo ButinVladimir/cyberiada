@@ -11,7 +11,7 @@ import { TYPES } from '@state/types';
 import { ProgramName } from '@state/progam-factory/types';
 import { Feature, PurchaseEvent, PurchaseType } from '@shared/types';
 import { EventBatcher } from '@shared/event-batcher';
-import { moveElementInArray } from '@shared/helpers';
+import { binarySearchDecimal, moveElementInArray } from '@shared/helpers';
 import { IMainframeProgramsState, IMainframeProgramsSerializedState } from './interfaces';
 import { MAINFRAME_PROGRAMS_STATE_UI_EVENTS } from './constants';
 
@@ -60,7 +60,6 @@ export class MainframeProgramsState implements IMainframeProgramsState {
       return false;
     }
 
-    const existingProgram = this.getOwnedProgramByName(programParameters.name);
     const program = this._programFactory.makeProgram(programParameters);
 
     const bought = this._globalState.money.purchase(
@@ -69,11 +68,37 @@ export class MainframeProgramsState implements IMainframeProgramsState {
       this.handlePurchaseProgram(program),
     );
 
-    if (!bought || existingProgram) {
-      this._programFactory.deleteProgram(program);
+    return bought;
+  }
+
+  upgradeMaxProgram(name: ProgramName): boolean {
+    const existingProgram = this.getOwnedProgramByName(name);
+
+    if (!existingProgram) {
+      return false;
     }
 
-    return bought;
+    const checkProgramUpgrade = this.handleCheckProgramUpgrade(name, existingProgram.quality);
+    const level = binarySearchDecimal(existingProgram.level, this._globalState.development.level, checkProgramUpgrade);
+
+    if (level <= existingProgram.level) {
+      return false;
+    }
+
+    return this.purchaseProgram({
+      name,
+      quality: existingProgram.quality,
+      level,
+      autoUpgradeEnabled: true,
+    });
+  }
+
+  upgradeMaxAllPrograms(): void {
+    for (const program of this._programsList) {
+      if (program.autoUpgradeEnabled) {
+        this.upgradeMaxProgram(program.name);
+      }
+    }
   }
 
   listOwnedPrograms(): IProgram[] {
@@ -163,7 +188,7 @@ export class MainframeProgramsState implements IMainframeProgramsState {
     const existingProgram = this._ownedPrograms.get(newProgram.name);
 
     if (existingProgram) {
-      existingProgram.update(newProgram);
+      existingProgram.upgrade(newProgram);
     } else {
       this._ownedPrograms.set(newProgram.name, newProgram);
       this._programsList.push(newProgram);
@@ -188,10 +213,25 @@ export class MainframeProgramsState implements IMainframeProgramsState {
 
   private clearState() {
     for (const ownedProgram of this._programsList) {
-      this._programFactory.deleteProgram(ownedProgram);
+      ownedProgram.removeEventListeners();
     }
 
     this._ownedPrograms.clear();
     this._programsList = [];
   }
+
+  private handleCheckProgramUpgrade = (name: ProgramName, quality: number) => (level: number) => {
+    if (level > this._globalState.development.level) {
+      return false;
+    }
+
+    const program = this._programFactory.makeProgram({
+      name,
+      level,
+      quality,
+      autoUpgradeEnabled: true,
+    });
+
+    return program.cost <= this._globalState.money.money;
+  };
 }

@@ -77,10 +77,6 @@ export abstract class BaseProgram implements IProgram {
   }
 
   set autoUpgradeEnabled(value: boolean) {
-    if (!this.globalState.unlockedFeatures.isFeatureUnlocked(Feature.automationMainframePrograms)) {
-      throw new Error('Mainframe program automation is not unlocked');
-    }
-
     this._autoUpgradeEnabled = value;
 
     this.uiEventBatcher.enqueueEvent(PROGRAMS_UI_EVENTS.PROGRAM_UPGRADED);
@@ -115,7 +111,7 @@ export abstract class BaseProgram implements IProgram {
 
   abstract perform(usedCores: number, usedRam: number): void;
 
-  update(newProgram: IProgram): void {
+  upgrade(newProgram: IProgram): void {
     if (this.name !== newProgram.name) {
       throw new Error(`Unable to update program ${this.name} with ${newProgram.name}`);
     }

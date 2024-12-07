@@ -129,7 +129,6 @@ export class TimeParameter implements ITimeParameter {
   async deserialize(serializedState: ITimeSerializedParameter): Promise<void> {
     this._lastUpdateTime = serializedState.lastUpdateTime;
     this._accumulatedTime = serializedState.accumulatedTime;
-    this._activeTime = serializedState.activeTime;
     this._gameTime = serializedState.gameTime;
     this._gameTimeTotal = serializedState.gameTimeTotal;
 
@@ -140,7 +139,6 @@ export class TimeParameter implements ITimeParameter {
     return {
       lastUpdateTime: this._lastUpdateTime,
       accumulatedTime: this._accumulatedTime,
-      activeTime: this._accumulatedTime,
       gameTime: this._gameTime,
       gameTimeTotal: this._gameTimeTotal,
     };

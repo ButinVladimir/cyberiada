@@ -5,8 +5,8 @@
     "updateInterval": 100,
     "autosaveEnabled": true,
     "autosaveInterval": 60000,
-    "maxTicksPerUpdate": 5,
-    "maxTicksPerFastForward": 10000,
+    "maxUpdatesPerTick": 5,
+    "maxUpdatesPerFastForward": 10000,
     "longNumberFormat": "builtIn",
     "mapSize": 3
   },
@@ -41,7 +41,7 @@
   },
   "defaultAutomationSettings": {
     "mainframeHardwareAutobuyer": {
-      "moneyShare": 5,
+      "moneyShare": 10,
       "priority": ["ram", "cores", "performance"]
     },
     "mainframeProgramsAutobuyer": {

@@ -56,32 +56,10 @@ export class ProgramFactory implements IProgramFactory {
   @lazyInject(TYPES.Formatter)
   private _formatter!: IFormatter;
 
-  private _programRepository: Set<IProgram>;
-
-  constructor() {
-    this._programRepository = new Set<IProgram>();
-  }
-
   makeProgram(parameters: IMakeProgramParameters): IProgram {
     const program: IProgram = this.makeProgramImplementation(parameters);
 
-    this._programRepository.add(program);
-
     return program;
-  }
-
-  deleteProgram(program: IProgram) {
-    program.removeEventListeners();
-
-    this._programRepository.delete(program);
-  }
-
-  deleteAllPrograms() {
-    for (const program of this._programRepository.values()) {
-      program.removeEventListeners();
-    }
-
-    this._programRepository.clear();
   }
 
   private makeProgramImplementation(parameters: IMakeProgramParameters): IProgram {
