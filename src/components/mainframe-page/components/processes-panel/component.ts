@@ -71,13 +71,13 @@ export class MainframeHardwarePanel extends BaseComponent<ProcessesPanelControll
         </div>
       </div>
 
+      <ca-processes-list></ca-processes-list>
+
       <ca-start-process-dialog
         ?is-open=${this._isStartProcessDialogOpen}
         @start-process-dialog-close=${this.handleStartProcessDialogClose}
       >
       </ca-start-process-dialog>
-
-      <ca-processes-list></ca-processes-list>
     `;
   }
 

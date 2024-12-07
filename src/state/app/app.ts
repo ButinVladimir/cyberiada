@@ -218,5 +218,9 @@ export class App implements IApp {
 
   private handleVisibilityChange = (): void => {
     this._uiVisible = !document.hidden;
+
+    if (this._uiVisible) {
+      this._stateUIConnector.fireUIEvents();
+    }
   };
 }

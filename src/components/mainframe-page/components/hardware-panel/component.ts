@@ -14,7 +14,8 @@ import { ARTICLE_HEIGHT_WITHOUT_GAP, ARTICLE_HEIGHT_WITH_GAP } from './constants
 export class MainframeHardwarePanel extends BaseComponent<MainframeHardwarePanelController> {
   static styles = css`
     :host {
-      display: block;
+      display: flex;
+      flex-direction: column;
       width: 100%;
       max-width: var(--ca-viewport-width);
     }
@@ -41,6 +42,10 @@ export class MainframeHardwarePanel extends BaseComponent<MainframeHardwarePanel
 
     div.articles-list ca-mainframe-hardware-panel-article.dragged {
       background-color: var(--ca-dragged-color);
+    }
+
+    div.buttons-block {
+      margin: 0 0 var(--sl-spacing-large) 0;
     }
   `;
 
@@ -87,6 +92,12 @@ export class MainframeHardwarePanel extends BaseComponent<MainframeHardwarePanel
           Press either ctrl or shift to buy 10 levels. Press both ctrl and shift to buy 100 levels.
         </intl-message>
       </p>
+
+      <div class="buttons-block">
+        <sl-button variant="default" type="button" size="medium" @click=${this.handleBuyMax}>
+          <intl-message label="ui:mainframe:hardware:buyMaxAllUpgrades"> Buy max all upgrades </intl-message>
+        </sl-button>
+      </div>
 
       <div class="articles-list" ${ref(this._articlesListRef)} @dragover=${this.handleDragOver}>
         ${this.renderParametersList()}
@@ -179,5 +190,12 @@ export class MainframeHardwarePanel extends BaseComponent<MainframeHardwarePanel
 
     this._draggedParameterType = undefined;
     this._draggedParameterPosition = undefined;
+  };
+
+  private handleBuyMax = (event: Event) => {
+    event.stopPropagation();
+    event.preventDefault();
+
+    this.controller.purchaseMax();
   };
 }

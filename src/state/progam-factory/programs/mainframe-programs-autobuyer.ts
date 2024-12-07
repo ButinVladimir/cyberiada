@@ -56,8 +56,6 @@ export class MainframeProgramsAutobuyerProgram extends BaseProgram {
           availableMoney -= newProgram.cost;
           actionsLeft--;
         }
-
-        this._programFactory.deleteProgram(newProgram);
       }
     }
   }
@@ -97,8 +95,6 @@ export class MainframeProgramsAutobuyerProgram extends BaseProgram {
       });
 
       const canAfford = newProgram.cost <= availableMoney;
-
-      this._programFactory.deleteProgram(newProgram);
 
       return canAfford;
     };

@@ -54,7 +54,7 @@ export class PurchaseProgramDialogController extends BaseController {
   private deleteSelectedProgram() {
     if (this._selectedProgram) {
       this.removeEventListenersByEmitter(this._selectedProgram);
-      this.programFactory.deleteProgram(this._selectedProgram);
+      this._selectedProgram.removeEventListeners();
     }
   }
 }

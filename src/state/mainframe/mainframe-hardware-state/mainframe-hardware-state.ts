@@ -112,6 +112,14 @@ export class MainframeHardwareState implements IMainframeHardwareState {
     this.emitAutobuyerUpdatedEvent();
   }
 
+  purchaseMax() {
+    for (const parameter of this._parametersList) {
+      if (parameter.autoUpgradeEnabled) {
+        parameter.purchaseMax();
+      }
+    }
+  }
+
   emitUpgradedEvent() {
     this._mainframeProcessesState.requestUpdateProcesses();
     this._globalState.requestGrowthRecalculation();

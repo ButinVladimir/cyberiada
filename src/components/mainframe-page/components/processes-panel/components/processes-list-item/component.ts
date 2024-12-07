@@ -37,10 +37,10 @@ export class ProcessesListItem extends BaseComponent<ProcessesListItemController
 
     sl-icon[name='question-circle'] {
       position: relative;
-      top: 0.25em;
       margin-left: 0.5em;
       color: var(--ca-hint-color);
       font-size: var(--sl-font-size-large);
+      vertical-align: middle;
     }
 
     div.indicators-container {
@@ -50,6 +50,7 @@ export class ProcessesListItem extends BaseComponent<ProcessesListItemController
       flex-direction: row;
       gap: var(--sl-spacing-small);
       font-size: var(--sl-font-size-large);
+      vertical-align: middle;
     }
   `;
 

@@ -197,12 +197,12 @@
     },
     {
       "name": "ca-mainframe-hardware-panel",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_articlesListRef` {`Ref<HTMLDivElement>`} - \n\n  * `_shiftPressed` {`boolean`} - \n\n  * `_ctrlPressed` {`boolean`} - \n\n  * `_draggedParameterType` - \n\n  * `_draggedParameterPosition` {`number | undefined`} - \n\n  * `renderParametersList` - \n\n  * `renderParameter` - \n\n  * `handleKeypress` - \n\n  * `handleDragStart` - \n\n  * `handleDragOver` - \n\n  * `handleDragEnd` - \n\n  * `controller` {`MainframeHardwarePanelController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_articlesListRef` {`Ref<HTMLDivElement>`} - \n\n  * `_shiftPressed` {`boolean`} - \n\n  * `_ctrlPressed` {`boolean`} - \n\n  * `_draggedParameterType` - \n\n  * `_draggedParameterPosition` {`number | undefined`} - \n\n  * `renderParametersList` - \n\n  * `renderParameter` - \n\n  * `handleKeypress` - \n\n  * `handleDragStart` - \n\n  * `handleDragOver` - \n\n  * `handleDragEnd` - \n\n  * `handleBuyMax` - \n\n  * `controller` {`MainframeHardwarePanelController`} - ",
       "attributes": []
     },
     {
       "name": "ca-mainframe-hardware-panel-article",
-      "description": "Attributes:\n\n  * `type` - \n\n  * `max-increase` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `type` - \n\n  * `maxIncrease` {`number`} - \n\n  * `handleBuy` - \n\n  * `handleToggleAutoUpgrade` - \n\n  * `handleDragStart` - \n\n  * `controller` {`MainframeHardwarePanelArticleController`} - ",
+      "description": "Attributes:\n\n  * `type` - \n\n  * `max-increase` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `type` - \n\n  * `maxIncrease` {`number`} - \n\n  * `handleBuy` - \n\n  * `handleBuyMax` - \n\n  * `handleToggleAutoUpgrade` - \n\n  * `handleDragStart` - \n\n  * `controller` {`MainframeHardwarePanelArticleController`} - ",
       "attributes": [
         {
           "name": "type",
@@ -289,12 +289,12 @@
     },
     {
       "name": "ca-mainframe-programs-panel",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_isPurchaseProgramDialogOpen` {`boolean`} - \n\n  * `handlePurchaseProgramDialogOpen` - \n\n  * `handlePurchaseProgramDialogClose` - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_isPurchaseProgramDialogOpen` {`boolean`} - \n\n  * `handlePurchaseProgramDialogOpen` - \n\n  * `handlePurchaseProgramDialogClose` - \n\n  * `handleUpgradeMaxAllPrograms` - \n\n  * `controller` {`ProgramsPanelController`} - ",
       "attributes": []
     },
     {
       "name": "ca-owned-programs-list-item",
-      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `handleToggleAutoUpgrade` - \n\n  * `handleDragStart` - \n\n  * `controller` {`OwnedProgramsListItemController`} - ",
+      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `handleToggleAutoUpgrade` - \n\n  * `handleDragStart` - \n\n  * `handleUpgradeMax` - \n\n  * `controller` {`OwnedProgramsListItemController`} - ",
       "attributes": [
         {
           "name": "program-name",
@@ -368,7 +368,7 @@
     },
     {
       "name": "ca-settings-form",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_languageInputRef` {`Ref<SlSelect>`} - \n\n  * `_themeInputRef` {`Ref<SlSelect>`} - \n\n  * `_messageLogSizeInputRef` {`Ref<SlInput>`} - \n\n  * `_updateIntervalInputRef` {`Ref<SlRange>`} - \n\n  * `_autosaveEnabledSwitchRef` {`Ref<SlSwitch>`} - \n\n  * `_autosaveIntervalInputRef` {`Ref<SlRange>`} - \n\n  * `_maxTicksPerUpdateInputRef` {`Ref<SlRange>`} - \n\n  * `_maxTicksPerFastForwardInputRef` {`Ref<SlInput>`} - \n\n  * `_longNumberFormatInputRef` {`Ref<SlSelect>`} - \n\n  * `_isSaving` {`boolean`} - \n\n  * `startSaving` - \n\n  * `stopSaving` - \n\n  * `handleChangeLanguage` - \n\n  * `handleChangeTheme` - \n\n  * `handleChangeMessageLogSize` - \n\n  * `handleChangeUpdateInterval` - \n\n  * `handleChangeAutosaveEnabled` - \n\n  * `handleChangeAutosaveInterval` - \n\n  * `handleChangeMaxTicksPerUpdate` - \n\n  * `handleChangeMaxTicksPerFastForward` - \n\n  * `handleChangeLongNumberFormat` - \n\n  * `autosaveIntervalFormatter` - \n\n  * `decimalNumberFormatter` - \n\n  * `controller` {`SettingsFormController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_languageInputRef` {`Ref<SlSelect>`} - \n\n  * `_themeInputRef` {`Ref<SlSelect>`} - \n\n  * `_messageLogSizeInputRef` {`Ref<SlInput>`} - \n\n  * `_updateIntervalInputRef` {`Ref<SlRange>`} - \n\n  * `_autosaveEnabledSwitchRef` {`Ref<SlSwitch>`} - \n\n  * `_autosaveIntervalInputRef` {`Ref<SlRange>`} - \n\n  * `_maxUpdatesPerTickInputRef` {`Ref<SlRange>`} - \n\n  * `_maxUpdatesPerFastForwardInputRef` {`Ref<SlInput>`} - \n\n  * `_longNumberFormatInputRef` {`Ref<SlSelect>`} - \n\n  * `_isSaving` {`boolean`} - \n\n  * `startSaving` - \n\n  * `stopSaving` - \n\n  * `handleChangeLanguage` - \n\n  * `handleChangeTheme` - \n\n  * `handleChangeMessageLogSize` - \n\n  * `handleChangeUpdateInterval` - \n\n  * `handleChangeAutosaveEnabled` - \n\n  * `handleChangeAutosaveInterval` - \n\n  * `handleChangemaxUpdatesPerTick` - \n\n  * `handleChangemaxUpdatesPerFastForward` - \n\n  * `handleChangeLongNumberFormat` - \n\n  * `autosaveIntervalFormatter` - \n\n  * `decimalNumberFormatter` - \n\n  * `controller` {`SettingsFormController`} - ",
       "attributes": []
     },
     {

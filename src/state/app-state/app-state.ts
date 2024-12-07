@@ -5,7 +5,6 @@ import type { ICityState } from '@state/city-state/interfaces/city-state';
 import type { IMainframeHardwareState } from '@state/mainframe/mainframe-hardware-state/interfaces/mainframe-hardware-state';
 import type { IMainframeProgramsState } from '@state/mainframe/mainframe-programs-state/interfaces/mainframe-programs-state';
 import type { IMainframeProcessesState } from '@state/mainframe/mainframe-processes-state/interfaces/mainframe-processes-state';
-import type { IProgramFactory } from '@state/progam-factory/interfaces/program-factory';
 import type { IGlobalState } from '@state/global-state/interfaces/global-state';
 import type { IMainframeHardwareAutomationState } from '@state/automation/mainframe-hardware-automation-state/interfaces/mainframe-hardware-automation-state';
 import type { IMainframeProgramsAutomationState } from '@state/automation/mainframe-programs-automation-state/interfaces/mainframe-programs-automation-state';
@@ -22,7 +21,6 @@ export class AppState implements IAppState {
   private _mainframeHardwareState: IMainframeHardwareState;
   private _mainframeProgramsState: IMainframeProgramsState;
   private _mainframeProcessesState: IMainframeProcessesState;
-  private _programFactory: IProgramFactory;
   private _mainframeHardwareAutomationState: IMainframeHardwareAutomationState;
   private _mainframeProgramsAutomationState: IMainframeProgramsAutomationState;
 
@@ -34,7 +32,6 @@ export class AppState implements IAppState {
     @inject(TYPES.MainframeHardwareState) _mainframeHardwareState: IMainframeHardwareState,
     @inject(TYPES.MainframeProgramsState) _mainframeProgramsState: IMainframeProgramsState,
     @inject(TYPES.MainframeProcessesState) _mainframeProcessesState: IMainframeProcessesState,
-    @inject(TYPES.ProgramFactory) _programFactory: IProgramFactory,
     @inject(TYPES.MainframeHardwareAutomationState)
     _mainframeHardwareAutomationState: IMainframeHardwareAutomationState,
     @inject(TYPES.MainframeProgramsAutomationState)
@@ -47,7 +44,6 @@ export class AppState implements IAppState {
     this._mainframeHardwareState = _mainframeHardwareState;
     this._mainframeProgramsState = _mainframeProgramsState;
     this._mainframeProcessesState = _mainframeProcessesState;
-    this._programFactory = _programFactory;
     this._mainframeHardwareAutomationState = _mainframeHardwareAutomationState;
     this._mainframeProgramsAutomationState = _mainframeProgramsAutomationState;
   }
@@ -59,37 +55,35 @@ export class AppState implements IAppState {
       this._globalState.time.updateActiveTime();
     }
 
-    let maxTicks = Math.floor(this._globalState.time.activeTime / this._settingsState.updateInterval);
+    let maxUpdates = Math.floor(this._globalState.time.activeTime / this._settingsState.updateInterval);
 
     switch (this._globalState.gameSpeed) {
       case GameSpeed.paused:
-        maxTicks = 0;
+        maxUpdates = 0;
         break;
       case GameSpeed.normal:
         break;
       case GameSpeed.fast:
-        maxTicks *= this._settingsState.maxTicksPerUpdate;
+        maxUpdates *= this._settingsState.maxUpdatesPerTick;
         break;
     }
 
-    this.processTicks(maxTicks);
+    this.processTicks(maxUpdates);
   }
 
   fastForwardState(): boolean {
     this._globalState.time.updateActiveTime();
 
-    const maxTicks =
-      this._settingsState.maxTicksPerFastForward *
+    const maxUpdates =
+      this._settingsState.maxUpdatesPerFastForward *
       Math.floor(this._globalState.time.activeTime / this._settingsState.updateInterval);
 
-    const ticksProcessed = this.processTicks(maxTicks);
+    const ticksProcessed = this.processTicks(maxUpdates);
 
-    return ticksProcessed === maxTicks;
+    return ticksProcessed === maxUpdates;
   }
 
   async startNewState(): Promise<void> {
-    this._programFactory.deleteAllPrograms();
-
     await this._settingsState.startNewState();
     await this._scenarioState.startNewState();
     await this._globalState.startNewState();
@@ -122,8 +116,6 @@ export class AppState implements IAppState {
   async deserialize(saveData: string): Promise<void> {
     const parsedSaveData = JSON.parse(atob(saveData)) as ISerializedState;
 
-    this._programFactory.deleteAllPrograms();
-
     await this._settingsState.deserialize(parsedSaveData.settings);
     await this._scenarioState.deserialize(parsedSaveData.scenario);
     await this._globalState.deserialize(parsedSaveData.global);
@@ -135,10 +127,10 @@ export class AppState implements IAppState {
     await this._mainframeProgramsAutomationState.deserialize(parsedSaveData.mainframeProgramsAutomationState);
   }
 
-  private processTicks(maxTicks: number): number {
+  private processTicks(maxUpdates: number): number {
     let ticksProcessed = 0;
 
-    for (; ticksProcessed < maxTicks && this._globalState.time.checkTimeForNextTick(); ticksProcessed++) {
+    for (; ticksProcessed < maxUpdates && this._globalState.time.checkTimeForNextTick(); ticksProcessed++) {
       this.processSingleTick();
     }
 

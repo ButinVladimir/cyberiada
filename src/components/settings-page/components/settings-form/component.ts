@@ -60,9 +60,9 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
 
   private _autosaveIntervalInputRef = createRef<SlRange>();
 
-  private _maxTicksPerUpdateInputRef = createRef<SlRange>();
+  private _maxUpdatesPerTickInputRef = createRef<SlRange>();
 
-  private _maxTicksPerFastForwardInputRef = createRef<SlInput>();
+  private _maxUpdatesPerFastForwardInputRef = createRef<SlInput>();
 
   private _longNumberFormatInputRef = createRef<SlSelect>();
 
@@ -92,8 +92,8 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
       this._updateIntervalInputRef.value.tooltipFormatter = this.decimalNumberFormatter;
     }
 
-    if (this._maxTicksPerUpdateInputRef.value) {
-      this._maxTicksPerUpdateInputRef.value.tooltipFormatter = this.decimalNumberFormatter;
+    if (this._maxUpdatesPerTickInputRef.value) {
+      this._maxUpdatesPerTickInputRef.value.tooltipFormatter = this.decimalNumberFormatter;
     }
   }
 
@@ -191,20 +191,20 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
       </sl-range>
 
       <sl-range
-        ${ref(this._maxTicksPerUpdateInputRef)}
+        ${ref(this._maxUpdatesPerTickInputRef)}
         min="2"
         max="100"
         step="1"
-        name="maxTicksPerUpdate"
-        value=${this.controller.maxTicksPerUpdate}
-        @sl-change=${this.handleChangeMaxTicksPerUpdate}
+        name="maxUpdatesPerTick"
+        value=${this.controller.maxUpdatesPerTick}
+        @sl-change=${this.handleChangemaxUpdatesPerTick}
       >
         <span class="input-label" slot="label">
-          <intl-message label="ui:settings:maxTicksPerUpdate">Max ticks per update</intl-message>
+          <intl-message label="ui:settings:maxUpdatesPerTick">Max ticks per update</intl-message>
         </span>
 
         <span slot="help-text">
-          <intl-message label="ui:settings:maxTicksPerUpdateHint">
+          <intl-message label="ui:settings:maxUpdatesPerTickHint">
             Excessive messages in log won't be removed until new message is received
           </intl-message>
         </span>
@@ -237,21 +237,21 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
       </sl-range>
 
       <sl-input
-        ${ref(this._maxTicksPerFastForwardInputRef)}
-        name="maxTicksPerFastForward"
-        value=${this.controller.maxTicksPerFastForward}
+        ${ref(this._maxUpdatesPerFastForwardInputRef)}
+        name="maxUpdatesPerFastForward"
+        value=${this.controller.maxUpdatesPerFastForward}
         type="number"
         min="1"
         max="100000000"
         step="1"
-        @sl-change=${this.handleChangeMaxTicksPerFastForward}
+        @sl-change=${this.handleChangemaxUpdatesPerFastForward}
       >
         <span class="input-label" slot="label">
-          <intl-message label="ui:settings:maxTicksPerFastForward">Max ticks per fast forward</intl-message>
+          <intl-message label="ui:settings:maxUpdatesPerFastForward">Max ticks per fast forward</intl-message>
         </span>
 
         <span slot="help-text">
-          <intl-message label="ui:settings:maxTicksPerFastForwardHint">
+          <intl-message label="ui:settings:maxUpdatesPerFastForwardHint">
             Too high number can cause strain on CPU
           </intl-message>
         </span>
@@ -342,20 +342,20 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
     this.controller.setAutosaveInterval(this._autosaveIntervalInputRef.value.value);
   };
 
-  private handleChangeMaxTicksPerUpdate = () => {
-    if (!this._maxTicksPerUpdateInputRef.value) {
+  private handleChangemaxUpdatesPerTick = () => {
+    if (!this._maxUpdatesPerTickInputRef.value) {
       return;
     }
 
-    this.controller.setMaxTicksPerUpdate(this._maxTicksPerUpdateInputRef.value.value);
+    this.controller.setMaxUpdatesPerTick(this._maxUpdatesPerTickInputRef.value.value);
   };
 
-  private handleChangeMaxTicksPerFastForward = () => {
-    if (!this._maxTicksPerFastForwardInputRef.value) {
+  private handleChangemaxUpdatesPerFastForward = () => {
+    if (!this._maxUpdatesPerFastForwardInputRef.value) {
       return;
     }
 
-    let value = this._maxTicksPerFastForwardInputRef.value.valueAsNumber;
+    let value = this._maxUpdatesPerFastForwardInputRef.value.valueAsNumber;
 
     if (value < 1) {
       value = 1;
@@ -365,8 +365,8 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
       value = 100000000;
     }
 
-    this.controller.setMaxTicksPerFastForward(value);
-    this._maxTicksPerFastForwardInputRef.value.valueAsNumber = value;
+    this.controller.setmaxUpdatesPerFastForward(value);
+    this._maxUpdatesPerFastForwardInputRef.value.valueAsNumber = value;
   };
 
   private handleChangeLongNumberFormat = () => {
