@@ -19,6 +19,14 @@ export class PurchaseProgramDialogController extends BaseController {
     return this.globalState.development.level;
   }
 
+  get ram(): number {
+    return this.mainframeHardwareState.ram.level;
+  }
+
+  get cores(): number {
+    return this.mainframeHardwareState.cores.level;
+  }
+
   getSelectedProgram(name: ProgramName, level: number, quality: number): IProgram {
     if (
       this._selectedProgram?.name !== name ||

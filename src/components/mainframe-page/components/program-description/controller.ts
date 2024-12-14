@@ -34,6 +34,10 @@ export class ProgramDescriptionController extends BaseController {
     return this._program;
   }
 
+  getCurrentProgram(name: ProgramName): IProgram | undefined {
+    return this.mainframeProgramsState.getOwnedProgramByName(name);
+  }
+
   private deleteOldProgram() {
     if (this._program) {
       this.removeEventListenersByEmitter(this._program);

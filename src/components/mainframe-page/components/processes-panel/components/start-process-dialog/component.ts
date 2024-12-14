@@ -186,6 +186,7 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
             level=${program?.level ?? 1}
             quality=${program?.quality ?? 0}
             threads=${threads}
+            type="process-comparison"
           >
           </ca-program-description>
         </div>

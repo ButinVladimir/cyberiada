@@ -90,11 +90,25 @@ mainframe:
   threads: Threads
   cores: Cores
   programDescription:
-    cost: Costs {{value.cost}} money to purchase
-    requirements: Requires {{value.ram}} RAM and up to {{value.cores}} cores to run {{value.threads}} threads
-    requirementsScalable: Autoscalable and uses all unused RAM and cores
-    completionTime: Can be completed in {{value.minTime}} - {{value.maxTime}}
-    completionTimeScalable: It will run every tick
+    requirements:
+      requirementsProcess: Requirements for {{value.threads}} threads
+      requirementsDiff: Requirements for {{value.threads}} ({{value.threadsDiff}}) threads
+      requirementsSingle: Requirements for single thread
+      requirementsScalable: Requirements for autoscalable program
+      cost: 'Cost: {{value.cost}}'
+      costDiff: 'Cost: {{value.cost}} ({{value.costDiff}})'
+      ram: 'RAM: {{value.ram}}'
+      ramDiff: 'RAM: {{value}} ({{value.ramDiff}})'
+      ramAllUnused: 'RAM: All unused'
+      cores: 'Cores: Up to {{value.cores}}'
+      coresDiff: 'Cores: Up to {{value.cores}} ({{value.coresDiff}})'
+      coresAllUnused: 'Cores: All unused'
+      completionTime: 'Completion time: {{value.minTime}} &mdash; {{value.maxTime}}'
+      completionTimeProcess: 'Completion time: {{value.time}}'
+      completionTimeProcessNoCores: 'Completion time: Requires cores to be completed'
+      completionTimeDiff: 'Completion time: {{value.minTime}} &mdash; {{value.maxTime}} ({{value.minTimeDiff}} &mdash; {{value.maxTimeDiff}})'
+      completionTimeScalable: 'Completion time: Instant'
+    effects: 'Effects'
   tabs:
     processes: Processes
     hardware: Hardware

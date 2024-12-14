@@ -61,10 +61,8 @@ export class MainframeProgramsAutobuyerProgram extends BaseProgram {
   }
 
   buildProgramDescriptionParametersObject(threads: number) {
-    const completionTimes = this.buildCompletionTimeParametersObject(threads);
-
-    const minAvgValue = threads / completionTimes.maxTime;
-    const maxAvgValue = threads / completionTimes.minTime;
+    const minAvgValue = threads / this.calculateCompletionMaxTime(threads);
+    const maxAvgValue = threads / this.calculateCompletionMinTime(threads);
 
     return {
       value: this.formatter.formatNumberDecimal(threads),

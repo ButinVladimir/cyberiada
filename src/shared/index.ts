@@ -7,3 +7,4 @@ export * from './formatter';
 export * from './helpers';
 export * from './base-component';
 export * from './base-controller';
+export * from './formatter-parameters';
