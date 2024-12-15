@@ -33,8 +33,8 @@ export class SettingsState implements ISettingsState {
   private _updateInterval: number;
   private _autosaveEnabled: boolean;
   private _autosaveInterval: number;
+  private _fastSpeedMultiplier: number;
   private _maxUpdatesPerTick: number;
-  private _maxUpdatesPerFastForward: number;
   private _longNumberFormat: LongNumberFormat;
   private _mapCellSize: number;
   private _enabledMessageEvents: Set<MessageEvent>;
@@ -48,8 +48,8 @@ export class SettingsState implements ISettingsState {
     this._updateInterval = constants.defaultSettings.updateInterval;
     this._autosaveEnabled = constants.defaultSettings.autosaveEnabled;
     this._autosaveInterval = constants.defaultSettings.autosaveInterval;
+    this._fastSpeedMultiplier = constants.defaultSettings.fastSpeedMultiplier;
     this._maxUpdatesPerTick = constants.defaultSettings.maxUpdatesPerTick;
-    this._maxUpdatesPerFastForward = constants.defaultSettings.maxUpdatesPerFastForward;
     this._longNumberFormat = constants.defaultSettings.longNumberFormat as LongNumberFormat;
     this._mapCellSize = constants.defaultSettings.mapSize;
     this._enabledMessageEvents = new Set<MessageEvent>();
@@ -81,12 +81,12 @@ export class SettingsState implements ISettingsState {
     return this._autosaveInterval;
   }
 
-  get maxUpdatesPerTick() {
-    return this._maxUpdatesPerTick;
+  get fastSpeedMultiplier() {
+    return this._fastSpeedMultiplier;
   }
 
-  get maxUpdatesPerFastForward() {
-    return this._maxUpdatesPerFastForward;
+  get maxUpdatesPerTick() {
+    return this._maxUpdatesPerTick;
   }
 
   get longNumberFormat() {
@@ -141,12 +141,12 @@ export class SettingsState implements ISettingsState {
     this._app.restartAutosaveTimer();
   }
 
-  setMaxUpdatesPerTick(maxUpdatesPerTick: number) {
-    this._maxUpdatesPerTick = maxUpdatesPerTick;
+  setfastSpeedMultiplier(fastSpeedMultiplier: number) {
+    this._fastSpeedMultiplier = fastSpeedMultiplier;
   }
 
-  setMaxUpdatesPerFastForward(maxUpdatesPerFastForward: number) {
-    this._maxUpdatesPerFastForward = maxUpdatesPerFastForward;
+  setMaxUpdatesPerTick(maxUpdatesPerTick: number) {
+    this._maxUpdatesPerTick = maxUpdatesPerTick;
   }
 
   setLongNumberFormat(longNumberFormat: LongNumberFormat) {
@@ -190,8 +190,8 @@ export class SettingsState implements ISettingsState {
     this.setUpdateInterval(constants.defaultSettings.updateInterval);
     this.setAutosaveEnabled(constants.defaultSettings.autosaveEnabled);
     this.setAutosaveInterval(constants.defaultSettings.autosaveInterval);
+    this.setfastSpeedMultiplier(constants.defaultSettings.fastSpeedMultiplier);
     this.setMaxUpdatesPerTick(constants.defaultSettings.maxUpdatesPerTick);
-    this.setMaxUpdatesPerFastForward(constants.defaultSettings.maxUpdatesPerFastForward);
     this.setLongNumberFormat(constants.defaultSettings.longNumberFormat as LongNumberFormat);
     this.setMapCellSize(constants.defaultSettings.mapSize);
     this.deserializeMessageEvents(this.getAllMessageEvents());
@@ -206,8 +206,8 @@ export class SettingsState implements ISettingsState {
     this.setUpdateInterval(serializedState.updateInterval);
     this.setAutosaveEnabled(serializedState.autosaveEnabled);
     this.setAutosaveInterval(serializedState.autosaveInterval);
+    this.setfastSpeedMultiplier(serializedState.fastSpeedMultiplier);
     this.setMaxUpdatesPerTick(serializedState.maxUpdatesPerTick);
-    this.setMaxUpdatesPerFastForward(serializedState.maxUpdatesPerFastForward);
     this.setLongNumberFormat(serializedState.longNumberFormat);
     this.setMapCellSize(serializedState.mapCellSize);
     this.deserializeMessageEvents(serializedState.enabledMessageEvents);
@@ -223,8 +223,8 @@ export class SettingsState implements ISettingsState {
       updateInterval: this.updateInterval,
       autosaveEnabled: this.autosaveEnabled,
       autosaveInterval: this.autosaveInterval,
+      fastSpeedMultiplier: this.fastSpeedMultiplier,
       maxUpdatesPerTick: this.maxUpdatesPerTick,
-      maxUpdatesPerFastForward: this.maxUpdatesPerFastForward,
       longNumberFormat: this.longNumberFormat,
       mapCellSize: this.mapCellSize,
       enabledMessageEvents: this.serializeMessageEvents(),

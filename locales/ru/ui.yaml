@@ -49,14 +49,11 @@ settings:
   updateInterval: Интервал обновления (мс)
   autosaveEnabled: Включить автосохранение
   autosaveInterval: Интервал автосохранения (сек)
-  maxUpdatesPerTick: Максимальное количество обновлений за тик при быстрой скорости игры
+  fastSpeedMultiplier: Множитель скорости при быстрой скорости игры
+  fastSpeedMultiplierHint: Слишком большое значение может привести к нагрузке на процессор
+  maxUpdatesPerTick: Максимальное количество обновлений за тик
   maxUpdatesPerTickHint: Слишком большое значение может привести к нагрузке на процессор
-  maxUpdatesPerFastForward: Максимальное количество обновлений за тик при трате накопленного времени
-  maxUpdatesPerFastForwardHint: Слишком большое значение может привести к нагрузке на процессор
   longNumberFormat: Формат больших чисел
-  languages:
-    en: Английский
-    ru: Русский
   themes:
     light: Светлая
     dark: Темная
@@ -90,11 +87,25 @@ mainframe:
   threads: Потоки
   cores: Ядра
   programDescription:
-    cost: Стоит {{value.cost}} для покупки
-    requirements: Требует {{value.ram}} памяти и до {{value.cores}} ядер для запуска {{value.threads}} потоков
-    requirementsScalable: Автомасштабируется и использует все неиспользуемые ядра и память
-    completionTime: Может быть выполнена за {{value.minTime}} - {{value.maxTime}}
-    completionTimeScalable: Выполняется каждый тик
+    requirements:
+      requirementsProcess: Требования для {{value.threads}} потоков
+      requirementsDiff: Требования для {{value.threads}} ({{value.threadsDiff}}) потоков
+      requirementsSingle: Требования для одного потока
+      requirementsScalable: Требования для автомасштабируемой программы
+      cost: 'Цена: {{value.cost}}'
+      costDiff: 'Цена: {{value.cost}} ({{value.costDiff}})'
+      ram: 'Память: {{value.ram}}'
+      ramDiff: 'Память: {{value.ram}} ({{value.ramDiff}})'
+      ramAllUnused: 'Память: Вся неиспользуемая'
+      cores: 'Ядра: До {{value.cores}}'
+      coresDiff: 'Ядра: до {{value.cores}} ({{value.coresDiff}})'
+      coresAllUnused: 'Ядра: Все неиспользуемые'
+      completionTime: 'Время выполнения: {{value.minTime}} &mdash; {{value.maxTime}}'
+      completionTimeProcess: 'Время выполнения: {{value.time}}'
+      completionTimeProcessNoCores: 'Время выполнения: Для выполнения требуются назначенные ядра'
+      completionTimeDiff: 'Время выполнения: {{value.minTime}} &mdash; {{value.maxTime}} ({{value.minTimeDiff}} &mdash; {{value.maxTimeDiff}})'
+      completionTimeScalable: 'Время выполнения: Мгновенно'
+    effects: 'Эффекты'
   tabs:
     processes: Процессы
     hardware: Оборудование
@@ -117,7 +128,7 @@ mainframe:
       Программы наверху имеют больший приоритет. Автоматическое улучшение программ пытается повысить их уровни, не меняет качества.
     purchaseProgram: Купить программу
     purchaseProgramDialogHint: Выберите тип программы, уровень и качество, чтобы купить её.
-      Уровень не может быть выше текущего уровня развития города.
+      Уровень не может быть выше текущего уровня развития.
       Качество зависит от полученных услуг.
       Если у тебя уже есть программа с тем же именем, старая будет заменена на новую.
     purchase: Купить за {{value.cost}}
@@ -149,10 +160,6 @@ mainframe:
     usesCores: "{{value.cores}} \/ {{value.maxCores}}"
     availableCores: 'Доступные ядра: {{value}}'
     availableRam: 'Доступная память: {{value}}'
-    processDescription:
-      completionTime: Может быть выполнен за {{value}}
-      completionTimeScalable: Выполняется каждый тик
-      completionTimeNoCores: Для выполнения требуются назначенные ядра
 statistics:
   statistics: Статистика
   total: Всего
@@ -182,7 +189,7 @@ statistics:
       title: Деньги в секунду
       program: Аренда сервера
     developmentPoints:
-      title: Очки развития города в секунду
+      title: Очки развития в секунду
       program: Аренда сервера
     pointsByPrograms:
       title: Очки в секунду, сгенерированные программами
@@ -192,7 +199,7 @@ statistics:
       title: Деньги
       program: Аренда сервера
     developmentPoints:
-      title: Очки развития города
+      title: Очки развития
       program: Аренда сервера
     pointsByPrograms:
       title: Очки, сгенерированные программами

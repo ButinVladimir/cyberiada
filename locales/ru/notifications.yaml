@@ -7,3 +7,6 @@ featureUnlocked:
 timeAccumulated:
   name: Накоплено время
   message: Пока ты не играл, ты заработал {{value.time}} накопленного времени
+gameVersionUpdated:
+  name: Версия игры обновлена
+  message: Версия игры обновлена

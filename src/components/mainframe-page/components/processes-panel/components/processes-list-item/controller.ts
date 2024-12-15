@@ -5,6 +5,14 @@ import { ProgramName } from '@state/progam-factory/types';
 export class ProcessesListItemController extends BaseController {
   private _process?: IProcess;
 
+  get availableRam(): number {
+    return this.mainframeProcessesState.availableRam;
+  }
+
+  get availableCores(): number {
+    return this.mainframeProcessesState.availableCores;
+  }
+
   getProcess(programName: ProgramName) {
     if (this._process?.program.name !== programName) {
       if (this._process) {

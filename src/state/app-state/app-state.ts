@@ -1,4 +1,5 @@
 import { inject, injectable } from 'inversify';
+import type { INotificationsState } from '@state/notifications-state/interfaces/notifications-state';
 import type { IScenarioState } from '@state/scenario-state/interfaces/scenario-state';
 import type { ISettingsState } from '@state/settings-state/interfaces/settings-state';
 import type { ICityState } from '@state/city-state/interfaces/city-state';
@@ -10,10 +11,14 @@ import type { IMainframeHardwareAutomationState } from '@state/automation/mainfr
 import type { IMainframeProgramsAutomationState } from '@state/automation/mainframe-programs-automation-state/interfaces/mainframe-programs-automation-state';
 import { GameSpeed } from '@state/global-state/types';
 import { TYPES } from '@state/types';
+import { NotificationType } from '@shared/types';
+import { CURRENT_VERSION } from '@shared/constants';
 import { IAppState, ISerializedState } from './interfaces';
+import { Migrator } from './migrator';
 
 @injectable()
 export class AppState implements IAppState {
+  private _notificationsState: INotificationsState;
   private _scenarioState: IScenarioState;
   private _globalState: IGlobalState;
   private _settingsState: ISettingsState;
@@ -25,6 +30,7 @@ export class AppState implements IAppState {
   private _mainframeProgramsAutomationState: IMainframeProgramsAutomationState;
 
   constructor(
+    @inject(TYPES.NotificationsState) _notificationsState: INotificationsState,
     @inject(TYPES.ScenarioState) _scenarioState: IScenarioState,
     @inject(TYPES.GlobalState) _globalState: IGlobalState,
     @inject(TYPES.SettingsState) _settingsState: ISettingsState,
@@ -37,6 +43,7 @@ export class AppState implements IAppState {
     @inject(TYPES.MainframeProgramsAutomationState)
     _mainframeProgramsAutomationState: IMainframeProgramsAutomationState,
   ) {
+    this._notificationsState = _notificationsState;
     this._scenarioState = _scenarioState;
     this._globalState = _globalState;
     this._settingsState = _settingsState;
@@ -64,9 +71,11 @@ export class AppState implements IAppState {
       case GameSpeed.normal:
         break;
       case GameSpeed.fast:
-        maxUpdates *= this._settingsState.maxUpdatesPerTick;
+        maxUpdates *= this._settingsState.fastSpeedMultiplier;
         break;
     }
+
+    maxUpdates = Math.min(maxUpdates, this._settingsState.maxUpdatesPerTick);
 
     this.processTicks(maxUpdates);
   }
@@ -74,9 +83,7 @@ export class AppState implements IAppState {
   fastForwardState(): boolean {
     this._globalState.time.updateActiveTime();
 
-    const maxUpdates =
-      this._settingsState.maxUpdatesPerFastForward *
-      Math.floor(this._globalState.time.activeTime / this._settingsState.updateInterval);
+    const maxUpdates = this._settingsState.maxUpdatesPerTick;
 
     const ticksProcessed = this.processTicks(maxUpdates);
 
@@ -97,6 +104,7 @@ export class AppState implements IAppState {
 
   serialize(): string {
     const saveState: ISerializedState = {
+      gameVersion: CURRENT_VERSION,
       scenario: this._scenarioState.serialize(),
       global: this._globalState.serialize(),
       settings: this._settingsState.serialize(),
@@ -114,17 +122,30 @@ export class AppState implements IAppState {
   }
 
   async deserialize(saveData: string): Promise<void> {
-    const parsedSaveData = JSON.parse(atob(saveData)) as ISerializedState;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const parsedSaveData = JSON.parse(atob(saveData));
 
-    await this._settingsState.deserialize(parsedSaveData.settings);
-    await this._scenarioState.deserialize(parsedSaveData.scenario);
-    await this._globalState.deserialize(parsedSaveData.global);
-    await this._cityState.deserialize(parsedSaveData.city);
-    await this._mainframeHardwareState.deserialize(parsedSaveData.mainframeHardware);
-    await this._mainframeProgramsState.deserialize(parsedSaveData.mainframePrograms);
-    await this._mainframeProcessesState.deserialize(parsedSaveData.mainframeProcesses);
-    await this._mainframeHardwareAutomationState.deserialize(parsedSaveData.mainframeHardwareAutomationState);
-    await this._mainframeProgramsAutomationState.deserialize(parsedSaveData.mainframeProgramsAutomationState);
+    const migrator = new Migrator();
+    const migratedSaveData = migrator.migrate(parsedSaveData);
+
+    if (migrator.hasMigrated) {
+      this._notificationsState.pushNotification(NotificationType.gameVersionUpdated, undefined, true);
+    }
+
+    if (!migratedSaveData) {
+      await this.startNewState();
+      return;
+    }
+
+    await this._settingsState.deserialize(migratedSaveData.settings);
+    await this._scenarioState.deserialize(migratedSaveData.scenario);
+    await this._globalState.deserialize(migratedSaveData.global);
+    await this._cityState.deserialize(migratedSaveData.city);
+    await this._mainframeHardwareState.deserialize(migratedSaveData.mainframeHardware);
+    await this._mainframeProgramsState.deserialize(migratedSaveData.mainframePrograms);
+    await this._mainframeProcessesState.deserialize(migratedSaveData.mainframeProcesses);
+    await this._mainframeHardwareAutomationState.deserialize(migratedSaveData.mainframeHardwareAutomationState);
+    await this._mainframeProgramsAutomationState.deserialize(migratedSaveData.mainframeProgramsAutomationState);
   }
 
   private processTicks(maxUpdates: number): number {

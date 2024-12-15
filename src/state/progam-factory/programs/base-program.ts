@@ -11,11 +11,10 @@ import { IMainframeHardwareState } from '@state/mainframe/mainframe-hardware-sta
 import { IScenarioState } from '@state/scenario-state/interfaces/scenario-state';
 import { Feature } from '@shared/types';
 import { ProgramName } from '../types';
-import { IProgram } from '../interfaces/program';
-import { ICompletionTimeParameters } from '../interfaces/completion-time-parameters';
 import { IMakeProgramParameters } from '../interfaces/make-program-parameters';
 import { IBaseProgramParameters } from '../interfaces/program-parameters/base-program-parameters';
 import { PROGRAMS_UI_EVENTS } from '../constants';
+import { IProgram } from '../interfaces';
 
 export abstract class BaseProgram implements IProgram {
   readonly uiEventBatcher: EventBatcher;
@@ -139,6 +138,14 @@ export abstract class BaseProgram implements IProgram {
     return completionPoints / completionDelta;
   }
 
+  calculateCompletionMinTime(threads: number): number {
+    return this.calculateCompletionTime(threads, this.cores * threads);
+  }
+
+  calculateCompletionMaxTime(threads: number): number {
+    return this.calculateCompletionTime(threads, 1);
+  }
+
   removeEventListeners(): void {
     this.stateUiConnector.unregisterEventEmitter(this);
   }
@@ -149,30 +156,6 @@ export abstract class BaseProgram implements IProgram {
       level: this.level,
       quality: this.quality,
       autoUpgradeEnabled: this.autoUpgradeEnabled,
-    };
-  }
-
-  buildCostParametersObject(): object {
-    return {
-      cost: this.formatter.formatNumberLong(this.cost),
-    };
-  }
-
-  buildRequirementsParametersObject(threads: number): object {
-    return {
-      cores: this.formatter.formatNumberDecimal(this.cores * threads),
-      ram: this.formatter.formatNumberDecimal(this.ram * threads),
-      threads: this.formatter.formatNumberDecimal(threads),
-    };
-  }
-
-  buildCompletionTimeParametersObject(threads: number): ICompletionTimeParameters {
-    const minTime = this.calculateCompletionTime(threads, this.cores * threads);
-    const maxTime = this.calculateCompletionTime(threads, 1);
-
-    return {
-      minTime,
-      maxTime,
     };
   }
 

@@ -28,8 +28,8 @@ export class NotificationsState implements INotificationsState {
     this._stateUiConnector.registerEventEmitter(this);
   }
 
-  pushNotification(notificationType: NotificationType, parameters?: Record<string, any>) {
-    if (!this._settingsState.isNotificationTypeEnabled(notificationType)) {
+  pushNotification(notificationType: NotificationType, parameters?: Record<string, any>, force?: boolean) {
+    if (!force && !this._settingsState.isNotificationTypeEnabled(notificationType)) {
       return;
     }
 

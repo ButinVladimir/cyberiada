@@ -4,6 +4,8 @@ import { customElement, property } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { ProgramName } from '@state/progam-factory/types';
 import { OwnedProgramsListItemController } from './controller';
+import { DescriptionRenderer } from './description-renderer';
+import { IDescriptionRenderer } from './interfaces';
 
 @customElement('ca-owned-programs-list-item')
 export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemController> {
@@ -55,6 +57,18 @@ export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemCo
     sl-button#upgrade-max-btn {
       margin-right: var(--sl-spacing-medium);
     }
+
+    div.program-description {
+      white-space: normal;
+    }
+
+    div.program-description p {
+      margin: 0;
+    }
+
+    div.program-description p.line-break {
+      height: var(--sl-spacing-medium);
+    }
   `;
 
   @property({
@@ -82,6 +96,13 @@ export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemCo
 
     const autoupgradeIcon = program.autoUpgradeEnabled ? 'arrow-up-circle-fill' : 'arrow-up-circle';
 
+    const descriptionRenderer: IDescriptionRenderer = new DescriptionRenderer({
+      formatter: this.controller.formatter,
+      ram: this.controller.ram,
+      cores: this.controller.cores,
+      program: program,
+    });
+
     return html`
       <td class="program" draggable="true" @dragstart=${this.handleDragStart}>
         <intl-message id="title" label="programs:${program.name}:name"> Progam name </intl-message>
@@ -89,14 +110,7 @@ export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemCo
         <sl-tooltip>
           <sl-icon name="question-circle"></sl-icon>
 
-          <ca-program-description
-            slot="content"
-            program-name=${program.name}
-            level=${program.level}
-            quality=${program.quality}
-            threads=${1}
-          >
-          </ca-program-description>
+          <div class="program-description" slot="content">${descriptionRenderer.renderDescription()}</div>
         </sl-tooltip>
       </td>
 

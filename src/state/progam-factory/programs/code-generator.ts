@@ -14,10 +14,9 @@ export class CodeGeneratorProgram extends BaseProgram {
 
   buildProgramDescriptionParametersObject(threads: number) {
     const delta = this.calculateDelta(threads);
-    const completionTimes = this.buildCompletionTimeParametersObject(threads);
 
-    const minAvgValue = delta / completionTimes.maxTime;
-    const maxAvgValue = delta / completionTimes.minTime;
+    const minAvgValue = delta / this.calculateCompletionMaxTime(threads);
+    const maxAvgValue = delta / this.calculateCompletionMinTime(threads);
 
     return {
       value: this.formatter.formatNumberLong(delta),

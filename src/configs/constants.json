@@ -5,8 +5,8 @@
     "updateInterval": 100,
     "autosaveEnabled": true,
     "autosaveInterval": 60000,
-    "maxUpdatesPerTick": 5,
-    "maxUpdatesPerFastForward": 10000,
+    "fastSpeedMultiplier": 5,
+    "maxUpdatesPerTick": 10000,
     "longNumberFormat": "builtIn",
     "mapSize": 3
   },

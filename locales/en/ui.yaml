@@ -49,14 +49,11 @@ settings:
   updateInterval: Update interval (ms)
   autosaveEnabled: Enable autosave
   autosaveInterval: Autosave interval (s)
-  maxUpdatesPerTick: Maximum amount of updates per tick when game speed is fast
+  fastSpeedMultiplier: Speed multiplier when game speed is fast
+  fastSpeedMultiplierHint: Too high number can cause strain on CPU
+  maxUpdatesPerTick: Maximum amount of updates per tick
   maxUpdatesPerTickHint: Too high number can cause strain on CPU
-  maxUpdatesPerFastForward: Maximum amount of updates per tick when accumulated time is being spent
-  maxUpdatesPerFastForwardHint: Too high number can cause strain on CPU
   longNumberFormat: Long number format
-  languages:
-    en: English
-    ru: Russian
   themes:
     light: Light
     dark: Dark
@@ -90,11 +87,25 @@ mainframe:
   threads: Threads
   cores: Cores
   programDescription:
-    cost: Costs {{value.cost}} money to purchase
-    requirements: Requires {{value.ram}} RAM and up to {{value.cores}} cores to run {{value.threads}} threads
-    requirementsScalable: Autoscalable and uses all unused RAM and cores
-    completionTime: Can be completed in {{value.minTime}} - {{value.maxTime}}
-    completionTimeScalable: It will run every tick
+    requirements:
+      requirementsProcess: Requirements for {{value.threads}} threads
+      requirementsDiff: Requirements for {{value.threads}} ({{value.threadsDiff}}) threads
+      requirementsSingle: Requirements for single thread
+      requirementsScalable: Requirements for autoscalable program
+      cost: 'Cost: {{value.cost}}'
+      costDiff: 'Cost: {{value.cost}} ({{value.costDiff}})'
+      ram: 'RAM: {{value.ram}}'
+      ramDiff: 'RAM: {{value.ram}} ({{value.ramDiff}})'
+      ramAllUnused: 'RAM: All unused'
+      cores: 'Cores: Up to {{value.cores}}'
+      coresDiff: 'Cores: Up to {{value.cores}} ({{value.coresDiff}})'
+      coresAllUnused: 'Cores: All unused'
+      completionTime: 'Completion time: {{value.minTime}} &mdash; {{value.maxTime}}'
+      completionTimeProcess: 'Completion time: {{value.time}}'
+      completionTimeProcessNoCores: 'Completion time: Requires assigned cores to be completed'
+      completionTimeDiff: 'Completion time: {{value.minTime}} &mdash; {{value.maxTime}} ({{value.minTimeDiff}} &mdash; {{value.maxTimeDiff}})'
+      completionTimeScalable: 'Completion time: Instant'
+    effects: 'Effects'
   tabs:
     processes: Processes
     hardware: Hardware
@@ -149,10 +160,6 @@ mainframe:
     usesCores: "{{value.cores}} \/ {{value.maxCores}}"
     availableCores: 'Available cores: {{value}}'
     availableRam: 'Available RAM: {{value}}'
-    processDescription:
-      completionTime: Can be completed in {{value}}
-      completionTimeScalable: It will run every tick
-      completionTimeNoCores: Requires assigned cores to be completed
 statistics:
   statistics: Statistics
   total: Total
