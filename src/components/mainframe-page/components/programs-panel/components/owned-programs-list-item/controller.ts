@@ -1,10 +1,17 @@
-import { Feature } from '@shared/types';
 import { BaseController } from '@shared/base-controller';
 import { IProgram } from '@state/progam-factory/interfaces/program';
 import { ProgramName } from '@state/progam-factory/types';
 
 export class OwnedProgramsListItemController extends BaseController {
   private _ownedProgram?: IProgram;
+
+  get ram(): number {
+    return this.mainframeHardwareState.ram.level;
+  }
+
+  get cores(): number {
+    return this.mainframeHardwareState.cores.level;
+  }
 
   getProgram(programName: ProgramName) {
     if (this._ownedProgram?.name !== programName) {
@@ -18,7 +25,7 @@ export class OwnedProgramsListItemController extends BaseController {
     return this._ownedProgram;
   }
 
-  isProgramsAutomationUnlocked(): boolean {
-    return this.globalState.unlockedFeatures.isFeatureUnlocked(Feature.automationMainframePrograms);
+  upgradeMaxProgram(programName: ProgramName) {
+    this.mainframeProgramsState.upgradeMaxProgram(programName);
   }
 }

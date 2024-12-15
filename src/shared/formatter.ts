@@ -2,8 +2,8 @@ import i18n from 'i18next';
 import { injectable, inject } from 'inversify';
 import type { ISettingsState } from '@state/settings-state/interfaces/settings-state';
 import { TYPES } from '@state/types';
-import { IFormatter } from './interfaces/formatter';
 import { LongNumberFormat } from './types';
+import { IFormatterParameters, IFormatter } from './interfaces';
 
 const TIME_PARTS = [
   {
@@ -30,6 +30,31 @@ const QUALITY_MAP: Record<number, string> = {
   6: 'VII',
 };
 
+const defaultTimeShortFormatParameters: IFormatterParameters = {
+  alwaysShowSign: false,
+  prefix: '',
+};
+
+const defaultNumberFloatFormatParameters: IFormatterParameters = {
+  alwaysShowSign: false,
+  prefix: '',
+};
+
+const defaultNumberDecimalFormatParameters: IFormatterParameters = {
+  alwaysShowSign: false,
+  prefix: '',
+};
+
+const defaultNumberLongFormatParameters: IFormatterParameters = {
+  alwaysShowSign: false,
+  prefix: '',
+};
+
+const defaultNumberQualityFormatParameters: IFormatterParameters = {
+  alwaysShowSign: false,
+  prefix: '',
+};
+
 @injectable()
 export class Formatter implements IFormatter {
   private _settingsState: ISettingsState;
@@ -49,8 +74,8 @@ export class Formatter implements IFormatter {
     i18n.on('languageChanged', this.updateBuiltInFormatters);
   }
 
-  formatTimeShort(time: number): string {
-    let remainingTime = time;
+  formatTimeShort(time: number, parameters: IFormatterParameters = defaultTimeShortFormatParameters): string {
+    let remainingTime = Math.abs(time);
     const result = [];
 
     for (const { units } of TIME_PARTS) {
@@ -60,37 +85,51 @@ export class Formatter implements IFormatter {
       result.push(value.toString().padStart(2, '0'));
     }
 
-    return result.join(':');
+    const formattedTime = result.join(':');
+
+    return this.applyNumberFormatterParameters(time, formattedTime, parameters);
   }
 
-  formatNumberFloat(value: number): string {
-    return this._floatBuiltInFormatter.format(value);
+  formatNumberFloat(value: number, parameters: IFormatterParameters = defaultNumberFloatFormatParameters): string {
+    const formattedValue = this._floatBuiltInFormatter.format(Math.abs(value));
+
+    return this.applyNumberFormatterParameters(value, formattedValue, parameters);
   }
 
-  formatNumberDecimal(value: number): string {
-    return this._decimalBuiltInFormatter.format(value);
+  formatNumberDecimal(value: number, parameters: IFormatterParameters = defaultNumberDecimalFormatParameters): string {
+    const formattedValue = this._decimalBuiltInFormatter.format(Math.abs(value));
+
+    return this.applyNumberFormatterParameters(value, formattedValue, parameters);
   }
 
-  formatNumberLong(value: number): string {
+  formatNumberLong(value: number, parameters: IFormatterParameters = defaultNumberLongFormatParameters): string {
+    let formattedValue = '';
+
     switch (this._settingsState.longNumberFormat) {
       case LongNumberFormat.builtIn:
-        return this.formatNumberFloat(value);
+        formattedValue = this.formatNumberFloat(Math.abs(value));
+        break;
 
       case LongNumberFormat.scientific:
-        return this.formatNumberExponential(value);
+        formattedValue = this.formatNumberExponential(Math.abs(value));
+        break;
     }
+
+    return this.applyNumberFormatterParameters(value, formattedValue, parameters);
   }
 
-  formatQuality(value: number): string {
+  formatQuality(value: number, parameters: IFormatterParameters = defaultNumberQualityFormatParameters): string {
+    let formattedValue = '';
+
     if (value < 0) {
-      return '0-';
+      formattedValue = '0';
+    } else if (value > 6) {
+      formattedValue = 'VII+';
+    } else {
+      formattedValue = QUALITY_MAP[value];
     }
 
-    if (value > 6) {
-      return 'VII+';
-    }
-
-    return QUALITY_MAP[value];
+    return this.applyNumberFormatterParameters(value, formattedValue, parameters);
   }
 
   private updateBuiltInFormatters = () => {
@@ -103,5 +142,23 @@ export class Formatter implements IFormatter {
 
   private formatNumberExponential(value: number) {
     return value.toExponential(2);
+  }
+
+  private applyNumberFormatterParameters(value: number, formattedValue: string, parameters: IFormatterParameters) {
+    let newFormattedValue = formattedValue;
+
+    if (value < 0) {
+      newFormattedValue = '-' + newFormattedValue;
+    }
+
+    if (value > 0 && parameters.alwaysShowSign) {
+      newFormattedValue = '+' + newFormattedValue;
+    }
+
+    if (parameters.prefix) {
+      newFormattedValue = parameters.prefix + newFormattedValue;
+    }
+
+    return newFormattedValue;
   }
 }

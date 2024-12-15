@@ -4,6 +4,8 @@ import { customElement, property } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { ProgramName } from '@state/progam-factory/types';
 import { OwnedProgramsListItemController } from './controller';
+import { DescriptionRenderer } from './description-renderer';
+import { IDescriptionRenderer } from './interfaces';
 
 @customElement('ca-owned-programs-list-item')
 export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemController> {
@@ -42,10 +44,30 @@ export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemCo
 
     sl-icon[name='question-circle'] {
       position: relative;
-      top: 0.25em;
       margin-left: 0.5em;
       color: var(--ca-hint-color);
       font-size: var(--sl-font-size-large);
+      vertical-align: middle;
+    }
+
+    sl-icon-button#toggle-autoupgrade-btn {
+      vertical-align: middle;
+    }
+
+    sl-button#upgrade-max-btn {
+      margin-right: var(--sl-spacing-medium);
+    }
+
+    div.program-description {
+      white-space: normal;
+    }
+
+    div.program-description p {
+      margin: 0;
+    }
+
+    div.program-description p.line-break {
+      height: var(--sl-spacing-medium);
     }
   `;
 
@@ -74,6 +96,13 @@ export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemCo
 
     const autoupgradeIcon = program.autoUpgradeEnabled ? 'arrow-up-circle-fill' : 'arrow-up-circle';
 
+    const descriptionRenderer: IDescriptionRenderer = new DescriptionRenderer({
+      formatter: this.controller.formatter,
+      ram: this.controller.ram,
+      cores: this.controller.cores,
+      program: program,
+    });
+
     return html`
       <td class="program" draggable="true" @dragstart=${this.handleDragStart}>
         <intl-message id="title" label="programs:${program.name}:name"> Progam name </intl-message>
@@ -81,14 +110,7 @@ export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemCo
         <sl-tooltip>
           <sl-icon name="question-circle"></sl-icon>
 
-          <ca-program-description
-            slot="content"
-            program-name=${program.name}
-            level=${program.level}
-            quality=${program.quality}
-            threads=${1}
-          >
-          </ca-program-description>
+          <div class="program-description" slot="content">${descriptionRenderer.renderDescription()}</div>
         </sl-tooltip>
       </td>
 
@@ -96,25 +118,25 @@ export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemCo
 
       <td class="quality">${formatter.formatQuality(program.quality)}</td>
 
-      ${this.controller.isProgramsAutomationUnlocked()
-        ? html`
-            <td class="autoupgrade">
-              <sl-tooltip>
-                <intl-message slot="content" label="ui:mainframe:programs:toggleAutoupgrade">
-                  Toggle autoupgrade
-                </intl-message>
+      <td class="autoupgrade">
+        <sl-button id="upgrade-max-btn" variant="default" type="button" size="medium" @click=${this.handleUpgradeMax}>
+          <intl-message label="ui:common:upgrade"> Upgrade </intl-message>
+        </sl-button>
 
-                <sl-icon-button
-                  id="toggle-autoupgrade-btn"
-                  name=${autoupgradeIcon}
-                  label=${t('mainframe.programs.toggleAutoupgrade', { ns: 'ui' })}
-                  @click=${this.handleToggleAutoUpgrade}
-                >
-                </sl-icon-button>
-              </sl-tooltip>
-            </td>
-          `
-        : null}
+        <sl-tooltip>
+          <intl-message slot="content" label="ui:mainframe:programs:toggleAutoupgrade">
+            Toggle autoupgrade
+          </intl-message>
+
+          <sl-icon-button
+            id="toggle-autoupgrade-btn"
+            name=${autoupgradeIcon}
+            label=${t('mainframe.programs.toggleAutoupgrade', { ns: 'ui' })}
+            @click=${this.handleToggleAutoUpgrade}
+          >
+          </sl-icon-button>
+        </sl-tooltip>
+      </td>
     `;
   }
 
@@ -133,5 +155,12 @@ export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemCo
     if (event.dataTransfer) {
       event.dataTransfer.setData('text/plain', this.programName);
     }
+  };
+
+  private handleUpgradeMax = (event: Event) => {
+    event.stopPropagation();
+    event.preventDefault();
+
+    this.controller.upgradeMaxProgram(this.programName as ProgramName);
   };
 }

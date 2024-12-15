@@ -9,6 +9,8 @@ import {
 import { ProgramAlert } from '@shared/types';
 import { ProcessesListItemController } from './controller';
 import { ProgramName } from '@state/progam-factory/types';
+import { DescriptionRenderer } from './description-renderer';
+import { IDescriptionRenderer } from './interfaces';
 
 @customElement('ca-processes-list-item')
 export class ProcessesListItem extends BaseComponent<ProcessesListItemController> {
@@ -37,10 +39,10 @@ export class ProcessesListItem extends BaseComponent<ProcessesListItemController
 
     sl-icon[name='question-circle'] {
       position: relative;
-      top: 0.25em;
       margin-left: 0.5em;
       color: var(--ca-hint-color);
       font-size: var(--sl-font-size-large);
+      vertical-align: middle;
     }
 
     div.indicators-container {
@@ -50,6 +52,19 @@ export class ProcessesListItem extends BaseComponent<ProcessesListItemController
       flex-direction: row;
       gap: var(--sl-spacing-small);
       font-size: var(--sl-font-size-large);
+      vertical-align: middle;
+    }
+
+    div.program-description {
+      white-space: normal;
+    }
+
+    div.program-description p {
+      margin: 0;
+    }
+
+    div.program-description p.line-break {
+      height: var(--sl-spacing-medium);
     }
   `;
 
@@ -96,6 +111,14 @@ export class ProcessesListItem extends BaseComponent<ProcessesListItemController
       ? html`<intl-message label="ui:mainframe:processes:autoscalable">Autoscalable</intl-message>`
       : html`<intl-message label="ui:mainframe:processes:usesCores" value=${coresValue}>Cores</intl-message>`;
 
+    const descriptionRenderer: IDescriptionRenderer = new DescriptionRenderer({
+      formatter: this.controller.formatter,
+      availableRam: process.program.isAutoscalable ? this.controller.availableRam : process.totalRam,
+      usedCores: process.usedCores,
+      program: process.program,
+      threads: process.threads,
+    });
+
     return html`
       <td class="program" draggable="true" @dragstart=${this.handleDragStart}>
         <intl-message label="programs:${process.program.name}:name">Progam name</intl-message>
@@ -103,7 +126,7 @@ export class ProcessesListItem extends BaseComponent<ProcessesListItemController
         <sl-tooltip>
           <sl-icon name="question-circle"></sl-icon>
 
-          <ca-process-description slot="content" program-name=${process.program.name}> </ca-process-description>
+          <div class="program-description" slot="content">${descriptionRenderer.renderDescription()}</div>
         </sl-tooltip>
       </td>
 

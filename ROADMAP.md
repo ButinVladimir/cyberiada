@@ -339,7 +339,7 @@ Hacking is done only by mainframe. Each district has it's own server, hacking it
 
 Hacking requires filling completion scale and avoid filling alert scale while hacking is active.
 
-Hacking is unavailable initially, unlocking it requires finishing respect milestone in specific city. 
+Hacking is unavailable initially, unlocking it requires finishing respect milestone in specific city.
 
 # Content
 

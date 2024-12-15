@@ -26,12 +26,12 @@ export class SettingsFormController extends BaseController {
     return this.settingsState.autosaveInterval;
   }
 
-  get maxTicksPerUpdate(): number {
-    return this.settingsState.maxTicksPerUpdate;
+  get fastSpeedMultiplier(): number {
+    return this.settingsState.fastSpeedMultiplier;
   }
 
-  get maxTicksPerFastForward(): number {
-    return this.settingsState.maxTicksPerFastForward;
+  get maxUpdatesPerTick(): number {
+    return this.settingsState.maxUpdatesPerTick;
   }
 
   get longNumberFormat(): LongNumberFormat {
@@ -68,13 +68,13 @@ export class SettingsFormController extends BaseController {
     this.handleRefreshUI();
   }
 
-  setMaxTicksPerUpdate(maxTicksPerUpdate: number) {
-    this.settingsState.setMaxTicksPerUpdate(maxTicksPerUpdate);
+  setfastSpeedMultiplier(fastSpeedMultiplier: number) {
+    this.settingsState.setfastSpeedMultiplier(fastSpeedMultiplier);
     this.handleRefreshUI();
   }
 
-  setMaxTicksPerFastForward(maxTicksPerFastForward: number) {
-    this.settingsState.setMaxTicksPerFastForward(maxTicksPerFastForward);
+  setmaxUpdatesPerTick(maxUpdatesPerTick: number) {
+    this.settingsState.setMaxUpdatesPerTick(maxUpdatesPerTick);
     this.handleRefreshUI();
   }
 

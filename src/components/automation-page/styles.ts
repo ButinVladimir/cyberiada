@@ -39,9 +39,6 @@ export const autobuyerStyles = css`
     margin: 0;
     color: var(--ca-hint-color);
     font-size: var(--ca-hint-font-size);
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
   }
 
   div.input-container {

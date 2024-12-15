@@ -1,4 +1,3 @@
-import { Feature } from '@shared/types';
 import { BaseController } from '@shared/base-controller';
 import { IMainframeHardwareParameter } from '@state/mainframe/mainframe-hardware-state/interfaces/mainframe-hardware-parameter';
 import { MainframeHardwareParameterType } from '@state/mainframe/mainframe-hardware-state/types';
@@ -24,16 +23,16 @@ export class MainframeHardwarePanelArticleController extends BaseController {
     this.getParameter(type).purchase(increase);
   }
 
+  purchaseMax(type: MainframeHardwareParameterType) {
+    this.getParameter(type).purchaseMax();
+  }
+
   checkCanPurchase(increase: number, type: MainframeHardwareParameterType): boolean {
     return this.getParameter(type).checkCanPurchase(increase);
   }
 
   getPurchaseCost(increase: number, type: MainframeHardwareParameterType): number {
     return this.getParameter(type).getIncreaseCost(increase);
-  }
-
-  isHardwareAutomationUnlocked(): boolean {
-    return this.globalState.unlockedFeatures.isFeatureUnlocked(Feature.automationMainframeHardware);
   }
 
   private getParameter(type: MainframeHardwareParameterType): IMainframeHardwareParameter {

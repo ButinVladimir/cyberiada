@@ -6,6 +6,7 @@ import type { IFormatter } from '@shared/interfaces/formatter';
 import { calculatePow } from '@shared/helpers';
 import { IExponent } from '@shared/interfaces/exponent';
 import { Feature, PurchaseEvent, PurchaseType } from '@shared/types';
+import { binarySearchDecimal } from '@shared/helpers';
 import {
   IMainframeHardwareParameter,
   IMainframeHardwareParameterArguments,
@@ -52,10 +53,6 @@ export abstract class MainframeHardwareParameter implements IMainframeHardwarePa
   }
 
   set autoUpgradeEnabled(value: boolean) {
-    if (!this.globalState.unlockedFeatures.isFeatureUnlocked(Feature.automationMainframeHardware)) {
-      throw new Error('Mainframe program automation is not unlocked');
-    }
-
     this._autoUpgradeEnabled = value;
 
     this.mainframeHardwareState.emitAutobuyerUpdatedEvent();
@@ -87,7 +84,23 @@ export abstract class MainframeHardwareParameter implements IMainframeHardwarePa
     return this.globalState.money.purchase(cost, PurchaseType.mainframeHardware, this.handlePurchaseIncrease(increase));
   }
 
-  checkCanPurchase(increase: number): boolean {
+  purchaseMax(): boolean {
+    const maxIncrease = this.globalState.development.level - this.level;
+
+    if (maxIncrease <= 0) {
+      return false;
+    }
+
+    const increase = binarySearchDecimal(0, maxIncrease, this.checkCanPurchase);
+
+    return this.purchase(increase);
+  }
+
+  checkCanPurchase = (increase: number): boolean => {
+    if (increase <= 0) {
+      return false;
+    }
+
     if (!this.globalState.unlockedFeatures.isFeatureUnlocked(Feature.mainframeHardware)) {
       return false;
     }
@@ -101,7 +114,7 @@ export abstract class MainframeHardwareParameter implements IMainframeHardwarePa
     const cost = this.getIncreaseCost(increase);
 
     return cost <= this.globalState.money.money;
-  }
+  };
 
   // eslint-disable-next-line @typescript-eslint/require-await
   async startNewState(): Promise<void> {

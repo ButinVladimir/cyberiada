@@ -13,7 +13,10 @@ import {
   PurchaseType,
   IncomeSource,
   NotificationType,
+  GameVersion,
 } from './types';
+
+export const CURRENT_VERSION = GameVersion['0.1.1'];
 
 export const LANGUAGES: Language[] = Object.values(Language);
 
@@ -35,7 +38,13 @@ export const GAME_STATE_ALERTS: GameStateAlert[] = Object.values(GameStateAlert)
 
 export const PROGRAM_ALERTS: ProgramAlert[] = Object.values(ProgramAlert);
 
-export const NOTIFICATION_TYPES: NotificationType[] = Object.values(NotificationType);
+export const FORCE_NOTIFICATION_TYPES: Set<NotificationType> = new Set<NotificationType>([
+  NotificationType.gameVersionUpdated,
+]);
+
+export const NOTIFICATION_TYPES: NotificationType[] = Object.values(NotificationType).filter(
+  (notificationType) => !FORCE_NOTIFICATION_TYPES.has(notificationType),
+);
 
 export const QUALITIES: number[] = [0, 1, 2, 3, 4, 5, 6];
 

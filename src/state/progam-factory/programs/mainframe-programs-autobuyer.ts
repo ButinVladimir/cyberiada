@@ -56,17 +56,13 @@ export class MainframeProgramsAutobuyerProgram extends BaseProgram {
           availableMoney -= newProgram.cost;
           actionsLeft--;
         }
-
-        this._programFactory.deleteProgram(newProgram);
       }
     }
   }
 
   buildProgramDescriptionParametersObject(threads: number) {
-    const completionTimes = this.buildCompletionTimeParametersObject(threads);
-
-    const minAvgValue = threads / completionTimes.maxTime;
-    const maxAvgValue = threads / completionTimes.minTime;
+    const minAvgValue = threads / this.calculateCompletionMaxTime(threads);
+    const maxAvgValue = threads / this.calculateCompletionMinTime(threads);
 
     return {
       value: this.formatter.formatNumberDecimal(threads),
@@ -97,8 +93,6 @@ export class MainframeProgramsAutobuyerProgram extends BaseProgram {
       });
 
       const canAfford = newProgram.cost <= availableMoney;
-
-      this._programFactory.deleteProgram(newProgram);
 
       return canAfford;
     };

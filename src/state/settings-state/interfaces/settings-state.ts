@@ -9,8 +9,8 @@ export interface ISettingsState extends ISerializeable<ISettingsSerializedState>
   updateInterval: number;
   autosaveEnabled: boolean;
   autosaveInterval: number;
-  maxTicksPerUpdate: number;
-  maxTicksPerFastForward: number;
+  fastSpeedMultiplier: number;
+  maxUpdatesPerTick: number;
   longNumberFormat: LongNumberFormat;
   mapCellSize: number;
   isMessageEventEnabled(event: MessageEvent): boolean;
@@ -22,8 +22,8 @@ export interface ISettingsState extends ISerializeable<ISettingsSerializedState>
   setUpdateInterval(updateInterval: number): void;
   setAutosaveEnabled(autosaveEnabled: boolean): void;
   setAutosaveInterval(autosaveInterval: number): void;
-  setMaxTicksPerUpdate(maxTicksPerUpdate: number): void;
-  setMaxTicksPerFastForward(maxTicksPerFastForward: number): void;
+  setfastSpeedMultiplier(fastSpeedMultiplier: number): void;
+  setMaxUpdatesPerTick(maxUpdatesPerTick: number): void;
   setLongNumberFormat(longNumberFormat: LongNumberFormat): void;
   setMapCellSize(mapSize: number): void;
   toggleMessageEvent(event: MessageEvent, enabled: boolean): void;

@@ -9,6 +9,7 @@ common:
   available: Available
   willBeAvailableIn: Will be available in {{value}}
   higherDevelopmentLevelRequired: Higher development level required
+  upgrade: Upgrade
 pages:
   cityOverview: City overview
   companyManagement: Company management
@@ -48,14 +49,11 @@ settings:
   updateInterval: Update interval (ms)
   autosaveEnabled: Enable autosave
   autosaveInterval: Autosave interval (s)
-  maxTicksPerUpdate: Maximum amount of updates per tick when game speed is fast
-  maxTicksPerUpdateHint: Too high number can cause strain on CPU
-  maxTicksPerFastForward: Maximum amount of updates per tick when accumulated time is being spent
-  maxTicksPerFastForwardHint: Too high number can cause strain on CPU
+  fastSpeedMultiplier: Speed multiplier when game speed is fast
+  fastSpeedMultiplierHint: Too high number can cause strain on CPU
+  maxUpdatesPerTick: Maximum amount of updates per tick
+  maxUpdatesPerTickHint: Too high number can cause strain on CPU
   longNumberFormat: Long number format
-  languages:
-    en: English
-    ru: Russian
   themes:
     light: Light
     dark: Dark
@@ -89,18 +87,32 @@ mainframe:
   threads: Threads
   cores: Cores
   programDescription:
-    cost: Costs {{value.cost}} money to purchase
-    requirements: Requires {{value.ram}} RAM and up to {{value.cores}} cores to run {{value.threads}} threads
-    requirementsScalable: Autoscalable and uses all unused RAM and cores
-    completionTime: Can be completed in {{value.minTime}} - {{value.maxTime}}
-    completionTimeScalable: It will run every tick
+    requirements:
+      requirementsProcess: Requirements for {{value.threads}} threads
+      requirementsDiff: Requirements for {{value.threads}} ({{value.threadsDiff}}) threads
+      requirementsSingle: Requirements for single thread
+      requirementsScalable: Requirements for autoscalable program
+      cost: 'Cost: {{value.cost}}'
+      costDiff: 'Cost: {{value.cost}} ({{value.costDiff}})'
+      ram: 'RAM: {{value.ram}}'
+      ramDiff: 'RAM: {{value.ram}} ({{value.ramDiff}})'
+      ramAllUnused: 'RAM: All unused'
+      cores: 'Cores: Up to {{value.cores}}'
+      coresDiff: 'Cores: Up to {{value.cores}} ({{value.coresDiff}})'
+      coresAllUnused: 'Cores: All unused'
+      completionTime: 'Completion time: {{value.minTime}} &mdash; {{value.maxTime}}'
+      completionTimeProcess: 'Completion time: {{value.time}}'
+      completionTimeProcessNoCores: 'Completion time: Requires assigned cores to be completed'
+      completionTimeDiff: 'Completion time: {{value.minTime}} &mdash; {{value.maxTime}} ({{value.minTimeDiff}} &mdash; {{value.maxTimeDiff}})'
+      completionTimeScalable: 'Completion time: Instant'
+    effects: 'Effects'
   tabs:
     processes: Processes
     hardware: Hardware
     programs: Programs
   hardware:
     hardwareHint: Press either Ctrl or Shift to buy 10 levels. Press both Ctrl and Shift to buy 100 levels.
-      Hardware upgrade priority can be changed by dragging it by the title.
+      Hardware autoupgrade priority can be changed by dragging it by the title.
       Upgrades on top have higher priority.
     performance: 'Performance level: {{value}}'
     performanceHint: Higher performance level leads to faster running processes
@@ -109,15 +121,18 @@ mainframe:
     ram: 'RAM level: {{value}}'
     ramHint: Additional RAM allows to keep more processes in memory so they could ran later or in bigger batches
     buy: Buy x{{value.increase}} for {{value.cost}}
+    buyMax: Buy max
+    buyMaxAllUpgrades: Buy all upgrades
   programs:
-    programsHint: Program upgrade priority can be changed by dragging it by the title.
-      Programs on top have higher priority.
+    programsHint: Program autoupgrade priority can be changed by dragging it by the title.
+      Programs on top have higher priority. Autoupgrade for programs won't change their quality but will attempt to increase level.
     purchaseProgram: Purchase program
     purchaseProgramDialogHint: Select program type, level and quality to purchase it.
       Level cannot be above current development level.
       Quality is limited depending on gained favors.
       If you already have program with same name, old one will be replaced with new one.
     purchase: Purchase for {{value.cost}}
+    upgradeMaxAllPrograms: Upgrade all programs
     emptyListNotification: You don't have any owned programs
     toggleAutoupgrade: Toggle autoupgrade
     toggleAutoupgradeAll: Toggle autoupgrade for all programs
@@ -145,10 +160,6 @@ mainframe:
     usesCores: "{{value.cores}} \/ {{value.maxCores}}"
     availableCores: 'Available cores: {{value}}'
     availableRam: 'Available RAM: {{value}}'
-    processDescription:
-      completionTime: Can be completed in {{value}}
-      completionTimeScalable: It will run every tick
-      completionTimeNoCores: Requires assigned cores to be completed
 statistics:
   statistics: Statistics
   total: Total

@@ -16,7 +16,7 @@ export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwa
       border-radius: var(--sl-border-radius-small);
       display: flex;
       align-items: center;
-      gap: var(--sl-spacing-3x-large);
+      gap: var(--sl-spacing-large);
     }
 
     div.text-container {
@@ -30,6 +30,8 @@ export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwa
 
     div.button-container {
       flex: 0 0 auto;
+      display: flex;
+      gap: var(--sl-spacing-medium);
     }
 
     h4.title {
@@ -50,9 +52,6 @@ export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwa
       margin: 0;
       color: var(--ca-hint-color);
       font-size: var(--ca-hint-font-size);
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
     }
 
     h4.title sl-icon-button {
@@ -111,17 +110,13 @@ export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwa
                 Toggle autoupgrade
               </intl-message>
 
-              ${this.controller.isHardwareAutomationUnlocked()
-                ? html`
-                    <sl-icon-button
-                      id="toggle-autoupgrade-btn"
-                      name=${autoupgradeIcon}
-                      label=${t('mainframe.programs.toggleAutoupgrade', { ns: 'ui' })}
-                      @click=${this.handleToggleAutoUpgrade}
-                    >
-                    </sl-icon-button>
-                  `
-                : null}
+              <sl-icon-button
+                id="toggle-autoupgrade-btn"
+                name=${autoupgradeIcon}
+                label=${t('mainframe.programs.toggleAutoupgrade', { ns: 'ui' })}
+                @click=${this.handleToggleAutoUpgrade}
+              >
+              </sl-icon-button>
             </sl-tooltip>
           </h4>
           <p class="hint">
@@ -131,6 +126,10 @@ export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwa
       </div>
 
       <div class="button-container">
+        <sl-button variant="default" type="button" size="medium" @click=${this.handleBuyMax}>
+          <intl-message label="ui:mainframe:hardware:buyMax"> Buy max </intl-message>
+        </sl-button>
+
         <ca-purchase-tooltip cost=${cost} level=${level + 1}>
           <sl-button variant="primary" type="button" size="medium" ?disabled=${buttonDisabled} @click=${this.handleBuy}>
             <intl-message label="ui:mainframe:hardware:buy" value=${buttonValue}> Buy </intl-message>
@@ -146,6 +145,13 @@ export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwa
 
     const increase = this.calculateIncrease();
     this.controller.purchase(increase, this.type);
+  };
+
+  private handleBuyMax = (event: Event) => {
+    event.stopPropagation();
+    event.preventDefault();
+
+    this.controller.purchaseMax(this.type);
   };
 
   private calculateIncrease(): number {

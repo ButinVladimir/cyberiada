@@ -1,4 +1,3 @@
-import { Feature } from '@shared/types';
 import { BaseController } from '@shared/base-controller';
 import { IProgram } from '@state/progam-factory/interfaces/program';
 import { ProgramName } from '@state/progam-factory/types';
@@ -14,9 +13,5 @@ export class OwnedProgramsListController extends BaseController {
 
   moveProgram(programName: ProgramName, newPosition: number) {
     this.mainframeProgramsState.moveProgram(programName, newPosition);
-  }
-
-  isProgramsAutomationUnlocked(): boolean {
-    return this.globalState.unlockedFeatures.isFeatureUnlocked(Feature.automationMainframePrograms);
   }
 }

@@ -7,8 +7,10 @@ import { IMainframeProcessesSerializedState } from '@state/mainframe/mainframe-p
 import { IGlobalSerializedState } from '@state/global-state/interfaces/serialized-states/global-serialized-state';
 import { IMainframeHardwareAutomationSerializedState } from '@state/automation/mainframe-hardware-automation-state/interfaces/mainframe-hardware-automation-serialized-state';
 import { IMainframeProgramsAutomationSerializedState } from '@state/automation/mainframe-programs-automation-state/interfaces/mainframe-programs-automation-serialized-state';
+import { GameVersion } from '@shared/types';
 
 export interface ISerializedState {
+  gameVersion: GameVersion;
   scenario: IScenarioSerializedState;
   global: IGlobalSerializedState;
   settings: ISettingsSerializedState;

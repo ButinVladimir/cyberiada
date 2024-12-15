@@ -33,8 +33,8 @@ export class SettingsState implements ISettingsState {
   private _updateInterval: number;
   private _autosaveEnabled: boolean;
   private _autosaveInterval: number;
-  private _maxTicksPerUpdate: number;
-  private _maxTicksPerFastForward: number;
+  private _fastSpeedMultiplier: number;
+  private _maxUpdatesPerTick: number;
   private _longNumberFormat: LongNumberFormat;
   private _mapCellSize: number;
   private _enabledMessageEvents: Set<MessageEvent>;
@@ -48,8 +48,8 @@ export class SettingsState implements ISettingsState {
     this._updateInterval = constants.defaultSettings.updateInterval;
     this._autosaveEnabled = constants.defaultSettings.autosaveEnabled;
     this._autosaveInterval = constants.defaultSettings.autosaveInterval;
-    this._maxTicksPerUpdate = constants.defaultSettings.maxTicksPerUpdate;
-    this._maxTicksPerFastForward = constants.defaultSettings.maxTicksPerFastForward;
+    this._fastSpeedMultiplier = constants.defaultSettings.fastSpeedMultiplier;
+    this._maxUpdatesPerTick = constants.defaultSettings.maxUpdatesPerTick;
     this._longNumberFormat = constants.defaultSettings.longNumberFormat as LongNumberFormat;
     this._mapCellSize = constants.defaultSettings.mapSize;
     this._enabledMessageEvents = new Set<MessageEvent>();
@@ -81,12 +81,12 @@ export class SettingsState implements ISettingsState {
     return this._autosaveInterval;
   }
 
-  get maxTicksPerUpdate() {
-    return this._maxTicksPerUpdate;
+  get fastSpeedMultiplier() {
+    return this._fastSpeedMultiplier;
   }
 
-  get maxTicksPerFastForward() {
-    return this._maxTicksPerFastForward;
+  get maxUpdatesPerTick() {
+    return this._maxUpdatesPerTick;
   }
 
   get longNumberFormat() {
@@ -141,12 +141,12 @@ export class SettingsState implements ISettingsState {
     this._app.restartAutosaveTimer();
   }
 
-  setMaxTicksPerUpdate(maxTicksPerUpdate: number) {
-    this._maxTicksPerUpdate = maxTicksPerUpdate;
+  setfastSpeedMultiplier(fastSpeedMultiplier: number) {
+    this._fastSpeedMultiplier = fastSpeedMultiplier;
   }
 
-  setMaxTicksPerFastForward(maxTicksPerFastForward: number) {
-    this._maxTicksPerFastForward = maxTicksPerFastForward;
+  setMaxUpdatesPerTick(maxUpdatesPerTick: number) {
+    this._maxUpdatesPerTick = maxUpdatesPerTick;
   }
 
   setLongNumberFormat(longNumberFormat: LongNumberFormat) {
@@ -190,8 +190,8 @@ export class SettingsState implements ISettingsState {
     this.setUpdateInterval(constants.defaultSettings.updateInterval);
     this.setAutosaveEnabled(constants.defaultSettings.autosaveEnabled);
     this.setAutosaveInterval(constants.defaultSettings.autosaveInterval);
-    this.setMaxTicksPerUpdate(constants.defaultSettings.maxTicksPerUpdate);
-    this.setMaxTicksPerFastForward(constants.defaultSettings.maxTicksPerFastForward);
+    this.setfastSpeedMultiplier(constants.defaultSettings.fastSpeedMultiplier);
+    this.setMaxUpdatesPerTick(constants.defaultSettings.maxUpdatesPerTick);
     this.setLongNumberFormat(constants.defaultSettings.longNumberFormat as LongNumberFormat);
     this.setMapCellSize(constants.defaultSettings.mapSize);
     this.deserializeMessageEvents(this.getAllMessageEvents());
@@ -206,8 +206,8 @@ export class SettingsState implements ISettingsState {
     this.setUpdateInterval(serializedState.updateInterval);
     this.setAutosaveEnabled(serializedState.autosaveEnabled);
     this.setAutosaveInterval(serializedState.autosaveInterval);
-    this.setMaxTicksPerUpdate(serializedState.maxTicksPerUpdate);
-    this.setMaxTicksPerFastForward(serializedState.maxTicksPerFastForward);
+    this.setfastSpeedMultiplier(serializedState.fastSpeedMultiplier);
+    this.setMaxUpdatesPerTick(serializedState.maxUpdatesPerTick);
     this.setLongNumberFormat(serializedState.longNumberFormat);
     this.setMapCellSize(serializedState.mapCellSize);
     this.deserializeMessageEvents(serializedState.enabledMessageEvents);
@@ -223,8 +223,8 @@ export class SettingsState implements ISettingsState {
       updateInterval: this.updateInterval,
       autosaveEnabled: this.autosaveEnabled,
       autosaveInterval: this.autosaveInterval,
-      maxTicksPerUpdate: this.maxTicksPerUpdate,
-      maxTicksPerFastForward: this.maxTicksPerFastForward,
+      fastSpeedMultiplier: this.fastSpeedMultiplier,
+      maxUpdatesPerTick: this.maxUpdatesPerTick,
       longNumberFormat: this.longNumberFormat,
       mapCellSize: this.mapCellSize,
       enabledMessageEvents: this.serializeMessageEvents(),

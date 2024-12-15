@@ -8,6 +8,7 @@ import type { IMainframeProcessesState } from '@state/mainframe/mainframe-proces
 import type { IMainframeHardwareState } from '@state/mainframe/mainframe-hardware-state/interfaces/mainframe-hardware-state';
 import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
 import type { INotificationsState } from '@state/notifications-state/interfaces/notifications-state';
+import type { IFormatter } from '@shared/interfaces/formatter';
 import {
   IMoneyParameter,
   IGlobalSerializedState,
@@ -59,6 +60,9 @@ export class GlobalState implements IGlobalState {
   @lazyInject(TYPES.NotificationsState)
   private _notificationsState!: INotificationsState;
 
+  @lazyInject(TYPES.Formatter)
+  private _formatter!: IFormatter;
+
   private _randomSeed: number;
   private _gameSpeed: GameSpeed;
   private _money: IMoneyParameter | undefined;
@@ -106,6 +110,8 @@ export class GlobalState implements IGlobalState {
         stateUiConnector: this._stateUiConnector,
         settingsState: this._settingsState,
         scenarioState: this._scenarioState,
+        notificationsState: this._notificationsState,
+        formatter: this._formatter,
       });
     }
 
@@ -215,6 +221,7 @@ export class GlobalState implements IGlobalState {
   }
 
   recalculate() {
+    this.time.recalculate();
     this.development.recalculateLevel();
     this.computationalBase.recalculateDiscount();
     this.programCompletionSpeed.recalculate();
