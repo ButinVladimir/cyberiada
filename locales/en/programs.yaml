@@ -10,7 +10,7 @@ shareServer:
 codeGenerator:
   name: Code generator
   overview: Program to develop other programs. Generates computational base points (CBP) and improves mainframe products discount.
-  computationalBasePointsProcess: 'CBP: {{value.value}} per second'
+  computationalBasePointsProcess: 'CBP: {{value.value}} per completion ({{value.avgValue}} per second)'
   computationalBasePointsProgram: 'CBP: {{value.value}} per completion ({{value.minAvgValue}} &mdash; {{value.maxAvgValue}} per second)'
   computationalBasePointsDiff: 'CBP: {{value.value}} ({{value.valueDiff}}) per completion ({{value.minAvgValue}} &mdash; {{value.maxAvgValue}} per second) ({{value.minAvgValueDiff}} &mdash; {{value.maxAvgValueDiff}})'
 predictiveComputator:
@@ -22,14 +22,14 @@ predictiveComputator:
 mainframeHardwareAutobuyer:
   name: Mainframe hardware autobuyer
   overview: Program to automatically buy mainframe hardware.
-  actionsProcess: 'Actions: {{value.value}} per second'
+  actionsProcess: 'Actions: {{value.value}} per completion ({{value.avgValue}} per second)'
   actionsProgram: 'Actions: 1 per completion ({{value.minAvgValue}} &mdash; {{value.maxAvgValue}} per second)'
   actionsProcessDiff: 'Actions: {{value.value}} ({{value.valueDiff}}) per completion ({{value.minAvgValue}} &mdash; {{value.maxAvgValue}} per second) ({{value.minAvgValueDiff}} &mdash; {{value.maxAvgValueDiff}})'
   actionsProgramDiff: 'Actions: 1 per completion ({{value.minAvgValue}} &mdash; {{value.maxAvgValue}} per second) ({{value.minAvgValueDiff}} &mdash; {{value.maxAvgValueDiff}})'
 mainframeProgramsAutobuyer:
   name: Mainframe programs autobuyer
   overview: Program to automatically buy mainframe programs.
-  actionsProcess: 'Actions: {{value.value}} per second'
+  actionsProcess: 'Actions: {{value.value}} per completion ({{value.avgValue}} per second)'
   actionsProgram: 'Actions: 1 per completion ({{value.minAvgValue}} &mdash; {{value.maxAvgValue}} per second)'
   actionsProcessDiff: 'Actions: {{value.value}} ({{value.valueDiff}}) per completion ({{value.minAvgValue}} &mdash; {{value.maxAvgValue}} per second) ({{value.minAvgValueDiff}} &mdash; {{value.maxAvgValueDiff}})'
   actionsProgramDiff: 'Actions: 1 per completion ({{value.minAvgValue}} &mdash; {{value.maxAvgValue}} per second) ({{value.minAvgValueDiff}} &mdash; {{value.maxAvgValueDiff}})'

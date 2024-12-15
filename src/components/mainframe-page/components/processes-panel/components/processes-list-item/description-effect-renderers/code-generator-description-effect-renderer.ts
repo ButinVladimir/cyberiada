@@ -26,7 +26,8 @@ export class CodeGeneratorDescriptionEffectRenderer implements IDescriptionEffec
     const avgValue = value / time * MS_IN_SECOND;
 
     const values = JSON.stringify({
-      value: this._formatter.formatNumberLong(avgValue),
+      value: this._formatter.formatNumberLong(value),
+      avgValue: this._formatter.formatNumberLong(avgValue),
     });
 
     return html`

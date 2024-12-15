@@ -25,7 +25,8 @@ export class MainframeProgramsAutobuyerDescriptionEffectRenderer implements IDes
     const avgValue = this._threads / time * MS_IN_SECOND;
 
     const values = JSON.stringify({
-      value: this._formatter.formatNumberFloat(avgValue),
+      value: this._formatter.formatNumberDecimal(this._threads),
+      avgValue: this._formatter.formatNumberFloat(avgValue),
     });
 
     return html`

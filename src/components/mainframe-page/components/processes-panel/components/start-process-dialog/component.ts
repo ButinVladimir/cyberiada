@@ -1,7 +1,6 @@
 import { css, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.component.js';
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.component.js';
 import { BaseComponent } from '@shared/base-component';
@@ -15,6 +14,8 @@ import {
 import { ProgramAlert } from '@shared/types';
 import { StartProcessDialogCloseEvent } from './events';
 import { StartProcessDialogController } from './controller';
+import { DescriptionRenderer } from './description-renderer';
+import { IDescriptionRenderer } from './interfaces';
 
 @customElement('ca-start-process-dialog')
 export class StartProcessDialog extends BaseComponent<StartProcessDialogController> {
@@ -61,11 +62,6 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
       font-size: var(--ca-hint-font-size);
     }
 
-    ca-program-description[program-name] {
-      margin-top: var(--sl-spacing-medium);
-      margin-bottom: 0;
-    }
-
     span.input-label {
       font-size: var(--sl-font-size-medium);
       line-height: var(--sl-line-height-dense);
@@ -73,6 +69,19 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
 
     div.footer {
       display: flex;
+    }
+
+    div.program-description {
+      margin-top: var(--sl-spacing-medium);
+      margin-bottom: 0;
+    }
+
+    div.program-description p {
+      margin: 0;
+    }
+
+    div.program-description p.line-break {
+      height: var(--sl-spacing-medium);
     }
   `;
 
@@ -133,13 +142,24 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
   renderContent() {
     const program = this._programName ? this.controller.getProgram(this._programName) : undefined;
 
-    const threads = program?.isAutoscalable ? this.controller.cores : this._threads;
-
     const threadsInputDisabled = !(program && !program.isAutoscalable);
     const submitButtonDisabled = !(
       program &&
       (program.isAutoscalable || (this._threads >= 1 && this._threads <= this._maxThreads))
     );
+
+    const currentProcess = this._programName ? this.controller.getProcessByName(this._programName) : undefined;
+
+    const descriptionRenderer: IDescriptionRenderer | undefined = program
+    ? new DescriptionRenderer({
+        formatter: this.controller.formatter,
+        ram: this.controller.ram,
+        cores: this.controller.cores,
+        program: program,
+        threads: this._threads,
+        currentThreads: currentProcess ? currentProcess.threads : 0,
+      })
+    : undefined;
 
     return html`
       <sl-dialog ?open=${this.isOpen && !this._confirmationAlertVisible} @sl-request-close=${this.handleClose}>
@@ -181,14 +201,7 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
             </sl-select>
           </div>
 
-          <ca-program-description
-            program-name=${ifDefined(this._programName)}
-            level=${program?.level ?? 1}
-            quality=${program?.quality ?? 0}
-            threads=${threads}
-            type="process-comparison"
-          >
-          </ca-program-description>
+          ${descriptionRenderer ? descriptionRenderer.renderDescription() : null}
         </div>
 
         <sl-button slot="footer" size="medium" variant="default" outline @click=${this.handleClose}>

@@ -98,14 +98,14 @@ mainframe:
       cost: 'Cost: {{value.cost}}'
       costDiff: 'Cost: {{value.cost}} ({{value.costDiff}})'
       ram: 'RAM: {{value.ram}}'
-      ramDiff: 'RAM: {{value}} ({{value.ramDiff}})'
+      ramDiff: 'RAM: {{value.ram}} ({{value.ramDiff}})'
       ramAllUnused: 'RAM: All unused'
       cores: 'Cores: Up to {{value.cores}}'
       coresDiff: 'Cores: Up to {{value.cores}} ({{value.coresDiff}})'
       coresAllUnused: 'Cores: All unused'
       completionTime: 'Completion time: {{value.minTime}} &mdash; {{value.maxTime}}'
       completionTimeProcess: 'Completion time: {{value.time}}'
-      completionTimeProcessNoCores: 'Completion time: Requires cores to be completed'
+      completionTimeProcessNoCores: 'Completion time: Requires assigned cores to be completed'
       completionTimeDiff: 'Completion time: {{value.minTime}} &mdash; {{value.maxTime}} ({{value.minTimeDiff}} &mdash; {{value.maxTimeDiff}})'
       completionTimeScalable: 'Completion time: Instant'
     effects: 'Effects'
@@ -163,10 +163,6 @@ mainframe:
     usesCores: "{{value.cores}} \/ {{value.maxCores}}"
     availableCores: 'Available cores: {{value}}'
     availableRam: 'Available RAM: {{value}}'
-    processDescription:
-      completionTime: Can be completed in {{value}}
-      completionTimeScalable: It will run every tick
-      completionTimeNoCores: Requires assigned cores to be completed
 statistics:
   statistics: Statistics
   total: Total
