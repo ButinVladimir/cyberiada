@@ -256,9 +256,7 @@ export class ProgramDescription extends BaseComponent<ProgramDescriptionControll
       </p>
 
       <p>
-        <intl-message label="ui:mainframe:programDescription:requirements:ram" value=${ramValues}>
-          RAM
-        </intl-message>
+        <intl-message label="ui:mainframe:programDescription:requirements:ram" value=${ramValues}> RAM </intl-message>
       </p>
 
       <p>

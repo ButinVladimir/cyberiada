@@ -20,9 +20,11 @@ export class PredictiveComputatorDescriptionEffectRenderer implements IDescripti
   }
 
   public renderEffect = () => {
-    const value = JSON.stringify({ value: this._formatter.formatNumberFloat(
-      this._program.calculateProgramCompletionSpeedMultiplier(this._cores, this._ram),
-    )});
+    const value = JSON.stringify({
+      value: this._formatter.formatNumberFloat(
+        this._program.calculateProgramCompletionSpeedMultiplier(this._cores, this._ram),
+      ),
+    });
 
     return html`
       <p>

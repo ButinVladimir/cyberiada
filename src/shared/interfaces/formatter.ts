@@ -1,4 +1,4 @@
-import { IFormatterParameters } from "./formatter-parameters";
+import { IFormatterParameters } from './formatter-parameters';
 
 export interface IFormatter {
   formatTimeShort(time: number, parameters?: IFormatterParameters): string;

@@ -17,8 +17,8 @@ export class MainframeHardwareAutobuyerDescriptionEffectRenderer implements IDes
   public renderEffect = () => {
     const minTime = this._program.calculateCompletionMinTime(1);
     const maxTime = this._program.calculateCompletionMaxTime(1);
-    const minAvgValue = 1 / maxTime * MS_IN_SECOND;
-    const maxAvgValue = 1 / minTime * MS_IN_SECOND;
+    const minAvgValue = (1 / maxTime) * MS_IN_SECOND;
+    const maxAvgValue = (1 / minTime) * MS_IN_SECOND;
 
     const values = JSON.stringify({
       minAvgValue: this._formatter.formatNumberFloat(minAvgValue),
@@ -27,7 +27,9 @@ export class MainframeHardwareAutobuyerDescriptionEffectRenderer implements IDes
 
     return html`
       <p>
-        <intl-message label="programs:mainframeHardwareAutobuyer:actionsProgram" value=${values}> Actions </intl-message>
+        <intl-message label="programs:mainframeHardwareAutobuyer:actionsProgram" value=${values}>
+          Actions
+        </intl-message>
       </p>
     `;
   };

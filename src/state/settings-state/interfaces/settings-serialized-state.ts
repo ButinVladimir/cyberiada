@@ -8,8 +8,8 @@ export interface ISettingsSerializedState {
   updateInterval: number;
   autosaveEnabled: boolean;
   autosaveInterval: number;
+  fastSpeedMultiplier: number;
   maxUpdatesPerTick: number;
-  maxUpdatesPerFastForward: number;
   longNumberFormat: LongNumberFormat;
   enabledMessageEvents: MessageEvent[];
   enabledGameAlerts: GameAlert[];

@@ -112,7 +112,10 @@ export class DescriptionRenderer implements IDescriptionRenderer {
 
     return html`
       <p>
-        <intl-message label="ui:mainframe:programDescription:requirements:requirementsProcess" value=${requirementValues}>
+        <intl-message
+          label="ui:mainframe:programDescription:requirements:requirementsProcess"
+          value=${requirementValues}
+        >
           Requirements
         </intl-message>
       </p>

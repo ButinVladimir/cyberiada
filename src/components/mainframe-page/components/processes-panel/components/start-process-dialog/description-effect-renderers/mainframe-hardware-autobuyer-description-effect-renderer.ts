@@ -12,7 +12,7 @@ export class MainframeHardwareAutobuyerDescriptionEffectRenderer implements IDes
 
   private _threads: number;
 
-  private _currentThreads: number; 
+  private _currentThreads: number;
 
   constructor(parameters: IDescriptionParameters) {
     this._program = parameters.program as MainframeHardwareAutobuyerProgram;
@@ -24,8 +24,8 @@ export class MainframeHardwareAutobuyerDescriptionEffectRenderer implements IDes
   public renderEffect = () => {
     const minTime = this._program.calculateCompletionMinTime(this._threads);
     const maxTime = this._program.calculateCompletionMaxTime(this._threads);
-    const minAvgValue = this._threads / maxTime * MS_IN_SECOND;
-    const maxAvgValue = this._threads / minTime * MS_IN_SECOND;
+    const minAvgValue = (this._threads / maxTime) * MS_IN_SECOND;
+    const maxAvgValue = (this._threads / minTime) * MS_IN_SECOND;
 
     const valueDiff = this._threads - this._currentThreads;
     let minAvgValueDiff = minAvgValue;
@@ -34,8 +34,8 @@ export class MainframeHardwareAutobuyerDescriptionEffectRenderer implements IDes
     if (this._currentThreads) {
       const currentMinTime = this._program.calculateCompletionMinTime(this._currentThreads);
       const currentMaxTime = this._program.calculateCompletionMaxTime(this._currentThreads);
-      const currentMinAvgValue = this._currentThreads / currentMaxTime * MS_IN_SECOND;
-      const currentMaxAvgValue = this._currentThreads / currentMinTime * MS_IN_SECOND;      
+      const currentMinAvgValue = (this._currentThreads / currentMaxTime) * MS_IN_SECOND;
+      const currentMaxAvgValue = (this._currentThreads / currentMinTime) * MS_IN_SECOND;
 
       minAvgValueDiff = minAvgValue - currentMinAvgValue;
       maxAvgValueDiff = maxAvgValue - currentMaxAvgValue;
@@ -52,7 +52,9 @@ export class MainframeHardwareAutobuyerDescriptionEffectRenderer implements IDes
 
     return html`
       <p>
-        <intl-message label="programs:mainframeHardwareAutobuyer:actionsProcessDiff" value=${values}> Actions </intl-message>
+        <intl-message label="programs:mainframeHardwareAutobuyer:actionsProcessDiff" value=${values}>
+          Actions
+        </intl-message>
       </p>
     `;
   };

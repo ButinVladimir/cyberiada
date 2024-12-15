@@ -49,14 +49,11 @@ settings:
   updateInterval: Update interval (ms)
   autosaveEnabled: Enable autosave
   autosaveInterval: Autosave interval (s)
-  maxUpdatesPerTick: Maximum amount of updates per tick when game speed is fast
+  fastSpeedMultiplier: Speed multiplier when game speed is fast
+  fastSpeedMultiplierHint: Too high number can cause strain on CPU
+  maxUpdatesPerTick: Maximum amount of updates per tick
   maxUpdatesPerTickHint: Too high number can cause strain on CPU
-  maxUpdatesPerFastForward: Maximum amount of updates per tick when accumulated time is being spent
-  maxUpdatesPerFastForwardHint: Too high number can cause strain on CPU
   longNumberFormat: Long number format
-  languages:
-    en: English
-    ru: Russian
   themes:
     light: Light
     dark: Dark

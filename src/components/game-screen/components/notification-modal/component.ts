@@ -3,6 +3,7 @@ import { customElement, state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import SlCheckbox from '@shoelace-style/shoelace/dist/components/checkbox/checkbox.component.js';
 import { BaseComponent } from '@shared/base-component';
+import { FORCE_NOTIFICATION_TYPES } from '@shared/constants';
 import { NotificationModalController } from './controller';
 
 @customElement('ca-notification-modal')
@@ -14,7 +15,7 @@ export class NotificationModal extends BaseComponent<NotificationModalController
 
     p {
       margin-top: 0;
-      margin-bottom: var(--sl-spacing-2x-large);
+      margin-bottom: var(--sl-spacing-large);
     }
   `;
 
@@ -40,6 +41,7 @@ export class NotificationModal extends BaseComponent<NotificationModalController
 
     const notification = this.controller.getUnreadNotification()!;
     const parameters = notification.parameters ? JSON.stringify(notification.parameters) : '';
+    const showToggle = !FORCE_NOTIFICATION_TYPES.has(notification.notificationType);
 
     return html`
       <sl-dialog no-header ?open=${isOpen} @sl-request-close=${this.handleClose}>
@@ -49,15 +51,19 @@ export class NotificationModal extends BaseComponent<NotificationModalController
           </intl-message>
         </p>
 
-        <sl-checkbox
-          ref=${ref(this._notificationTypeToggleRef)}
-          size="medium"
-          name="notification-type"
-          ?checked=${this._notificationTypeToggled}
-          @sl-change=${this.handleToggleNotificationType}
-        >
-          <intl-message label="ui:settings:notificationTypeToggle"> Toggle notification type </intl-message>
-        </sl-checkbox>
+        ${showToggle
+          ? html`
+              <sl-checkbox
+                ref=${ref(this._notificationTypeToggleRef)}
+                size="medium"
+                name="notification-type"
+                ?checked=${this._notificationTypeToggled}
+                @sl-change=${this.handleToggleNotificationType}
+              >
+                <intl-message label="ui:settings:notificationTypeToggle"> Toggle notification type </intl-message>
+              </sl-checkbox>
+            `
+          : null}
 
         <sl-button slot="footer" size="medium" variant="primary" @click=${this.handleClose}>
           <intl-message label="ui:common:continue"> Continue </intl-message>

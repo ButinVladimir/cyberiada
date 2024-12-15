@@ -1,4 +1,4 @@
-import { IFormatterParameters } from "./interfaces/formatter-parameters";
+import { IFormatterParameters } from './interfaces/formatter-parameters';
 
 export const diffFormatterParametersDecimal: IFormatterParameters = {
   alwaysShowSign: true,

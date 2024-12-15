@@ -7,3 +7,6 @@ featureUnlocked:
 timeAccumulated:
   name: Time accumulated
   message: While you were away, you've earned {{value.time}} accumulated time
+gameVersionUpdated:
+  name: Game version updated
+  message: Game version has been updated

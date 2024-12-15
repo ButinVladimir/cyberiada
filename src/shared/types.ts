@@ -1,3 +1,7 @@
+export enum GameVersion {
+  '0.1.1' = '0.1.1',
+}
+
 export enum Language {
   en = 'en',
   ru = 'ru',
@@ -71,6 +75,7 @@ export enum NotificationType {
   storyEvent = 'storyEvent',
   featureUnlocked = 'featureUnlocked',
   timeAccumulated = 'timeAccumulated',
+  gameVersionUpdated = 'gameVersionUpdated',
 }
 
 export enum LongNumberFormat {

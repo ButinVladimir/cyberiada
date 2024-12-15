@@ -22,7 +22,7 @@ export class MainframeHardwareAutobuyerDescriptionEffectRenderer implements IDes
 
   public renderEffect = () => {
     const time = this._program.calculateCompletionTime(this._threads, this._usedCores);
-    const avgValue = this._threads / time * MS_IN_SECOND;
+    const avgValue = (this._threads / time) * MS_IN_SECOND;
 
     const values = JSON.stringify({
       value: this._formatter.formatNumberDecimal(this._threads),
@@ -31,9 +31,10 @@ export class MainframeHardwareAutobuyerDescriptionEffectRenderer implements IDes
 
     return html`
       <p>
-        <intl-message label="programs:mainframeHardwareAutobuyer:actionsProcess" value=${values}> Actions </intl-message>
+        <intl-message label="programs:mainframeHardwareAutobuyer:actionsProcess" value=${values}>
+          Actions
+        </intl-message>
       </p>
     `;
   };
 }
-

@@ -90,10 +90,10 @@ export class DescriptionRenderer implements IDescriptionRenderer {
 
   private renderNormalRequirements = () => {
     const threadsDiff = this._threads - this._currentThreads;
-    const requirementsValues = JSON.stringify({ 
+    const requirementsValues = JSON.stringify({
       threads: this._formatter.formatNumberDecimal(this._threads),
       threadsDiff: this._formatter.formatNumberDecimal(threadsDiff, diffFormatterParametersDecimal),
-    })
+    });
 
     const ram = this._program.ram * this._threads;
     const ramDiff = ram - this._program.ram * this._currentThreads;
@@ -112,9 +112,9 @@ export class DescriptionRenderer implements IDescriptionRenderer {
     const minTime = this._program.calculateCompletionMinTime(this._threads);
     const maxTime = this._program.calculateCompletionMaxTime(this._threads);
 
-    let minTimeDiff  = minTime;
+    let minTimeDiff = minTime;
     let maxTimeDiff = maxTime;
-    
+
     if (this._currentThreads > 0) {
       minTimeDiff = minTime - this._program.calculateCompletionMinTime(this._currentThreads);
       maxTimeDiff = maxTime - this._program.calculateCompletionMaxTime(this._currentThreads);
@@ -135,7 +135,9 @@ export class DescriptionRenderer implements IDescriptionRenderer {
       </p>
 
       <p>
-        <intl-message label="ui:mainframe:programDescription:requirements:ramDiff" value=${ramValues}> RAM </intl-message>
+        <intl-message label="ui:mainframe:programDescription:requirements:ramDiff" value=${ramValues}>
+          RAM
+        </intl-message>
       </p>
 
       <p>

@@ -25,8 +25,8 @@ export class CodeGeneratorDescriptionEffectRenderer implements IDescriptionEffec
     const value = this._program.calculateDelta(this._threads);
     const minTime = this._program.calculateCompletionMinTime(this._threads);
     const maxTime = this._program.calculateCompletionMaxTime(this._threads);
-    const minAvgValue = value / maxTime * MS_IN_SECOND;
-    const maxAvgValue = value / minTime * MS_IN_SECOND;
+    const minAvgValue = (value / maxTime) * MS_IN_SECOND;
+    const maxAvgValue = (value / minTime) * MS_IN_SECOND;
 
     let valueDiff = value;
     let minAvgValueDiff = minAvgValue;
@@ -36,8 +36,8 @@ export class CodeGeneratorDescriptionEffectRenderer implements IDescriptionEffec
       const currentValue = this._program.calculateDelta(this._currentThreads);
       const currentMinTime = this._program.calculateCompletionMinTime(this._currentThreads);
       const currentMaxTime = this._program.calculateCompletionMaxTime(this._currentThreads);
-      const currentMinAvgValue = currentValue / currentMaxTime * MS_IN_SECOND;
-      const currentMaxAvgValue = currentValue / currentMinTime * MS_IN_SECOND;      
+      const currentMinAvgValue = (currentValue / currentMaxTime) * MS_IN_SECOND;
+      const currentMaxAvgValue = (currentValue / currentMinTime) * MS_IN_SECOND;
 
       valueDiff = value - currentValue;
       minAvgValueDiff = minAvgValue - currentMinAvgValue;
@@ -55,7 +55,9 @@ export class CodeGeneratorDescriptionEffectRenderer implements IDescriptionEffec
 
     return html`
       <p>
-        <intl-message label="programs:codeGenerator:computationalBasePointsDiff" value=${values}> Computational base points </intl-message>
+        <intl-message label="programs:codeGenerator:computationalBasePointsDiff" value=${values}>
+          Computational base points
+        </intl-message>
       </p>
     `;
   };

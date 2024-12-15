@@ -18,8 +18,8 @@ export class CodeGeneratorDescriptionEffectRenderer implements IDescriptionEffec
     const value = this._program.calculateDelta(1);
     const minTime = this._program.calculateCompletionMinTime(1);
     const maxTime = this._program.calculateCompletionMaxTime(1);
-    const minAvgValue = value / maxTime * MS_IN_SECOND;
-    const maxAvgValue = value / minTime * MS_IN_SECOND;
+    const minAvgValue = (value / maxTime) * MS_IN_SECOND;
+    const maxAvgValue = (value / minTime) * MS_IN_SECOND;
 
     const values = JSON.stringify({
       value: this._formatter.formatNumberLong(value),
@@ -29,7 +29,9 @@ export class CodeGeneratorDescriptionEffectRenderer implements IDescriptionEffec
 
     return html`
       <p>
-        <intl-message label="programs:codeGenerator:computationalBasePointsProgram" value=${values}> Computational base points </intl-message>
+        <intl-message label="programs:codeGenerator:computationalBasePointsProgram" value=${values}>
+          Computational base points
+        </intl-message>
       </p>
     `;
   };

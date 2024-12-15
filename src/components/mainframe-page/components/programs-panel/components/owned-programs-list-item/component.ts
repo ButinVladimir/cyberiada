@@ -97,11 +97,11 @@ export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemCo
     const autoupgradeIcon = program.autoUpgradeEnabled ? 'arrow-up-circle-fill' : 'arrow-up-circle';
 
     const descriptionRenderer: IDescriptionRenderer = new DescriptionRenderer({
-          formatter: this.controller.formatter,
-          ram: this.controller.ram,
-          cores: this.controller.cores,
-          program: program,
-        });
+      formatter: this.controller.formatter,
+      ram: this.controller.ram,
+      cores: this.controller.cores,
+      program: program,
+    });
 
     return html`
       <td class="program" draggable="true" @dragstart=${this.handleDragStart}>
@@ -110,9 +110,7 @@ export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemCo
         <sl-tooltip>
           <sl-icon name="question-circle"></sl-icon>
 
-          <div class="program-description" slot="content">
-            ${descriptionRenderer.renderDescription()}
-          </div>
+          <div class="program-description" slot="content">${descriptionRenderer.renderDescription()}</div>
         </sl-tooltip>
       </td>
 

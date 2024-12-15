@@ -111,13 +111,13 @@ export class ProcessesListItem extends BaseComponent<ProcessesListItemController
       ? html`<intl-message label="ui:mainframe:processes:autoscalable">Autoscalable</intl-message>`
       : html`<intl-message label="ui:mainframe:processes:usesCores" value=${coresValue}>Cores</intl-message>`;
 
-      const descriptionRenderer: IDescriptionRenderer = new DescriptionRenderer({
-        formatter: this.controller.formatter,
-        availableRam: process.program.isAutoscalable ? this.controller.availableRam : process.totalRam,
-        usedCores: process.usedCores,
-        program: process.program,
-        threads: process.threads,
-      });
+    const descriptionRenderer: IDescriptionRenderer = new DescriptionRenderer({
+      formatter: this.controller.formatter,
+      availableRam: process.program.isAutoscalable ? this.controller.availableRam : process.totalRam,
+      usedCores: process.usedCores,
+      program: process.program,
+      threads: process.threads,
+    });
 
     return html`
       <td class="program" draggable="true" @dragstart=${this.handleDragStart}>
@@ -126,9 +126,7 @@ export class ProcessesListItem extends BaseComponent<ProcessesListItemController
         <sl-tooltip>
           <sl-icon name="question-circle"></sl-icon>
 
-          <div class="program-description" slot="content">
-            ${descriptionRenderer.renderDescription()}
-          </div>
+          <div class="program-description" slot="content">${descriptionRenderer.renderDescription()}</div>
         </sl-tooltip>
       </td>
 

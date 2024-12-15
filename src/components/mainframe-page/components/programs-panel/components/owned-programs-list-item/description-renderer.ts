@@ -83,11 +83,11 @@ export class DescriptionRenderer implements IDescriptionRenderer {
 
   private renderNormalRequirements = () => {
     const ramValue = JSON.stringify({
-      ram: this._formatter.formatNumberDecimal(this._program.ram)
+      ram: this._formatter.formatNumberDecimal(this._program.ram),
     });
 
     const coresValue = JSON.stringify({
-      cores: this._formatter.formatNumberDecimal(this._program.cores)
+      cores: this._formatter.formatNumberDecimal(this._program.cores),
     });
 
     const completionTimeValues = JSON.stringify({

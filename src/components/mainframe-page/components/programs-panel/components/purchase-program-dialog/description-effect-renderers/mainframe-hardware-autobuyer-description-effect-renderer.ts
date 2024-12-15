@@ -21,8 +21,8 @@ export class MainframeHardwareAutobuyerDescriptionEffectRenderer implements IDes
   public renderEffect = () => {
     const minTime = this._program.calculateCompletionMinTime(1);
     const maxTime = this._program.calculateCompletionMaxTime(1);
-    const minAvgValue = 1 / maxTime * MS_IN_SECOND;
-    const maxAvgValue = 1 / minTime * MS_IN_SECOND;
+    const minAvgValue = (1 / maxTime) * MS_IN_SECOND;
+    const maxAvgValue = (1 / minTime) * MS_IN_SECOND;
 
     let minAvgValueDiff = minAvgValue;
     let maxAvgValueDiff = maxAvgValue;
@@ -30,8 +30,8 @@ export class MainframeHardwareAutobuyerDescriptionEffectRenderer implements IDes
     if (this._ownedProgram) {
       const ownedMinTime = this._ownedProgram.calculateCompletionMinTime(1);
       const ownedMaxTime = this._ownedProgram.calculateCompletionMaxTime(1);
-      const ownedMinAvgValue = 1 / ownedMaxTime * MS_IN_SECOND;
-      const ownedMaxAvgValue = 1 / ownedMinTime * MS_IN_SECOND;      
+      const ownedMinAvgValue = (1 / ownedMaxTime) * MS_IN_SECOND;
+      const ownedMaxAvgValue = (1 / ownedMinTime) * MS_IN_SECOND;
 
       minAvgValueDiff = minAvgValue - ownedMinAvgValue;
       maxAvgValueDiff = maxAvgValue - ownedMaxAvgValue;
@@ -46,7 +46,9 @@ export class MainframeHardwareAutobuyerDescriptionEffectRenderer implements IDes
 
     return html`
       <p>
-        <intl-message label="programs:mainframeHardwareAutobuyer:actionsProgramDiff" value=${values}> Actions </intl-message>
+        <intl-message label="programs:mainframeHardwareAutobuyer:actionsProgramDiff" value=${values}>
+          Actions
+        </intl-message>
       </p>
     `;
   };

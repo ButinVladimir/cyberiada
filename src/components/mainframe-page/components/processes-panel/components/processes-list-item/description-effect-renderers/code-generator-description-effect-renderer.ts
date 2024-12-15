@@ -23,7 +23,7 @@ export class CodeGeneratorDescriptionEffectRenderer implements IDescriptionEffec
   public renderEffect = () => {
     const value = this._program.calculateDelta(this._threads);
     const time = this._program.calculateCompletionTime(this._threads, this._usedCores);
-    const avgValue = value / time * MS_IN_SECOND;
+    const avgValue = (value / time) * MS_IN_SECOND;
 
     const values = JSON.stringify({
       value: this._formatter.formatNumberLong(value),
@@ -32,7 +32,9 @@ export class CodeGeneratorDescriptionEffectRenderer implements IDescriptionEffec
 
     return html`
       <p>
-        <intl-message label="programs:codeGenerator:computationalBasePointsProcess" value=${values}> Computational base points </intl-message>
+        <intl-message label="programs:codeGenerator:computationalBasePointsProcess" value=${values}>
+          Computational base points
+        </intl-message>
       </p>
     `;
   };

@@ -151,15 +151,15 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
     const currentProcess = this._programName ? this.controller.getProcessByName(this._programName) : undefined;
 
     const descriptionRenderer: IDescriptionRenderer | undefined = program
-    ? new DescriptionRenderer({
-        formatter: this.controller.formatter,
-        ram: this.controller.ram,
-        cores: this.controller.cores,
-        program: program,
-        threads: this._threads,
-        currentThreads: currentProcess ? currentProcess.threads : 0,
-      })
-    : undefined;
+      ? new DescriptionRenderer({
+          formatter: this.controller.formatter,
+          ram: this.controller.ram,
+          cores: this.controller.cores,
+          program: program,
+          threads: this._threads,
+          currentThreads: currentProcess ? currentProcess.threads : 0,
+        })
+      : undefined;
 
     return html`
       <sl-dialog ?open=${this.isOpen && !this._confirmationAlertVisible} @sl-request-close=${this.handleClose}>

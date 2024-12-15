@@ -220,16 +220,6 @@
       "attributes": []
     },
     {
-      "name": "ca-process-description",
-      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `renderScalableDescription` - \n\n  * `renderOrdinaryDescription` - \n\n  * `controller` {`ProcessDescriptionController`} - ",
-      "attributes": [
-        {
-          "name": "program-name",
-          "description": "`program-name` {`string`} - \n\nProperty: programName\n\nDefault: "
-        }
-      ]
-    },
-    {
       "name": "ca-processes-list-item-progress",
       "description": "Attributes:\n\n  * `program-name` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `controller` {`ProcessesListItemProgressController`} - ",
       "attributes": [
@@ -267,7 +257,7 @@
     },
     {
       "name": "ca-program-description",
-      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\n  * `level` {`number`} - \n\n  * `quality` {`number`} - \n\n  * `threads` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `level` {`number`} - \n\n  * `quality` {`number`} - \n\n  * `threads` {`number`} - \n\n  * `renderScalableDescription` - \n\n  * `renderOrdinaryDescription` - \n\n  * `controller` {`ProgramDescriptionController`} - ",
+      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\n  * `level` {`number`} - \n\n  * `quality` {`number`} - \n\n  * `threads` {`number`} - \n\n  * `type` {`ProgramDescriptionType`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `level` {`number`} - \n\n  * `quality` {`number`} - \n\n  * `threads` {`number`} - \n\n  * `type` {`ProgramDescriptionType`} - \n\n  * `renderAutoscalableDescription` - \n\n  * `renderNormalDescription` - \n\n  * `renderAutoscalableProgramDiff` - \n\n  * `renderNormalProgramDiff` - \n\n  * `controller` {`ProgramDescriptionController`} - ",
       "attributes": [
         {
           "name": "program-name",
@@ -283,7 +273,22 @@
         },
         {
           "name": "threads",
-          "description": "`threads` {`number`} - \n\nProperty: threads\n\nDefault: 0"
+          "description": "`threads` {`number`} - \n\nProperty: threads\n\nDefault: 1"
+        },
+        {
+          "name": "type",
+          "description": "`type` {`ProgramDescriptionType`} - \n\nProperty: type\n\nDefault: ProgramDescriptionType['program-description']",
+          "values": [
+            {
+              "name": "program-description"
+            },
+            {
+              "name": "program-comparison"
+            },
+            {
+              "name": "process-comparison"
+            }
+          ]
         }
       ]
     },
@@ -368,7 +373,7 @@
     },
     {
       "name": "ca-settings-form",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_languageInputRef` {`Ref<SlSelect>`} - \n\n  * `_themeInputRef` {`Ref<SlSelect>`} - \n\n  * `_messageLogSizeInputRef` {`Ref<SlInput>`} - \n\n  * `_updateIntervalInputRef` {`Ref<SlRange>`} - \n\n  * `_autosaveEnabledSwitchRef` {`Ref<SlSwitch>`} - \n\n  * `_autosaveIntervalInputRef` {`Ref<SlRange>`} - \n\n  * `_maxUpdatesPerTickInputRef` {`Ref<SlRange>`} - \n\n  * `_maxUpdatesPerFastForwardInputRef` {`Ref<SlInput>`} - \n\n  * `_longNumberFormatInputRef` {`Ref<SlSelect>`} - \n\n  * `_isSaving` {`boolean`} - \n\n  * `startSaving` - \n\n  * `stopSaving` - \n\n  * `handleChangeLanguage` - \n\n  * `handleChangeTheme` - \n\n  * `handleChangeMessageLogSize` - \n\n  * `handleChangeUpdateInterval` - \n\n  * `handleChangeAutosaveEnabled` - \n\n  * `handleChangeAutosaveInterval` - \n\n  * `handleChangemaxUpdatesPerTick` - \n\n  * `handleChangemaxUpdatesPerFastForward` - \n\n  * `handleChangeLongNumberFormat` - \n\n  * `autosaveIntervalFormatter` - \n\n  * `decimalNumberFormatter` - \n\n  * `controller` {`SettingsFormController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_languageInputRef` {`Ref<SlSelect>`} - \n\n  * `_themeInputRef` {`Ref<SlSelect>`} - \n\n  * `_messageLogSizeInputRef` {`Ref<SlInput>`} - \n\n  * `_updateIntervalInputRef` {`Ref<SlRange>`} - \n\n  * `_autosaveEnabledSwitchRef` {`Ref<SlSwitch>`} - \n\n  * `_autosaveIntervalInputRef` {`Ref<SlRange>`} - \n\n  * `_fastSpeedMultiplierInputRef` {`Ref<SlRange>`} - \n\n  * `_maxUpdatesPerTickInputRef` {`Ref<SlInput>`} - \n\n  * `_longNumberFormatInputRef` {`Ref<SlSelect>`} - \n\n  * `_isSaving` {`boolean`} - \n\n  * `startSaving` - \n\n  * `stopSaving` - \n\n  * `handleChangeLanguage` - \n\n  * `handleChangeTheme` - \n\n  * `handleChangeMessageLogSize` - \n\n  * `handleChangeUpdateInterval` - \n\n  * `handleChangeAutosaveEnabled` - \n\n  * `handleChangeAutosaveInterval` - \n\n  * `handleChangefastSpeedMultiplier` - \n\n  * `handleChangeMaxUpdatesPerTick` - \n\n  * `handleChangeLongNumberFormat` - \n\n  * `autosaveIntervalFormatter` - \n\n  * `decimalNumberFormatter` - \n\n  * `controller` {`SettingsFormController`} - ",
       "attributes": []
     },
     {

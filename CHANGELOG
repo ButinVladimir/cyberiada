@@ -1,0 +1,15 @@
+# Changelog
+
+## 0.1.1 (2024-12-15)
+
+- When tab is inactive and game is not paused, time will be spent immediately instead of being accumulated
+- Added "Buy all" buttons for mainframe programs and hardware tabs
+- Reworked programs and processes descriptions. They now can show difference between old and new versions
+- Added version migrator
+- New alerts to show added offline time and warn about new version
+
+## 0.1 (2024-12-03)
+
+- Mainframe page
+- Foundation for the rest of the game: state, UI, settings, alerts, notifications, etc.
+- Prototype map generator

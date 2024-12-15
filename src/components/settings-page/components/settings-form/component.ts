@@ -6,9 +6,10 @@ import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.com
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.component.js';
 import SlRange from '@shoelace-style/shoelace/dist/components/range/range.component.js';
 import SlSwitch from '@shoelace-style/shoelace/dist/components/switch/switch.component.js';
-import { LANGUAGES, LONG_NUMBER_FORMATS, THEMES } from '@shared/constants';
+import { LONG_NUMBER_FORMATS, THEMES } from '@shared/constants';
 import { Language, LongNumberFormat, Theme } from '@shared/types';
 import { SettingsFormController } from './controller';
+import { LANGUAGE_OPTIONS } from './constants';
 
 @customElement('ca-settings-form')
 export class SettingsForm extends BaseComponent<SettingsFormController> {
@@ -60,9 +61,9 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
 
   private _autosaveIntervalInputRef = createRef<SlRange>();
 
-  private _maxUpdatesPerTickInputRef = createRef<SlRange>();
+  private _fastSpeedMultiplierInputRef = createRef<SlRange>();
 
-  private _maxUpdatesPerFastForwardInputRef = createRef<SlInput>();
+  private _maxUpdatesPerTickInputRef = createRef<SlInput>();
 
   private _longNumberFormatInputRef = createRef<SlSelect>();
 
@@ -92,8 +93,8 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
       this._updateIntervalInputRef.value.tooltipFormatter = this.decimalNumberFormatter;
     }
 
-    if (this._maxUpdatesPerTickInputRef.value) {
-      this._maxUpdatesPerTickInputRef.value.tooltipFormatter = this.decimalNumberFormatter;
+    if (this._fastSpeedMultiplierInputRef.value) {
+      this._fastSpeedMultiplierInputRef.value.tooltipFormatter = this.decimalNumberFormatter;
     }
   }
 
@@ -109,11 +110,8 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
           <intl-message label="ui:settings:language">Language</intl-message>
         </span>
 
-        ${LANGUAGES.map(
-          (language) =>
-            html` <sl-option value=${language}>
-              <intl-message label="ui:settings:languages:${language}"> Language </intl-message>
-            </sl-option>`,
+        ${LANGUAGE_OPTIONS.map(
+          ([language, optionText]) => html`<sl-option value=${language}> ${optionText} </sl-option>`,
         )}
       </sl-select>
 
@@ -191,13 +189,13 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
       </sl-range>
 
       <sl-range
-        ${ref(this._maxUpdatesPerTickInputRef)}
+        ${ref(this._fastSpeedMultiplierInputRef)}
         min="2"
         max="100"
         step="1"
-        name="maxUpdatesPerTick"
-        value=${this.controller.maxUpdatesPerTick}
-        @sl-change=${this.handleChangemaxUpdatesPerTick}
+        name="fastSpeedMultiplier"
+        value=${this.controller.fastSpeedMultiplier}
+        @sl-change=${this.handleChangefastSpeedMultiplier}
       >
         <span class="input-label" slot="label">
           <intl-message label="ui:settings:maxUpdatesPerTick">Max ticks per update</intl-message>
@@ -237,21 +235,21 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
       </sl-range>
 
       <sl-input
-        ${ref(this._maxUpdatesPerFastForwardInputRef)}
-        name="maxUpdatesPerFastForward"
-        value=${this.controller.maxUpdatesPerFastForward}
+        ${ref(this._maxUpdatesPerTickInputRef)}
+        name="maxUpdatesPerTick"
+        value=${this.controller.maxUpdatesPerTick}
         type="number"
         min="1"
         max="100000000"
         step="1"
-        @sl-change=${this.handleChangemaxUpdatesPerFastForward}
+        @sl-change=${this.handleChangeMaxUpdatesPerTick}
       >
         <span class="input-label" slot="label">
-          <intl-message label="ui:settings:maxUpdatesPerFastForward">Max ticks per fast forward</intl-message>
+          <intl-message label="ui:settings:maxUpdatesPerTick">Max ticks per fast forward</intl-message>
         </span>
 
         <span slot="help-text">
-          <intl-message label="ui:settings:maxUpdatesPerFastForwardHint">
+          <intl-message label="ui:settings:maxUpdatesPerTickHint">
             Too high number can cause strain on CPU
           </intl-message>
         </span>
@@ -342,20 +340,20 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
     this.controller.setAutosaveInterval(this._autosaveIntervalInputRef.value.value);
   };
 
-  private handleChangemaxUpdatesPerTick = () => {
+  private handleChangefastSpeedMultiplier = () => {
+    if (!this._fastSpeedMultiplierInputRef.value) {
+      return;
+    }
+
+    this.controller.setfastSpeedMultiplier(this._fastSpeedMultiplierInputRef.value.value);
+  };
+
+  private handleChangeMaxUpdatesPerTick = () => {
     if (!this._maxUpdatesPerTickInputRef.value) {
       return;
     }
 
-    this.controller.setMaxUpdatesPerTick(this._maxUpdatesPerTickInputRef.value.value);
-  };
-
-  private handleChangemaxUpdatesPerFastForward = () => {
-    if (!this._maxUpdatesPerFastForwardInputRef.value) {
-      return;
-    }
-
-    let value = this._maxUpdatesPerFastForwardInputRef.value.valueAsNumber;
+    let value = this._maxUpdatesPerTickInputRef.value.valueAsNumber;
 
     if (value < 1) {
       value = 1;
@@ -365,8 +363,8 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
       value = 100000000;
     }
 
-    this.controller.setmaxUpdatesPerFastForward(value);
-    this._maxUpdatesPerFastForwardInputRef.value.valueAsNumber = value;
+    this.controller.setmaxUpdatesPerTick(value);
+    this._maxUpdatesPerTickInputRef.value.valueAsNumber = value;
   };
 
   private handleChangeLongNumberFormat = () => {

@@ -22,7 +22,9 @@ export class ShareServerDescriptionEffectRenderer implements IDescriptionEffectR
 
   public renderEffect = () => {
     const money = JSON.stringify({
-      money: this._formatter.formatNumberLong(this._program.calculateMoneyDelta(this._usedCores, this._availableRam, MS_IN_SECOND)),
+      money: this._formatter.formatNumberLong(
+        this._program.calculateMoneyDelta(this._usedCores, this._availableRam, MS_IN_SECOND),
+      ),
     });
 
     const developmentPoints = JSON.stringify({
