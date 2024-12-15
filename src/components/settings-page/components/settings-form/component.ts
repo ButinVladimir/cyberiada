@@ -198,11 +198,11 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
         @sl-change=${this.handleChangefastSpeedMultiplier}
       >
         <span class="input-label" slot="label">
-          <intl-message label="ui:settings:maxUpdatesPerTick">Max ticks per update</intl-message>
+          <intl-message label="ui:settings:fastSpeedMultiplier">Fast speed multiplier</intl-message>
         </span>
 
         <span slot="help-text">
-          <intl-message label="ui:settings:maxUpdatesPerTickHint">
+          <intl-message label="ui:settings:fastSpeedMultiplierHint">
             Excessive messages in log won't be removed until new message is received
           </intl-message>
         </span>
