@@ -81,17 +81,9 @@ export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwa
   }
 
   renderContent() {
-    const increase = this.calculateIncrease();
     const formatter = this.controller.formatter;
 
     const level = this.controller.getLevel(this.type);
-    const buttonDisabled = !this.controller.checkCanPurchase(increase, this.type);
-    const cost = this.controller.getPurchaseCost(increase, this.type);
-
-    const buttonValue = JSON.stringify({
-      cost: formatter.formatNumberLong(cost),
-      increase: formatter.formatNumberDecimal(increase),
-    });
 
     const autoupgradeIcon = this.controller.isAutoUpgradeEnabled(this.type)
       ? 'arrow-up-circle-fill'
@@ -130,11 +122,12 @@ export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwa
           <intl-message label="ui:mainframe:hardware:buyMax"> Buy max </intl-message>
         </sl-button>
 
-        <ca-purchase-tooltip cost=${cost} level=${level + 1}>
-          <sl-button variant="primary" type="button" size="medium" ?disabled=${buttonDisabled} @click=${this.handleBuy}>
-            <intl-message label="ui:mainframe:hardware:buy" value=${buttonValue}> Buy </intl-message>
-          </sl-button>
-        </ca-purchase-tooltip>
+        <ca-mainframe-hardware-panel-article-buy-button
+          max-increase=${this.maxIncrease}
+          type=${this.type}
+          @buy-hardware=${this.handleBuy}
+        >
+        </ca-mainframe-hardware-panel-article-buy-button>
       </div>
     `;
   }

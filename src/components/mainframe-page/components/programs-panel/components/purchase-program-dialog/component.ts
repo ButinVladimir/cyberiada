@@ -15,8 +15,7 @@ import { QUALITIES } from '@shared/constants';
 import { ProgramAlert } from '@shared/types';
 import { PurchaseProgramDialogCloseEvent } from './events';
 import { PurchaseProgramDialogController } from './controller';
-import { DescriptionRenderer } from './description-renderer';
-import { IDescriptionRenderer } from './interfaces';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 @customElement('ca-purchase-program-dialog')
 export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogController> {
@@ -144,26 +143,7 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
   }
 
   renderContent() {
-    const { formatter, money, developmentLevel } = this.controller;
-
-    const program = this._programName
-      ? this.controller.getSelectedProgram(this._programName, this._level, this._quality)
-      : undefined;
-    const cost = program ? program.cost : 0;
-
-    const submitButtonValues = JSON.stringify({ cost: formatter.formatNumberLong(cost) });
-
-    const submitButtonDisabled = !(program && this._level <= developmentLevel && cost <= money);
-
-    const descriptionRenderer: IDescriptionRenderer | undefined = program
-      ? new DescriptionRenderer({
-          formatter: this.controller.formatter,
-          ram: this.controller.ram,
-          cores: this.controller.cores,
-          program: program,
-          ownedProgram: this._programName ? this.controller.getOwnedProgram(this._programName) : undefined,
-        })
-      : undefined;
+    const { formatter, developmentLevel } = this.controller;
 
     return html`
       <sl-dialog ?open=${this.isOpen && !this._confirmationAlertVisible} @sl-request-close=${this.handleClose}>
@@ -230,23 +210,28 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
             </sl-select>
           </div>
 
-          ${descriptionRenderer ? descriptionRenderer.renderDescription() : null}
+          ${this._programName
+            ? html`<ca-program-diff-text
+                program-name=${this._programName}
+                level=${this._level}
+                quality=${this._quality}
+              >
+              </ca-program-diff-text>`
+            : null}
         </div>
 
         <sl-button slot="footer" size="medium" variant="default" outline @click=${this.handleClose}>
           <intl-message label="ui:common:close"> Close </intl-message>
         </sl-button>
 
-        <ca-purchase-tooltip cost=${cost} level=${this._level} slot="footer">
-          <sl-button
-            size="medium"
-            variant="primary"
-            ?disabled=${submitButtonDisabled}
-            @click=${this.handleOpenConfirmationAlert}
-          >
-            <intl-message label="ui:mainframe:programs:purchase" value=${submitButtonValues}> Purchase </intl-message>
-          </sl-button>
-        </ca-purchase-tooltip>
+        <ca-purchase-program-dialog-buy-button
+          slot="footer"
+          program-name=${ifDefined(this._programName)}
+          level=${this._level}
+          quality=${this._quality}
+          @buy-program=${this.handleOpenConfirmationAlert}
+        >
+        </ca-purchase-program-dialog-buy-button>
       </sl-dialog>
     `;
   }

@@ -55,6 +55,8 @@ const defaultNumberQualityFormatParameters: IFormatterParameters = {
   prefix: '',
 };
 
+const longNumberFormatterThreshold = 1000;
+
 @injectable()
 export class Formatter implements IFormatter {
   private _settingsState: ISettingsState;
@@ -104,14 +106,21 @@ export class Formatter implements IFormatter {
 
   formatNumberLong(value: number, parameters: IFormatterParameters = defaultNumberLongFormatParameters): string {
     let formattedValue = '';
+    const absoluteValue = Math.abs(value);
+
+    if (absoluteValue < longNumberFormatterThreshold) {
+      formattedValue = this.formatNumberFloat(absoluteValue);
+
+      return this.applyNumberFormatterParameters(value, formattedValue, parameters);
+    }
 
     switch (this._settingsState.longNumberFormat) {
       case LongNumberFormat.builtIn:
-        formattedValue = this.formatNumberFloat(Math.abs(value));
+        formattedValue = this.formatNumberFloat(absoluteValue);
         break;
 
       case LongNumberFormat.scientific:
-        formattedValue = this.formatNumberExponential(Math.abs(value));
+        formattedValue = this.formatNumberExponential(absoluteValue);
         break;
     }
 
@@ -135,13 +144,13 @@ export class Formatter implements IFormatter {
   private updateBuiltInFormatters = () => {
     this._decimalBuiltInFormatter = new Intl.NumberFormat(this._settingsState.language, { maximumFractionDigits: 0 });
     this._floatBuiltInFormatter = new Intl.NumberFormat(this._settingsState.language, {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
+      minimumFractionDigits: 3,
+      maximumFractionDigits: 3,
     });
   };
 
   private formatNumberExponential(value: number) {
-    return value.toExponential(2);
+    return value.toExponential(3);
   }
 
   private applyNumberFormatterParameters(value: number, formattedValue: string, parameters: IFormatterParameters) {

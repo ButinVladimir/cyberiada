@@ -2,7 +2,7 @@ import { BaseController } from '@shared/base-controller';
 import { IProcess } from '@state/mainframe/mainframe-processes-state/interfaces/process';
 import { ProgramName } from '@state/progam-factory/types';
 
-export class ProcessesListItemController extends BaseController {
+export class ProcessDescriptionTextController extends BaseController {
   private _process?: IProcess;
 
   get availableRam(): number {
@@ -19,15 +19,5 @@ export class ProcessesListItemController extends BaseController {
     }
 
     return this._process;
-  }
-
-  toggleProcess(): void {
-    this._process?.toggleActive(!this._process.isActive);
-  }
-
-  deleteProcess(): void {
-    if (this._process) {
-      this.mainframeProcessesState.deleteProcess(this._process.program.name);
-    }
   }
 }

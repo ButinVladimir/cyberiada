@@ -23,6 +23,4 @@ export interface IProgram extends IUIEventEmitter {
   calculateCompletionMinTime(threads: number): number;
   calculateCompletionMaxTime(threads: number): number;
   serialize(): IMakeProgramParameters;
-  buildProgramDescriptionParametersObject(threads: number, usedRam: number): object;
-  buildProcessDescriptionParametersObject(threads: number, usedCores: number, usedRam: number): object;
 }

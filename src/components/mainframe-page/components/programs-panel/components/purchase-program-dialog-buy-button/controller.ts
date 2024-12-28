@@ -2,13 +2,17 @@ import { BaseController } from '@shared/base-controller';
 import { IProgram } from '@state/progam-factory/interfaces/program';
 import { ProgramName } from '@state/progam-factory/types';
 
-export class PurchaseProgramDialogController extends BaseController {
+export class PurchaseProgramDialogBuyButtonController extends BaseController {
   private _selectedProgram?: IProgram;
 
   hostDisconnected() {
     super.hostDisconnected();
 
     this.deleteSelectedProgram();
+  }
+
+  get money(): number {
+    return this.globalState.money.money;
   }
 
   get developmentLevel(): number {
@@ -32,19 +36,6 @@ export class PurchaseProgramDialogController extends BaseController {
     }
 
     return this._selectedProgram;
-  }
-
-  getOwnedProgram(name: ProgramName): IProgram | undefined {
-    return this.mainframeProgramsState.getOwnedProgramByName(name);
-  }
-
-  purchaseProgram(name: ProgramName, level: number, quality: number): boolean {
-    return this.mainframeProgramsState.purchaseProgram({
-      name,
-      level,
-      quality,
-      autoUpgradeEnabled: true,
-    });
   }
 
   private deleteSelectedProgram() {

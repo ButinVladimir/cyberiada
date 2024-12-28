@@ -14,8 +14,6 @@ import {
 import { ProgramAlert } from '@shared/types';
 import { StartProcessDialogCloseEvent } from './events';
 import { StartProcessDialogController } from './controller';
-import { DescriptionRenderer } from './description-renderer';
-import { IDescriptionRenderer } from './interfaces';
 
 @customElement('ca-start-process-dialog')
 export class StartProcessDialog extends BaseComponent<StartProcessDialogController> {
@@ -104,9 +102,6 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
   private _threads = 1;
 
   @state()
-  private _maxThreads = 1;
-
-  @state()
   private _confirmationAlertVisible = false;
 
   constructor() {
@@ -141,25 +136,13 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
 
   renderContent() {
     const program = this._programName ? this.controller.getProgram(this._programName) : undefined;
+    const maxThreads = this.calculateMaxThreads();
 
     const threadsInputDisabled = !(program && !program.isAutoscalable);
     const submitButtonDisabled = !(
       program &&
-      (program.isAutoscalable || (this._threads >= 1 && this._threads <= this._maxThreads))
+      (program.isAutoscalable || (this._threads >= 1 && this._threads <= maxThreads))
     );
-
-    const currentProcess = this._programName ? this.controller.getProcessByName(this._programName) : undefined;
-
-    const descriptionRenderer: IDescriptionRenderer | undefined = program
-      ? new DescriptionRenderer({
-          formatter: this.controller.formatter,
-          ram: this.controller.ram,
-          cores: this.controller.cores,
-          program: program,
-          threads: this._threads,
-          currentThreads: currentProcess ? currentProcess.threads : 0,
-        })
-      : undefined;
 
     return html`
       <sl-dialog ?open=${this.isOpen && !this._confirmationAlertVisible} @sl-request-close=${this.handleClose}>
@@ -174,8 +157,12 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
 
           <div class="inputs-container">
             <sl-select
-            ${ref(this._programInputRef)}
-             name="program" value=${this._programName ?? ''} hoist @sl-change=${this.handleProgramChange}>
+              ${ref(this._programInputRef)}
+              name="program"
+              value=${this._programName ?? ''}
+              hoist
+              @sl-change=${this.handleProgramChange}
+            >
               <span class="input-label" slot="label">
                 <intl-message label="ui:mainframe:program">Program</intl-message>
               </span>
@@ -184,12 +171,12 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
             </sl-select>
 
             <sl-input
-            ${ref(this._threadsInputRef)}
+              ${ref(this._threadsInputRef)}
               name="threads"
               value=${this._threads}
               type="number"
               min="1"
-              max=${Math.max(this._maxThreads, 1)}
+              max=${Math.max(maxThreads, 1)}
               step="1"
               ?disabled=${threadsInputDisabled}
               @sl-change=${this.handleThreadsChange}
@@ -198,17 +185,25 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
                 <intl-message label="ui:mainframe:threads">Threads</intl-message>
               </span>
             </sl-input>
-            </sl-select>
           </div>
 
-          ${descriptionRenderer ? descriptionRenderer.renderDescription() : null}
+          ${this._programName
+            ? html`<ca-process-diff-text program-name=${this._programName} threads=${this._threads}>
+              </ca-process-diff-text>`
+            : null}
         </div>
 
         <sl-button slot="footer" size="medium" variant="default" outline @click=${this.handleClose}>
           <intl-message label="ui:common:close"> Close </intl-message>
         </sl-button>
 
-        <sl-button ?disabled=${submitButtonDisabled} slot="footer" size="medium" variant="primary" @click=${this.handleOpenConfirmationAlert}>
+        <sl-button
+          ?disabled=${submitButtonDisabled}
+          slot="footer"
+          size="medium"
+          variant="primary"
+          @click=${this.handleOpenConfirmationAlert}
+        >
           <intl-message label="ui:mainframe:processes:startProcess"> Start process </intl-message>
         </sl-button>
       </sl-dialog>
@@ -228,15 +223,6 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
     }
 
     this._programName = this._programInputRef.value.value as ProgramName;
-
-    const program = this.controller.getProgram(this._programName);
-    const availableRam = this.controller.getAvailableRamForProgram(this._programName);
-
-    this._maxThreads = 1;
-
-    if (program && !program.isAutoscalable) {
-      this._maxThreads = Math.max(Math.floor(availableRam / program.ram), 0);
-    }
   };
 
   private handleThreadsChange = () => {
@@ -245,9 +231,10 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
     }
 
     let threads = this._threadsInputRef.value.valueAsNumber;
+    const maxThreads = this.calculateMaxThreads();
 
-    if (threads > this._maxThreads) {
-      threads = this._maxThreads;
+    if (threads > maxThreads) {
+      threads = maxThreads;
     }
 
     if (threads < 1) {
@@ -345,5 +332,20 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
     return html`<sl-option value=${program.name}>
       <intl-message label="ui:mainframe:processes:programSelectItem" value=${value}> Program </intl-message>
     </sl-option>`;
+  };
+
+  private calculateMaxThreads = (): number => {
+    if (!this._programName) {
+      return 1;
+    }
+
+    const program = this.controller.getProgram(this._programName);
+    const availableRam = this.controller.getAvailableRamForProgram(this._programName);
+
+    if (program && !program.isAutoscalable) {
+      return Math.max(Math.floor(availableRam / program.ram), 0);
+    }
+
+    return 1;
   };
 }

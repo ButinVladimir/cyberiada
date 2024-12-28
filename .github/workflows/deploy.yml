@@ -1,7 +1,7 @@
 name: Deploy
 
 on:
-  push:
+  pull_request:
     branches: [$default-branch]
 
   workflow_dispatch:
@@ -12,7 +12,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "pages"
+  group: 'pages'
   cancel-in-progress: false
 
 jobs:
@@ -42,7 +42,7 @@ jobs:
   deploy:
     name: Deploy
     needs: build
-    
+
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -52,7 +52,7 @@ jobs:
     steps:
       - name: Setup Pages
         uses: actions/configure-pages@v5
-      
+
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
         id: deployment

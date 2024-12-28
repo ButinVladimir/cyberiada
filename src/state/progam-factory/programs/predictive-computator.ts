@@ -9,18 +9,6 @@ export class PredictiveComputatorProgram extends BaseProgram {
 
   perform(): void {}
 
-  buildProgramDescriptionParametersObject(threads: number, usedRam: number) {
-    return {
-      value: this.formatter.formatNumberLong(this.calculateProgramCompletionSpeedMultiplier(threads, usedRam)),
-    };
-  }
-
-  buildProcessDescriptionParametersObject(threads: number, usedCores: number, usedRam: number) {
-    return {
-      value: this.formatter.formatNumberLong(this.calculateProgramCompletionSpeedMultiplier(usedCores, usedRam)),
-    };
-  }
-
   calculateProgramCompletionSpeedMultiplier(threads: number, usedRam: number): number {
     const programData = programs[this.name];
 

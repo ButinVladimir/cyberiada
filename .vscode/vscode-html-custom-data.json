@@ -201,6 +201,20 @@
       "attributes": []
     },
     {
+      "name": "ca-mainframe-hardware-panel-article-buy-button",
+      "description": "Attributes:\n\n  * `type` - \n\n  * `max-increase` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `type` - \n\n  * `maxIncrease` {`number`} - \n\n  * `handlePurchase` - \n\n  * `controller` {`MainframeHardwarePanelArticleBuyButtonController`} - ",
+      "attributes": [
+        {
+          "name": "type",
+          "description": "`type` - \n\nProperty: type"
+        },
+        {
+          "name": "max-increase",
+          "description": "`max-increase` {`number`} - \n\nProperty: maxIncrease"
+        }
+      ]
+    },
+    {
       "name": "ca-mainframe-hardware-panel-article",
       "description": "Attributes:\n\n  * `type` - \n\n  * `max-increase` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `type` - \n\n  * `maxIncrease` {`number`} - \n\n  * `handleBuy` - \n\n  * `handleBuyMax` - \n\n  * `handleToggleAutoUpgrade` - \n\n  * `handleDragStart` - \n\n  * `controller` {`MainframeHardwarePanelArticleController`} - ",
       "attributes": [
@@ -218,6 +232,30 @@
       "name": "ca-mainframe-processes-panel",
       "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_isStartProcessDialogOpen` {`boolean`} - \n\n  * `handleStartProcessDialogOpen` - \n\n  * `handleStartProcessDialogClose` - \n\n  * `controller` {`ProcessesPanelController`} - ",
       "attributes": []
+    },
+    {
+      "name": "ca-process-description-text",
+      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `renderAutoscalableRequirements` - \n\n  * `renderNormalRequirements` - \n\n  * `renderEffects` - \n\n  * `controller` {`ProcessDescriptionTextController`} - ",
+      "attributes": [
+        {
+          "name": "program-name",
+          "description": "`program-name` {`string`} - \n\nProperty: programName"
+        }
+      ]
+    },
+    {
+      "name": "ca-process-diff-text",
+      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\n  * `threads` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `threads` {`number`} - \n\n  * `renderAutoscalableRequirements` - \n\n  * `renderNormalRequirements` - \n\n  * `renderEffects` - \n\n  * `controller` {`ProcessDiffTextController`} - ",
+      "attributes": [
+        {
+          "name": "program-name",
+          "description": "`program-name` {`string`} - \n\nProperty: programName"
+        },
+        {
+          "name": "threads",
+          "description": "`threads` {`number`} - \n\nProperty: threads\n\nDefault: 0"
+        }
+      ]
     },
     {
       "name": "ca-processes-list-item-progress",
@@ -246,49 +284,12 @@
     },
     {
       "name": "ca-start-process-dialog",
-      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_programInputRef` {`Ref<SlSelect>`} - \n\n  * `_threadsInputRef` {`Ref<SlInput>`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `_programName` - \n\n  * `_threads` {`number`} - \n\n  * `_maxThreads` {`number`} - \n\n  * `_confirmationAlertVisible` {`boolean`} - \n\n  * `handleClose` - \n\n  * `handleProgramChange` - \n\n  * `handleThreadsChange` - \n\n  * `handleOpenConfirmationAlert` - \n\n  * `handleConfirmConfirmationAlert` - \n\n  * `startProcess` - \n\n  * `handleCloseConfirmationAlert` - \n\n  * `formatProgramSelectItem` - \n\n  * `controller` {`StartProcessDialogController`} - ",
+      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_programInputRef` {`Ref<SlSelect>`} - \n\n  * `_threadsInputRef` {`Ref<SlInput>`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `_programName` - \n\n  * `_threads` {`number`} - \n\n  * `_confirmationAlertVisible` {`boolean`} - \n\n  * `handleClose` - \n\n  * `handleProgramChange` - \n\n  * `handleThreadsChange` - \n\n  * `handleOpenConfirmationAlert` - \n\n  * `handleConfirmConfirmationAlert` - \n\n  * `startProcess` - \n\n  * `handleCloseConfirmationAlert` - \n\n  * `formatProgramSelectItem` - \n\n  * `calculateMaxThreads` - \n\n  * `controller` {`StartProcessDialogController`} - ",
       "attributes": [
         {
           "name": "is-open",
           "description": "`is-open` {`boolean`} - \n\nProperty: isOpen\n\nDefault: false",
           "valueSet": "v"
-        }
-      ]
-    },
-    {
-      "name": "ca-program-description",
-      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\n  * `level` {`number`} - \n\n  * `quality` {`number`} - \n\n  * `threads` {`number`} - \n\n  * `type` {`ProgramDescriptionType`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `level` {`number`} - \n\n  * `quality` {`number`} - \n\n  * `threads` {`number`} - \n\n  * `type` {`ProgramDescriptionType`} - \n\n  * `renderAutoscalableDescription` - \n\n  * `renderNormalDescription` - \n\n  * `renderAutoscalableProgramDiff` - \n\n  * `renderNormalProgramDiff` - \n\n  * `controller` {`ProgramDescriptionController`} - ",
-      "attributes": [
-        {
-          "name": "program-name",
-          "description": "`program-name` {`string`} - \n\nProperty: programName\n\nDefault: "
-        },
-        {
-          "name": "level",
-          "description": "`level` {`number`} - \n\nProperty: level\n\nDefault: 1"
-        },
-        {
-          "name": "quality",
-          "description": "`quality` {`number`} - \n\nProperty: quality\n\nDefault: 0"
-        },
-        {
-          "name": "threads",
-          "description": "`threads` {`number`} - \n\nProperty: threads\n\nDefault: 1"
-        },
-        {
-          "name": "type",
-          "description": "`type` {`ProgramDescriptionType`} - \n\nProperty: type\n\nDefault: ProgramDescriptionType['program-description']",
-          "values": [
-            {
-              "name": "program-description"
-            },
-            {
-              "name": "program-comparison"
-            },
-            {
-              "name": "process-comparison"
-            }
-          ]
         }
       ]
     },
@@ -311,6 +312,52 @@
       "name": "ca-owned-programs-list",
       "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_tbodyRef` {`Ref<HTMLTableSectionElement>`} - \n\n  * `_draggedItemName` - \n\n  * `_draggedItemPosition` {`number | undefined`} - \n\n  * `renderList` - \n\n  * `renderEmptyListNotification` - \n\n  * `renderListItem` - \n\n  * `handleToggleAutoupgrade` - \n\n  * `handleDragStart` - \n\n  * `handleDragOver` - \n\n  * `handleDragEnd` - \n\n  * `controller` {`OwnedProgramsListController`} - ",
       "attributes": []
+    },
+    {
+      "name": "ca-program-description-text",
+      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `renderAutoscalableRequirements` - \n\n  * `renderNormalRequirements` - \n\n  * `renderEffects` - \n\n  * `controller` {`ProgramDescriptionTextController`} - ",
+      "attributes": [
+        {
+          "name": "program-name",
+          "description": "`program-name` {`string`} - \n\nProperty: programName"
+        }
+      ]
+    },
+    {
+      "name": "ca-program-diff-text",
+      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\n  * `level` {`number`} - \n\n  * `quality` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `level` {`number`} - \n\n  * `quality` {`number`} - \n\n  * `renderAutoscalableRequirements` - \n\n  * `renderNormalRequirements` - \n\n  * `renderEffects` - \n\n  * `controller` {`ProgramDiffTextController`} - ",
+      "attributes": [
+        {
+          "name": "program-name",
+          "description": "`program-name` {`string`} - \n\nProperty: programName"
+        },
+        {
+          "name": "level",
+          "description": "`level` {`number`} - \n\nProperty: level\n\nDefault: 0"
+        },
+        {
+          "name": "quality",
+          "description": "`quality` {`number`} - \n\nProperty: quality\n\nDefault: 0"
+        }
+      ]
+    },
+    {
+      "name": "ca-purchase-program-dialog-buy-button",
+      "description": "Attributes:\n\n  * `program-name` - \n\n  * `level` {`number`} - \n\n  * `quality` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` - \n\n  * `level` {`number`} - \n\n  * `quality` {`number`} - \n\n  * `handlePurchase` - \n\n  * `controller` {`PurchaseProgramDialogBuyButtonController`} - ",
+      "attributes": [
+        {
+          "name": "program-name",
+          "description": "`program-name` - \n\nProperty: programName"
+        },
+        {
+          "name": "level",
+          "description": "`level` {`number`} - \n\nProperty: level"
+        },
+        {
+          "name": "quality",
+          "description": "`quality` {`number`} - \n\nProperty: quality"
+        }
+      ]
     },
     {
       "name": "ca-purchase-program-dialog",
