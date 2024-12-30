@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { html, css } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
@@ -49,15 +50,13 @@ export class FastForwardingScreen extends BaseComponent<FastForwardingScreenCont
 
     return html`
       <div>
-        <span>
-          <intl-message label="ui:fastForwardingScreen:fastForwarding"> Fast forwarding... </intl-message>
-        </span>
+        <span> ${t('fastForwardingScreen.fastForwarding', { ns: 'ui' })} </span>
       </div>
 
       <sl-progress-bar value=${progressBarValue}> ${formatter.formatTimeShort(accumulatedTime)} </sl-progress-bar>
 
       <sl-button variant="danger" size="medium" @click=${this.handleStopFastForwarding}>
-        <intl-message label="ui:fastForwardingScreen:stop"> Purchase a program </intl-message>
+        ${t('fastForwardingScreen.stop', { ns: 'ui' })}
       </sl-button>
     `;
   }

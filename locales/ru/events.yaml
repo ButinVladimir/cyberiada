@@ -9,34 +9,34 @@ fastForwarded:
   message: Накопленное время потрачено
 levelReached:
   name: Уровень развития достигнут
-  message: Уровень развития {{value.level}} достигнут
+  message: Уровень развития {{level}} достигнут
 featureUnlocked:
   name: Новая возможность разблокирована
-  message: Новая возможность "$t(features:{{value.feature}})" разблокирована
+  message: Новая возможность "$t(features:{{feature}})" разблокирована
 storyEvent:
   name: Сюжетное событие
-  message: $t(story:{{value.messageKey}})
+  message: $t(story:{{messageKey}})
 performanceUpgraded:
   name: Производительность мейнфрема улучшена
-  message: Производительность мейнфрема улучшена до {{value.level}}
+  message: Производительность мейнфрема улучшена до {{level}}
 coresUpgraded:
   name: Ядра мейнфрейма улучшены
-  message: Ядра мейнфрейма улучшены до {{value.level}}
+  message: Ядра мейнфрейма улучшены до {{level}}
 ramUpgraded:
   name: Память мейнфрейма улучшена
-  message: Память мейнфрейма улучшена до {{value.level}}
+  message: Память мейнфрейма улучшена до {{level}}
 programPurchased:
   name: Программа приобретена
-  message: Программа "$t(programs:{{value.programName}}:name)" с уровнем {{value.level}} и качеством {{value.quality}} приобретена
+  message: Программа "$t(programs:{{programName}}:name)" с уровнем {{level}} и качеством {{quality}} приобретена
 processStarted:
   name: Процесс начат
-  message: Процесс для программы "$t(programs:{{value.programName}}:name)" с {{value.threads}} потоками начат
+  message: Процесс для программы "$t(programs:{{programName}}:name)" с {{threads}} потоками начат
 processFinished:
   name: Процесс закончен
-  message: Процесс для программы "$t(programs:{{value.programName}}:name)" с {{value.threads}} потоками закончен
+  message: Процесс для программы "$t(programs:{{programName}}:name)" с {{threads}} потоками закончен
 processDeleted:
   name: Процесс удален
-  message: Процесс для программы "$t(programs:{{value.programName}}:name)" с {{value.threads}} потоками удален
+  message: Процесс для программы "$t(programs:{{programName}}:name)" с {{threads}} потоками удален
 allProcessesDeleted:
   name: Все процессы удалены
   message: Все процессы удалены

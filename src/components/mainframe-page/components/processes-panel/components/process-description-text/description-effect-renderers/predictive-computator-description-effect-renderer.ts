@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { html } from 'lit';
 import { PredictiveComputatorProgram } from '@state/progam-factory/programs/predictive-computator';
 import { IFormatter } from '@shared/interfaces/formatter';
@@ -21,17 +22,14 @@ export class PredictiveComputatorDescriptionEffectRenderer implements IDescripti
     const { usedCores } = this._process;
     const program = this._process.program as PredictiveComputatorProgram;
 
-    const value = JSON.stringify({
-      value: this._formatter.formatNumberFloat(
-        program.calculateProgramCompletionSpeedMultiplier(usedCores, this._availableRam),
-      ),
-    });
-
     return html`
       <p>
-        <intl-message label="programs:predictiveComputator:speedMultiplierProcess" value=${value}>
-          Speed multiplier
-        </intl-message>
+        ${t('predictiveComputator.speedMultiplierProcess', {
+          ns: 'programs',
+          value: this._formatter.formatNumberFloat(
+            program.calculateProgramCompletionSpeedMultiplier(usedCores, this._availableRam),
+          ),
+        })}
       </p>
     `;
   };

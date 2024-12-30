@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { TemplateResult, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
@@ -69,16 +70,10 @@ export class AlertFilterDialog extends BaseComponent<AlertFilterDialogController
   renderContent() {
     return html`
       <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
-        <h4 slot="label" class="title">
-          <intl-message label="ui:settings:alertFilter"> Alert filter </intl-message>
-        </h4>
+        <h4 slot="label" class="title">${t('settings.alertFilter', { ns: 'ui' })}</h4>
 
         <div class="body">
-          <p class="hint">
-            <intl-message label="ui:settings:alertFilterHint">
-              Enable alerts in filter to make them visible when event happens.
-            </intl-message>
-          </p>
+          <p class="hint">${t('settings.alertFilterHint', { ns: 'ui' })}</p>
 
           <div class="events-container">
             ${repeat(GAME_STATE_ALERTS, (gameAlert) => gameAlert, this.renderGameAlertCheckbox)}
@@ -90,7 +85,7 @@ export class AlertFilterDialog extends BaseComponent<AlertFilterDialogController
         </div>
 
         <sl-button slot="footer" size="medium" variant="default" outline @click=${this.handleClose}>
-          <intl-message label="ui:common:close"> Close </intl-message>
+          ${t('common.close', { ns: 'ui' })}
         </sl-button>
       </sl-dialog>
     `;
@@ -105,7 +100,7 @@ export class AlertFilterDialog extends BaseComponent<AlertFilterDialogController
         ?checked=${this.controller.isAlertEnabled(gameAlert)}
         @sl-change=${this.handleToggleAlert}
       >
-        <intl-message label=${`alerts:${gameAlert}:name`}> Alert </intl-message>
+        ${t(`${gameAlert}.name`, { ns: 'alerts' })}
       </sl-checkbox>
     `;
   };

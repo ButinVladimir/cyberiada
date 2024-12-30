@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
@@ -22,18 +23,14 @@ export class StatisticsUnlockedFeaturesPanel extends BaseComponent<StatisticsUnl
     const features = this.controller.listUnlockedFeatures();
 
     return html`
-      <h4 class="title">
-        <intl-message label="ui:statistics:unlockedFeatures:title"> Unlocked features </intl-message>
-      </h4>
+      <h4 class="title">${t('statistics.unlockedFeatures.title', { ns: 'ui' })}</h4>
 
       <div class="parameters-table">${repeat(features, (feature) => feature, this.renderFeature)}</div>
     `;
   }
 
   private renderFeature = (feature: Feature) => html`
-    <span>
-      <intl-message label=${`features:${feature}`}> Feature </intl-message>
-    </span>
+    <span> ${t(feature, { ns: 'features' })} </span>
     <span></span>
   `;
 }

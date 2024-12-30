@@ -93,33 +93,27 @@ export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwa
       <div class="text-container">
         <div class="text-container-inner">
           <h4 class="title" draggable="true" @dragstart=${this.handleDragStart}>
-            <intl-message label="ui:mainframe:hardware:${this.type}" value=${formatter.formatNumberDecimal(level)}>
-              Level
-            </intl-message>
+            ${t(`mainframe.hardware.${this.type}`, { ns: 'ui', level: formatter.formatNumberDecimal(level) })}
 
             <sl-tooltip>
-              <intl-message slot="content" label="ui:mainframe:programs:toggleAutoupgrade">
-                Toggle autoupgrade
-              </intl-message>
+              <span slot="content"> ${t('mainframe.hardware.toggleAutoupgrade', { ns: 'ui' })} </span>
 
               <sl-icon-button
                 id="toggle-autoupgrade-btn"
                 name=${autoupgradeIcon}
-                label=${t('mainframe.programs.toggleAutoupgrade', { ns: 'ui' })}
+                label=${t('mainframe.hardware.toggleAutoupgrade', { ns: 'ui' })}
                 @click=${this.handleToggleAutoUpgrade}
               >
               </sl-icon-button>
             </sl-tooltip>
           </h4>
-          <p class="hint">
-            <intl-message label="ui:mainframe:hardware:${this.type}Hint"> Higher level leads to profit. </intl-message>
-          </p>
+          <p class="hint">${t(`mainframe.hardware.${this.type}Hint`, { ns: 'ui' })}</p>
         </div>
       </div>
 
       <div class="button-container">
         <sl-button variant="default" type="button" size="medium" @click=${this.handleBuyMax}>
-          <intl-message label="ui:mainframe:hardware:buyMax"> Buy max </intl-message>
+          ${t('mainframe.hardware.buyMax', { ns: 'ui' })}
         </sl-button>
 
         <ca-mainframe-hardware-panel-article-buy-button

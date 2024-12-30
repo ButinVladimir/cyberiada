@@ -85,18 +85,17 @@ export class ProcessesListItem extends BaseComponent<ProcessesListItemController
       return html``;
     }
 
-    const coresValue = JSON.stringify({
-      cores: formatter.formatNumberDecimal(process.usedCores),
-      maxCores: formatter.formatNumberDecimal(process.maxCores),
-    });
-
     const cores = process.program.isAutoscalable
-      ? html`<intl-message label="ui:mainframe:processes:autoscalable">Autoscalable</intl-message>`
-      : html`<intl-message label="ui:mainframe:processes:usesCores" value=${coresValue}>Cores</intl-message>`;
+      ? t('mainframe.processes.autoscalable', { ns: 'ui' })
+      : t('mainframe.processes.usesCores', {
+          ns: 'ui',
+          cores: formatter.formatNumberDecimal(process.usedCores),
+          maxCores: formatter.formatNumberDecimal(process.maxCores),
+        });
 
     return html`
       <td class="program" draggable="true" @dragstart=${this.handleDragStart}>
-        <intl-message label="programs:${process.program.name}:name">Progam name</intl-message>
+        ${t(`${process.program.name}.name`, { ns: 'programs' })}
 
         <sl-tooltip>
           <sl-icon name="question-circle"></sl-icon>
@@ -112,7 +111,7 @@ export class ProcessesListItem extends BaseComponent<ProcessesListItemController
           <ca-processes-list-item-progress program-name=${process.program.name}> </ca-processes-list-item-progress>
 
           <sl-tooltip>
-            <intl-message slot="content" label="ui:mainframe:processes:processToggle"> Toggle process </intl-message>
+            <span slot="content"> ${t('mainframe.processes.processToggle', { ns: 'ui' })} </span>
 
             <sl-icon-button
               name=${process.isActive ? 'play-fill' : 'pause-fill'}
@@ -123,7 +122,7 @@ export class ProcessesListItem extends BaseComponent<ProcessesListItemController
           </sl-tooltip>
 
           <sl-tooltip>
-            <intl-message slot="content" label="ui:mainframe:processes:processDelete"> Delete process </intl-message>
+            <span slot="content"> ${t('mainframe.processes.processDelete', { ns: 'ui' })} </span>
 
             <sl-icon-button
               id="delete-btn"
@@ -149,9 +148,9 @@ export class ProcessesListItem extends BaseComponent<ProcessesListItemController
     event.preventDefault();
     event.stopPropagation();
 
-    const confirmationAlertParameters = JSON.stringify({
+    const confirmationAlertParameters = {
       programName: this.programName,
-    });
+    };
 
     this.dispatchEvent(
       new ConfirmationAlertOpenEvent(ProgramAlert.processDelete, confirmationAlertParameters, this.programName),

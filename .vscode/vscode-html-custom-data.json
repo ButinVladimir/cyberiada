@@ -117,11 +117,12 @@
     },
     {
       "name": "ca-menu-bar",
-      "description": "Attributes:\n\n  * `selected-menu-item` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `selectedMenuItem` {`string`} - \n\n  * `renderMenuItem` - \n\n  * `handleMenuItemClick` - \n\n  * `controller` {`MenuBarController`} - ",
+      "description": "Attributes:\n\n  * `selected-menu-item` {`string | undefined`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `selectedMenuItem` {`string | undefined`} - \n\n  * `renderMenuItem` - \n\n  * `handleMenuItemClick` - \n\n  * `controller` {`MenuBarController`} - ",
       "attributes": [
         {
           "name": "selected-menu-item",
-          "description": "`selected-menu-item` {`string`} - \n\nProperty: selectedMenuItem\n\nDefault: "
+          "description": "`selected-menu-item` {`string | undefined`} - \n\nProperty: selectedMenuItem",
+          "values": []
         }
       ]
     },
@@ -425,7 +426,7 @@
     },
     {
       "name": "ca-confirmation-alert",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_gameAlertToggleRef` {`Ref<SlCheckbox>`} - \n\n  * `_gameAlert` - \n\n  * `_gameAlertKey` {`string | undefined`} - \n\n  * `_messageParams` {`string`} - \n\n  * `_isOpen` {`boolean`} - \n\n  * `_alertToggled` {`boolean`} - \n\n  * `handleOpen` - \n\n  * `handleClose` - \n\n  * `handleSubmit` - \n\n  * `handleToggleAlert` - \n\n  * `controller` {`ConfirmationAlertController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_gameAlertToggleRef` {`Ref<SlCheckbox>`} - \n\n  * `_gameAlert` - \n\n  * `_gameAlertKey` {`string | undefined`} - \n\n  * `_messageParams` - \n\n  * `_isOpen` {`boolean`} - \n\n  * `_alertToggled` {`boolean`} - \n\n  * `handleOpen` - \n\n  * `handleClose` - \n\n  * `handleSubmit` - \n\n  * `handleToggleAlert` - \n\n  * `controller` {`ConfirmationAlertController`} - ",
       "attributes": []
     },
     {

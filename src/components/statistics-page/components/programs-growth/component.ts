@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
@@ -22,22 +23,16 @@ export class StatisticsProgramsGrowth extends BaseComponent<StatisticsProgramsGr
     const computationalBase = this.controller.computationalBase;
 
     return html`
-      <h4 class="title">
-        <intl-message label="ui:statistics:growth:pointsByPrograms:title">Points per second by programs</intl-message>
-      </h4>
+      <h4 class="title">${t('statistics.growth.pointsByPrograms.title', { ns: 'ui' })}</h4>
 
       ${computationalBase > 0
         ? html`
             <div class="parameters-table">
               <span>
-                <intl-message label="ui:statistics:growth:pointsByPrograms:computationalBase">
-                  Computational base
-                </intl-message>
+                ${t('statistics.growth.pointsByPrograms.computationalBase', { ns: 'ui' })}
 
                 <sl-tooltip>
-                  <intl-message slot="content" label="ui:statistics:hints:computationalBase">
-                    Computational base hint
-                  </intl-message>
+                  <span slot="content"> ${t('statistics.hints.computationalBase', { ns: 'ui' })} </span>
 
                   <sl-icon name="question-circle"></sl-icon>
                 </sl-tooltip>

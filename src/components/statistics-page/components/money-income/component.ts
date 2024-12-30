@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
@@ -23,18 +24,14 @@ export class StatisticsMoneyIncome extends BaseComponent<StatisticsMoneyIncomeCo
     const total = INCOME_SOURCES.reduce((sum, incomeSource) => sum + this.controller.getMoneyIncome(incomeSource), 0);
 
     return html`
-      <h4 class="title">
-        <intl-message label="ui:statistics:income:money:title">Title</intl-message>
-      </h4>
+      <h4 class="title">${t('statistics.income.money.title', { ns: 'ui' })}</h4>
 
       <div class="parameters-table">
         ${INCOME_SOURCES.map((incomeSource) =>
           this.renderIncomeSource(incomeSource, this.controller.getMoneyIncome(incomeSource)),
         )}
 
-        <span>
-          <intl-message label="ui:statistics:total">Total</intl-message>
-        </span>
+        <span> ${t('statistics.total', { ns: 'ui' })} </span>
         <span> ${formatter.formatNumberLong(total)} </span>
       </div>
     `;
@@ -48,9 +45,7 @@ export class StatisticsMoneyIncome extends BaseComponent<StatisticsMoneyIncomeCo
     const formatter = this.controller.formatter;
 
     return html`
-      <span>
-        <intl-message label="ui:statistics:income:money:${incomeSource}">Income source</intl-message>
-      </span>
+      <span> ${t(`statistics.income.money.${incomeSource}`, { ns: 'ui' })} </span>
       <span> ${formatter.formatNumberLong(value)} </span>
     `;
   };

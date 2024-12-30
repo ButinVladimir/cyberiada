@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
@@ -64,9 +65,7 @@ export class ProgramDiffText extends BaseComponent<ProcessDiffTextController> {
     const effects = this.renderEffects();
 
     return html`
-      <p>
-        <intl-message label="programs:${this.programName}:overview"> Program overview </intl-message>
-      </p>
+      <p>${t(`${this.programName}.overview`, { ns: 'programs' })}</p>
 
       <p class="line-break"></p>
 
@@ -74,9 +73,7 @@ export class ProgramDiffText extends BaseComponent<ProcessDiffTextController> {
 
       <p class="line-break"></p>
 
-      <p>
-        <intl-message label="ui:mainframe:programDescription:effects"> Effects </intl-message>
-      </p>
+      <p>${t('mainframe.programDescription.effects', { ns: 'ui' })}</p>
 
       ${effects}
     `;
@@ -84,27 +81,13 @@ export class ProgramDiffText extends BaseComponent<ProcessDiffTextController> {
 
   private renderAutoscalableRequirements = () => {
     return html`
-      <p>
-        <intl-message label="ui:mainframe:programDescription:requirements:requirementsScalable">
-          Requirements
-        </intl-message>
-      </p>
+      <p>${t('mainframe.programDescription.requirements.requirementsScalable', { ns: 'ui' })}</p>
 
-      <p>
-        <intl-message label="ui:mainframe:programDescription:requirements:ramAllUnused"> RAM: All unused </intl-message>
-      </p>
+      <p>${t('mainframe.programDescription.requirements.ramAllUnused', { ns: 'ui' })}</p>
 
-      <p>
-        <intl-message label="ui:mainframe:programDescription:requirements:coresAllUnused">
-          Cores: All unused
-        </intl-message>
-      </p>
+      <p>${t('mainframe.programDescription.requirements.coresAllUnused', { ns: 'ui' })}</p>
 
-      <p>
-        <intl-message label="ui:mainframe:programDescription:requirements:completionTimeScalable">
-          Completion time: Instant
-        </intl-message>
-      </p>
+      <p>${t('mainframe.programDescription.requirements.completionTimeScalable', { ns: 'ui' })}</p>
     `;
   };
 
@@ -115,24 +98,12 @@ export class ProgramDiffText extends BaseComponent<ProcessDiffTextController> {
     const formatter = this.controller.formatter;
 
     const threadsDiff = this.threads - currentThreads;
-    const requirementsValues = JSON.stringify({
-      threads: formatter.formatNumberDecimal(this.threads),
-      threadsDiff: formatter.formatNumberDecimal(threadsDiff, diffFormatterParametersDecimal),
-    });
 
     const ram = program.ram * this.threads;
     const ramDiff = ram - program.ram * currentThreads;
-    const ramValues = JSON.stringify({
-      ram: formatter.formatNumberDecimal(ram),
-      ramDiff: formatter.formatNumberDecimal(ramDiff, diffFormatterParametersDecimal),
-    });
 
     const cores = program.cores * this.threads;
     const coresDiff = cores - program.cores * currentThreads;
-    const coresValues = JSON.stringify({
-      cores: formatter.formatNumberDecimal(cores),
-      coresDiff: formatter.formatNumberDecimal(coresDiff, diffFormatterParametersDecimal),
-    });
 
     const minTime = program.calculateCompletionMinTime(this.threads);
     const maxTime = program.calculateCompletionMaxTime(this.threads);
@@ -145,39 +116,39 @@ export class ProgramDiffText extends BaseComponent<ProcessDiffTextController> {
       maxTimeDiff = maxTime - program.calculateCompletionMaxTime(currentThreads);
     }
 
-    const completionTimeValues = JSON.stringify({
-      minTime: formatter.formatTimeShort(minTime),
-      maxTime: formatter.formatTimeShort(maxTime),
-      minTimeDiff: formatter.formatTimeShort(minTimeDiff, diffFormatterParametersShortTime),
-      maxTimeDiff: formatter.formatTimeShort(maxTimeDiff, diffFormatterParametersShortTime),
-    });
-
     return html`
       <p>
-        <intl-message label="ui:mainframe:programDescription:requirements:requirementsDiff" value=${requirementsValues}>
-          Requirements
-        </intl-message>
+        ${t('mainframe.programDescription.requirements.requirementsDiff', {
+          ns: 'ui',
+          threads: formatter.formatNumberDecimal(this.threads),
+          threadsDiff: formatter.formatNumberDecimal(threadsDiff, diffFormatterParametersDecimal),
+        })}
       </p>
 
       <p>
-        <intl-message label="ui:mainframe:programDescription:requirements:ramDiff" value=${ramValues}>
-          RAM
-        </intl-message>
+        ${t('mainframe.programDescription.requirements.ramDiff', {
+          ns: 'ui',
+          ram: formatter.formatNumberDecimal(ram),
+          ramDiff: formatter.formatNumberDecimal(ramDiff, diffFormatterParametersDecimal),
+        })}
       </p>
 
       <p>
-        <intl-message label="ui:mainframe:programDescription:requirements:coresDiff" value=${coresValues}>
-          Cores
-        </intl-message>
+        ${t('mainframe.programDescription.requirements.coresDiff', {
+          ns: 'ui',
+          cores: formatter.formatNumberDecimal(cores),
+          coresDiff: formatter.formatNumberDecimal(coresDiff, diffFormatterParametersDecimal),
+        })}
       </p>
 
       <p>
-        <intl-message
-          label="ui:mainframe:programDescription:requirements:completionTimeDiff"
-          value=${completionTimeValues}
-        >
-          Completion time
-        </intl-message>
+        ${t('mainframe.programDescription.requirements.completionTimeDiff', {
+          ns: 'ui',
+          minTime: formatter.formatTimeShort(minTime),
+          maxTime: formatter.formatTimeShort(maxTime),
+          minTimeDiff: formatter.formatTimeShort(minTimeDiff, diffFormatterParametersShortTime),
+          maxTimeDiff: formatter.formatTimeShort(maxTimeDiff, diffFormatterParametersShortTime),
+        })}
       </p>
     `;
   };

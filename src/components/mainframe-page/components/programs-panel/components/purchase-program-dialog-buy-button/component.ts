@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
@@ -43,14 +44,12 @@ export class PurchaseProgramDialogBuyButton extends BaseComponent<PurchaseProgra
       : undefined;
     const cost = program ? program.cost : 0;
 
-    const submitButtonValues = JSON.stringify({ cost: formatter.formatNumberLong(cost) });
-
     const submitButtonDisabled = !(program && this.level <= developmentLevel && cost <= money);
 
     return html`
       <ca-purchase-tooltip cost=${cost} level=${this.level} slot="footer">
         <sl-button size="medium" variant="primary" ?disabled=${submitButtonDisabled} @click=${this.handlePurchase}>
-          <intl-message label="ui:mainframe:programs:purchase" value=${submitButtonValues}> Purchase </intl-message>
+          ${t('mainframe.programs.purchase', { ns: 'ui', cost: formatter.formatNumberLong(cost) })}
         </sl-button>
       </ca-purchase-tooltip>
     `;

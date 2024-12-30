@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { css, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
@@ -147,16 +148,10 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
 
     return html`
       <sl-dialog ?open=${this.isOpen && !this._confirmationAlertVisible} @sl-request-close=${this.handleClose}>
-        <h4 slot="label" class="title">
-          <intl-message label="ui:mainframe:programs:purchaseProgram"> Purchase a program </intl-message>
-        </h4>
+        <h4 slot="label" class="title">${t('mainframe.programs.purchaseProgram', { ns: 'ui' })}</h4>
 
         <div class="body">
-          <p class="hint">
-            <intl-message label="ui:mainframe:programs:purchaseProgramDialogHint">
-              Select program type, level and quality to purchase it.
-            </intl-message>
-          </p>
+          <p class="hint">${t('mainframe.programs.purchaseProgramDialogHint', { ns: 'ui' })}</p>
 
           <div class="inputs-container">
             <sl-select
@@ -166,15 +161,11 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
               hoist
               @sl-change=${this.handleProgramChange}
             >
-              <span class="input-label" slot="label">
-                <intl-message label="ui:mainframe:program">Program</intl-message>
-              </span>
+              <span class="input-label" slot="label"> ${t('mainframe.program', { ns: 'ui' })} </span>
 
               ${PROGRAMS.map(
                 (program) =>
-                  html`<sl-option value=${program}>
-                    <intl-message label="programs:${program}:name"> Program </intl-message>
-                  </sl-option>`,
+                  html`<sl-option value=${program}> ${t(`${program}.name`, { ns: 'programs' })} </sl-option>`,
               )}
             </sl-select>
 
@@ -188,9 +179,7 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
               step="1"
               @sl-change=${this.handleLevelChange}
             >
-              <span class="input-label" slot="label">
-                <intl-message label="ui:mainframe:level">Level</intl-message>
-              </span>
+              <span class="input-label" slot="label"> ${t('mainframe.level', { ns: 'ui' })} </span>
             </sl-input>
 
             <sl-select
@@ -200,9 +189,7 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
               hoist
               @sl-change=${this.handleQualityChange}
             >
-              <span class="input-label" slot="label">
-                <intl-message label="ui:mainframe:quality">Quality</intl-message>
-              </span>
+              <span class="input-label" slot="label"> ${t('mainframe.quality', { ns: 'ui' })} </span>
 
               ${QUALITIES.map(
                 (quality) => html` <sl-option value=${quality}> ${formatter.formatQuality(quality)} </sl-option>`,
@@ -221,7 +208,7 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
         </div>
 
         <sl-button slot="footer" size="medium" variant="default" outline @click=${this.handleClose}>
-          <intl-message label="ui:common:close"> Close </intl-message>
+          ${t('common.close', { ns: 'ui' })}
         </sl-button>
 
         <ca-purchase-program-dialog-buy-button
@@ -291,11 +278,11 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
     if (ownedProgram) {
       const formatter = this.controller.formatter;
 
-      const confirmationAlertParameters = JSON.stringify({
+      const confirmationAlertParameters = {
         programName: this._programName,
         level: formatter.formatNumberDecimal(ownedProgram.level),
         quality: formatter.formatQuality(ownedProgram.quality),
-      });
+      };
 
       this._confirmationAlertVisible = true;
 

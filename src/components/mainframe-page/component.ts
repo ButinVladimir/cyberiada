@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { css, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
@@ -28,27 +29,15 @@ export class MainframePage extends BaseComponent<MainframePageController> {
     const isMainframeProgramsUnlocked = this.controller.isMainframeProgramsUnlocked();
 
     return html`
-      <h3 class="title">
-        <intl-message label="ui:mainframe:mainframe">Mainframe</intl-message>
-      </h3>
+      <h3 class="title">${t('mainframe.mainframe', { ns: 'ui' })}</h3>
 
       <sl-tab-group>
-        <sl-tab slot="nav" panel="processes">
-          <intl-message label="ui:mainframe:tabs:processes">Processes</intl-message>
-        </sl-tab>
+        <sl-tab slot="nav" panel="processes"> ${t('mainframe.tabs.processes', { ns: 'ui' })} </sl-tab>
         ${isMainframeHardwareUnlocked
-          ? html`
-              <sl-tab slot="nav" panel="hardware">
-                <intl-message label="ui:mainframe:tabs:hardware">Hardware</intl-message>
-              </sl-tab>
-            `
+          ? html` <sl-tab slot="nav" panel="hardware"> ${t('mainframe.tabs.hardware', { ns: 'ui' })} </sl-tab> `
           : null}
         ${isMainframeProgramsUnlocked
-          ? html`
-              <sl-tab slot="nav" panel="programs">
-                <intl-message label="ui:mainframe:tabs:programs">Programs</intl-message>
-              </sl-tab>
-            `
+          ? html` <sl-tab slot="nav" panel="programs"> ${t('mainframe.tabs.programs', { ns: 'ui' })} </sl-tab> `
           : null}
 
         <sl-tab-panel name="processes">

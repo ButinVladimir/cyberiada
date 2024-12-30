@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
@@ -55,10 +56,6 @@ export class MenuItem extends BaseComponent {
       selected: this.selected,
     });
 
-    return html`
-      <button type="button" class=${classes}>
-        <intl-message label="ui:pages:${this.name}"> Name </intl-message>
-      </button>
-    `;
+    return html` <button type="button" class=${classes}>${t(`pages.${this.name}`, { ns: 'ui' })}</button> `;
   }
 }

@@ -84,7 +84,7 @@ export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemCo
 
     return html`
       <td class="program" draggable="true" @dragstart=${this.handleDragStart}>
-        <intl-message id="title" label="programs:${program.name}:name"> Progam name </intl-message>
+        ${t(`${program.name}.name`, { ns: 'programs' })}
 
         <sl-tooltip>
           <sl-icon name="question-circle"></sl-icon>
@@ -99,13 +99,11 @@ export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemCo
 
       <td class="autoupgrade">
         <sl-button id="upgrade-max-btn" variant="default" type="button" size="medium" @click=${this.handleUpgradeMax}>
-          <intl-message label="ui:common:upgrade"> Upgrade </intl-message>
+          ${t('common.upgrade', { ns: 'ui' })}
         </sl-button>
 
         <sl-tooltip>
-          <intl-message slot="content" label="ui:mainframe:programs:toggleAutoupgrade">
-            Toggle autoupgrade
-          </intl-message>
+          <span slot="content"> ${t('mainframe.programs.toggleAutoupgrade', { ns: 'ui' })} </span>
 
           <sl-icon-button
             id="toggle-autoupgrade-btn"

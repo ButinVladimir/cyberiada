@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { html } from 'lit';
 import { MainframeHardwareAutobuyerProgram } from '@state/progam-factory/programs/mainframe-hardware-autobuyer';
 import { IFormatter } from '@shared/interfaces/formatter';
@@ -22,16 +23,13 @@ export class MainframeHardwareAutobuyerDescriptionEffectRenderer implements IDes
     const time = program.calculateCompletionTime(threads, usedCores);
     const avgValue = (threads / time) * MS_IN_SECOND;
 
-    const values = JSON.stringify({
-      value: this._formatter.formatNumberDecimal(threads),
-      avgValue: this._formatter.formatNumberFloat(avgValue),
-    });
-
     return html`
       <p>
-        <intl-message label="programs:mainframeHardwareAutobuyer:actionsProcess" value=${values}>
-          Actions
-        </intl-message>
+        ${t('mainframeHardwareAutobuyer.actionsProcess', {
+          ns: 'programs',
+          value: this._formatter.formatNumberLong(threads),
+          avgValue: this._formatter.formatNumberLong(avgValue),
+        })}
       </p>
     `;
   };

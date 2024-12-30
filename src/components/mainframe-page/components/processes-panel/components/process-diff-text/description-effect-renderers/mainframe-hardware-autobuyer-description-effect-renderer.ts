@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { html } from 'lit';
 import { MainframeHardwareAutobuyerProgram } from '@state/progam-factory/programs/mainframe-hardware-autobuyer';
 import { IFormatter } from '@shared/interfaces/formatter';
@@ -41,20 +42,17 @@ export class MainframeHardwareAutobuyerDescriptionEffectRenderer implements IDes
       maxAvgValueDiff = maxAvgValue - currentMaxAvgValue;
     }
 
-    const values = JSON.stringify({
-      value: this._formatter.formatNumberDecimal(this._threads),
-      valueDiff: this._formatter.formatNumberDecimal(valueDiff, diffFormatterParametersDecimal),
-      minAvgValue: this._formatter.formatNumberFloat(minAvgValue),
-      maxAvgValue: this._formatter.formatNumberFloat(maxAvgValue),
-      minAvgValueDiff: this._formatter.formatNumberFloat(minAvgValueDiff, diffFormatterParametersFloat),
-      maxAvgValueDiff: this._formatter.formatNumberFloat(maxAvgValueDiff, diffFormatterParametersFloat),
-    });
-
     return html`
       <p>
-        <intl-message label="programs:mainframeHardwareAutobuyer:actionsProcessDiff" value=${values}>
-          Actions
-        </intl-message>
+        ${t('mainframeHardwareAutobuyer.actionsProcessDiff', {
+          ns: 'programs',
+          value: this._formatter.formatNumberDecimal(this._threads),
+          valueDiff: this._formatter.formatNumberDecimal(valueDiff, diffFormatterParametersDecimal),
+          minAvgValue: this._formatter.formatNumberFloat(minAvgValue),
+          maxAvgValue: this._formatter.formatNumberFloat(maxAvgValue),
+          minAvgValueDiff: this._formatter.formatNumberFloat(minAvgValueDiff, diffFormatterParametersFloat),
+          maxAvgValueDiff: this._formatter.formatNumberFloat(maxAvgValueDiff, diffFormatterParametersFloat),
+        })}
       </p>
     `;
   };

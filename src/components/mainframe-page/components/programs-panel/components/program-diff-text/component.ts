@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
@@ -66,9 +67,7 @@ export class ProgramDiffText extends BaseComponent<ProgramDiffTextController> {
     const effects = this.renderEffects();
 
     return html`
-      <p>
-        <intl-message label="programs:${this.programName}:overview"> Program overview </intl-message>
-      </p>
+      <p>${t(`${this.programName}.overview`, { ns: 'programs' })}</p>
 
       <p class="line-break"></p>
 
@@ -76,9 +75,7 @@ export class ProgramDiffText extends BaseComponent<ProgramDiffTextController> {
 
       <p class="line-break"></p>
 
-      <p>
-        <intl-message label="ui:mainframe:programDescription:effects"> Effects </intl-message>
-      </p>
+      <p>${t('mainframe.programDescription.effects', { ns: 'ui' })}</p>
 
       ${effects}
     `;
@@ -86,27 +83,13 @@ export class ProgramDiffText extends BaseComponent<ProgramDiffTextController> {
 
   private renderAutoscalableRequirements = () => {
     return html`
-      <p>
-        <intl-message label="ui:mainframe:programDescription:requirements:requirementsScalable">
-          Requirements
-        </intl-message>
-      </p>
+      <p>${t('mainframe.programDescription.requirements.requirementsScalable', { ns: 'ui' })}</p>
 
-      <p>
-        <intl-message label="ui:mainframe:programDescription:requirements:ramAllUnused"> RAM: All unused </intl-message>
-      </p>
+      <p>${t('mainframe.programDescription.requirements.ramAllUnused', { ns: 'ui' })}</p>
 
-      <p>
-        <intl-message label="ui:mainframe:programDescription:requirements:coresAllUnused">
-          Cores: All unused
-        </intl-message>
-      </p>
+      <p>${t('mainframe.programDescription.requirements.coresAllUnused', { ns: 'ui' })}</p>
 
-      <p>
-        <intl-message label="ui:mainframe:programDescription:requirements:completionTimeScalable">
-          Completion time: Instant
-        </intl-message>
-      </p>
+      <p>${t('mainframe.programDescription.requirements.completionTimeScalable', { ns: 'ui' })}</p>
     `;
   };
 
@@ -115,49 +98,39 @@ export class ProgramDiffText extends BaseComponent<ProgramDiffTextController> {
     const ownedProgram = this.controller.getOwnedProgram(this.programName as ProgramName);
     const formatter = this.controller.formatter;
 
-    const ramValues = JSON.stringify({ ram: formatter.formatNumberDecimal(program.ram) });
-
     const coresDiff = ownedProgram ? program.cores - ownedProgram.cores : program.cores;
-    const coresValues = JSON.stringify({
-      cores: formatter.formatNumberDecimal(program.cores),
-      coresDiff: formatter.formatNumberDecimal(coresDiff, diffFormatterParametersDecimal),
-    });
 
     const minTime = program.calculateCompletionMinTime(1);
     const minTimeDiff = ownedProgram ? minTime - ownedProgram.calculateCompletionMinTime(1) : minTime;
     const maxTime = program.calculateCompletionMaxTime(1);
     const maxTimeDiff = ownedProgram ? maxTime - ownedProgram.calculateCompletionMaxTime(1) : maxTime;
-    const completionTimeValues = JSON.stringify({
-      minTime: formatter.formatTimeShort(minTime),
-      maxTime: formatter.formatTimeShort(maxTime),
-      minTimeDiff: formatter.formatTimeShort(minTimeDiff, diffFormatterParametersShortTime),
-      maxTimeDiff: formatter.formatTimeShort(maxTimeDiff, diffFormatterParametersShortTime),
-    });
 
     return html`
+      <p>${t('mainframe.programDescription.requirements.requirementsSingle', { ns: 'ui' })}</p>
+
       <p>
-        <intl-message label="ui:mainframe:programDescription:requirements:requirementsSingle">
-          Requirements
-        </intl-message>
+        ${t('mainframe.programDescription.requirements.ram', {
+          ns: 'ui',
+          ram: formatter.formatNumberDecimal(program.ram),
+        })}
       </p>
 
       <p>
-        <intl-message label="ui:mainframe:programDescription:requirements:ram" value=${ramValues}> RAM </intl-message>
+        ${t('mainframe.programDescription.requirements.coresDiff', {
+          ns: 'ui',
+          cores: formatter.formatNumberDecimal(program.cores),
+          coresDiff: formatter.formatNumberDecimal(coresDiff, diffFormatterParametersDecimal),
+        })}
       </p>
 
       <p>
-        <intl-message label="ui:mainframe:programDescription:requirements:coresDiff" value=${coresValues}>
-          Cores
-        </intl-message>
-      </p>
-
-      <p>
-        <intl-message
-          label="ui:mainframe:programDescription:requirements:completionTimeDiff"
-          value=${completionTimeValues}
-        >
-          Completion time
-        </intl-message>
+        ${t('mainframe.programDescription.requirements.completionTimeDiff', {
+          ns: 'ui',
+          minTime: formatter.formatTimeShort(minTime),
+          maxTime: formatter.formatTimeShort(maxTime),
+          minTimeDiff: formatter.formatTimeShort(minTimeDiff, diffFormatterParametersShortTime),
+          maxTimeDiff: formatter.formatTimeShort(maxTimeDiff, diffFormatterParametersShortTime),
+        })}
       </p>
     `;
   };

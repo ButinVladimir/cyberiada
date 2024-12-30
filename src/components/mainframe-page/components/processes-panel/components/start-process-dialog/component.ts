@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { css, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
@@ -146,14 +147,10 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
 
     return html`
       <sl-dialog ?open=${this.isOpen && !this._confirmationAlertVisible} @sl-request-close=${this.handleClose}>
-        <h4 slot="label" class="title">
-          <intl-message label="ui:mainframe:processes:startProcess"> Start process </intl-message>
-        </h4>
+        <h4 slot="label" class="title">${t('mainframe.processes.startProcess', { ns: 'ui' })}</h4>
 
         <div class="body">
-          <p class="hint">
-            <intl-message label="ui:mainframe:processes:startProcessDialogHint"> Select program. </intl-message>
-          </p>
+          <p class="hint">${t('mainframe.processes.startProcessDialogHint', { ns: 'ui' })}</p>
 
           <div class="inputs-container">
             <sl-select
@@ -163,9 +160,7 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
               hoist
               @sl-change=${this.handleProgramChange}
             >
-              <span class="input-label" slot="label">
-                <intl-message label="ui:mainframe:program">Program</intl-message>
-              </span>
+              <span class="input-label" slot="label"> ${t('mainframe.program', { ns: 'ui' })} </span>
 
               ${this.controller.listPrograms().map(this.formatProgramSelectItem)}
             </sl-select>
@@ -181,9 +176,7 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
               ?disabled=${threadsInputDisabled}
               @sl-change=${this.handleThreadsChange}
             >
-              <span class="input-label" slot="label">
-                <intl-message label="ui:mainframe:threads">Threads</intl-message>
-              </span>
+              <span class="input-label" slot="label"> ${t('mainframe.threads', { ns: 'ui' })} </span>
             </sl-input>
           </div>
 
@@ -194,7 +187,7 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
         </div>
 
         <sl-button slot="footer" size="medium" variant="default" outline @click=${this.handleClose}>
-          <intl-message label="ui:common:close"> Close </intl-message>
+          ${t('common.close', { ns: 'ui' })}
         </sl-button>
 
         <sl-button
@@ -204,7 +197,7 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
           variant="primary"
           @click=${this.handleOpenConfirmationAlert}
         >
-          <intl-message label="ui:mainframe:processes:startProcess"> Start process </intl-message>
+          ${t('mainframe.processes.startProcess', { ns: 'ui' })}
         </sl-button>
       </sl-dialog>
     `;
@@ -260,18 +253,18 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
     const formatter = this.controller.formatter;
 
     if (existingProcess) {
-      const confirmationAlertParameters = JSON.stringify({
+      const confirmationAlertParameters = {
         programName: this._programName,
         threads: formatter.formatNumberDecimal(existingProcess.threads),
-      });
+      };
 
       this._confirmationAlertVisible = true;
 
       this.dispatchEvent(new ConfirmationAlertOpenEvent(ProgramAlert.processReplace, confirmationAlertParameters));
     } else if (program?.isAutoscalable && runningScalableProgram) {
-      const confirmationAlertParameters = JSON.stringify({
+      const confirmationAlertParameters = {
         programName: runningScalableProgram.program.name,
-      });
+      };
 
       this._confirmationAlertVisible = true;
 
@@ -323,14 +316,14 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
 
   private formatProgramSelectItem = (program: IProgram) => {
     const formatter = this.controller.formatter;
-    const value = JSON.stringify({
-      programName: program.name,
-      level: formatter.formatNumberDecimal(program.level),
-      quality: formatter.formatQuality(program.quality),
-    });
 
     return html`<sl-option value=${program.name}>
-      <intl-message label="ui:mainframe:processes:programSelectItem" value=${value}> Program </intl-message>
+      ${t('mainframe.processes.programSelectItem', {
+        ns: 'ui',
+        programName: program.name,
+        level: formatter.formatNumberDecimal(program.level),
+        quality: formatter.formatQuality(program.quality),
+      })}
     </sl-option>`;
   };
 

@@ -115,18 +115,12 @@ export class ProcessesList extends BaseComponent<ProcessesListController> {
     return html`
       <table>
         <thead>
-          <th class="program">
-            <intl-message label="ui:mainframe:program">Program</intl-message>
-          </th>
-          <th class="cores">
-            <intl-message label="ui:mainframe:cores">Cores</intl-message>
-          </th>
+          <th class="program">${t('mainframe.program', { ns: 'ui' })}</th>
+          <th class="cores">${t('mainframe.cores', { ns: 'ui' })}</th>
           <th class="progress">
             <div class="buttons-container">
               <sl-tooltip>
-                <intl-message slot="content" label="ui:mainframe:processes:allProcessesToggle">
-                  Toggle all processes
-                </intl-message>
+                <span slot="content"> ${t('mainframe.processes.allProcessesToggle', { ns: 'ui' })} </span>
 
                 <sl-icon-button
                   name=${processesActive ? 'play-fill' : 'pause-fill'}
@@ -137,9 +131,7 @@ export class ProcessesList extends BaseComponent<ProcessesListController> {
               </sl-tooltip>
 
               <sl-tooltip>
-                <intl-message slot="content" label="ui:mainframe:processes:allProcessesDelete">
-                  Delete all processes
-                </intl-message>
+                <span slot="content"> ${t('mainframe.processes.allProcessesDelete', { ns: 'ui' })} </span>
 
                 <sl-icon-button
                   id="delete-btn"
@@ -182,11 +174,7 @@ export class ProcessesList extends BaseComponent<ProcessesListController> {
   private renderEmptyListNotification = () => {
     return html`
       <tr class="notification">
-        <td colspan="4">
-          <intl-message label="ui:mainframe:processes:emptyListNotification">
-            You don't have any processes
-          </intl-message>
-        </td>
+        <td colspan="4">${t('mainframe.processes.emptyListNotification', { ns: 'ui' })}</td>
       </tr>
     `;
   };
@@ -220,7 +208,7 @@ export class ProcessesList extends BaseComponent<ProcessesListController> {
     event.preventDefault();
     event.stopPropagation();
 
-    this.dispatchEvent(new ConfirmationAlertOpenEvent(ProgramAlert.deleteAllProcesses, ''));
+    this.dispatchEvent(new ConfirmationAlertOpenEvent(ProgramAlert.deleteAllProcesses, {}));
   };
 
   private handleConfirmAllDeleteProcessesDialog = (event: Event) => {

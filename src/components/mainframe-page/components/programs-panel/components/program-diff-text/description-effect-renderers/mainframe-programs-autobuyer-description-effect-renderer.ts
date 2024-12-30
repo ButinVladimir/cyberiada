@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { html } from 'lit';
 import { MainframeProgramsAutobuyerProgram } from '@state/progam-factory/programs/mainframe-programs-autobuyer';
 import { IFormatter } from '@shared/interfaces/formatter';
@@ -37,18 +38,15 @@ export class MainframeProgramsAutobuyerDescriptionEffectRenderer implements IDes
       maxAvgValueDiff = maxAvgValue - ownedMaxAvgValue;
     }
 
-    const values = JSON.stringify({
-      minAvgValue: this._formatter.formatNumberFloat(minAvgValue),
-      maxAvgValue: this._formatter.formatNumberFloat(maxAvgValue),
-      minAvgValueDiff: this._formatter.formatNumberFloat(minAvgValueDiff, diffFormatterParametersFloat),
-      maxAvgValueDiff: this._formatter.formatNumberFloat(maxAvgValueDiff, diffFormatterParametersFloat),
-    });
-
     return html`
       <p>
-        <intl-message label="programs:mainframeProgramsAutobuyer:actionsProgramDiff" value=${values}>
-          Actions
-        </intl-message>
+        ${t('mainframeProgramsAutobuyer.actionsProgramDiff', {
+          ns: 'programs',
+          minAvgValue: this._formatter.formatNumberFloat(minAvgValue),
+          maxAvgValue: this._formatter.formatNumberFloat(maxAvgValue),
+          minAvgValueDiff: this._formatter.formatNumberFloat(minAvgValueDiff, diffFormatterParametersFloat),
+          maxAvgValueDiff: this._formatter.formatNumberFloat(maxAvgValueDiff, diffFormatterParametersFloat),
+        })}
       </p>
     `;
   };

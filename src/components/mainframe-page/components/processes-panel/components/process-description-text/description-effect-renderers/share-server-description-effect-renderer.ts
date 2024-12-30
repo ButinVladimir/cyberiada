@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { html } from 'lit';
 import { ShareServerProgram } from '@state/progam-factory/programs/share-server';
 import { IFormatter } from '@shared/interfaces/formatter';
@@ -22,25 +23,23 @@ export class ShareServerDescriptionEffectRenderer implements IDescriptionEffectR
     const { usedCores } = this._process;
     const program = this._process.program as ShareServerProgram;
 
-    const money = JSON.stringify({
-      money: this._formatter.formatNumberLong(program.calculateMoneyDelta(usedCores, this._availableRam, MS_IN_SECOND)),
-    });
-
-    const developmentPoints = JSON.stringify({
-      developmentPoints: this._formatter.formatNumberLong(
-        program.calculateDevelopmentPointsDelta(usedCores, this._availableRam, MS_IN_SECOND),
-      ),
-    });
-
     return html`
       <p>
-        <intl-message label="programs:shareServer:moneyProcess" value=${money}> Money </intl-message>
+        ${t('shareServer.moneyProcess', {
+          ns: 'programs',
+          money: this._formatter.formatNumberLong(
+            program.calculateMoneyDelta(usedCores, this._availableRam, MS_IN_SECOND),
+          ),
+        })}
       </p>
 
       <p>
-        <intl-message label="programs:shareServer:developmentPointsProcess" value=${developmentPoints}>
-          Development points
-        </intl-message>
+        ${t('shareServer.developmentPointsProcess', {
+          ns: 'programs',
+          developmentPoints: this._formatter.formatNumberLong(
+            program.calculateDevelopmentPointsDelta(usedCores, this._availableRam, MS_IN_SECOND),
+          ),
+        })}
       </p>
     `;
   };

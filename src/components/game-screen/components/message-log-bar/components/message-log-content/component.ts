@@ -1,9 +1,9 @@
+import { t } from 'i18next';
 import { ScrollableComponentElement } from 'scrollable-component';
 import { html, css, TemplateResult } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { repeat } from 'lit/directives/repeat.js';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import { BaseComponent } from '@shared/base-component';
 import { IMessage } from '@state/message-log-state/interfaces/message';
 import { MessageLogContentController } from './controller';
@@ -88,13 +88,12 @@ export class MessageLogContent extends BaseComponent<MessageLogContentController
   }
 
   private renderMessage = (message: IMessage): TemplateResult => {
-    const parameters = message.parameters ? JSON.stringify(message.parameters) : undefined;
-    const label = `events:${message.event}:message`;
+    const parameters = message.parameters ?? {};
 
     return html`
       <p>
         [<intl-datetime time .value=${message.date}></intl-datetime>]
-        <intl-message label=${label} value=${ifDefined(parameters)}>Message</intl-message>
+        ${t(`events:${message.event}:message`, { ns: 'ui', ...parameters })}
       </p>
     `;
   };

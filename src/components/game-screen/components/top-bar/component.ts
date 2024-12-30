@@ -30,7 +30,7 @@ export class TopBar extends BaseComponent {
     return html`
       <div class="group">
         <sl-tooltip>
-          <intl-message slot="content" label="ui:topBar:menu"> Menu </intl-message>
+          <span slot="content"> ${t('topBar.menu', { ns: 'ui' })} </span>
 
           <sl-icon-button name="list" label=${t('topBar.menu', { ns: 'ui' })} @click=${this.handleMenuClick}>
           </sl-icon-button>
@@ -53,7 +53,7 @@ export class TopBar extends BaseComponent {
 
       <div class="group">
         <sl-tooltip>
-          <intl-message slot="content" label="ui:topBar:messageLog"> Message log </intl-message>
+          <span slot="content"> ${t('topBar.messageLog', { ns: 'ui' })} </span>
 
           <sl-icon-button
             name="chat-left-dots"

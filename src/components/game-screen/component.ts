@@ -3,6 +3,7 @@ import { customElement, state } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { OverviewMenuItem } from '@shared/types';
 import { MenuItemSelectedEvent } from './components/menu-bar/events';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 @customElement('ca-game-screen')
 export class GameScreen extends BaseComponent {
@@ -84,7 +85,7 @@ export class GameScreen extends BaseComponent {
   private _messageLogOpened = true;
 
   @state()
-  private _selectedMenuItem = OverviewMenuItem.mainframe;
+  private _selectedMenuItem?: OverviewMenuItem;
 
   renderContent() {
     return html`
@@ -100,7 +101,7 @@ export class GameScreen extends BaseComponent {
             ? html`
                 <div class="side-bar-container menu-bar-container">
                   <ca-menu-bar
-                    selected-menu-item=${this._selectedMenuItem}
+                    selected-menu-item=${ifDefined(this._selectedMenuItem)}
                     @menu-item-selected=${this.handleMenuItemSelect}
                   >
                   </ca-menu-bar>
@@ -109,7 +110,7 @@ export class GameScreen extends BaseComponent {
             : nothing}
 
           <div class="viewport-container">
-            <ca-viewport selected-menu-item=${this._selectedMenuItem}></ca-viewport>
+            <ca-viewport selected-menu-item=${ifDefined(this._selectedMenuItem)}></ca-viewport>
           </div>
 
           ${this._messageLogOpened

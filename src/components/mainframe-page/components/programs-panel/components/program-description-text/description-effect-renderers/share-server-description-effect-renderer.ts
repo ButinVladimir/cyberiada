@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { html } from 'lit';
 import { ShareServerProgram } from '@state/progam-factory/programs/share-server';
 import { IFormatter } from '@shared/interfaces/formatter';
@@ -21,25 +22,23 @@ export class ShareServerDescriptionEffectRenderer implements IDescriptionEffectR
   }
 
   public renderEffect = () => {
-    const money = JSON.stringify({
-      money: this._formatter.formatNumberLong(this._program.calculateMoneyDelta(this._cores, this._ram, MS_IN_SECOND)),
-    });
-
-    const developmentPoints = JSON.stringify({
-      developmentPoints: this._formatter.formatNumberLong(
-        this._program.calculateDevelopmentPointsDelta(this._cores, this._ram, MS_IN_SECOND),
-      ),
-    });
-
     return html`
       <p>
-        <intl-message label="programs:shareServer:moneyProgram" value=${money}> Money </intl-message>
+        ${t('shareServer.moneyProgram', {
+          ns: 'programs',
+          money: this._formatter.formatNumberLong(
+            this._program.calculateMoneyDelta(this._cores, this._ram, MS_IN_SECOND),
+          ),
+        })}
       </p>
 
       <p>
-        <intl-message label="programs:shareServer:developmentPointsProgram" value=${developmentPoints}>
-          Development points
-        </intl-message>
+        ${t('shareServer.developmentPointsProgram', {
+          ns: 'programs',
+          developmentPoints: this._formatter.formatNumberLong(
+            this._program.calculateDevelopmentPointsDelta(this._cores, this._ram, MS_IN_SECOND),
+          ),
+        })}
       </p>
     `;
   };

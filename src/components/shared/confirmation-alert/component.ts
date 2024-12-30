@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { css, html } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
@@ -35,7 +36,7 @@ export class ConfirmationAlert extends BaseComponent<ConfirmationAlertController
   private _gameAlertKey?: string;
 
   @state()
-  private _messageParams = '';
+  private _messageParams = {};
 
   @state()
   private _isOpen = false;
@@ -64,9 +65,7 @@ export class ConfirmationAlert extends BaseComponent<ConfirmationAlertController
   renderContent() {
     return html`
       <sl-dialog no-header ?open=${this._isOpen} @sl-request-close=${this.handleClose}>
-        <p>
-          <intl-message label="alerts:${this._gameAlert}:message" value=${this._messageParams}> Message </intl-message>
-        </p>
+        <p>${t(`${this._gameAlert}.message`, { ns: 'alerts', ...this._messageParams })}</p>
 
         <sl-checkbox
           ref=${ref(this._gameAlertToggleRef)}
@@ -75,14 +74,15 @@ export class ConfirmationAlert extends BaseComponent<ConfirmationAlertController
           ?checked=${this._alertToggled}
           @sl-change=${this.handleToggleAlert}
         >
-          <intl-message label="ui:settings:alertToggle"> Toggle alert </intl-message>
+          ${t('settings.alertToggle', { ns: 'ui' })}
         </sl-checkbox>
 
         <sl-button slot="footer" size="medium" variant="default" outline @click=${this.handleClose}>
-          <intl-message label="ui:common:cancel"> Cancel </intl-message>
+          ${t('common.cancel', { ns: 'ui' })}
         </sl-button>
+
         <sl-button slot="footer" size="medium" variant="danger" @click=${this.handleSubmit}>
-          <intl-message label="ui:common:continue"> Continue </intl-message>
+          ${t('common.continue', { ns: 'ui' })}
         </sl-button>
       </sl-dialog>
     `;

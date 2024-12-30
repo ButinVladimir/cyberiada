@@ -40,7 +40,7 @@ export class MenuBar extends BaseComponent<MenuBarController> {
   `;
 
   @property({ attribute: 'selected-menu-item', type: String })
-  selectedMenuItem = '';
+  selectedMenuItem?: string;
 
   protected controller: MenuBarController;
 

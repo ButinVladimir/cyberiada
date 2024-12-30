@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { html, css } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
@@ -62,7 +63,7 @@ export class TopBarValues extends BaseComponent<TopBarValuesController> {
     return html`
       <div class="block">
         <sl-tooltip>
-          <intl-message slot="content" label="ui:topBar:accumulatedTime"> Accumulated time </intl-message>
+          <span slot="content"> ${t('topBar.accumulatedTime', { ns: 'ui' })} </span>
 
           <sl-icon name="clock"> </sl-icon>
 
@@ -72,7 +73,7 @@ export class TopBarValues extends BaseComponent<TopBarValuesController> {
 
       <div class="block">
         <sl-tooltip>
-          <intl-message slot="content" label="ui:topBar:money"> Money </intl-message>
+          <span slot="content"> ${t('topBar.money', { ns: 'ui' })} </span>
 
           <sl-icon name="currency-bitcoin"> </sl-icon>
 
@@ -82,9 +83,7 @@ export class TopBarValues extends BaseComponent<TopBarValuesController> {
 
       <div class="block">
         <sl-tooltip>
-          <intl-message slot="content" label="ui:topBar:${developmentLabel}" value=${timeUntilNextLevel}>
-            Development level
-          </intl-message>
+          <span slot="content"> ${t(`topBar.${developmentLabel}`, { ns: 'ui', time: timeUntilNextLevel })} </span>
 
           <sl-icon name="star"> </sl-icon>
 

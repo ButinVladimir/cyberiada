@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { html } from 'lit';
 import { CodeGeneratorProgram } from '@state/progam-factory/programs/code-generator';
 import { IFormatter } from '@shared/interfaces/formatter';
@@ -23,16 +24,13 @@ export class CodeGeneratorDescriptionEffectRenderer implements IDescriptionEffec
     const time = program.calculateCompletionTime(threads, usedCores);
     const avgValue = (value / time) * MS_IN_SECOND;
 
-    const values = JSON.stringify({
-      value: this._formatter.formatNumberLong(value),
-      avgValue: this._formatter.formatNumberLong(avgValue),
-    });
-
     return html`
       <p>
-        <intl-message label="programs:codeGenerator:computationalBasePointsProcess" value=${values}>
-          Computational base points
-        </intl-message>
+        ${t('codeGenerator.computationalBasePointsProcess', {
+          ns: 'programs',
+          value: this._formatter.formatNumberLong(value),
+          avgValue: this._formatter.formatNumberLong(avgValue),
+        })}
       </p>
     `;
   };

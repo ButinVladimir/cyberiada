@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import type { IDistrictInfo } from '@state/city-state/interfaces';
@@ -21,8 +22,6 @@ export class CityDistrictInfoPanel extends BaseComponent {
       return null;
     }
 
-    return html`
-      <p><intl-message label="ui:city:cityOverview:name">Name</intl-message>: ${this.districtInfo.name}</p>
-    `;
+    return html` <p>${t('city.cityOverview.name', { ns: 'ui' })}: ${this.districtInfo.name}</p> `;
   }
 }

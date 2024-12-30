@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { html } from 'lit';
 import { MainframeHardwareAutobuyerProgram } from '@state/progam-factory/programs/mainframe-hardware-autobuyer';
 import { IFormatter } from '@shared/interfaces/formatter';
@@ -20,16 +21,13 @@ export class MainframeHardwareAutobuyerDescriptionEffectRenderer implements IDes
     const minAvgValue = (1 / maxTime) * MS_IN_SECOND;
     const maxAvgValue = (1 / minTime) * MS_IN_SECOND;
 
-    const values = JSON.stringify({
-      minAvgValue: this._formatter.formatNumberFloat(minAvgValue),
-      maxAvgValue: this._formatter.formatNumberFloat(maxAvgValue),
-    });
-
     return html`
       <p>
-        <intl-message label="programs:mainframeHardwareAutobuyer:actionsProgram" value=${values}>
-          Actions
-        </intl-message>
+        ${t('mainframeHardwareAutobuyer.actionsProgram', {
+          ns: 'programs',
+          minAvgValue: this._formatter.formatNumberFloat(minAvgValue),
+          maxAvgValue: this._formatter.formatNumberFloat(maxAvgValue),
+        })}
       </p>
     `;
   };

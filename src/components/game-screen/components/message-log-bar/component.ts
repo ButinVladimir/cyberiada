@@ -84,14 +84,12 @@ export class MessageLogBar extends BaseComponent<MessageLogBarController> {
   renderContent() {
     return html`
       <div class="title-bar">
-        <h4 class="title">
-          <intl-message label="ui:messageLog:messageLog">Message log</intl-message>
-        </h4>
+        <h4 class="title">${t('messageLog.messageLog', { ns: 'ui' })}</h4>
 
         <div class="gutter"></div>
 
         <sl-tooltip>
-          <intl-message slot="content" label="ui:messageLog:clearMessages"> Clear messages </intl-message>
+          <span slot="content"> ${t('messageLog.clearMessages', { ns: 'ui' })} </span>
 
           <sl-icon-button
             id="clear-messages-btn"
@@ -110,7 +108,7 @@ export class MessageLogBar extends BaseComponent<MessageLogBarController> {
   private handleOpenClearMessagesDialog = (event: Event) => {
     event.stopPropagation();
 
-    this.dispatchEvent(new ConfirmationAlertOpenEvent(GameStateAlert.clearMessages, ''));
+    this.dispatchEvent(new ConfirmationAlertOpenEvent(GameStateAlert.clearMessages, {}));
   };
 
   private handleConfirmClearMessagesDialog = (event: Event) => {

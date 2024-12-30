@@ -7,7 +7,7 @@ common:
   continue: Продолжить
   notEnoughMoney: Не достаточно денег
   available: Доступно
-  willBeAvailableIn: Будет доступно через {{value}}
+  willBeAvailableIn: Будет доступно через {{time}}
   higherDevelopmentLevelRequired: Требуется больший уровень развития
   upgrade: Улучшить
 pages:
@@ -29,11 +29,11 @@ topBar:
   accumulatedTime: Накопленное время
   money: Деньги
   developmentLevel: Уровень развития
-  developmentLevelNext: Уровень развития, следующий уровень будет достигнут через {{value}}
+  developmentLevelNext: Уровень развития, следующий уровень будет достигнут через {{time}}
   availableGoals:
     titleGoalsExist: 'Доступные цели уровня развития:'
     titleNoGoals: Доступных целей уроня развития нет
-    reachLevel: Достичь уровень развития {{value}}
+    reachLevel: Достичь уровень развития {{level}}
 messageLog:
   messageLog: Сообщения
   clearMessages: Удалить сообщения
@@ -88,22 +88,20 @@ mainframe:
   cores: Ядра
   programDescription:
     requirements:
-      requirementsProcess: Требования для {{value.threads}} потоков
-      requirementsDiff: Требования для {{value.threads}} ({{value.threadsDiff}}) потоков
+      requirementsProcess: Требования для {{threads}} потоков
+      requirementsDiff: Требования для {{threads}} ({{threadsDiff}}) потоков
       requirementsSingle: Требования для одного потока
       requirementsScalable: Требования для автомасштабируемой программы
-      cost: 'Цена: {{value.cost}}'
-      costDiff: 'Цена: {{value.cost}} ({{value.costDiff}})'
-      ram: 'Память: {{value.ram}}'
-      ramDiff: 'Память: {{value.ram}} ({{value.ramDiff}})'
+      ram: 'Память: {{ram}}'
+      ramDiff: 'Память: {{ram}} ({{ramDiff}})'
       ramAllUnused: 'Память: Вся неиспользуемая'
-      cores: 'Ядра: До {{value.cores}}'
-      coresDiff: 'Ядра: до {{value.cores}} ({{value.coresDiff}})'
+      cores: 'Ядра: До {{cores}}'
+      coresDiff: 'Ядра: до {{cores}} ({{coresDiff}})'
       coresAllUnused: 'Ядра: Все неиспользуемые'
-      completionTime: 'Время выполнения: {{value.minTime}} &mdash; {{value.maxTime}}'
-      completionTimeProcess: 'Время выполнения: {{value.time}}'
+      completionTime: "Время выполнения: {{minTime}} \u2014 {{maxTime}}"
+      completionTimeProcess: 'Время выполнения: {{time}}'
       completionTimeProcessNoCores: 'Время выполнения: Для выполнения требуются назначенные ядра'
-      completionTimeDiff: 'Время выполнения: {{value.minTime}} &mdash; {{value.maxTime}} ({{value.minTimeDiff}} &mdash; {{value.maxTimeDiff}})'
+      completionTimeDiff: "Время выполнения: {{minTime}} \u2014 {{maxTime}} ({{minTimeDiff}} \u2014 {{maxTimeDiff}})"
       completionTimeScalable: 'Время выполнения: Мгновенно'
     effects: 'Эффекты'
   tabs:
@@ -114,15 +112,16 @@ mainframe:
     hardwareHint: Нажмите Ctrl или Shift для покупки 10 уровней. Нажмите вместе Ctrl и Shift для покупки 100 уровней.
       Приоритет автоматического улучшения оборудования может быть изменен путем его перетаскивания за название.
       Улучшения наверху имеют больший приоритет.
-    performance: 'Уровень производительности: {{value}}'
+    performance: 'Уровень производительности: {{level}}'
     performanceHint: Высокие уровни производительности ведут к более быстрым процессам
-    cores: 'Уровень ядер: {{value}}'
+    cores: 'Уровень ядер: {{level}}'
     coresHint: Дополнительные ядра дают лучшее масштабирование и выполнение большего числа процессов одновременно
-    ram: 'Уровень памяти: {{value}}'
+    ram: 'Уровень памяти: {{level}}'
     ramHint: Дополнительная память дает возможность держать больше процессов в памяти, чтобы они смогли выполниться позже или в больших группах
-    buy: Купить x{{value.increase}} за {{value.cost}}
+    buy: Купить x{{increase}} за {{cost}}
     buyMax: Купить все
     buyMaxAllUpgrades: Купить все улучшения
+    toggleAutoupgrade: Включить/выключить автопокупку
   programs:
     programsHint: Приоритет автоматического улучшения программы может быть изменен путем его перетаскивания за название.
       Программы наверху имеют больший приоритет. Автоматическое улучшение программ пытается повысить их уровни, не меняет качества.
@@ -131,7 +130,7 @@ mainframe:
       Уровень не может быть выше текущего уровня развития.
       Качество зависит от полученных услуг.
       Если у тебя уже есть программа с тем же именем, старая будет заменена на новую.
-    purchase: Купить за {{value.cost}}
+    purchase: Купить за {{cost}}
     upgradeMaxAllPrograms: Улучшить все программы
     emptyListNotification: У тебя нет имеющихся програм
     toggleAutoupgrade: Включить/выключить автопокупку
@@ -148,18 +147,18 @@ mainframe:
       Если у тебя уже есть процесс для выбранной программы, старый процесс будет замене на новый.
       Потоки позволяют выполняться нескольким экземплярам программы одновременно, но дополнительные потоки требует больше памяти.
     emptyListNotification: У тебя нет процессов
-    programSelectItem: $t(programs:{{value.programName}}:name), уровень {{value.level}}, качество {{value.quality}}
-    progressBarLabel: "{{value.currentCompletionPoints}} \/ {{value.maxCompletionPoints}}"
-    progressBarHintActive: 'Процесс будет выполнен через {{value}}'
+    programSelectItem: $t(programs:{{programName}}:name), уровень {{level}}, качество {{quality}}
+    progressBarLabel: "{{currentCompletionPoints}} \/ {{maxCompletionPoints}}"
+    progressBarHintActive: 'Процесс будет выполнен через {{time}}'
     progressBarHintPaused: 'Процесс неактивен'
     processToggle: Включить / выключить процесс
     allProcessesToggle: Включить / выключить все процессы
     processDelete: Удалить процесс
     allProcessesDelete: Удалить все процессы
     autoscalable: Автомасштабируется
-    usesCores: "{{value.cores}} \/ {{value.maxCores}}"
-    availableCores: 'Доступные ядра: {{value}}'
-    availableRam: 'Доступная память: {{value}}'
+    usesCores: "{{cores}} \/ {{maxCores}}"
+    availableCores: 'Доступные ядра: {{cores}}'
+    availableRam: 'Доступная память: {{ram}}'
 statistics:
   statistics: Статистика
   total: Всего

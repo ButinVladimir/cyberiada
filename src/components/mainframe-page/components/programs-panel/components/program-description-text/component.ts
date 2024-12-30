@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
@@ -56,9 +57,7 @@ export class ProgramDescriptionText extends BaseComponent<ProgramDescriptionText
     const effects = this.renderEffects();
 
     return html`
-      <p>
-        <intl-message label="programs:${this.programName}:overview"> Program overview </intl-message>
-      </p>
+      <p>${t(`${this.programName}.overview`, { ns: 'programs' })}</p>
 
       <p class="line-break"></p>
 
@@ -66,9 +65,7 @@ export class ProgramDescriptionText extends BaseComponent<ProgramDescriptionText
 
       <p class="line-break"></p>
 
-      <p>
-        <intl-message label="ui:mainframe:programDescription:effects"> Effects </intl-message>
-      </p>
+      <p>${t('mainframe.programDescription.effects', { ns: 'ui' })}</p>
 
       ${effects}
     `;
@@ -76,27 +73,13 @@ export class ProgramDescriptionText extends BaseComponent<ProgramDescriptionText
 
   private renderAutoscalableRequirements = () => {
     return html`
-      <p>
-        <intl-message label="ui:mainframe:programDescription:requirements:requirementsScalable">
-          Requirements
-        </intl-message>
-      </p>
+      <p>${t('mainframe.programDescription.requirements.requirementsScalable', { ns: 'ui' })}</p>
 
-      <p>
-        <intl-message label="ui:mainframe:programDescription:requirements:ramAllUnused"> RAM: All unused </intl-message>
-      </p>
+      <p>${t('mainframe.programDescription.requirements.ramAllUnused', { ns: 'ui' })}</p>
 
-      <p>
-        <intl-message label="ui:mainframe:programDescription:requirements:coresAllUnused">
-          Cores: All unused
-        </intl-message>
-      </p>
+      <p>${t('mainframe.programDescription.requirements.coresAllUnused', { ns: 'ui' })}</p>
 
-      <p>
-        <intl-message label="ui:mainframe:programDescription:requirements:completionTimeScalable">
-          Completion time: Instant
-        </intl-message>
-      </p>
+      <p>${t('mainframe.programDescription.requirements.completionTimeScalable', { ns: 'ui' })}</p>
     `;
   };
 
@@ -104,40 +87,33 @@ export class ProgramDescriptionText extends BaseComponent<ProgramDescriptionText
     const program = this.controller.getProgram(this.programName as ProgramName)!;
     const formatter = this.controller.formatter;
 
-    const ramValue = JSON.stringify({
-      ram: formatter.formatNumberDecimal(program.ram),
-    });
-
-    const coresValue = JSON.stringify({
-      cores: formatter.formatNumberDecimal(program.cores),
-    });
-
-    const completionTimeValues = JSON.stringify({
-      minTime: formatter.formatTimeShort(program.calculateCompletionMinTime(1)),
-      maxTime: formatter.formatTimeShort(program.calculateCompletionMaxTime(1)),
-    });
-
     return html`
       <p>
-        <intl-message label="ui:mainframe:programDescription:requirements:requirementsSingle">
-          Requirements
-        </intl-message>
+        ${t('mainframe.programDescription.requirements.requirementsSingle', {
+          ns: 'ui',
+        })}
       </p>
 
       <p>
-        <intl-message label="ui:mainframe:programDescription:requirements:ram" value=${ramValue}> RAM </intl-message>
+        ${t('mainframe.programDescription.requirements.ram', {
+          ns: 'ui',
+          ram: formatter.formatNumberDecimal(program.ram),
+        })}
       </p>
 
       <p>
-        <intl-message label="ui:mainframe:programDescription:requirements:cores" value=${coresValue}>
-          Cores
-        </intl-message>
+        ${t('mainframe.programDescription.requirements.cores', {
+          ns: 'ui',
+          cores: formatter.formatNumberDecimal(program.cores),
+        })}
       </p>
 
       <p>
-        <intl-message label="ui:mainframe:programDescription:requirements:completionTime" value=${completionTimeValues}>
-          Completion time
-        </intl-message>
+        ${t('mainframe.programDescription.requirements.completionTime', {
+          ns: 'ui',
+          minTime: formatter.formatTimeShort(program.calculateCompletionMinTime(1)),
+          maxTime: formatter.formatTimeShort(program.calculateCompletionMaxTime(1)),
+        })}
       </p>
     `;
   };

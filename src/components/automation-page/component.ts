@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { css, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
@@ -16,14 +17,10 @@ export class AutomationPage extends BaseComponent {
 
   renderContent() {
     return html`
-      <h3 class="title">
-        <intl-message label="ui:automation:automation">Statistics</intl-message>
-      </h3>
+      <h3 class="title">${t('automation.automation', { ns: 'ui' })}</h3>
 
       <sl-tab-group>
-        <sl-tab slot="nav" panel="autobuyers">
-          <intl-message label="ui:automation:tabs:autobuyers">Autobuyers</intl-message>
-        </sl-tab>
+        <sl-tab slot="nav" panel="autobuyers"> ${t('automation.tabs.autobuyers', { ns: 'ui' })} </sl-tab>
 
         <sl-tab-panel name="autobuyers">
           <ca-automation-autobuyers-panel></ca-automation-autobuyers-panel>

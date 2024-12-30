@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { html, css, TemplateResult } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
@@ -106,9 +107,7 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
         value=${this.controller.language}
         @sl-change=${this.handleChangeLanguage}
       >
-        <span class="input-label" slot="label">
-          <intl-message label="ui:settings:language">Language</intl-message>
-        </span>
+        <span class="input-label" slot="label"> ${t('settings.language', { ns: 'ui' })} </span>
 
         ${LANGUAGE_OPTIONS.map(
           ([language, optionText]) => html`<sl-option value=${language}> ${optionText} </sl-option>`,
@@ -121,15 +120,10 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
         value=${this.controller.theme}
         @sl-change=${this.handleChangeTheme}
       >
-        <span class="input-label" slot="label">
-          <intl-message label="ui:settings:theme">Theme</intl-message>
-        </span>
+        <span class="input-label" slot="label"> ${t('settings.theme', { ns: 'ui' })} </span>
 
         ${THEMES.map(
-          (theme) =>
-            html` <sl-option value=${theme}>
-              <intl-message label="ui:settings:themes:${theme}"> Theme </intl-message>
-            </sl-option>`,
+          (theme) => html`<sl-option value=${theme}> ${t(`settings.themes.${theme}`, { ns: 'ui' })} </sl-option>`,
         )}
       </sl-select>
 
@@ -143,15 +137,9 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
         step="1"
         @sl-change=${this.handleChangeMessageLogSize}
       >
-        <span class="input-label" slot="label">
-          <intl-message label="ui:settings:messageLogSize">Message log size</intl-message>
-        </span>
+        <span class="input-label" slot="label"> ${t('settings.messageLogSize', { ns: 'ui' })} </span>
 
-        <span slot="help-text">
-          <intl-message label="ui:settings:messageLogSizeHint">
-            Excessive messages in log won't be removed until new message is received
-          </intl-message>
-        </span>
+        <span slot="help-text"> ${t('settings.messageLogSizeHint', { ns: 'ui' })} </span>
       </sl-input>
 
       <sl-select
@@ -160,16 +148,12 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
         value=${this.controller.longNumberFormat}
         @sl-change=${this.handleChangeLongNumberFormat}
       >
-        <span class="input-label" slot="label">
-          <intl-message label="ui:settings:longNumberFormat">Long number format</intl-message>
-        </span>
+        <span class="input-label" slot="label"> ${t('settings.longNumberFormat', { ns: 'ui' })} </span>
 
         ${LONG_NUMBER_FORMATS.map(
           (longNumberFormat) =>
             html` <sl-option value=${longNumberFormat}>
-              <intl-message label="ui:settings:longNumberFormats:${longNumberFormat}">
-                Long number format
-              </intl-message>
+              ${t(`settings.longNumberFormats.${longNumberFormat}`, { ns: 'ui' })}
             </sl-option>`,
         )}
       </sl-select>
@@ -183,9 +167,7 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
         value=${this.controller.updateInterval}
         @sl-change=${this.handleChangeUpdateInterval}
       >
-        <span class="input-label" slot="label">
-          <intl-message label="ui:settings:updateInterval">Update interval</intl-message>
-        </span>
+        <span class="input-label" slot="label"> ${t('settings.updateInterval', { ns: 'ui' })} </span>
       </sl-range>
 
       <sl-range
@@ -197,15 +179,9 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
         value=${this.controller.fastSpeedMultiplier}
         @sl-change=${this.handleChangefastSpeedMultiplier}
       >
-        <span class="input-label" slot="label">
-          <intl-message label="ui:settings:fastSpeedMultiplier">Fast speed multiplier</intl-message>
-        </span>
+        <span class="input-label" slot="label"> ${t('settings.fastSpeedMultiplier', { ns: 'ui' })} </span>
 
-        <span slot="help-text">
-          <intl-message label="ui:settings:fastSpeedMultiplierHint">
-            Excessive messages in log won't be removed until new message is received
-          </intl-message>
-        </span>
+        <span slot="help-text"> ${t('settings.fastSpeedMultiplierHint', { ns: 'ui' })} </span>
       </sl-range>
 
       <sl-switch
@@ -215,9 +191,7 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
         ?checked=${this.controller.autosaveEnabled}
         @sl-change=${this.handleChangeAutosaveEnabled}
       >
-        <span class="input-label">
-          <intl-message label="ui:settings:autosaveEnabled">Autosave enabled</intl-message>
-        </span>
+        <span class="input-label"> ${t('settings.autosaveEnabled', { ns: 'ui' })} </span>
       </sl-switch>
 
       <sl-range
@@ -229,9 +203,7 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
         value=${this.controller.autosaveInterval}
         @sl-change=${this.handleChangeAutosaveInterval}
       >
-        <span class="input-label" slot="label">
-          <intl-message label="ui:settings:autosaveInterval">Autosave interval</intl-message>
-        </span>
+        <span class="input-label" slot="label"> ${t('settings.autosaveInterval', { ns: 'ui' })} </span>
       </sl-range>
 
       <sl-input
@@ -244,15 +216,9 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
         step="1"
         @sl-change=${this.handleChangeMaxUpdatesPerTick}
       >
-        <span class="input-label" slot="label">
-          <intl-message label="ui:settings:maxUpdatesPerTick">Max ticks per fast forward</intl-message>
-        </span>
+        <span class="input-label" slot="label"> ${t('settings.maxUpdatesPerTick', { ns: 'ui' })} </span>
 
-        <span slot="help-text">
-          <intl-message label="ui:settings:maxUpdatesPerTickHint">
-            Too high number can cause strain on CPU
-          </intl-message>
-        </span>
+        <span slot="help-text"> ${t('settings.maxUpdatesPerTickHint', { ns: 'ui' })} </span>
       </sl-input>
     `;
   }

@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { css, html } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
@@ -87,15 +88,11 @@ export class MainframeHardwarePanel extends BaseComponent<MainframeHardwarePanel
 
   renderContent() {
     return html`
-      <p class="hint">
-        <intl-message label="ui:mainframe:hardware:hardwareHint">
-          Press either ctrl or shift to buy 10 levels. Press both ctrl and shift to buy 100 levels.
-        </intl-message>
-      </p>
+      <p class="hint">${t('mainframe.hardware.hardwareHint', { ns: 'ui' })}</p>
 
       <div class="buttons-block">
         <sl-button variant="default" type="button" size="medium" @click=${this.handleBuyMax}>
-          <intl-message label="ui:mainframe:hardware:buyMaxAllUpgrades"> Buy max all upgrades </intl-message>
+          ${t('mainframe.hardware.buyMaxAllUpgrades', { ns: 'ui' })}
         </sl-button>
       </div>
 

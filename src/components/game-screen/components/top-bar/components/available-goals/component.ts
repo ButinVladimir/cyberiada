@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { html, css } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
@@ -52,15 +53,11 @@ export class TopBarAvailableGoals extends BaseComponent<TopBarAvailableGoalsCont
     const availableGoals = this.controller.listAvailableGoals();
 
     if (availableGoals.length === 0) {
-      return html`
-        <intl-message label="ui:topBar:availableGoals:titleNoGoals">
-          No available development level goals
-        </intl-message>
-      `;
+      return html` ${t('topBar.availableGoals.titleNoGoals', { ns: 'ui' })} `;
     }
 
     return html`
-      <intl-message label="ui:topBar:availableGoals:titleGoalsExist"> Available development level goals </intl-message>
+      ${t('topBar.availableGoals.titleGoalsExist', { ns: 'ui' })}
       <ul class="goals">
         ${repeat(availableGoals, (goal) => goal.key, this.renderGoal)}
       </ul>
@@ -68,10 +65,6 @@ export class TopBarAvailableGoals extends BaseComponent<TopBarAvailableGoalsCont
   };
 
   private renderGoal = (goal: IStoryEvent) => {
-    return html`
-      <li>
-        <intl-message label="ui:topBar:availableGoals:reachLevel" value=${goal.level}></intl-message>
-      </li>
-    `;
+    return html` <li>${t('topBar.availableGoals.reachLevel', { ns: 'ui', level: goal.level })}</li> `;
   };
 }

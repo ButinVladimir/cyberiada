@@ -4,10 +4,10 @@ export class ConfirmationAlertOpenEvent extends Event {
   static readonly type = 'confirmation-alert-open';
 
   readonly gameAlert: GameAlert;
-  readonly messageParams: string;
+  readonly messageParams: object;
   readonly gameAlertKey?: string;
 
-  constructor(gameAlert: GameAlert, messageParams: string, gameAlertKey?: string) {
+  constructor(gameAlert: GameAlert, messageParams: object, gameAlertKey?: string) {
     super(ConfirmationAlertOpenEvent.type, {
       bubbles: true,
       composed: true,

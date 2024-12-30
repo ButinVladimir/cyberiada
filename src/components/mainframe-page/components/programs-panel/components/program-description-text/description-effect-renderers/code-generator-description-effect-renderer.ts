@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { html } from 'lit';
 import { CodeGeneratorProgram } from '@state/progam-factory/programs/code-generator';
 import { IFormatter } from '@shared/interfaces/formatter';
@@ -21,17 +22,14 @@ export class CodeGeneratorDescriptionEffectRenderer implements IDescriptionEffec
     const minAvgValue = (value / maxTime) * MS_IN_SECOND;
     const maxAvgValue = (value / minTime) * MS_IN_SECOND;
 
-    const values = JSON.stringify({
-      value: this._formatter.formatNumberLong(value),
-      minAvgValue: this._formatter.formatNumberLong(minAvgValue),
-      maxAvgValue: this._formatter.formatNumberLong(maxAvgValue),
-    });
-
     return html`
       <p>
-        <intl-message label="programs:codeGenerator:computationalBasePointsProgram" value=${values}>
-          Computational base points
-        </intl-message>
+        ${t('codeGenerator.computationalBasePointsProgram', {
+          ns: 'programs',
+          value: this._formatter.formatNumberLong(value),
+          minAvgValue: this._formatter.formatNumberLong(minAvgValue),
+          maxAvgValue: this._formatter.formatNumberLong(maxAvgValue),
+        })}
       </p>
     `;
   };

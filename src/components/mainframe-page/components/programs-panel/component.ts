@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { css, html } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
@@ -38,19 +39,15 @@ export class MainframeProgramsPanel extends BaseComponent<ProgramsPanelControlle
 
   renderContent() {
     return html`
-      <p class="hint">
-        <intl-message label="ui:mainframe:programs:programsHint">
-          Press either ctrl or shift to buy 10 levels. Press both ctrl and shift to buy 100 levels.
-        </intl-message>
-      </p>
+      <p class="hint">${t('mainframe.programs.programsHint', { ns: 'ui' })}</p>
 
       <div class="buttons-container">
         <sl-button variant="primary" size="medium" @click=${this.handlePurchaseProgramDialogOpen}>
-          <intl-message label="ui:mainframe:programs:purchaseProgram"> Purchase a program </intl-message>
+          ${t('mainframe.programs.purchaseProgram', { ns: 'ui' })}
         </sl-button>
 
         <sl-button variant="default" size="medium" @click=${this.handleUpgradeMaxAllPrograms}>
-          <intl-message label="ui:mainframe:programs:upgradeMaxAllPrograms"> Upgrade all programs </intl-message>
+          ${t('mainframe.programs.upgradeMaxAllPrograms', { ns: 'ui' })}
         </sl-button>
       </div>
 

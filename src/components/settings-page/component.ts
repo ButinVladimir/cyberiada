@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { css, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
@@ -26,9 +27,7 @@ export class SettingsPage extends BaseComponent {
 
   renderContent() {
     return html`
-      <h3 class="title">
-        <intl-message label="ui:settings:settings">Settings</intl-message>
-      </h3>
+      <h3 class="title">${t('settings.settings', { ns: 'ui' })}</h3>
 
       <ca-savefile-panel></ca-savefile-panel>
       <sl-divider></sl-divider>

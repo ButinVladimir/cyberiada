@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { css, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
@@ -54,19 +55,19 @@ export class SavefilePanel extends BaseComponent<SavefilePanelController> {
       <input ${ref(this._importInputRef)} type="file" id="import-file" @change=${this.handleChangeImportSavefile} />
 
       <sl-button variant="primary" type="button" size="medium" @click=${this.handleSaveGame}>
-        <intl-message label="ui:settings:saveGame"> Save game </intl-message>
+        ${t('settings.saveGame', { ns: 'ui' })}
       </sl-button>
 
       <sl-button variant="default" type="button" size="medium" outline @click=${this.handleOpenImportSavefileDialog}>
-        <intl-message label="ui:settings:importSavefile"> Import savefile </intl-message>
+        ${t('settings.importSavefile', { ns: 'ui' })}
       </sl-button>
 
       <sl-button variant="default" type="button" size="medium" outline @click=${this.handleExportSavefile}>
-        <intl-message label="ui:settings:exportSavefile"> Export savefile </intl-message>
+        ${t('settings.exportSavefile', { ns: 'ui' })}
       </sl-button>
 
       <sl-button variant="danger" type="button" size="medium" @click=${this.handleOpenDeleteSaveDataDialog}>
-        <intl-message label="ui:settings:deleteSaveData"> Delete save data </intl-message>
+        ${t('settings.deleteSaveData', { ns: 'ui' })}
       </sl-button>
     `;
   }
@@ -80,7 +81,7 @@ export class SavefilePanel extends BaseComponent<SavefilePanelController> {
   private handleOpenImportSavefileDialog = (event: Event) => {
     event.stopPropagation();
 
-    this.dispatchEvent(new ConfirmationAlertOpenEvent(GameStateAlert.saveImport, ''));
+    this.dispatchEvent(new ConfirmationAlertOpenEvent(GameStateAlert.saveImport, {}));
   };
 
   private handleConfirmImportSavefileDialog = (event: Event) => {
@@ -118,7 +119,7 @@ export class SavefilePanel extends BaseComponent<SavefilePanelController> {
   private handleOpenDeleteSaveDataDialog = (event: Event) => {
     event.stopPropagation();
 
-    this.dispatchEvent(new ConfirmationAlertOpenEvent(GameStateAlert.saveDelete, ''));
+    this.dispatchEvent(new ConfirmationAlertOpenEvent(GameStateAlert.saveDelete, {}));
   };
 
   private handleConfirmDeleteSaveDataDialog = (event: Event) => {

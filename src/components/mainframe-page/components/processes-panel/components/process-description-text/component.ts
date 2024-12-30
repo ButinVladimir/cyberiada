@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
@@ -56,9 +57,7 @@ export class ProcessDescriptionText extends BaseComponent<ProcessDescriptionText
     const effects = this.renderEffects();
 
     return html`
-      <p>
-        <intl-message label="programs:${this.programName}:overview"> Program overview </intl-message>
-      </p>
+      <p>${t(`${this.programName}.overview`, { ns: 'programs' })}</p>
 
       <p class="line-break"></p>
 
@@ -66,9 +65,7 @@ export class ProcessDescriptionText extends BaseComponent<ProcessDescriptionText
 
       <p class="line-break"></p>
 
-      <p>
-        <intl-message label="ui:mainframe:programDescription:effects"> Effects </intl-message>
-      </p>
+      <p>${t('mainframe.programDescription.effects', { ns: 'ui' })}</p>
 
       ${effects}
     `;
@@ -76,27 +73,13 @@ export class ProcessDescriptionText extends BaseComponent<ProcessDescriptionText
 
   private renderAutoscalableRequirements = () => {
     return html`
-      <p>
-        <intl-message label="ui:mainframe:programDescription:requirements:requirementsScalable">
-          Requirements
-        </intl-message>
-      </p>
+      <p>${t('mainframe.programDescription.requirements.requirementsScalable', { ns: 'ui' })}</p>
 
-      <p>
-        <intl-message label="ui:mainframe:programDescription:requirements:ramAllUnused"> RAM: All unused </intl-message>
-      </p>
+      <p>${t('mainframe.programDescription.requirements.ramAllUnused', { ns: 'ui' })}</p>
 
-      <p>
-        <intl-message label="ui:mainframe:programDescription:requirements:coresAllUnused">
-          Cores: All unused
-        </intl-message>
-      </p>
+      <p>${t('mainframe.programDescription.requirements.coresAllUnused', { ns: 'ui' })}</p>
 
-      <p>
-        <intl-message label="ui:mainframe:programDescription:requirements:completionTimeScalable">
-          Completion time: Instant
-        </intl-message>
-      </p>
+      <p>${t('mainframe.programDescription.requirements.completionTimeScalable', { ns: 'ui' })}</p>
     `;
   };
 
@@ -104,56 +87,39 @@ export class ProcessDescriptionText extends BaseComponent<ProcessDescriptionText
     const formatter = this.controller.formatter;
     const process = this.controller.getProcess(this.programName as ProgramName)!;
 
-    const requirementValues = JSON.stringify({
-      threads: formatter.formatNumberDecimal(process.threads),
-    });
-
-    const ramValues = JSON.stringify({ ram: formatter.formatNumberDecimal(process.program.ram * process.threads) });
-
-    const coresValues = JSON.stringify({
-      cores: formatter.formatNumberDecimal(process.program.cores * process.threads),
-    });
-
     const completionDelta = process.program.calculateCompletionDelta(process.threads, process.usedCores, 1);
-    let completionTimeKey = 'completionTimeProcessNoCores';
-    let completionTimeValues = '';
-
-    if (completionDelta > 0) {
-      completionTimeKey = 'completionTimeProcess';
-
-      const time = process.program.calculateCompletionTime(process.threads, process.usedCores);
-      completionTimeValues = JSON.stringify({
-        time: formatter.formatTimeShort(time),
-      });
-    }
 
     return html`
       <p>
-        <intl-message
-          label="ui:mainframe:programDescription:requirements:requirementsProcess"
-          value=${requirementValues}
-        >
-          Requirements
-        </intl-message>
+        ${t('mainframe.programDescription.requirements.requirementsProcess', {
+          ns: 'ui',
+          threads: formatter.formatNumberDecimal(process.threads),
+        })}
       </p>
 
       <p>
-        <intl-message label="ui:mainframe:programDescription:requirements:ram" value=${ramValues}> RAM </intl-message>
+        ${t('mainframe.programDescription.requirements.ram', {
+          ns: 'ui',
+          ram: formatter.formatNumberDecimal(process.program.ram * process.threads),
+        })}
       </p>
 
       <p>
-        <intl-message label="ui:mainframe:programDescription:requirements:cores" value=${coresValues}>
-          Cores
-        </intl-message>
+        ${t('mainframe.programDescription.requirements.cores', {
+          ns: 'ui',
+          cores: formatter.formatNumberDecimal(process.program.cores * process.threads),
+        })}
       </p>
 
       <p>
-        <intl-message
-          label="ui:mainframe:programDescription:requirements:${completionTimeKey}"
-          value=${completionTimeValues}
-        >
-          Completion time
-        </intl-message>
+        ${completionDelta > 0
+          ? t('mainframe.programDescription.requirements.completionTimeProcess', {
+              ns: 'ui',
+              time: formatter.formatTimeShort(
+                process.program.calculateCompletionTime(process.threads, process.usedCores),
+              ),
+            })
+          : t('mainframe.programDescription.requirements.completionTimeProcessNoCores', { ns: 'ui' })}
       </p>
     `;
   };

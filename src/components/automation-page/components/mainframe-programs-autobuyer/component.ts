@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { html } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { customElement } from 'lit/decorators.js';
@@ -26,17 +27,9 @@ export class AutomationMainframeProgramsAutobuyer extends BaseComponent<Automati
     return html`
       <div class="text-container">
         <div class="text-container-inner">
-          <h4 class="title">
-            <intl-message label="ui:automation:mainframeProgramsAutobuyer:mainframeProgramsAutobuyer">
-              Mainframe programs autobuyer
-            </intl-message>
-          </h4>
+          <h4 class="title">${t('automation.mainframeProgramsAutobuyer.mainframeProgramsAutobuyer', { ns: 'ui' })}</h4>
 
-          <p class="hint">
-            <intl-message label="ui:automation:mainframeProgramsAutobuyer:percentageHint">
-              Percentages hint
-            </intl-message>
-          </p>
+          <p class="hint">${t('automation.mainframeProgramsAutobuyer.percentageHint', { ns: 'ui' })}</p>
         </div>
       </div>
 

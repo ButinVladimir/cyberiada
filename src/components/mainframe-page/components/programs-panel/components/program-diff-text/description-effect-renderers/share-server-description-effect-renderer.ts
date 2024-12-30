@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { html } from 'lit';
 import { ShareServerProgram } from '@state/progam-factory/programs/share-server';
 import { IFormatter } from '@shared/interfaces/formatter';
@@ -29,29 +30,27 @@ export class ShareServerDescriptionEffectRenderer implements IDescriptionEffectR
     const moneyDiff = this._ownedProgram
       ? money - this._ownedProgram.calculateMoneyDelta(this._cores, this._ram, MS_IN_SECOND)
       : money;
-    const moneyValues = JSON.stringify({
-      money: this._formatter.formatNumberLong(money),
-      moneyDiff: this._formatter.formatNumberLong(moneyDiff, diffFormatterParametersLong),
-    });
 
     const developmentPoints = this._program.calculateDevelopmentPointsDelta(this._cores, this._ram, MS_IN_SECOND);
     const developmentPointsDiff = this._ownedProgram
       ? money - this._ownedProgram.calculateDevelopmentPointsDelta(this._cores, this._ram, MS_IN_SECOND)
       : money;
-    const developmentPointsValues = JSON.stringify({
-      developmentPoints: this._formatter.formatNumberLong(developmentPoints),
-      developmentPointsDiff: this._formatter.formatNumberLong(developmentPointsDiff, diffFormatterParametersLong),
-    });
 
     return html`
       <p>
-        <intl-message label="programs:shareServer:moneyDiff" value=${moneyValues}> Money </intl-message>
+        ${t('shareServer.moneyDiff', {
+          ns: 'programs',
+          money: this._formatter.formatNumberLong(money),
+          moneyDiff: this._formatter.formatNumberLong(moneyDiff, diffFormatterParametersLong),
+        })}
       </p>
 
       <p>
-        <intl-message label="programs:shareServer:developmentPointsDiff" value=${developmentPointsValues}>
-          Development points
-        </intl-message>
+        ${t('shareServer.developmentPointsDiff', {
+          ns: 'programs',
+          developmentPoints: this._formatter.formatNumberLong(developmentPoints),
+          developmentPointsDiff: this._formatter.formatNumberLong(developmentPointsDiff, diffFormatterParametersLong),
+        })}
       </p>
     `;
   };

@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { css, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
@@ -44,9 +45,7 @@ export class CreditsPage extends BaseComponent {
         <a target="_blank" href="https://github.com/ButinVladimir/cyberiada">GitHub</a>
       </p>
 
-      <p class="contributors">
-        Vladimir Butin (OmniLRenegadE) - <intl-message label="ui:credits:OmniLRenegadE"></intl-message>
-      </p>
+      <p class="contributors">Vladimir Butin (OmniLRenegadE) - ${t('credits.OmniLRenegadE', { ns: 'ui' })}</p>
     `;
   }
 }

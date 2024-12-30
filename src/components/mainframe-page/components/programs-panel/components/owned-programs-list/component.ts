@@ -99,20 +99,12 @@ export class OwnedProgramsList extends BaseComponent<OwnedProgramsListController
     return html`
       <table>
         <thead>
-          <th class="program">
-            <intl-message label="ui:mainframe:program">Program</intl-message>
-          </th>
-          <th class="level">
-            <intl-message label="ui:mainframe:level">Level</intl-message>
-          </th>
-          <th class="quality">
-            <intl-message label="ui:mainframe:quality">Quality</intl-message>
-          </th>
+          <th class="program">${t('mainframe.program', { ns: 'ui' })}</th>
+          <th class="level">${t('mainframe.level', { ns: 'ui' })}</th>
+          <th class="quality">${t('mainframe.quality', { ns: 'ui' })}</th>
           <th class="autoupgrade">
             <sl-tooltip>
-              <intl-message slot="content" label="ui:mainframe:programs:toggleAutoupgradeAll">
-                Toggle autoupgrade
-              </intl-message>
+              <span slot="content"> ${t('mainframe.programs.toggleAutoupgradeAll', { ns: 'ui' })} </span>
 
               <sl-icon-button
                 id="toggle-autoupgrade-btn"
@@ -154,9 +146,7 @@ export class OwnedProgramsList extends BaseComponent<OwnedProgramsListController
   private renderEmptyListNotification = () => {
     return html`
       <tr class="notification">
-        <td colspan="4">
-          <intl-message label="ui:mainframe:programs:emptyListNotification"> You don't have any programs </intl-message>
-        </td>
+        <td colspan="4">${t('mainframe.programs.emptyListNotification', { ns: 'ui' })}</td>
       </tr>
     `;
   };

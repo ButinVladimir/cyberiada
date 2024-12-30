@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { css, html } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -66,13 +67,9 @@ export class CityOverview extends BaseComponent<CityOverviewController> {
 
   renderContent() {
     return html`
-      <h3 class="title">
-        <intl-message label="ui:city:cityOverview:title">City overview</intl-message>
-      </h3>
+      <h3 class="title">${t('city.cityOverview.title', { ns: 'ui' })}</h3>
 
-      <p>
-        <intl-message label="ui:city:cityOverview:hint">City overview hint</intl-message>
-      </p>
+      <p>${t('city.cityOverview.hint', { ns: 'ui' })}</p>
 
       <ca-map-cell-zoom-panel zoom=${this.controller.mapCellSize} @map-cell-zoom-change=${this.handleChangeZoom}>
       </ca-map-cell-zoom-panel>

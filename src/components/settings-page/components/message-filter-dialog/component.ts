@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { TemplateResult, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
@@ -69,16 +70,10 @@ export class MessageFilterDialog extends BaseComponent<MessageFilterDialogContro
   renderContent() {
     return html`
       <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
-        <h4 slot="label" class="title">
-          <intl-message label="ui:settings:messageFilter"> Message filter </intl-message>
-        </h4>
+        <h4 slot="label" class="title">${t('settings.messageFilter', { ns: 'ui' })}</h4>
 
         <div class="body">
-          <p class="hint">
-            <intl-message label="ui:settings:messageFilterHint">
-              Enable events in filter to start adding messages for them in log.
-            </intl-message>
-          </p>
+          <p class="hint">${t('settings.messageFilterHint', { ns: 'ui' })}</p>
 
           <div class="events-container">${repeat(GAME_STATE_EVENTS, (event) => event, this.renderEventCheckbox)}</div>
 
@@ -92,7 +87,7 @@ export class MessageFilterDialog extends BaseComponent<MessageFilterDialogContro
         </div>
 
         <sl-button slot="footer" size="medium" variant="default" outline @click=${this.handleClose}>
-          <intl-message label="ui:common:close"> Close </intl-message>
+          ${t('common.close', { ns: 'ui' })}
         </sl-button>
       </sl-dialog>
     `;
@@ -107,7 +102,7 @@ export class MessageFilterDialog extends BaseComponent<MessageFilterDialogContro
         ?checked=${this.controller.isMessageEventEnabled(event)}
         @sl-change=${this.handleToggleEvent}
       >
-        <intl-message label=${`events:${event}:name`}> Event </intl-message>
+        ${t(`${event}.name`, { ns: 'events' })}
       </sl-checkbox>
     `;
   };

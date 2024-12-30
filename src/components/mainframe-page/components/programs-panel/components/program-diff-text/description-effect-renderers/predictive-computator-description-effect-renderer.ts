@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { html } from 'lit';
 import { PredictiveComputatorProgram } from '@state/progam-factory/programs/predictive-computator';
 import { IFormatter } from '@shared/interfaces/formatter';
@@ -28,16 +29,14 @@ export class PredictiveComputatorDescriptionEffectRenderer implements IDescripti
     const valueDiff = this._ownedProgram
       ? value - this._ownedProgram.calculateProgramCompletionSpeedMultiplier(this._cores, this._ram)
       : value;
-    const values = JSON.stringify({
-      value: this._formatter.formatNumberFloat(value),
-      valueDiff: this._formatter.formatNumberFloat(valueDiff, diffFormatterParametersFloat),
-    });
 
     return html`
       <p>
-        <intl-message label="programs:predictiveComputator:speedMultiplierDiff" value=${values}>
-          Speed multiplier
-        </intl-message>
+        ${t('predictiveComputator.speedMultiplierDiff', {
+          ns: 'programs',
+          value: this._formatter.formatNumberFloat(value),
+          valueDiff: this._formatter.formatNumberFloat(valueDiff, diffFormatterParametersFloat),
+        })}
       </p>
     `;
   };

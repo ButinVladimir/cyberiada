@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { css, html } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
@@ -45,29 +46,23 @@ export class MainframeHardwarePanel extends BaseComponent<ProcessesPanelControll
     const formatter = this.controller.formatter;
 
     return html`
-      <p class="hint">
-        <intl-message label="ui:mainframe:processes:processesHint"> Start process hint. </intl-message>
-      </p>
+      <p class="hint">${t('mainframe.processes.processesHint', { ns: 'ui' })}</p>
 
       <div class="top-container">
         <sl-button variant="primary" size="medium" @click=${this.handleStartProcessDialogOpen}>
-          <intl-message label="ui:mainframe:processes:startProcess"> Purchase a program </intl-message>
+          ${t('mainframe.processes.startProcess', { ns: 'ui' })}
         </sl-button>
         <div>
-          <intl-message
-            label="ui:mainframe:processes:availableCores"
-            value=${formatter.formatNumberDecimal(this.controller.availableCores)}
-          >
-            Available cores
-          </intl-message>
+          ${t('mainframe.processes.availableCores', {
+            ns: 'ui',
+            cores: formatter.formatNumberDecimal(this.controller.availableCores),
+          })}
         </div>
         <div>
-          <intl-message
-            label="ui:mainframe:processes:availableRam"
-            value=${formatter.formatNumberDecimal(this.controller.availableRam)}
-          >
-            Available ram
-          </intl-message>
+          ${t('mainframe.processes.availableRam', {
+            ns: 'ui',
+            ram: formatter.formatNumberDecimal(this.controller.availableRam),
+          })}
         </div>
       </div>
 

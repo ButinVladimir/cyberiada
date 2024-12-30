@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
@@ -37,11 +38,6 @@ export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwa
     const buttonDisabled = !this.controller.checkCanPurchase(increase, this.type);
     const cost = this.controller.getPurchaseCost(increase, this.type);
 
-    const buttonValue = JSON.stringify({
-      cost: formatter.formatNumberLong(cost),
-      increase: formatter.formatNumberDecimal(increase),
-    });
-
     return html`
       <ca-purchase-tooltip cost=${cost} level=${level + 1}>
         <sl-button
@@ -51,7 +47,11 @@ export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwa
           ?disabled=${buttonDisabled}
           @click=${this.handlePurchase}
         >
-          <intl-message label="ui:mainframe:hardware:buy" value=${buttonValue}> Buy </intl-message>
+          ${t('mainframe.hardware.buy', {
+            ns: 'ui',
+            cost: formatter.formatNumberLong(cost),
+            increase: formatter.formatNumberDecimal(increase),
+          })}
         </sl-button>
       </ca-purchase-tooltip>
     `;

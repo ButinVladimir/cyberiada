@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { html } from 'lit';
 import { CodeGeneratorProgram } from '@state/progam-factory/programs/code-generator';
 import { IFormatter } from '@shared/interfaces/formatter';
@@ -41,20 +42,17 @@ export class CodeGeneratorDescriptionEffectRenderer implements IDescriptionEffec
       maxAvgValueDiff = maxAvgValue - ownedMaxAvgValue;
     }
 
-    const values = JSON.stringify({
-      value: this._formatter.formatNumberLong(value),
-      valueDiff: this._formatter.formatNumberLong(valueDiff, diffFormatterParametersLong),
-      minAvgValue: this._formatter.formatNumberLong(minAvgValue),
-      maxAvgValue: this._formatter.formatNumberLong(maxAvgValue),
-      minAvgValueDiff: this._formatter.formatNumberLong(minAvgValueDiff, diffFormatterParametersLong),
-      maxAvgValueDiff: this._formatter.formatNumberLong(maxAvgValueDiff, diffFormatterParametersLong),
-    });
-
     return html`
       <p>
-        <intl-message label="programs:codeGenerator:computationalBasePointsDiff" value=${values}>
-          Computational base points
-        </intl-message>
+        ${t('codeGenerator.computationalBasePointsDiff', {
+          ns: 'programs',
+          value: this._formatter.formatNumberLong(value),
+          valueDiff: this._formatter.formatNumberLong(valueDiff, diffFormatterParametersLong),
+          minAvgValue: this._formatter.formatNumberLong(minAvgValue),
+          maxAvgValue: this._formatter.formatNumberLong(maxAvgValue),
+          minAvgValueDiff: this._formatter.formatNumberLong(minAvgValueDiff, diffFormatterParametersLong),
+          maxAvgValueDiff: this._formatter.formatNumberLong(maxAvgValueDiff, diffFormatterParametersLong),
+        })}
       </p>
     `;
   };

@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { css, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
@@ -16,26 +17,14 @@ export class StatisticsPage extends BaseComponent {
 
   renderContent() {
     return html`
-      <h3 class="title">
-        <intl-message label="ui:statistics:statistics">Statistics</intl-message>
-      </h3>
+      <h3 class="title">${t('statistics.statistics', { ns: 'ui' })}</h3>
 
       <sl-tab-group>
-        <sl-tab slot="nav" panel="general">
-          <intl-message label="ui:statistics:tabs:general">General</intl-message>
-        </sl-tab>
-        <sl-tab slot="nav" panel="growth">
-          <intl-message label="ui:statistics:tabs:growth">Growth</intl-message>
-        </sl-tab>
-        <sl-tab slot="nav" panel="income">
-          <intl-message label="ui:statistics:tabs:income">Income</intl-message>
-        </sl-tab>
-        <sl-tab slot="nav" panel="expenses">
-          <intl-message label="ui:statistics:tabs:expenses">Expenses</intl-message>
-        </sl-tab>
-        <sl-tab slot="nav" panel="unlocked-features">
-          <intl-message label="ui:statistics:tabs:unlockedFeatures">Unlocked features</intl-message>
-        </sl-tab>
+        <sl-tab slot="nav" panel="general"> ${t('statistics.tabs.general', { ns: 'ui' })} </sl-tab>
+        <sl-tab slot="nav" panel="growth"> ${t('statistics.tabs.growth', { ns: 'ui' })} </sl-tab>
+        <sl-tab slot="nav" panel="income"> ${t('statistics.tabs.income', { ns: 'ui' })} </sl-tab>
+        <sl-tab slot="nav" panel="expenses"> ${t('statistics.tabs.expenses', { ns: 'ui' })} </sl-tab>
+        <sl-tab slot="nav" panel="unlocked-features"> ${t('statistics.tabs.unlockedFeatures', { ns: 'ui' })} </sl-tab>
 
         <sl-tab-panel name="general">
           <ca-statistics-general-panel></ca-statistics-general-panel>
