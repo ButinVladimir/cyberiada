@@ -1,5 +1,5 @@
 import { t } from 'i18next';
-import { css, html } from 'lit';
+import { css, html, nothing } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import SlCheckbox from '@shoelace-style/shoelace/dist/components/checkbox/checkbox.component.js';
@@ -60,7 +60,7 @@ export class NotificationModal extends BaseComponent<NotificationModalController
                 ${t('settings.notificationTypeToggle', { ns: 'ui' })}
               </sl-checkbox>
             `
-          : null}
+          : nothing}
 
         <sl-button slot="footer" size="medium" variant="primary" @click=${this.handleClose}>
           ${t('common.continue', { ns: 'ui' })}

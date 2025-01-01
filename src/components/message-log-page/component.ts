@@ -9,55 +9,26 @@ import {
 import { GameStateAlert } from '@shared/types';
 import { MessageLogBarController } from './controller';
 
-@customElement('ca-message-log-bar')
-export class MessageLogBar extends BaseComponent<MessageLogBarController> {
+@customElement('ca-message-log-page')
+export class MessageLogPage extends BaseComponent<MessageLogBarController> {
   static styles = css`
     :host {
       width: 100%;
       box-sizing: border-box;
       display: flex;
       flex-direction: column;
-      align-items: stretch;
-      justify-content: flex-start;
     }
 
-    div.title-bar div.gutter {
-      flex: 1 1 auto;
-    }
-
-    div.title-bar {
-      flex: 0;
-      display: flex;
-      align-items: flex-start;
-      padding: var(--sl-spacing-small);
-      border-bottom: var(--ca-border);
-      height: var(--ca-message-log-top-bar);
-    }
-
-    h4.title {
-      font-size: var(--sl-font-size-large);
+    h3.title {
+      font-size: var(--sl-font-size-2x-large);
       font-weight: var(--sl-font-weight-bold);
       margin-top: 0;
-      margin-bottom: 0;
+      margin-bottom: var(--sl-spacing-large);
       line-height: var(--sl-line-height-denser);
-      flex: 1 1 auto;
     }
 
-    sl-icon-button {
-      font-size: var(--sl-font-size-large);
-      line-height: var(--sl-line-height-denser);
-      margin-top: -0.3em;
-      flex: 0 0 auto;
-    }
-
-    sl-icon-button#clear-messages-btn::part(base):hover {
-      color: var(--sl-color-danger-600);
-    }
-
-    ca-message-log-content {
-      flex: 1 1 auto;
-      width: 100%;
-      height: calc(100vh - var(--ca-message-log-top-bar) - var(--ca-top-bar-height));
+    sl-divider {
+      --spacing: var(--sl-spacing-large);
     }
   `;
 
@@ -83,23 +54,15 @@ export class MessageLogBar extends BaseComponent<MessageLogBarController> {
 
   renderContent() {
     return html`
-      <div class="title-bar">
-        <h4 class="title">${t('messageLog.messageLog', { ns: 'ui' })}</h4>
+      <h3 class="title">${t('messageLog.messageLog', { ns: 'ui' })}</h3>
 
-        <div class="gutter"></div>
-
-        <sl-tooltip>
-          <span slot="content"> ${t('messageLog.clearMessages', { ns: 'ui' })} </span>
-
-          <sl-icon-button
-            id="clear-messages-btn"
-            name="x-circle"
-            label=${t('messageLog.clearMessages', { ns: 'ui' })}
-            @click=${this.handleOpenClearMessagesDialog}
-          >
-          </sl-icon-button>
-        </sl-tooltip>
+      <div>
+        <sl-button variant="danger" size="medium" @click=${this.handleOpenClearMessagesDialog}>
+          ${t('messageLog.clearMessages', { ns: 'ui' })}
+        </sl-button>
       </div>
+
+      <sl-divider></sl-divider>
 
       <ca-message-log-content></ca-message-log-content>
     `;

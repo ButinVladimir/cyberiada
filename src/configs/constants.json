@@ -2,6 +2,7 @@
   "startingScenario": "tutorial",
   "defaultSettings": {
     "messageLogSize": 30,
+    "toastDuration": 5000,
     "updateInterval": 100,
     "autosaveEnabled": true,
     "autosaveInterval": 60000,

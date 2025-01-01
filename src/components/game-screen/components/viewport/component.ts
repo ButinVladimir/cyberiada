@@ -48,11 +48,14 @@ export class Viewport extends BaseComponent {
       case OverviewMenuItem.mainframe:
         return html`<ca-mainframe-page></ca-mainframe-page>`;
 
+      case OverviewMenuItem.automation:
+        return html`<ca-automation-page></ca-automation-page>`;
+
       case OverviewMenuItem.statistics:
         return html`<ca-statistics-page></ca-statistics-page>`;
 
-      case OverviewMenuItem.automation:
-        return html`<ca-automation-page></ca-automation-page>`;
+      case OverviewMenuItem.messageLog:
+        return html`<ca-message-log-page></ca-message-log-page>`;
 
       case MiscMenuItem.settings:
         return html`<ca-settings-page></ca-settings-page>`;

@@ -12,16 +12,16 @@ fastForward:
   message: Вы действительно хотите потратить накопленное время?
 purchaseProgramOverwrite:
   name: Покупка уже купленной програмы
-  message: Вы действительно хотите приобрести программу "$t(programs:{{value.programName}}:name)"? Это заменит вашу текущую программу с уровнем {{value.level}} и качеством {{value.quality}}.
+  message: Вы действительно хотите приобрести программу "$t(programs:{{programName}}:name)"? Это заменит вашу текущую программу с уровнем {{level}} и качеством {{quality}}.
 processDelete:
   name: Удаление процесса
-  message: Вы действительно хотите удалить процесс для программы "$t(programs:{{value.programName}}:name)"? Его прогресс будет утерян.
+  message: Вы действительно хотите удалить процесс для программы "$t(programs:{{programName}}:name)"? Его прогресс будет утерян.
 processReplace:
   name: Замена процесса
-  message: Вы действительно хотите заменить процесс для программы "$t(programs:{{value.programName}}:name)"? Это заменит текущий процесс с {{value.threads}} потоками.
+  message: Вы действительно хотите заменить процесс для программы "$t(programs:{{programName}}:name)"? Это заменит текущий процесс с {{threads}} потоками.
 scalableProcessReplace:
   name: Замена табируемого процесса
-  message: Вы действительно хотите заменить автомасштабируемый процесс? Это удалит текущий процесс для программы "$t(programs:{{value.programName}}:name)".
+  message: Вы действительно хотите заменить автомасштабируемый процесс? Это удалит текущий процесс для программы "$t(programs:{{programName}}:name)".
 deleteAllProcesses:
   name: Удаление всех процессов
   message: Вы действительно хотите удалить все процессы? Их прогресс будет утерян.

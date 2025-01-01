@@ -16,8 +16,9 @@ export enum OverviewMenuItem {
   cityOverview = 'cityOverview',
   companyManagement = 'companyManagement',
   mainframe = 'mainframe',
-  statistics = 'statistics',
   automation = 'automation',
+  statistics = 'statistics',
+  messageLog = 'messageLog',
 }
 
 export enum MiscMenuItem {

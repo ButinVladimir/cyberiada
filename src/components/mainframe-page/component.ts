@@ -1,5 +1,5 @@
 import { t } from 'i18next';
-import { css, html } from 'lit';
+import { css, html, nothing } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { MainframePageController } from './controller';
@@ -35,10 +35,10 @@ export class MainframePage extends BaseComponent<MainframePageController> {
         <sl-tab slot="nav" panel="processes"> ${t('mainframe.tabs.processes', { ns: 'ui' })} </sl-tab>
         ${isMainframeHardwareUnlocked
           ? html` <sl-tab slot="nav" panel="hardware"> ${t('mainframe.tabs.hardware', { ns: 'ui' })} </sl-tab> `
-          : null}
+          : nothing}
         ${isMainframeProgramsUnlocked
           ? html` <sl-tab slot="nav" panel="programs"> ${t('mainframe.tabs.programs', { ns: 'ui' })} </sl-tab> `
-          : null}
+          : nothing}
 
         <sl-tab-panel name="processes">
           <ca-mainframe-processes-panel></ca-mainframe-processes-panel>
@@ -49,14 +49,14 @@ export class MainframePage extends BaseComponent<MainframePageController> {
                 <ca-mainframe-hardware-panel></ca-mainframe-hardware-panel>
               </sl-tab-panel>
             `
-          : null}
+          : nothing}
         ${isMainframeProgramsUnlocked
           ? html`
               <sl-tab-panel name="programs">
                 <ca-mainframe-programs-panel></ca-mainframe-programs-panel>
               </sl-tab-panel>
             `
-          : null}
+          : nothing}
       </sl-tab-group>
     `;
   }

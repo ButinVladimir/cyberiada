@@ -1,5 +1,5 @@
 import { t } from 'i18next';
-import { css, html } from 'lit';
+import { css, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { ProgramName } from '@state/progam-factory/types';
@@ -33,7 +33,7 @@ export class ProcessesListItemProgressColumn extends BaseComponent<ProcessesList
     const process = this.controller.getProcess(this.programName as ProgramName);
 
     if (!process) {
-      return html``;
+      return nothing;
     }
 
     const processCompletionDelta = process.calculateCompletionDelta(1);

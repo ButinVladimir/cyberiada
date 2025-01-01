@@ -41,7 +41,7 @@ export class UnlockedFeaturesParameter implements IUnlockedFeaturesParameter {
       this._unlockedFeatures.add(feature);
 
       this._notificationsState.pushNotification(NotificationType.featureUnlocked, { feature });
-      this._messageLogState.postMessage(GameStateEvent.featureUnlocked, { feature });
+      this._messageLogState.postMessage(GameStateEvent.featureUnlocked, { feature }, false);
     }
   }
 

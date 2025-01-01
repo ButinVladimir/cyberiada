@@ -30,6 +30,7 @@ export class SettingsState implements ISettingsState {
   private _language: Language;
   private _theme: Theme;
   private _messageLogSize: number;
+  private _toastDuration: number;
   private _updateInterval: number;
   private _autosaveEnabled: boolean;
   private _autosaveInterval: number;
@@ -45,6 +46,7 @@ export class SettingsState implements ISettingsState {
     this._language = Language.en;
     this._theme = Theme.light;
     this._messageLogSize = constants.defaultSettings.messageLogSize;
+    this._toastDuration = constants.defaultSettings.toastDuration;
     this._updateInterval = constants.defaultSettings.updateInterval;
     this._autosaveEnabled = constants.defaultSettings.autosaveEnabled;
     this._autosaveInterval = constants.defaultSettings.autosaveInterval;
@@ -67,6 +69,10 @@ export class SettingsState implements ISettingsState {
 
   get messageLogSize() {
     return this._messageLogSize;
+  }
+
+  get toastDuration() {
+    return this._toastDuration;
   }
 
   get updateInterval() {
@@ -114,6 +120,8 @@ export class SettingsState implements ISettingsState {
 
     await i18n.changeLanguage(this.language);
     document.documentElement.lang = this.language;
+
+    this._app.refreshUI();
   }
 
   setTheme(theme: Theme) {
@@ -124,6 +132,10 @@ export class SettingsState implements ISettingsState {
 
   setMessageLogSize(messageLogSize: number) {
     this._messageLogSize = messageLogSize;
+  }
+
+  setToastDuration(duration: number) {
+    this._toastDuration = duration;
   }
 
   setUpdateInterval(updateInterval: number) {
@@ -141,7 +153,7 @@ export class SettingsState implements ISettingsState {
     this._app.restartAutosaveTimer();
   }
 
-  setfastSpeedMultiplier(fastSpeedMultiplier: number) {
+  setFastSpeedMultiplier(fastSpeedMultiplier: number) {
     this._fastSpeedMultiplier = fastSpeedMultiplier;
   }
 
@@ -187,10 +199,11 @@ export class SettingsState implements ISettingsState {
     await this.setLanguage(i18n.resolvedLanguage! as Language);
     this.setTheme(window.matchMedia('(prefers-color-scheme:dark)').matches ? Theme.dark : Theme.light);
     this.setMessageLogSize(constants.defaultSettings.messageLogSize);
+    this.setToastDuration(constants.defaultSettings.toastDuration);
     this.setUpdateInterval(constants.defaultSettings.updateInterval);
     this.setAutosaveEnabled(constants.defaultSettings.autosaveEnabled);
     this.setAutosaveInterval(constants.defaultSettings.autosaveInterval);
-    this.setfastSpeedMultiplier(constants.defaultSettings.fastSpeedMultiplier);
+    this.setFastSpeedMultiplier(constants.defaultSettings.fastSpeedMultiplier);
     this.setMaxUpdatesPerTick(constants.defaultSettings.maxUpdatesPerTick);
     this.setLongNumberFormat(constants.defaultSettings.longNumberFormat as LongNumberFormat);
     this.setMapCellSize(constants.defaultSettings.mapSize);
@@ -203,10 +216,11 @@ export class SettingsState implements ISettingsState {
     await this.setLanguage(serializedState.language);
     this.setTheme(serializedState.theme);
     this.setMessageLogSize(serializedState.messageLogSize);
+    this.setToastDuration(serializedState.toastDuration);
     this.setUpdateInterval(serializedState.updateInterval);
     this.setAutosaveEnabled(serializedState.autosaveEnabled);
     this.setAutosaveInterval(serializedState.autosaveInterval);
-    this.setfastSpeedMultiplier(serializedState.fastSpeedMultiplier);
+    this.setFastSpeedMultiplier(serializedState.fastSpeedMultiplier);
     this.setMaxUpdatesPerTick(serializedState.maxUpdatesPerTick);
     this.setLongNumberFormat(serializedState.longNumberFormat);
     this.setMapCellSize(serializedState.mapCellSize);
@@ -220,6 +234,7 @@ export class SettingsState implements ISettingsState {
       language: this.language,
       theme: this.theme,
       messageLogSize: this.messageLogSize,
+      toastDuration: this.toastDuration,
       updateInterval: this.updateInterval,
       autosaveEnabled: this.autosaveEnabled,
       autosaveInterval: this.autosaveInterval,

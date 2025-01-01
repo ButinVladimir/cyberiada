@@ -40,7 +40,7 @@ export class StoryEventsParameter implements IStoryEventsParameter {
       if (storyEvent.messages) {
         storyEvent.messages.forEach((messageKey) => {
           this._notificationsState.pushNotification(NotificationType.storyEvent, { messageKey });
-          this._messageLogState.postMessage(GameStateEvent.storyEvent, { messageKey });
+          this._messageLogState.postMessage(GameStateEvent.storyEvent, { messageKey }, false);
         });
       }
 

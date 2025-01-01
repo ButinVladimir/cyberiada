@@ -14,6 +14,10 @@ export class SettingsFormController extends BaseController {
     return this.settingsState.messageLogSize;
   }
 
+  get toastDuration(): number {
+    return this.settingsState.toastDuration;
+  }
+
   get updateInterval(): number {
     return this.settingsState.updateInterval;
   }
@@ -53,6 +57,11 @@ export class SettingsFormController extends BaseController {
     this.handleRefreshUI();
   }
 
+  setToastDuration(duration: number) {
+    this.settingsState.setToastDuration(duration);
+    this.handleRefreshUI();
+  }
+
   setUpdateInterval(updateInterval: number) {
     this.settingsState.setUpdateInterval(updateInterval);
     this.handleRefreshUI();
@@ -68,12 +77,12 @@ export class SettingsFormController extends BaseController {
     this.handleRefreshUI();
   }
 
-  setfastSpeedMultiplier(fastSpeedMultiplier: number) {
-    this.settingsState.setfastSpeedMultiplier(fastSpeedMultiplier);
+  setFastSpeedMultiplier(fastSpeedMultiplier: number) {
+    this.settingsState.setFastSpeedMultiplier(fastSpeedMultiplier);
     this.handleRefreshUI();
   }
 
-  setmaxUpdatesPerTick(maxUpdatesPerTick: number) {
+  setMaxUpdatesPerTick(maxUpdatesPerTick: number) {
     this.settingsState.setMaxUpdatesPerTick(maxUpdatesPerTick);
     this.handleRefreshUI();
   }

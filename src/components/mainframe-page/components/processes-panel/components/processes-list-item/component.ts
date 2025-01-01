@@ -1,5 +1,5 @@
 import { t } from 'i18next';
-import { css, html } from 'lit';
+import { css, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { ConfirmationAlertOpenEvent, ConfirmationAlertSubmitEvent } from '@components/shared/confirmation-alert/events';
@@ -82,7 +82,7 @@ export class ProcessesListItem extends BaseComponent<ProcessesListItemController
     const process = this.controller.getProcess(this.programName as ProgramName);
 
     if (!process) {
-      return html``;
+      return nothing;
     }
 
     const cores = process.program.isAutoscalable

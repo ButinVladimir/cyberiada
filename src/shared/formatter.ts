@@ -55,6 +55,21 @@ const defaultNumberQualityFormatParameters: IFormatterParameters = {
   prefix: '',
 };
 
+const defaultDecimalBuiltInFormatterOptions: Intl.NumberFormatOptions = {
+  maximumFractionDigits: 0,
+};
+
+const defaultFloatBuiltInFormatterOptions: Intl.NumberFormatOptions = {
+  minimumFractionDigits: 3,
+  maximumFractionDigits: 3,
+};
+
+const defaultDateTimeFormatterOptions: Intl.DateTimeFormatOptions = {
+  hour: '2-digit',
+  minute: '2-digit',
+  second: '2-digit',
+};
+
 const longNumberFormatterThreshold = 1000;
 
 @injectable()
@@ -63,15 +78,14 @@ export class Formatter implements IFormatter {
 
   private _decimalBuiltInFormatter: Intl.NumberFormat;
   private _floatBuiltInFormatter: Intl.NumberFormat;
+  private _dateTimeFormatter: Intl.DateTimeFormat;
 
   constructor(@inject(TYPES.SettingsState) _settingsState: ISettingsState) {
     this._settingsState = _settingsState;
 
-    this._decimalBuiltInFormatter = new Intl.NumberFormat(navigator.language, { maximumFractionDigits: 0 });
-    this._floatBuiltInFormatter = new Intl.NumberFormat(navigator.language, {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
+    this._decimalBuiltInFormatter = new Intl.NumberFormat(navigator.language, defaultDecimalBuiltInFormatterOptions);
+    this._floatBuiltInFormatter = new Intl.NumberFormat(navigator.language, defaultFloatBuiltInFormatterOptions);
+    this._dateTimeFormatter = new Intl.DateTimeFormat(navigator.language, defaultDateTimeFormatterOptions);
 
     i18n.on('languageChanged', this.updateBuiltInFormatters);
   }
@@ -141,12 +155,20 @@ export class Formatter implements IFormatter {
     return this.applyNumberFormatterParameters(value, formattedValue, parameters);
   }
 
+  formatDateTime(value: Date): string {
+    return this._dateTimeFormatter.format(value);
+  }
+
   private updateBuiltInFormatters = () => {
-    this._decimalBuiltInFormatter = new Intl.NumberFormat(this._settingsState.language, { maximumFractionDigits: 0 });
-    this._floatBuiltInFormatter = new Intl.NumberFormat(this._settingsState.language, {
-      minimumFractionDigits: 3,
-      maximumFractionDigits: 3,
-    });
+    this._decimalBuiltInFormatter = new Intl.NumberFormat(
+      this._settingsState.language,
+      defaultDecimalBuiltInFormatterOptions,
+    );
+    this._floatBuiltInFormatter = new Intl.NumberFormat(
+      this._settingsState.language,
+      defaultFloatBuiltInFormatterOptions,
+    );
+    this._dateTimeFormatter = new Intl.DateTimeFormat(this._settingsState.language, defaultDateTimeFormatterOptions);
   };
 
   private formatNumberExponential(value: number) {

@@ -1,6 +1,6 @@
 import { t } from 'i18next';
-import { html, css, TemplateResult } from 'lit';
-import { customElement, state } from 'lit/decorators.js';
+import { html, css } from 'lit';
+import { customElement } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { BaseComponent } from '@shared/base-component';
 import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.component.js';
@@ -10,7 +10,7 @@ import SlSwitch from '@shoelace-style/shoelace/dist/components/switch/switch.com
 import { LONG_NUMBER_FORMATS, THEMES } from '@shared/constants';
 import { Language, LongNumberFormat, Theme } from '@shared/types';
 import { SettingsFormController } from './controller';
-import { LANGUAGE_OPTIONS } from './constants';
+import * as constants from './constants';
 
 @customElement('ca-settings-form')
 export class SettingsForm extends BaseComponent<SettingsFormController> {
@@ -56,6 +56,8 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
 
   private _messageLogSizeInputRef = createRef<SlInput>();
 
+  private _toastDurationInputRef = createRef<SlRange>();
+
   private _updateIntervalInputRef = createRef<SlRange>();
 
   private _autosaveEnabledSwitchRef = createRef<SlSwitch>();
@@ -68,9 +70,6 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
 
   private _longNumberFormatInputRef = createRef<SlSelect>();
 
-  @state()
-  private _isSaving = false;
-
   constructor() {
     super();
 
@@ -78,28 +77,6 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
   }
 
   renderContent() {
-    const content = this._isSaving ? this.renderSpinner() : this.renderForm();
-
-    return html`${content}`;
-  }
-
-  updated(_changedProperties: Map<string, any>) {
-    super.updated(_changedProperties);
-
-    if (this._autosaveIntervalInputRef.value) {
-      this._autosaveIntervalInputRef.value.tooltipFormatter = this.autosaveIntervalFormatter;
-    }
-
-    if (this._updateIntervalInputRef.value) {
-      this._updateIntervalInputRef.value.tooltipFormatter = this.decimalNumberFormatter;
-    }
-
-    if (this._fastSpeedMultiplierInputRef.value) {
-      this._fastSpeedMultiplierInputRef.value.tooltipFormatter = this.decimalNumberFormatter;
-    }
-  }
-
-  private renderForm(): TemplateResult {
     return html`
       <sl-select
         ${ref(this._languageInputRef)}
@@ -109,7 +86,9 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
       >
         <span class="input-label" slot="label"> ${t('settings.language', { ns: 'ui' })} </span>
 
-        ${LANGUAGE_OPTIONS.map(
+        <span slot="help-text"> ${t('settings.languageHint', { ns: 'ui' })} </span>
+
+        ${constants.LANGUAGE_OPTIONS.map(
           ([language, optionText]) => html`<sl-option value=${language}> ${optionText} </sl-option>`,
         )}
       </sl-select>
@@ -132,14 +111,69 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
         name="messageLogSize"
         value=${this.controller.messageLogSize}
         type="number"
-        min="1"
-        max="100"
-        step="1"
+        min=${constants.MESSAGE_LOG_SIZE_MIN}
+        max=${constants.MESSAGE_LOG_SIZE_MAX}
+        step=${constants.MESSAGE_LOG_SIZE_STEP}
         @sl-change=${this.handleChangeMessageLogSize}
       >
         <span class="input-label" slot="label"> ${t('settings.messageLogSize', { ns: 'ui' })} </span>
 
         <span slot="help-text"> ${t('settings.messageLogSizeHint', { ns: 'ui' })} </span>
+      </sl-input>
+
+      <sl-range
+        ${ref(this._toastDurationInputRef)}
+        min=${constants.TOAST_DURATION_MIN}
+        max=${constants.TOAST_DURATION_MAX}
+        step=${constants.TOAST_DURATION_STEP}
+        name="toastDuration"
+        value=${this.controller.toastDuration}
+        @sl-change=${this.handleChangeToastDuration}
+      >
+        <span class="input-label" slot="label"> ${t('settings.toastDuration', { ns: 'ui' })} </span>
+
+        <span slot="help-text"> ${t('settings.toastDurationHint', { ns: 'ui' })} </span>
+      </sl-range>
+
+      <sl-range
+        ${ref(this._updateIntervalInputRef)}
+        min=${constants.UPDATE_INTERVAL_MIN}
+        max=${constants.UPDATE_INTERVAL_MAX}
+        step=${constants.UPDATE_INTERVAL_STEP}
+        name="updateInterval"
+        value=${this.controller.updateInterval}
+        @sl-change=${this.handleChangeUpdateInterval}
+      >
+        <span class="input-label" slot="label"> ${t('settings.updateInterval', { ns: 'ui' })} </span>
+      </sl-range>
+
+      <sl-range
+        ${ref(this._fastSpeedMultiplierInputRef)}
+        min=${constants.FAST_SPEED_MULTIPLIER_MIN}
+        max=${constants.FAST_SPEED_MULTIPLIER_MAX}
+        step=${constants.FAST_SPEED_MULTIPLIER_STEP}
+        name="fastSpeedMultiplier"
+        value=${this.controller.fastSpeedMultiplier}
+        @sl-change=${this.handleChangeFastSpeedMultiplier}
+      >
+        <span class="input-label" slot="label"> ${t('settings.fastSpeedMultiplier', { ns: 'ui' })} </span>
+
+        <span slot="help-text"> ${t('settings.fastSpeedMultiplierHint', { ns: 'ui' })} </span>
+      </sl-range>
+
+      <sl-input
+        ${ref(this._maxUpdatesPerTickInputRef)}
+        name="maxUpdatesPerTick"
+        value=${this.controller.maxUpdatesPerTick}
+        type="number"
+        min=${constants.MAX_UPDATES_PER_TICK_MIN}
+        max=${constants.MAX_UPDATES_PER_TICK_MAX}
+        step=${constants.MAX_UPDATES_PER_TICK_STEP}
+        @sl-change=${this.handleChangeMaxUpdatesPerTick}
+      >
+        <span class="input-label" slot="label"> ${t('settings.maxUpdatesPerTick', { ns: 'ui' })} </span>
+
+        <span slot="help-text"> ${t('settings.maxUpdatesPerTickHint', { ns: 'ui' })} </span>
       </sl-input>
 
       <sl-select
@@ -158,32 +192,6 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
         )}
       </sl-select>
 
-      <sl-range
-        ${ref(this._updateIntervalInputRef)}
-        min="25"
-        max="1000"
-        step="1"
-        name="updateInterval"
-        value=${this.controller.updateInterval}
-        @sl-change=${this.handleChangeUpdateInterval}
-      >
-        <span class="input-label" slot="label"> ${t('settings.updateInterval', { ns: 'ui' })} </span>
-      </sl-range>
-
-      <sl-range
-        ${ref(this._fastSpeedMultiplierInputRef)}
-        min="2"
-        max="100"
-        step="1"
-        name="fastSpeedMultiplier"
-        value=${this.controller.fastSpeedMultiplier}
-        @sl-change=${this.handleChangefastSpeedMultiplier}
-      >
-        <span class="input-label" slot="label"> ${t('settings.fastSpeedMultiplier', { ns: 'ui' })} </span>
-
-        <span slot="help-text"> ${t('settings.fastSpeedMultiplierHint', { ns: 'ui' })} </span>
-      </sl-range>
-
       <sl-switch
         ${ref(this._autosaveEnabledSwitchRef)}
         size="large"
@@ -196,62 +204,49 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
 
       <sl-range
         ${ref(this._autosaveIntervalInputRef)}
-        min="10000"
-        max="600000"
-        step="1000"
+        min=${constants.AUTOSAVE_INTERVAL_MIN}
+        max=${constants.AUTOSAVE_INTERVAL_MAX}
+        step=${constants.AUTOSAVE_INTERVAL_STEP}
         name="autosaveInterval"
         value=${this.controller.autosaveInterval}
         @sl-change=${this.handleChangeAutosaveInterval}
       >
         <span class="input-label" slot="label"> ${t('settings.autosaveInterval', { ns: 'ui' })} </span>
+
+        <span slot="help-text"> ${t('settings.autosaveIntervalHint', { ns: 'ui' })} </span>
       </sl-range>
-
-      <sl-input
-        ${ref(this._maxUpdatesPerTickInputRef)}
-        name="maxUpdatesPerTick"
-        value=${this.controller.maxUpdatesPerTick}
-        type="number"
-        min="1"
-        max="100000000"
-        step="1"
-        @sl-change=${this.handleChangeMaxUpdatesPerTick}
-      >
-        <span class="input-label" slot="label"> ${t('settings.maxUpdatesPerTick', { ns: 'ui' })} </span>
-
-        <span slot="help-text"> ${t('settings.maxUpdatesPerTickHint', { ns: 'ui' })} </span>
-      </sl-input>
     `;
   }
 
-  private renderSpinner(): TemplateResult {
-    return html`
-      <div class="spinner-container">
-        <sl-spinner></sl-spinner>
-      </div>
-    `;
+  updated(_changedProperties: Map<string, any>) {
+    super.updated(_changedProperties);
+
+    if (this._toastDurationInputRef.value) {
+      this._toastDurationInputRef.value.tooltipFormatter = this.timeSecondsFormatter;
+    }
+
+    if (this._autosaveIntervalInputRef.value) {
+      this._autosaveIntervalInputRef.value.tooltipFormatter = this.timeSecondsFormatter;
+    }
+
+    if (this._updateIntervalInputRef.value) {
+      this._updateIntervalInputRef.value.tooltipFormatter = this.decimalNumberFormatter;
+    }
+
+    if (this._fastSpeedMultiplierInputRef.value) {
+      this._fastSpeedMultiplierInputRef.value.tooltipFormatter = this.decimalNumberFormatter;
+    }
   }
-
-  private startSaving = () => {
-    this._isSaving = true;
-  };
-
-  private stopSaving = () => {
-    this._isSaving = false;
-  };
 
   private handleChangeLanguage = async () => {
     if (!this._languageInputRef.value) {
       return;
     }
 
-    this.startSaving();
-
     try {
       await this.controller.setLanguage(this._languageInputRef.value.value as Language);
     } catch (e) {
       console.error(e);
-    } finally {
-      this.stopSaving();
     }
   };
 
@@ -270,16 +265,24 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
 
     let value = this._messageLogSizeInputRef.value.valueAsNumber;
 
-    if (value < 1) {
-      value = 1;
+    if (value < constants.MESSAGE_LOG_SIZE_MIN) {
+      value = constants.MESSAGE_LOG_SIZE_MIN;
     }
 
-    if (value > 100) {
-      value = 100;
+    if (value > constants.MESSAGE_LOG_SIZE_MAX) {
+      value = constants.MESSAGE_LOG_SIZE_MAX;
     }
 
     this.controller.setMessageLogSize(value);
     this._messageLogSizeInputRef.value.valueAsNumber = value;
+  };
+
+  private handleChangeToastDuration = () => {
+    if (!this._toastDurationInputRef.value) {
+      return;
+    }
+
+    this.controller.setToastDuration(this._toastDurationInputRef.value.value);
   };
 
   private handleChangeUpdateInterval = () => {
@@ -306,12 +309,12 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
     this.controller.setAutosaveInterval(this._autosaveIntervalInputRef.value.value);
   };
 
-  private handleChangefastSpeedMultiplier = () => {
+  private handleChangeFastSpeedMultiplier = () => {
     if (!this._fastSpeedMultiplierInputRef.value) {
       return;
     }
 
-    this.controller.setfastSpeedMultiplier(this._fastSpeedMultiplierInputRef.value.value);
+    this.controller.setFastSpeedMultiplier(this._fastSpeedMultiplierInputRef.value.value);
   };
 
   private handleChangeMaxUpdatesPerTick = () => {
@@ -321,15 +324,15 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
 
     let value = this._maxUpdatesPerTickInputRef.value.valueAsNumber;
 
-    if (value < 1) {
-      value = 1;
+    if (value < constants.MAX_UPDATES_PER_TICK_MIN) {
+      value = constants.MAX_UPDATES_PER_TICK_MIN;
     }
 
-    if (value > 100000000) {
-      value = 100000000;
+    if (value > constants.MAX_UPDATES_PER_TICK_MAX) {
+      value = constants.MAX_UPDATES_PER_TICK_MAX;
     }
 
-    this.controller.setmaxUpdatesPerTick(value);
+    this.controller.setMaxUpdatesPerTick(value);
     this._maxUpdatesPerTickInputRef.value.valueAsNumber = value;
   };
 
@@ -341,7 +344,7 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
     this.controller.setLongNumberFormat(this._longNumberFormatInputRef.value.value as LongNumberFormat);
   };
 
-  private autosaveIntervalFormatter = (value: number): string => {
+  private timeSecondsFormatter = (value: number): string => {
     return this.controller.formatter.formatNumberDecimal(value / 1000);
   };
 

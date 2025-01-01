@@ -1,5 +1,5 @@
 import { t } from 'i18next';
-import { css, html } from 'lit';
+import { css, html, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.component.js';
@@ -183,7 +183,7 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
           ${this._programName
             ? html`<ca-process-diff-text program-name=${this._programName} threads=${this._threads}>
               </ca-process-diff-text>`
-            : null}
+            : nothing}
         </div>
 
         <sl-button slot="footer" size="medium" variant="default" outline @click=${this.handleClose}>

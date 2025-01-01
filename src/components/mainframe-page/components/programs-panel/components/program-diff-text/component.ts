@@ -1,5 +1,5 @@
 import { t } from 'i18next';
-import { css, html } from 'lit';
+import { css, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { ProgramName } from '@state/progam-factory/types';
@@ -164,7 +164,7 @@ export class ProgramDiffText extends BaseComponent<ProgramDiffTextController> {
         return new MainframeProgramsAutobuyerDescriptionEffectRenderer(parameters).renderEffect();
 
       default:
-        return html``;
+        return nothing;
     }
   };
 }

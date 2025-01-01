@@ -1,5 +1,5 @@
 import { t } from 'i18next';
-import { css, html } from 'lit';
+import { css, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { ProgramName } from '@state/progam-factory/types';
@@ -47,7 +47,7 @@ export class ProgramDescriptionText extends BaseComponent<ProgramDescriptionText
     const program = this.controller.getProgram(this.programName as ProgramName);
 
     if (!program) {
-      return html``;
+      return nothing;
     }
 
     const requirements = program.isAutoscalable
@@ -145,7 +145,7 @@ export class ProgramDescriptionText extends BaseComponent<ProgramDescriptionText
         return new MainframeProgramsAutobuyerDescriptionEffectRenderer(parameters).renderEffect();
 
       default:
-        return html``;
+        return nothing;
     }
   };
 }

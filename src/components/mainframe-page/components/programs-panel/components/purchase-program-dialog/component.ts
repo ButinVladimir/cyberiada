@@ -1,5 +1,5 @@
 import { t } from 'i18next';
-import { css, html } from 'lit';
+import { css, html, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.component.js';
@@ -204,7 +204,7 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
                 quality=${this._quality}
               >
               </ca-program-diff-text>`
-            : null}
+            : nothing}
         </div>
 
         <sl-button slot="footer" size="medium" variant="default" outline @click=${this.handleClose}>

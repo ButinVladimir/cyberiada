@@ -112,7 +112,7 @@
     },
     {
       "name": "ca-game-screen",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_menuOpened` {`boolean`} - \n\n  * `_messageLogOpened` {`boolean`} - \n\n  * `_selectedMenuItem` - \n\n  * `handleMenuToggle` - \n\n  * `handleMessageLogToggle` - \n\n  * `handleMenuItemSelect` - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_menuOpened` {`boolean`} - \n\n  * `_selectedMenuItem` - \n\n  * `handleMenuToggle` - \n\n  * `handleMenuItemSelect` - ",
       "attributes": []
     },
     {
@@ -142,23 +142,24 @@
       ]
     },
     {
-      "name": "ca-message-log-bar",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `handleOpenClearMessagesDialog` - \n\n  * `handleConfirmClearMessagesDialog` - \n\n  * `controller` {`MessageLogBarController`} - ",
-      "attributes": []
-    },
-    {
-      "name": "ca-message-log-content",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `SCROLL_EPS` {`number`} - \n\n  * `_scrollableComponentRef` {`Ref<ScrollableComponentElement>`} - \n\n  * `_scrollSticky` {`boolean`} - \n\n  * `renderMessage` - \n\n  * `handleScroll` - \n\n  * `controller` {`MessageLogContentController`} - ",
-      "attributes": []
-    },
-    {
       "name": "ca-notification-modal",
       "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_notificationTypeToggleRef` {`Ref<SlCheckbox>`} - \n\n  * `_notificationTypeToggled` {`boolean`} - \n\n  * `handleClose` - \n\n  * `handleToggleNotificationType` - \n\n  * `controller` {`NotificationModalController`} - ",
       "attributes": []
     },
     {
+      "name": "ca-toasts",
+      "description": "Attributes:\n\n  * `selected-menu-item` {`string | undefined`} - \n\nProperties:\n\n  * `selectedMenuItem` {`string | undefined`} - \n\n  * `controller` {`ToastsController`} - ",
+      "attributes": [
+        {
+          "name": "selected-menu-item",
+          "description": "`selected-menu-item` {`string | undefined`} - \n\nProperty: selectedMenuItem",
+          "values": []
+        }
+      ]
+    },
+    {
       "name": "ca-top-bar",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `handleMenuClick` - \n\n  * `handleLogsClick` - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `handleMenuClick` - ",
       "attributes": []
     },
     {
@@ -372,6 +373,16 @@
       ]
     },
     {
+      "name": "ca-message-log-page",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `handleOpenClearMessagesDialog` - \n\n  * `handleConfirmClearMessagesDialog` - \n\n  * `controller` {`MessageLogBarController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-message-log-content",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderMessage` - \n\n  * `controller` {`MessageLogContentController`} - ",
+      "attributes": []
+    },
+    {
       "name": "ca-settings-page",
       "description": "Properties:\n\n  * `styles` {`CSSResult`} - ",
       "attributes": []
@@ -421,7 +432,7 @@
     },
     {
       "name": "ca-settings-form",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_languageInputRef` {`Ref<SlSelect>`} - \n\n  * `_themeInputRef` {`Ref<SlSelect>`} - \n\n  * `_messageLogSizeInputRef` {`Ref<SlInput>`} - \n\n  * `_updateIntervalInputRef` {`Ref<SlRange>`} - \n\n  * `_autosaveEnabledSwitchRef` {`Ref<SlSwitch>`} - \n\n  * `_autosaveIntervalInputRef` {`Ref<SlRange>`} - \n\n  * `_fastSpeedMultiplierInputRef` {`Ref<SlRange>`} - \n\n  * `_maxUpdatesPerTickInputRef` {`Ref<SlInput>`} - \n\n  * `_longNumberFormatInputRef` {`Ref<SlSelect>`} - \n\n  * `_isSaving` {`boolean`} - \n\n  * `startSaving` - \n\n  * `stopSaving` - \n\n  * `handleChangeLanguage` - \n\n  * `handleChangeTheme` - \n\n  * `handleChangeMessageLogSize` - \n\n  * `handleChangeUpdateInterval` - \n\n  * `handleChangeAutosaveEnabled` - \n\n  * `handleChangeAutosaveInterval` - \n\n  * `handleChangefastSpeedMultiplier` - \n\n  * `handleChangeMaxUpdatesPerTick` - \n\n  * `handleChangeLongNumberFormat` - \n\n  * `autosaveIntervalFormatter` - \n\n  * `decimalNumberFormatter` - \n\n  * `controller` {`SettingsFormController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_languageInputRef` {`Ref<SlSelect>`} - \n\n  * `_themeInputRef` {`Ref<SlSelect>`} - \n\n  * `_messageLogSizeInputRef` {`Ref<SlInput>`} - \n\n  * `_toastDurationInputRef` {`Ref<SlRange>`} - \n\n  * `_updateIntervalInputRef` {`Ref<SlRange>`} - \n\n  * `_autosaveEnabledSwitchRef` {`Ref<SlSwitch>`} - \n\n  * `_autosaveIntervalInputRef` {`Ref<SlRange>`} - \n\n  * `_fastSpeedMultiplierInputRef` {`Ref<SlRange>`} - \n\n  * `_maxUpdatesPerTickInputRef` {`Ref<SlInput>`} - \n\n  * `_longNumberFormatInputRef` {`Ref<SlSelect>`} - \n\n  * `handleChangeLanguage` - \n\n  * `handleChangeTheme` - \n\n  * `handleChangeMessageLogSize` - \n\n  * `handleChangeToastDuration` - \n\n  * `handleChangeUpdateInterval` - \n\n  * `handleChangeAutosaveEnabled` - \n\n  * `handleChangeAutosaveInterval` - \n\n  * `handleChangeFastSpeedMultiplier` - \n\n  * `handleChangeMaxUpdatesPerTick` - \n\n  * `handleChangeLongNumberFormat` - \n\n  * `timeSecondsFormatter` - \n\n  * `decimalNumberFormatter` - \n\n  * `controller` {`SettingsFormController`} - ",
       "attributes": []
     },
     {

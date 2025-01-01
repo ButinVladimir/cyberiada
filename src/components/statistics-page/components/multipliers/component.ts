@@ -1,5 +1,5 @@
 import { t } from 'i18next';
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { StatisticsMultipliersController } from './controller';
@@ -32,7 +32,7 @@ export class StatisticsMultipliers extends BaseComponent<StatisticsMultipliersCo
               <span> ${t('statistics.general.multipliers.programCompletionSpeed', { ns: 'ui' })} </span>
               <span> ${formatter.formatNumberFloat(programCompletionSpeedMultiplier)} </span>
             `
-          : null}
+          : nothing}
         ${mainframeDiscount > 0
           ? html`
               <span>
@@ -46,7 +46,7 @@ export class StatisticsMultipliers extends BaseComponent<StatisticsMultipliersCo
               </span>
               <span> ${formatter.formatNumberFloat(mainframeDiscount)} </span>
             `
-          : null}
+          : nothing}
       </div>
     `;
   }

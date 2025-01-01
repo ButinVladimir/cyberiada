@@ -18,9 +18,9 @@ pages:
   settings: Settings
   automation: Automation
   credits: Credits
+  messageLog: Message log
 topBar:
   menu: Toggle menu
-  messageLog: Toggle message log
   gameSpeedButtons:
     pause: Pause
     playNormal: Play on normal speed (without accumulated time)
@@ -43,12 +43,16 @@ fastForwardingScreen:
 settings:
   settings: Settings
   language: Language
+  languageHint: Changing language will reload game UI completely
   theme: Theme
   messageLogSize: Maximum amount of messages in log
   messageLogSizeHint: Excessive messages in log won"t be removed until new message is received
+  toastDuration: Message popup duration (s)
+  toastDurationHint: Set 0 to disable message popups
   updateInterval: Update interval (ms)
   autosaveEnabled: Enable autosave
   autosaveInterval: Autosave interval (s)
+  autosaveIntervalHint: Too low number can cause strain on CPU
   fastSpeedMultiplier: Speed multiplier when game speed is fast
   fastSpeedMultiplierHint: Too high number can cause strain on CPU
   maxUpdatesPerTick: Maximum amount of updates per tick
@@ -65,12 +69,12 @@ settings:
   exportSavefile: Export savefile
   deleteSaveData: Delete save data
   messageFilter: Message filter
-  messageFilterHint: Enable events in filter to receive messages about them in the log.
+  messageFilterHint: Enable events in filter to receive messages about them in the log and as popups
   alertFilter: Alert filter
-  alertFilterHint: Enable alerts in filter to make them visible when event happens.
+  alertFilterHint: Enable alerts in filter to make them visible when event happens
   alertToggle: Show alerts like this in the future
   notificationTypeFilter: Notification type filter
-  notificationTypeFilterHint: Enable notification types in filter to make them visible when event happens.
+  notificationTypeFilterHint: Enable notification types in filter to make them visible when event happens
   notificationTypeToggle: Show notifications like this in the future
 city:
   cityOverview:

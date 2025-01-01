@@ -18,9 +18,9 @@ pages:
   settings: Настройки
   automation: Автоматизация
   credits: Титры
+  messageLog: Лог сообщений
 topBar:
   menu: Показать/скрыть меню
-  messageLog: Показать/скрыть сообщения
   gameSpeedButtons:
     pause: Пауза
     playNormal: Играть на нормальной скорости (без накопленного времени)
@@ -35,7 +35,7 @@ topBar:
     titleNoGoals: Доступных целей уроня развития нет
     reachLevel: Достичь уровень развития {{level}}
 messageLog:
-  messageLog: Сообщения
+  messageLog: Лог сообщений
   clearMessages: Удалить сообщения
 fastForwardingScreen:
   fastForwarding: Трата накопленного времени...
@@ -43,12 +43,16 @@ fastForwardingScreen:
 settings:
   settings: Настройки
   language: Язык
+  languageHint: После смена языка интерфейс игры будет полностью перезагружен
   theme: Тема
   messageLogSize: Максимальное количество сообщений
   messageLogSizeHint: Лишние сообщения не будут удалены, пока не будет получено новое сообщение
+  toastDuration: Время, как долго всплывающие сообщения будут на экране (сек)
+  toastDurationHint: Выберите 0, чтобы выключить всплывающие сообщения
   updateInterval: Интервал обновления (мс)
   autosaveEnabled: Включить автосохранение
   autosaveInterval: Интервал автосохранения (сек)
+  autosaveIntervalHint: Слишком малое значение может привести к нагрузке на процессор
   fastSpeedMultiplier: Множитель скорости при быстрой скорости игры
   fastSpeedMultiplierHint: Слишком большое значение может привести к нагрузке на процессор
   maxUpdatesPerTick: Максимальное количество обновлений за тик
@@ -65,12 +69,12 @@ settings:
   exportSavefile: Экспорт сохранения
   deleteSaveData: Удалить сохраненные данные
   messageFilter: Фильтр сообщений
-  messageFilterHint: Включите события в фильтре, чтобы получать сообщения о них.
+  messageFilterHint: Включите события в фильтре, чтобы получать сообщения в логе и в виде всплывающих окон
   alertFilter: Фильтр предупреждений
-  alertFilterHint: Включите предупреждения в фильтре, чтобы они появлялись, когда соответствующее события произошли.
+  alertFilterHint: Включите предупреждения в фильтре, чтобы они появлялись, когда соответствующее события произошли
   alertToggle: Показывать подобные предупреждения в будущем
   notificationTypeFilter: Фильтр уведомлений
-  notificationTypeFilterHint: Включите уведомления в фильтре, чтобы они появлялись, когда соответствующее события произошли.
+  notificationTypeFilterHint: Включите уведомления в фильтре, чтобы они появлялись, когда соответствующее события произошли
   notificationTypeToggle: Показывать подобные уведомления в будущем
 city:
   cityOverview:

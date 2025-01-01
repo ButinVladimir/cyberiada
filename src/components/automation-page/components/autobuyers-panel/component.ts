@@ -1,4 +1,4 @@
-import { css, html } from 'lit';
+import { css, html, nothing } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { Feature } from '@shared/types';
@@ -29,10 +29,10 @@ export class AutomationAutobuyersPanel extends BaseComponent<AutomationAutobuyer
     return html`
       ${this.controller.isFeatureUnlocked(Feature.automationMainframeHardware)
         ? html`<ca-automation-mainframe-hardware-autobuyer></ca-automation-mainframe-hardware-autobuyer>`
-        : null}
+        : nothing}
       ${this.controller.isFeatureUnlocked(Feature.automationMainframePrograms)
         ? html`<ca-automation-mainframe-programs-autobuyer></ca-automation-mainframe-programs-autobuyer>`
-        : null}
+        : nothing}
     `;
   }
 }

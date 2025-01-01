@@ -17,8 +17,8 @@ storyEvent:
   name: Сюжетное событие
   message: $t(story:{{messageKey}})
 performanceUpgraded:
-  name: Производительность мейнфрема улучшена
-  message: Производительность мейнфрема улучшена до {{level}}
+  name: Производительность мейнфрейма улучшена
+  message: Производительность мейнфрейма улучшена до {{level}}
 coresUpgraded:
   name: Ядра мейнфрейма улучшены
   message: Ядра мейнфрейма улучшены до {{level}}

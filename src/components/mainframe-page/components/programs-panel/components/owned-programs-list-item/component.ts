@@ -1,5 +1,5 @@
 import { t } from 'i18next';
-import { css, html } from 'lit';
+import { css, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { ProgramName } from '@state/progam-factory/types';
@@ -77,7 +77,7 @@ export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemCo
     const program = this.controller.getProgram(this.programName as ProgramName);
 
     if (!program) {
-      return html``;
+      return nothing;
     }
 
     const autoupgradeIcon = program.autoUpgradeEnabled ? 'arrow-up-circle-fill' : 'arrow-up-circle';

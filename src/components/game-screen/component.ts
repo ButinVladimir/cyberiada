@@ -8,7 +8,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 @customElement('ca-game-screen')
 export class GameScreen extends BaseComponent {
   static styles = css`
-    :host {
+    .game-screen {
       width: 100vw;
       height: 100vh;
       max-height: 100vh;
@@ -82,47 +82,39 @@ export class GameScreen extends BaseComponent {
   private _menuOpened = true;
 
   @state()
-  private _messageLogOpened = true;
-
-  @state()
   private _selectedMenuItem?: OverviewMenuItem;
 
   renderContent() {
     return html`
-      <div class="top-bar-outer-container">
-        <div class="top-bar-inner-container">
-          <ca-top-bar @menu-toggled=${this.handleMenuToggle} @logs-toggled=${this.handleMessageLogToggle}> </ca-top-bar>
-        </div>
-      </div>
-
-      <div class="content-outer-container">
-        <div class="content-inner-container">
-          ${this._menuOpened
-            ? html`
-                <div class="side-bar-container menu-bar-container">
-                  <ca-menu-bar
-                    selected-menu-item=${ifDefined(this._selectedMenuItem)}
-                    @menu-item-selected=${this.handleMenuItemSelect}
-                  >
-                  </ca-menu-bar>
-                </div>
-              `
-            : nothing}
-
-          <div class="viewport-container">
-            <ca-viewport selected-menu-item=${ifDefined(this._selectedMenuItem)}></ca-viewport>
+      <div class="game-screen">
+        <div class="top-bar-outer-container">
+          <div class="top-bar-inner-container">
+            <ca-top-bar @menu-toggled=${this.handleMenuToggle}> </ca-top-bar>
           </div>
+        </div>
 
-          ${this._messageLogOpened
-            ? html`
-                <div class="side-bar-container message-log-bar-container">
-                  <ca-message-log-bar></ca-message-log-bar>
-                </div>
-              `
-            : nothing}
+        <div class="content-outer-container">
+          <div class="content-inner-container">
+            ${this._menuOpened
+              ? html`
+                  <div class="side-bar-container menu-bar-container">
+                    <ca-menu-bar
+                      selected-menu-item=${ifDefined(this._selectedMenuItem)}
+                      @menu-item-selected=${this.handleMenuItemSelect}
+                    >
+                    </ca-menu-bar>
+                  </div>
+                `
+              : nothing}
+
+            <div class="viewport-container">
+              <ca-viewport selected-menu-item=${ifDefined(this._selectedMenuItem)}></ca-viewport>
+            </div>
+          </div>
         </div>
       </div>
 
+      <ca-toasts></ca-toasts>
       <ca-confirmation-alert></ca-confirmation-alert>
       <ca-notification-modal></ca-notification-modal>
     `;
@@ -130,10 +122,6 @@ export class GameScreen extends BaseComponent {
 
   private handleMenuToggle = () => {
     this._menuOpened = !this._menuOpened;
-  };
-
-  private handleMessageLogToggle = () => {
-    this._messageLogOpened = !this._messageLogOpened;
   };
 
   private handleMenuItemSelect = (event: Event) => {

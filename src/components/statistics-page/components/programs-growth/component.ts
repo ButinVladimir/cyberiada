@@ -1,5 +1,5 @@
 import { t } from 'i18next';
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { StatisticsProgramsGrowthController } from './controller';
@@ -40,7 +40,7 @@ export class StatisticsProgramsGrowth extends BaseComponent<StatisticsProgramsGr
               <span> ${formatter.formatNumberLong(computationalBase)} </span>
             </div>
           `
-        : null}
+        : nothing}
     `;
   }
 }

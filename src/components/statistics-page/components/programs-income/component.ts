@@ -1,5 +1,5 @@
 import { t } from 'i18next';
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { StatisticsProgramsIncomeController } from './controller';
@@ -39,7 +39,7 @@ export class StatisticsProgramsIncome extends BaseComponent<StatisticsProgramsIn
               </span>
               <span> ${formatter.formatNumberLong(this.controller.computationalBase)} </span>
             `
-          : null}
+          : nothing}
       </div>
     `;
   }
