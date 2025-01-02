@@ -1,0 +1,201 @@
+import { css, html } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
+import { createRef, ref } from 'lit/directives/ref.js';
+import { BaseComponent } from '@shared/base-component';
+import { EMPTY_IMAGE } from '@shared/constants';
+import { SortableElementMovedEvent } from './events';
+
+@customElement('ca-sortable-list')
+export class MainframeHardwarePanel extends BaseComponent {
+  static styles = css`
+    div.list {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+    }
+  `;
+
+  @property({
+    attribute: 'gap',
+    type: Number,
+  })
+  gap = 0;
+
+  private _listRef = createRef<HTMLDivElement>();
+
+  private _draggedElement?: HTMLElement;
+
+  private _listBoundingRect?: DOMRect;
+
+  private _elementBoundingRect?: DOMRect;
+
+  updated(_changedProperties: Map<string, any>) {
+    super.updated(_changedProperties);
+
+    this.handleChildrenUpdate();
+  }
+
+  renderContent() {
+    return html`
+      <div ${ref(this._listRef)} part="list" class="list" @dragover=${this.handleDragOver}>
+        <slot></slot>
+      </div>
+    `;
+  }
+
+  private handleChildrenUpdate = () => {
+    const children = this.shadowRoot!.querySelector('slot')!.assignedElements();
+
+    for (const child of children) {
+      const htmlElement = child as HTMLElement;
+      htmlElement.removeEventListener('dragstart', this.handleDragStart);
+      htmlElement.removeEventListener('dragend', this.handleDragEnd);
+
+      htmlElement.addEventListener('dragstart', this.handleDragStart);
+      htmlElement.addEventListener('dragend', this.handleDragEnd);
+    }
+
+    this._listBoundingRect = undefined;
+    this._elementBoundingRect = undefined;
+  };
+
+  private handleDragStart = (event: DragEvent) => {
+    event.stopPropagation();
+
+    if (event.dataTransfer) {
+      event.dataTransfer.effectAllowed = 'move';
+      event.dataTransfer.dropEffect = 'move';
+      event.dataTransfer.setDragImage(EMPTY_IMAGE, 0, 0);
+
+      this._draggedElement = event.target as HTMLElement;
+      this._draggedElement.classList.add('dragged');
+    }
+  };
+
+  private handleDragOver = (event: DragEvent) => {
+    event.stopPropagation();
+    event.preventDefault();
+
+    if (!this._listBoundingRect && this._listRef.value) {
+      this._listBoundingRect = this._listRef.value.getBoundingClientRect();
+    }
+
+    if (this._draggedElement) {
+      let eventY = event.clientY - this._listBoundingRect!.top;
+
+      if (eventY < 0) {
+        eventY = 0;
+      }
+
+      if (eventY >= this._listBoundingRect!.height) {
+        eventY = this._listBoundingRect!.height - 1;
+      }
+
+      if (!this._elementBoundingRect) {
+        this._elementBoundingRect = this._draggedElement.getBoundingClientRect();
+      }
+
+      const increase = this.calculatePositionIncrease(eventY) - this.calculatePositionDecrease(eventY);
+
+      if (increase !== 0) {
+        const id = this._draggedElement.getAttribute('data-drag-id')!;
+        const currentPosition = this.calculateCurrentPosition();
+
+        const newPosition = currentPosition + increase;
+
+        this.dispatchEvent(new SortableElementMovedEvent(id, newPosition));
+
+        this._elementBoundingRect = undefined;
+      }
+    }
+  };
+
+  private calculatePositionDecrease(eventY: number): number {
+    if (!this._draggedElement || !this._listBoundingRect || !this._elementBoundingRect) {
+      return 0;
+    }
+
+    const elementTop = this._elementBoundingRect.top - this._listBoundingRect.top;
+    const elementBottom = this._elementBoundingRect.bottom - this._listBoundingRect.top + this.gap;
+
+    if (eventY >= elementTop) {
+      return 0;
+    }
+
+    let positionDecrease = 0;
+    let coordinateDecrease = 0;
+
+    let element: Element | null = this._draggedElement.previousElementSibling;
+
+    while (element && eventY < elementTop - coordinateDecrease) {
+      positionDecrease++;
+      coordinateDecrease += element.getBoundingClientRect().height + this.gap;
+      element = element.previousElementSibling;
+    }
+
+    if (eventY > elementBottom - coordinateDecrease) {
+      positionDecrease--;
+    }
+
+    return positionDecrease;
+  }
+
+  private calculatePositionIncrease(eventY: number): number {
+    if (!this._draggedElement || !this._listBoundingRect || !this._elementBoundingRect) {
+      return 0;
+    }
+
+    const elementTop = this._elementBoundingRect.top - this._listBoundingRect.top;
+    const elementBottom = this._elementBoundingRect.bottom - this._listBoundingRect.top + this.gap;
+
+    if (eventY <= elementBottom) {
+      return 0;
+    }
+
+    let positionIncrease = 0;
+    let coordinateIncrease = 0;
+
+    let element: Element | null = this._draggedElement.nextElementSibling;
+
+    while (element && eventY > elementBottom + coordinateIncrease) {
+      positionIncrease++;
+      coordinateIncrease += element.getBoundingClientRect().height + this.gap;
+      element = element.nextElementSibling;
+    }
+
+    if (eventY < elementTop + coordinateIncrease) {
+      positionIncrease--;
+    }
+
+    return positionIncrease;
+  }
+
+  private calculateCurrentPosition(): number {
+    if (!this._draggedElement) {
+      return 0;
+    }
+
+    let position = 0;
+    let element: Element | null = this._draggedElement.previousElementSibling;
+
+    while (element) {
+      position++;
+      element = element.previousElementSibling;
+    }
+
+    return position;
+  }
+
+  private handleDragEnd = (event: DragEvent) => {
+    event.stopPropagation();
+
+    if (this._draggedElement) {
+      this._draggedElement.classList.remove('dragged');
+    }
+
+    this._draggedElement = undefined;
+    this._listBoundingRect = undefined;
+    this._elementBoundingRect = undefined;
+  };
+}

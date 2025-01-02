@@ -54,9 +54,16 @@ export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwa
       font-size: var(--ca-hint-font-size);
     }
 
-    h4.title sl-icon-button {
+    h4.title #toggle-autoupgrade-btn {
       position: relative;
       top: 0.1em;
+    }
+
+    #drag-icon {
+      position: relative;
+      top: 0.15em;
+      left: -0.2em;
+      color: var(--ca-hint-color);
     }
   `;
 
@@ -93,6 +100,8 @@ export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwa
       <div class="text-container">
         <div class="text-container-inner">
           <h4 class="title" draggable="true" @dragstart=${this.handleDragStart}>
+            <sl-icon id="drag-icon" name="grip-vertical"> </sl-icon>
+
             ${t(`mainframe.hardware.${this.type}`, { ns: 'ui', level: formatter.formatNumberDecimal(level) })}
 
             <sl-tooltip>

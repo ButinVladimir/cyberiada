@@ -1,2 +1,1 @@
-export const ARTICLE_HEIGHT_WITHOUT_GAP = 145;
-export const ARTICLE_HEIGHT_WITH_GAP = 165;
+export const GAP = 20;

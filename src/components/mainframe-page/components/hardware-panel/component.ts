@@ -2,14 +2,12 @@ import { t } from 'i18next';
 import { css, html } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
-import { createRef, ref } from 'lit/directives/ref.js';
 import { BaseComponent } from '@shared/base-component';
 import { IMainframeHardwareParameter } from '@state/mainframe/mainframe-hardware-state/interfaces/mainframe-hardware-parameter';
 import type { MainframeHardwareParameterType } from '@state/mainframe/mainframe-hardware-state/types';
-import { EMPTY_IMAGE } from '@shared/constants';
-import { moveElementInArray } from '@shared/helpers';
+import { SortableElementMovedEvent } from '@components/shared/sortable-list/events/sortable-element-moved';
 import { MainframeHardwarePanelController } from './controller';
-import { ARTICLE_HEIGHT_WITHOUT_GAP, ARTICLE_HEIGHT_WITH_GAP } from './constants';
+import { GAP } from './constants';
 
 @customElement('ca-mainframe-hardware-panel')
 export class MainframeHardwarePanel extends BaseComponent<MainframeHardwarePanelController> {
@@ -27,7 +25,11 @@ export class MainframeHardwarePanel extends BaseComponent<MainframeHardwarePanel
       font-size: var(--ca-hint-font-size);
     }
 
-    div.articles-list {
+    ca-sortable-list {
+      width: 100%;
+    }
+
+    ca-sortable-list::part(list) {
       width: 100%;
       display: flex;
       flex-direction: column;
@@ -36,12 +38,11 @@ export class MainframeHardwarePanel extends BaseComponent<MainframeHardwarePanel
       gap: var(--sl-spacing-large);
     }
 
-    div.articles-list ca-mainframe-hardware-panel-article {
+    ca-sortable-list ca-mainframe-hardware-panel-article {
       width: 100%;
-      height: ${ARTICLE_HEIGHT_WITHOUT_GAP}px;
     }
 
-    div.articles-list ca-mainframe-hardware-panel-article.dragged {
+    ca-sortable-list ca-mainframe-hardware-panel-article.dragged {
       background-color: var(--ca-dragged-color);
     }
 
@@ -52,19 +53,11 @@ export class MainframeHardwarePanel extends BaseComponent<MainframeHardwarePanel
 
   protected controller: MainframeHardwarePanelController;
 
-  private _articlesListRef = createRef<HTMLDivElement>();
-
   @state()
   private _shiftPressed = false;
 
   @state()
   private _ctrlPressed = false;
-
-  @state()
-  private _draggedParameterType: MainframeHardwareParameterType | undefined;
-
-  @state()
-  private _draggedParameterPosition: number | undefined;
 
   constructor() {
     super();
@@ -96,37 +89,20 @@ export class MainframeHardwarePanel extends BaseComponent<MainframeHardwarePanel
         </sl-button>
       </div>
 
-      <div class="articles-list" ${ref(this._articlesListRef)} @dragover=${this.handleDragOver}>
-        ${this.renderParametersList()}
-      </div>
+      <ca-sortable-list gap=${GAP} @sortable-element-moved=${this.handleMoveElement}>
+        ${repeat(this.controller.listParameters(), (parameter) => parameter.type, this.renderParameter)}
+      </ca-sortable-list>
     `;
   }
-
-  private renderParametersList = () => {
-    let parameters = this.controller.listParameters();
-
-    if (this._draggedParameterType && this._draggedParameterPosition !== undefined) {
-      const oldPosition = parameters.findIndex((program) => program.type === this._draggedParameterType);
-
-      const reorderedPrograms = [...parameters];
-      moveElementInArray(reorderedPrograms, oldPosition, this._draggedParameterPosition);
-
-      parameters = reorderedPrograms;
-    }
-
-    return repeat(parameters, (parameter) => parameter.type, this.renderParameter);
-  };
 
   private renderParameter = (parameter: IMainframeHardwareParameter) => {
     const maxIncrease = this.getMaxIncrease();
 
     return html`
       <ca-mainframe-hardware-panel-article
-        class=${parameter.type === this._draggedParameterType ? 'dragged' : ''}
         type=${parameter.type}
         max-increase=${maxIncrease}
-        @dragstart=${this.handleDragStart}
-        @dragend=${this.handleDragEnd}
+        data-drag-id=${parameter.type}
       >
       </ca-mainframe-hardware-panel-article>
     `;
@@ -151,48 +127,17 @@ export class MainframeHardwarePanel extends BaseComponent<MainframeHardwarePanel
     return maxIncrease;
   }
 
-  private handleDragStart = (event: DragEvent) => {
-    event.stopPropagation();
-
-    if (event.dataTransfer) {
-      event.dataTransfer.effectAllowed = 'move';
-      event.dataTransfer.dropEffect = 'move';
-      event.dataTransfer.setDragImage(EMPTY_IMAGE, 0, 0);
-
-      this._draggedParameterType = event.dataTransfer.getData('text/plain') as MainframeHardwareParameterType;
-    }
-  };
-
-  private handleDragOver = (event: DragEvent) => {
-    event.stopPropagation();
-    event.preventDefault();
-
-    if (this._articlesListRef.value) {
-      const boundingRect = this._articlesListRef.value.getBoundingClientRect();
-      const relativeTop = Math.max(event.clientY - boundingRect.top, 0);
-
-      this._draggedParameterPosition = Math.min(
-        Math.floor(relativeTop / ARTICLE_HEIGHT_WITH_GAP),
-        this.controller.listParameters().length - 1,
-      );
-    }
-  };
-
-  private handleDragEnd = (event: Event) => {
-    event.stopPropagation();
-
-    if (this._draggedParameterType && this._draggedParameterPosition !== undefined) {
-      this.controller.moveParameter(this._draggedParameterType, this._draggedParameterPosition);
-    }
-
-    this._draggedParameterType = undefined;
-    this._draggedParameterPosition = undefined;
-  };
-
   private handleBuyMax = (event: Event) => {
     event.stopPropagation();
     event.preventDefault();
 
     this.controller.purchaseMax();
+  };
+
+  private handleMoveElement = (event: SortableElementMovedEvent) => {
+    event.stopPropagation();
+    event.preventDefault();
+
+    this.controller.moveParameter(event.keyName as MainframeHardwareParameterType, event.position);
   };
 }

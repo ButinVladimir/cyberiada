@@ -199,7 +199,7 @@
     },
     {
       "name": "ca-mainframe-hardware-panel",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_articlesListRef` {`Ref<HTMLDivElement>`} - \n\n  * `_shiftPressed` {`boolean`} - \n\n  * `_ctrlPressed` {`boolean`} - \n\n  * `_draggedParameterType` - \n\n  * `_draggedParameterPosition` {`number | undefined`} - \n\n  * `renderParametersList` - \n\n  * `renderParameter` - \n\n  * `handleKeypress` - \n\n  * `handleDragStart` - \n\n  * `handleDragOver` - \n\n  * `handleDragEnd` - \n\n  * `handleBuyMax` - \n\n  * `controller` {`MainframeHardwarePanelController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_shiftPressed` {`boolean`} - \n\n  * `_ctrlPressed` {`boolean`} - \n\n  * `renderParameter` - \n\n  * `handleKeypress` - \n\n  * `handleBuyMax` - \n\n  * `handleMoveElement` - \n\n  * `controller` {`MainframeHardwarePanelController`} - ",
       "attributes": []
     },
     {
@@ -451,6 +451,16 @@
         {
           "name": "level",
           "description": "`level` {`number`} - \n\nProperty: level\n\nDefault: 0"
+        }
+      ]
+    },
+    {
+      "name": "ca-sortable-list",
+      "description": "Attributes:\n\n  * `gap` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `gap` {`number`} - \n\n  * `_listRef` {`Ref<HTMLDivElement>`} - \n\n  * `_draggedElement` {`HTMLElement | undefined`} - \n\n  * `_listBoundingRect` {`DOMRect | undefined`} - \n\n  * `_elementBoundingRect` {`DOMRect | undefined`} - \n\n  * `handleChildrenUpdate` - \n\n  * `handleDragStart` - \n\n  * `handleDragOver` - \n\n  * `handleDragEnd` - ",
+      "attributes": [
+        {
+          "name": "gap",
+          "description": "`gap` {`number`} - \n\nProperty: gap\n\nDefault: 0"
         }
       ]
     },
