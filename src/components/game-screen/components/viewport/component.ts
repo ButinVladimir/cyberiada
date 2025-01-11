@@ -15,14 +15,15 @@ export class Viewport extends BaseComponent {
     scrollable-component {
       width: 100%;
       height: 100%;
-      --content-padding: var(--sl-spacing-small) var(--sl-spacing-medium);
+      --content-padding: var(--sl-spacing-medium);
       --scrollbar-width: var(--ca-scrollbar-width);
       --scrollbar-thumb-fill-color: var(--ca-scrollbar-thumb-fill-color);
       --scrollbar-thumb-fill-color-hover: var(--ca-scrollbar-thumb-fill-color-hover);
     }
 
     div.content-wrapper {
-      max-width: var(--ca-max-content-width);
+      width: calc(100vw - 2 * var(--sl-spacing-medium));
+      max-width: var(--ca-width-widescreen-content);
     }
   `;
 

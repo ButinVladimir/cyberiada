@@ -8,7 +8,6 @@ import { AutomationAutobuyersPanelController } from './controller';
 export class AutomationAutobuyersPanel extends BaseComponent<AutomationAutobuyersPanelController> {
   static styles = css`
     :host {
-      max-width: var(--ca-viewport-width);
       width: 100%;
       display: flex;
       align-items: stretch;

@@ -2,16 +2,24 @@ import { t } from 'i18next';
 import { html, css } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
+import { SCREEN_WIDTH_POINTS } from '@shared/styles';
 
 @customElement('ca-events-filter-panel')
 export class EventsFilterPanel extends BaseComponent {
   static styles = css`
-    :host {
+    div.buttons-list {
       display: flex;
-      align-items: center;
-      flex-direction: row;
+      align-items: flex-start;
+      flex-direction: column;
       flex-wrap: wrap;
       gap: var(--sl-spacing-large);
+    }
+
+    @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
+      div.buttons-list {
+        flex-direction: row;
+        align-items: center;
+      }
     }
   `;
 
@@ -26,20 +34,22 @@ export class EventsFilterPanel extends BaseComponent {
 
   renderContent() {
     return html`
-      <sl-button variant="default" size="medium" @click=${this.handleMessageFilterDialogOpen}>
-        <sl-icon slot="prefix" name="chat-left-dots"></sl-icon>
-        ${t('settings.messageFilter', { ns: 'ui' })}
-      </sl-button>
+      <div class="buttons-list">
+        <sl-button variant="default" size="medium" @click=${this.handleMessageFilterDialogOpen}>
+          <sl-icon slot="prefix" name="chat-left-dots"></sl-icon>
+          ${t('settings.messageFilter', { ns: 'ui' })}
+        </sl-button>
 
-      <sl-button variant="default" size="medium" @click=${this.handleAlertFilterDialogOpen}>
-        <sl-icon slot="prefix" name="question-circle"></sl-icon>
-        ${t('settings.alertFilter', { ns: 'ui' })}
-      </sl-button>
+        <sl-button variant="default" size="medium" @click=${this.handleAlertFilterDialogOpen}>
+          <sl-icon slot="prefix" name="question-circle"></sl-icon>
+          ${t('settings.alertFilter', { ns: 'ui' })}
+        </sl-button>
 
-      <sl-button variant="default" size="medium" @click=${this.handleNotificationTypeFilterDialogOpen}>
-        <sl-icon slot="prefix" name="exclamation-circle"></sl-icon>
-        ${t('settings.notificationTypeFilter', { ns: 'ui' })}
-      </sl-button>
+        <sl-button variant="default" size="medium" @click=${this.handleNotificationTypeFilterDialogOpen}>
+          <sl-icon slot="prefix" name="exclamation-circle"></sl-icon>
+          ${t('settings.notificationTypeFilter', { ns: 'ui' })}
+        </sl-button>
+      </div>
 
       <ca-message-filter-dialog
         ?is-open=${this._isMessageFilterOpen}

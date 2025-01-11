@@ -2,50 +2,39 @@ import { t } from 'i18next';
 import { html, css } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
-import { TopBarValuesController } from './controller';
+import { MenuBarValuesController } from './controller';
 
-@customElement('ca-top-bar-values')
-export class TopBarValues extends BaseComponent<TopBarValuesController> {
+@customElement('ca-menu-bar-values')
+export class MenuBarValues extends BaseComponent<MenuBarValuesController> {
   static styles = css`
     :host {
-      height: 100%;
       display: flex;
+      flex-direction: column;
       align-items: stretch;
-      gap: var(--sl-spacing-medium);
     }
 
     div.block {
       display: flex;
       align-items: center;
+      padding: var(--sl-spacing-small);
+      font-size: var(--sl-font-size-medium);
+      line-height: var(--sl-line-height-normal);
     }
 
     sl-icon {
       color: var(--ca-hint-color);
-    }
-
-    sl-icon[name='clock'] {
-      margin-right: var(--sl-spacing-small);
-    }
-
-    sl-icon[name='currency-bitcoin'] {
-      margin-right: var(--sl-spacing-2x-small);
-    }
-
-    sl-icon[name='star'] {
-      margin-right: var(--sl-spacing-2x-small);
-    }
-
-    span.text {
+      width: 1rem;
       font-size: var(--sl-font-size-medium);
+      margin-right: var(--sl-spacing-small);
     }
   `;
 
-  protected controller: TopBarValuesController;
+  protected controller: MenuBarValuesController;
 
   constructor() {
     super();
 
-    this.controller = new TopBarValuesController(this);
+    this.controller = new MenuBarValuesController(this);
   }
 
   renderContent() {
@@ -63,7 +52,7 @@ export class TopBarValues extends BaseComponent<TopBarValuesController> {
     return html`
       <div class="block">
         <sl-tooltip>
-          <span slot="content"> ${t('topBar.accumulatedTime', { ns: 'ui' })} </span>
+          <span slot="content"> ${t('menuBar.accumulatedTime', { ns: 'ui', time: accumulatedTimeFormatted })} </span>
 
           <sl-icon name="clock"> </sl-icon>
 
@@ -73,7 +62,7 @@ export class TopBarValues extends BaseComponent<TopBarValuesController> {
 
       <div class="block">
         <sl-tooltip>
-          <span slot="content"> ${t('topBar.money', { ns: 'ui' })} </span>
+          <span slot="content"> ${t('menuBar.money', { ns: 'ui', money: moneyFormatted })} </span>
 
           <sl-icon name="currency-bitcoin"> </sl-icon>
 
@@ -83,7 +72,13 @@ export class TopBarValues extends BaseComponent<TopBarValuesController> {
 
       <div class="block">
         <sl-tooltip>
-          <span slot="content"> ${t(`topBar.${developmentLabel}`, { ns: 'ui', time: timeUntilNextLevel })} </span>
+          <span slot="content">
+            ${t(`menuBar.${developmentLabel}`, {
+              ns: 'ui',
+              level: developmentLevelFormatted,
+              time: timeUntilNextLevel,
+            })}
+          </span>
 
           <sl-icon name="star"> </sl-icon>
 

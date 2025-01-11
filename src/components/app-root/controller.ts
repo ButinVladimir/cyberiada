@@ -13,4 +13,8 @@ export class AppRootController extends BaseController {
   get appStage(): AppStage {
     return this.app.appStage;
   }
+
+  saveGame() {
+    this.app.saveGame();
+  }
 }

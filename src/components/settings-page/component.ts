@@ -2,28 +2,28 @@ import { t } from 'i18next';
 import { css, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
+import { pageTitleStyle } from '@shared/styles';
 
 @customElement('ca-settings-page')
 export class SettingsPage extends BaseComponent {
-  static styles = css`
-    :host {
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-    }
+  static styles = [
+    pageTitleStyle,
+    css`
+      :host {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+      }
 
-    h3.title {
-      font-size: var(--sl-font-size-2x-large);
-      font-weight: var(--sl-font-weight-bold);
-      margin-top: 0;
-      margin-bottom: var(--sl-spacing-large);
-      line-height: var(--sl-line-height-denser);
-    }
+      h3.title {
+        margin-bottom: var(--sl-spacing-large);
+      }
 
-    sl-divider {
-      --spacing: var(--sl-spacing-large);
-    }
-  `;
+      sl-divider {
+        --spacing: var(--sl-spacing-large);
+      }
+    `,
+  ];
 
   renderContent() {
     return html`

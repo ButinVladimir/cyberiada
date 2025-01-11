@@ -18,6 +18,7 @@ export class TopBarAvailableGoals extends BaseComponent<TopBarAvailableGoalsCont
 
     sl-icon {
       color: var(--ca-hint-color);
+      padding: var(--sl-spacing-medium);
     }
 
     ul.goals {

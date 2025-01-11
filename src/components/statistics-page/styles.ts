@@ -2,7 +2,6 @@ import { css } from 'lit';
 
 export const statisticsPanelStyle = css`
   :host {
-    max-width: var(--ca-viewport-width);
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -13,12 +12,7 @@ export const statisticsPanelStyle = css`
 
 export const statisticsPanelContentStyle = css`
   :host {
-    max-width: var(--ca-viewport-width);
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    justify-content: center;
+    display: block;
   }
 
   h4.title {
@@ -33,7 +27,7 @@ export const statisticsPanelContentStyle = css`
     display: grid;
     column-gap: var(--sl-spacing-3x-small);
     row-gap: var(--sl-spacing-3x-small);
-    grid-template-columns: 1fr 0fr;
+    grid-template-columns: auto auto;
     grid-auto-rows: auto;
     margin-bottom: var(--sl-spacing-small);
   }

@@ -26,14 +26,15 @@ topBar:
     playNormal: Играть на нормальной скорости (без накопленного времени)
     playFast: Играть на быстрой скорости (с накопленным временем)
     fastForward: Потратить все накопленное время
-  accumulatedTime: Накопленное время
-  money: Деньги
-  developmentLevel: Уровень развития
-  developmentLevelNext: Уровень развития, следующий уровень будет достигнут через {{time}}
   availableGoals:
     titleGoalsExist: 'Доступные цели уровня развития:'
     titleNoGoals: Доступных целей уроня развития нет
     reachLevel: Достичь уровень развития {{level}}
+menuBar:
+  accumulatedTime: 'Накопленное время: {{time}}'
+  money: 'Деньги: {{money}}'
+  developmentLevel: 'Уровень развития: {{level}}'
+  developmentLevelNext: 'Уровень развития: {{level}}, следующий уровень будет достигнут через {{time}}'
 messageLog:
   messageLog: Лог сообщений
   clearMessages: Удалить сообщения

@@ -27,7 +27,7 @@ export class MenuBar extends BaseComponent<MenuBarController> {
 
     nav {
       box-sizing: border-box;
-      padding: var(--sl-spacing-small) var(--sl-spacing-2x-small);
+      padding: var(--sl-spacing-2x-small);
       width: 100%;
       display: flex;
       flex-direction: column;
@@ -54,6 +54,10 @@ export class MenuBar extends BaseComponent<MenuBarController> {
     return html`
       <scrollable-component>
         <nav>
+          <ca-menu-bar-values></ca-menu-bar-values>
+
+          <sl-divider></sl-divider>
+
           ${OVERVIEW_MENU_ITEMS.map(this.renderMenuItem)}
 
           <sl-divider></sl-divider>

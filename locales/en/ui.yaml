@@ -26,14 +26,15 @@ topBar:
     playNormal: Play on normal speed (without accumulated time)
     playFast: Play on fast speed (with accumulated time)
     fastForward: Spend all accumulated time
-  accumulatedTime: Accumulated time
-  money: Money
-  developmentLevel: Development level
-  developmentLevelNext: Development level, next level will be reached in {{time}}
   availableGoals:
     titleGoalsExist: 'Available development level goals:'
     titleNoGoals: No available development level goals
     reachLevel: Reach development level {{level}}
+menuBar:
+  accumulatedTime: 'Accumulated time: {{time}}'
+  money: 'Money: {{money}}'
+  developmentLevel: 'Development level: {{level}}'
+  developmentLevelNext: 'Development level: {{level}}, next level will be reached in {{time}}'
 messageLog:
   messageLog: Message log
   clearMessages: Clear messages

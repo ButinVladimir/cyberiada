@@ -8,45 +8,35 @@ import SlInput from '@shoelace-style/shoelace/dist/components/input/input.compon
 import SlRange from '@shoelace-style/shoelace/dist/components/range/range.component.js';
 import SlSwitch from '@shoelace-style/shoelace/dist/components/switch/switch.component.js';
 import { LONG_NUMBER_FORMATS, THEMES } from '@shared/constants';
+import { SCREEN_WIDTH_POINTS, inputLabelStyle } from '@shared/styles';
 import { Language, LongNumberFormat, Theme } from '@shared/types';
 import { SettingsFormController } from './controller';
 import * as constants from './constants';
 
 @customElement('ca-settings-form')
 export class SettingsForm extends BaseComponent<SettingsFormController> {
-  static styles = css`
-    :host {
-      width: 100%;
-      max-width: var(--ca-viewport-width);
-      display: grid;
-      column-gap: var(--sl-spacing-3x-large);
-      row-gap: var(--sl-spacing-large);
-      grid-template-columns: repeat(2, 1fr);
-      grid-auto-rows: auto;
-      align-items: flex-start;
-      margin-bottom: var(--sl-spacing-large);
-    }
+  static styles = [
+    inputLabelStyle,
+    css`
+      :host {
+        width: 100%;
+        display: grid;
+        row-gap: var(--sl-spacing-2x-large);
+        grid-template-columns: 1fr;
+        grid-auto-rows: auto;
+        align-items: flex-start;
+        margin-bottom: var(--sl-spacing-large);
+      }
 
-    span.input-label {
-      font-size: var(--sl-font-size-medium);
-      line-height: var(--sl-line-height-dense);
-    }
-
-    div.spinner-container {
-      width: 100%;
-      max-width: 20em;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: var(--sl-spacing-3x-large);
-      font-size: var(--sl-font-size-3x-large);
-      box-sizing: border-box;
-    }
-
-    div.spinner-container sl-spinner {
-      --speed: var(--sl-transition-x-slow);
-    }
-  `;
+      @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
+        :host {
+          row-gap: var(--sl-spacing-large);
+          column-gap: var(--sl-spacing-3x-large);
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+    `,
+  ];
 
   protected controller: SettingsFormController;
 

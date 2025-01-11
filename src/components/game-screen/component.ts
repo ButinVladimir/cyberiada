@@ -1,9 +1,11 @@
-import { html, css, nothing } from 'lit';
+import { html, css } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { classMap } from 'lit/directives/class-map.js';
 import { BaseComponent } from '@shared/base-component';
 import { OverviewMenuItem } from '@shared/types';
+import { SCREEN_WIDTH_POINTS } from '@shared/styles';
 import { MenuItemSelectedEvent } from './components/menu-bar/events';
-import { ifDefined } from 'lit/directives/if-defined.js';
 
 @customElement('ca-game-screen')
 export class GameScreen extends BaseComponent {
@@ -31,10 +33,10 @@ export class GameScreen extends BaseComponent {
     }
 
     .top-bar-inner-container {
-      max-width: var(--ca-max-width);
       width: 100vw;
+      max-width: var(--ca-width-screen);
       display: flex;
-      padding: var(--sl-spacing-small);
+      padding: var(--sl-spacing-2x-small);
     }
 
     .content-outer-container {
@@ -49,42 +51,93 @@ export class GameScreen extends BaseComponent {
 
     .content-inner-container {
       background-color: var(--sl-panel-background-color);
-      max-width: var(--ca-max-width);
       width: 100vw;
+      max-width: var(--ca-width-screen);
       display: flex;
       align-items: stretch;
     }
 
-    .side-bar-container {
+    .menu-bar-container {
       flex: 0 0 auto;
       box-sizing: border-box;
-      width: 0;
+      background-color: var(--sl-panel-background-color);
       height: calc(100vh - var(--ca-top-bar-height));
+      width: 0;
+      border-right: var(--ca-border);
+      position: absolute;
+      top: var(--ca-top-bar-height);
+      left: 0;
+      transition: width var(--sl-transition-x-fast) ease;
     }
 
-    .menu-bar-container {
-      width: 15rem;
-      border-right: var(--ca-border);
+    .menu-bar-container.menu-opened {
+      width: 100vw;
+      z-index: 2;
     }
 
     .viewport-container {
+      position: relative;
       flex: 1 1 auto;
       height: calc(100vh - var(--ca-top-bar-height));
     }
 
-    .message-log-bar-container {
-      width: 25rem;
-      border-left: var(--ca-border);
+    .viewport-overlay {
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: var(--sl-panel-background-color);
+      opacity: 0.5;
+    }
+
+    .viewport-overlay.menu-opened {
+      display: block;
+      z-index: 1;
+    }
+
+    @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
+      .menu-bar-container.menu-opened {
+        width: var(--ca-menu-bar-max-width);
+      }
+    }
+
+    @media (min-width: ${SCREEN_WIDTH_POINTS.WIDE_SCREEN}) {
+      .menu-bar-container {
+        position: static;
+        width: var(--ca-menu-bar-max-width);
+      }
+
+      .menu-bar-container.menu-opened {
+        width: var(--ca-menu-bar-max-width);
+        z-index: 0;
+      }
+
+      .viewport-overlay.menu-opened {
+        display: none;
+        z-index: 0;
+      }
     }
   `;
 
   @state()
-  private _menuOpened = true;
+  private _menuOpened = false;
 
   @state()
   private _selectedMenuItem?: OverviewMenuItem;
 
   renderContent() {
+    const menuClasses = classMap({
+      'menu-bar-container': true,
+      'menu-opened': this._menuOpened,
+    });
+
+    const viewportOverlayClasses = classMap({
+      'viewport-overlay': true,
+      'menu-opened': this._menuOpened,
+    });
+
     return html`
       <div class="game-screen">
         <div class="top-bar-outer-container">
@@ -95,19 +148,17 @@ export class GameScreen extends BaseComponent {
 
         <div class="content-outer-container">
           <div class="content-inner-container">
-            ${this._menuOpened
-              ? html`
-                  <div class="side-bar-container menu-bar-container">
-                    <ca-menu-bar
-                      selected-menu-item=${ifDefined(this._selectedMenuItem)}
-                      @menu-item-selected=${this.handleMenuItemSelect}
-                    >
-                    </ca-menu-bar>
-                  </div>
-                `
-              : nothing}
+            <div class=${menuClasses}>
+              <ca-menu-bar
+                selected-menu-item=${ifDefined(this._selectedMenuItem)}
+                @menu-item-selected=${this.handleMenuItemSelect}
+              >
+              </ca-menu-bar>
+            </div>
 
             <div class="viewport-container">
+              <div class=${viewportOverlayClasses} @click=${this.handleMenuToggle}></div>
+
               <ca-viewport selected-menu-item=${ifDefined(this._selectedMenuItem)}></ca-viewport>
             </div>
           </div>
@@ -128,5 +179,6 @@ export class GameScreen extends BaseComponent {
     const menuItemSelectEvent = event as MenuItemSelectedEvent;
 
     this._selectedMenuItem = menuItemSelectEvent.menuItem as OverviewMenuItem;
+    this._menuOpened = false;
   };
 }

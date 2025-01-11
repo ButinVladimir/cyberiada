@@ -2,34 +2,36 @@ import { t } from 'i18next';
 import { css, html } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
+import { hintStyle } from '@shared/styles';
 import { ProcessesPanelController } from './controller';
 
 @customElement('ca-mainframe-processes-panel')
 export class MainframeHardwarePanel extends BaseComponent<ProcessesPanelController> {
-  static styles = css`
-    :host {
-      display: flex;
-      align-items: flex-start;
-      flex-direction: column;
-    }
+  static styles = [
+    hintStyle,
+    css`
+      :host {
+        display: flex;
+        align-items: flex-start;
+        flex-direction: column;
+      }
 
-    p.hint {
-      margin-top: 0;
-      margin-bottom: var(--sl-spacing-large);
-      color: var(--ca-hint-color);
-      font-size: var(--ca-hint-font-size);
-    }
+      p.hint {
+        margin-top: 0;
+        margin-bottom: var(--sl-spacing-large);
+      }
 
-    div.top-container {
-      display: flex;
-      align-items: center;
-      gap: var(--sl-spacing-3x-large);
-    }
+      div.top-container {
+        display: flex;
+        align-items: center;
+        gap: var(--sl-spacing-3x-large);
+      }
 
-    ca-processes-list {
-      margin-top: var(--sl-spacing-large);
-    }
-  `;
+      ca-processes-list {
+        margin-top: var(--sl-spacing-large);
+      }
+    `,
+  ];
 
   protected controller: ProcessesPanelController;
 

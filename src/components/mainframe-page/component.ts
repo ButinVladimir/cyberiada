@@ -3,18 +3,18 @@ import { css, html, nothing } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { MainframePageController } from './controller';
+import { pageTitleStyle } from '@shared/styles';
 
 @customElement('ca-mainframe-page')
 export class MainframePage extends BaseComponent<MainframePageController> {
-  static styles = css`
-    h3.title {
-      font-size: var(--sl-font-size-2x-large);
-      font-weight: var(--sl-font-weight-bold);
-      margin-top: 0;
-      margin-bottom: var(--sl-spacing-2x-small);
-      line-height: var(--sl-line-height-denser);
-    }
-  `;
+  static styles = [
+    pageTitleStyle,
+    css`
+      h3.title {
+        margin-bottom: var(--sl-spacing-2x-small);
+      }
+    `,
+  ];
 
   protected controller: MainframePageController;
 

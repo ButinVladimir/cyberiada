@@ -14,77 +14,75 @@ import {
 } from '@components/shared/confirmation-alert/events';
 import { QUALITIES } from '@shared/constants';
 import { ProgramAlert } from '@shared/types';
+import { inputLabelStyle, hintStyle } from '@shared/styles';
 import { PurchaseProgramDialogCloseEvent } from './events';
 import { PurchaseProgramDialogController } from './controller';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 @customElement('ca-purchase-program-dialog')
 export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogController> {
-  static styles = css`
-    sl-dialog {
-      --width: 50rem;
-    }
+  static styles = [
+    inputLabelStyle,
+    hintStyle,
+    css`
+      sl-dialog {
+        --width: 50rem;
+      }
 
-    sl-dialog::part(body) {
-      padding-top: 0;
-      padding-bottom: 0;
-    }
+      sl-dialog::part(body) {
+        padding-top: 0;
+        padding-bottom: 0;
+      }
 
-    sl-dialog::part(footer) {
-      width: 100%;
-      display: flex;
-      flex-direction: row;
-      justify-content: flex-end;
-      gap: var(--sl-spacing-small);
-    }
+      sl-dialog::part(footer) {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        gap: var(--sl-spacing-small);
+      }
 
-    h4.title {
-      font-size: var(--sl-font-size-large);
-      font-weight: var(--sl-font-weight-bold);
-      margin: 0;
-    }
+      h4.title {
+        font-size: var(--sl-font-size-large);
+        font-weight: var(--sl-font-weight-bold);
+        margin: 0;
+      }
 
-    div.body {
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-    }
+      div.body {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+      }
 
-    div.inputs-container {
-      display: grid;
-      column-gap: var(--sl-spacing-medium);
-      grid-template-columns: repeat(3, 1fr);
-    }
+      div.inputs-container {
+        display: grid;
+        column-gap: var(--sl-spacing-medium);
+        grid-template-columns: repeat(3, 1fr);
+      }
 
-    p.hint {
-      margin-top: 0;
-      margin-bottom: var(--sl-spacing-medium);
-      color: var(--ca-hint-color);
-      font-size: var(--ca-hint-font-size);
-    }
+      p.hint {
+        margin-top: 0;
+        margin-bottom: var(--sl-spacing-medium);
+      }
 
-    span.input-label {
-      font-size: var(--sl-font-size-medium);
-      line-height: var(--sl-line-height-dense);
-    }
+      div.footer {
+        display: flex;
+      }
 
-    div.footer {
-      display: flex;
-    }
+      div.program-description {
+        margin-top: var(--sl-spacing-medium);
+        margin-bottom: 0;
+      }
 
-    div.program-description {
-      margin-top: var(--sl-spacing-medium);
-      margin-bottom: 0;
-    }
+      div.program-description p {
+        margin: 0;
+      }
 
-    div.program-description p {
-      margin: 0;
-    }
-
-    div.program-description p.line-break {
-      height: var(--sl-spacing-medium);
-    }
-  `;
+      div.program-description p.line-break {
+        height: var(--sl-spacing-medium);
+      }
+    `,
+  ];
 
   protected controller: PurchaseProgramDialogController;
 

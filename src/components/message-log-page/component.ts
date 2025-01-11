@@ -7,30 +7,30 @@ import {
   ConfirmationAlertSubmitEvent,
 } from '@/components/shared/confirmation-alert/events';
 import { GameStateAlert } from '@shared/types';
+import { pageTitleStyle } from '@shared/styles';
 import { MessageLogBarController } from './controller';
 
 @customElement('ca-message-log-page')
 export class MessageLogPage extends BaseComponent<MessageLogBarController> {
-  static styles = css`
-    :host {
-      width: 100%;
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-    }
+  static styles = [
+    pageTitleStyle,
+    css`
+      :host {
+        width: 100%;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+      }
 
-    h3.title {
-      font-size: var(--sl-font-size-2x-large);
-      font-weight: var(--sl-font-weight-bold);
-      margin-top: 0;
-      margin-bottom: var(--sl-spacing-large);
-      line-height: var(--sl-line-height-denser);
-    }
+      h3.title {
+        margin-bottom: var(--sl-spacing-large);
+      }
 
-    sl-divider {
-      --spacing: var(--sl-spacing-large);
-    }
-  `;
+      sl-divider {
+        --spacing: var(--sl-spacing-large);
+      }
+    `,
+  ];
 
   protected controller: MessageLogBarController;
 
@@ -57,7 +57,7 @@ export class MessageLogPage extends BaseComponent<MessageLogBarController> {
       <h3 class="title">${t('messageLog.messageLog', { ns: 'ui' })}</h3>
 
       <div>
-        <sl-button variant="danger" size="medium" @click=${this.handleOpenClearMessagesDialog}>
+        <sl-button id="clear-button" variant="danger" size="medium" @click=${this.handleOpenClearMessagesDialog}>
           ${t('messageLog.clearMessages', { ns: 'ui' })}
         </sl-button>
       </div>

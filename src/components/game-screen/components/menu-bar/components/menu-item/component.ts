@@ -19,9 +19,12 @@ export class MenuItem extends BaseComponent {
       border: 0 solid var(--sl-color-primary-600);
       font-family: var(--sl-font-sans);
       font-size: var(--sl-font-size-medium);
+      line-height: var(--sl-line-height-normal);
       letter-spacing: var(--sl-letter-spacing-normal);
       color: var(--sl-color-neutral-950);
       white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
 
       transition:
         border-left-width var(--sl-transition-x-fast) ease,

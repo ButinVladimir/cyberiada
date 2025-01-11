@@ -6,52 +6,54 @@ import SlCheckbox from '@shoelace-style/shoelace/dist/components/checkbox/checkb
 import { BaseComponent } from '@shared/base-component';
 import { GAME_STATE_ALERTS, PROGRAM_ALERTS } from '@shared/constants';
 import { GameAlert } from '@shared/types';
+import { hintStyle } from '@shared/styles';
 import { AlertFilterDialogCloseEvent } from './events';
 import { AlertFilterDialogController } from './controller';
 
 @customElement('ca-alert-filter-dialog')
 export class AlertFilterDialog extends BaseComponent<AlertFilterDialogController> {
-  static styles = css`
-    sl-dialog {
-      --width: 50rem;
-    }
+  static styles = [
+    hintStyle,
+    css`
+      sl-dialog {
+        --width: 50rem;
+      }
 
-    sl-dialog::part(body) {
-      padding-top: 0;
-      padding-bottom: 0;
-    }
+      sl-dialog::part(body) {
+        padding-top: 0;
+        padding-bottom: 0;
+      }
 
-    h4.title {
-      font-size: var(--sl-font-size-large);
-      font-weight: var(--sl-font-weight-bold);
-      margin: 0;
-    }
+      h4.title {
+        font-size: var(--sl-font-size-large);
+        font-weight: var(--sl-font-weight-bold);
+        margin: 0;
+      }
 
-    div.body {
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-    }
+      div.body {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+      }
 
-    p.hint {
-      margin-top: 0;
-      margin-bottom: var(--sl-spacing-small);
-      color: var(--ca-hint-color);
-      font-size: var(--ca-hint-font-size);
-    }
+      p.hint {
+        margin-top: 0;
+        margin-bottom: var(--sl-spacing-small);
+      }
 
-    div.events-container {
-      display: grid;
-      column-gap: var(--sl-spacing-3x-small);
-      row-gap: var(--sl-spacing-3x-small);
-      grid-template-columns: repeat(2, minmax(0, 30em));
-      grid-auto-rows: auto;
-    }
+      div.events-container {
+        display: grid;
+        column-gap: var(--sl-spacing-3x-small);
+        row-gap: var(--sl-spacing-3x-small);
+        grid-template-columns: repeat(2, minmax(0, 30em));
+        grid-auto-rows: auto;
+      }
 
-    sl-divider {
-      --spacing: var(--sl-spacing-medium);
-    }
-  `;
+      sl-divider {
+        --spacing: var(--sl-spacing-medium);
+      }
+    `,
+  ];
 
   protected controller: AlertFilterDialogController;
 

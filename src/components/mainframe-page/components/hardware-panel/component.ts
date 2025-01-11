@@ -6,50 +6,51 @@ import { BaseComponent } from '@shared/base-component';
 import { IMainframeHardwareParameter } from '@state/mainframe/mainframe-hardware-state/interfaces/mainframe-hardware-parameter';
 import type { MainframeHardwareParameterType } from '@state/mainframe/mainframe-hardware-state/types';
 import { SortableElementMovedEvent } from '@components/shared/sortable-list/events/sortable-element-moved';
+import { hintStyle } from '@shared/styles';
 import { MainframeHardwarePanelController } from './controller';
 import { GAP } from './constants';
 
 @customElement('ca-mainframe-hardware-panel')
 export class MainframeHardwarePanel extends BaseComponent<MainframeHardwarePanelController> {
-  static styles = css`
-    :host {
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-      max-width: var(--ca-viewport-width);
-    }
+  static styles = [
+    hintStyle,
+    css`
+      :host {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+      }
 
-    p.hint {
-      margin: 0 0 var(--sl-spacing-large);
-      color: var(--ca-hint-color);
-      font-size: var(--ca-hint-font-size);
-    }
+      p.hint {
+        margin: 0 0 var(--sl-spacing-large);
+      }
 
-    ca-sortable-list {
-      width: 100%;
-    }
+      ca-sortable-list {
+        width: 100%;
+      }
 
-    ca-sortable-list::part(list) {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-      justify-content: center;
-      gap: var(--sl-spacing-large);
-    }
+      ca-sortable-list::part(list) {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: center;
+        gap: var(--sl-spacing-large);
+      }
 
-    ca-sortable-list ca-mainframe-hardware-panel-article {
-      width: 100%;
-    }
+      ca-sortable-list ca-mainframe-hardware-panel-article {
+        width: 100%;
+      }
 
-    ca-sortable-list ca-mainframe-hardware-panel-article.dragged {
-      background-color: var(--ca-dragged-color);
-    }
+      ca-sortable-list ca-mainframe-hardware-panel-article.dragged {
+        background-color: var(--ca-dragged-color);
+      }
 
-    div.buttons-block {
-      margin: 0 0 var(--sl-spacing-large) 0;
-    }
-  `;
+      div.buttons-block {
+        margin: 0 0 var(--sl-spacing-large) 0;
+      }
+    `,
+  ];
 
   protected controller: MainframeHardwarePanelController;
 

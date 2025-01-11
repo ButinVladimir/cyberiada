@@ -2,6 +2,7 @@ import { t } from 'i18next';
 import { html, css } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
+import { SCREEN_WIDTH_POINTS } from '@shared/styles';
 import { MenuToggledEvent } from './events';
 
 @customElement('ca-top-bar')
@@ -12,23 +13,38 @@ export class TopBar extends BaseComponent {
       align-items: stretch;
       box-sizing: border-box;
       width: 100%;
-      gap: var(--sl-spacing-2x-large);
     }
 
     .group {
       flex: 0 0 auto;
       font-size: var(--sl-font-size-large);
       line-height: var(--sl-line-height-denser);
+      display: flex;
+      align-items: center;
+    }
+
+    .menu-group {
+      margin-right: var(--sl-spacing-large);
+    }
+
+    @media (min-width: ${SCREEN_WIDTH_POINTS.WIDE_SCREEN}) {
+      .menu-group {
+        display: none;
+      }
     }
 
     .gutter {
       flex: 1 1 auto;
     }
+
+    sl-icon-button::part(base) {
+      padding: var(--sl-spacing-small);
+    }
   `;
 
   renderContent() {
     return html`
-      <div class="group">
+      <div class="group menu-group">
         <sl-tooltip>
           <span slot="content"> ${t('topBar.menu', { ns: 'ui' })} </span>
 
@@ -39,10 +55,6 @@ export class TopBar extends BaseComponent {
 
       <div class="group">
         <ca-game-speed-buttons></ca-game-speed-buttons>
-      </div>
-
-      <div class="group">
-        <ca-top-bar-values></ca-top-bar-values>
       </div>
 
       <div class="gutter"></div>

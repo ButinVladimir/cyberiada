@@ -2,29 +2,31 @@ import { t } from 'i18next';
 import { css, html } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
+import { hintStyle } from '@shared/styles';
 import { ProgramsPanelController } from './controller';
 
 @customElement('ca-mainframe-programs-panel')
 export class MainframeProgramsPanel extends BaseComponent<ProgramsPanelController> {
-  static styles = css`
-    :host {
-      display: flex;
-      align-items: flex-start;
-      flex-direction: column;
-      gap: var(--sl-spacing-large);
-    }
+  static styles = [
+    hintStyle,
+    css`
+      :host {
+        display: flex;
+        align-items: flex-start;
+        flex-direction: column;
+        gap: var(--sl-spacing-large);
+      }
 
-    p.hint {
-      margin: 0;
-      color: var(--ca-hint-color);
-      font-size: var(--ca-hint-font-size);
-    }
+      p.hint {
+        margin: 0;
+      }
 
-    div.buttons-container {
-      display: flex;
-      gap: var(--sl-spacing-medium);
-    }
-  `;
+      div.buttons-container {
+        display: flex;
+        gap: var(--sl-spacing-medium);
+      }
+    `,
+  ];
 
   protected controller: ProgramsPanelController;
 

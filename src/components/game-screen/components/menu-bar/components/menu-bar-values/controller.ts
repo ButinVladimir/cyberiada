@@ -1,6 +1,6 @@
 import { BaseController } from '@shared/base-controller';
 
-export class TopBarValuesController extends BaseController {
+export class MenuBarValuesController extends BaseController {
   get accumulatedTime(): number {
     return this.globalState.time.accumulatedTime;
   }

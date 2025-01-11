@@ -3,69 +3,71 @@ import { css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import type { MainframeHardwareParameterType } from '@state/mainframe/mainframe-hardware-state/types';
+import { hintStyle } from '@shared/styles';
 import { MainframeHardwarePanelArticleController } from './controller';
 
 @customElement('ca-mainframe-hardware-panel-article')
 export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwarePanelArticleController> {
-  static styles = css`
-    :host {
-      width: 100%;
-      padding: var(--sl-spacing-large);
-      box-sizing: border-box;
-      border: var(--ca-border);
-      border-radius: var(--sl-border-radius-small);
-      display: flex;
-      align-items: center;
-      gap: var(--sl-spacing-large);
-    }
+  static styles = [
+    hintStyle,
+    css`
+      :host {
+        width: 100%;
+        padding: var(--sl-spacing-large);
+        box-sizing: border-box;
+        border: var(--ca-border);
+        border-radius: var(--sl-border-radius-small);
+        display: flex;
+        align-items: center;
+        gap: var(--sl-spacing-large);
+      }
 
-    div.text-container {
-      flex: 1 1 auto;
-      overflow: hidden;
-    }
+      div.text-container {
+        flex: 1 1 auto;
+        overflow: hidden;
+      }
 
-    div.text-container-inner {
-      max-width: 100%;
-    }
+      div.text-container-inner {
+        max-width: 100%;
+      }
 
-    div.button-container {
-      flex: 0 0 auto;
-      display: flex;
-      gap: var(--sl-spacing-medium);
-    }
+      div.button-container {
+        flex: 0 0 auto;
+        display: flex;
+        gap: var(--sl-spacing-medium);
+      }
 
-    h4.title {
-      width: 100%;
-      font-size: var(--sl-font-size-large);
-      font-weight: var(--sl-font-weight-bold);
-      margin-top: 0;
-      margin-bottom: var(--sl-spacing-medium);
-      line-height: var(--sl-line-height-denser);
-      cursor: grab;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-    }
+      h4.title {
+        width: 100%;
+        font-size: var(--sl-font-size-large);
+        font-weight: var(--sl-font-weight-bold);
+        margin-top: 0;
+        margin-bottom: var(--sl-spacing-medium);
+        line-height: var(--sl-line-height-denser);
+        cursor: grab;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
 
-    p.hint {
-      width: 100%;
-      margin: 0;
-      color: var(--ca-hint-color);
-      font-size: var(--ca-hint-font-size);
-    }
+      p.hint {
+        width: 100%;
+        margin: 0;
+      }
 
-    h4.title #toggle-autoupgrade-btn {
-      position: relative;
-      top: 0.1em;
-    }
+      h4.title #toggle-autoupgrade-btn {
+        position: relative;
+        top: 0.1em;
+      }
 
-    #drag-icon {
-      position: relative;
-      top: 0.15em;
-      left: -0.2em;
-      color: var(--ca-hint-color);
-    }
-  `;
+      #drag-icon {
+        position: relative;
+        top: 0.15em;
+        left: -0.2em;
+        color: var(--ca-hint-color);
+      }
+    `,
+  ];
 
   @property({
     attribute: 'type',

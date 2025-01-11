@@ -14,6 +14,18 @@ export class AppRoot extends BaseComponent<AppRootController> {
     this.controller = new AppRootController(this);
   }
 
+  connectedCallback() {
+    super.connectedCallback();
+
+    window.addEventListener('beforeunload', this.handleUnload);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+
+    window.removeEventListener('beforeunload', this.handleUnload);
+  }
+
   renderContent() {
     switch (this.controller.appStage) {
       case AppStage.loading:
@@ -29,4 +41,10 @@ export class AppRoot extends BaseComponent<AppRootController> {
         return null;
     }
   }
+
+  private handleUnload = () => {
+    if (this.controller.appStage === AppStage.fastForward || this.controller.appStage === AppStage.running) {
+      this.controller.saveGame();
+    }
+  };
 }

@@ -20,6 +20,10 @@ export class GameSpeedButtons extends BaseComponent<GameSpeedButtonsController> 
       box-sizing: border-box;
       align-items: center;
     }
+
+    sl-icon-button::part(base) {
+      padding: var(--sl-spacing-small);
+    }
   `;
 
   protected controller: GameSpeedButtonsController;
