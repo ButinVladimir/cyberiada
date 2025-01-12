@@ -6,7 +6,7 @@ import { BaseComponent } from '@shared/base-component';
 import SlCheckbox from '@shoelace-style/shoelace/dist/components/checkbox/checkbox.component.js';
 import { GAME_STATE_EVENTS, PURCHASE_EVENTS, PROGRAM_EVENTS } from '@shared/constants';
 import { MessageEvent } from '@shared/types';
-import { hintStyle } from '@shared/styles';
+import { hintStyle, sectionTitleStyle } from '@shared/styles';
 import { MessageFilterDialogCloseEvent } from './events';
 import { MessageFilterDialogController } from './controller';
 
@@ -14,6 +14,7 @@ import { MessageFilterDialogController } from './controller';
 export class MessageFilterDialog extends BaseComponent<MessageFilterDialogController> {
   static styles = [
     hintStyle,
+    sectionTitleStyle,
     css`
       sl-dialog {
         --width: 50rem;
@@ -25,8 +26,6 @@ export class MessageFilterDialog extends BaseComponent<MessageFilterDialogContro
       }
 
       h4.title {
-        font-size: var(--sl-font-size-large);
-        font-weight: var(--sl-font-weight-bold);
         margin: 0;
       }
 

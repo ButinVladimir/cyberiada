@@ -471,12 +471,12 @@
     },
     {
       "name": "ca-statistics-development-growth",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderIncomeSource` - \n\n  * `controller` {`StatisticsDevelopmentGrowthController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `renderIncomeSource` - \n\n  * `controller` {`StatisticsDevelopmentGrowthController`} - ",
       "attributes": []
     },
     {
       "name": "ca-statistics-development-income",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderIncomeSource` - \n\n  * `controller` {`StatisticsDevelopmentIncomeController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `renderIncomeSource` - \n\n  * `controller` {`StatisticsDevelopmentIncomeController`} - ",
       "attributes": []
     },
     {
@@ -486,7 +486,7 @@
     },
     {
       "name": "ca-statistics-general-panel",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `controller` {`StatisticsGeneralPanelController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `controller` {`StatisticsGeneralPanelController`} - ",
       "attributes": []
     },
     {
@@ -501,42 +501,42 @@
     },
     {
       "name": "ca-statistics-money-expenses",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderExpenseArticle` - \n\n  * `controller` {`StatisticsMoneyExpensesController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `renderExpenseArticle` - \n\n  * `controller` {`StatisticsMoneyExpensesController`} - ",
       "attributes": []
     },
     {
       "name": "ca-statistics-money-growth",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderIncomeSource` - \n\n  * `controller` {`StatisticsMoneyGrowthController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `renderIncomeSource` - \n\n  * `controller` {`StatisticsMoneyGrowthController`} - ",
       "attributes": []
     },
     {
       "name": "ca-statistics-money-income",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderIncomeSource` - \n\n  * `controller` {`StatisticsMoneyIncomeController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `renderIncomeSource` - \n\n  * `controller` {`StatisticsMoneyIncomeController`} - ",
       "attributes": []
     },
     {
       "name": "ca-statistics-multipliers",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `controller` {`StatisticsMultipliersController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `controller` {`StatisticsMultipliersController`} - ",
       "attributes": []
     },
     {
       "name": "ca-statistics-program-completion-speed",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `controller` {`StatisticsProgramCompletionSpeedController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `controller` {`StatisticsProgramCompletionSpeedController`} - ",
       "attributes": []
     },
     {
       "name": "ca-statistics-programs-growth",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `controller` {`StatisticsProgramsGrowthController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `controller` {`StatisticsProgramsGrowthController`} - ",
       "attributes": []
     },
     {
       "name": "ca-statistics-programs-income",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `controller` {`StatisticsProgramsIncomeController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `controller` {`StatisticsProgramsIncomeController`} - ",
       "attributes": []
     },
     {
       "name": "ca-statistics-unlocked-features-panel",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderFeature` - \n\n  * `controller` {`StatisticsUnlockedFeaturesPanelController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `renderFeature` - \n\n  * `controller` {`StatisticsUnlockedFeaturesPanelController`} - ",
       "attributes": []
     }
   ],

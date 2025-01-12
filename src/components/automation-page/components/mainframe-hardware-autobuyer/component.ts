@@ -26,13 +26,9 @@ export class AutomationMainframeHardwareAutobuyer extends BaseComponent<Automati
     const { moneyShare } = this.controller;
 
     return html`
-      <div class="text-container">
-        <div class="text-container-inner">
-          <h4 class="title">${t('automation.mainframeHardwareAutobuyer.mainframeHardwareAutobuyer', { ns: 'ui' })}</h4>
+      <h4 class="title">${t('automation.mainframeHardwareAutobuyer.mainframeHardwareAutobuyer', { ns: 'ui' })}</h4>
 
-          <p class="hint">${t('automation.mainframeHardwareAutobuyer.percentageHint', { ns: 'ui' })}</p>
-        </div>
-      </div>
+      <p class="hint">${t('automation.mainframeHardwareAutobuyer.percentageHint', { ns: 'ui' })}</p>
 
       <div class="input-container">
         <sl-input

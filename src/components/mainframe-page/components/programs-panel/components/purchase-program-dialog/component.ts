@@ -14,7 +14,7 @@ import {
 } from '@components/shared/confirmation-alert/events';
 import { QUALITIES } from '@shared/constants';
 import { ProgramAlert } from '@shared/types';
-import { inputLabelStyle, hintStyle } from '@shared/styles';
+import { inputLabelStyle, hintStyle, sectionTitleStyle } from '@shared/styles';
 import { PurchaseProgramDialogCloseEvent } from './events';
 import { PurchaseProgramDialogController } from './controller';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -24,6 +24,7 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
   static styles = [
     inputLabelStyle,
     hintStyle,
+    sectionTitleStyle,
     css`
       sl-dialog {
         --width: 50rem;
@@ -43,8 +44,6 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
       }
 
       h4.title {
-        font-size: var(--sl-font-size-large);
-        font-weight: var(--sl-font-weight-bold);
         margin: 0;
       }
 

@@ -3,13 +3,14 @@ import { css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import type { MainframeHardwareParameterType } from '@state/mainframe/mainframe-hardware-state/types';
-import { hintStyle } from '@shared/styles';
+import { hintStyle, sectionTitleStyle, SCREEN_WIDTH_POINTS } from '@shared/styles';
 import { MainframeHardwarePanelArticleController } from './controller';
 
 @customElement('ca-mainframe-hardware-panel-article')
 export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwarePanelArticleController> {
   static styles = [
     hintStyle,
+    sectionTitleStyle,
     css`
       :host {
         width: 100%;
@@ -17,45 +18,39 @@ export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwa
         box-sizing: border-box;
         border: var(--ca-border);
         border-radius: var(--sl-border-radius-small);
-        display: flex;
-        align-items: center;
-        gap: var(--sl-spacing-large);
-      }
-
-      div.text-container {
-        flex: 1 1 auto;
-        overflow: hidden;
-      }
-
-      div.text-container-inner {
-        max-width: 100%;
+        display: grid;
+        grid-template-areas:
+          'title'
+          'buttons'
+          'hint';
+        row-gap: var(--sl-spacing-small);
+        column-gap: var(--sl-spacing-small);
       }
 
       div.button-container {
-        flex: 0 0 auto;
+        grid-area: buttons;
         display: flex;
         gap: var(--sl-spacing-medium);
       }
 
+      div.title-row {
+        grid-area: title;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+      }
+
       h4.title {
-        width: 100%;
-        font-size: var(--sl-font-size-large);
-        font-weight: var(--sl-font-weight-bold);
-        margin-top: 0;
-        margin-bottom: var(--sl-spacing-medium);
-        line-height: var(--sl-line-height-denser);
+        margin: 0;
         cursor: grab;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
       }
 
       p.hint {
-        width: 100%;
+        grid-area: hint;
         margin: 0;
       }
 
-      h4.title #toggle-autoupgrade-btn {
+      #toggle-autoupgrade-btn {
         position: relative;
         top: 0.1em;
       }
@@ -65,6 +60,21 @@ export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwa
         top: 0.15em;
         left: -0.2em;
         color: var(--ca-hint-color);
+      }
+
+      @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
+        :host {
+          grid-template-areas:
+            'title buttons'
+            'hint buttons';
+          grid-template-rows: auto auto;
+          grid-template-columns: 1fr auto;
+        }
+      }
+
+      div.button-container {
+        align-items: center;
+        height: 100%;
       }
     `,
   ];
@@ -99,28 +109,26 @@ export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwa
       : 'arrow-up-circle';
 
     return html`
-      <div class="text-container">
-        <div class="text-container-inner">
-          <h4 class="title" draggable="true" @dragstart=${this.handleDragStart}>
-            <sl-icon id="drag-icon" name="grip-vertical"> </sl-icon>
+      <div class="title-row">
+        <h4 class="title" draggable="true" @dragstart=${this.handleDragStart}>
+          <sl-icon id="drag-icon" name="grip-vertical"> </sl-icon>
 
-            ${t(`mainframe.hardware.${this.type}`, { ns: 'ui', level: formatter.formatNumberDecimal(level) })}
+          ${t(`mainframe.hardware.${this.type}`, { ns: 'ui', level: formatter.formatNumberDecimal(level) })}
+        </h4>
+        <sl-tooltip>
+          <span slot="content"> ${t('mainframe.hardware.toggleAutoupgrade', { ns: 'ui' })} </span>
 
-            <sl-tooltip>
-              <span slot="content"> ${t('mainframe.hardware.toggleAutoupgrade', { ns: 'ui' })} </span>
-
-              <sl-icon-button
-                id="toggle-autoupgrade-btn"
-                name=${autoupgradeIcon}
-                label=${t('mainframe.hardware.toggleAutoupgrade', { ns: 'ui' })}
-                @click=${this.handleToggleAutoUpgrade}
-              >
-              </sl-icon-button>
-            </sl-tooltip>
-          </h4>
-          <p class="hint">${t(`mainframe.hardware.${this.type}Hint`, { ns: 'ui' })}</p>
-        </div>
+          <sl-icon-button
+            id="toggle-autoupgrade-btn"
+            name=${autoupgradeIcon}
+            label=${t('mainframe.hardware.toggleAutoupgrade', { ns: 'ui' })}
+            @click=${this.handleToggleAutoUpgrade}
+          >
+          </sl-icon-button>
+        </sl-tooltip>
       </div>
+
+      <p class="hint">${t(`mainframe.hardware.${this.type}Hint`, { ns: 'ui' })}</p>
 
       <div class="button-container">
         <sl-button variant="default" type="button" size="medium" @click=${this.handleBuyMax}>

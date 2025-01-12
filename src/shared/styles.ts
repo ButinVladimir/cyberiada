@@ -27,3 +27,12 @@ export const hintStyle = css`
     font-size: var(--ca-hint-font-size);
   }
 `;
+
+export const sectionTitleStyle = css`
+  h4.title {
+    font-size: var(--sl-font-size-large);
+    font-weight: var(--sl-font-weight-bold);
+    margin-top: 0;
+    line-height: var(--sl-line-height-normal);
+  }
+`;

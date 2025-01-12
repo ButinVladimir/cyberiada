@@ -6,7 +6,7 @@ import SlCheckbox from '@shoelace-style/shoelace/dist/components/checkbox/checkb
 import { BaseComponent } from '@shared/base-component';
 import { GAME_STATE_ALERTS, PROGRAM_ALERTS } from '@shared/constants';
 import { GameAlert } from '@shared/types';
-import { hintStyle } from '@shared/styles';
+import { hintStyle, sectionTitleStyle } from '@shared/styles';
 import { AlertFilterDialogCloseEvent } from './events';
 import { AlertFilterDialogController } from './controller';
 
@@ -14,6 +14,7 @@ import { AlertFilterDialogController } from './controller';
 export class AlertFilterDialog extends BaseComponent<AlertFilterDialogController> {
   static styles = [
     hintStyle,
+    sectionTitleStyle,
     css`
       sl-dialog {
         --width: 50rem;
@@ -25,8 +26,6 @@ export class AlertFilterDialog extends BaseComponent<AlertFilterDialogController
       }
 
       h4.title {
-        font-size: var(--sl-font-size-large);
-        font-weight: var(--sl-font-weight-bold);
         margin: 0;
       }
 

@@ -13,7 +13,7 @@ import {
   ConfirmationAlertSubmitEvent,
 } from '@/components/shared/confirmation-alert/events';
 import { ProgramAlert } from '@shared/types';
-import { inputLabelStyle, hintStyle } from '@shared/styles';
+import { inputLabelStyle, hintStyle, sectionTitleStyle } from '@shared/styles';
 import { StartProcessDialogCloseEvent } from './events';
 import { StartProcessDialogController } from './controller';
 
@@ -22,6 +22,7 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
   static styles = [
     inputLabelStyle,
     hintStyle,
+    sectionTitleStyle,
     css`
       sl-dialog {
         --width: 40rem;
@@ -41,8 +42,6 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
       }
 
       h4.title {
-        font-size: var(--sl-font-size-large);
-        font-weight: var(--sl-font-weight-bold);
         margin: 0;
       }
 
