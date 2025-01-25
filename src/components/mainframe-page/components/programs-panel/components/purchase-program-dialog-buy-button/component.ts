@@ -49,7 +49,7 @@ export class PurchaseProgramDialogBuyButton extends BaseComponent<PurchaseProgra
     return html`
       <ca-purchase-tooltip cost=${cost} level=${this.level} slot="footer">
         <sl-button size="medium" variant="primary" ?disabled=${submitButtonDisabled} @click=${this.handlePurchase}>
-          ${t('mainframe.programs.purchase', { ns: 'ui', cost: formatter.formatNumberLong(cost) })}
+          ${t('mainframe.programs.purchase', { ns: 'ui', cost: formatter.formatNumberFloat(cost) })}
         </sl-button>
       </ca-purchase-tooltip>
     `;

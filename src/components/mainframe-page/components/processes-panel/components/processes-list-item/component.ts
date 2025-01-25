@@ -4,50 +4,111 @@ import { customElement, property } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { ConfirmationAlertOpenEvent, ConfirmationAlertSubmitEvent } from '@components/shared/confirmation-alert/events';
 import { ProgramAlert } from '@shared/types';
-import { ProcessesListItemController } from './controller';
 import { ProgramName } from '@state/progam-factory/types';
+import { SCREEN_WIDTH_POINTS } from '@shared/styles';
+import { ProcessesListItemController } from './controller';
 
 @customElement('ca-processes-list-item')
 export class ProcessesListItem extends BaseComponent<ProcessesListItemController> {
   static styles = css`
     :host {
-      display: table-row;
-      border-bottom: var(--ca-border);
-    }
-
-    td.program {
-      width: 32%;
-      cursor: grab;
-    }
-
-    td.cores {
-      width: 17%;
-    }
-
-    td {
-      text-align: left;
-      vertical-align: middle;
+      display: grid;
+      grid-template-areas:
+        'program'
+        'progress-bar'
+        'cores'
+        'buttons';
+      grid-template-columns: auto;
+      grid-template-rows: repeat(1fr);
+      gap: var(--sl-spacing-small);
       padding: var(--sl-spacing-small);
-      white-space: nowrap;
-      text-overflow: ellipsis;
+      box-sizing: border-box;
+    }
+
+    #drag-icon {
+      position: relative;
+      top: 0.15em;
+      left: -0.2em;
+      color: var(--ca-hint-color);
+    }
+
+    .desktop {
+      display: none;
+    }
+
+    .program {
+      cursor: grab;
+      grid-area: program;
+    }
+
+    .cores {
+      grid-area: cores;
+    }
+
+    .progress-bar {
+      grid-area: progress-bar;
+    }
+
+    .buttons {
+      grid-area: buttons;
+      align-items: center;
+      flex-direction: row;
+      gap: var(--sl-spacing-small);
+    }
+
+    .buttons.desktop {
+      justify-content: flex-end;
+      font-size: var(--sl-font-size-large);
+    }
+
+    .buttons.mobile {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+    }
+
+    sl-icon[name='grip-vertical'] {
+      position: relative;
+      top: 0.2em;
+      color: var(--ca-hint-color);
+      font-size: var(--sl-font-size-large);
     }
 
     sl-icon[name='question-circle'] {
       position: relative;
+      top: 0.25em;
       margin-left: 0.5em;
       color: var(--ca-hint-color);
       font-size: var(--sl-font-size-large);
-      vertical-align: middle;
     }
 
-    div.indicators-container {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      flex-direction: row;
-      gap: var(--sl-spacing-small);
-      font-size: var(--sl-font-size-large);
-      vertical-align: middle;
+    #delete-btn::part(base):hover {
+      color: var(--sl-color-danger-600);
+    }
+
+    @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
+      :host {
+        grid-template-areas: 'program cores progress-bar buttons';
+        grid-template-columns: 3fr 1fr 2fr 6rem;
+        grid-template-rows: auto;
+        align-items: center;
+      }
+
+      .desktop {
+        display: block;
+      }
+
+      .mobile {
+        display: none;
+      }
+
+      .buttons.mobile {
+        display: none;
+      }
+
+      .buttons.desktop {
+        display: flex;
+      }
     }
   `;
 
@@ -92,9 +153,22 @@ export class ProcessesListItem extends BaseComponent<ProcessesListItemController
           cores: formatter.formatNumberDecimal(process.usedCores),
           maxCores: formatter.formatNumberDecimal(process.maxCores),
         });
+    const coresFull = process.program.isAutoscalable
+      ? t('mainframe.processes.autoscalable', { ns: 'ui' })
+      : t('mainframe.processes.usesCoresFull', {
+          ns: 'ui',
+          cores: formatter.formatNumberDecimal(process.usedCores),
+          maxCores: formatter.formatNumberDecimal(process.maxCores),
+        });
+
+    const toggleIcon = process.isActive ? 'play-fill' : 'pause-fill';
+    const toggleLabel = process.isActive ? 'disableProcess' : 'enableProcess';
+    const toggleVariant = process.isActive ? 'neutral' : 'default';
 
     return html`
-      <td class="program" draggable="true" @dragstart=${this.handleDragStart}>
+      <div class="program" draggable="true" @dragstart=${this.handleDragStart}>
+        <sl-icon name="grip-vertical"> </sl-icon>
+
         ${t(`${process.program.name}.name`, { ns: 'programs' })}
 
         <sl-tooltip>
@@ -102,38 +176,50 @@ export class ProcessesListItem extends BaseComponent<ProcessesListItemController
 
           <ca-process-description-text slot="content" program-name=${this.programName}></ca-process-description-text>
         </sl-tooltip>
-      </td>
+      </div>
 
-      <td class="cores">${cores}</td>
+      <div class="cores mobile">${coresFull}</div>
 
-      <td>
-        <div class="indicators-container">
-          <ca-processes-list-item-progress program-name=${process.program.name}> </ca-processes-list-item-progress>
+      <div class="cores desktop">${cores}</div>
 
-          <sl-tooltip>
-            <span slot="content"> ${t('mainframe.processes.processToggle', { ns: 'ui' })} </span>
+      <div class="progress-bar">
+        <ca-processes-list-item-progress program-name=${process.program.name}> </ca-processes-list-item-progress>
+      </div>
 
-            <sl-icon-button
-              name=${process.isActive ? 'play-fill' : 'pause-fill'}
-              label=${t('mainframe.processes.processToggle', { ns: 'ui' })}
-              @click=${this.handleToggleProcess}
-            >
-            </sl-icon-button>
-          </sl-tooltip>
+      <div class="buttons mobile">
+        <sl-button variant=${toggleVariant} size="medium" @click=${this.handleToggleProcess}>
+          ${t(`mainframe.processes.${toggleLabel}`, { ns: 'ui' })}
+        </sl-button>
 
-          <sl-tooltip>
-            <span slot="content"> ${t('mainframe.processes.processDelete', { ns: 'ui' })} </span>
+        <sl-button variant="danger" size="medium" @click=${this.handleOpenDeleteProcessDialog}>
+          ${t('mainframe.processes.processDelete', { ns: 'ui' })}
+        </sl-button>
+      </div>
 
-            <sl-icon-button
-              id="delete-btn"
-              name="x-lg"
-              label=${t('mainframe.processes.processDelete', { ns: 'ui' })}
-              @click=${this.handleOpenDeleteProcessDialog}
-            >
-            </sl-icon-button>
-          </sl-tooltip>
-        </div>
-      </td>
+      <div class="buttons desktop">
+        <sl-tooltip>
+          <span slot="content"> ${t(`mainframe.processes.${toggleLabel}`, { ns: 'ui' })} </span>
+
+          <sl-icon-button
+            name=${toggleIcon}
+            label=${t(`mainframe.processes.${toggleLabel}`, { ns: 'ui' })}
+            @click=${this.handleToggleProcess}
+          >
+          </sl-icon-button>
+        </sl-tooltip>
+
+        <sl-tooltip>
+          <span slot="content"> ${t('mainframe.processes.processDelete', { ns: 'ui' })} </span>
+
+          <sl-icon-button
+            id="delete-btn"
+            name="x-lg"
+            label=${t('mainframe.processes.processDelete', { ns: 'ui' })}
+            @click=${this.handleOpenDeleteProcessDialog}
+          >
+          </sl-icon-button>
+        </sl-tooltip>
+      </div>
     `;
   }
 

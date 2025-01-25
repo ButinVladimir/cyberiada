@@ -52,7 +52,6 @@ export const statisticsPanelContentStyle = [
     @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
       .parameters-table {
         grid-template-columns: auto auto;
-        grid-auto-rows: auto;
       }
 
       .parameters-table > span:nth-child(even) {

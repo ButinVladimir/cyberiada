@@ -3,6 +3,7 @@ import { css, html } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { hintStyle } from '@shared/styles';
+import { SCREEN_WIDTH_POINTS } from '@shared/styles';
 import { ProcessesPanelController } from './controller';
 
 @customElement('ca-mainframe-processes-panel')
@@ -22,13 +23,36 @@ export class MainframeHardwarePanel extends BaseComponent<ProcessesPanelControll
       }
 
       div.top-container {
-        display: flex;
-        align-items: center;
-        gap: var(--sl-spacing-3x-large);
+        display: grid;
+        grid-template-areas:
+          'cores'
+          'ram'
+          'start-process';
+        gap: var(--sl-spacing-medium);
+      }
+
+      .start-process {
+        grid-area: start-process;
+      }
+
+      .cores {
+        grid-area: cores;
+      }
+
+      .ram {
+        grid-area: ram;
       }
 
       ca-processes-list {
         margin-top: var(--sl-spacing-large);
+      }
+
+      @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
+        div.top-container {
+          grid-template-areas: 'start-process cores ram';
+          align-items: center;
+          gap: var(--sl-spacing-3x-large);
+        }
       }
     `,
   ];
@@ -51,16 +75,18 @@ export class MainframeHardwarePanel extends BaseComponent<ProcessesPanelControll
       <p class="hint">${t('mainframe.processes.processesHint', { ns: 'ui' })}</p>
 
       <div class="top-container">
-        <sl-button variant="primary" size="medium" @click=${this.handleStartProcessDialogOpen}>
+        <sl-button class="start-process" variant="primary" size="medium" @click=${this.handleStartProcessDialogOpen}>
           ${t('mainframe.processes.startProcess', { ns: 'ui' })}
         </sl-button>
-        <div>
+
+        <div class="cores">
           ${t('mainframe.processes.availableCores', {
             ns: 'ui',
             cores: formatter.formatNumberDecimal(this.controller.availableCores),
           })}
         </div>
-        <div>
+
+        <div class="ram">
           ${t('mainframe.processes.availableRam', {
             ns: 'ui',
             ram: formatter.formatNumberDecimal(this.controller.availableRam),

@@ -49,7 +49,7 @@ export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwa
         >
           ${t('mainframe.hardware.buy', {
             ns: 'ui',
-            cost: formatter.formatNumberLong(cost),
+            cost: formatter.formatNumberFloat(cost),
             increase: formatter.formatNumberDecimal(increase),
           })}
         </sl-button>

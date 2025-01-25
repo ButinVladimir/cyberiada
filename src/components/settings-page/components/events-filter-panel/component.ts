@@ -2,24 +2,16 @@ import { t } from 'i18next';
 import { html, css } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
-import { SCREEN_WIDTH_POINTS } from '@shared/styles';
 
 @customElement('ca-events-filter-panel')
 export class EventsFilterPanel extends BaseComponent {
   static styles = css`
     div.buttons-list {
       display: flex;
-      align-items: flex-start;
-      flex-direction: column;
+      align-items: center;
+      flex-direction: row;
       flex-wrap: wrap;
       gap: var(--sl-spacing-large);
-    }
-
-    @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
-      div.buttons-list {
-        flex-direction: row;
-        align-items: center;
-      }
     }
   `;
 

@@ -27,8 +27,8 @@ export class MainframeHardwareAutobuyerDescriptionEffectRenderer implements IDes
       <p>
         ${t('mainframeHardwareAutobuyer.actionsProcess', {
           ns: 'programs',
-          value: this._formatter.formatNumberLong(threads),
-          avgValue: this._formatter.formatNumberLong(avgValue),
+          value: this._formatter.formatNumberFloat(threads),
+          avgValue: this._formatter.formatNumberFloat(avgValue),
         })}
       </p>
     `;

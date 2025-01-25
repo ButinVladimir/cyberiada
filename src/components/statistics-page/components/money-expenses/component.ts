@@ -35,7 +35,7 @@ export class StatisticsMoneyExpenses extends BaseComponent<StatisticsMoneyExpens
         )}
 
         <span> ${t('statistics.total', { ns: 'ui' })} </span>
-        <span> ${formatter.formatNumberLong(moneyTotal)} </span>
+        <span> ${formatter.formatNumberFloat(moneyTotal)} </span>
       </div>
     `;
   }
@@ -49,7 +49,7 @@ export class StatisticsMoneyExpenses extends BaseComponent<StatisticsMoneyExpens
 
     return html`
       <span> ${t(`statistics.expenses.money.${purchaseType}`, { ns: 'ui' })} </span>
-      <span> ${formatter.formatNumberLong(value)} </span>
+      <span> ${formatter.formatNumberFloat(value)} </span>
     `;
   };
 }

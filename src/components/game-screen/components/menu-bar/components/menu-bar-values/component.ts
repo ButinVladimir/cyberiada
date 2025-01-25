@@ -40,7 +40,7 @@ export class MenuBarValues extends BaseComponent<MenuBarValuesController> {
   renderContent() {
     const formatter = this.controller.formatter;
     const accumulatedTimeFormatted = formatter.formatTimeShort(this.controller.accumulatedTime);
-    const moneyFormatted = formatter.formatNumberLong(this.controller.money);
+    const moneyFormatted = formatter.formatNumberFloat(this.controller.money);
     const developmentLevelFormatted = formatter.formatNumberDecimal(this.controller.developmentLevel);
 
     const isDevelopmentGrowing = this.controller.developmentGrowth > 0;

@@ -3,57 +3,90 @@ import { css, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { ProgramName } from '@state/progam-factory/types';
+import { SCREEN_WIDTH_POINTS } from '@shared/styles';
 import { OwnedProgramsListItemController } from './controller';
 
 @customElement('ca-owned-programs-list-item')
 export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemController> {
   static styles = css`
     :host {
-      display: table-row;
-      border-bottom: var(--ca-border);
+      display: grid;
+      grid-template-columns: auto;
+      grid-template-rows: repeat(1fr);
+      gap: var(--sl-spacing-small);
+      padding: var(--sl-spacing-small);
+      box-sizing: border-box;
     }
 
-    td.program {
-      width: 40%;
+    #drag-icon {
+      position: relative;
+      top: 0.15em;
+      left: -0.2em;
+      color: var(--ca-hint-color);
+    }
+
+    .desktop {
+      display: none;
+    }
+
+    .program {
       cursor: grab;
     }
 
-    td.level {
-      width: 25%;
+    .buttons {
+      align-items: center;
+      flex-direction: row;
+      gap: var(--sl-spacing-small);
     }
 
-    td.quality {
-      width: 25%;
-    }
-
-    td.autoupgrade {
-      width: auto;
-      text-align: right;
+    .buttons.desktop {
+      justify-content: flex-end;
       font-size: var(--sl-font-size-large);
     }
 
-    td {
-      text-align: left;
-      vertical-align: middle;
-      padding: var(--sl-spacing-small);
-      white-space: nowrap;
-      text-overflow: ellipsis;
+    .buttons.mobile {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+    }
+
+    sl-icon[name='grip-vertical'] {
+      position: relative;
+      top: 0.2em;
+      color: var(--ca-hint-color);
+      font-size: var(--sl-font-size-large);
     }
 
     sl-icon[name='question-circle'] {
       position: relative;
+      top: 0.25em;
       margin-left: 0.5em;
       color: var(--ca-hint-color);
       font-size: var(--sl-font-size-large);
-      vertical-align: middle;
     }
 
-    sl-icon-button#toggle-autoupgrade-btn {
-      vertical-align: middle;
-    }
+    @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
+      :host {
+        grid-template-columns: 2fr 1fr 1fr 0;
+        grid-template-rows: auto;
+        align-items: center;
+      }
 
-    sl-button#upgrade-max-btn {
-      margin-right: var(--sl-spacing-medium);
+      .desktop {
+        display: block;
+      }
+
+      .mobile {
+        display: none;
+      }
+
+      .buttons.mobile {
+        display: none;
+      }
+
+      .buttons.desktop {
+        display: flex;
+      }
     }
   `;
 
@@ -81,9 +114,16 @@ export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemCo
     }
 
     const autoupgradeIcon = program.autoUpgradeEnabled ? 'arrow-up-circle-fill' : 'arrow-up-circle';
+    const autoupgradeLabel = program.autoUpgradeEnabled ? 'disableAutoupgrade' : 'enableAutoupgrade';
+    const autoupgradeVariant = program.autoUpgradeEnabled ? 'neutral' : 'default';
+
+    const formattedLevel = formatter.formatNumberDecimal(program.level);
+    const formattedQuality = formatter.formatQuality(program.quality);
 
     return html`
-      <td class="program" draggable="true" @dragstart=${this.handleDragStart}>
+      <div class="program" draggable="true" @dragstart=${this.handleDragStart}>
+        <sl-icon name="grip-vertical"> </sl-icon>
+
         ${t(`${program.name}.name`, { ns: 'programs' })}
 
         <sl-tooltip>
@@ -91,29 +131,49 @@ export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemCo
 
           <ca-program-description-text slot="content" program-name=${this.programName}></ca-program-description-text>
         </sl-tooltip>
-      </td>
+      </div>
 
-      <td class="level">${formatter.formatNumberDecimal(program.level)}</td>
+      <div class="mobile">${t(`mainframe.programs.level`, { ns: 'ui', level: formattedLevel })}</div>
 
-      <td class="quality">${formatter.formatQuality(program.quality)}</td>
+      <div class="desktop">${formattedLevel}</div>
 
-      <td class="autoupgrade">
-        <sl-button id="upgrade-max-btn" variant="default" type="button" size="medium" @click=${this.handleUpgradeMax}>
+      <div class="mobile">${t(`mainframe.programs.quality`, { ns: 'ui', quality: formattedQuality })}</div>
+
+      <div class="desktop">${formattedQuality}</div>
+
+      <div class="buttons mobile">
+        <sl-button variant="default" size="medium" @click=${this.handleUpgradeMax}>
           ${t('common.upgrade', { ns: 'ui' })}
         </sl-button>
 
+        <sl-button variant=${autoupgradeVariant} size="medium" @click=${this.handleToggleAutoUpgrade}>
+          ${t(`mainframe.programs.${autoupgradeLabel}`, { ns: 'ui' })}
+        </sl-button>
+      </div>
+
+      <div class="buttons desktop">
         <sl-tooltip>
-          <span slot="content"> ${t('mainframe.programs.toggleAutoupgrade', { ns: 'ui' })} </span>
+          <span slot="content"> ${t('common.upgrade', { ns: 'ui' })} </span>
 
           <sl-icon-button
-            id="toggle-autoupgrade-btn"
+            name="chevron-double-up"
+            label=${t('common.upgrade', { ns: 'ui' })}
+            @click=${this.handleUpgradeMax}
+          >
+          </sl-icon-button>
+        </sl-tooltip>
+
+        <sl-tooltip>
+          <span slot="content"> ${t(`mainframe.programs.${autoupgradeLabel}`, { ns: 'ui' })} </span>
+
+          <sl-icon-button
             name=${autoupgradeIcon}
-            label=${t('mainframe.programs.toggleAutoupgrade', { ns: 'ui' })}
+            label=${t(`mainframe.programs.${autoupgradeLabel}`, { ns: 'ui' })}
             @click=${this.handleToggleAutoUpgrade}
           >
           </sl-icon-button>
         </sl-tooltip>
-      </td>
+      </div>
     `;
   }
 

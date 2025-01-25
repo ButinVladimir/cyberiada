@@ -53,15 +53,15 @@ export class ProcessesListItemProgressColumn extends BaseComponent<ProcessesList
     const progresBarValue = (process.currentCompletionPoints / process.maxCompletionPoints) * 100;
 
     return process.program.isAutoscalable
-      ? html`<div class="progress-gap"></div>`
+      ? html`${t('mainframe.processes.instantCompletion', { ns: 'ui' })}`
       : html`<sl-tooltip>
           <span slot="content"> ${t(progressBarHintLabel, { ns: 'ui', time: progressBarHintTime })} </span>
 
           <sl-progress-bar value=${progresBarValue}>
             ${t('mainframe.processes.progressBarLabel', {
               ns: 'ui',
-              currentCompletionPoints: formatter.formatNumberLong(process.currentCompletionPoints),
-              maxCompletionPoints: formatter.formatNumberLong(process.maxCompletionPoints),
+              currentCompletionPoints: formatter.formatNumberFloat(process.currentCompletionPoints),
+              maxCompletionPoints: formatter.formatNumberFloat(process.maxCompletionPoints),
             })}
           </sl-progress-bar>
         </sl-tooltip>`;

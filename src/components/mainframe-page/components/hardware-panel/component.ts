@@ -38,10 +38,6 @@ export class MainframeHardwarePanel extends BaseComponent<MainframeHardwarePanel
         gap: var(--sl-spacing-large);
       }
 
-      ca-sortable-list ca-mainframe-hardware-panel-article {
-        width: 100%;
-      }
-
       ca-sortable-list ca-mainframe-hardware-panel-article.dragged {
         background-color: var(--ca-dragged-color);
       }

@@ -30,14 +30,14 @@ export class ShareServerDescriptionEffectRenderer implements IDescriptionEffectR
       <p>
         ${t('shareServer.moneyProgram', {
           ns: 'programs',
-          money: this._formatter.formatNumberLong(money),
+          money: this._formatter.formatNumberFloat(money),
         })}
       </p>
 
       <p>
         ${t('shareServer.developmentPointsProgram', {
           ns: 'programs',
-          developmentPoints: this._formatter.formatNumberLong(developmentPoints),
+          developmentPoints: this._formatter.formatNumberFloat(developmentPoints),
         })}
       </p>
     `;

@@ -63,8 +63,10 @@ settings:
     light: Светлая
     dark: Темная
   longNumberFormats:
+    short: Короткий
+    long: Длинный
     scientific: Научный
-    builtIn: Встроенный
+    engineering: Инженерный
   saveGame: Сохранить игру
   importSavefile: Импорт сохранения
   exportSavefile: Экспорт сохранения
@@ -126,7 +128,8 @@ mainframe:
     buy: Купить x{{increase}} за {{cost}}
     buyMax: Купить все
     buyMaxAllUpgrades: Купить все улучшения
-    toggleAutoupgrade: Включить/выключить автопокупку
+    enableAutoupgrade: Включить автоулучшение
+    disableAutoupgrade: Выключить автоулучшение
   programs:
     programsHint: Приоритет автоматического улучшения программы может быть изменен путем его перетаскивания за название.
       Программы наверху имеют больший приоритет. Автоматическое улучшение программ пытается повысить их уровни, не меняет качества.
@@ -138,8 +141,12 @@ mainframe:
     purchase: Купить за {{cost}}
     upgradeMaxAllPrograms: Улучшить все программы
     emptyListNotification: У тебя нет имеющихся програм
-    toggleAutoupgrade: Включить/выключить автопокупку
-    toggleAutoupgradeAll: Включить/выключить автопокупку для всех программ
+    enableAutoupgrade: Включить автоулучшение
+    disableAutoupgrade: Выключить автоулучшение
+    enableAutoupgradeAll: Включить автоулучшение для всех программ
+    disableAutoupgradeAll: Выключить автоулучшение для всех программ
+    level: 'Уровень: {{level}}'
+    quality: 'Качество: {{quality}}'
   processes:
     processesHint: Чтобы программа выполнялась, для неё должен быть начат процесс.
       Процессы для немасштабируемых программ наверху списка имеют приоритет, когда ядра распределяются по процессам.
@@ -156,12 +163,16 @@ mainframe:
     progressBarLabel: "{{currentCompletionPoints}} \/ {{maxCompletionPoints}}"
     progressBarHintActive: 'Процесс будет выполнен через {{time}}'
     progressBarHintPaused: 'Процесс неактивен'
-    processToggle: Включить / выключить процесс
-    allProcessesToggle: Включить / выключить все процессы
+    enableProcess: Включить процесс
+    disableProcess: Выключить процесс
+    enableAllProcesses: Включить все процессы
+    disableAllProcesses: Выключить все процессы
     processDelete: Удалить процесс
     allProcessesDelete: Удалить все процессы
     autoscalable: Автомасштабируется
+    instantCompletion: Мгновенное выполнение
     usesCores: "{{cores}} \/ {{maxCores}}"
+    usesCoresFull: "Использует ядра: {{cores}} \/ {{maxCores}}"
     availableCores: 'Доступные ядра: {{cores}}'
     availableRam: 'Доступная память: {{ram}}'
 statistics:

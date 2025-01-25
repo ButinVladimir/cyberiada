@@ -25,7 +25,7 @@ export class StatisticsProgramCompletionSpeed extends BaseComponent<StatisticsPr
 
       <div class="parameters-table">
         <span> ${t('statistics.growth.programCompletionSpeed.pointsPerSecond', { ns: 'ui' })} </span>
-        <span> ${formatter.formatNumberLong(this.controller.programCompletionSpeed)} </span>
+        <span> ${formatter.formatNumberFloat(this.controller.programCompletionSpeed)} </span>
       </div>
     `;
   }

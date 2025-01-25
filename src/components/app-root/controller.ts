@@ -14,6 +14,10 @@ export class AppRootController extends BaseController {
     return this.app.appStage;
   }
 
+  get autosaveEnabled(): boolean {
+    return this.settingsState.autosaveEnabled;
+  }
+
   saveGame() {
     this.app.saveGame();
   }

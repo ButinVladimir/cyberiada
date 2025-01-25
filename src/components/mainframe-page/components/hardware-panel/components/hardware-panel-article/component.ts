@@ -52,7 +52,8 @@ export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwa
 
       #toggle-autoupgrade-btn {
         position: relative;
-        top: 0.1em;
+        top: 0.15em;
+        font-size: var(--sl-font-size-large);
       }
 
       #drag-icon {
@@ -104,9 +105,10 @@ export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwa
 
     const level = this.controller.getLevel(this.type);
 
-    const autoupgradeIcon = this.controller.isAutoUpgradeEnabled(this.type)
-      ? 'arrow-up-circle-fill'
-      : 'arrow-up-circle';
+    const isAutoupgradeEnabled = this.controller.isAutoUpgradeEnabled(this.type);
+
+    const autoupgradeIcon = isAutoupgradeEnabled ? 'arrow-up-circle-fill' : 'arrow-up-circle';
+    const autoupgradeLabel = isAutoupgradeEnabled ? 'disableAutoupgrade' : 'enableAutoupgrade';
 
     return html`
       <div class="title-row">
@@ -114,18 +116,19 @@ export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwa
           <sl-icon id="drag-icon" name="grip-vertical"> </sl-icon>
 
           ${t(`mainframe.hardware.${this.type}`, { ns: 'ui', level: formatter.formatNumberDecimal(level) })}
-        </h4>
-        <sl-tooltip>
-          <span slot="content"> ${t('mainframe.hardware.toggleAutoupgrade', { ns: 'ui' })} </span>
 
-          <sl-icon-button
-            id="toggle-autoupgrade-btn"
-            name=${autoupgradeIcon}
-            label=${t('mainframe.hardware.toggleAutoupgrade', { ns: 'ui' })}
-            @click=${this.handleToggleAutoUpgrade}
-          >
-          </sl-icon-button>
-        </sl-tooltip>
+          <sl-tooltip>
+            <span slot="content"> ${t(`mainframe.hardware.${autoupgradeLabel}`, { ns: 'ui' })} </span>
+
+            <sl-icon-button
+              id="toggle-autoupgrade-btn"
+              name=${autoupgradeIcon}
+              label=${t(`mainframe.hardware.${autoupgradeLabel}`, { ns: 'ui' })}
+              @click=${this.handleToggleAutoUpgrade}
+            >
+            </sl-icon-button>
+          </sl-tooltip>
+        </h4>
       </div>
 
       <p class="hint">${t(`mainframe.hardware.${this.type}Hint`, { ns: 'ui' })}</p>

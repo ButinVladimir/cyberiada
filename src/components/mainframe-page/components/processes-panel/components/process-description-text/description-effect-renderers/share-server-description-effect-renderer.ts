@@ -27,7 +27,7 @@ export class ShareServerDescriptionEffectRenderer implements IDescriptionEffectR
       <p>
         ${t('shareServer.moneyProcess', {
           ns: 'programs',
-          money: this._formatter.formatNumberLong(
+          money: this._formatter.formatNumberFloat(
             program.calculateMoneyDelta(usedCores, this._availableRam, MS_IN_SECOND),
           ),
         })}
@@ -36,7 +36,7 @@ export class ShareServerDescriptionEffectRenderer implements IDescriptionEffectR
       <p>
         ${t('shareServer.developmentPointsProcess', {
           ns: 'programs',
-          developmentPoints: this._formatter.formatNumberLong(
+          developmentPoints: this._formatter.formatNumberFloat(
             program.calculateDevelopmentPointsDelta(usedCores, this._availableRam, MS_IN_SECOND),
           ),
         })}

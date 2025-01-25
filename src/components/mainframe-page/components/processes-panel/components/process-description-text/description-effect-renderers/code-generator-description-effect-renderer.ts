@@ -28,8 +28,8 @@ export class CodeGeneratorDescriptionEffectRenderer implements IDescriptionEffec
       <p>
         ${t('codeGenerator.computationalBasePointsProcess', {
           ns: 'programs',
-          value: this._formatter.formatNumberLong(value),
-          avgValue: this._formatter.formatNumberLong(avgValue),
+          value: this._formatter.formatNumberFloat(value),
+          avgValue: this._formatter.formatNumberFloat(avgValue),
         })}
       </p>
     `;

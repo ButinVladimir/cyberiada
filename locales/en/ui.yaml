@@ -63,8 +63,10 @@ settings:
     light: Light
     dark: Dark
   longNumberFormats:
+    short: Short
+    long: Long
     scientific: Scientific
-    builtIn: Built-in
+    engineering: Engineering
   saveGame: Save game
   importSavefile: Import savefile
   exportSavefile: Export savefile
@@ -126,7 +128,8 @@ mainframe:
     buy: Buy x{{increase}} for {{cost}}
     buyMax: Buy max
     buyMaxAllUpgrades: Buy all upgrades
-    toggleAutoupgrade: Toggle autoupgrade
+    enableAutoupgrade: Enable autoupgrade
+    disableAutoupgrade: Disable autoupgrade
   programs:
     programsHint: Program autoupgrade priority can be changed by dragging it by the title.
       Programs on top have higher priority. Autoupgrade for programs won"t change their quality but will attempt to increase level.
@@ -137,9 +140,13 @@ mainframe:
       If you already have program with same name, old one will be replaced with new one.
     purchase: Purchase for {{cost}}
     upgradeMaxAllPrograms: Upgrade all programs
-    emptyListNotification: You don"t have any owned programs
-    toggleAutoupgrade: Toggle autoupgrade
-    toggleAutoupgradeAll: Toggle autoupgrade for all programs
+    emptyListNotification: You don't have any owned programs
+    enableAutoupgrade: Enable autoupgrade
+    disableAutoupgrade: Disable autoupgrade
+    enableAutoupgradeAll: Enable autoupgrade for all programs
+    disableAutoupgradeAll: Disable autoupgrade for all programs
+    level: 'Level: {{level}}'
+    quality: 'Quality: {{quality}}'
   processes:
     processesHint: To make a program run, a process has to be start for it.
       Topmost processes for non-scalable programs have more priority when cores are assigned to processes.
@@ -151,17 +158,21 @@ mainframe:
     startProcessDialogHint: Select one of owned programs to start process for it.
       If you already have process for same program, old process will be replaced with new one.
       Threads allow to run multiple instances of same program at same time, but additional threads require additional memory.
-    emptyListNotification: You don"t have any processes
+    emptyListNotification: You don't have any processes
     programSelectItem: $t(programs:{{programName}}:name), level {{level}}, quality {{quality}}
     progressBarLabel: "{{currentCompletionPoints}} \/ {{maxCompletionPoints}}"
     progressBarHintActive: 'Process will be completed in {{time}}'
     progressBarHintPaused: "Process isn't active"
-    processToggle: Enable / disable process
-    allProcessesToggle: Enable / disable all processes
+    enableProcess: Enable process
+    disableProcess: Disable process
+    enableAllProcesses: Enable all processes
+    disableAllProcesses: Disable all processes
     processDelete: Delete process
-    allProcessesDelete: Delete all process
+    allProcessesDelete: Delete all processes
     autoscalable: Autoscalable
+    instantCompletion: Instant completion
     usesCores: "{{cores}} \/ {{maxCores}}"
+    usesCoresFull: "Uses cores: {{cores}} \/ {{maxCores}}"
     availableCores: 'Available cores: {{cores}}'
     availableRam: 'Available RAM: {{ram}}'
 statistics:

@@ -37,7 +37,7 @@ export class StatisticsProgramsIncome extends BaseComponent<StatisticsProgramsIn
                   <sl-icon name="question-circle"></sl-icon>
                 </sl-tooltip>
               </span>
-              <span> ${formatter.formatNumberLong(this.controller.computationalBase)} </span>
+              <span> ${formatter.formatNumberFloat(this.controller.computationalBase)} </span>
             `
           : nothing}
       </div>

@@ -8,7 +8,6 @@ import {
   ConfirmationAlertOpenEvent,
   ConfirmationAlertSubmitEvent,
 } from '@/components/shared/confirmation-alert/events';
-import { SCREEN_WIDTH_POINTS } from '@shared/styles';
 import { SavefilePanelController } from './controller';
 
 @customElement('ca-savefile-panel')
@@ -16,21 +15,14 @@ export class SavefilePanel extends BaseComponent<SavefilePanelController> {
   static styles = css`
     :host {
       display: flex;
-      align-items: flex-start;
-      flex-direction: column;
+      align-items: center;
+      flex-direction: row;
       flex-wrap: wrap;
       gap: var(--sl-spacing-large);
     }
 
     input#import-file {
       display: none;
-    }
-
-    @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
-      :host {
-        flex-direction: row;
-        align-items: center;
-      }
     }
   `;
 

@@ -37,7 +37,7 @@ export class StatisticsProgramsGrowth extends BaseComponent<StatisticsProgramsGr
                   <sl-icon name="question-circle"></sl-icon>
                 </sl-tooltip>
               </span>
-              <span> ${formatter.formatNumberLong(computationalBase)} </span>
+              <span> ${formatter.formatNumberFloat(computationalBase)} </span>
             </div>
           `
         : nothing}

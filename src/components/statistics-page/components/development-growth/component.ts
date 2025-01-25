@@ -32,7 +32,7 @@ export class StatisticsDevelopmentGrowth extends BaseComponent<StatisticsDevelop
         )}
 
         <span> ${t('statistics.total', { ns: 'ui' })} </span>
-        <span> ${formatter.formatNumberLong(total)} </span>
+        <span> ${formatter.formatNumberFloat(total)} </span>
       </div>
     `;
   }
@@ -46,7 +46,7 @@ export class StatisticsDevelopmentGrowth extends BaseComponent<StatisticsDevelop
 
     return html`
       <span> ${t(`statistics.growth.developmentPoints.${incomeSource}`, { ns: 'ui' })} </span>
-      <span> ${formatter.formatNumberLong(value)} </span>
+      <span> ${formatter.formatNumberFloat(value)} </span>
     `;
   };
 }

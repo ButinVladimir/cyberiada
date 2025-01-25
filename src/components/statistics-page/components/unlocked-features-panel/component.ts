@@ -1,15 +1,29 @@
 import { t } from 'i18next';
-import { html } from 'lit';
+import { html, css } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { BaseComponent } from '@shared/base-component';
 import { Feature } from '@shared/types';
 import { StatisticsUnlockedFeaturesPanelController } from './controller';
-import { statisticsPanelContentStyle } from '../../styles';
+import { sectionTitleStyle } from '@shared/styles';
 
 @customElement('ca-statistics-unlocked-features-panel')
 export class StatisticsUnlockedFeaturesPanel extends BaseComponent<StatisticsUnlockedFeaturesPanelController> {
-  static styles = statisticsPanelContentStyle;
+  static styles = [
+    sectionTitleStyle,
+    css`
+      h4.title {
+        margin-bottom: var(--sl-spacing-2x-small);
+      }
+
+      .parameters-table {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--sl-spacing-3x-small);
+      }
+    `,
+  ];
 
   protected controller: StatisticsUnlockedFeaturesPanelController;
 

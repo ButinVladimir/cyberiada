@@ -43,7 +43,11 @@ export class AppRoot extends BaseComponent<AppRootController> {
   }
 
   private handleUnload = () => {
-    if (this.controller.appStage === AppStage.fastForward || this.controller.appStage === AppStage.running) {
+    const gameIsRunning =
+      this.controller.appStage === AppStage.fastForward || this.controller.appStage === AppStage.running;
+    const autosaveEnabled = this.controller.autosaveEnabled;
+
+    if (gameIsRunning && autosaveEnabled) {
       this.controller.saveGame();
     }
   };

@@ -80,8 +80,10 @@ export enum NotificationType {
 }
 
 export enum LongNumberFormat {
-  builtIn = 'builtIn',
+  short = 'short',
+  long = 'long',
   scientific = 'scientific',
+  engineering = 'engineering',
 }
 
 export enum PurchaseType {

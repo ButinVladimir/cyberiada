@@ -26,9 +26,9 @@ export class CodeGeneratorDescriptionEffectRenderer implements IDescriptionEffec
       <p>
         ${t('codeGenerator.computationalBasePointsProgram', {
           ns: 'programs',
-          value: this._formatter.formatNumberLong(value),
-          minAvgValue: this._formatter.formatNumberLong(minAvgValue),
-          maxAvgValue: this._formatter.formatNumberLong(maxAvgValue),
+          value: this._formatter.formatNumberFloat(value),
+          minAvgValue: this._formatter.formatNumberFloat(minAvgValue),
+          maxAvgValue: this._formatter.formatNumberFloat(maxAvgValue),
         })}
       </p>
     `;

@@ -49,12 +49,12 @@ export class CodeGeneratorDescriptionEffectRenderer implements IDescriptionEffec
       <p>
         ${t('codeGenerator.computationalBasePointsDiff', {
           ns: 'programs',
-          value: this._formatter.formatNumberLong(value),
-          valueDiff: this._formatter.formatNumberLong(valueDiff, diffFormatterParametersLong),
-          minAvgValue: this._formatter.formatNumberLong(minAvgValue),
-          maxAvgValue: this._formatter.formatNumberLong(maxAvgValue),
-          minAvgValueDiff: this._formatter.formatNumberLong(minAvgValueDiff, diffFormatterParametersLong),
-          maxAvgValueDiff: this._formatter.formatNumberLong(maxAvgValueDiff, diffFormatterParametersLong),
+          value: this._formatter.formatNumberFloat(value),
+          valueDiff: this._formatter.formatNumberFloat(valueDiff, diffFormatterParametersLong),
+          minAvgValue: this._formatter.formatNumberFloat(minAvgValue),
+          maxAvgValue: this._formatter.formatNumberFloat(maxAvgValue),
+          minAvgValueDiff: this._formatter.formatNumberFloat(minAvgValueDiff, diffFormatterParametersLong),
+          maxAvgValueDiff: this._formatter.formatNumberFloat(maxAvgValueDiff, diffFormatterParametersLong),
         })}
       </p>
     `;

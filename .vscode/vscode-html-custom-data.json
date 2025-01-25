@@ -281,7 +281,7 @@
     },
     {
       "name": "ca-processes-list",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_tbodyRef` {`Ref<HTMLTableSectionElement>`} - \n\n  * `_draggedItemName` - \n\n  * `_draggedItemPosition` {`number | undefined`} - \n\n  * `renderList` - \n\n  * `renderEmptyListNotification` - \n\n  * `renderListItem` - \n\n  * `handleToggleAllProcesses` - \n\n  * `handleOpenDeleteAllProcessesDialog` - \n\n  * `handleConfirmAllDeleteProcessesDialog` - \n\n  * `handleDragStart` - \n\n  * `handleDragOver` - \n\n  * `handleDragEnd` - \n\n  * `controller` {`ProcessesListController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderEmptyListNotification` - \n\n  * `renderProcess` - \n\n  * `handleToggleAllProcesses` - \n\n  * `handleOpenDeleteAllProcessesDialog` - \n\n  * `handleConfirmAllDeleteProcessesDialog` - \n\n  * `handleMoveProcess` - \n\n  * `controller` {`ProcessesListController`} - ",
       "attributes": []
     },
     {
@@ -297,7 +297,7 @@
     },
     {
       "name": "ca-mainframe-programs-panel",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_isPurchaseProgramDialogOpen` {`boolean`} - \n\n  * `handlePurchaseProgramDialogOpen` - \n\n  * `handlePurchaseProgramDialogClose` - \n\n  * `handleUpgradeMaxAllPrograms` - \n\n  * `controller` {`ProgramsPanelController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_isPurchaseProgramDialogOpen` {`boolean`} - \n\n  * `handlePurchaseProgramDialogOpen` - \n\n  * `handlePurchaseProgramDialogClose` - ",
       "attributes": []
     },
     {
@@ -312,7 +312,7 @@
     },
     {
       "name": "ca-owned-programs-list",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_tbodyRef` {`Ref<HTMLTableSectionElement>`} - \n\n  * `_draggedItemName` - \n\n  * `_draggedItemPosition` {`number | undefined`} - \n\n  * `renderList` - \n\n  * `renderEmptyListNotification` - \n\n  * `renderListItem` - \n\n  * `handleToggleAutoupgrade` - \n\n  * `handleDragStart` - \n\n  * `handleDragOver` - \n\n  * `handleDragEnd` - \n\n  * `controller` {`OwnedProgramsListController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderEmptyListNotification` - \n\n  * `renderProgram` - \n\n  * `handleToggleAutoupgrade` - \n\n  * `handleMoveProgram` - \n\n  * `handleUpgradeMaxAllPrograms` - \n\n  * `controller` {`OwnedProgramsListController`} - ",
       "attributes": []
     },
     {

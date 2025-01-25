@@ -3,10 +3,9 @@ import { css, html } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { hintStyle } from '@shared/styles';
-import { ProgramsPanelController } from './controller';
 
 @customElement('ca-mainframe-programs-panel')
-export class MainframeProgramsPanel extends BaseComponent<ProgramsPanelController> {
+export class MainframeProgramsPanel extends BaseComponent {
   static styles = [
     hintStyle,
     css`
@@ -20,38 +19,19 @@ export class MainframeProgramsPanel extends BaseComponent<ProgramsPanelControlle
       p.hint {
         margin: 0;
       }
-
-      div.buttons-container {
-        display: flex;
-        gap: var(--sl-spacing-medium);
-      }
     `,
   ];
 
-  protected controller: ProgramsPanelController;
-
   @state()
   private _isPurchaseProgramDialogOpen = false;
-
-  constructor() {
-    super();
-
-    this.controller = new ProgramsPanelController(this);
-  }
 
   renderContent() {
     return html`
       <p class="hint">${t('mainframe.programs.programsHint', { ns: 'ui' })}</p>
 
-      <div class="buttons-container">
-        <sl-button variant="primary" size="medium" @click=${this.handlePurchaseProgramDialogOpen}>
-          ${t('mainframe.programs.purchaseProgram', { ns: 'ui' })}
-        </sl-button>
-
-        <sl-button variant="default" size="medium" @click=${this.handleUpgradeMaxAllPrograms}>
-          ${t('mainframe.programs.upgradeMaxAllPrograms', { ns: 'ui' })}
-        </sl-button>
-      </div>
+      <sl-button variant="primary" size="medium" @click=${this.handlePurchaseProgramDialogOpen}>
+        ${t('mainframe.programs.purchaseProgram', { ns: 'ui' })}
+      </sl-button>
 
       <ca-owned-programs-list></ca-owned-programs-list>
 
@@ -75,12 +55,5 @@ export class MainframeProgramsPanel extends BaseComponent<ProgramsPanelControlle
     event.stopPropagation();
 
     this._isPurchaseProgramDialogOpen = false;
-  };
-
-  private handleUpgradeMaxAllPrograms = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
-    this.controller.upgradeMaxAllPrograms();
   };
 }
