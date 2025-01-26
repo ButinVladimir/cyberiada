@@ -1,11 +1,15 @@
+import { t } from 'i18next';
 import { html, css } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
+import { MiscMenuItem } from '@shared/types';
+import { IHistoryState } from '@shared/interfaces/history-state';
+import { ISettingsEventsFilterHistoryState } from './interfaces';
 
 @customElement('ca-events-filter-panel')
 export class EventsFilterPanel extends BaseComponent {
   static styles = css`
-    :host {
+    div.buttons-list {
       display: flex;
       align-items: center;
       flex-direction: row;
@@ -23,22 +27,36 @@ export class EventsFilterPanel extends BaseComponent {
   @state()
   private _isNotificationTypeFilterOpen = false;
 
+  connectedCallback() {
+    super.connectedCallback();
+
+    window.addEventListener('popstate', this.handlePopState);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+
+    window.removeEventListener('popstate', this.handlePopState);
+  }
+
   renderContent() {
     return html`
-      <sl-button variant="default" size="medium" @click=${this.handleMessageFilterDialogOpen}>
-        <sl-icon slot="prefix" name="chat-left-dots"></sl-icon>
-        <intl-message label="ui:settings:messageFilter">Message filter</intl-message>
-      </sl-button>
+      <div class="buttons-list">
+        <sl-button variant="default" size="medium" @click=${this.handleMessageFilterDialogOpen}>
+          <sl-icon slot="prefix" name="chat-left-dots"></sl-icon>
+          ${t('settings.messageFilter', { ns: 'ui' })}
+        </sl-button>
 
-      <sl-button variant="default" size="medium" @click=${this.handleAlertFilterDialogOpen}>
-        <sl-icon slot="prefix" name="question-circle"></sl-icon>
-        <intl-message label="ui:settings:alertFilter">Alert filter</intl-message>
-      </sl-button>
+        <sl-button variant="default" size="medium" @click=${this.handleAlertFilterDialogOpen}>
+          <sl-icon slot="prefix" name="question-circle"></sl-icon>
+          ${t('settings.alertFilter', { ns: 'ui' })}
+        </sl-button>
 
-      <sl-button variant="default" size="medium" @click=${this.handleNotificationTypeFilterDialogOpen}>
-        <sl-icon slot="prefix" name="exclamation-circle"></sl-icon>
-        <intl-message label="ui:settings:notificationTypeFilter">Notification type filter</intl-message>
-      </sl-button>
+        <sl-button variant="default" size="medium" @click=${this.handleNotificationTypeFilterDialogOpen}>
+          <sl-icon slot="prefix" name="exclamation-circle"></sl-icon>
+          ${t('settings.notificationTypeFilter', { ns: 'ui' })}
+        </sl-button>
+      </div>
 
       <ca-message-filter-dialog
         ?is-open=${this._isMessageFilterOpen}
@@ -65,13 +83,16 @@ export class EventsFilterPanel extends BaseComponent {
     event.stopPropagation();
 
     this._isMessageFilterOpen = true;
+
+    const state = { ...window.history.state, messageFilterOpen: true } as ISettingsEventsFilterHistoryState;
+    window.history.pushState(state, MiscMenuItem.settings);
   };
 
   private handleMessageFilterDialogClose = (event: Event) => {
     event.preventDefault();
     event.stopPropagation();
 
-    this._isMessageFilterOpen = false;
+    window.history.back();
   };
 
   private handleAlertFilterDialogOpen = (event: Event) => {
@@ -79,13 +100,16 @@ export class EventsFilterPanel extends BaseComponent {
     event.stopPropagation();
 
     this._isAlertFilterOpen = true;
+
+    const state = { ...window.history.state, alertFilterOpen: true } as ISettingsEventsFilterHistoryState;
+    window.history.pushState(state, MiscMenuItem.settings);
   };
 
   private handleAlertFilterDialogClose = (event: Event) => {
     event.preventDefault();
     event.stopPropagation();
 
-    this._isAlertFilterOpen = false;
+    window.history.back();
   };
 
   private handleNotificationTypeFilterDialogOpen = (event: Event) => {
@@ -93,12 +117,25 @@ export class EventsFilterPanel extends BaseComponent {
     event.stopPropagation();
 
     this._isNotificationTypeFilterOpen = true;
+
+    const state = { ...window.history.state, notificationTypeFilterOpen: true } as ISettingsEventsFilterHistoryState;
+    window.history.pushState(state, MiscMenuItem.settings);
   };
 
   private handleNotificationTypeFilterDialogClose = (event: Event) => {
     event.preventDefault();
     event.stopPropagation();
 
-    this._isNotificationTypeFilterOpen = false;
+    window.history.back();
+  };
+
+  private handlePopState = (event: PopStateEvent) => {
+    if ((event.state as IHistoryState).selectedMenuItem === MiscMenuItem.settings) {
+      const state = event.state as ISettingsEventsFilterHistoryState;
+
+      this._isAlertFilterOpen = !!state.alertFilterOpen;
+      this._isMessageFilterOpen = !!state.messageFilterOpen;
+      this._isNotificationTypeFilterOpen = !!state.notificationTypeFilterOpen;
+    }
   };
 }

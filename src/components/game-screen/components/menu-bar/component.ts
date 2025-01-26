@@ -4,8 +4,6 @@ import constants from '@configs/constants.json';
 import { BaseComponent } from '@shared/base-component';
 import { OVERVIEW_MENU_ITEMS, MISC_MENU_ITEMS } from '@shared/constants';
 import { Feature } from '@shared/types';
-import { MenuItem } from './components/menu-item/component';
-import { MenuItemSelectedEvent } from './events/menu-item-selected-event';
 import { MenuBarController } from './controller';
 
 @customElement('ca-menu-bar')
@@ -27,7 +25,7 @@ export class MenuBar extends BaseComponent<MenuBarController> {
 
     nav {
       box-sizing: border-box;
-      padding: var(--sl-spacing-small) var(--sl-spacing-2x-small);
+      padding: var(--sl-spacing-2x-small);
       width: 100%;
       display: flex;
       flex-direction: column;
@@ -40,7 +38,7 @@ export class MenuBar extends BaseComponent<MenuBarController> {
   `;
 
   @property({ attribute: 'selected-menu-item', type: String })
-  selectedMenuItem = '';
+  selectedMenuItem?: string;
 
   protected controller: MenuBarController;
 
@@ -54,6 +52,10 @@ export class MenuBar extends BaseComponent<MenuBarController> {
     return html`
       <scrollable-component>
         <nav>
+          <ca-menu-bar-values></ca-menu-bar-values>
+
+          <sl-divider></sl-divider>
+
           ${OVERVIEW_MENU_ITEMS.map(this.renderMenuItem)}
 
           <sl-divider></sl-divider>
@@ -73,22 +75,7 @@ export class MenuBar extends BaseComponent<MenuBarController> {
     }
 
     return html`
-      <ca-menu-item
-        key=${menuItem}
-        name=${menuItem}
-        ?selected=${this.selectedMenuItem === menuItem}
-        @click=${this.handleMenuItemClick}
-      >
-      </ca-menu-item>
+      <ca-menu-item key=${menuItem} name=${menuItem} ?selected=${this.selectedMenuItem === menuItem}> </ca-menu-item>
     `;
-  };
-
-  private handleMenuItemClick = (event: Event) => {
-    event.stopPropagation();
-
-    const target = event.target as MenuItem;
-    const menuItemName = target.getAttribute('name') ?? '';
-
-    this.dispatchEvent(new MenuItemSelectedEvent(menuItemName));
   };
 }

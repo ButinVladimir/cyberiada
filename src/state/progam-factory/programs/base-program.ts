@@ -158,8 +158,4 @@ export abstract class BaseProgram implements IProgram {
       autoUpgradeEnabled: this.autoUpgradeEnabled,
     };
   }
-
-  abstract buildProgramDescriptionParametersObject(threads: number, usedRam: number): object;
-
-  abstract buildProcessDescriptionParametersObject(threads: number, usedCores: number, usedRam: number): object;
 }

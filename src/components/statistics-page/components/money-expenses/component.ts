@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
@@ -26,19 +27,15 @@ export class StatisticsMoneyExpenses extends BaseComponent<StatisticsMoneyExpens
     );
 
     return html`
-      <h4 class="title">
-        <intl-message label="ui:statistics:expenses:money:title">money</intl-message>
-      </h4>
+      <h4 class="title">${t('statistics.expenses.money.title', { ns: 'ui' })}</h4>
 
       <div class="parameters-table">
         ${PURCHASE_TYPES.map((purchaseType) =>
           this.renderExpenseArticle(purchaseType, this.controller.getMoneyExpenses(purchaseType)),
         )}
 
-        <span>
-          <intl-message label="ui:statistics:total">Total</intl-message>
-        </span>
-        <span> ${formatter.formatNumberLong(moneyTotal)} </span>
+        <span> ${t('statistics.total', { ns: 'ui' })} </span>
+        <span> ${formatter.formatNumberFloat(moneyTotal)} </span>
       </div>
     `;
   }
@@ -51,10 +48,8 @@ export class StatisticsMoneyExpenses extends BaseComponent<StatisticsMoneyExpens
     const formatter = this.controller.formatter;
 
     return html`
-      <span>
-        <intl-message label="ui:statistics:expenses:money:${purchaseType}">Purchase type</intl-message>
-      </span>
-      <span> ${formatter.formatNumberLong(value)} </span>
+      <span> ${t(`statistics.expenses.money.${purchaseType}`, { ns: 'ui' })} </span>
+      <span> ${formatter.formatNumberFloat(value)} </span>
     `;
   };
 }

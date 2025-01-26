@@ -1,35 +1,35 @@
 shareServer:
   name: Сервер аренды мейнфрейма
   overview: Программа для предоставления доступа к мейнфрейму городской сети. Пассивно генерирует доход и очки развития (ОР).
-  moneyProcess: 'Деньги: {{value.money}} в секунду'
-  moneyProgram: 'Деньги: До {{value.money}} в секунду'
-  moneyDiff: 'Деньги: До {{value.money}} ({{value.moneyDiff}}) в секунду'
-  developmentPointsProcess: 'ОР: {{value.developmentPoints}} в секунду'
-  developmentPointsProgram: 'ОР: До {{value.developmentPoints}} в секунду'
-  developmentPointsDiff: 'ОР: До {{value.developmentPoints}} ({{value.developmentPointsDiff}}) в секунду'
+  moneyProcess: 'Деньги: {{money}} в секунду'
+  moneyProgram: 'Деньги: До {{money}} в секунду'
+  moneyDiff: 'Деньги: До {{money}} ({{moneyDiff}}) в секунду'
+  developmentPointsProcess: 'ОР: {{developmentPoints}} в секунду'
+  developmentPointsProgram: 'ОР: До {{developmentPoints}} в секунду'
+  developmentPointsDiff: 'ОР: До {{developmentPoints}} ({{developmentPointsDiff}}) в секунду'
 codeGenerator:
   name: Генератор кода
   overview: Программа для разработки других программ. Генерирует очки вычислительной базы (ОВБ) и улучшает скидку на продукты для мейнфрейма.
-  computationalBasePointsProcess: 'ОВБ: {{value.value}} за выполнение ({{value.avgValue}} в секунду)'
-  computationalBasePointsProgram: 'ОВБ: {{value.value}} за выполнение ({{value.minAvgValue}} &mdash; {{value.maxAvgValue}} в секунду)'
-  computationalBasePointsDiff: 'ОВБ: {{value.value}} ({{value.valueDiff}}) за выполнение ({{value.minAvgValue}} &mdash; {{value.maxAvgValue}} в секунду) ({{value.minAvgValueDiff}} &mdash; {{value.maxAvgValueDiff}})'
+  computationalBasePointsProcess: 'ОВБ: {{value}} за выполнение ({{avgValue}} в секунду)'
+  computationalBasePointsProgram: "ОВБ: {{value}} за выполнение ({{minAvgValue}} \u2014 {{maxAvgValue}} в секунду)"
+  computationalBasePointsDiff: "ОВБ: {{value}} ({{valueDiff}}) за выполнение ({{minAvgValue}} \u2014 {{maxAvgValue}} в секунду) ({{minAvgValueDiff}} \u2014 {{maxAvgValueDiff}})"
 predictiveComputator:
   name: Предсказательный вычислитель
   overview: Программа для ускорения выполнения других процессов.
-  speedMultiplierProcess: 'Множитель скорости: {{value.value}}'
-  speedMultiplierProgram: 'Множитель скорости: До {{value.value}}'
-  speedMultiplierDiff: 'Множитель скорости: До {{value.value}} ({{value.valueDiff}})'
+  speedMultiplierProcess: 'Множитель скорости: {{value}}'
+  speedMultiplierProgram: 'Множитель скорости: До {{value}}'
+  speedMultiplierDiff: 'Множитель скорости: До {{value}} ({{valueDiff}})'
 mainframeHardwareAutobuyer:
   name: Автопокупка оборудования мейнфрейма
   overview: Программа для автоматической покупки оборудования мейнфрейма.
-  actionsProcess: 'Действия: {{value.value}} за выполнение ({{value.avgValue}} в секунду)'
-  actionsProgram: 'Действия: 1 за выполнение ({{value.minAvgValue}} &mdash; {{value.maxAvgValue}} в секунду)'
-  actionsProcessDiff: 'Действия: {{value.value}} ({{value.valueDiff}}) за выполнение ({{value.minAvgValue}} &mdash; {{value.maxAvgValue}} в секунду) ({{value.minAvgValueDiff}} &mdash; {{value.maxAvgValueDiff}})'
-  actionsProgramDiff: 'Действия: 1 за выполнение ({{value.minAvgValue}} &mdash; {{value.maxAvgValue}} в секунду) ({{value.minAvgValueDiff}} &mdash; {{value.maxAvgValueDiff}})'
+  actionsProcess: 'Действия: {{value}} за выполнение ({{avgValue}} в секунду)'
+  actionsProgram: "Действия: 1 за выполнение ({{minAvgValue}} \u2014 {{maxAvgValue}} в секунду)"
+  actionsProcessDiff: "Действия: {{value}} ({{valueDiff}}) за выполнение ({{minAvgValue}} \u2014 {{maxAvgValue}} в секунду) ({{minAvgValueDiff}} \u2014 {{maxAvgValueDiff}})"
+  actionsProgramDiff: "Действия: 1 за выполнение ({{minAvgValue}} \u2014 {{maxAvgValue}} в секунду) ({{minAvgValueDiff}} \u2014 {{maxAvgValueDiff}})"
 mainframeProgramsAutobuyer:
   name: Автопокупка программ для мейнфрейма
   overview: Программа для автоматической покупки программ для мейнфрейма.
-  actionsProcess: 'Действия: {{value.value}} за выполнение ({{value.avgValue}} в секунду)'
-  actionsProgram: 'Действия: 1 за выполнение ({{value.minAvgValue}} &mdash; {{value.maxAvgValue}} в секунду)'
-  actionsProcessDiff: 'Действия: {{value.value}} ({{value.valueDiff}}) за выполнение ({{value.minAvgValue}} &mdash; {{value.maxAvgValue}} в секунду) ({{value.minAvgValueDiff}} &mdash; {{value.maxAvgValueDiff}})'
-  actionsProgramDiff: 'Действия: 1 за выполнение ({{value.minAvgValue}} &mdash; {{value.maxAvgValue}} в секунду) ({{value.minAvgValueDiff}} &mdash; {{value.maxAvgValueDiff}})'
+  actionsProcess: 'Действия: {{value}} за выполнение ({{avgValue}} в секунду)'
+  actionsProgram: "Действия: 1 за выполнение ({{minAvgValue}} \u2014 {{maxAvgValue}} в секунду)"
+  actionsProcessDiff: "Действия: {{value}} ({{valueDiff}}) за выполнение ({{minAvgValue}} \u2014 {{maxAvgValue}} в секунду) ({{minAvgValueDiff}} \u2014 {{maxAvgValueDiff}})"
+  actionsProgramDiff: "Действия: 1 за выполнение ({{minAvgValue}} \u2014 {{maxAvgValue}} в секунду) ({{minAvgValueDiff}} \u2014 {{maxAvgValueDiff}})"

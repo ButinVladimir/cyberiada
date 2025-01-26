@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { html } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { customElement } from 'lit/decorators.js';
@@ -25,21 +26,9 @@ export class AutomationMainframeHardwareAutobuyer extends BaseComponent<Automati
     const { moneyShare } = this.controller;
 
     return html`
-      <div class="text-container">
-        <div class="text-container-inner">
-          <h4 class="title">
-            <intl-message label="ui:automation:mainframeHardwareAutobuyer:mainframeHardwareAutobuyer">
-              Mainframe hardware autobuyer
-            </intl-message>
-          </h4>
+      <h4 class="title">${t('automation.mainframeHardwareAutobuyer.mainframeHardwareAutobuyer', { ns: 'ui' })}</h4>
 
-          <p class="hint">
-            <intl-message label="ui:automation:mainframeHardwareAutobuyer:percentageHint">
-              Percentages hint
-            </intl-message>
-          </p>
-        </div>
-      </div>
+      <p class="hint">${t('automation.mainframeHardwareAutobuyer.percentageHint', { ns: 'ui' })}</p>
 
       <div class="input-container">
         <sl-input

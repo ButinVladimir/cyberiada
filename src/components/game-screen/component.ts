@@ -1,13 +1,17 @@
-import { html, css, nothing } from 'lit';
+import { html, css } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { classMap } from 'lit/directives/class-map.js';
 import { BaseComponent } from '@shared/base-component';
-import { OverviewMenuItem } from '@shared/types';
+import { MiscMenuItem, OverviewMenuItem } from '@shared/types';
+import { SCREEN_WIDTH_POINTS } from '@shared/styles';
+import { IHistoryState } from '@shared/interfaces/history-state';
 import { MenuItemSelectedEvent } from './components/menu-bar/events';
 
 @customElement('ca-game-screen')
 export class GameScreen extends BaseComponent {
   static styles = css`
-    :host {
+    .game-screen {
       width: 100vw;
       height: 100vh;
       max-height: 100vh;
@@ -30,10 +34,10 @@ export class GameScreen extends BaseComponent {
     }
 
     .top-bar-inner-container {
-      max-width: var(--ca-max-width);
       width: 100vw;
+      max-width: var(--ca-width-screen);
       display: flex;
-      padding: var(--sl-spacing-small);
+      padding: var(--sl-spacing-2x-small);
     }
 
     .content-outer-container {
@@ -48,80 +52,131 @@ export class GameScreen extends BaseComponent {
 
     .content-inner-container {
       background-color: var(--sl-panel-background-color);
-      max-width: var(--ca-max-width);
       width: 100vw;
+      max-width: var(--ca-width-screen);
       display: flex;
       align-items: stretch;
     }
 
-    .side-bar-container {
+    .menu-bar-container {
       flex: 0 0 auto;
       box-sizing: border-box;
-      width: 0;
+      background-color: var(--sl-panel-background-color);
       height: calc(100vh - var(--ca-top-bar-height));
+      width: 0;
+      border-right: var(--ca-border);
+      position: absolute;
+      top: var(--ca-top-bar-height);
+      left: 0;
+      transition: width var(--sl-transition-x-fast) ease;
     }
 
-    .menu-bar-container {
-      width: 15rem;
-      border-right: var(--ca-border);
+    .menu-bar-container.menu-opened {
+      width: 100vw;
+      z-index: 2;
     }
 
     .viewport-container {
+      position: relative;
       flex: 1 1 auto;
       height: calc(100vh - var(--ca-top-bar-height));
     }
 
-    .message-log-bar-container {
-      width: 25rem;
-      border-left: var(--ca-border);
+    .viewport-overlay {
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: var(--sl-panel-background-color);
+      opacity: 0.5;
+    }
+
+    .viewport-overlay.menu-opened {
+      display: block;
+      z-index: 1;
+    }
+
+    @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
+      .menu-bar-container.menu-opened {
+        width: var(--ca-menu-bar-max-width);
+      }
+    }
+
+    @media (min-width: ${SCREEN_WIDTH_POINTS.WIDE_SCREEN}) {
+      .menu-bar-container {
+        position: static;
+        width: var(--ca-menu-bar-max-width);
+      }
+
+      .menu-bar-container.menu-opened {
+        width: var(--ca-menu-bar-max-width);
+        z-index: 0;
+      }
+
+      .viewport-overlay.menu-opened {
+        display: none;
+        z-index: 0;
+      }
     }
   `;
 
   @state()
-  private _menuOpened = true;
+  private _menuOpened = false;
 
   @state()
-  private _messageLogOpened = true;
+  private _selectedMenuItem?: OverviewMenuItem | MiscMenuItem;
 
-  @state()
-  private _selectedMenuItem = OverviewMenuItem.mainframe;
+  connectedCallback() {
+    super.connectedCallback();
+
+    this.addEventListener(MenuItemSelectedEvent.type, this.handleMenuItemSelect);
+    window.addEventListener('popstate', this.handlePopState);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+
+    this.removeEventListener(MenuItemSelectedEvent.type, this.handleMenuItemSelect);
+    window.removeEventListener('popstate', this.handlePopState);
+  }
 
   renderContent() {
+    const menuClasses = classMap({
+      'menu-bar-container': true,
+      'menu-opened': this._menuOpened,
+    });
+
+    const viewportOverlayClasses = classMap({
+      'viewport-overlay': true,
+      'menu-opened': this._menuOpened,
+    });
+
     return html`
-      <div class="top-bar-outer-container">
-        <div class="top-bar-inner-container">
-          <ca-top-bar @menu-toggled=${this.handleMenuToggle} @logs-toggled=${this.handleMessageLogToggle}> </ca-top-bar>
-        </div>
-      </div>
-
-      <div class="content-outer-container">
-        <div class="content-inner-container">
-          ${this._menuOpened
-            ? html`
-                <div class="side-bar-container menu-bar-container">
-                  <ca-menu-bar
-                    selected-menu-item=${this._selectedMenuItem}
-                    @menu-item-selected=${this.handleMenuItemSelect}
-                  >
-                  </ca-menu-bar>
-                </div>
-              `
-            : nothing}
-
-          <div class="viewport-container">
-            <ca-viewport selected-menu-item=${this._selectedMenuItem}></ca-viewport>
+      <div class="game-screen">
+        <div class="top-bar-outer-container">
+          <div class="top-bar-inner-container">
+            <ca-top-bar @menu-toggled=${this.handleMenuToggle}> </ca-top-bar>
           </div>
+        </div>
 
-          ${this._messageLogOpened
-            ? html`
-                <div class="side-bar-container message-log-bar-container">
-                  <ca-message-log-bar></ca-message-log-bar>
-                </div>
-              `
-            : nothing}
+        <div class="content-outer-container">
+          <div class="content-inner-container">
+            <div class=${menuClasses}>
+              <ca-menu-bar selected-menu-item=${ifDefined(this._selectedMenuItem)}> </ca-menu-bar>
+            </div>
+
+            <div class="viewport-container">
+              <div class=${viewportOverlayClasses} @click=${this.handleMenuToggle}></div>
+
+              <ca-viewport selected-menu-item=${ifDefined(this._selectedMenuItem)}></ca-viewport>
+            </div>
+          </div>
         </div>
       </div>
 
+      <ca-toasts></ca-toasts>
       <ca-confirmation-alert></ca-confirmation-alert>
       <ca-notification-modal></ca-notification-modal>
     `;
@@ -131,13 +186,23 @@ export class GameScreen extends BaseComponent {
     this._menuOpened = !this._menuOpened;
   };
 
-  private handleMessageLogToggle = () => {
-    this._messageLogOpened = !this._messageLogOpened;
+  private handleMenuItemSelect = (event: Event) => {
+    event.stopPropagation();
+
+    const menuItemSelectedEvent = event as MenuItemSelectedEvent;
+
+    this._selectedMenuItem = menuItemSelectedEvent.menuItem as OverviewMenuItem;
+
+    const state: IHistoryState = { selectedMenuItem: this._selectedMenuItem, showConfirmationAlert: false };
+
+    window.history.pushState(state, this._selectedMenuItem);
+
+    this._menuOpened = false;
   };
 
-  private handleMenuItemSelect = (event: Event) => {
-    const menuItemSelectEvent = event as MenuItemSelectedEvent;
+  private handlePopState = (event: PopStateEvent) => {
+    const state = event.state as IHistoryState;
 
-    this._selectedMenuItem = menuItemSelectEvent.menuItem as OverviewMenuItem;
+    this._selectedMenuItem = state.selectedMenuItem;
   };
 }

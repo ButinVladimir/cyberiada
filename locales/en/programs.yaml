@@ -1,35 +1,35 @@
 shareServer:
   name: Mainframe share server
   overview: Program to share your mainframe capabilities to city network. Passively generates money and development points (DP).
-  moneyProcess: 'Money: {{value.money}} per second'
-  moneyProgram: 'Money: Up to {{value.money}} per second'
-  moneyDiff: 'Money: Up to {{value.money}} ({{value.moneyDiff}}) per second'
-  developmentPointsProcess: 'DP: {{value.developmentPoints}} per second'
-  developmentPointsProgram: 'DP: Up to {{value.developmentPoints}} per second'
-  developmentPointsDiff: 'DP: Up to {{value.developmentPoints}} ({{value.developmentPointsDiff}}) per second'
+  moneyProcess: 'Money: {{money}} per second'
+  moneyProgram: 'Money: Up to {{money}} per second'
+  moneyDiff: 'Money: Up to {{money}} ({{moneyDiff}}) per second'
+  developmentPointsProcess: 'DP: {{developmentPoints}} per second'
+  developmentPointsProgram: 'DP: Up to {{developmentPoints}} per second'
+  developmentPointsDiff: 'DP: Up to {{developmentPoints}} ({{developmentPointsDiff}}) per second'
 codeGenerator:
   name: Code generator
   overview: Program to develop other programs. Generates computational base points (CBP) and improves mainframe products discount.
-  computationalBasePointsProcess: 'CBP: {{value.value}} per completion ({{value.avgValue}} per second)'
-  computationalBasePointsProgram: 'CBP: {{value.value}} per completion ({{value.minAvgValue}} &mdash; {{value.maxAvgValue}} per second)'
-  computationalBasePointsDiff: 'CBP: {{value.value}} ({{value.valueDiff}}) per completion ({{value.minAvgValue}} &mdash; {{value.maxAvgValue}} per second) ({{value.minAvgValueDiff}} &mdash; {{value.maxAvgValueDiff}})'
+  computationalBasePointsProcess: 'CBP: {{value}} per completion ({{avgValue}} per second)'
+  computationalBasePointsProgram: "CBP: {{value}} per completion ({{minAvgValue}} \u2014 {{maxAvgValue}} per second)"
+  computationalBasePointsDiff: "CBP: {{value}} ({{valueDiff}}) per completion ({{minAvgValue}} \u2014 {{maxAvgValue}} per second) ({{minAvgValueDiff}} \u2014 {{maxAvgValueDiff}})"
 predictiveComputator:
   name: Predictive computator
   overview: Program to speed up completion of currently running processes.
-  speedMultiplierProcess: 'Speed multiplier: {{value.value}}'
-  speedMultiplierProgram: 'Speed multiplier: Up to {{value.value}}'
-  speedMultiplierDiff: 'Speed multiplier: Up to {{value.value}} ({{value.valueDiff}})'
+  speedMultiplierProcess: 'Speed multiplier: {{value}}'
+  speedMultiplierProgram: 'Speed multiplier: Up to {{value}}'
+  speedMultiplierDiff: 'Speed multiplier: Up to {{value}} ({{valueDiff}})'
 mainframeHardwareAutobuyer:
   name: Mainframe hardware autobuyer
   overview: Program to automatically buy mainframe hardware.
-  actionsProcess: 'Actions: {{value.value}} per completion ({{value.avgValue}} per second)'
-  actionsProgram: 'Actions: 1 per completion ({{value.minAvgValue}} &mdash; {{value.maxAvgValue}} per second)'
-  actionsProcessDiff: 'Actions: {{value.value}} ({{value.valueDiff}}) per completion ({{value.minAvgValue}} &mdash; {{value.maxAvgValue}} per second) ({{value.minAvgValueDiff}} &mdash; {{value.maxAvgValueDiff}})'
-  actionsProgramDiff: 'Actions: 1 per completion ({{value.minAvgValue}} &mdash; {{value.maxAvgValue}} per second) ({{value.minAvgValueDiff}} &mdash; {{value.maxAvgValueDiff}})'
+  actionsProcess: 'Actions: {{value}} per completion ({{avgValue}} per second)'
+  actionsProgram: "Actions: 1 per completion ({{minAvgValue}} \u2014 {{maxAvgValue}} per second)"
+  actionsProcessDiff: "Actions: {{value}} ({{valueDiff}}) per completion ({{minAvgValue}} \u2014 {{maxAvgValue}} per second) ({{minAvgValueDiff}} \u2014 {{maxAvgValueDiff}})"
+  actionsProgramDiff: "Actions: 1 per completion ({{minAvgValue}} \u2014 {{maxAvgValue}} per second) ({{minAvgValueDiff}} \u2014 {{maxAvgValueDiff}})"
 mainframeProgramsAutobuyer:
   name: Mainframe programs autobuyer
   overview: Program to automatically buy mainframe programs.
-  actionsProcess: 'Actions: {{value.value}} per completion ({{value.avgValue}} per second)'
-  actionsProgram: 'Actions: 1 per completion ({{value.minAvgValue}} &mdash; {{value.maxAvgValue}} per second)'
-  actionsProcessDiff: 'Actions: {{value.value}} ({{value.valueDiff}}) per completion ({{value.minAvgValue}} &mdash; {{value.maxAvgValue}} per second) ({{value.minAvgValueDiff}} &mdash; {{value.maxAvgValueDiff}})'
-  actionsProgramDiff: 'Actions: 1 per completion ({{value.minAvgValue}} &mdash; {{value.maxAvgValue}} per second) ({{value.minAvgValueDiff}} &mdash; {{value.maxAvgValueDiff}})'
+  actionsProcess: 'Actions: {{value}} per completion ({{avgValue}} per second)'
+  actionsProgram: "Actions: 1 per completion ({{minAvgValue}} \u2014 {{maxAvgValue}} per second)"
+  actionsProcessDiff: "Actions: {{value}} ({{valueDiff}}) per completion ({{minAvgValue}} \u2014 {{maxAvgValue}} per second) ({{minAvgValueDiff}} \u2014 {{maxAvgValueDiff}})"
+  actionsProgramDiff: "Actions: 1 per completion ({{minAvgValue}} \u2014 {{maxAvgValue}} per second) ({{minAvgValueDiff}} \u2014 {{maxAvgValueDiff}})"

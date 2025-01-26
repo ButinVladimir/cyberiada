@@ -5,6 +5,7 @@ export interface ISettingsSerializedState {
   theme: Theme;
   mapCellSize: number;
   messageLogSize: number;
+  toastDuration: number;
   updateInterval: number;
   autosaveEnabled: boolean;
   autosaveInterval: number;

@@ -1,7 +1,9 @@
+import { t } from 'i18next';
 import { css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { BaseComponent } from '@shared/base-component';
+import { MenuItemSelectedEvent } from '../../events/menu-item-selected-event';
 
 @customElement('ca-menu-item')
 export class MenuItem extends BaseComponent {
@@ -14,13 +16,16 @@ export class MenuItem extends BaseComponent {
       display: flex;
       padding: var(--sl-spacing-small);
       width: 100%;
+      box-sizing: border-box;
       background: none;
       border: 0 solid var(--sl-color-primary-600);
       font-family: var(--sl-font-sans);
       font-size: var(--sl-font-size-medium);
+      line-height: var(--sl-line-height-normal);
       letter-spacing: var(--sl-letter-spacing-normal);
       color: var(--sl-color-neutral-950);
       white-space: nowrap;
+      text-decoration: none;
 
       transition:
         border-left-width var(--sl-transition-x-fast) ease,
@@ -56,9 +61,16 @@ export class MenuItem extends BaseComponent {
     });
 
     return html`
-      <button type="button" class=${classes}>
-        <intl-message label="ui:pages:${this.name}"> Name </intl-message>
+      <button type="button" class=${classes} @click=${this.handleClick}>
+        ${t(`pages.${this.name}`, { ns: 'ui' })}
       </button>
     `;
   }
+
+  private handleClick = (event: Event) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    this.dispatchEvent(new MenuItemSelectedEvent(this.name));
+  };
 }

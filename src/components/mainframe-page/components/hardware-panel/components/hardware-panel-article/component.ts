@@ -3,62 +3,82 @@ import { css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import type { MainframeHardwareParameterType } from '@state/mainframe/mainframe-hardware-state/types';
+import { hintStyle, sectionTitleStyle, SCREEN_WIDTH_POINTS } from '@shared/styles';
 import { MainframeHardwarePanelArticleController } from './controller';
 
 @customElement('ca-mainframe-hardware-panel-article')
 export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwarePanelArticleController> {
-  static styles = css`
-    :host {
-      width: 100%;
-      padding: var(--sl-spacing-large);
-      box-sizing: border-box;
-      border: var(--ca-border);
-      border-radius: var(--sl-border-radius-small);
-      display: flex;
-      align-items: center;
-      gap: var(--sl-spacing-large);
-    }
+  static styles = [
+    hintStyle,
+    sectionTitleStyle,
+    css`
+      :host {
+        width: 100%;
+        padding: var(--sl-spacing-large);
+        box-sizing: border-box;
+        border: var(--ca-border);
+        border-radius: var(--sl-border-radius-small);
+        display: grid;
+        grid-template-areas:
+          'title'
+          'buttons'
+          'hint';
+        row-gap: var(--sl-spacing-small);
+        column-gap: var(--sl-spacing-small);
+      }
 
-    div.text-container {
-      flex: 1 1 auto;
-      overflow: hidden;
-    }
+      div.button-container {
+        grid-area: buttons;
+        display: flex;
+        gap: var(--sl-spacing-medium);
+      }
 
-    div.text-container-inner {
-      max-width: 100%;
-    }
+      div.title-row {
+        grid-area: title;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+      }
 
-    div.button-container {
-      flex: 0 0 auto;
-      display: flex;
-      gap: var(--sl-spacing-medium);
-    }
+      h4.title {
+        margin: 0;
+        cursor: grab;
+      }
 
-    h4.title {
-      width: 100%;
-      font-size: var(--sl-font-size-large);
-      font-weight: var(--sl-font-weight-bold);
-      margin-top: 0;
-      margin-bottom: var(--sl-spacing-medium);
-      line-height: var(--sl-line-height-denser);
-      cursor: grab;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-    }
+      p.hint {
+        grid-area: hint;
+        margin: 0;
+      }
 
-    p.hint {
-      width: 100%;
-      margin: 0;
-      color: var(--ca-hint-color);
-      font-size: var(--ca-hint-font-size);
-    }
+      #toggle-autoupgrade-btn {
+        position: relative;
+        top: 0.15em;
+        font-size: var(--sl-font-size-large);
+      }
 
-    h4.title sl-icon-button {
-      position: relative;
-      top: 0.1em;
-    }
-  `;
+      #drag-icon {
+        position: relative;
+        top: 0.15em;
+        left: -0.2em;
+        color: var(--ca-hint-color);
+      }
+
+      @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
+        :host {
+          grid-template-areas:
+            'title buttons'
+            'hint buttons';
+          grid-template-rows: auto auto;
+          grid-template-columns: 1fr auto;
+        }
+      }
+
+      div.button-container {
+        align-items: center;
+        height: 100%;
+      }
+    `,
+  ];
 
   @property({
     attribute: 'type',
@@ -81,60 +101,49 @@ export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwa
   }
 
   renderContent() {
-    const increase = this.calculateIncrease();
     const formatter = this.controller.formatter;
 
     const level = this.controller.getLevel(this.type);
-    const buttonDisabled = !this.controller.checkCanPurchase(increase, this.type);
-    const cost = this.controller.getPurchaseCost(increase, this.type);
 
-    const buttonValue = JSON.stringify({
-      cost: formatter.formatNumberLong(cost),
-      increase: formatter.formatNumberDecimal(increase),
-    });
+    const isAutoupgradeEnabled = this.controller.isAutoUpgradeEnabled(this.type);
 
-    const autoupgradeIcon = this.controller.isAutoUpgradeEnabled(this.type)
-      ? 'arrow-up-circle-fill'
-      : 'arrow-up-circle';
+    const autoupgradeIcon = isAutoupgradeEnabled ? 'arrow-up-circle-fill' : 'arrow-up-circle';
+    const autoupgradeLabel = isAutoupgradeEnabled ? 'disableAutoupgrade' : 'enableAutoupgrade';
 
     return html`
-      <div class="text-container">
-        <div class="text-container-inner">
-          <h4 class="title" draggable="true" @dragstart=${this.handleDragStart}>
-            <intl-message label="ui:mainframe:hardware:${this.type}" value=${formatter.formatNumberDecimal(level)}>
-              Level
-            </intl-message>
+      <div class="title-row">
+        <h4 class="title" draggable="true" @dragstart=${this.handleDragStart}>
+          <sl-icon id="drag-icon" name="grip-vertical"> </sl-icon>
 
-            <sl-tooltip>
-              <intl-message slot="content" label="ui:mainframe:programs:toggleAutoupgrade">
-                Toggle autoupgrade
-              </intl-message>
+          ${t(`mainframe.hardware.${this.type}`, { ns: 'ui', level: formatter.formatNumberDecimal(level) })}
 
-              <sl-icon-button
-                id="toggle-autoupgrade-btn"
-                name=${autoupgradeIcon}
-                label=${t('mainframe.programs.toggleAutoupgrade', { ns: 'ui' })}
-                @click=${this.handleToggleAutoUpgrade}
-              >
-              </sl-icon-button>
-            </sl-tooltip>
-          </h4>
-          <p class="hint">
-            <intl-message label="ui:mainframe:hardware:${this.type}Hint"> Higher level leads to profit. </intl-message>
-          </p>
-        </div>
+          <sl-tooltip>
+            <span slot="content"> ${t(`mainframe.hardware.${autoupgradeLabel}`, { ns: 'ui' })} </span>
+
+            <sl-icon-button
+              id="toggle-autoupgrade-btn"
+              name=${autoupgradeIcon}
+              label=${t(`mainframe.hardware.${autoupgradeLabel}`, { ns: 'ui' })}
+              @click=${this.handleToggleAutoUpgrade}
+            >
+            </sl-icon-button>
+          </sl-tooltip>
+        </h4>
       </div>
+
+      <p class="hint">${t(`mainframe.hardware.${this.type}Hint`, { ns: 'ui' })}</p>
 
       <div class="button-container">
         <sl-button variant="default" type="button" size="medium" @click=${this.handleBuyMax}>
-          <intl-message label="ui:mainframe:hardware:buyMax"> Buy max </intl-message>
+          ${t('mainframe.hardware.buyMax', { ns: 'ui' })}
         </sl-button>
 
-        <ca-purchase-tooltip cost=${cost} level=${level + 1}>
-          <sl-button variant="primary" type="button" size="medium" ?disabled=${buttonDisabled} @click=${this.handleBuy}>
-            <intl-message label="ui:mainframe:hardware:buy" value=${buttonValue}> Buy </intl-message>
-          </sl-button>
-        </ca-purchase-tooltip>
+        <ca-mainframe-hardware-panel-article-buy-button
+          max-increase=${this.maxIncrease}
+          type=${this.type}
+          @buy-hardware=${this.handleBuy}
+        >
+        </ca-mainframe-hardware-panel-article-buy-button>
       </div>
     `;
   }

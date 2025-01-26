@@ -2,12 +2,13 @@
   "startingScenario": "tutorial",
   "defaultSettings": {
     "messageLogSize": 30,
-    "updateInterval": 100,
+    "toastDuration": 5000,
+    "updateInterval": 50,
     "autosaveEnabled": true,
     "autosaveInterval": 60000,
     "fastSpeedMultiplier": 5,
     "maxUpdatesPerTick": 10000,
-    "longNumberFormat": "builtIn",
+    "longNumberFormat": "short",
     "mapSize": 3
   },
   "defaultScenarioSettings": {

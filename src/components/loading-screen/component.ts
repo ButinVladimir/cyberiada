@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { html, css } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
@@ -22,10 +23,6 @@ export class LoadingScreen extends BaseComponent {
   `;
 
   renderContent() {
-    return html`
-      <span>
-        <intl-message label="ui:common:loading"> Loading... </intl-message>
-      </span>
-    `;
+    return html` <span> ${t('common.loading', { ns: 'ui' })} </span> `;
   }
 }

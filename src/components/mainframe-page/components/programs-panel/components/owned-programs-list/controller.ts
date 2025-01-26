@@ -14,4 +14,8 @@ export class OwnedProgramsListController extends BaseController {
   moveProgram(programName: ProgramName, newPosition: number) {
     this.mainframeProgramsState.moveProgram(programName, newPosition);
   }
+
+  upgradeMaxAllPrograms() {
+    this.mainframeProgramsState.upgradeMaxAllPrograms();
+  }
 }

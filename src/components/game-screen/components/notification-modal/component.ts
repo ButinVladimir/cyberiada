@@ -1,23 +1,28 @@
-import { css, html } from 'lit';
+import { t } from 'i18next';
+import { css, html, nothing } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import SlCheckbox from '@shoelace-style/shoelace/dist/components/checkbox/checkbox.component.js';
 import { BaseComponent } from '@shared/base-component';
 import { FORCE_NOTIFICATION_TYPES } from '@shared/constants';
+import { smallModalStyle } from '@shared/styles';
 import { NotificationModalController } from './controller';
 
 @customElement('ca-notification-modal')
 export class NotificationModal extends BaseComponent<NotificationModalController> {
-  static styles = css`
-    sl-dialog::part(footer) {
-      text-align: right;
-    }
+  static styles = [
+    smallModalStyle,
+    css`
+      sl-dialog::part(footer) {
+        text-align: right;
+      }
 
-    p {
-      margin-top: 0;
-      margin-bottom: var(--sl-spacing-large);
-    }
-  `;
+      p {
+        margin-top: 0;
+        margin-bottom: var(--sl-spacing-large);
+      }
+    `,
+  ];
 
   protected controller: NotificationModalController;
 
@@ -40,16 +45,12 @@ export class NotificationModal extends BaseComponent<NotificationModalController
     }
 
     const notification = this.controller.getUnreadNotification()!;
-    const parameters = notification.parameters ? JSON.stringify(notification.parameters) : '';
+    const parameters = notification.parameters ?? {};
     const showToggle = !FORCE_NOTIFICATION_TYPES.has(notification.notificationType);
 
     return html`
       <sl-dialog no-header ?open=${isOpen} @sl-request-close=${this.handleClose}>
-        <p>
-          <intl-message label="notifications:${notification.notificationType}:message" value=${parameters}>
-            Message
-          </intl-message>
-        </p>
+        <p>${t(`${notification.notificationType}.message`, { ns: 'notifications', ...parameters })}</p>
 
         ${showToggle
           ? html`
@@ -60,13 +61,13 @@ export class NotificationModal extends BaseComponent<NotificationModalController
                 ?checked=${this._notificationTypeToggled}
                 @sl-change=${this.handleToggleNotificationType}
               >
-                <intl-message label="ui:settings:notificationTypeToggle"> Toggle notification type </intl-message>
+                ${t('settings.notificationTypeToggle', { ns: 'ui' })}
               </sl-checkbox>
             `
-          : null}
+          : nothing}
 
         <sl-button slot="footer" size="medium" variant="primary" @click=${this.handleClose}>
-          <intl-message label="ui:common:continue"> Continue </intl-message>
+          ${t('common.continue', { ns: 'ui' })}
         </sl-button>
       </sl-dialog>
     `;

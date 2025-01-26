@@ -15,14 +15,15 @@ export class Viewport extends BaseComponent {
     scrollable-component {
       width: 100%;
       height: 100%;
-      --content-padding: var(--sl-spacing-small) var(--sl-spacing-medium);
+      --content-padding: var(--sl-spacing-medium);
       --scrollbar-width: var(--ca-scrollbar-width);
       --scrollbar-thumb-fill-color: var(--ca-scrollbar-thumb-fill-color);
       --scrollbar-thumb-fill-color-hover: var(--ca-scrollbar-thumb-fill-color-hover);
     }
 
     div.content-wrapper {
-      max-width: var(--ca-max-content-width);
+      width: calc(100vw - 2 * var(--sl-spacing-medium));
+      max-width: var(--ca-width-widescreen-content);
     }
   `;
 
@@ -48,11 +49,14 @@ export class Viewport extends BaseComponent {
       case OverviewMenuItem.mainframe:
         return html`<ca-mainframe-page></ca-mainframe-page>`;
 
+      case OverviewMenuItem.automation:
+        return html`<ca-automation-page></ca-automation-page>`;
+
       case OverviewMenuItem.statistics:
         return html`<ca-statistics-page></ca-statistics-page>`;
 
-      case OverviewMenuItem.automation:
-        return html`<ca-automation-page></ca-automation-page>`;
+      case OverviewMenuItem.messageLog:
+        return html`<ca-message-log-page></ca-message-log-page>`;
 
       case MiscMenuItem.settings:
         return html`<ca-settings-page></ca-settings-page>`;

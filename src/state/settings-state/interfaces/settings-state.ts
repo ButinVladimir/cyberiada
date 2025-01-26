@@ -6,6 +6,7 @@ export interface ISettingsState extends ISerializeable<ISettingsSerializedState>
   language: Language;
   theme: Theme;
   messageLogSize: number;
+  toastDuration: number;
   updateInterval: number;
   autosaveEnabled: boolean;
   autosaveInterval: number;
@@ -19,10 +20,11 @@ export interface ISettingsState extends ISerializeable<ISettingsSerializedState>
   setLanguage(language: Language): Promise<void>;
   setTheme(theme: Theme): void;
   setMessageLogSize(messageLogSize: number): void;
+  setToastDuration(duration: number): void;
   setUpdateInterval(updateInterval: number): void;
   setAutosaveEnabled(autosaveEnabled: boolean): void;
   setAutosaveInterval(autosaveInterval: number): void;
-  setfastSpeedMultiplier(fastSpeedMultiplier: number): void;
+  setFastSpeedMultiplier(fastSpeedMultiplier: number): void;
   setMaxUpdatesPerTick(maxUpdatesPerTick: number): void;
   setLongNumberFormat(longNumberFormat: LongNumberFormat): void;
   setMapCellSize(mapSize: number): void;

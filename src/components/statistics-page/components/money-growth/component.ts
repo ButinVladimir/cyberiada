@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
@@ -23,19 +24,15 @@ export class StatisticsMoneyGrowth extends BaseComponent<StatisticsMoneyGrowthCo
     const total = this.controller.moneyTotalGrowth;
 
     return html`
-      <h4 class="title">
-        <intl-message label="ui:statistics:growth:money:title">Title</intl-message>
-      </h4>
+      <h4 class="title">${t('statistics.growth.money.title', { ns: 'ui' })}</h4>
 
       <div class="parameters-table">
         ${INCOME_SOURCES.map((incomeSource) =>
           this.renderIncomeSource(incomeSource, this.controller.getMoneyGrowth(incomeSource)),
         )}
 
-        <span>
-          <intl-message label="ui:statistics:total">Total</intl-message>
-        </span>
-        <span> ${formatter.formatNumberLong(total)} </span>
+        <span> ${t('statistics.total', { ns: 'ui' })} </span>
+        <span> ${formatter.formatNumberFloat(total)} </span>
       </div>
     `;
   }
@@ -48,10 +45,8 @@ export class StatisticsMoneyGrowth extends BaseComponent<StatisticsMoneyGrowthCo
     const formatter = this.controller.formatter;
 
     return html`
-      <span>
-        <intl-message label="ui:statistics:growth:money:${incomeSource}">Income source</intl-message>
-      </span>
-      <span> ${formatter.formatNumberLong(value)} </span>
+      <span> ${t(`statistics.growth.money.${incomeSource}`, { ns: 'ui' })} </span>
+      <span> ${formatter.formatNumberFloat(value)} </span>
     `;
   };
 }

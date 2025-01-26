@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
@@ -20,19 +21,13 @@ export class StatisticsGeneralPanel extends BaseComponent<StatisticsGeneralPanel
     const formatter = this.controller.formatter;
 
     return html`
-      <h4 class="title">
-        <intl-message label="ui:statistics:general:time:title">In-game passed time</intl-message>
-      </h4>
+      <h4 class="title">${t('statistics.general.time.title', { ns: 'ui' })}</h4>
 
       <div class="parameters-table">
-        <span>
-          <intl-message label="ui:statistics:general:time:timeThisRun">Time this run</intl-message>
-        </span>
+        <span> ${t('statistics.general.time.timeThisRun', { ns: 'ui' })} </span>
         <span> ${formatter.formatTimeShort(this.controller.gameTime)} </span>
 
-        <span>
-          <intl-message label="ui:statistics:general:time:timeTotal">Total time</intl-message>
-        </span>
+        <span> ${t('statistics.general.time.timeTotal', { ns: 'ui' })} </span>
         <span> ${formatter.formatTimeShort(this.controller.gameTimeTotal)} </span>
       </div>
 

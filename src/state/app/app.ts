@@ -7,7 +7,7 @@ import { TYPES } from '@state/types';
 import { EventBatcher } from '@shared/event-batcher';
 import { GameStateEvent } from '@shared/types';
 import { IApp } from './interfaces';
-import { LOCAL_STORAGE_KEY, APP_UI_EVENTS } from './constants';
+import { LOCAL_STORAGE_KEY, APP_UI_EVENTS, REFRESH_UI_TIME } from './constants';
 import { AppStage } from './types';
 
 @injectable()
@@ -76,6 +76,16 @@ export class App implements IApp {
     localStorage.setItem(LOCAL_STORAGE_KEY, encodedSaveData);
     this._messageLogState.postMessage(GameStateEvent.gameSaved);
   };
+
+  refreshUI(): void {
+    this._appStage = AppStage.loading;
+    this.emitChangedAppStageEvent();
+
+    setTimeout(() => {
+      this._appStage = AppStage.running;
+      this.emitChangedAppStageEvent();
+    }, REFRESH_UI_TIME);
+  }
 
   importSavefile(file: File): void {
     this.startLoadingGame();
@@ -206,7 +216,7 @@ export class App implements IApp {
         if (!this._appState.fastForwardState()) {
           this._appStage = AppStage.running;
           this._messageLogState.postMessage(GameStateEvent.fastForwared);
-          this.uiEventBatcher.enqueueEvent(APP_UI_EVENTS.CHANGED_APP_STAGE);
+          this.emitChangedAppStageEvent();
         }
         break;
     }

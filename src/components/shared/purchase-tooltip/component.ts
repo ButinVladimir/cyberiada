@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
@@ -30,7 +31,7 @@ export class PurchaseTooltip extends BaseComponent<PurchaseTooltipController> {
   renderContent() {
     return html`
       <sl-tooltip>
-        ${this.renderMessage()}
+        <span slot="content"> ${this.renderMessage()} </span>
 
         <slot></slot>
       </sl-tooltip>
@@ -39,15 +40,11 @@ export class PurchaseTooltip extends BaseComponent<PurchaseTooltipController> {
 
   private renderMessage = () => {
     if (this.level > this.controller.developmentLevel) {
-      return html`
-        <intl-message slot="content" label="ui:common:higherDevelopmentLevelRequired">
-          Higher development level required
-        </intl-message>
-      `;
+      return html`${t('common.higherDevelopmentLevelRequired', { ns: 'ui' })}`;
     }
 
     if (this.cost <= this.controller.money) {
-      return html` <intl-message slot="content" label="ui:common:available"> Available </intl-message> `;
+      return html`${t('common.available', { ns: 'ui' })}`;
     }
 
     if (this.controller.growth > 0) {
@@ -55,13 +52,9 @@ export class PurchaseTooltip extends BaseComponent<PurchaseTooltipController> {
         (this.cost - this.controller.money) / this.controller.growth,
       );
 
-      return html`
-        <intl-message slot="content" label="ui:common:willBeAvailableIn" value=${time}>
-          Will be available
-        </intl-message>
-      `;
+      return html`${t('common.willBeAvailableIn', { ns: 'ui', time })}`;
     }
 
-    return html` <intl-message slot="content" label="ui:common:notEnoughMoney"> Not enough money </intl-message> `;
+    return html`${t('common.notEnoughMoney', { ns: 'ui' })}`;
   };
 }

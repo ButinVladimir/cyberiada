@@ -5,14 +5,6 @@ import { ProgramName } from '@state/progam-factory/types';
 export class OwnedProgramsListItemController extends BaseController {
   private _ownedProgram?: IProgram;
 
-  get ram(): number {
-    return this.mainframeHardwareState.ram.level;
-  }
-
-  get cores(): number {
-    return this.mainframeHardwareState.cores.level;
-  }
-
   getProgram(programName: ProgramName) {
     if (this._ownedProgram?.name !== programName) {
       if (this._ownedProgram) {
