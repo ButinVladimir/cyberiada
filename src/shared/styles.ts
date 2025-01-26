@@ -36,3 +36,15 @@ export const sectionTitleStyle = css`
     line-height: var(--sl-line-height-normal);
   }
 `;
+
+export const smallModalStyle = css`
+  sl-dialog {
+    --width: 600px;
+  }
+`;
+
+export const mediumModalStyle = css`
+  sl-dialog {
+    --width: 900px;
+  }
+`;

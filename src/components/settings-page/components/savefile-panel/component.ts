@@ -4,10 +4,7 @@ import { customElement } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { BaseComponent } from '@shared/base-component';
 import { GameStateAlert } from '@shared/types';
-import {
-  ConfirmationAlertOpenEvent,
-  ConfirmationAlertSubmitEvent,
-} from '@/components/shared/confirmation-alert/events';
+import { ConfirmationAlertOpenEvent, ConfirmationAlertSubmitEvent } from '@components/shared/confirmation-alert/events';
 import { SavefilePanelController } from './controller';
 
 @customElement('ca-savefile-panel')

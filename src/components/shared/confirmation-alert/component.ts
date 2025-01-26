@@ -5,25 +5,30 @@ import { createRef, ref } from 'lit/directives/ref.js';
 import SlCheckbox from '@shoelace-style/shoelace/dist/components/checkbox/checkbox.component.js';
 import { BaseComponent } from '@shared/base-component';
 import type { GameAlert } from '@shared/types';
+import { smallModalStyle } from '@shared/styles';
+import { IHistoryState } from '@shared/interfaces';
 import { ConfirmationAlertOpenEvent, ConfirmationAlertCloseEvent, ConfirmationAlertSubmitEvent } from './events';
 import { ConfirmationAlertController } from './controller';
 
 @customElement('ca-confirmation-alert')
 export class ConfirmationAlert extends BaseComponent<ConfirmationAlertController> {
-  static styles = css`
-    sl-dialog::part(footer) {
-      width: 100%;
-      display: flex;
-      flex-direction: row;
-      justify-content: flex-end;
-      gap: var(--sl-spacing-small);
-    }
+  static styles = [
+    smallModalStyle,
+    css`
+      sl-dialog::part(footer) {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        gap: var(--sl-spacing-small);
+      }
 
-    p {
-      margin-top: 0;
-      margin-bottom: var(--sl-spacing-large);
-    }
-  `;
+      p {
+        margin-top: 0;
+        margin-bottom: var(--sl-spacing-large);
+      }
+    `,
+  ];
 
   protected controller: ConfirmationAlertController;
 
@@ -54,12 +59,14 @@ export class ConfirmationAlert extends BaseComponent<ConfirmationAlertController
     super.connectedCallback();
 
     document.addEventListener(ConfirmationAlertOpenEvent.type, this.handleOpen);
+    window.addEventListener('popstate', this.handlePopState);
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
 
     document.removeEventListener(ConfirmationAlertOpenEvent.type, this.handleOpen);
+    window.removeEventListener('popstate', this.handlePopState);
   }
 
   renderContent() {
@@ -99,6 +106,9 @@ export class ConfirmationAlert extends BaseComponent<ConfirmationAlertController
     if (this.controller.isGameAlertEnabled(this._gameAlert)) {
       this._isOpen = true;
       this._alertToggled = true;
+
+      const historyState = { ...window.history.state, showConfirmationAlert: true } as IHistoryState;
+      window.history.pushState(historyState, 'confirmationAlert');
     } else {
       this._isOpen = false;
 
@@ -109,24 +119,20 @@ export class ConfirmationAlert extends BaseComponent<ConfirmationAlertController
   private handleClose = (event: Event) => {
     event.stopPropagation();
 
-    this._isOpen = false;
-
-    if (this._gameAlert) {
-      this.dispatchEvent(new ConfirmationAlertCloseEvent(this._gameAlert, this._gameAlertKey));
-    }
+    window.history.back();
   };
 
   private handleSubmit = (event: Event) => {
     event.stopPropagation();
 
     if (this._gameAlert) {
-      this._isOpen = false;
-
       if (this._gameAlertToggleRef.value) {
         this.controller.toggleGameAlert(this._gameAlert, this._alertToggled);
       }
 
       this.dispatchEvent(new ConfirmationAlertSubmitEvent(this._gameAlert, this._gameAlertKey));
+
+      window.history.back();
     }
   };
 
@@ -135,6 +141,16 @@ export class ConfirmationAlert extends BaseComponent<ConfirmationAlertController
 
     if (this._gameAlert && this._gameAlertToggleRef.value) {
       this._alertToggled = this._gameAlertToggleRef.value.checked;
+    }
+  };
+
+  private handlePopState = (event: PopStateEvent) => {
+    const state = event.state as IHistoryState;
+
+    this._isOpen = !!state.showConfirmationAlert;
+
+    if (this._gameAlert) {
+      this.dispatchEvent(new ConfirmationAlertCloseEvent(this._gameAlert, this._gameAlertKey));
     }
   };
 }

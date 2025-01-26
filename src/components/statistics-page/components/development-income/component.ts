@@ -1,7 +1,7 @@
 import { t } from 'i18next';
 import { html } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import { BaseComponent } from '@/shared/base-component';
+import { BaseComponent } from '@shared/base-component';
 import { IncomeSource } from '@shared/types';
 import { INCOME_SOURCES } from '@shared/constants';
 import { StatisticsDevelopmentIncomeController } from './controller';

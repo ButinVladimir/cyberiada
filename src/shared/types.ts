@@ -1,5 +1,6 @@
 export enum GameVersion {
   '0.1.1' = '0.1.1',
+  '0.1.2' = '0.1.2',
 }
 
 export enum Language {
@@ -13,12 +14,12 @@ export enum Theme {
 }
 
 export enum OverviewMenuItem {
-  cityOverview = 'cityOverview',
-  companyManagement = 'companyManagement',
+  cityOverview = 'city-overview',
+  companyManagement = 'company-management',
   mainframe = 'mainframe',
   automation = 'automation',
   statistics = 'statistics',
-  messageLog = 'messageLog',
+  messageLog = 'message-log',
 }
 
 export enum MiscMenuItem {

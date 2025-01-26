@@ -6,7 +6,7 @@ import SlCheckbox from '@shoelace-style/shoelace/dist/components/checkbox/checkb
 import { BaseComponent } from '@shared/base-component';
 import { NOTIFICATION_TYPES } from '@shared/constants';
 import { NotificationType } from '@shared/types';
-import { hintStyle, sectionTitleStyle } from '@shared/styles';
+import { hintStyle, sectionTitleStyle, mediumModalStyle, SCREEN_WIDTH_POINTS } from '@shared/styles';
 import { NotificationTypeFilterDialogCloseEvent } from './events';
 import { NotificationTypeFilterDialogController } from './controller';
 
@@ -15,11 +15,8 @@ export class NotificationTypeFilterDialog extends BaseComponent<NotificationType
   static styles = [
     hintStyle,
     sectionTitleStyle,
+    mediumModalStyle,
     css`
-      sl-dialog {
-        --width: 50rem;
-      }
-
       sl-dialog::part(body) {
         padding-top: 0;
         padding-bottom: 0;
@@ -44,12 +41,18 @@ export class NotificationTypeFilterDialog extends BaseComponent<NotificationType
         display: grid;
         column-gap: var(--sl-spacing-3x-small);
         row-gap: var(--sl-spacing-3x-small);
-        grid-template-columns: repeat(2, minmax(0, 30em));
+        grid-template-columns: auto;
         grid-auto-rows: auto;
       }
 
       sl-divider {
         --spacing: var(--sl-spacing-medium);
+      }
+
+      @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
+        div.events-container {
+          grid-template-columns: repeat(2, 1fr);
+        }
       }
     `,
   ];

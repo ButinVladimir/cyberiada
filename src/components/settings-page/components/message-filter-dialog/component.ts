@@ -6,7 +6,7 @@ import { BaseComponent } from '@shared/base-component';
 import SlCheckbox from '@shoelace-style/shoelace/dist/components/checkbox/checkbox.component.js';
 import { GAME_STATE_EVENTS, PURCHASE_EVENTS, PROGRAM_EVENTS } from '@shared/constants';
 import { MessageEvent } from '@shared/types';
-import { hintStyle, sectionTitleStyle } from '@shared/styles';
+import { hintStyle, sectionTitleStyle, mediumModalStyle, SCREEN_WIDTH_POINTS } from '@shared/styles';
 import { MessageFilterDialogCloseEvent } from './events';
 import { MessageFilterDialogController } from './controller';
 
@@ -15,11 +15,8 @@ export class MessageFilterDialog extends BaseComponent<MessageFilterDialogContro
   static styles = [
     hintStyle,
     sectionTitleStyle,
+    mediumModalStyle,
     css`
-      sl-dialog {
-        --width: 50rem;
-      }
-
       sl-dialog::part(body) {
         padding-top: 0;
         padding-bottom: 0;
@@ -44,12 +41,18 @@ export class MessageFilterDialog extends BaseComponent<MessageFilterDialogContro
         display: grid;
         column-gap: var(--sl-spacing-3x-small);
         row-gap: var(--sl-spacing-3x-small);
-        grid-template-columns: repeat(2, minmax(0, 30em));
+        grid-template-columns: auto;
         grid-auto-rows: auto;
       }
 
       sl-divider {
         --spacing: var(--sl-spacing-medium);
+      }
+
+      @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
+        div.events-container {
+          grid-template-columns: repeat(2, 1fr);
+        }
       }
     `,
   ];

@@ -3,6 +3,9 @@ import { css, html } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { hintStyle } from '@shared/styles';
+import { OverviewMenuItem } from '@shared/types';
+import { IHistoryState } from '@shared/interfaces/history-state';
+import { IMainframePageHistoryState } from '../../interfaces';
 
 @customElement('ca-mainframe-programs-panel')
 export class MainframeProgramsPanel extends BaseComponent {
@@ -24,6 +27,18 @@ export class MainframeProgramsPanel extends BaseComponent {
 
   @state()
   private _isPurchaseProgramDialogOpen = false;
+
+  connectedCallback() {
+    super.connectedCallback();
+
+    window.addEventListener('popstate', this.handlePopState);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+
+    window.removeEventListener('popstate', this.handlePopState);
+  }
 
   renderContent() {
     return html`
@@ -48,12 +63,23 @@ export class MainframeProgramsPanel extends BaseComponent {
     event.stopPropagation();
 
     this._isPurchaseProgramDialogOpen = true;
+
+    const state = { ...window.history.state, purchaseProgramModalOpen: true } as IMainframePageHistoryState;
+    window.history.pushState(state, OverviewMenuItem.mainframe);
   };
 
   private handlePurchaseProgramDialogClose = (event: Event) => {
     event.preventDefault();
     event.stopPropagation();
 
-    this._isPurchaseProgramDialogOpen = false;
+    window.history.back();
+  };
+
+  private handlePopState = (event: PopStateEvent) => {
+    if ((event.state as IHistoryState).selectedMenuItem === OverviewMenuItem.mainframe) {
+      const state = event.state as IMainframePageHistoryState;
+
+      this._isPurchaseProgramDialogOpen = !!state.purchaseProgramModalOpen;
+    }
   };
 }

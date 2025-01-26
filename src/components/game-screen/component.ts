@@ -3,8 +3,9 @@ import { customElement, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { BaseComponent } from '@shared/base-component';
-import { OverviewMenuItem } from '@shared/types';
+import { MiscMenuItem, OverviewMenuItem } from '@shared/types';
 import { SCREEN_WIDTH_POINTS } from '@shared/styles';
+import { IHistoryState } from '@shared/interfaces/history-state';
 import { MenuItemSelectedEvent } from './components/menu-bar/events';
 
 @customElement('ca-game-screen')
@@ -125,7 +126,21 @@ export class GameScreen extends BaseComponent {
   private _menuOpened = false;
 
   @state()
-  private _selectedMenuItem?: OverviewMenuItem;
+  private _selectedMenuItem?: OverviewMenuItem | MiscMenuItem;
+
+  connectedCallback() {
+    super.connectedCallback();
+
+    this.addEventListener(MenuItemSelectedEvent.type, this.handleMenuItemSelect);
+    window.addEventListener('popstate', this.handlePopState);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+
+    this.removeEventListener(MenuItemSelectedEvent.type, this.handleMenuItemSelect);
+    window.removeEventListener('popstate', this.handlePopState);
+  }
 
   renderContent() {
     const menuClasses = classMap({
@@ -149,11 +164,7 @@ export class GameScreen extends BaseComponent {
         <div class="content-outer-container">
           <div class="content-inner-container">
             <div class=${menuClasses}>
-              <ca-menu-bar
-                selected-menu-item=${ifDefined(this._selectedMenuItem)}
-                @menu-item-selected=${this.handleMenuItemSelect}
-              >
-              </ca-menu-bar>
+              <ca-menu-bar selected-menu-item=${ifDefined(this._selectedMenuItem)}> </ca-menu-bar>
             </div>
 
             <div class="viewport-container">
@@ -176,9 +187,22 @@ export class GameScreen extends BaseComponent {
   };
 
   private handleMenuItemSelect = (event: Event) => {
-    const menuItemSelectEvent = event as MenuItemSelectedEvent;
+    event.stopPropagation();
 
-    this._selectedMenuItem = menuItemSelectEvent.menuItem as OverviewMenuItem;
+    const menuItemSelectedEvent = event as MenuItemSelectedEvent;
+
+    this._selectedMenuItem = menuItemSelectedEvent.menuItem as OverviewMenuItem;
+
+    const state: IHistoryState = { selectedMenuItem: this._selectedMenuItem, showConfirmationAlert: false };
+
+    window.history.pushState(state, this._selectedMenuItem);
+
     this._menuOpened = false;
+  };
+
+  private handlePopState = (event: PopStateEvent) => {
+    const state = event.state as IHistoryState;
+
+    this._selectedMenuItem = state.selectedMenuItem;
   };
 }

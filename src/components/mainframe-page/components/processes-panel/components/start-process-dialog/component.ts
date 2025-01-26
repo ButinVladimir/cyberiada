@@ -7,15 +7,12 @@ import SlInput from '@shoelace-style/shoelace/dist/components/input/input.compon
 import { BaseComponent } from '@shared/base-component';
 import { ProgramName } from '@state/progam-factory/types';
 import { IProgram } from '@state/progam-factory/interfaces/program';
-import {
-  ConfirmationAlertOpenEvent,
-  ConfirmationAlertCloseEvent,
-  ConfirmationAlertSubmitEvent,
-} from '@/components/shared/confirmation-alert/events';
-import { ProgramAlert } from '@shared/types';
-import { inputLabelStyle, hintStyle, sectionTitleStyle } from '@shared/styles';
+import { ConfirmationAlertOpenEvent, ConfirmationAlertSubmitEvent } from '@components/shared/confirmation-alert/events';
+import { OverviewMenuItem, ProgramAlert } from '@shared/types';
+import { inputLabelStyle, hintStyle, sectionTitleStyle, mediumModalStyle, SCREEN_WIDTH_POINTS } from '@shared/styles';
 import { StartProcessDialogCloseEvent } from './events';
 import { StartProcessDialogController } from './controller';
+import { IMainframePageHistoryState } from '../../../../interfaces';
 
 @customElement('ca-start-process-dialog')
 export class StartProcessDialog extends BaseComponent<StartProcessDialogController> {
@@ -23,11 +20,8 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
     inputLabelStyle,
     hintStyle,
     sectionTitleStyle,
+    mediumModalStyle,
     css`
-      sl-dialog {
-        --width: 40rem;
-      }
-
       sl-dialog::part(body) {
         padding-top: 0;
         padding-bottom: 0;
@@ -54,7 +48,9 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
       div.inputs-container {
         display: grid;
         column-gap: var(--sl-spacing-medium);
-        grid-template-columns: 2fr 1fr;
+        row-gap: var(--sl-spacing-medium);
+        grid-template-columns: auto;
+        grid-template-rows: auto;
       }
 
       p.hint {
@@ -78,6 +74,13 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
       div.program-description p.line-break {
         height: var(--sl-spacing-medium);
       }
+
+      @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
+        div.inputs-container {
+          grid-template-rows: auto;
+          grid-template-columns: 2fr 1fr;
+        }
+      }
     `,
   ];
 
@@ -99,9 +102,6 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
   @state()
   private _threads = 1;
 
-  @state()
-  private _confirmationAlertVisible = false;
-
   constructor() {
     super();
 
@@ -111,14 +111,12 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
   connectedCallback() {
     super.connectedCallback();
 
-    document.addEventListener(ConfirmationAlertCloseEvent.type, this.handleCloseConfirmationAlert);
     document.addEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmConfirmationAlert);
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
 
-    document.removeEventListener(ConfirmationAlertCloseEvent.type, this.handleCloseConfirmationAlert);
     document.removeEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmConfirmationAlert);
   }
 
@@ -126,9 +124,10 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
     super.updated(_changedProperties);
 
     if (_changedProperties.get('isOpen') === false) {
-      this._programName = undefined;
-      this._threads = 1;
-      this._confirmationAlertVisible = false;
+      const historyState = window.history.state as IMainframePageHistoryState;
+
+      this._programName = historyState.programName ?? undefined;
+      this._threads = historyState.threads ?? 1;
     }
   }
 
@@ -143,7 +142,7 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
     );
 
     return html`
-      <sl-dialog ?open=${this.isOpen && !this._confirmationAlertVisible} @sl-request-close=${this.handleClose}>
+      <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
         <h4 slot="label" class="title">${t('mainframe.processes.startProcess', { ns: 'ui' })}</h4>
 
         <div class="body">
@@ -212,7 +211,11 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
       return;
     }
 
-    this._programName = this._programInputRef.value.value as ProgramName;
+    const programName = this._programInputRef.value.value as ProgramName;
+    this._programName = programName;
+
+    const state = { ...window.history.state, programName } as IMainframePageHistoryState;
+    window.history.replaceState(state, OverviewMenuItem.mainframe);
   };
 
   private handleThreadsChange = () => {
@@ -233,6 +236,9 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
 
     this._threads = threads;
     this._threadsInputRef.value.valueAsNumber = threads;
+
+    const state = { ...window.history.state, threads } as IMainframePageHistoryState;
+    window.history.replaceState(state, OverviewMenuItem.mainframe);
   };
 
   private handleOpenConfirmationAlert = (event: Event) => {
@@ -255,15 +261,11 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
         threads: formatter.formatNumberDecimal(existingProcess.threads),
       };
 
-      this._confirmationAlertVisible = true;
-
       this.dispatchEvent(new ConfirmationAlertOpenEvent(ProgramAlert.processReplace, confirmationAlertParameters));
     } else if (program?.isAutoscalable && runningScalableProgram) {
       const confirmationAlertParameters = {
         programName: runningScalableProgram.program.name,
       };
-
-      this._confirmationAlertVisible = true;
 
       this.dispatchEvent(
         new ConfirmationAlertOpenEvent(ProgramAlert.scalableProcessReplace, confirmationAlertParameters),
@@ -283,8 +285,6 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
       return;
     }
 
-    this._confirmationAlertVisible = false;
-
     this.startProcess();
   };
 
@@ -296,19 +296,6 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
         this.dispatchEvent(new StartProcessDialogCloseEvent());
       }
     }
-  };
-
-  private handleCloseConfirmationAlert = (event: Event) => {
-    const convertedEvent = event as ConfirmationAlertCloseEvent;
-
-    if (
-      convertedEvent.gameAlert !== ProgramAlert.processReplace &&
-      convertedEvent.gameAlert !== ProgramAlert.scalableProcessReplace
-    ) {
-      return;
-    }
-
-    this._confirmationAlertVisible = false;
   };
 
   private formatProgramSelectItem = (program: IProgram) => {

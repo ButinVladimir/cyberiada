@@ -11,14 +11,14 @@ common:
   higherDevelopmentLevelRequired: Higher development level required
   upgrade: Upgrade
 pages:
-  cityOverview: City overview
-  companyManagement: Company management
+  city-overview: City overview
+  company-management: Company management
   mainframe: Mainframe
   statistics: Statistics
   settings: Settings
   automation: Automation
   credits: Credits
-  messageLog: Message log
+  message-log: Message log
 topBar:
   menu: Toggle menu
   gameSpeedButtons:

@@ -2,22 +2,19 @@ import { t } from 'i18next';
 import { css, html, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.component.js';
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.component.js';
 import { BaseComponent } from '@shared/base-component';
 import { PROGRAMS } from '@state/progam-factory/constants';
 import { ProgramName } from '@state/progam-factory/types';
-import {
-  ConfirmationAlertOpenEvent,
-  ConfirmationAlertCloseEvent,
-  ConfirmationAlertSubmitEvent,
-} from '@components/shared/confirmation-alert/events';
+import { ConfirmationAlertOpenEvent, ConfirmationAlertSubmitEvent } from '@components/shared/confirmation-alert/events';
 import { QUALITIES } from '@shared/constants';
-import { ProgramAlert } from '@shared/types';
-import { inputLabelStyle, hintStyle, sectionTitleStyle } from '@shared/styles';
+import { OverviewMenuItem, ProgramAlert } from '@shared/types';
+import { inputLabelStyle, hintStyle, sectionTitleStyle, mediumModalStyle, SCREEN_WIDTH_POINTS } from '@shared/styles';
 import { PurchaseProgramDialogCloseEvent } from './events';
 import { PurchaseProgramDialogController } from './controller';
-import { ifDefined } from 'lit/directives/if-defined.js';
+import { IMainframePageHistoryState } from '../../../../interfaces';
 
 @customElement('ca-purchase-program-dialog')
 export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogController> {
@@ -25,11 +22,8 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
     inputLabelStyle,
     hintStyle,
     sectionTitleStyle,
+    mediumModalStyle,
     css`
-      sl-dialog {
-        --width: 50rem;
-      }
-
       sl-dialog::part(body) {
         padding-top: 0;
         padding-bottom: 0;
@@ -56,7 +50,9 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
       div.inputs-container {
         display: grid;
         column-gap: var(--sl-spacing-medium);
-        grid-template-columns: repeat(3, 1fr);
+        row-gap: var(--sl-spacing-medium);
+        grid-template-columns: auto;
+        grid-template-rows: auto;
       }
 
       p.hint {
@@ -79,6 +75,13 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
 
       div.program-description p.line-break {
         height: var(--sl-spacing-medium);
+      }
+
+      @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
+        div.inputs-container {
+          grid-template-rows: auto;
+          grid-template-columns: 2fr 1fr 1fr;
+        }
       }
     `,
   ];
@@ -106,9 +109,6 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
   @state()
   private _quality = 0;
 
-  @state()
-  private _confirmationAlertVisible = false;
-
   constructor() {
     super();
 
@@ -118,14 +118,12 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
   connectedCallback() {
     super.connectedCallback();
 
-    document.addEventListener(ConfirmationAlertCloseEvent.type, this.handleCloseConfirmationAlert);
     document.addEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmConfirmationAlert);
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
 
-    document.removeEventListener(ConfirmationAlertCloseEvent.type, this.handleCloseConfirmationAlert);
     document.removeEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmConfirmationAlert);
   }
 
@@ -133,10 +131,11 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
     super.updated(_changedProperties);
 
     if (_changedProperties.get('isOpen') === false) {
-      this._programName = undefined;
-      this._level = this.controller.developmentLevel;
-      this._quality = 0;
-      this._confirmationAlertVisible = false;
+      const historyState = window.history.state as IMainframePageHistoryState;
+
+      this._programName = historyState.programName ?? undefined;
+      this._level = historyState.level ?? this.controller.developmentLevel;
+      this._quality = historyState.quality ?? 0;
     }
   }
 
@@ -144,7 +143,7 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
     const { formatter, developmentLevel } = this.controller;
 
     return html`
-      <sl-dialog ?open=${this.isOpen && !this._confirmationAlertVisible} @sl-request-close=${this.handleClose}>
+      <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
         <h4 slot="label" class="title">${t('mainframe.programs.purchaseProgram', { ns: 'ui' })}</h4>
 
         <div class="body">
@@ -232,7 +231,11 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
       return;
     }
 
-    this._programName = this._programInputRef.value.value as ProgramName;
+    const programName = this._programInputRef.value.value as ProgramName;
+    this._programName = programName;
+
+    const state = { ...window.history.state, programName } as IMainframePageHistoryState;
+    window.history.replaceState(state, OverviewMenuItem.mainframe);
   };
 
   private handleLevelChange = () => {
@@ -252,6 +255,9 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
 
     this._level = level;
     this._levelInputRef.value.valueAsNumber = level;
+
+    const state = { ...window.history.state, level } as IMainframePageHistoryState;
+    window.history.replaceState(state, OverviewMenuItem.mainframe);
   };
 
   private handleQualityChange = () => {
@@ -259,7 +265,11 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
       return;
     }
 
-    this._quality = +this._qualityInputRef.value.value;
+    const quality = +this._qualityInputRef.value.value;
+    this._quality = quality;
+
+    const state = { ...window.history.state, quality } as IMainframePageHistoryState;
+    window.history.replaceState(state, OverviewMenuItem.mainframe);
   };
 
   private handleOpenConfirmationAlert = (event: Event) => {
@@ -281,8 +291,6 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
         quality: formatter.formatQuality(ownedProgram.quality),
       };
 
-      this._confirmationAlertVisible = true;
-
       this.dispatchEvent(
         new ConfirmationAlertOpenEvent(ProgramAlert.purchaseProgramOverwrite, confirmationAlertParameters),
       );
@@ -298,8 +306,6 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
       return;
     }
 
-    this._confirmationAlertVisible = false;
-
     this.purchase();
   };
 
@@ -313,15 +319,5 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
     if (isBought) {
       this.dispatchEvent(new PurchaseProgramDialogCloseEvent());
     }
-  };
-
-  private handleCloseConfirmationAlert = (event: Event) => {
-    const convertedEvent = event as ConfirmationAlertCloseEvent;
-
-    if (convertedEvent.gameAlert !== ProgramAlert.purchaseProgramOverwrite) {
-      return;
-    }
-
-    this._confirmationAlertVisible = false;
   };
 }

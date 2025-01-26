@@ -29,3 +29,7 @@ body {
   --ca-table-row-odd-color: var(--sl-color-neutral-100);
   --ca-dragged-color: var(--sl-color-primary-100);
 }
+
+.sl-toast-stack {
+  top: var(--ca-top-bar-height);
+}

@@ -11,14 +11,14 @@ common:
   higherDevelopmentLevelRequired: Требуется больший уровень развития
   upgrade: Улучшить
 pages:
-  cityOverview: Обзор города
-  companyManagement: Управление компанией
+  city-overview: Обзор города
+  company-management: Управление компанией
   mainframe: Мейнфрейм
   statistics: Статистика
   settings: Настройки
   automation: Автоматизация
   credits: Титры
-  messageLog: Лог сообщений
+  message-log: Лог сообщений
 topBar:
   menu: Показать/скрыть меню
   gameSpeedButtons:

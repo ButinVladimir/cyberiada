@@ -5,9 +5,12 @@ import { BaseComponent } from '@shared/base-component';
 import { hintStyle } from '@shared/styles';
 import { SCREEN_WIDTH_POINTS } from '@shared/styles';
 import { ProcessesPanelController } from './controller';
+import { OverviewMenuItem } from '@shared/types';
+import { IHistoryState } from '@shared/interfaces/history-state';
+import { IMainframePageHistoryState } from '../../interfaces';
 
 @customElement('ca-mainframe-processes-panel')
-export class MainframeHardwarePanel extends BaseComponent<ProcessesPanelController> {
+export class MainframeProcessesPanel extends BaseComponent<ProcessesPanelController> {
   static styles = [
     hintStyle,
     css`
@@ -68,6 +71,18 @@ export class MainframeHardwarePanel extends BaseComponent<ProcessesPanelControll
     this.controller = new ProcessesPanelController(this);
   }
 
+  connectedCallback() {
+    super.connectedCallback();
+
+    window.addEventListener('popstate', this.handlePopState);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+
+    window.removeEventListener('popstate', this.handlePopState);
+  }
+
   renderContent() {
     const formatter = this.controller.formatter;
 
@@ -109,12 +124,23 @@ export class MainframeHardwarePanel extends BaseComponent<ProcessesPanelControll
     event.stopPropagation();
 
     this._isStartProcessDialogOpen = true;
+
+    const state = { ...window.history.state, startProcessModalOpen: true } as IMainframePageHistoryState;
+    window.history.pushState(state, OverviewMenuItem.mainframe);
   };
 
   private handleStartProcessDialogClose = (event: Event) => {
     event.preventDefault();
     event.stopPropagation();
 
-    this._isStartProcessDialogOpen = false;
+    window.history.back();
+  };
+
+  private handlePopState = (event: PopStateEvent) => {
+    if ((event.state as IHistoryState).selectedMenuItem === OverviewMenuItem.mainframe) {
+      const state = event.state as IMainframePageHistoryState;
+
+      this._isStartProcessDialogOpen = !!state.startProcessModalOpen;
+    }
   };
 }
