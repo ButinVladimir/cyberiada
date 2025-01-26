@@ -6,14 +6,6 @@ import { IProcess } from '@state/mainframe/mainframe-processes-state/interfaces/
 export class StartProcessDialogController extends BaseController {
   private _program?: IProgram;
 
-  get ram(): number {
-    return this.mainframeHardwareState.ram.level;
-  }
-
-  get cores(): number {
-    return this.mainframeHardwareState.cores.level;
-  }
-
   getAvailableRamForProgram(programName?: ProgramName): number {
     let availableRam = this.mainframeProcessesState.availableRam;
 

@@ -2,7 +2,7 @@ import { inject, injectable } from 'inversify';
 import { ProgramName } from '@state/progam-factory/types';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import type { IMainframeHardwareState } from '@state/mainframe/mainframe-hardware-state/interfaces/mainframe-hardware-state';
-import type { IMainframeProgramsState } from '@/state/mainframe/mainframe-programs-state/interfaces/mainframe-programs-state';
+import type { IMainframeProgramsState } from '@state/mainframe/mainframe-programs-state/interfaces/mainframe-programs-state';
 import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
 import type { ISettingsState } from '@state/settings-state/interfaces/settings-state';
 import type { IFormatter } from '@shared/interfaces/formatter';

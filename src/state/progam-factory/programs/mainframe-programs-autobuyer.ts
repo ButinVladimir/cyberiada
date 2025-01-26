@@ -1,4 +1,3 @@
-import { MS_IN_SECOND } from '@shared/constants';
 import { binarySearchDecimal } from '@shared/helpers';
 import { IMainframeProgramsAutomationState } from '@state/automation/mainframe-programs-automation-state/interfaces/mainframe-programs-automation-state';
 import { ProgramName } from '../types';
@@ -58,28 +57,6 @@ export class MainframeProgramsAutobuyerProgram extends BaseProgram {
         }
       }
     }
-  }
-
-  buildProgramDescriptionParametersObject(threads: number) {
-    const minAvgValue = threads / this.calculateCompletionMaxTime(threads);
-    const maxAvgValue = threads / this.calculateCompletionMinTime(threads);
-
-    return {
-      value: this.formatter.formatNumberDecimal(threads),
-      minAvgValue: this.formatter.formatNumberDecimal(minAvgValue * MS_IN_SECOND),
-      maxAvgValue: this.formatter.formatNumberDecimal(maxAvgValue * MS_IN_SECOND),
-    };
-  }
-
-  buildProcessDescriptionParametersObject(threads: number, usedCores: number) {
-    const completionTime = this.calculateCompletionTime(threads, usedCores);
-
-    const avgValue = threads / completionTime;
-
-    return {
-      value: this.formatter.formatNumberDecimal(threads),
-      avgValue: this.formatter.formatNumberDecimal(avgValue * MS_IN_SECOND),
-    };
   }
 
   private makeCheckProgramFunction =

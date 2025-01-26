@@ -5,6 +5,7 @@ export interface IApp extends IUIEventEmitter {
   appStage: AppStage;
   startUp(): Promise<void>;
   saveGame(): void;
+  refreshUI(): void;
   importSavefile(file: File): void;
   exportSavefile(): void;
   deleteSaveData(): Promise<void>;

@@ -1,4 +1,5 @@
-import { css, html } from 'lit';
+import { t } from 'i18next';
+import { css, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { ProgramName } from '@state/progam-factory/types';
@@ -32,41 +33,36 @@ export class ProcessesListItemProgressColumn extends BaseComponent<ProcessesList
     const process = this.controller.getProcess(this.programName as ProgramName);
 
     if (!process) {
-      return html``;
+      return nothing;
     }
-
-    const progressBarLabelValues = JSON.stringify({
-      currentCompletionPoints: formatter.formatNumberLong(process.currentCompletionPoints),
-      maxCompletionPoints: formatter.formatNumberLong(process.maxCompletionPoints),
-    });
 
     const processCompletionDelta = process.calculateCompletionDelta(1);
     let progressBarHintLabel: string;
-    let progressBarHintValue: string;
+    let progressBarHintTime: string;
 
     if (processCompletionDelta > 0) {
-      progressBarHintLabel = 'ui:mainframe:processes:progressBarHintActive';
-      progressBarHintValue = formatter.formatTimeShort(
+      progressBarHintLabel = 'mainframe.processes.progressBarHintActive';
+      progressBarHintTime = formatter.formatTimeShort(
         (process.maxCompletionPoints - process.currentCompletionPoints) / processCompletionDelta,
       );
     } else {
-      progressBarHintLabel = 'ui:mainframe:processes:progressBarHintPaused';
-      progressBarHintValue = '';
+      progressBarHintLabel = 'mainframe.processes.progressBarHintPaused';
+      progressBarHintTime = '';
     }
 
     const progresBarValue = (process.currentCompletionPoints / process.maxCompletionPoints) * 100;
 
     return process.program.isAutoscalable
-      ? html`<div class="progress-gap"></div>`
-      : html` <sl-tooltip>
-          <intl-message slot="content" label=${progressBarHintLabel} value=${progressBarHintValue}>
-            Progress bar hint
-          </intl-message>
+      ? html`${t('mainframe.processes.instantCompletion', { ns: 'ui' })}`
+      : html`<sl-tooltip>
+          <span slot="content"> ${t(progressBarHintLabel, { ns: 'ui', time: progressBarHintTime })} </span>
 
           <sl-progress-bar value=${progresBarValue}>
-            <intl-message label="ui:mainframe:processes:progressBarLabel" value=${progressBarLabelValues}>
-              Progress
-            </intl-message>
+            ${t('mainframe.processes.progressBarLabel', {
+              ns: 'ui',
+              currentCompletionPoints: formatter.formatNumberFloat(process.currentCompletionPoints),
+              maxCompletionPoints: formatter.formatNumberFloat(process.maxCompletionPoints),
+            })}
           </sl-progress-bar>
         </sl-tooltip>`;
   }

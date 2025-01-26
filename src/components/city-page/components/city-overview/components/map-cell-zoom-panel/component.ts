@@ -88,7 +88,7 @@ export class MapCellZoomPanel extends BaseComponent<MapCellZoomPanelController> 
 
       <div class="zoom-button-container">
         <sl-tooltip placement="bottom">
-          <intl-message slot="content" label="ui:city:cityOverview:toggleZoomPanel"> Toggle zoom panel </intl-message>
+          <span slot="content"> ${t('city.cityOverview.toggleZoomPanel', { ns: 'ui' })} </span>
 
           <sl-icon-button
             name="zoom-in"

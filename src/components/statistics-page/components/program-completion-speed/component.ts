@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
@@ -20,17 +21,11 @@ export class StatisticsProgramCompletionSpeed extends BaseComponent<StatisticsPr
     const formatter = this.controller.formatter;
 
     return html`
-      <h4 class="title">
-        <intl-message label="ui:statistics:growth:programCompletionSpeed:title">Program completion speed</intl-message>
-      </h4>
+      <h4 class="title">${t('statistics.growth.programCompletionSpeed.title', { ns: 'ui' })}</h4>
 
       <div class="parameters-table">
-        <span>
-          <intl-message label="ui:statistics:growth:programCompletionSpeed:pointsPerSecond">
-            Program completion speed
-          </intl-message>
-        </span>
-        <span> ${formatter.formatNumberLong(this.controller.programCompletionSpeed)} </span>
+        <span> ${t('statistics.growth.programCompletionSpeed.pointsPerSecond', { ns: 'ui' })} </span>
+        <span> ${formatter.formatNumberFloat(this.controller.programCompletionSpeed)} </span>
       </div>
     `;
   }

@@ -1,4 +1,4 @@
-import { css, html } from 'lit';
+import { css, html, nothing } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { Feature } from '@shared/types';
@@ -8,7 +8,6 @@ import { AutomationAutobuyersPanelController } from './controller';
 export class AutomationAutobuyersPanel extends BaseComponent<AutomationAutobuyersPanelController> {
   static styles = css`
     :host {
-      max-width: var(--ca-viewport-width);
       width: 100%;
       display: flex;
       align-items: stretch;
@@ -29,10 +28,10 @@ export class AutomationAutobuyersPanel extends BaseComponent<AutomationAutobuyer
     return html`
       ${this.controller.isFeatureUnlocked(Feature.automationMainframeHardware)
         ? html`<ca-automation-mainframe-hardware-autobuyer></ca-automation-mainframe-hardware-autobuyer>`
-        : null}
+        : nothing}
       ${this.controller.isFeatureUnlocked(Feature.automationMainframePrograms)
         ? html`<ca-automation-mainframe-programs-autobuyer></ca-automation-mainframe-programs-autobuyer>`
-        : null}
+        : nothing}
     `;
   }
 }

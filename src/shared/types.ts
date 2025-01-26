@@ -1,5 +1,6 @@
 export enum GameVersion {
   '0.1.1' = '0.1.1',
+  '0.1.2' = '0.1.2',
 }
 
 export enum Language {
@@ -13,11 +14,12 @@ export enum Theme {
 }
 
 export enum OverviewMenuItem {
-  cityOverview = 'cityOverview',
-  companyManagement = 'companyManagement',
+  cityOverview = 'city-overview',
+  companyManagement = 'company-management',
   mainframe = 'mainframe',
-  statistics = 'statistics',
   automation = 'automation',
+  statistics = 'statistics',
+  messageLog = 'message-log',
 }
 
 export enum MiscMenuItem {
@@ -79,8 +81,10 @@ export enum NotificationType {
 }
 
 export enum LongNumberFormat {
-  builtIn = 'builtIn',
+  short = 'short',
+  long = 'long',
   scientific = 'scientific',
+  engineering = 'engineering',
 }
 
 export enum PurchaseType {

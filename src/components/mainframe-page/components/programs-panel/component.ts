@@ -1,58 +1,52 @@
+import { t } from 'i18next';
 import { css, html } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
-import { ProgramsPanelController } from './controller';
+import { hintStyle } from '@shared/styles';
+import { OverviewMenuItem } from '@shared/types';
+import { IHistoryState } from '@shared/interfaces/history-state';
+import { IMainframePageHistoryState } from '../../interfaces';
 
 @customElement('ca-mainframe-programs-panel')
-export class MainframeProgramsPanel extends BaseComponent<ProgramsPanelController> {
-  static styles = css`
-    :host {
-      display: flex;
-      align-items: flex-start;
-      flex-direction: column;
-      gap: var(--sl-spacing-large);
-    }
+export class MainframeProgramsPanel extends BaseComponent {
+  static styles = [
+    hintStyle,
+    css`
+      :host {
+        display: flex;
+        align-items: flex-start;
+        flex-direction: column;
+        gap: var(--sl-spacing-large);
+      }
 
-    p.hint {
-      margin: 0;
-      color: var(--ca-hint-color);
-      font-size: var(--ca-hint-font-size);
-    }
-
-    div.buttons-container {
-      display: flex;
-      gap: var(--sl-spacing-medium);
-    }
-  `;
-
-  protected controller: ProgramsPanelController;
+      p.hint {
+        margin: 0;
+      }
+    `,
+  ];
 
   @state()
   private _isPurchaseProgramDialogOpen = false;
 
-  constructor() {
-    super();
+  connectedCallback() {
+    super.connectedCallback();
 
-    this.controller = new ProgramsPanelController(this);
+    window.addEventListener('popstate', this.handlePopState);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+
+    window.removeEventListener('popstate', this.handlePopState);
   }
 
   renderContent() {
     return html`
-      <p class="hint">
-        <intl-message label="ui:mainframe:programs:programsHint">
-          Press either ctrl or shift to buy 10 levels. Press both ctrl and shift to buy 100 levels.
-        </intl-message>
-      </p>
+      <p class="hint">${t('mainframe.programs.programsHint', { ns: 'ui' })}</p>
 
-      <div class="buttons-container">
-        <sl-button variant="primary" size="medium" @click=${this.handlePurchaseProgramDialogOpen}>
-          <intl-message label="ui:mainframe:programs:purchaseProgram"> Purchase a program </intl-message>
-        </sl-button>
-
-        <sl-button variant="default" size="medium" @click=${this.handleUpgradeMaxAllPrograms}>
-          <intl-message label="ui:mainframe:programs:upgradeMaxAllPrograms"> Upgrade all programs </intl-message>
-        </sl-button>
-      </div>
+      <sl-button variant="primary" size="medium" @click=${this.handlePurchaseProgramDialogOpen}>
+        ${t('mainframe.programs.purchaseProgram', { ns: 'ui' })}
+      </sl-button>
 
       <ca-owned-programs-list></ca-owned-programs-list>
 
@@ -69,19 +63,23 @@ export class MainframeProgramsPanel extends BaseComponent<ProgramsPanelControlle
     event.stopPropagation();
 
     this._isPurchaseProgramDialogOpen = true;
+
+    const state = { ...window.history.state, purchaseProgramModalOpen: true } as IMainframePageHistoryState;
+    window.history.pushState(state, OverviewMenuItem.mainframe);
   };
 
   private handlePurchaseProgramDialogClose = (event: Event) => {
     event.preventDefault();
     event.stopPropagation();
 
-    this._isPurchaseProgramDialogOpen = false;
+    window.history.back();
   };
 
-  private handleUpgradeMaxAllPrograms = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
+  private handlePopState = (event: PopStateEvent) => {
+    if ((event.state as IHistoryState).selectedMenuItem === OverviewMenuItem.mainframe) {
+      const state = event.state as IMainframePageHistoryState;
 
-    this.controller.upgradeMaxAllPrograms();
+      this._isPurchaseProgramDialogOpen = !!state.purchaseProgramModalOpen;
+    }
   };
 }

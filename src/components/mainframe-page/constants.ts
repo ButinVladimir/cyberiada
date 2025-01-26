@@ -15,3 +15,9 @@ export const diffFormatterParametersLong: IFormatterParameters = {
 export const diffFormatterParametersShortTime: IFormatterParameters = {
   alwaysShowSign: true,
 };
+
+export enum MainframePageTabs {
+  processes = 'processes',
+  hardware = 'hardware',
+  programs = 'programs',
+}

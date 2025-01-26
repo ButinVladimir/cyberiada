@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { TemplateResult, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
@@ -5,52 +6,56 @@ import SlCheckbox from '@shoelace-style/shoelace/dist/components/checkbox/checkb
 import { BaseComponent } from '@shared/base-component';
 import { NOTIFICATION_TYPES } from '@shared/constants';
 import { NotificationType } from '@shared/types';
+import { hintStyle, sectionTitleStyle, mediumModalStyle, SCREEN_WIDTH_POINTS } from '@shared/styles';
 import { NotificationTypeFilterDialogCloseEvent } from './events';
 import { NotificationTypeFilterDialogController } from './controller';
 
 @customElement('ca-notification-type-filter-dialog')
 export class NotificationTypeFilterDialog extends BaseComponent<NotificationTypeFilterDialogController> {
-  static styles = css`
-    sl-dialog {
-      --width: 50rem;
-    }
+  static styles = [
+    hintStyle,
+    sectionTitleStyle,
+    mediumModalStyle,
+    css`
+      sl-dialog::part(body) {
+        padding-top: 0;
+        padding-bottom: 0;
+      }
 
-    sl-dialog::part(body) {
-      padding-top: 0;
-      padding-bottom: 0;
-    }
+      h4.title {
+        margin: 0;
+      }
 
-    h4.title {
-      font-size: var(--sl-font-size-large);
-      font-weight: var(--sl-font-weight-bold);
-      margin: 0;
-    }
+      div.body {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+      }
 
-    div.body {
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-    }
+      p.hint {
+        margin-top: 0;
+        margin-bottom: var(--sl-spacing-small);
+      }
 
-    p.hint {
-      margin-top: 0;
-      margin-bottom: var(--sl-spacing-small);
-      color: var(--ca-hint-color);
-      font-size: var(--ca-hint-font-size);
-    }
+      div.events-container {
+        display: grid;
+        column-gap: var(--sl-spacing-3x-small);
+        row-gap: var(--sl-spacing-3x-small);
+        grid-template-columns: auto;
+        grid-auto-rows: auto;
+      }
 
-    div.events-container {
-      display: grid;
-      column-gap: var(--sl-spacing-3x-small);
-      row-gap: var(--sl-spacing-3x-small);
-      grid-template-columns: repeat(2, minmax(0, 30em));
-      grid-auto-rows: auto;
-    }
+      sl-divider {
+        --spacing: var(--sl-spacing-medium);
+      }
 
-    sl-divider {
-      --spacing: var(--sl-spacing-medium);
-    }
-  `;
+      @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
+        div.events-container {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+    `,
+  ];
 
   protected controller: NotificationTypeFilterDialogController;
 
@@ -69,16 +74,10 @@ export class NotificationTypeFilterDialog extends BaseComponent<NotificationType
   renderContent() {
     return html`
       <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
-        <h4 slot="label" class="title">
-          <intl-message label="ui:settings:notificationTypeFilter"> Notification type filter </intl-message>
-        </h4>
+        <h4 slot="label" class="title">${t('settings.notificationTypeFilter', { ns: 'ui' })}</h4>
 
         <div class="body">
-          <p class="hint">
-            <intl-message label="ui:settings:notificationTypeFilterHint">
-              Enable notification types in filter to see notifications for those events.
-            </intl-message>
-          </p>
+          <p class="hint">${t('settings.notificationTypeFilterHint', { ns: 'ui' })}</p>
 
           <div class="events-container">
             ${repeat(NOTIFICATION_TYPES, (gameAlert) => gameAlert, this.renderGameAlertCheckbox)}
@@ -86,7 +85,7 @@ export class NotificationTypeFilterDialog extends BaseComponent<NotificationType
         </div>
 
         <sl-button slot="footer" size="medium" variant="default" outline @click=${this.handleClose}>
-          <intl-message label="ui:common:close"> Close </intl-message>
+          ${t('common.close', { ns: 'ui' })}
         </sl-button>
       </sl-dialog>
     `;
@@ -101,7 +100,7 @@ export class NotificationTypeFilterDialog extends BaseComponent<NotificationType
         ?checked=${this.controller.isNotificationTypeEnabled(notificationType)}
         @sl-change=${this.handleToggleAlert}
       >
-        <intl-message label=${`notifications:${notificationType}:name`}> Alert </intl-message>
+        ${t(`${notificationType}.name`, { ns: 'notifications' })}
       </sl-checkbox>
     `;
   };

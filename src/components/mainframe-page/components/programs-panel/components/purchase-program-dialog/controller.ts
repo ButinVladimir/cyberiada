@@ -11,20 +11,8 @@ export class PurchaseProgramDialogController extends BaseController {
     this.deleteSelectedProgram();
   }
 
-  get money(): number {
-    return this.globalState.money.money;
-  }
-
   get developmentLevel(): number {
     return this.globalState.development.level;
-  }
-
-  get ram(): number {
-    return this.mainframeHardwareState.ram.level;
-  }
-
-  get cores(): number {
-    return this.mainframeHardwareState.cores.level;
   }
 
   getSelectedProgram(name: ProgramName, level: number, quality: number): IProgram {

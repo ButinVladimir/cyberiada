@@ -1,4 +1,3 @@
-import { MS_IN_SECOND } from '@shared/constants';
 import { ISettingsState } from '@state/settings-state/interfaces/settings-state';
 import { IncomeSource } from '@shared/types';
 import programs from '@configs/programs.json';
@@ -29,26 +28,6 @@ export class ShareServerProgram extends BaseProgram {
 
     this.globalState.money.increase(moneyDelta, IncomeSource.program);
     this.globalState.development.increase(developmentPointsDelta, IncomeSource.program);
-  }
-
-  buildProgramDescriptionParametersObject(threads: number, usedRam: number) {
-    const moneyDelta = this.calculateMoneyDelta(threads, usedRam, MS_IN_SECOND);
-    const developmentPointsDelta = this.calculateDevelopmentPointsDelta(threads, usedRam, MS_IN_SECOND);
-
-    return {
-      money: this.formatter.formatNumberLong(moneyDelta),
-      developmentPoints: this.formatter.formatNumberLong(developmentPointsDelta),
-    };
-  }
-
-  buildProcessDescriptionParametersObject(threads: number, usedCores: number, usedRam: number) {
-    const moneyDelta = this.calculateMoneyDelta(usedCores, usedRam, MS_IN_SECOND);
-    const developmentPointsDelta = this.calculateDevelopmentPointsDelta(usedCores, usedRam, MS_IN_SECOND);
-
-    return {
-      money: this.formatter.formatNumberLong(moneyDelta),
-      developmentPoints: this.formatter.formatNumberLong(developmentPointsDelta),
-    };
   }
 
   calculateMoneyDelta(threads: number, usedRam: number, passedTime: number): number {

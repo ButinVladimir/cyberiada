@@ -8,7 +8,7 @@ import { CityState, ICityState } from '@state/city-state';
 import { IMessageLogState, MessageLogState } from '@state/message-log-state';
 import { IProgramFactory, ProgramFactory } from '@state/progam-factory';
 import { IMainframeHardwareState, MainframeHardwareState } from '@state/mainframe/mainframe-hardware-state';
-import { IMainframeProgramsState, MainframeProgramsState } from '@/state/mainframe/mainframe-programs-state';
+import { IMainframeProgramsState, MainframeProgramsState } from '@state/mainframe/mainframe-programs-state';
 import { IMainframeProcessesState, MainframeProcessesState } from '@state/mainframe/mainframe-processes-state';
 import {
   IMainframeHardwareAutomationState,

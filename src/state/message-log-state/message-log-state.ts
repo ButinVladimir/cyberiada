@@ -15,6 +15,7 @@ export class MessageLogState implements IMessageLogState {
   private _stateUiConnector: IStateUIConnector;
   private _settingsState: ISettingsState;
   private readonly _messages: IMessage[];
+  private readonly _toasts: IMessage[];
 
   constructor(
     @inject(TYPES.StateUIConnector) _stateUiConnector: IStateUIConnector,
@@ -24,29 +25,35 @@ export class MessageLogState implements IMessageLogState {
     this._settingsState = _settingsState;
 
     this._messages = [];
+    this._toasts = [];
 
     this.uiEventBatcher = new EventBatcher();
     this._stateUiConnector.registerEventEmitter(this);
   }
 
-  postMessage(event: MessageEvent, parameters?: Record<string, any>) {
+  postMessage(event: MessageEvent, parameters?: Record<string, any>, postToast = true) {
     if (!this._settingsState.isMessageEventEnabled(event)) {
       return;
     }
 
-    this._messages.push({
+    const message: IMessage = {
       date: new Date(),
       id: uuid(),
       event,
       parameters,
-    });
+    };
 
-    const messagesToDelete = this._messages.length - this._settingsState.messageLogSize;
-    if (messagesToDelete > 0) {
-      this._messages.splice(0, messagesToDelete);
-    }
+    this._messages.unshift(message);
+    this._messages.splice(this._settingsState.messageLogSize);
 
     this.uiEventBatcher.enqueueEvent(MESSAGE_LOG_UI_EVENTS.UPDATED_MESSAGES);
+
+    if (postToast && this._settingsState.toastDuration > 0) {
+      this._toasts.unshift(message);
+      this._toasts.splice(this._settingsState.messageLogSize);
+
+      this.uiEventBatcher.enqueueEvent(MESSAGE_LOG_UI_EVENTS.UPDATED_TOASTS);
+    }
   }
 
   getMessages(): IMessage[] {
@@ -59,5 +66,16 @@ export class MessageLogState implements IMessageLogState {
     this._messages.splice(0);
 
     this.uiEventBatcher.enqueueEvent(MESSAGE_LOG_UI_EVENTS.UPDATED_MESSAGES);
+  }
+
+  getToasts(): IMessage[] {
+    this._stateUiConnector.connectEventHandler(this, MESSAGE_LOG_UI_EVENTS.UPDATED_TOASTS);
+
+    const toastsBatch = [...this._toasts];
+    toastsBatch.reverse();
+
+    this._toasts.splice(0);
+
+    return toastsBatch;
   }
 }

@@ -1,4 +1,5 @@
-import { html } from 'lit';
+import { t } from 'i18next';
+import { html, nothing } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { StatisticsMultipliersController } from './controller';
@@ -23,39 +24,29 @@ export class StatisticsMultipliers extends BaseComponent<StatisticsMultipliersCo
     const mainframeDiscount = this.controller.mainframeDiscount * 100;
 
     return html`
-      <h4 class="title">
-        <intl-message label="ui:statistics:general:multipliers:title">Multipliers and discounts</intl-message>
-      </h4>
+      <h4 class="title">${t('statistics.general.multipliers.title', { ns: 'ui' })}</h4>
 
       <div class="parameters-table">
         ${programCompletionSpeedMultiplier > 1
           ? html`
-              <span>
-                <intl-message label="ui:statistics:general:multipliers:programCompletionSpeed">
-                  Program completion speed
-                </intl-message>
-              </span>
+              <span> ${t('statistics.general.multipliers.programCompletionSpeed', { ns: 'ui' })} </span>
               <span> ${formatter.formatNumberFloat(programCompletionSpeedMultiplier)} </span>
             `
-          : null}
+          : nothing}
         ${mainframeDiscount > 0
           ? html`
               <span>
-                <intl-message label="ui:statistics:general:multipliers:mainframeDiscount">
-                  Mainframe discount
-                </intl-message>
+                ${t('statistics.general.multipliers.mainframeDiscount', { ns: 'ui' })}
 
                 <sl-tooltip>
-                  <intl-message slot="content" label="ui:statistics:hints:mainframeDiscount">
-                    Mainframe discount hint
-                  </intl-message>
+                  <span slot="content"> ${t('statistics.hints.mainframeDiscount', { ns: 'ui' })} </span>
 
                   <sl-icon name="question-circle"></sl-icon>
                 </sl-tooltip>
               </span>
               <span> ${formatter.formatNumberFloat(mainframeDiscount)} </span>
             `
-          : null}
+          : nothing}
       </div>
     `;
   }

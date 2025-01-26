@@ -1,48 +1,60 @@
 import { css } from 'lit';
+import { hintStyle, sectionTitleStyle, SCREEN_WIDTH_POINTS } from '@shared/styles';
 
-export const autobuyerStyles = css`
-  :host {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    padding: var(--sl-spacing-large);
-    box-sizing: border-box;
-    border: var(--ca-border);
-    border-radius: var(--sl-border-radius-small);
-    gap: var(--sl-spacing-3x-large);
-  }
+export const autobuyerStyles = [
+  hintStyle,
+  sectionTitleStyle,
+  css`
+    :host {
+      width: 100%;
+      padding: var(--sl-spacing-large);
+      box-sizing: border-box;
+      border: var(--ca-border);
+      border-radius: var(--sl-border-radius-small);
+      display: grid;
+      grid-template-areas:
+        'title'
+        'input'
+        'hint';
+      row-gap: var(--sl-spacing-small);
+      column-gap: var(--sl-spacing-small);
+    }
 
-  div.text-container {
-    flex: 1 1 auto;
-    overflow: hidden;
-  }
+    h4.title {
+      grid-area: title;
+      margin: 0;
+    }
 
-  div.text-container-inner {
-    max-width: 100%;
-  }
+    p.hint {
+      grid-area: hint;
+      margin: 0;
+    }
 
-  h4.title {
-    width: 100%;
-    font-size: var(--sl-font-size-large);
-    font-weight: var(--sl-font-weight-bold);
-    margin-top: 0;
-    margin-bottom: var(--sl-spacing-medium);
-    line-height: var(--sl-line-height-denser);
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
+    div.input-container {
+      grid-area: input;
+      width: 100%;
+      display: flex;
+    }
 
-  p.hint {
-    width: 100%;
-    margin: 0;
-    color: var(--ca-hint-color);
-    font-size: var(--ca-hint-font-size);
-  }
+    div.input-container sl-input {
+      width: 100%;
+    }
 
-  div.input-container {
-    flex: 0 0 auto;
-    min-width: 15rem;
-  }
-`;
+    @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
+      :host {
+        grid-template-areas:
+          'title input'
+          'hint input';
+        grid-template-rows: auto auto;
+        grid-template-columns: 1fr auto;
+      }
+
+      div.input-container {
+        grid-area: input;
+        width: 15rem;
+        align-items: center;
+        height: 100%;
+      }
+    }
+  `,
+];

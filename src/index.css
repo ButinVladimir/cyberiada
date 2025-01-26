@@ -13,20 +13,23 @@ body {
 :host,
 .sl-theme-light,
 .sl-theme-dark {
-  --ca-max-width: 1920px;
-  --ca-max-content-width: 78rem;
+  --ca-width-screen: 1920px;
+  --ca-width-widescreen-content: 1024px;
+  --ca-top-bar-height: 4rem;
+  --ca-menu-bar-max-width: 384px;
   --sl-input-font-family: var(--sl-font-sans);
   --sl-input-help-text-color: var(--sl-color-neutral-700);
   --ca-hint-color: var(--sl-input-help-text-color);
   --ca-hint-font-size: var(--sl-font-size-small);
   --ca-border: var(--sl-panel-border-width) solid var(--sl-panel-border-color);
   --ca-table-header-font-weight: var(--sl-font-weight-bold);
-  --ca-top-bar-height: 61px;
-  --ca-message-log-top-bar: 55px;
   --ca-scrollbar-width: 0.7rem;
   --ca-scrollbar-thumb-fill-color: var(--sl-color-neutral-400);
   --ca-scrollbar-thumb-fill-color-hover: var(--sl-color-neutral-700);
   --ca-table-row-odd-color: var(--sl-color-neutral-100);
   --ca-dragged-color: var(--sl-color-primary-100);
-  --ca-viewport-width: 65rem;
+}
+
+.sl-toast-stack {
+  top: var(--ca-top-bar-height);
 }

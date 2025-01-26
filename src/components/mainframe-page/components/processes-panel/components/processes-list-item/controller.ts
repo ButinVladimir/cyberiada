@@ -9,10 +9,6 @@ export class ProcessesListItemController extends BaseController {
     return this.mainframeProcessesState.availableRam;
   }
 
-  get availableCores(): number {
-    return this.mainframeProcessesState.availableCores;
-  }
-
   getProcess(programName: ProgramName) {
     if (this._process?.program.name !== programName) {
       if (this._process) {

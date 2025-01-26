@@ -1,20 +1,15 @@
 import { t } from 'i18next';
 import { css, html } from 'lit';
-import { customElement, state } from 'lit/decorators.js';
+import { customElement } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
-import { createRef, ref } from 'lit/directives/ref.js';
 import { BaseComponent } from '@shared/base-component';
 import { ProgramAlert } from '@shared/types';
-import {
-  ConfirmationAlertOpenEvent,
-  ConfirmationAlertSubmitEvent,
-} from '@/components/shared/confirmation-alert/events';
+import { ConfirmationAlertOpenEvent, ConfirmationAlertSubmitEvent } from '@components/shared/confirmation-alert/events';
 import { IProcess } from '@state/mainframe/mainframe-processes-state/interfaces/process';
 import { ProgramName } from '@state/progam-factory/types';
-import { moveElementInArray } from '@shared/helpers';
-import { EMPTY_IMAGE } from '@shared/constants';
+import { SCREEN_WIDTH_POINTS } from '@shared/styles';
+import { SortableElementMovedEvent } from '@components/shared/sortable-list/events/sortable-element-moved';
 import { ProcessesListController } from './controller';
-import { TABLE_ROW_HEIGHT } from './constants';
 
 @customElement('ca-processes-list')
 export class ProcessesList extends BaseComponent<ProcessesListController> {
@@ -22,74 +17,99 @@ export class ProcessesList extends BaseComponent<ProcessesListController> {
     :host {
       width: 100%;
       align-self: stretch;
+      display: block;
+      border-top: var(--ca-border);
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      border-spacing: 0;
+    .header {
+      display: grid;
+      grid-template-columns: auto;
+      grid-template-rows: auto;
+      gap: var(--sl-spacing-small);
+      align-items: center;
+      border-bottom: var(--ca-border);
+      padding: var(--sl-spacing-small) 0;
     }
 
-    th {
+    .header-column {
+      display: none;
       font-weight: var(--sl-font-weight-bold);
     }
 
-    th.program,
-    td.program {
-      width: 32%;
+    .buttons {
+      align-items: center;
+      flex-direction: row;
+      gap: var(--sl-spacing-small);
     }
 
-    th.cores,
-    td.cores {
-      width: 17%;
+    .buttons.desktop {
+      display: none;
+      justify-content: flex-end;
+      font-size: var(--sl-font-size-large);
     }
 
-    thead th {
-      font-weight: var(--ca-table-header-font-weight);
-      border-top: var(--ca-border);
-      border-bottom: var(--ca-border);
-      text-align: left;
-      padding: var(--sl-spacing-small);
+    .buttons.mobile {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
     }
 
-    tr.notification td {
+    .notification {
       padding: var(--sl-spacing-3x-large);
       text-align: center;
       border-bottom: var(--ca-border);
     }
 
-    tbody ca-processes-list-item:nth-child(2n + 1) {
+    ca-sortable-list {
+      width: 100%;
+    }
+
+    ca-sortable-list::part(list) {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: center;
+    }
+
+    ca-sortable-list ca-processes-list-item {
+      border-bottom: var(--ca-border);
+    }
+
+    ca-sortable-list ca-processes-list-item:nth-child(2n + 1) {
       background-color: var(--ca-table-row-odd-color);
     }
 
-    tbody ca-processes-list-item {
-      height: ${TABLE_ROW_HEIGHT}px;
-    }
-
-    tbody ca-processes-list-item.dragged {
+    ca-sortable-list ca-processes-list-item.dragged {
       background-color: var(--ca-dragged-color);
     }
 
-    div.buttons-container {
-      width: 100%;
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      flex-direction: row;
-      gap: var(--sl-spacing-small);
-      font-size: var(--sl-font-size-large);
+    #delete-btn::part(base):hover {
+      color: var(--sl-color-danger-600);
+    }
+
+    @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
+      .header {
+        grid-template-columns: 3fr 1fr 2fr 6rem;
+        grid-template-rows: auto;
+        padding: var(--sl-spacing-small);
+      }
+
+      .header-column {
+        display: block;
+      }
+
+      .buttons.desktop {
+        display: flex;
+      }
+
+      .buttons.mobile {
+        display: none;
+      }
     }
   `;
 
   protected controller: ProcessesListController;
-
-  private _tbodyRef = createRef<HTMLTableSectionElement>();
-
-  @state()
-  private _draggedItemName: ProgramName | undefined;
-
-  @state()
-  private _draggedItemPosition: number | undefined;
 
   constructor() {
     super();
@@ -112,93 +132,74 @@ export class ProcessesList extends BaseComponent<ProcessesListController> {
   renderContent() {
     const processesActive = this.checkSomeProcessesActive();
 
+    const toggleProcessesIcon = processesActive ? 'play-fill' : 'pause-fill';
+    const toggleProcessesLabel = processesActive ? 'disableAllProcesses' : 'enableAllProcesses';
+    const toggleProcessesVariant = processesActive ? 'neutral' : 'default';
+
+    const processes = this.controller.listProcesses();
+
     return html`
-      <table>
-        <thead>
-          <th class="program">
-            <intl-message label="ui:mainframe:program">Program</intl-message>
-          </th>
-          <th class="cores">
-            <intl-message label="ui:mainframe:cores">Cores</intl-message>
-          </th>
-          <th class="progress">
-            <div class="buttons-container">
-              <sl-tooltip>
-                <intl-message slot="content" label="ui:mainframe:processes:allProcessesToggle">
-                  Toggle all processes
-                </intl-message>
+      <div class="header">
+        <div class="header-column">${t('mainframe.program', { ns: 'ui' })}</div>
+        <div class="header-column">${t('mainframe.cores', { ns: 'ui' })}</div>
+        <div class="header-column"></div>
+        <div class="buttons desktop">
+          <sl-tooltip>
+            <span slot="content"> ${t(`mainframe.processes.${toggleProcessesLabel}`, { ns: 'ui' })} </span>
 
-                <sl-icon-button
-                  name=${processesActive ? 'play-fill' : 'pause-fill'}
-                  label=${t('mainframe.processes.allProcessesToggle', { ns: 'ui' })}
-                  @click=${this.handleToggleAllProcesses}
-                >
-                </sl-icon-button>
-              </sl-tooltip>
+            <sl-icon-button
+              name=${toggleProcessesIcon}
+              label=${t(`mainframe.processes.${toggleProcessesLabel}`, { ns: 'ui' })}
+              @click=${this.handleToggleAllProcesses}
+            >
+            </sl-icon-button>
+          </sl-tooltip>
 
-              <sl-tooltip>
-                <intl-message slot="content" label="ui:mainframe:processes:allProcessesDelete">
-                  Delete all processes
-                </intl-message>
+          <sl-tooltip>
+            <span slot="content"> ${t('mainframe.processes.allProcessesDelete', { ns: 'ui' })} </span>
 
-                <sl-icon-button
-                  id="delete-btn"
-                  name="x-lg"
-                  label=${t('mainframe.processes.allProcessesDelete', { ns: 'ui' })}
-                  @click=${this.handleOpenDeleteAllProcessesDialog}
-                >
-                </sl-icon-button>
-              </sl-tooltip>
-            </div>
-          </th>
-        </thead>
+            <sl-icon-button
+              id="delete-btn"
+              name="x-lg"
+              label=${t('mainframe.processes.allProcessesDelete', { ns: 'ui' })}
+              @click=${this.handleOpenDeleteAllProcessesDialog}
+            >
+            </sl-icon-button>
+          </sl-tooltip>
+        </div>
 
-        <tbody ${ref(this._tbodyRef)} @dragover=${this.handleDragOver}>
-          ${this.renderList()}
-        </tbody>
-      </table>
+        <div class="buttons mobile">
+          <sl-button variant=${toggleProcessesVariant} size="medium" @click=${this.handleToggleAllProcesses}>
+            ${t(`mainframe.processes.${toggleProcessesLabel}`, { ns: 'ui' })}
+          </sl-button>
+
+          <sl-button variant="danger" size="medium" @click=${this.handleOpenDeleteAllProcessesDialog}>
+            ${t('mainframe.processes.allProcessesDelete', { ns: 'ui' })}
+          </sl-button>
+        </div>
+      </div>
+
+      ${processes.length > 0
+        ? html`
+            <ca-sortable-list @sortable-element-moved=${this.handleMoveProcess}>
+              ${repeat(processes, (process) => process.program.name, this.renderProcess)}
+            </ca-sortable-list>
+          `
+        : this.renderEmptyListNotification()}
     `;
   }
 
-  private renderList = () => {
-    let processes = this.controller.listProcesses();
-
-    if (processes.length === 0) {
-      return this.renderEmptyListNotification();
-    }
-
-    if (this._draggedItemName && this._draggedItemPosition !== undefined) {
-      const oldPosition = processes.findIndex((process) => process.program.name === this._draggedItemName);
-
-      const reorderedProcesses = [...processes];
-      moveElementInArray(reorderedProcesses, oldPosition, this._draggedItemPosition);
-
-      processes = reorderedProcesses;
-    }
-
-    return repeat(processes, (programName) => programName, this.renderListItem);
-  };
-
   private renderEmptyListNotification = () => {
     return html`
-      <tr class="notification">
-        <td colspan="4">
-          <intl-message label="ui:mainframe:processes:emptyListNotification">
-            You don't have any processes
-          </intl-message>
-        </td>
-      </tr>
+      <div class="notification">
+        <td colspan="4">${t('mainframe.processes.emptyListNotification', { ns: 'ui' })}</td>
+      </div>
     `;
   };
 
-  private renderListItem = (process: IProcess) => {
+  private renderProcess = (process: IProcess) => {
     return html`
-      <ca-processes-list-item
-        class=${process.program.name === this._draggedItemName ? 'dragged' : ''}
-        program-name=${process.program.name}
-        @dragstart=${this.handleDragStart}
-        @dragend=${this.handleDragEnd}
-      >
+      <ca-processes-list-item program-name=${process.program.name} data-drag-id=${process.program.name}>
       </ca-processes-list-item>
     `;
   };
@@ -220,7 +221,7 @@ export class ProcessesList extends BaseComponent<ProcessesListController> {
     event.preventDefault();
     event.stopPropagation();
 
-    this.dispatchEvent(new ConfirmationAlertOpenEvent(ProgramAlert.deleteAllProcesses, ''));
+    this.dispatchEvent(new ConfirmationAlertOpenEvent(ProgramAlert.deleteAllProcesses, {}));
   };
 
   private handleConfirmAllDeleteProcessesDialog = (event: Event) => {
@@ -233,41 +234,10 @@ export class ProcessesList extends BaseComponent<ProcessesListController> {
     this.controller.deleteAllProcesses();
   };
 
-  private handleDragStart = (event: DragEvent) => {
-    event.stopPropagation();
-
-    if (event.dataTransfer) {
-      event.dataTransfer.effectAllowed = 'move';
-      event.dataTransfer.dropEffect = 'move';
-      event.dataTransfer.setDragImage(EMPTY_IMAGE, 0, 0);
-
-      this._draggedItemName = event.dataTransfer.getData('text/plain') as ProgramName;
-    }
-  };
-
-  private handleDragOver = (event: DragEvent) => {
+  private handleMoveProcess = (event: SortableElementMovedEvent) => {
     event.stopPropagation();
     event.preventDefault();
 
-    if (this._tbodyRef.value) {
-      const boundingRect = this._tbodyRef.value.getBoundingClientRect();
-      const relativeTop = Math.max(event.clientY - boundingRect.top, 0);
-
-      this._draggedItemPosition = Math.min(
-        Math.floor(relativeTop / TABLE_ROW_HEIGHT),
-        this.controller.listProcesses().length - 1,
-      );
-    }
-  };
-
-  private handleDragEnd = (event: Event) => {
-    event.stopPropagation();
-
-    if (this._draggedItemName && this._draggedItemPosition !== undefined) {
-      this.controller.moveProcess(this._draggedItemName, this._draggedItemPosition);
-    }
-
-    this._draggedItemName = undefined;
-    this._draggedItemPosition = undefined;
+    this.controller.moveProcess(event.keyName as ProgramName, event.position);
   };
 }

@@ -1,12 +1,12 @@
 storyEvent:
   name: Story event
-  message: $t(story:{{value.messageKey}})
+  message: $t(story:{{messageKey}})
 featureUnlocked:
   name: New feature unlocked
-  message: New feature "$t(features:{{value.feature}})" has been unlocked
+  message: New feature "$t(features:{{feature}})" has been unlocked
 timeAccumulated:
   name: Time accumulated
-  message: While you were away, you've earned {{value.time}} accumulated time
+  message: While you were away, you've earned {{time}} accumulated time
 gameVersionUpdated:
   name: Game version updated
   message: Game version has been updated

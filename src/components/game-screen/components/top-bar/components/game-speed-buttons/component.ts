@@ -3,10 +3,7 @@ import { html, css, TemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { GameSpeed } from '@state/global-state/types';
-import {
-  ConfirmationAlertOpenEvent,
-  ConfirmationAlertSubmitEvent,
-} from '@/components/shared/confirmation-alert/events';
+import { ConfirmationAlertOpenEvent, ConfirmationAlertSubmitEvent } from '@components/shared/confirmation-alert/events';
 import { GameStateAlert } from '@shared/types';
 import { GameSpeedButtonsController } from './controller';
 import { GameSpeedButtonProps } from './interfaces';
@@ -19,6 +16,10 @@ export class GameSpeedButtons extends BaseComponent<GameSpeedButtonsController> 
       display: flex;
       box-sizing: border-box;
       align-items: center;
+    }
+
+    sl-icon-button::part(base) {
+      padding: var(--sl-spacing-small);
     }
   `;
 
@@ -62,7 +63,7 @@ export class GameSpeedButtons extends BaseComponent<GameSpeedButtonsController> 
         icon: gameSpeed === GameSpeed.fast ? 'fast-forward-fill' : 'fast-forward',
       })}
       <sl-tooltip>
-        <intl-message slot="content" label="ui:topBar:gameSpeedButtons:fastForward"> Game speed button </intl-message>
+        <span slot="content"> ${t('topBar.gameSpeedButtons.fastForward', { ns: 'ui' })} </span>
 
         <sl-icon-button
           name="skip-end"
@@ -79,7 +80,7 @@ export class GameSpeedButtons extends BaseComponent<GameSpeedButtonsController> 
 
     return html`
       <sl-tooltip>
-        <intl-message slot="content" label="ui:topBar:gameSpeedButtons:${label}"> Game speed button </intl-message>
+        <span slot="content"> ${t(`topBar.gameSpeedButtons.${label}`, { ns: 'ui' })} </span>
 
         <sl-icon-button
           name=${icon}
@@ -101,7 +102,7 @@ export class GameSpeedButtons extends BaseComponent<GameSpeedButtonsController> 
   private handleOpenFastForwardDialog = (event: Event) => {
     event.stopPropagation();
 
-    this.dispatchEvent(new ConfirmationAlertOpenEvent(GameStateAlert.fastForward, ''));
+    this.dispatchEvent(new ConfirmationAlertOpenEvent(GameStateAlert.fastForward, {}));
   };
 
   private handleConfirmFastForwardDialog = (event: Event) => {

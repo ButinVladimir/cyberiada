@@ -1,7 +1,6 @@
 import 'reflect-metadata';
 import i18n from 'i18next';
 import resources from 'virtual:i18next-loader';
-import 'i18next-wc';
 import '@components';
 import { setBasePath } from '@shoelace-style/shoelace/dist/utilities/base-path.js';
 import '@state/bindings';

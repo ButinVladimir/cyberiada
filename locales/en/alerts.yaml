@@ -12,16 +12,16 @@ fastForward:
   message: Are you sure want to spend accumulated time?
 purchaseProgramOverwrite:
   name: Purchase an already owned program
-  message: Are you sure want to purchase program "$t(programs:{{value.programName}}:name)"? This will replace your current program with level {{value.level}} and quality {{value.quality}}.
+  message: Are you sure want to purchase program "$t(programs:{{programName}}:name)"? This will replace your current program with level {{level}} and quality {{quality}}.
 processDelete:
   name: Delete a process
-  message: Are you sure want to delete process for program "$t(programs:{{value.programName}}:name)"? It's progress will be lost.
+  message: Are you sure want to delete process for program "$t(programs:{{programName}}:name)"? It's progress will be lost.
 processReplace:
   name: Replace a process
-  message: Are you sure want to overwrite process for program "$t(programs:{{value.programName}}:name)"? This will replace your current process with {{value.threads}} threads.
+  message: Are you sure want to overwrite process for program "$t(programs:{{programName}}:name)"? This will replace your current process with {{threads}} threads.
 scalableProcessReplace:
   name: Replace a scalable process
-  message: Are you sure want to replace scalable process? This will delete your current process for program "$t(programs:{{value.programName}}:name)".
+  message: Are you sure want to replace scalable process? This will delete your current process for program "$t(programs:{{programName}}:name)".
 deleteAllProcesses:
   name: Delete all process
   message: Are you sure want to delete all processes? Their progress will be lost.

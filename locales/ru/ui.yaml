@@ -7,35 +7,36 @@ common:
   continue: Продолжить
   notEnoughMoney: Не достаточно денег
   available: Доступно
-  willBeAvailableIn: Будет доступно через {{value}}
+  willBeAvailableIn: Будет доступно через {{time}}
   higherDevelopmentLevelRequired: Требуется больший уровень развития
   upgrade: Улучшить
 pages:
-  cityOverview: Обзор города
-  companyManagement: Управление компанией
+  city-overview: Обзор города
+  company-management: Управление компанией
   mainframe: Мейнфрейм
   statistics: Статистика
   settings: Настройки
   automation: Автоматизация
   credits: Титры
+  message-log: Лог сообщений
 topBar:
   menu: Показать/скрыть меню
-  messageLog: Показать/скрыть сообщения
   gameSpeedButtons:
     pause: Пауза
     playNormal: Играть на нормальной скорости (без накопленного времени)
     playFast: Играть на быстрой скорости (с накопленным временем)
     fastForward: Потратить все накопленное время
-  accumulatedTime: Накопленное время
-  money: Деньги
-  developmentLevel: Уровень развития
-  developmentLevelNext: Уровень развития, следующий уровень будет достигнут через {{value}}
   availableGoals:
     titleGoalsExist: 'Доступные цели уровня развития:'
     titleNoGoals: Доступных целей уроня развития нет
-    reachLevel: Достичь уровень развития {{value}}
+    reachLevel: Достичь уровень развития {{level}}
+menuBar:
+  accumulatedTime: 'Накопленное время: {{time}}'
+  money: 'Деньги: {{money}}'
+  developmentLevel: 'Уровень развития: {{level}}'
+  developmentLevelNext: 'Уровень развития: {{level}}, следующий уровень будет достигнут через {{time}}'
 messageLog:
-  messageLog: Сообщения
+  messageLog: Лог сообщений
   clearMessages: Удалить сообщения
 fastForwardingScreen:
   fastForwarding: Трата накопленного времени...
@@ -43,12 +44,16 @@ fastForwardingScreen:
 settings:
   settings: Настройки
   language: Язык
+  languageHint: После смена языка интерфейс игры будет полностью перезагружен
   theme: Тема
   messageLogSize: Максимальное количество сообщений
   messageLogSizeHint: Лишние сообщения не будут удалены, пока не будет получено новое сообщение
+  toastDuration: Время, как долго всплывающие сообщения будут на экране (сек)
+  toastDurationHint: Выберите 0, чтобы выключить всплывающие сообщения
   updateInterval: Интервал обновления (мс)
   autosaveEnabled: Включить автосохранение
   autosaveInterval: Интервал автосохранения (сек)
+  autosaveIntervalHint: Слишком малое значение может привести к нагрузке на процессор
   fastSpeedMultiplier: Множитель скорости при быстрой скорости игры
   fastSpeedMultiplierHint: Слишком большое значение может привести к нагрузке на процессор
   maxUpdatesPerTick: Максимальное количество обновлений за тик
@@ -58,19 +63,21 @@ settings:
     light: Светлая
     dark: Темная
   longNumberFormats:
+    short: Короткий
+    long: Длинный
     scientific: Научный
-    builtIn: Встроенный
+    engineering: Инженерный
   saveGame: Сохранить игру
   importSavefile: Импорт сохранения
   exportSavefile: Экспорт сохранения
   deleteSaveData: Удалить сохраненные данные
   messageFilter: Фильтр сообщений
-  messageFilterHint: Включите события в фильтре, чтобы получать сообщения о них.
+  messageFilterHint: Включите события в фильтре, чтобы получать сообщения в логе и в виде всплывающих окон
   alertFilter: Фильтр предупреждений
-  alertFilterHint: Включите предупреждения в фильтре, чтобы они появлялись, когда соответствующее события произошли.
+  alertFilterHint: Включите предупреждения в фильтре, чтобы они появлялись, когда соответствующее события произошли
   alertToggle: Показывать подобные предупреждения в будущем
   notificationTypeFilter: Фильтр уведомлений
-  notificationTypeFilterHint: Включите уведомления в фильтре, чтобы они появлялись, когда соответствующее события произошли.
+  notificationTypeFilterHint: Включите уведомления в фильтре, чтобы они появлялись, когда соответствующее события произошли
   notificationTypeToggle: Показывать подобные уведомления в будущем
 city:
   cityOverview:
@@ -88,22 +95,20 @@ mainframe:
   cores: Ядра
   programDescription:
     requirements:
-      requirementsProcess: Требования для {{value.threads}} потоков
-      requirementsDiff: Требования для {{value.threads}} ({{value.threadsDiff}}) потоков
+      requirementsProcess: Требования для {{threads}} потоков
+      requirementsDiff: Требования для {{threads}} ({{threadsDiff}}) потоков
       requirementsSingle: Требования для одного потока
       requirementsScalable: Требования для автомасштабируемой программы
-      cost: 'Цена: {{value.cost}}'
-      costDiff: 'Цена: {{value.cost}} ({{value.costDiff}})'
-      ram: 'Память: {{value.ram}}'
-      ramDiff: 'Память: {{value.ram}} ({{value.ramDiff}})'
+      ram: 'Память: {{ram}}'
+      ramDiff: 'Память: {{ram}} ({{ramDiff}})'
       ramAllUnused: 'Память: Вся неиспользуемая'
-      cores: 'Ядра: До {{value.cores}}'
-      coresDiff: 'Ядра: до {{value.cores}} ({{value.coresDiff}})'
+      cores: 'Ядра: До {{cores}}'
+      coresDiff: 'Ядра: до {{cores}} ({{coresDiff}})'
       coresAllUnused: 'Ядра: Все неиспользуемые'
-      completionTime: 'Время выполнения: {{value.minTime}} &mdash; {{value.maxTime}}'
-      completionTimeProcess: 'Время выполнения: {{value.time}}'
+      completionTime: "Время выполнения: {{minTime}} \u2014 {{maxTime}}"
+      completionTimeProcess: 'Время выполнения: {{time}}'
       completionTimeProcessNoCores: 'Время выполнения: Для выполнения требуются назначенные ядра'
-      completionTimeDiff: 'Время выполнения: {{value.minTime}} &mdash; {{value.maxTime}} ({{value.minTimeDiff}} &mdash; {{value.maxTimeDiff}})'
+      completionTimeDiff: "Время выполнения: {{minTime}} \u2014 {{maxTime}} ({{minTimeDiff}} \u2014 {{maxTimeDiff}})"
       completionTimeScalable: 'Время выполнения: Мгновенно'
     effects: 'Эффекты'
   tabs:
@@ -114,15 +119,17 @@ mainframe:
     hardwareHint: Нажмите Ctrl или Shift для покупки 10 уровней. Нажмите вместе Ctrl и Shift для покупки 100 уровней.
       Приоритет автоматического улучшения оборудования может быть изменен путем его перетаскивания за название.
       Улучшения наверху имеют больший приоритет.
-    performance: 'Уровень производительности: {{value}}'
+    performance: 'Уровень производительности: {{level}}'
     performanceHint: Высокие уровни производительности ведут к более быстрым процессам
-    cores: 'Уровень ядер: {{value}}'
+    cores: 'Уровень ядер: {{level}}'
     coresHint: Дополнительные ядра дают лучшее масштабирование и выполнение большего числа процессов одновременно
-    ram: 'Уровень памяти: {{value}}'
+    ram: 'Уровень памяти: {{level}}'
     ramHint: Дополнительная память дает возможность держать больше процессов в памяти, чтобы они смогли выполниться позже или в больших группах
-    buy: Купить x{{value.increase}} за {{value.cost}}
+    buy: Купить x{{increase}} за {{cost}}
     buyMax: Купить все
     buyMaxAllUpgrades: Купить все улучшения
+    enableAutoupgrade: Включить автоулучшение
+    disableAutoupgrade: Выключить автоулучшение
   programs:
     programsHint: Приоритет автоматического улучшения программы может быть изменен путем его перетаскивания за название.
       Программы наверху имеют больший приоритет. Автоматическое улучшение программ пытается повысить их уровни, не меняет качества.
@@ -131,11 +138,15 @@ mainframe:
       Уровень не может быть выше текущего уровня развития.
       Качество зависит от полученных услуг.
       Если у тебя уже есть программа с тем же именем, старая будет заменена на новую.
-    purchase: Купить за {{value.cost}}
+    purchase: Купить за {{cost}}
     upgradeMaxAllPrograms: Улучшить все программы
     emptyListNotification: У тебя нет имеющихся програм
-    toggleAutoupgrade: Включить/выключить автопокупку
-    toggleAutoupgradeAll: Включить/выключить автопокупку для всех программ
+    enableAutoupgrade: Включить автоулучшение
+    disableAutoupgrade: Выключить автоулучшение
+    enableAutoupgradeAll: Включить автоулучшение для всех программ
+    disableAutoupgradeAll: Выключить автоулучшение для всех программ
+    level: 'Уровень: {{level}}'
+    quality: 'Качество: {{quality}}'
   processes:
     processesHint: Чтобы программа выполнялась, для неё должен быть начат процесс.
       Процессы для немасштабируемых программ наверху списка имеют приоритет, когда ядра распределяются по процессам.
@@ -148,18 +159,22 @@ mainframe:
       Если у тебя уже есть процесс для выбранной программы, старый процесс будет замене на новый.
       Потоки позволяют выполняться нескольким экземплярам программы одновременно, но дополнительные потоки требует больше памяти.
     emptyListNotification: У тебя нет процессов
-    programSelectItem: $t(programs:{{value.programName}}:name), уровень {{value.level}}, качество {{value.quality}}
-    progressBarLabel: "{{value.currentCompletionPoints}} \/ {{value.maxCompletionPoints}}"
-    progressBarHintActive: 'Процесс будет выполнен через {{value}}'
+    programSelectItem: $t(programs:{{programName}}:name), уровень {{level}}, качество {{quality}}
+    progressBarLabel: "{{currentCompletionPoints}} \/ {{maxCompletionPoints}}"
+    progressBarHintActive: 'Процесс будет выполнен через {{time}}'
     progressBarHintPaused: 'Процесс неактивен'
-    processToggle: Включить / выключить процесс
-    allProcessesToggle: Включить / выключить все процессы
+    enableProcess: Включить процесс
+    disableProcess: Выключить процесс
+    enableAllProcesses: Включить все процессы
+    disableAllProcesses: Выключить все процессы
     processDelete: Удалить процесс
     allProcessesDelete: Удалить все процессы
     autoscalable: Автомасштабируется
-    usesCores: "{{value.cores}} \/ {{value.maxCores}}"
-    availableCores: 'Доступные ядра: {{value}}'
-    availableRam: 'Доступная память: {{value}}'
+    instantCompletion: Мгновенное выполнение
+    usesCores: "{{cores}} \/ {{maxCores}}"
+    usesCoresFull: "Использует ядра: {{cores}} \/ {{maxCores}}"
+    availableCores: 'Доступные ядра: {{cores}}'
+    availableRam: 'Доступная память: {{ram}}'
 statistics:
   statistics: Статистика
   total: Всего

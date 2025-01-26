@@ -1,5 +1,5 @@
 export class MenuItemSelectedEvent extends Event {
-  static readonly type = 'menu-item-selected';
+  static readonly type = 'menu-item-selected-event';
 
   menuItem = '';
 
