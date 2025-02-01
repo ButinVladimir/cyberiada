@@ -6,6 +6,7 @@ import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/sta
 import { TYPES } from '@state/types';
 import { EventBatcher } from '@shared/event-batcher';
 import { GameStateEvent } from '@shared/types';
+import { IHistoryState } from '@shared/interfaces/history-state';
 import { IApp } from './interfaces';
 import { LOCAL_STORAGE_KEY, APP_UI_EVENTS, REFRESH_UI_TIME } from './constants';
 import { AppStage } from './types';
@@ -67,6 +68,7 @@ export class App implements IApp {
       await this._appState.startNewState();
     }
 
+    this.setStartingHistoryState();
     this.startRunningGame();
   }
 
@@ -152,6 +154,14 @@ export class App implements IApp {
   }
 
   fastForward() {
+    const currentHistoryState = window.history.state as IHistoryState;
+    const newHistoryState: IHistoryState = {
+      ...currentHistoryState,
+      fastForwarding: true,
+    };
+
+    window.history.pushState(newHistoryState, '');
+
     this._appStage = AppStage.fastForward;
 
     this.emitChangedAppStageEvent();
@@ -214,6 +224,8 @@ export class App implements IApp {
 
       case AppStage.fastForward:
         if (!this._appState.fastForwardState()) {
+          window.history.back();
+
           this._appStage = AppStage.running;
           this._messageLogState.postMessage(GameStateEvent.fastForwared);
           this.emitChangedAppStageEvent();
@@ -233,4 +245,15 @@ export class App implements IApp {
       this._stateUIConnector.fireUIEvents();
     }
   };
+
+  private setStartingHistoryState(): void {
+    const state: IHistoryState = {
+      selectedMenuItem: undefined,
+      showConfirmationAlert: false,
+      menuOpened: false,
+      fastForwarding: false,
+    };
+
+    window.history.replaceState(state, '');
+  }
 }

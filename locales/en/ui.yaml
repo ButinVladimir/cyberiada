@@ -11,8 +11,8 @@ common:
   higherDevelopmentLevelRequired: Higher development level required
   upgrade: Upgrade
 pages:
-  city-overview: City overview
-  company-management: Company management
+  cityOverview: City overview
+  companyManagement: Company management
   mainframe: Mainframe
   statistics: Statistics
   settings: Settings

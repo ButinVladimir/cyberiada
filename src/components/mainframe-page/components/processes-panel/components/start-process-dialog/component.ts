@@ -8,8 +8,15 @@ import { BaseComponent } from '@shared/base-component';
 import { ProgramName } from '@state/progam-factory/types';
 import { IProgram } from '@state/progam-factory/interfaces/program';
 import { ConfirmationAlertOpenEvent, ConfirmationAlertSubmitEvent } from '@components/shared/confirmation-alert/events';
-import { OverviewMenuItem, ProgramAlert } from '@shared/types';
-import { inputLabelStyle, hintStyle, sectionTitleStyle, mediumModalStyle, SCREEN_WIDTH_POINTS } from '@shared/styles';
+import { ProgramAlert } from '@shared/types';
+import {
+  inputLabelStyle,
+  hintStyle,
+  sectionTitleStyle,
+  mediumModalStyle,
+  modalBodyScrollStyle,
+  SCREEN_WIDTH_POINTS,
+} from '@shared/styles';
 import { StartProcessDialogCloseEvent } from './events';
 import { StartProcessDialogController } from './controller';
 import { IMainframePageHistoryState } from '../../../../interfaces';
@@ -21,6 +28,7 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
     hintStyle,
     sectionTitleStyle,
     mediumModalStyle,
+    modalBodyScrollStyle,
     css`
       sl-dialog::part(body) {
         padding-top: 0;
@@ -215,7 +223,7 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
     this._programName = programName;
 
     const state = { ...window.history.state, programName } as IMainframePageHistoryState;
-    window.history.replaceState(state, OverviewMenuItem.mainframe);
+    window.history.replaceState(state, '');
   };
 
   private handleThreadsChange = () => {
@@ -238,7 +246,7 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
     this._threadsInputRef.value.valueAsNumber = threads;
 
     const state = { ...window.history.state, threads } as IMainframePageHistoryState;
-    window.history.replaceState(state, OverviewMenuItem.mainframe);
+    window.history.replaceState(state, '');
   };
 
   private handleOpenConfirmationAlert = (event: Event) => {

@@ -6,7 +6,13 @@ import SlCheckbox from '@shoelace-style/shoelace/dist/components/checkbox/checkb
 import { BaseComponent } from '@shared/base-component';
 import { GAME_STATE_ALERTS, PROGRAM_ALERTS } from '@shared/constants';
 import { GameAlert } from '@shared/types';
-import { hintStyle, sectionTitleStyle, mediumModalStyle, SCREEN_WIDTH_POINTS } from '@shared/styles';
+import {
+  hintStyle,
+  sectionTitleStyle,
+  mediumModalStyle,
+  modalBodyScrollStyle,
+  SCREEN_WIDTH_POINTS,
+} from '@shared/styles';
 import { AlertFilterDialogCloseEvent } from './events';
 import { AlertFilterDialogController } from './controller';
 
@@ -16,6 +22,7 @@ export class AlertFilterDialog extends BaseComponent<AlertFilterDialogController
     hintStyle,
     sectionTitleStyle,
     mediumModalStyle,
+    modalBodyScrollStyle,
     css`
       sl-dialog::part(body) {
         padding-top: 0;

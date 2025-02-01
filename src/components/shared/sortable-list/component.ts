@@ -30,32 +30,29 @@ export class MainframeHardwarePanel extends BaseComponent {
 
   private _elementBoundingRect?: DOMRect;
 
-  updated(_changedProperties: Map<string, any>) {
-    super.updated(_changedProperties);
+  connectedCallback() {
+    super.connectedCallback();
 
-    this.handleChildrenUpdate();
+    this.addEventListener('dragstart', this.handleDragStart);
+    this.addEventListener('dragend', this.handleDragEnd);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+
+    this.removeEventListener('dragstart', this.handleDragStart);
+    this.removeEventListener('dragend', this.handleDragEnd);
   }
 
   renderContent() {
     return html`
       <div ${ref(this._listRef)} part="list" class="list" @dragover=${this.handleDragOver}>
-        <slot></slot>
+        <slot @slotchange=${this.handleChildrenUpdate}></slot>
       </div>
     `;
   }
 
   private handleChildrenUpdate = () => {
-    const children = this.shadowRoot!.querySelector('slot')!.assignedElements();
-
-    for (const child of children) {
-      const htmlElement = child as HTMLElement;
-      htmlElement.removeEventListener('dragstart', this.handleDragStart);
-      htmlElement.removeEventListener('dragend', this.handleDragEnd);
-
-      htmlElement.addEventListener('dragstart', this.handleDragStart);
-      htmlElement.addEventListener('dragend', this.handleDragEnd);
-    }
-
     this._listBoundingRect = undefined;
     this._elementBoundingRect = undefined;
   };

@@ -14,8 +14,8 @@ export enum Theme {
 }
 
 export enum OverviewMenuItem {
-  cityOverview = 'city-overview',
-  companyManagement = 'company-management',
+  cityOverview = 'cityOverview',
+  companyManagement = 'companyManagement',
   mainframe = 'mainframe',
   automation = 'automation',
   statistics = 'statistics',

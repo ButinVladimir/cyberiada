@@ -24,12 +24,15 @@ export class MainframePage extends BaseComponent<MainframePageController> {
 
   protected controller: MainframePageController;
 
-  private _currentTab: MainframePageTabs = MainframePageTabs.processes;
+  private _currentTab: MainframePageTabs;
 
   private _tabGroupRef = createRef<SlTabGroup>();
 
   constructor() {
     super();
+
+    const state = window.history.state as IMainframePageHistoryState;
+    this._currentTab = state.selectedTab ?? MainframePageTabs.processes;
 
     this.controller = new MainframePageController(this);
   }
@@ -54,37 +57,55 @@ export class MainframePage extends BaseComponent<MainframePageController> {
       <h3 class="title">${t('mainframe.mainframe', { ns: 'ui' })}</h3>
 
       <sl-tab-group ${ref(this._tabGroupRef)} @sl-tab-show=${this.handleTabShow}>
-        <sl-tab slot="nav" panel=${MainframePageTabs.processes}>
+        <sl-tab
+          ?active=${this._currentTab === MainframePageTabs.processes}
+          slot="nav"
+          panel=${MainframePageTabs.processes}
+        >
           ${t('mainframe.tabs.processes', { ns: 'ui' })}
         </sl-tab>
         ${isMainframeHardwareUnlocked
           ? html`
-              <sl-tab slot="nav" panel=${MainframePageTabs.hardware}>
+              <sl-tab
+                ?active=${this._currentTab === MainframePageTabs.hardware}
+                slot="nav"
+                panel=${MainframePageTabs.hardware}
+              >
                 ${t('mainframe.tabs.hardware', { ns: 'ui' })}
               </sl-tab>
             `
           : nothing}
         ${isMainframeProgramsUnlocked
           ? html`
-              <sl-tab slot="nav" panel=${MainframePageTabs.programs}>
+              <sl-tab
+                ?active=${this._currentTab === MainframePageTabs.programs}
+                slot="nav"
+                panel=${MainframePageTabs.programs}
+              >
                 ${t('mainframe.tabs.programs', { ns: 'ui' })}
               </sl-tab>
             `
           : nothing}
 
-        <sl-tab-panel name=${MainframePageTabs.processes}>
+        <sl-tab-panel ?active=${this._currentTab === MainframePageTabs.processes} name=${MainframePageTabs.processes}>
           <ca-mainframe-processes-panel></ca-mainframe-processes-panel>
         </sl-tab-panel>
         ${isMainframeHardwareUnlocked
           ? html`
-              <sl-tab-panel name=${MainframePageTabs.hardware}>
+              <sl-tab-panel
+                ?active=${this._currentTab === MainframePageTabs.hardware}
+                name=${MainframePageTabs.hardware}
+              >
                 <ca-mainframe-hardware-panel></ca-mainframe-hardware-panel>
               </sl-tab-panel>
             `
           : nothing}
         ${isMainframeProgramsUnlocked
           ? html`
-              <sl-tab-panel name=${MainframePageTabs.programs}>
+              <sl-tab-panel
+                ?active=${this._currentTab === MainframePageTabs.programs}
+                name=${MainframePageTabs.programs}
+              >
                 <ca-mainframe-programs-panel></ca-mainframe-programs-panel>
               </sl-tab-panel>
             `
@@ -106,7 +127,7 @@ export class MainframePage extends BaseComponent<MainframePageController> {
         selectedTab: tab,
       };
 
-      window.history.pushState(state, OverviewMenuItem.mainframe);
+      window.history.pushState(state, '');
     }
   };
 

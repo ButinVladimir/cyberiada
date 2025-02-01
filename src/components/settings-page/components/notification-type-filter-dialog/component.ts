@@ -6,7 +6,13 @@ import SlCheckbox from '@shoelace-style/shoelace/dist/components/checkbox/checkb
 import { BaseComponent } from '@shared/base-component';
 import { NOTIFICATION_TYPES } from '@shared/constants';
 import { NotificationType } from '@shared/types';
-import { hintStyle, sectionTitleStyle, mediumModalStyle, SCREEN_WIDTH_POINTS } from '@shared/styles';
+import {
+  hintStyle,
+  sectionTitleStyle,
+  mediumModalStyle,
+  modalBodyScrollStyle,
+  SCREEN_WIDTH_POINTS,
+} from '@shared/styles';
 import { NotificationTypeFilterDialogCloseEvent } from './events';
 import { NotificationTypeFilterDialogController } from './controller';
 
@@ -16,6 +22,7 @@ export class NotificationTypeFilterDialog extends BaseComponent<NotificationType
     hintStyle,
     sectionTitleStyle,
     mediumModalStyle,
+    modalBodyScrollStyle,
     css`
       sl-dialog::part(body) {
         padding-top: 0;

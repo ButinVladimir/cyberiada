@@ -5,13 +5,14 @@ import { createRef, ref } from 'lit/directives/ref.js';
 import SlCheckbox from '@shoelace-style/shoelace/dist/components/checkbox/checkbox.component.js';
 import { BaseComponent } from '@shared/base-component';
 import { FORCE_NOTIFICATION_TYPES } from '@shared/constants';
-import { smallModalStyle } from '@shared/styles';
+import { modalBodyScrollStyle, smallModalStyle } from '@shared/styles';
 import { NotificationModalController } from './controller';
 
 @customElement('ca-notification-modal')
 export class NotificationModal extends BaseComponent<NotificationModalController> {
   static styles = [
     smallModalStyle,
+    modalBodyScrollStyle,
     css`
       sl-dialog::part(footer) {
         text-align: right;
