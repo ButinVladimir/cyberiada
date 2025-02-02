@@ -16,7 +16,7 @@ import {
   GameVersion,
 } from './types';
 
-export const CURRENT_VERSION = GameVersion['0.1.2'];
+export const CURRENT_VERSION = GameVersion['0.1.3'];
 
 export const LANGUAGES: Language[] = Object.values(Language);
 

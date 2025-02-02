@@ -1,29 +1,28 @@
-import { css, html } from 'lit';
+import { css, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { OverviewMenuItem, MiscMenuItem } from '@shared/types';
+import constants from '@configs/constants.json';
+import { Feature } from '@shared/types';
+import { ViewportController } from './controller';
 
 @customElement('ca-viewport')
-export class Viewport extends BaseComponent {
+export class Viewport extends BaseComponent<ViewportController> {
   static styles = css`
     :host {
       display: block;
       width: 100%;
       height: 100%;
-    }
-
-    scrollable-component {
-      width: 100%;
-      height: 100%;
-      --content-padding: var(--sl-spacing-medium);
-      --scrollbar-width: var(--ca-scrollbar-width);
-      --scrollbar-thumb-fill-color: var(--ca-scrollbar-thumb-fill-color);
-      --scrollbar-thumb-fill-color-hover: var(--ca-scrollbar-thumb-fill-color-hover);
+      scrollbar-gutter: stable;
+      scrollbar-width: thin;
+      overflow: auto;
     }
 
     div.content-wrapper {
-      width: calc(100vw - 2 * var(--sl-spacing-medium));
+      width: 100%;
       max-width: var(--ca-width-widescreen-content);
+      padding: var(--sl-spacing-medium);
+      box-sizing: border-box;
     }
   `;
 
@@ -33,15 +32,26 @@ export class Viewport extends BaseComponent {
   })
   selectedMenuItem = '';
 
+  protected controller: ViewportController;
+
+  constructor() {
+    super();
+
+    this.controller = new ViewportController(this);
+  }
+
   renderContent() {
-    return html`
-      <scrollable-component>
-        <div class="content-wrapper">${this.renderPage()}</div>
-      </scrollable-component>
-    `;
+    return html` <div class="content-wrapper">${this.renderPage()}</div> `;
   }
 
   private renderPage = () => {
+    const requirements = constants.menuUnlockRequirements as Record<string, Feature>;
+    const feature = requirements[this.selectedMenuItem] as Feature | undefined;
+
+    if (feature && !this.controller.isFeatureUnlocked(feature)) {
+      return nothing;
+    }
+
     switch (this.selectedMenuItem) {
       case OverviewMenuItem.cityOverview:
         return html`<ca-city-page></ca-city-page>`;
@@ -65,7 +75,7 @@ export class Viewport extends BaseComponent {
         return html`<ca-credits-page></ca-credits-page>`;
 
       default:
-        return null;
+        return nothing;
     }
   };
 }

@@ -1,25 +1,44 @@
 import { BaseController } from '@shared/base-controller';
 import { INotification } from '@state/notifications-state/interfaces/notitification';
-import { NotificationType } from '@shared/types';
+import { NOTIFICATION_STATE_UI_EVENTS } from '@state/notifications-state/constants';
+import { IHistoryState } from '@shared/interfaces/history-state';
+import { INotificationModal } from './interfaces';
 
-export class NotificationModalController extends BaseController {
-  hasUnreadNotifications(): boolean {
-    return this.notificationsState.hasUnreadNotifications();
+export class NotificationModalController extends BaseController<INotificationModal> {
+  hostConnected() {
+    super.hostConnected();
+
+    this.addEventListener(this.notificationsState, NOTIFICATION_STATE_UI_EVENTS.UPDATED_NOTIFICATIONS);
+
+    this.getUnreadNotification();
   }
 
-  getUnreadNotification(): INotification | undefined {
-    return this.notificationsState.getUnreadNotification();
+  getUnreadNotification(): void {
+    const notification = this.notificationsState.getUnreadNotification();
+
+    if (this.host.notification !== notification) {
+      this.host.notification = notification;
+
+      if (notification) {
+        const historyState: IHistoryState = window.history.state as IHistoryState;
+        const newHistoryState: IHistoryState = {
+          ...historyState,
+          showNotification: true,
+        };
+        window.history.pushState(newHistoryState, '');
+      }
+    }
   }
 
-  popUnreadNotification(): void {
+  handleCloseModal(notification: INotification, enabled: boolean): void {
+    this.settingsState.toggleNotificationType(notification.notificationType, enabled);
     this.notificationsState.popUnreadNotification();
+    this.getUnreadNotification();
   }
 
-  isNotificationTypeEnabled(notificationType: NotificationType): boolean {
-    return this.settingsState.isNotificationTypeEnabled(notificationType);
-  }
+  protected handleRefreshUI = (): void => {
+    this.getUnreadNotification();
 
-  toggleNotificationType(notificationType: NotificationType, enabled: boolean) {
-    this.settingsState.toggleNotificationType(notificationType, enabled);
-  }
+    this.host.requestUpdate();
+  };
 }

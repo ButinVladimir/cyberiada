@@ -85,7 +85,7 @@ export class EventsFilterPanel extends BaseComponent {
     this._isMessageFilterOpen = true;
 
     const state = { ...window.history.state, messageFilterOpen: true } as ISettingsEventsFilterHistoryState;
-    window.history.pushState(state, MiscMenuItem.settings);
+    window.history.pushState(state, '');
   };
 
   private handleMessageFilterDialogClose = (event: Event) => {
@@ -102,7 +102,7 @@ export class EventsFilterPanel extends BaseComponent {
     this._isAlertFilterOpen = true;
 
     const state = { ...window.history.state, alertFilterOpen: true } as ISettingsEventsFilterHistoryState;
-    window.history.pushState(state, MiscMenuItem.settings);
+    window.history.pushState(state, '');
   };
 
   private handleAlertFilterDialogClose = (event: Event) => {
@@ -119,7 +119,7 @@ export class EventsFilterPanel extends BaseComponent {
     this._isNotificationTypeFilterOpen = true;
 
     const state = { ...window.history.state, notificationTypeFilterOpen: true } as ISettingsEventsFilterHistoryState;
-    window.history.pushState(state, MiscMenuItem.settings);
+    window.history.pushState(state, '');
   };
 
   private handleNotificationTypeFilterDialogClose = (event: Event) => {

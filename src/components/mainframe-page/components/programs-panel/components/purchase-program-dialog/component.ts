@@ -8,10 +8,20 @@ import SlInput from '@shoelace-style/shoelace/dist/components/input/input.compon
 import { BaseComponent } from '@shared/base-component';
 import { PROGRAMS } from '@state/progam-factory/constants';
 import { ProgramName } from '@state/progam-factory/types';
-import { ConfirmationAlertOpenEvent, ConfirmationAlertSubmitEvent } from '@components/shared/confirmation-alert/events';
+import {
+  ConfirmationAlertOpenEvent,
+  ConfirmationAlertSubmitEvent,
+} from '@components/game-screen/components/confirmation-alert/events';
 import { QUALITIES } from '@shared/constants';
-import { OverviewMenuItem, ProgramAlert } from '@shared/types';
-import { inputLabelStyle, hintStyle, sectionTitleStyle, mediumModalStyle, SCREEN_WIDTH_POINTS } from '@shared/styles';
+import { ProgramAlert } from '@shared/types';
+import {
+  inputLabelStyle,
+  hintStyle,
+  sectionTitleStyle,
+  mediumModalStyle,
+  modalBodyScrollStyle,
+  SCREEN_WIDTH_POINTS,
+} from '@shared/styles';
 import { PurchaseProgramDialogCloseEvent } from './events';
 import { PurchaseProgramDialogController } from './controller';
 import { IMainframePageHistoryState } from '../../../../interfaces';
@@ -23,6 +33,7 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
     hintStyle,
     sectionTitleStyle,
     mediumModalStyle,
+    modalBodyScrollStyle,
     css`
       sl-dialog::part(body) {
         padding-top: 0;
@@ -235,7 +246,7 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
     this._programName = programName;
 
     const state = { ...window.history.state, programName } as IMainframePageHistoryState;
-    window.history.replaceState(state, OverviewMenuItem.mainframe);
+    window.history.replaceState(state, '');
   };
 
   private handleLevelChange = () => {
@@ -257,7 +268,7 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
     this._levelInputRef.value.valueAsNumber = level;
 
     const state = { ...window.history.state, level } as IMainframePageHistoryState;
-    window.history.replaceState(state, OverviewMenuItem.mainframe);
+    window.history.replaceState(state, '');
   };
 
   private handleQualityChange = () => {
@@ -269,7 +280,7 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
     this._quality = quality;
 
     const state = { ...window.history.state, quality } as IMainframePageHistoryState;
-    window.history.replaceState(state, OverviewMenuItem.mainframe);
+    window.history.replaceState(state, '');
   };
 
   private handleOpenConfirmationAlert = (event: Event) => {

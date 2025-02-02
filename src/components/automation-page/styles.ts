@@ -7,6 +7,7 @@ export const autobuyerStyles = [
   css`
     :host {
       width: 100%;
+      background-color: var(--sl-panel-background-color);
       padding: var(--sl-spacing-large);
       box-sizing: border-box;
       border: var(--ca-border);

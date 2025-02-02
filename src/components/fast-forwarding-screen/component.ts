@@ -2,6 +2,7 @@ import { t } from 'i18next';
 import { html, css } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
+import { IHistoryState } from '@shared/interfaces/history-state';
 import { FastForwardingScreenController } from './controller';
 
 @customElement('ca-fast-forwarding-screen')
@@ -14,7 +15,7 @@ export class FastForwardingScreen extends BaseComponent<FastForwardingScreenCont
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      background-color: var(--sl-color-neutral-50);
+      background-color: var(--sl-color-neutral-0);
       gap: var(--sl-spacing-large);
     }
 
@@ -38,6 +39,18 @@ export class FastForwardingScreen extends BaseComponent<FastForwardingScreenCont
     super();
 
     this.controller = new FastForwardingScreenController(this);
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+
+    window.addEventListener('popstate', this.handlePopState);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+
+    window.removeEventListener('popstate', this.handlePopState);
   }
 
   renderContent() {
@@ -65,6 +78,14 @@ export class FastForwardingScreen extends BaseComponent<FastForwardingScreenCont
     event.stopPropagation();
     event.preventDefault();
 
-    this.controller.stopFastForwarding();
+    history.back();
+  };
+
+  private handlePopState = (event: PopStateEvent) => {
+    const state = event.state as IHistoryState;
+
+    if (!state.fastForwarding) {
+      this.controller.stopFastForwarding();
+    }
   };
 }

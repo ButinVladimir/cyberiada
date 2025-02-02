@@ -5,15 +5,17 @@ import { createRef, ref } from 'lit/directives/ref.js';
 import SlCheckbox from '@shoelace-style/shoelace/dist/components/checkbox/checkbox.component.js';
 import { BaseComponent } from '@shared/base-component';
 import type { GameAlert } from '@shared/types';
-import { smallModalStyle } from '@shared/styles';
+import { smallModalStyle, modalBodyScrollStyle } from '@shared/styles';
 import { IHistoryState } from '@shared/interfaces';
 import { ConfirmationAlertOpenEvent, ConfirmationAlertCloseEvent, ConfirmationAlertSubmitEvent } from './events';
 import { ConfirmationAlertController } from './controller';
+import { SUBMIT_DELAY } from './constants';
 
 @customElement('ca-confirmation-alert')
 export class ConfirmationAlert extends BaseComponent<ConfirmationAlertController> {
   static styles = [
     smallModalStyle,
+    modalBodyScrollStyle,
     css`
       sl-dialog::part(footer) {
         width: 100%;
@@ -108,7 +110,7 @@ export class ConfirmationAlert extends BaseComponent<ConfirmationAlertController
       this._alertToggled = true;
 
       const historyState = { ...window.history.state, showConfirmationAlert: true } as IHistoryState;
-      window.history.pushState(historyState, 'confirmationAlert');
+      window.history.pushState(historyState, '');
     } else {
       this._isOpen = false;
 
@@ -126,13 +128,17 @@ export class ConfirmationAlert extends BaseComponent<ConfirmationAlertController
     event.stopPropagation();
 
     if (this._gameAlert) {
+      window.history.back();
+
       if (this._gameAlertToggleRef.value) {
         this.controller.toggleGameAlert(this._gameAlert, this._alertToggled);
       }
 
-      this.dispatchEvent(new ConfirmationAlertSubmitEvent(this._gameAlert, this._gameAlertKey));
-
-      window.history.back();
+      const gameAlert = this._gameAlert;
+      const gameAlertKey = this._gameAlertKey;
+      setTimeout(() => {
+        this.dispatchEvent(new ConfirmationAlertSubmitEvent(gameAlert, gameAlertKey));
+      }, SUBMIT_DELAY);
     }
   };
 
@@ -147,7 +153,7 @@ export class ConfirmationAlert extends BaseComponent<ConfirmationAlertController
   private handlePopState = (event: PopStateEvent) => {
     const state = event.state as IHistoryState;
 
-    this._isOpen = !!state.showConfirmationAlert;
+    this._isOpen = state.showConfirmationAlert;
 
     if (this._gameAlert) {
       this.dispatchEvent(new ConfirmationAlertCloseEvent(this._gameAlert, this._gameAlertKey));

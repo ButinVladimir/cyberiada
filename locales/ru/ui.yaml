@@ -11,8 +11,8 @@ common:
   higherDevelopmentLevelRequired: Требуется больший уровень развития
   upgrade: Улучшить
 pages:
-  city-overview: Обзор города
-  company-management: Управление компанией
+  cityOverview: Обзор города
+  companyManagement: Управление компанией
   mainframe: Мейнфрейм
   statistics: Статистика
   settings: Настройки

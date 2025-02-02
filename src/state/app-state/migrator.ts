@@ -4,7 +4,7 @@
 import { CURRENT_VERSION } from '@shared/constants';
 import { GameVersion } from '@shared/types';
 import { IMigration, IMigrator, ISerializedState } from './interfaces';
-import { ResetStateMigration } from './migrations';
+import { ResetStateMigration, BumpVersionMigration } from './migrations';
 
 export class Migrator implements IMigrator {
   private _hasMigrated = false;
@@ -29,6 +29,8 @@ export class Migrator implements IMigrator {
 
   private getMigration(version: GameVersion): IMigration {
     switch (version) {
+      case GameVersion['0.1.2']:
+        return new BumpVersionMigration(GameVersion['0.1.3']);
       default:
         return new ResetStateMigration();
     }

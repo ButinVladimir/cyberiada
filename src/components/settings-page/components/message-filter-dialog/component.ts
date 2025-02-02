@@ -6,7 +6,13 @@ import { BaseComponent } from '@shared/base-component';
 import SlCheckbox from '@shoelace-style/shoelace/dist/components/checkbox/checkbox.component.js';
 import { GAME_STATE_EVENTS, PURCHASE_EVENTS, PROGRAM_EVENTS } from '@shared/constants';
 import { MessageEvent } from '@shared/types';
-import { hintStyle, sectionTitleStyle, mediumModalStyle, SCREEN_WIDTH_POINTS } from '@shared/styles';
+import {
+  hintStyle,
+  sectionTitleStyle,
+  mediumModalStyle,
+  modalBodyScrollStyle,
+  SCREEN_WIDTH_POINTS,
+} from '@shared/styles';
 import { MessageFilterDialogCloseEvent } from './events';
 import { MessageFilterDialogController } from './controller';
 
@@ -16,6 +22,7 @@ export class MessageFilterDialog extends BaseComponent<MessageFilterDialogContro
     hintStyle,
     sectionTitleStyle,
     mediumModalStyle,
+    modalBodyScrollStyle,
     css`
       sl-dialog::part(body) {
         padding-top: 0;

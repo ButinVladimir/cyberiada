@@ -1,4 +1,4 @@
-import { html, css } from 'lit';
+import { html, css, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import constants from '@configs/constants.json';
 import { BaseComponent } from '@shared/base-component';
@@ -13,19 +13,21 @@ export class MenuBar extends BaseComponent<MenuBarController> {
       display: block;
       width: 100%;
       height: 100%;
+      scrollbar-gutter: stable;
+      scrollbar-width: thin;
+      overflow: auto;
     }
 
-    scrollable-component {
+    aside {
+      box-sizing: border-box;
+      padding: var(--sl-spacing-2x-small);
       width: 100%;
-      height: 100%;
-      --scrollbar-width: var(--ca-scrollbar-width);
-      --scrollbar-thumb-fill-color: var(--ca-scrollbar-thumb-fill-color);
-      --scrollbar-thumb-fill-color-hover: var(--ca-scrollbar-thumb-fill-color-hover);
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
     }
 
     nav {
-      box-sizing: border-box;
-      padding: var(--sl-spacing-2x-small);
       width: 100%;
       display: flex;
       flex-direction: column;
@@ -50,19 +52,19 @@ export class MenuBar extends BaseComponent<MenuBarController> {
 
   renderContent() {
     return html`
-      <scrollable-component>
+      <aside>
+        <ca-menu-bar-values></ca-menu-bar-values>
+
+        <sl-divider></sl-divider>
+
         <nav>
-          <ca-menu-bar-values></ca-menu-bar-values>
-
-          <sl-divider></sl-divider>
-
           ${OVERVIEW_MENU_ITEMS.map(this.renderMenuItem)}
 
           <sl-divider></sl-divider>
 
           ${MISC_MENU_ITEMS.map(this.renderMenuItem)}
         </nav>
-      </scrollable-component>
+      </aside>
     `;
   }
 
@@ -71,7 +73,7 @@ export class MenuBar extends BaseComponent<MenuBarController> {
     const feature = requirements[menuItem] as Feature | undefined;
 
     if (feature && !this.controller.isFeatureUnlocked(feature)) {
-      return null;
+      return nothing;
     }
 
     return html`

@@ -1,8 +1,22 @@
 # Changelog
 
+## 0.1.3 (2025-02-22)
+
+- UI and mobile version bugfixes
+
+## 0.1.2 (2025-01-26)
+
+- UI reworked to be more mobile friendly
+- Translations are more optimized, removed excessive JSON conversion
+- New sortable list component to allow drag'n'drop without fixed height of list elements
+- History support to allow moving back on mobile
+- Message log now is on separate page, messages are shown as toasts
+- New formatters
+- Autosave on leaving game
+
 ## 0.1.1 (2024-12-15)
 
-- When tab is inactive and game is not paused, time will be spent immediately instead of being accumulated
+- When game tab is inactive and game is not paused, time will be spent immediately instead of being accumulated
 - Added "Buy all" buttons for mainframe programs and hardware tabs
 - Reworked programs and processes descriptions. They now can show difference between old and new versions
 - Added version migrator

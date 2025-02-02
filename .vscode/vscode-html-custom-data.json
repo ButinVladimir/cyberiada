@@ -107,12 +107,17 @@
     },
     {
       "name": "ca-fast-forwarding-screen",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_maxTime` {`number`} - \n\n  * `handleStopFastForwarding` - \n\n  * `controller` {`FastForwardingScreenController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_maxTime` {`number`} - \n\n  * `handleStopFastForwarding` - \n\n  * `handlePopState` - \n\n  * `controller` {`FastForwardingScreenController`} - ",
       "attributes": []
     },
     {
       "name": "ca-game-screen",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_menuOpened` {`boolean`} - \n\n  * `_selectedMenuItem` - \n\n  * `handleMenuToggle` - \n\n  * `handleMenuItemSelect` - \n\n  * `handlePopState` - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `handleMenuToggle` - \n\n  * `handleMenuItemSelect` - \n\n  * `handlePopState` - \n\n  * `_menuOpened` - \n\n  * `_selectedMenuItem` - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-confirmation-alert",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_gameAlertToggleRef` {`Ref<SlCheckbox>`} - \n\n  * `_gameAlert` - \n\n  * `_gameAlertKey` {`string | undefined`} - \n\n  * `_messageParams` - \n\n  * `_isOpen` {`boolean`} - \n\n  * `_alertToggled` {`boolean`} - \n\n  * `handleOpen` - \n\n  * `handleClose` - \n\n  * `handleSubmit` - \n\n  * `handleToggleAlert` - \n\n  * `handlePopState` - \n\n  * `controller` {`ConfirmationAlertController`} - ",
       "attributes": []
     },
     {
@@ -148,7 +153,7 @@
     },
     {
       "name": "ca-notification-modal",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_notificationTypeToggleRef` {`Ref<SlCheckbox>`} - \n\n  * `_notificationTypeToggled` {`boolean`} - \n\n  * `handleClose` - \n\n  * `handleToggleNotificationType` - \n\n  * `controller` {`NotificationModalController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_notificationTypeToggleRef` {`Ref<SlCheckbox>`} - \n\n  * `_notificationTypeToggled` {`boolean`} - \n\n  * `renderModalContent` - \n\n  * `handleClose` - \n\n  * `handleToggleNotificationType` - \n\n  * `handlePopState` - \n\n  * `controller` {`NotificationModalController`} - \n\n  * `notification` - \n\n  * `updateComplete` {`Promise<boolean>`} - Returns a Promise that resolves when the host has completed updating.\nThe Promise value is a boolean that is `true` if the element completed the\nupdate without triggering another update. The Promise result is `false` if\na property was set inside `updated()`. If the Promise is rejected, an\nexception was thrown during the update.",
       "attributes": []
     },
     {
@@ -179,7 +184,7 @@
     },
     {
       "name": "ca-viewport",
-      "description": "Attributes:\n\n  * `selected-menu-item` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `selectedMenuItem` {`string`} - \n\n  * `renderPage` - ",
+      "description": "Attributes:\n\n  * `selected-menu-item` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `selectedMenuItem` {`string`} - \n\n  * `renderPage` - \n\n  * `controller` {`ViewportController`} - ",
       "attributes": [
         {
           "name": "selected-menu-item",
@@ -194,7 +199,7 @@
     },
     {
       "name": "ca-mainframe-page",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_currentTab` {`MainframePageTabs`} - \n\n  * `_tabGroupRef` {`Ref<SlTabGroup>`} - \n\n  * `handleTabShow` - \n\n  * `handlePopState` - \n\n  * `controller` {`MainframePageController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_tabGroupRef` {`Ref<SlTabGroup>`} - \n\n  * `handleTabShow` - \n\n  * `handlePopState` - \n\n  * `_currentTab` {`MainframePageTabs`} - \n\n  * `controller` {`MainframePageController`} - ",
       "attributes": []
     },
     {
@@ -436,11 +441,6 @@
       "attributes": []
     },
     {
-      "name": "ca-confirmation-alert",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_gameAlertToggleRef` {`Ref<SlCheckbox>`} - \n\n  * `_gameAlert` - \n\n  * `_gameAlertKey` {`string | undefined`} - \n\n  * `_messageParams` - \n\n  * `_isOpen` {`boolean`} - \n\n  * `_alertToggled` {`boolean`} - \n\n  * `handleOpen` - \n\n  * `handleClose` - \n\n  * `handleSubmit` - \n\n  * `handleToggleAlert` - \n\n  * `handlePopState` - \n\n  * `controller` {`ConfirmationAlertController`} - ",
-      "attributes": []
-    },
-    {
       "name": "ca-purchase-tooltip",
       "description": "Attributes:\n\n  * `cost` {`number`} - \n\n  * `level` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `cost` {`number`} - \n\n  * `level` {`number`} - \n\n  * `renderMessage` - \n\n  * `controller` {`PurchaseTooltipController`} - ",
       "attributes": [
@@ -466,7 +466,7 @@
     },
     {
       "name": "ca-statistics-page",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_currentTab` {`StatisticsPageTabs`} - \n\n  * `_tabGroupRef` {`Ref<SlTabGroup>`} - \n\n  * `handleTabShow` - \n\n  * `handlePopState` - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_tabGroupRef` {`Ref<SlTabGroup>`} - \n\n  * `handleTabShow` - \n\n  * `handlePopState` - \n\n  * `_currentTab` {`StatisticsPageTabs`} - ",
       "attributes": []
     },
     {
