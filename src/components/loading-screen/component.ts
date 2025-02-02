@@ -12,7 +12,7 @@ export class LoadingScreen extends BaseComponent {
       display: flex;
       align-items: center;
       justify-content: center;
-      background-color: var(--sl-color-neutral-50);
+      background-color: var(--sl-color-neutral-0);
     }
 
     :host span {

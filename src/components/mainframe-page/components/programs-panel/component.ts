@@ -65,7 +65,7 @@ export class MainframeProgramsPanel extends BaseComponent {
     this._isPurchaseProgramDialogOpen = true;
 
     const state = { ...window.history.state, purchaseProgramModalOpen: true } as IMainframePageHistoryState;
-    window.history.pushState(state, OverviewMenuItem.mainframe);
+    window.history.pushState(state, '');
   };
 
   private handlePurchaseProgramDialogClose = (event: Event) => {

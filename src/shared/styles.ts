@@ -48,3 +48,10 @@ export const mediumModalStyle = css`
     --width: 900px;
   }
 `;
+
+export const modalBodyScrollStyle = css`
+  sl-dialog::part(body) {
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+  }
+`;

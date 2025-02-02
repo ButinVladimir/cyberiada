@@ -19,11 +19,10 @@ export class GameScreen extends BaseComponent {
       flex-direction: column;
       align-items: stretch;
       justify-content: start;
-      background-color: var(--sl-color-neutral-100);
+      background-color: var(--sl-color-neutral-0);
     }
 
     .top-bar-outer-container {
-      background-color: var(--sl-panel-background-color);
       border-bottom: var(--ca-border);
       box-sizing: border-box;
       display: flex;
@@ -51,7 +50,6 @@ export class GameScreen extends BaseComponent {
     }
 
     .content-inner-container {
-      background-color: var(--sl-panel-background-color);
       width: 100vw;
       max-width: var(--ca-width-screen);
       display: flex;
@@ -64,7 +62,6 @@ export class GameScreen extends BaseComponent {
       background-color: var(--sl-panel-background-color);
       height: calc(100vh - var(--ca-top-bar-height));
       width: 0;
-      border-right: var(--ca-border);
       position: absolute;
       top: var(--ca-top-bar-height);
       left: 0;
@@ -73,6 +70,7 @@ export class GameScreen extends BaseComponent {
 
     .menu-bar-container.menu-opened {
       width: 100vw;
+      border-right: var(--ca-border);
       z-index: 2;
     }
 
@@ -89,8 +87,7 @@ export class GameScreen extends BaseComponent {
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: var(--sl-panel-background-color);
-      opacity: 0.5;
+      background-color: var(--sl-overlay-background-color);
     }
 
     .viewport-overlay.menu-opened {
@@ -108,6 +105,8 @@ export class GameScreen extends BaseComponent {
       .menu-bar-container {
         position: static;
         width: var(--ca-menu-bar-max-width);
+        background-color: var(--sl-color-neutral-0);
+        border-right: var(--ca-border);
       }
 
       .menu-bar-container.menu-opened {
@@ -123,10 +122,19 @@ export class GameScreen extends BaseComponent {
   `;
 
   @state()
-  private _menuOpened = false;
+  private _menuOpened;
 
   @state()
   private _selectedMenuItem?: OverviewMenuItem | MiscMenuItem;
+
+  constructor() {
+    super();
+
+    const historyState = history.state as IHistoryState;
+
+    this._menuOpened = historyState.menuOpened;
+    this._selectedMenuItem = historyState.selectedMenuItem ?? undefined;
+  }
 
   connectedCallback() {
     super.connectedCallback();
@@ -183,7 +191,19 @@ export class GameScreen extends BaseComponent {
   }
 
   private handleMenuToggle = () => {
-    this._menuOpened = !this._menuOpened;
+    const newMenuOpened = !this._menuOpened;
+
+    const state: IHistoryState = {
+      ...(window.history.state as IHistoryState),
+      menuOpened: newMenuOpened,
+    };
+
+    if (newMenuOpened) {
+      window.history.pushState(state, '');
+      this._menuOpened = newMenuOpened;
+    } else {
+      window.history.back();
+    }
   };
 
   private handleMenuItemSelect = (event: Event) => {
@@ -193,16 +213,25 @@ export class GameScreen extends BaseComponent {
 
     this._selectedMenuItem = menuItemSelectedEvent.menuItem as OverviewMenuItem;
 
-    const state: IHistoryState = { selectedMenuItem: this._selectedMenuItem, showConfirmationAlert: false };
+    const state: IHistoryState = {
+      ...(window.history.state as IHistoryState),
+      selectedMenuItem: this._selectedMenuItem,
+    };
 
-    window.history.pushState(state, this._selectedMenuItem);
+    if (this._menuOpened) {
+      this._menuOpened = false;
+      state.menuOpened = false;
 
-    this._menuOpened = false;
+      window.history.replaceState(state, '');
+    } else {
+      window.history.pushState(state, '');
+    }
   };
 
   private handlePopState = (event: PopStateEvent) => {
     const state = event.state as IHistoryState;
 
     this._selectedMenuItem = state.selectedMenuItem;
+    this._menuOpened = state.menuOpened;
   };
 }

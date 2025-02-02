@@ -126,7 +126,7 @@ export class MainframeProcessesPanel extends BaseComponent<ProcessesPanelControl
     this._isStartProcessDialogOpen = true;
 
     const state = { ...window.history.state, startProcessModalOpen: true } as IMainframePageHistoryState;
-    window.history.pushState(state, OverviewMenuItem.mainframe);
+    window.history.pushState(state, '');
   };
 
   private handleStartProcessDialogClose = (event: Event) => {

@@ -7,6 +7,7 @@ body {
   letter-spacing: var(--sl-letter-spacing-normal);
   line-height: var(--sl-line-height-normal);
   color: var(--sl-color-neutral-950);
+  background-color: var(--sl-color-neutral-0);
 }
 
 :root,
@@ -14,19 +15,16 @@ body {
 .sl-theme-light,
 .sl-theme-dark {
   --ca-width-screen: 1920px;
-  --ca-width-widescreen-content: 1024px;
+  --ca-width-widescreen-content: 1088px;
   --ca-top-bar-height: 4rem;
-  --ca-menu-bar-max-width: 384px;
+  --ca-menu-bar-max-width: 320px;
   --sl-input-font-family: var(--sl-font-sans);
   --sl-input-help-text-color: var(--sl-color-neutral-700);
   --ca-hint-color: var(--sl-input-help-text-color);
   --ca-hint-font-size: var(--sl-font-size-small);
   --ca-border: var(--sl-panel-border-width) solid var(--sl-panel-border-color);
   --ca-table-header-font-weight: var(--sl-font-weight-bold);
-  --ca-scrollbar-width: 0.7rem;
-  --ca-scrollbar-thumb-fill-color: var(--sl-color-neutral-400);
-  --ca-scrollbar-thumb-fill-color-hover: var(--sl-color-neutral-700);
-  --ca-table-row-odd-color: var(--sl-color-neutral-100);
+  --ca-table-row-odd-color: var(--sl-color-neutral-50);
   --ca-dragged-color: var(--sl-color-primary-100);
 }
 

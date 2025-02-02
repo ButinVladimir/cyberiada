@@ -3,7 +3,10 @@ import { html, css, TemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { GameSpeed } from '@state/global-state/types';
-import { ConfirmationAlertOpenEvent, ConfirmationAlertSubmitEvent } from '@components/shared/confirmation-alert/events';
+import {
+  ConfirmationAlertOpenEvent,
+  ConfirmationAlertSubmitEvent,
+} from '@components/game-screen/components/confirmation-alert/events';
 import { GameStateAlert } from '@shared/types';
 import { GameSpeedButtonsController } from './controller';
 import { GameSpeedButtonProps } from './interfaces';

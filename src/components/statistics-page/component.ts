@@ -25,6 +25,13 @@ export class StatisticsPage extends BaseComponent {
 
   private _tabGroupRef = createRef<SlTabGroup>();
 
+  constructor() {
+    super();
+
+    const state = window.history.state as IStatisticsPageHistoryState;
+    this._currentTab = state.selectedTab ?? StatisticsPageTabs.general;
+  }
+
   connectedCallback() {
     super.connectedCallback();
 
@@ -42,29 +49,50 @@ export class StatisticsPage extends BaseComponent {
       <h3 class="title">${t('statistics.statistics', { ns: 'ui' })}</h3>
 
       <sl-tab-group ${ref(this._tabGroupRef)} @sl-tab-show=${this.handleTabShow}>
-        <sl-tab slot="nav" panel=${StatisticsPageTabs.general}> ${t('statistics.tabs.general', { ns: 'ui' })} </sl-tab>
-        <sl-tab slot="nav" panel=${StatisticsPageTabs.growth}> ${t('statistics.tabs.growth', { ns: 'ui' })} </sl-tab>
-        <sl-tab slot="nav" panel=${StatisticsPageTabs.income}> ${t('statistics.tabs.income', { ns: 'ui' })} </sl-tab>
-        <sl-tab slot="nav" panel=${StatisticsPageTabs.expenses}>
+        <sl-tab
+          ?active=${this._currentTab === StatisticsPageTabs.general}
+          slot="nav"
+          panel=${StatisticsPageTabs.general}
+        >
+          ${t('statistics.tabs.general', { ns: 'ui' })}
+        </sl-tab>
+        <sl-tab ?active=${this._currentTab === StatisticsPageTabs.growth} slot="nav" panel=${StatisticsPageTabs.growth}>
+          ${t('statistics.tabs.growth', { ns: 'ui' })}
+        </sl-tab>
+        <sl-tab ?active=${this._currentTab === StatisticsPageTabs.income} slot="nav" panel=${StatisticsPageTabs.income}>
+          ${t('statistics.tabs.income', { ns: 'ui' })}
+        </sl-tab>
+        <sl-tab
+          ?active=${this._currentTab === StatisticsPageTabs.expenses}
+          slot="nav"
+          panel=${StatisticsPageTabs.expenses}
+        >
           ${t('statistics.tabs.expenses', { ns: 'ui' })}
         </sl-tab>
-        <sl-tab slot="nav" panel=${StatisticsPageTabs.unlockedFeatures}>
+        <sl-tab
+          ?active=${this._currentTab === StatisticsPageTabs.unlockedFeatures}
+          slot="nav"
+          panel=${StatisticsPageTabs.unlockedFeatures}
+        >
           ${t('statistics.tabs.unlockedFeatures', { ns: 'ui' })}
         </sl-tab>
 
-        <sl-tab-panel name=${StatisticsPageTabs.general}>
+        <sl-tab-panel ?active=${this._currentTab === StatisticsPageTabs.general} name=${StatisticsPageTabs.general}>
           <ca-statistics-general-panel></ca-statistics-general-panel>
         </sl-tab-panel>
-        <sl-tab-panel name=${StatisticsPageTabs.growth}>
+        <sl-tab-panel ?active=${this._currentTab === StatisticsPageTabs.growth} name=${StatisticsPageTabs.growth}>
           <ca-statistics-growth-panel></ca-statistics-growth-panel>
         </sl-tab-panel>
-        <sl-tab-panel name=${StatisticsPageTabs.income}>
+        <sl-tab-panel ?active=${this._currentTab === StatisticsPageTabs.income} name=${StatisticsPageTabs.income}>
           <ca-statistics-income-panel></ca-statistics-income-panel>
         </sl-tab-panel>
-        <sl-tab-panel name=${StatisticsPageTabs.expenses}>
+        <sl-tab-panel ?active=${this._currentTab === StatisticsPageTabs.expenses} name=${StatisticsPageTabs.expenses}>
           <ca-statistics-expenses-panel></ca-statistics-expenses-panel>
         </sl-tab-panel>
-        <sl-tab-panel name=${StatisticsPageTabs.unlockedFeatures}>
+        <sl-tab-panel
+          ?active=${this._currentTab === StatisticsPageTabs.unlockedFeatures}
+          name=${StatisticsPageTabs.unlockedFeatures}
+        >
           <ca-statistics-unlocked-features-panel></ca-statistics-unlocked-features-panel>
         </sl-tab-panel>
       </sl-tab-group>
@@ -84,7 +112,7 @@ export class StatisticsPage extends BaseComponent {
         selectedTab: tab,
       };
 
-      window.history.pushState(state, OverviewMenuItem.statistics);
+      window.history.pushState(state, '');
     }
   };
 
