@@ -250,6 +250,7 @@ export class App implements IApp {
     const state: IHistoryState = {
       selectedMenuItem: undefined,
       showConfirmationAlert: false,
+      showNotification: false,
       menuOpened: false,
       fastForwarding: false,
     };

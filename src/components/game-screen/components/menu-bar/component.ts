@@ -27,6 +27,13 @@ export class MenuBar extends BaseComponent<MenuBarController> {
       align-items: stretch;
     }
 
+    nav {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+    }
+
     sl-divider {
       --spacing: var(--sl-spacing-2x-small);
     }
@@ -50,11 +57,13 @@ export class MenuBar extends BaseComponent<MenuBarController> {
 
         <sl-divider></sl-divider>
 
-        ${OVERVIEW_MENU_ITEMS.map(this.renderMenuItem)}
+        <nav>
+          ${OVERVIEW_MENU_ITEMS.map(this.renderMenuItem)}
 
-        <sl-divider></sl-divider>
+          <sl-divider></sl-divider>
 
-        ${MISC_MENU_ITEMS.map(this.renderMenuItem)}
+          ${MISC_MENU_ITEMS.map(this.renderMenuItem)}
+        </nav>
       </aside>
     `;
   }

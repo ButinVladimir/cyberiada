@@ -33,11 +33,12 @@ export class MenuItem extends BaseComponent {
     }
 
     button:hover {
-      background-color: var(--sl-color-neutral-100);
+      background-color: var(--sl-panel-background-color);
       cursor: pointer;
     }
 
     button.selected {
+      background-color: var(--sl-panel-background-color);
       border-left-width: var(--sl-spacing-2x-small);
       font-weight: var(--sl-font-weight-bold);
     }

@@ -7,7 +7,10 @@ import SlInput from '@shoelace-style/shoelace/dist/components/input/input.compon
 import { BaseComponent } from '@shared/base-component';
 import { ProgramName } from '@state/progam-factory/types';
 import { IProgram } from '@state/progam-factory/interfaces/program';
-import { ConfirmationAlertOpenEvent, ConfirmationAlertSubmitEvent } from '@components/shared/confirmation-alert/events';
+import {
+  ConfirmationAlertOpenEvent,
+  ConfirmationAlertSubmitEvent,
+} from '@components/game-screen/components/confirmation-alert/events';
 import { ProgramAlert } from '@shared/types';
 import {
   inputLabelStyle,
