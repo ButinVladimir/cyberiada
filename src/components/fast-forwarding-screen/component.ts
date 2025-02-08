@@ -2,7 +2,6 @@ import { t } from 'i18next';
 import { html, css } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
-import { IHistoryState } from '@shared/interfaces/history-state';
 import { FastForwardingScreenController } from './controller';
 
 @customElement('ca-fast-forwarding-screen')
@@ -81,11 +80,7 @@ export class FastForwardingScreen extends BaseComponent<FastForwardingScreenCont
     history.back();
   };
 
-  private handlePopState = (event: PopStateEvent) => {
-    const state = event.state as IHistoryState;
-
-    if (!state.fastForwarding) {
-      this.controller.stopFastForwarding();
-    }
+  private handlePopState = () => {
+    this.controller.stopFastForwarding();
   };
 }

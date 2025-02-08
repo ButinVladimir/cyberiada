@@ -20,10 +20,8 @@ export class NotificationModalController extends BaseController<INotificationMod
       this.host.notification = notification;
 
       if (notification) {
-        const historyState: IHistoryState = window.history.state as IHistoryState;
         const newHistoryState: IHistoryState = {
-          ...historyState,
-          showNotification: true,
+          ...(window.history.state as IHistoryState),
         };
         window.history.pushState(newHistoryState, '');
       }

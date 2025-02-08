@@ -7,8 +7,9 @@ import { BaseComponent } from '@shared/base-component';
 import { pageTitleStyle } from '@shared/styles';
 import { OverviewMenuItem } from '@shared/types';
 import { IHistoryState } from '@shared/interfaces';
-import { StatisticsPageTabs } from './constants';
+import { StatisticsPageTabs } from './types';
 import { IStatisticsPageHistoryState } from './interfaces';
+import { STATISTICS_PAGE_TABS_LIST } from './constants';
 
 @customElement('ca-statistics-page')
 export class StatisticsPage extends BaseComponent {
@@ -49,55 +50,44 @@ export class StatisticsPage extends BaseComponent {
       <h3 class="title">${t('statistics.statistics', { ns: 'ui' })}</h3>
 
       <sl-tab-group ${ref(this._tabGroupRef)} @sl-tab-show=${this.handleTabShow}>
-        <sl-tab
-          ?active=${this._currentTab === StatisticsPageTabs.general}
-          slot="nav"
-          panel=${StatisticsPageTabs.general}
-        >
-          ${t('statistics.tabs.general', { ns: 'ui' })}
-        </sl-tab>
-        <sl-tab ?active=${this._currentTab === StatisticsPageTabs.growth} slot="nav" panel=${StatisticsPageTabs.growth}>
-          ${t('statistics.tabs.growth', { ns: 'ui' })}
-        </sl-tab>
-        <sl-tab ?active=${this._currentTab === StatisticsPageTabs.income} slot="nav" panel=${StatisticsPageTabs.income}>
-          ${t('statistics.tabs.income', { ns: 'ui' })}
-        </sl-tab>
-        <sl-tab
-          ?active=${this._currentTab === StatisticsPageTabs.expenses}
-          slot="nav"
-          panel=${StatisticsPageTabs.expenses}
-        >
-          ${t('statistics.tabs.expenses', { ns: 'ui' })}
-        </sl-tab>
-        <sl-tab
-          ?active=${this._currentTab === StatisticsPageTabs.unlockedFeatures}
-          slot="nav"
-          panel=${StatisticsPageTabs.unlockedFeatures}
-        >
-          ${t('statistics.tabs.unlockedFeatures', { ns: 'ui' })}
-        </sl-tab>
-
-        <sl-tab-panel ?active=${this._currentTab === StatisticsPageTabs.general} name=${StatisticsPageTabs.general}>
-          <ca-statistics-general-panel></ca-statistics-general-panel>
-        </sl-tab-panel>
-        <sl-tab-panel ?active=${this._currentTab === StatisticsPageTabs.growth} name=${StatisticsPageTabs.growth}>
-          <ca-statistics-growth-panel></ca-statistics-growth-panel>
-        </sl-tab-panel>
-        <sl-tab-panel ?active=${this._currentTab === StatisticsPageTabs.income} name=${StatisticsPageTabs.income}>
-          <ca-statistics-income-panel></ca-statistics-income-panel>
-        </sl-tab-panel>
-        <sl-tab-panel ?active=${this._currentTab === StatisticsPageTabs.expenses} name=${StatisticsPageTabs.expenses}>
-          <ca-statistics-expenses-panel></ca-statistics-expenses-panel>
-        </sl-tab-panel>
-        <sl-tab-panel
-          ?active=${this._currentTab === StatisticsPageTabs.unlockedFeatures}
-          name=${StatisticsPageTabs.unlockedFeatures}
-        >
-          <ca-statistics-unlocked-features-panel></ca-statistics-unlocked-features-panel>
-        </sl-tab-panel>
+        ${STATISTICS_PAGE_TABS_LIST.map((tab) => this.renderTab(tab))}
+        ${STATISTICS_PAGE_TABS_LIST.map((tab) => this.renderTabPanel(tab))}
       </sl-tab-group>
     `;
   }
+
+  private renderTab = (tab: StatisticsPageTabs) => {
+    return html`
+      <sl-tab ?active=${this._currentTab === tab} slot="nav" panel=${tab}>
+        ${t(`statistics.tabs.${tab}`, { ns: 'ui' })}
+      </sl-tab>
+    `;
+  };
+
+  private renderTabPanel = (tab: StatisticsPageTabs) => {
+    return html`
+      <sl-tab-panel ?active=${this._currentTab === tab} name=${tab}> ${this.renderTabPanelContent(tab)} </sl-tab-panel>
+    `;
+  };
+
+  private renderTabPanelContent = (tab: StatisticsPageTabs) => {
+    switch (tab) {
+      case StatisticsPageTabs.general:
+        return html`<ca-statistics-general-panel></ca-statistics-general-panel>`;
+
+      case StatisticsPageTabs.growth:
+        return html`<ca-statistics-growth-panel></ca-statistics-growth-panel>`;
+
+      case StatisticsPageTabs.income:
+        return html`<ca-statistics-income-panel></ca-statistics-income-panel>`;
+
+      case StatisticsPageTabs.expenses:
+        return html`<ca-statistics-expenses-panel></ca-statistics-expenses-panel>`;
+
+      case StatisticsPageTabs.unlockedFeatures:
+        return html`<ca-statistics-unlocked-features-panel></ca-statistics-unlocked-features-panel>`;
+    }
+  };
 
   private handleTabShow = (event: Event) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access

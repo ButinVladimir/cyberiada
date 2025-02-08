@@ -199,7 +199,7 @@
     },
     {
       "name": "ca-mainframe-page",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_tabGroupRef` {`Ref<SlTabGroup>`} - \n\n  * `handleTabShow` - \n\n  * `handlePopState` - \n\n  * `_currentTab` {`MainframePageTabs`} - \n\n  * `controller` {`MainframePageController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_tabGroupRef` {`Ref<SlTabGroup>`} - \n\n  * `isTabUnlocked` - \n\n  * `renderTab` - \n\n  * `renderTabPanel` - \n\n  * `renderTabPanelContent` - \n\n  * `handleTabShow` - \n\n  * `handlePopState` - \n\n  * `_currentTab` {`MainframePageTabs`} - \n\n  * `controller` {`MainframePageController`} - ",
       "attributes": []
     },
     {
@@ -466,7 +466,7 @@
     },
     {
       "name": "ca-statistics-page",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_tabGroupRef` {`Ref<SlTabGroup>`} - \n\n  * `handleTabShow` - \n\n  * `handlePopState` - \n\n  * `_currentTab` {`StatisticsPageTabs`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_tabGroupRef` {`Ref<SlTabGroup>`} - \n\n  * `renderTab` - \n\n  * `renderTabPanel` - \n\n  * `renderTabPanelContent` - \n\n  * `handleTabShow` - \n\n  * `handlePopState` - \n\n  * `_currentTab` {`StatisticsPageTabs`} - ",
       "attributes": []
     },
     {
