@@ -154,10 +154,8 @@ export class App implements IApp {
   }
 
   fastForward() {
-    const currentHistoryState = window.history.state as IHistoryState;
     const newHistoryState: IHistoryState = {
-      ...currentHistoryState,
-      fastForwarding: true,
+      ...(window.history.state as IHistoryState),
     };
 
     window.history.pushState(newHistoryState, '');
@@ -250,9 +248,7 @@ export class App implements IApp {
     const state: IHistoryState = {
       selectedMenuItem: undefined,
       showConfirmationAlert: false,
-      showNotification: false,
       menuOpened: false,
-      fastForwarding: false,
     };
 
     window.history.replaceState(state, '');

@@ -1,7 +1,3 @@
-export enum StatisticsPageTabs {
-  general = 'general',
-  growth = 'growth',
-  income = 'income',
-  expenses = 'expenses',
-  unlockedFeatures = 'unlocked-features',
-}
+import { StatisticsPageTabs } from './types';
+
+export const STATISTICS_PAGE_TABS_LIST = Array.from(Object.values(StatisticsPageTabs));

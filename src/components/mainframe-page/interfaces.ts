@@ -1,5 +1,5 @@
 import { IHistoryState } from '@shared/interfaces/history-state';
-import { MainframePageTabs } from './constants';
+import { MainframePageTabs } from './types';
 import { OverviewMenuItem } from '@shared/types';
 import { ProgramName } from '@state/progam-factory/types';
 

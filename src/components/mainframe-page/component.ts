@@ -8,8 +8,9 @@ import { pageTitleStyle } from '@shared/styles';
 import { OverviewMenuItem } from '@shared/types';
 import { IHistoryState } from '@shared/interfaces/history-state';
 import { MainframePageController } from './controller';
-import { MainframePageTabs } from './constants';
+import { MainframePageTabs } from './types';
 import { IMainframePageHistoryState } from './interfaces';
+import { MAINFRAME_PAGE_TABS_LIST } from './constants';
 
 @customElement('ca-mainframe-page')
 export class MainframePage extends BaseComponent<MainframePageController> {
@@ -50,69 +51,61 @@ export class MainframePage extends BaseComponent<MainframePageController> {
   }
 
   renderContent() {
-    const isMainframeHardwareUnlocked = this.controller.isMainframeHardwareUnlocked();
-    const isMainframeProgramsUnlocked = this.controller.isMainframeProgramsUnlocked();
-
     return html`
       <h3 class="title">${t('mainframe.mainframe', { ns: 'ui' })}</h3>
 
       <sl-tab-group ${ref(this._tabGroupRef)} @sl-tab-show=${this.handleTabShow}>
-        <sl-tab
-          ?active=${this._currentTab === MainframePageTabs.processes}
-          slot="nav"
-          panel=${MainframePageTabs.processes}
-        >
-          ${t('mainframe.tabs.processes', { ns: 'ui' })}
-        </sl-tab>
-        ${isMainframeHardwareUnlocked
-          ? html`
-              <sl-tab
-                ?active=${this._currentTab === MainframePageTabs.hardware}
-                slot="nav"
-                panel=${MainframePageTabs.hardware}
-              >
-                ${t('mainframe.tabs.hardware', { ns: 'ui' })}
-              </sl-tab>
-            `
-          : nothing}
-        ${isMainframeProgramsUnlocked
-          ? html`
-              <sl-tab
-                ?active=${this._currentTab === MainframePageTabs.programs}
-                slot="nav"
-                panel=${MainframePageTabs.programs}
-              >
-                ${t('mainframe.tabs.programs', { ns: 'ui' })}
-              </sl-tab>
-            `
-          : nothing}
-
-        <sl-tab-panel ?active=${this._currentTab === MainframePageTabs.processes} name=${MainframePageTabs.processes}>
-          <ca-mainframe-processes-panel></ca-mainframe-processes-panel>
-        </sl-tab-panel>
-        ${isMainframeHardwareUnlocked
-          ? html`
-              <sl-tab-panel
-                ?active=${this._currentTab === MainframePageTabs.hardware}
-                name=${MainframePageTabs.hardware}
-              >
-                <ca-mainframe-hardware-panel></ca-mainframe-hardware-panel>
-              </sl-tab-panel>
-            `
-          : nothing}
-        ${isMainframeProgramsUnlocked
-          ? html`
-              <sl-tab-panel
-                ?active=${this._currentTab === MainframePageTabs.programs}
-                name=${MainframePageTabs.programs}
-              >
-                <ca-mainframe-programs-panel></ca-mainframe-programs-panel>
-              </sl-tab-panel>
-            `
-          : nothing}
+        ${MAINFRAME_PAGE_TABS_LIST.map((tab) => this.renderTab(tab))}
+        ${MAINFRAME_PAGE_TABS_LIST.map((tab) => this.renderTabPanel(tab))}
       </sl-tab-group>
     `;
   }
+
+  private isTabUnlocked = (tab: MainframePageTabs): boolean => {
+    switch (tab) {
+      case MainframePageTabs.hardware:
+        return this.controller.isMainframeHardwareUnlocked();
+      case MainframePageTabs.programs:
+        return this.controller.isMainframeProgramsUnlocked();
+      default:
+        return true;
+    }
+  };
+
+  private renderTab = (tab: MainframePageTabs) => {
+    if (!this.isTabUnlocked(tab)) {
+      return nothing;
+    }
+
+    return html`
+      <sl-tab ?active=${this._currentTab === tab} slot="nav" panel=${tab}>
+        ${t(`mainframe.tabs.${tab}`, { ns: 'ui' })}
+      </sl-tab>
+    `;
+  };
+
+  private renderTabPanel = (tab: MainframePageTabs) => {
+    if (!this.isTabUnlocked(tab)) {
+      return nothing;
+    }
+
+    return html`
+      <sl-tab-panel ?active=${this._currentTab === tab} name=${tab}> ${this.renderTabPanelContent(tab)} </sl-tab-panel>
+    `;
+  };
+
+  private renderTabPanelContent = (tab: MainframePageTabs) => {
+    switch (tab) {
+      case MainframePageTabs.processes:
+        return html`<ca-mainframe-processes-panel></ca-mainframe-processes-panel>`;
+
+      case MainframePageTabs.hardware:
+        return html`<ca-mainframe-hardware-panel></ca-mainframe-hardware-panel>`;
+
+      case MainframePageTabs.programs:
+        return html`<ca-mainframe-programs-panel></ca-mainframe-programs-panel>`;
+    }
+  };
 
   private handleTabShow = (event: Event) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
