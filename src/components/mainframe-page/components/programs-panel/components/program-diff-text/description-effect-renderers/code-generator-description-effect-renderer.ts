@@ -44,7 +44,7 @@ export class CodeGeneratorDescriptionEffectRenderer implements IDescriptionEffec
 
     return html`
       <p>
-        ${t('codeGenerator.computationalBasePointsDiff', {
+        ${t('codeGenerator.codeBasePointsDiff', {
           ns: 'programs',
           value: this._formatter.formatNumberFloat(value),
           valueDiff: this._formatter.formatNumberFloat(valueDiff, diffFormatterParametersLong),

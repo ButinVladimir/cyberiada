@@ -4,10 +4,10 @@ import { MS_IN_SECOND } from '@shared/constants';
 
 export class StatisticsMoneyGrowthController extends BaseController {
   get moneyTotalGrowth() {
-    return this.globalState.moneyGrowth.totalGrowth * MS_IN_SECOND;
+    return this.growthState.moneyGrowth.totalGrowth * MS_IN_SECOND;
   }
 
   getMoneyGrowth = (incomeSource: IncomeSource) => {
-    return this.globalState.moneyGrowth.getGrowth(incomeSource) * MS_IN_SECOND;
+    return this.growthState.moneyGrowth.getGrowth(incomeSource) * MS_IN_SECOND;
   };
 }

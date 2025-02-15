@@ -3,7 +3,7 @@ import { html } from 'lit';
 import { CodeGeneratorProgram } from '@state/progam-factory/programs/code-generator';
 import { IFormatter } from '@shared/interfaces/formatter';
 import { MS_IN_SECOND } from '@shared/constants';
-import { IProcess } from '@state/mainframe/mainframe-processes-state/interfaces/process';
+import { IProcess } from '@state/mainframe-state/states/mainframe-processes-state/interfaces/process';
 import { IDescriptionParameters, IDescriptionEffectRenderer } from '../interfaces';
 
 export class CodeGeneratorDescriptionEffectRenderer implements IDescriptionEffectRenderer {
@@ -26,7 +26,7 @@ export class CodeGeneratorDescriptionEffectRenderer implements IDescriptionEffec
 
     return html`
       <p>
-        ${t('codeGenerator.computationalBasePointsProcess', {
+        ${t('codeGenerator.codeBasePointsProcess', {
           ns: 'programs',
           value: this._formatter.formatNumberFloat(value),
           avgValue: this._formatter.formatNumberFloat(avgValue),

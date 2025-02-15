@@ -16,7 +16,7 @@
     "pointsByProgramMultipliers": {
       "program": 2
     },
-    "discounts": {
+    "multipliers": {
       "program": 4e6
     },
     "storyEvents": [

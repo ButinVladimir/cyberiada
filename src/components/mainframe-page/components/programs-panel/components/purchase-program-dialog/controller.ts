@@ -35,11 +35,11 @@ export class PurchaseProgramDialogController extends BaseController {
   }
 
   getOwnedProgram(name: ProgramName): IProgram | undefined {
-    return this.mainframeProgramsState.getOwnedProgramByName(name);
+    return this.mainframeState.programs.getOwnedProgramByName(name);
   }
 
   purchaseProgram(name: ProgramName, level: number, quality: number): boolean {
-    return this.mainframeProgramsState.purchaseProgram({
+    return this.mainframeState.programs.purchaseProgram({
       name,
       level,
       quality,

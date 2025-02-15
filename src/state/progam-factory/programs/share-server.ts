@@ -58,8 +58,8 @@ export class ShareServerProgram extends BaseProgram {
       Math.pow(threads * usedRam, programData.scalableResourcesModifier) *
       this.level *
       (1 +
-        (this.mainframeHardwareState.performance.level - 1) *
-          this.scenarioState.currentValues.mainframeSoftware.performanceBoost)
+        (this.mainframeState.hardware.performance.level - 1) *
+          this.globalState.scenario.currentValues.mainframeSoftware.performanceBoost)
     );
   }
 }

@@ -9,7 +9,13 @@ shareServer:
   developmentPointsDiff: 'ОР: До {{developmentPoints}} ({{developmentPointsDiff}}) в секунду'
 codeGenerator:
   name: Генератор кода
-  overview: Программа для разработки других программ. Генерирует очки вычислительной базы (ОВБ) и улучшает скидку на продукты для мейнфрейма.
+  overview: Программа для разработки других программ. Генерирует очки кодовой базы (ОКБ) и улучшает скидку на программы для мейнфрейма.
+  codeBasePointsProcess: 'ОКБ: {{value}} за выполнение ({{avgValue}} в секунду)'
+  codeBasePointsProgram: "ОКБ: {{value}} за выполнение ({{minAvgValue}} \u2014 {{maxAvgValue}} в секунду)"
+  codeBasePointsDiff: "ОКБ: {{value}} ({{valueDiff}}) за выполнение ({{minAvgValue}} \u2014 {{maxAvgValue}} в секунду) ({{minAvgValueDiff}} \u2014 {{maxAvgValueDiff}})"
+circuitDesigner:
+  name: Дизайнер микросхем
+  overview: Программа для разработки микросхем. Генерирует очки вычислительной базы (ОВБ) и улучшает скидку на оборудование для мейнфрейма.
   computationalBasePointsProcess: 'ОВБ: {{value}} за выполнение ({{avgValue}} в секунду)'
   computationalBasePointsProgram: "ОВБ: {{value}} за выполнение ({{minAvgValue}} \u2014 {{maxAvgValue}} в секунду)"
   computationalBasePointsDiff: "ОВБ: {{value}} ({{valueDiff}}) за выполнение ({{minAvgValue}} \u2014 {{maxAvgValue}} в секунду) ({{minAvgValueDiff}} \u2014 {{maxAvgValueDiff}})"

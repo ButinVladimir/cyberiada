@@ -1,5 +1,5 @@
 import { binarySearchDecimal } from '@shared/helpers';
-import { IMainframeProgramsAutomationState } from '@state/automation/mainframe-programs-automation-state/interfaces/mainframe-programs-automation-state';
+import { IAutomationState } from '@state/automation-state/interfaces/automation-state';
 import { ProgramName } from '../types';
 import { BaseProgram } from './base-program';
 import {
@@ -15,20 +15,20 @@ export class MainframeProgramsAutobuyerProgram extends BaseProgram {
   public readonly isAutoscalable = false;
 
   private _programFactory: IProgramFactory;
-  private _mainframeProgramsAutomationState: IMainframeProgramsAutomationState;
+  private _automationState: IAutomationState;
 
   constructor(parameters: IMainframeProgramsAutobuyerParameters) {
     super(parameters);
 
     this._programFactory = parameters.programFactory;
-    this._mainframeProgramsAutomationState = parameters.mainframeProgramsAutomationState;
+    this._automationState = parameters.automationState;
   }
 
   perform(threads: number): void {
     let actionsLeft = threads;
-    let availableMoney = (this.globalState.money.money * this._mainframeProgramsAutomationState.moneyShare) / 100;
+    let availableMoney = (this.globalState.money.money * this._automationState.mainframePrograms.moneyShare) / 100;
 
-    for (const existingProgram of this.mainframeProgramsState.listOwnedPrograms()) {
+    for (const existingProgram of this.mainframeState.programs.listOwnedPrograms()) {
       if (actionsLeft === 0) {
         break;
       }
@@ -51,7 +51,7 @@ export class MainframeProgramsAutobuyerProgram extends BaseProgram {
 
         const newProgram = this._programFactory.makeProgram(programParameters);
 
-        if (this.mainframeProgramsState.purchaseProgram(programParameters)) {
+        if (this.mainframeState.programs.purchaseProgram(programParameters)) {
           availableMoney -= newProgram.cost;
           actionsLeft--;
         }

@@ -1,10 +1,8 @@
 import { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import { IGlobalState } from '@state/global-state/interfaces/global-state';
 import { IFormatter } from '@shared/interfaces/formatter';
-import { IMainframeProcessesState } from '@state/mainframe/mainframe-processes-state/interfaces/mainframe-processes-state';
-import { IMainframeHardwareState } from '@state/mainframe/mainframe-hardware-state/interfaces/mainframe-hardware-state';
-import { IMainframeProgramsState } from '@state/mainframe/mainframe-programs-state/interfaces/mainframe-programs-state';
-import { IScenarioState } from '@state/scenario-state/interfaces/scenario-state';
+import { IMainframeState } from '@state/mainframe-state/interfaces/mainframe-state';
+import { IGrowthState } from '@state/growth-state/interfaces/growth-state';
 
 export interface IBaseProgramParameters {
   formatter: IFormatter;
@@ -13,8 +11,6 @@ export interface IBaseProgramParameters {
   autoUpgradeEnabled: boolean;
   stateUiConnector: IStateUIConnector;
   globalState: IGlobalState;
-  mainframeProgramsState: IMainframeProgramsState;
-  mainframeProcessesState: IMainframeProcessesState;
-  mainframeHardwareState: IMainframeHardwareState;
-  scenarioState: IScenarioState;
+  growthState: IGrowthState;
+  mainframeState: IMainframeState;
 }

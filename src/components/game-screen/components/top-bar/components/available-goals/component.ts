@@ -3,7 +3,7 @@ import { html, css } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { BaseComponent } from '@shared/base-component';
-import { IStoryEvent } from '@state/scenario-state/interfaces/story-event';
+import { IStoryEvent } from '@state/global-state/interfaces/story-event';
 import { TopBarAvailableGoalsController } from './controller';
 
 @customElement('ca-top-bar-available-goals')

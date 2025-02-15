@@ -1,18 +1,18 @@
 import { GameSpeed } from '../../types';
-import { IDevelopmentSerializedParameter } from './development-serialized-parameter';
-import { IComputationalBaseSerializedParameter } from './computational-base-serialized-parameter';
-import { IMoneySerializedParameter } from './money-serialized-parameter';
-import { IStoryEventsSerializedParameter } from './story-events-serialized-parameter';
-import { ITimeSerializedParameter } from './time-serialized-parameter';
-import { IUnlockedFeaturesSerializedParameter } from './unlocked-features-serialized-parameter';
+import { IDevelopmentSerializedState } from './development-serialized-state';
+import { ICodeBaseSerializedState } from './code-base-serialized-state';
+import { IMoneySerializedState } from './money-serialized-state';
+import { ITimeSerializedState } from './time-serialized-state';
+import { IUnlockedFeaturesSerializedState } from './unlocked-features-serialized-state';
+import { IScenarioSerializedState } from './scenario-serialized-state';
 
 export interface IGlobalSerializedState {
   randomSeed: number;
+  scenario: IScenarioSerializedState;
   gameSpeed: GameSpeed;
-  money: IMoneySerializedParameter;
-  time: ITimeSerializedParameter;
-  development: IDevelopmentSerializedParameter;
-  computationalBase: IComputationalBaseSerializedParameter;
-  unlockedFeatures: IUnlockedFeaturesSerializedParameter;
-  storyEvents: IStoryEventsSerializedParameter;
+  money: IMoneySerializedState;
+  time: ITimeSerializedState;
+  development: IDevelopmentSerializedState;
+  codeBase: ICodeBaseSerializedState;
+  unlockedFeatures: IUnlockedFeaturesSerializedState;
 }

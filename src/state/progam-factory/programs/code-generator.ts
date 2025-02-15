@@ -8,14 +8,14 @@ export class CodeGeneratorProgram extends BaseProgram {
   public readonly isAutoscalable = false;
 
   perform(threads: number): void {
-    this.globalState.computationalBase.increaseByProgram(this.calculateDelta(threads));
+    this.globalState.codeBase.increasePointsByProgram(this.calculateDelta(threads));
   }
 
   calculateDelta(threads: number): number {
     const programData = programs[this.name];
 
     return (
-      this.scenarioState.currentValues.pointsByProgramMultipliers.program *
+      this.globalState.scenario.currentValues.pointsByProgramMultipliers.program *
       threads *
       programData.computationalBaseLevelMultiplier *
       this.level *

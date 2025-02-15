@@ -1,18 +1,15 @@
 import { ReactiveController, ReactiveControllerHost } from 'lit';
 import { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import { IAppState } from '@state/app-state/interfaces/app-state';
-import { IScenarioState } from '@state/scenario-state/interfaces/scenario-state';
 import { IGlobalState } from '@state/global-state/interfaces/global-state';
 import { ISettingsState } from '@state/settings-state/interfaces/settings-state';
 import { ICityState } from '@state/city-state/interfaces/city-state';
 import { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
-import { IMainframeHardwareState } from '@state/mainframe/mainframe-hardware-state/interfaces/mainframe-hardware-state';
-import { IMainframeProgramsState } from '@state/mainframe/mainframe-programs-state/interfaces/mainframe-programs-state';
-import { IMainframeProcessesState } from '@state/mainframe/mainframe-processes-state/interfaces/mainframe-processes-state';
+import { IMainframeState } from '@state/mainframe-state/interfaces/mainframe-state';
 import { IProgramFactory } from '@state/progam-factory';
-import { IMainframeHardwareAutomationState } from '@state/automation/mainframe-hardware-automation-state/interfaces/mainframe-hardware-automation-state';
-import { IMainframeProgramsAutomationState } from '@state/automation/mainframe-programs-automation-state/interfaces/mainframe-programs-automation-state';
 import { INotificationsState } from '@state/notifications-state/interfaces/notifications-state';
+import { IGrowthState } from '@state/growth-state/interfaces/growth-state';
+import { IAutomationState } from '@state/automation-state';
 import { container } from '@state/container';
 import { TYPES } from '@state/types';
 import { IApp } from '@state/app';
@@ -101,12 +98,12 @@ export class BaseController<T extends ReactiveControllerHost = ReactiveControlle
     return container.get<IAppState>(TYPES.AppState);
   }
 
-  protected get scenarioState(): IScenarioState {
-    return container.get<IScenarioState>(TYPES.ScenarioState);
-  }
-
   protected get globalState(): IGlobalState {
     return container.get<IGlobalState>(TYPES.GlobalState);
+  }
+
+  protected get growthState(): IGrowthState {
+    return container.get<IGrowthState>(TYPES.GrowthState);
   }
 
   protected get settingsState(): ISettingsState {
@@ -125,28 +122,16 @@ export class BaseController<T extends ReactiveControllerHost = ReactiveControlle
     return container.get<INotificationsState>(TYPES.NotificationsState);
   }
 
-  protected get mainframeHardwareState(): IMainframeHardwareState {
-    return container.get<IMainframeHardwareState>(TYPES.MainframeHardwareState);
-  }
-
-  protected get mainframeProgramsState(): IMainframeProgramsState {
-    return container.get<IMainframeProgramsState>(TYPES.MainframeProgramsState);
-  }
-
-  protected get mainframeProcessesState(): IMainframeProcessesState {
-    return container.get<IMainframeProcessesState>(TYPES.MainframeProcessesState);
+  protected get mainframeState(): IMainframeState {
+    return container.get<IMainframeState>(TYPES.MainframeState);
   }
 
   protected get programFactory(): IProgramFactory {
     return container.get<IProgramFactory>(TYPES.ProgramFactory);
   }
 
-  protected get mainframeHardwareAutomationState(): IMainframeHardwareAutomationState {
-    return container.get<IMainframeHardwareAutomationState>(TYPES.MainframeHardwareAutomationState);
-  }
-
-  protected get mainframeProgramsAutomationState(): IMainframeProgramsAutomationState {
-    return container.get<IMainframeProgramsAutomationState>(TYPES.MainframeProgramsAutomationState);
+  protected get automationState(): IAutomationState {
+    return container.get<IAutomationState>(TYPES.AutomationState);
   }
 
   protected handleRefreshUI = (): void => {

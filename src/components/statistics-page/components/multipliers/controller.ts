@@ -2,10 +2,10 @@ import { BaseController } from '@shared/base-controller';
 
 export class StatisticsMultipliersController extends BaseController {
   get programCompletionSpeedMultiplier() {
-    return this.globalState.programCompletionSpeed.multiplier;
+    return this.growthState.programCompletionSpeed.multiplierByProgram;
   }
 
-  get mainframeDiscount() {
-    return this.globalState.computationalBase.discount;
+  get mainframeMultiplier() {
+    return this.globalState.codeBase.totalCostMultiplier;
   }
 }

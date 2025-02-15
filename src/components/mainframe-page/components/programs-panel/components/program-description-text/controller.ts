@@ -6,11 +6,11 @@ export class ProgramDescriptionTextController extends BaseController {
   private _ownedProgram?: IProgram;
 
   get ram(): number {
-    return this.mainframeHardwareState.ram.level;
+    return this.mainframeState.hardware.ram.level;
   }
 
   get cores(): number {
-    return this.mainframeHardwareState.cores.level;
+    return this.mainframeState.hardware.cores.level;
   }
 
   getProgram(programName: ProgramName) {
@@ -19,7 +19,7 @@ export class ProgramDescriptionTextController extends BaseController {
         this.removeEventListenersByEmitter(this._ownedProgram);
       }
 
-      this._ownedProgram = this.mainframeProgramsState.getOwnedProgramByName(programName);
+      this._ownedProgram = this.mainframeState.programs.getOwnedProgramByName(programName);
     }
 
     return this._ownedProgram;

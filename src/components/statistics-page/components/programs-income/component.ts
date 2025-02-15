@@ -20,13 +20,13 @@ export class StatisticsProgramsIncome extends BaseComponent<StatisticsProgramsIn
   renderContent() {
     const formatter = this.controller.formatter;
 
-    const computationalBase = this.controller.computationalBase;
+    const codeBase = this.controller.codeBase;
 
     return html`
       <h4 class="title">${t('statistics.income.pointsByPrograms.title', { ns: 'ui' })}</h4>
 
       <div class="parameters-table">
-        ${computationalBase > 1
+        ${codeBase > 1
           ? html`
               <span>
                 ${t('statistics.income.pointsByPrograms.computationalBase', { ns: 'ui' })}
@@ -37,7 +37,7 @@ export class StatisticsProgramsIncome extends BaseComponent<StatisticsProgramsIn
                   <sl-icon name="question-circle"></sl-icon>
                 </sl-tooltip>
               </span>
-              <span> ${formatter.formatNumberFloat(this.controller.computationalBase)} </span>
+              <span> ${formatter.formatNumberFloat(this.controller.codeBase)} </span>
             `
           : nothing}
       </div>

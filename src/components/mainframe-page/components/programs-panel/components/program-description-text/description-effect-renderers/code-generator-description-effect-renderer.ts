@@ -24,7 +24,7 @@ export class CodeGeneratorDescriptionEffectRenderer implements IDescriptionEffec
 
     return html`
       <p>
-        ${t('codeGenerator.computationalBasePointsProgram', {
+        ${t('codeGenerator.codeBasePointsProgram', {
           ns: 'programs',
           value: this._formatter.formatNumberFloat(value),
           minAvgValue: this._formatter.formatNumberFloat(minAvgValue),

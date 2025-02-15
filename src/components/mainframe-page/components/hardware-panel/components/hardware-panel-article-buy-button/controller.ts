@@ -1,6 +1,6 @@
 import { BaseController } from '@shared/base-controller';
-import { IMainframeHardwareParameter } from '@state/mainframe/mainframe-hardware-state/interfaces/mainframe-hardware-parameter';
-import { MainframeHardwareParameterType } from '@state/mainframe/mainframe-hardware-state/types';
+import { IMainframeHardwareParameter } from '@state/mainframe-state/states/mainframe-hardware-state/interfaces/mainframe-hardware-parameter';
+import { MainframeHardwareParameterType } from '@state/mainframe-state/states/mainframe-hardware-state/types';
 
 export class MainframeHardwarePanelArticleBuyButtonController extends BaseController {
   get developmentLevel() {
@@ -22,11 +22,11 @@ export class MainframeHardwarePanelArticleBuyButtonController extends BaseContro
   private getParameter(type: MainframeHardwareParameterType): IMainframeHardwareParameter {
     switch (type) {
       case 'performance':
-        return this.mainframeHardwareState.performance;
+        return this.mainframeState.hardware.performance;
       case 'cores':
-        return this.mainframeHardwareState.cores;
+        return this.mainframeState.hardware.cores;
       case 'ram':
-        return this.mainframeHardwareState.ram;
+        return this.mainframeState.hardware.ram;
       default:
         throw new Error('Invalid hardware panel article type');
     }
