@@ -32,11 +32,27 @@
       "minCompletionTime": 1000
     },
     "developmentLevelRequirements": { "baseMultiplier": 60000, "base": 1.5 },
-    "pointsByProgramMultipliers": {
-      "program": 1
-    },
-    "discounts": {
-      "program": 2e13
+    "programMultipliers": {
+      "codeBase": {
+        "pointsPerCompletion": 1,
+        "completionsToMax": 86400,
+        "logBase": 20
+      },
+      "computationalBase": {
+        "pointsPerCompletion": 1,
+        "completionsToMax": 86400,
+        "logBase": 20
+      },
+      "connectivity": {
+        "pointsPerCompletion": 1,
+        "completionsToMax": 86400,
+        "logBase": 20
+      },
+      "rewards": {
+        "pointsPerCompletion": 1,
+        "completionsToMax": 86400,
+        "logBase": 20
+      }
     },
     "storyEvents": []
   },

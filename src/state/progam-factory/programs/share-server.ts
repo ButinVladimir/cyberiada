@@ -1,12 +1,12 @@
 import { ISettingsState } from '@state/settings-state/interfaces/settings-state';
 import { IncomeSource } from '@shared/types';
 import programs from '@configs/programs.json';
-import { ProgramName } from '../types';
+import { OtherProgramName } from '../types';
 import { IShareServerParameters } from '../interfaces/program-parameters/share-server-parameters';
 import { BaseProgram } from './base-program';
 
 export class ShareServerProgram extends BaseProgram {
-  public readonly name = ProgramName.shareServer;
+  public readonly name = OtherProgramName.shareServer;
   public readonly isRepeatable = true;
   public readonly isAutoscalable = true;
 
@@ -34,6 +34,7 @@ export class ShareServerProgram extends BaseProgram {
     const programData = programs[this.name];
 
     return (
+      this.globalState.rewards.totalMultiplier *
       this.calculateModifier(threads, usedRam, passedTime) *
       programData.money *
       Math.pow(programData.moneyQualityMultiplier, this.quality)
@@ -44,6 +45,7 @@ export class ShareServerProgram extends BaseProgram {
     const programData = programs[this.name];
 
     return (
+      this.globalState.rewards.totalMultiplier *
       this.calculateModifier(threads, usedRam, passedTime) *
       programData.developmentPoints *
       Math.pow(programData.developmentPointsQualityMultiplier, this.quality)

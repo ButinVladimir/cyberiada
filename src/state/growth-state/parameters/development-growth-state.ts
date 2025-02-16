@@ -5,7 +5,7 @@ import { EventBatcher } from '@shared/event-batcher';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import type { IMainframeState } from '@state/mainframe-state/interfaces/mainframe-state';
 import { TYPES } from '@state/types';
-import { ProgramName } from '@state/progam-factory/types';
+import { OtherProgramName } from '@state/progam-factory/types';
 import { ShareServerProgram } from '@state/progam-factory/programs/share-server';
 import { INCOME_SOURCES } from '@shared/constants';
 import { IDevelopmentGrowthState } from '../interfaces/parameters/development-growth-state';
@@ -68,7 +68,7 @@ export class DevelopmentGrowthState implements IDevelopmentGrowthState {
   private updateGrowthByProgram() {
     const mainframeProcessesState = this._mainframeState.processes;
 
-    const shareServerProcess = mainframeProcessesState.getProcessByName(ProgramName.shareServer);
+    const shareServerProcess = mainframeProcessesState.getProcessByName(OtherProgramName.shareServer);
     let incomeByProgram = 0;
 
     if (shareServerProcess?.isActive) {

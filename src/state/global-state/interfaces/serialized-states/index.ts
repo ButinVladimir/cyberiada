@@ -3,5 +3,8 @@ export * from './money-serialized-state';
 export * from './time-serialized-state';
 export * from './development-serialized-state';
 export * from './code-base-serialized-state';
+export * from './computational-base-serialized-state';
+export * from './connectivity-serialized-state';
+export * from './rewards-serialized-state';
 export * from './unlocked-features-serialized-state';
 export * from './scenario-serialized-state';

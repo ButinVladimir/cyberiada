@@ -3,7 +3,7 @@ import { decorators } from '@state/container';
 import { EventBatcher } from '@shared/event-batcher';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import type { IMainframeState } from '@state/mainframe-state/interfaces/mainframe-state';
-import { ProgramName } from '@state/progam-factory/types';
+import { OtherProgramName } from '@state/progam-factory/types';
 import { PredictiveComputatorProgram } from '@state/progam-factory/programs/predictive-computator';
 import { TYPES } from '@state/types';
 import { GROWTH_STATE_UI_EVENTS } from '../constants';
@@ -70,7 +70,7 @@ export class ProgramCompletionSpeedState implements IProgramCompletionSpeedState
   private updateMultiplierByProgram() {
     const mainframeProcessesState = this._mainframeState.processes;
 
-    const predictiveComputatorProcess = mainframeProcessesState.getProcessByName(ProgramName.predictiveComputator);
+    const predictiveComputatorProcess = mainframeProcessesState.getProcessByName(OtherProgramName.predictiveComputator);
     let newValue = 1;
 
     if (predictiveComputatorProcess?.isActive) {

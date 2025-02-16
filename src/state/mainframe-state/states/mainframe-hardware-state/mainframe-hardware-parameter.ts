@@ -66,7 +66,10 @@ export abstract class MainframeHardwareParameter implements IMainframeHardwarePa
     const baseCost = calculatePow(this.level - 1, exp);
 
     return (
-      (this.globalState.codeBase.totalCostMultiplier * (baseCost * (Math.pow(exp.base, increase) - 1))) / (exp.base - 1)
+      (this.globalState.connectivity.totalCostMultiplier *
+        this.globalState.computationalBase.totalCostMultiplier *
+        (baseCost * (Math.pow(exp.base, increase) - 1))) /
+      (exp.base - 1)
     );
   }
 

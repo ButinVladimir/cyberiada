@@ -1,12 +1,12 @@
 import { binarySearchDecimal } from '@shared/helpers';
 import { IMainframeHardwareParameter } from '@state/mainframe-state/states/mainframe-hardware-state/interfaces/mainframe-hardware-parameter';
 import { IAutomationState } from '@state/automation-state/interfaces/automation-state';
-import { ProgramName } from '../types';
+import { OtherProgramName } from '../types';
 import { BaseProgram } from './base-program';
 import { IMainframeHardwareAutobuyerParameters } from '../interfaces/program-parameters/mainframe-hardware-autobuyer-parameters';
 
 export class MainframeHardwareAutobuyerProgram extends BaseProgram {
-  public readonly name = ProgramName.mainframeHardwareAutobuyer;
+  public readonly name = OtherProgramName.mainframeHardwareAutobuyer;
   public readonly isRepeatable = true;
   public readonly isAutoscalable = false;
 

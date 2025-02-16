@@ -9,6 +9,9 @@ import type {
   IMoneyState,
   ICodeBaseState,
   IUnlockedFeaturesState,
+  IComputationalBaseState,
+  IConnectivityState,
+  IRewardsState,
 } from './interfaces';
 import { IGlobalState } from './interfaces/global-state';
 import { GameSpeed } from './types';
@@ -20,6 +23,9 @@ export class GlobalState implements IGlobalState {
   private _developmentState: IDevelopmentState;
   private _moneyState: IMoneyState;
   private _codeBaseState: ICodeBaseState;
+  private _computationalBaseState: IComputationalBaseState;
+  private _connectivityState: IConnectivityState;
+  private _rewardsState: IRewardsState;
 
   private _unlockedFeaturesState: IUnlockedFeaturesState;
   private _storyEventsState: IStoryEventsState;
@@ -33,6 +39,9 @@ export class GlobalState implements IGlobalState {
     @inject(TYPES.DevelopmentState) _developmentState: IDevelopmentState,
     @inject(TYPES.MoneyState) _moneyState: IMoneyState,
     @inject(TYPES.CodeBaseState) _codeBaseState: ICodeBaseState,
+    @inject(TYPES.ComputationalBaseState) _computationalBaseState: IComputationalBaseState,
+    @inject(TYPES.ConnectivityState) _connectivityState: IConnectivityState,
+    @inject(TYPES.RewardsState) _rewardsState: IRewardsState,
     @inject(TYPES.UnlockedFeaturesState) _unlockedFeaturesState: IUnlockedFeaturesState,
     @inject(TYPES.StoryEventsState) _storyEventsState: IStoryEventsState,
   ) {
@@ -41,6 +50,9 @@ export class GlobalState implements IGlobalState {
     this._developmentState = _developmentState;
     this._moneyState = _moneyState;
     this._codeBaseState = _codeBaseState;
+    this._computationalBaseState = _computationalBaseState;
+    this._connectivityState = _connectivityState;
+    this._rewardsState = _rewardsState;
     this._unlockedFeaturesState = _unlockedFeaturesState;
     this._storyEventsState = _storyEventsState;
 
@@ -80,6 +92,18 @@ export class GlobalState implements IGlobalState {
     return this._codeBaseState;
   }
 
+  get computationalBase(): IComputationalBaseState {
+    return this._computationalBaseState;
+  }
+
+  get connectivity(): IConnectivityState {
+    return this._connectivityState;
+  }
+
+  get rewards(): IRewardsState {
+    return this._rewardsState;
+  }
+
   get unlockedFeatures(): IUnlockedFeaturesState {
     return this._unlockedFeaturesState;
   }
@@ -101,6 +125,9 @@ export class GlobalState implements IGlobalState {
     await this._timeState.startNewState();
     await this._developmentState.startNewState();
     await this._codeBaseState.startNewState();
+    await this._computationalBaseState.startNewState();
+    await this._connectivityState.startNewState();
+    await this._rewardsState.startNewState();
     await this._unlockedFeaturesState.startNewState();
     this.storyEvents.startNewState();
 
@@ -115,6 +142,9 @@ export class GlobalState implements IGlobalState {
     await this._timeState.deserialize(serializedState.time);
     await this._developmentState.deserialize(serializedState.development);
     await this._codeBaseState.deserialize(serializedState.codeBase);
+    await this._computationalBaseState.deserialize(serializedState.computationalBase);
+    await this._connectivityState.deserialize(serializedState.connectivity);
+    await this._rewardsState.deserialize(serializedState.rewards);
     await this._unlockedFeaturesState.deserialize(serializedState.unlockedFeatures);
 
     this.recalculate();
@@ -129,6 +159,9 @@ export class GlobalState implements IGlobalState {
       time: this._timeState.serialize(),
       development: this._developmentState.serialize(),
       codeBase: this._codeBaseState.serialize(),
+      computationalBase: this._computationalBaseState.serialize(),
+      connectivity: this._connectivityState.serialize(),
+      rewards: this._rewardsState.serialize(),
       unlockedFeatures: this._unlockedFeaturesState.serialize(),
     };
   }
@@ -136,5 +169,8 @@ export class GlobalState implements IGlobalState {
   private recalculate() {
     this._developmentState.recalculateLevel();
     this._codeBaseState.recalculateCostMultipliers();
+    this._computationalBaseState.recalculateCostMultipliers();
+    this._connectivityState.recalculateCostMultipliers();
+    this._rewardsState.recalculateMultipliers();
   }
 }

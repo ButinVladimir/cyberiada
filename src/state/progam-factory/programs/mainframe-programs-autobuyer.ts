@@ -1,6 +1,6 @@
 import { binarySearchDecimal } from '@shared/helpers';
 import { IAutomationState } from '@state/automation-state/interfaces/automation-state';
-import { ProgramName } from '../types';
+import { OtherProgramName } from '../types';
 import { BaseProgram } from './base-program';
 import {
   IMainframeProgramsAutobuyerParameters,
@@ -10,7 +10,7 @@ import {
 } from '../interfaces';
 
 export class MainframeProgramsAutobuyerProgram extends BaseProgram {
-  public readonly name = ProgramName.mainframeProgramsAutobuyer;
+  public readonly name = OtherProgramName.mainframeProgramsAutobuyer;
   public readonly isRepeatable = true;
   public readonly isAutoscalable = false;
 

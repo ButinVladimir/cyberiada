@@ -9,6 +9,9 @@ import {
   IStoryEventsState,
   IScenarioState,
   ICodeBaseState,
+  IComputationalBaseState,
+  IConnectivityState,
+  IRewardsState,
 } from './parameters';
 
 export interface IGlobalState extends ISerializeable<IGlobalSerializedState> {
@@ -19,6 +22,9 @@ export interface IGlobalState extends ISerializeable<IGlobalSerializedState> {
   time: ITimeState;
   development: IDevelopmentState;
   codeBase: ICodeBaseState;
+  computationalBase: IComputationalBaseState;
+  connectivity: IConnectivityState;
+  rewards: IRewardsState;
   unlockedFeatures: IUnlockedFeaturesState;
   storyEvents: IStoryEventsState;
   makeNextTick(): void;

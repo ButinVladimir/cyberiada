@@ -18,6 +18,12 @@ import {
   StoryEventsState,
   IUnlockedFeaturesState,
   UnlockedFeaturesState,
+  IComputationalBaseState,
+  ComputationalBaseState,
+  IConnectivityState,
+  ConnectivityState,
+  IRewardsState,
+  RewardsState,
 } from '@state/global-state';
 import {
   IGrowthState,
@@ -72,6 +78,20 @@ container.bind<IDevelopmentState>(TYPES.DevelopmentState).to(DevelopmentState).i
 container.bind<IMoneyState>(TYPES.MoneyState).to(MoneyState).inSingletonScope().whenTargetIsDefault();
 
 container.bind<ICodeBaseState>(TYPES.CodeBaseState).to(CodeBaseState).inSingletonScope().whenTargetIsDefault();
+
+container
+  .bind<IComputationalBaseState>(TYPES.ComputationalBaseState)
+  .to(ComputationalBaseState)
+  .inSingletonScope()
+  .whenTargetIsDefault();
+
+container
+  .bind<IConnectivityState>(TYPES.ConnectivityState)
+  .to(ConnectivityState)
+  .inSingletonScope()
+  .whenTargetIsDefault();
+
+container.bind<IRewardsState>(TYPES.RewardsState).to(RewardsState).inSingletonScope().whenTargetIsDefault();
 
 container.bind<IScenarioState>(TYPES.ScenarioState).to(ScenarioState).inSingletonScope().whenTargetIsDefault();
 

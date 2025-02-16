@@ -1,9 +1,9 @@
 import programs from '@configs/programs.json';
-import { ProgramName } from '../types';
+import { MultiplierProgramName } from '../types';
 import { BaseProgram } from './base-program';
 
 export class CodeGeneratorProgram extends BaseProgram {
-  public readonly name = ProgramName.codeGenerator;
+  public readonly name = MultiplierProgramName.codeGenerator;
   public readonly isRepeatable = true;
   public readonly isAutoscalable = false;
 
@@ -15,11 +15,11 @@ export class CodeGeneratorProgram extends BaseProgram {
     const programData = programs[this.name];
 
     return (
-      this.globalState.scenario.currentValues.pointsByProgramMultipliers.program *
+      this.globalState.scenario.currentValues.programMultipliers.codeBase.pointsPerCompletion *
       threads *
-      programData.computationalBaseLevelMultiplier *
+      programData.codeBaseLevelMultiplier *
       this.level *
-      Math.pow(programData.computationalBaseQualityMultiplier, this.quality)
+      Math.pow(programData.codeBaseQualityMultiplier, this.quality)
     );
   }
 }

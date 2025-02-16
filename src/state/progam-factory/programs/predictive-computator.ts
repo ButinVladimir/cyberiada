@@ -1,9 +1,9 @@
 import programs from '@configs/programs.json';
-import { ProgramName } from '../types';
+import { OtherProgramName } from '../types';
 import { BaseProgram } from './base-program';
 
 export class PredictiveComputatorProgram extends BaseProgram {
-  public readonly name = ProgramName.predictiveComputator;
+  public readonly name = OtherProgramName.predictiveComputator;
   public readonly isRepeatable = true;
   public readonly isAutoscalable = true;
 

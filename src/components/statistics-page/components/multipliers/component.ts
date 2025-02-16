@@ -21,7 +21,10 @@ export class StatisticsMultipliers extends BaseComponent<StatisticsMultipliersCo
     const formatter = this.controller.formatter;
 
     const programCompletionSpeedMultiplier = this.controller.programCompletionSpeedMultiplier;
-    const mainframeMultiplier = this.controller.mainframeMultiplier * 100;
+    const mainframeProgramCostMultiplier = this.controller.mainframeProgramCostMultiplier * 100;
+    const mainframeHardwareCostMultiplier = this.controller.mainframeHardwareCostMultiplier * 100;
+    const overallCostMultiplier = this.controller.overallCostMultiplier * 100;
+    const rewardsMultiplier = this.controller.rewardsMultiplier * 100;
 
     return html`
       <h4 class="title">${t('statistics.general.multipliers.title', { ns: 'ui' })}</h4>
@@ -31,15 +34,48 @@ export class StatisticsMultipliers extends BaseComponent<StatisticsMultipliersCo
         <span> ${formatter.formatNumberFloat(programCompletionSpeedMultiplier)} </span>
 
         <span>
-          ${t('statistics.general.multipliers.mainframeDiscount', { ns: 'ui' })}
+          ${t('statistics.general.multipliers.mainframeHardwareCostMultiplier', { ns: 'ui' })}
 
           <sl-tooltip>
-            <span slot="content"> ${t('statistics.hints.mainframeDiscount', { ns: 'ui' })} </span>
+            <span slot="content"> ${t('statistics.hints.computationalBase', { ns: 'ui' })} </span>
 
             <sl-icon name="question-circle"></sl-icon>
           </sl-tooltip>
         </span>
-        <span> ${formatter.formatNumberFloat(mainframeMultiplier)} </span>
+        <span> ${formatter.formatNumberFloat(mainframeHardwareCostMultiplier)} </span>
+
+        <span>
+          ${t('statistics.general.multipliers.mainframeProgramsCostMultiplier', { ns: 'ui' })}
+
+          <sl-tooltip>
+            <span slot="content"> ${t('statistics.hints.codeBase', { ns: 'ui' })} </span>
+
+            <sl-icon name="question-circle"></sl-icon>
+          </sl-tooltip>
+        </span>
+        <span> ${formatter.formatNumberFloat(mainframeProgramCostMultiplier)} </span>
+
+        <span>
+          ${t('statistics.general.multipliers.overallCostMultiplier', { ns: 'ui' })}
+
+          <sl-tooltip>
+            <span slot="content"> ${t('statistics.hints.connectivity', { ns: 'ui' })} </span>
+
+            <sl-icon name="question-circle"></sl-icon>
+          </sl-tooltip>
+        </span>
+        <span> ${formatter.formatNumberFloat(overallCostMultiplier)} </span>
+
+        <span>
+          ${t('statistics.general.multipliers.rewardsMultilplier', { ns: 'ui' })}
+
+          <sl-tooltip>
+            <span slot="content"> ${t('statistics.hints.rewards', { ns: 'ui' })} </span>
+
+            <sl-icon name="question-circle"></sl-icon>
+          </sl-tooltip>
+        </span>
+        <span> ${formatter.formatNumberFloat(rewardsMultiplier)} </span>
       </div>
     `;
   }

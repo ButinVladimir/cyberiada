@@ -2,10 +2,13 @@ import { t } from 'i18next';
 import { css, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
-import { ProgramName } from '@state/progam-factory/types';
+import { ProgramName, OtherProgramName, MultiplierProgramName } from '@state/progam-factory/types';
 import { diffFormatterParametersDecimal, diffFormatterParametersShortTime } from '@shared/formatter-parameters';
 import {
   CodeGeneratorDescriptionEffectRenderer,
+  CircuitDesignerDescriptionEffectRenderer,
+  InformationCollectorDescriptionEffectRenderer,
+  DealMakerDescriptionEffectRenderer,
   MainframeHardwareAutobuyerDescriptionEffectRenderer,
   PredictiveComputatorDescriptionEffectRenderer,
   ShareServerDescriptionEffectRenderer,
@@ -168,19 +171,28 @@ export class ProgramDiffText extends BaseComponent<ProcessDiffTextController> {
     };
 
     switch (this.programName) {
-      case ProgramName.shareServer:
+      case OtherProgramName.shareServer:
         return new ShareServerDescriptionEffectRenderer(parameters).renderEffect();
 
-      case ProgramName.codeGenerator:
+      case MultiplierProgramName.codeGenerator:
         return new CodeGeneratorDescriptionEffectRenderer(parameters).renderEffect();
 
-      case ProgramName.predictiveComputator:
+      case MultiplierProgramName.circuitDesigner:
+        return new CircuitDesignerDescriptionEffectRenderer(parameters).renderEffect();
+
+      case MultiplierProgramName.informationCollector:
+        return new InformationCollectorDescriptionEffectRenderer(parameters).renderEffect();
+
+      case MultiplierProgramName.dealMaker:
+        return new DealMakerDescriptionEffectRenderer(parameters).renderEffect();
+
+      case OtherProgramName.predictiveComputator:
         return new PredictiveComputatorDescriptionEffectRenderer(parameters).renderEffect();
 
-      case ProgramName.mainframeHardwareAutobuyer:
+      case OtherProgramName.mainframeHardwareAutobuyer:
         return new MainframeHardwareAutobuyerDescriptionEffectRenderer(parameters).renderEffect();
 
-      case ProgramName.mainframeProgramsAutobuyer:
+      case OtherProgramName.mainframeProgramsAutobuyer:
         return new MainframeProgramsAutobuyerDescriptionEffectRenderer(parameters).renderEffect();
 
       default:

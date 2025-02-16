@@ -4,7 +4,7 @@ import { EventBatcher } from '@shared/event-batcher';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import type { IMainframeState } from '@state/mainframe-state/interfaces/mainframe-state';
 import { TYPES } from '@state/types';
-import { ProgramName } from '@state/progam-factory/types';
+import { MultiplierProgramName } from '@state/progam-factory/types';
 import { CodeGeneratorProgram } from '@state/progam-factory/programs/code-generator';
 import { ICodeBaseGrowthState } from '../interfaces/parameters/code-base-growth-state';
 import { GROWTH_STATE_UI_EVENTS } from '../constants';
@@ -58,7 +58,7 @@ export class CodeBaseGrowthState implements ICodeBaseGrowthState {
   private updateGrowthByProgram(): void {
     const mainframeProcessesState = this._mainframeState.processes;
 
-    const process = mainframeProcessesState.getProcessByName(ProgramName.codeGenerator);
+    const process = mainframeProcessesState.getProcessByName(MultiplierProgramName.codeGenerator);
     let value = 0;
 
     if (process?.isActive) {

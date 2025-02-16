@@ -84,6 +84,7 @@ export abstract class BaseProgram implements IProgram {
     const programData = programs[this.name];
 
     return (
+      this.globalState.connectivity.totalCostMultiplier *
       this.globalState.codeBase.totalCostMultiplier *
       calculatePow(this.level - 1, programData.cost as IExponent) *
       Math.pow(programData.costQualityMultiplier, this.quality)

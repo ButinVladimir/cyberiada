@@ -10,13 +10,16 @@ import type { IAutomationState } from '@state/automation-state/interfaces/automa
 import type { IFormatter } from '@shared/interfaces/formatter';
 import { IProgramFactory } from './interfaces/program-factory';
 import { IBaseProgramParameters, IMakeProgramParameters, IProgram } from './interfaces';
-import { ProgramName } from './types';
+import { OtherProgramName, MultiplierProgramName } from './types';
 import {
   ShareServerProgram,
   CodeGeneratorProgram,
   PredictiveComputatorProgram,
   MainframeHardwareAutobuyerProgram,
   MainframeProgramsAutobuyerProgram,
+  CircuitDesignerProgram,
+  InformationCollectorProgram,
+  DealMakerProgram,
 } from './programs';
 
 const { lazyInject } = decorators;
@@ -63,29 +66,44 @@ export class ProgramFactory implements IProgramFactory {
     };
 
     switch (parameters.name) {
-      case ProgramName.shareServer:
+      case OtherProgramName.shareServer:
         return new ShareServerProgram({
           ...baseParameters,
           settingsState: this._settingsState,
         });
 
-      case ProgramName.codeGenerator:
+      case MultiplierProgramName.codeGenerator:
         return new CodeGeneratorProgram({
           ...baseParameters,
         });
 
-      case ProgramName.predictiveComputator:
+      case MultiplierProgramName.circuitDesigner:
+        return new CircuitDesignerProgram({
+          ...baseParameters,
+        });
+
+      case MultiplierProgramName.informationCollector:
+        return new InformationCollectorProgram({
+          ...baseParameters,
+        });
+
+      case MultiplierProgramName.dealMaker:
+        return new DealMakerProgram({
+          ...baseParameters,
+        });
+
+      case OtherProgramName.predictiveComputator:
         return new PredictiveComputatorProgram({
           ...baseParameters,
         });
 
-      case ProgramName.mainframeHardwareAutobuyer:
+      case OtherProgramName.mainframeHardwareAutobuyer:
         return new MainframeHardwareAutobuyerProgram({
           ...baseParameters,
           automationState: this._automationState,
         });
 
-      case ProgramName.mainframeProgramsAutobuyer:
+      case OtherProgramName.mainframeProgramsAutobuyer:
         return new MainframeProgramsAutobuyerProgram({
           ...baseParameters,
           programFactory: this,

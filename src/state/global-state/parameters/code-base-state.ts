@@ -42,7 +42,7 @@ export class CodeBaseState implements ICodeBaseState {
   }
 
   get costMultiplierByProgram() {
-    this._stateUiConnector.connectEventHandler(this, GLOBAL_STATE_UI_EVENTS.POINTS_BY_PROGRAM_CHANGED);
+    this._stateUiConnector.connectEventHandler(this, GLOBAL_STATE_UI_EVENTS.CODE_BASE_COST_MULTIPLIER_CHANGED);
 
     return this._costMultiplierByProgram;
   }
@@ -103,8 +103,10 @@ export class CodeBaseState implements ICodeBaseState {
   }
 
   private updateMultiplierByProgram() {
+    const multipliers = this._globalState.scenario.currentValues.programMultipliers.codeBase;
+
     const pointsLog =
-      Math.log(1 + this._pointsByProgram) / Math.log(this._globalState.scenario.currentValues.multipliers.program);
+      Math.log(1 + multipliers.completionsToMax * this._pointsByProgram) / Math.log(multipliers.logBase);
 
     this._costMultiplierByProgram = 1 / (1 + pointsLog);
   }

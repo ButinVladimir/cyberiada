@@ -29,7 +29,6 @@ export class MoneyState implements IMoneyState {
     this._money = 0;
     this._income = new Map<IncomeSource, number>();
     this._expenses = new Map<PurchaseType, number>();
-    this._updateRequested = true;
 
     this.uiEventBatcher = new EventBatcher();
     this._stateUiConnector.registerEventEmitter(this);

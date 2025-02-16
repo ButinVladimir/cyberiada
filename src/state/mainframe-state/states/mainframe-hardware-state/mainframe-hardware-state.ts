@@ -5,7 +5,7 @@ import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/sta
 import type { IGlobalState } from '@state/global-state/interfaces/global-state';
 import type { IGrowthState } from '@state/growth-state/interfaces/growth-state';
 import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
-import type { IMainframeProcessesState } from '@state/mainframe-state/states/mainframe-processes-state/interfaces/mainframe-processes-state';
+import type { IMainframeState } from '../../interfaces/mainframe-state';
 import type { IFormatter } from '@shared/interfaces/formatter';
 import { TYPES } from '@state/types';
 import { EventBatcher } from '@shared/event-batcher';
@@ -28,8 +28,8 @@ const { lazyInject } = decorators;
 export class MainframeHardwareState implements IMainframeHardwareState {
   readonly uiEventBatcher: EventBatcher;
 
-  @lazyInject(TYPES.MainframeProcessesState)
-  private _mainframeProcessesState!: IMainframeProcessesState;
+  @lazyInject(TYPES.MainframeState)
+  private _mainframeState!: IMainframeState;
 
   private _stateUiConnector: IStateUIConnector;
   private _globalState: IGlobalState;
@@ -120,7 +120,7 @@ export class MainframeHardwareState implements IMainframeHardwareState {
   }
 
   emitUpgradedEvent() {
-    this._mainframeProcessesState.requestUpdateProcesses();
+    this._mainframeState.processes.requestUpdateProcesses();
     this._growthState.requestGrowthRecalculation();
     this.uiEventBatcher.enqueueEvent(MAINFRAME_HARDWARE_STATE_UI_EVENTS.HARDWARE_UPGRADED);
   }

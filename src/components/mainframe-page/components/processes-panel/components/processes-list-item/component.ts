@@ -7,7 +7,7 @@ import {
   ConfirmationAlertSubmitEvent,
 } from '@components/game-screen/components/confirmation-alert/events';
 import { ProgramAlert } from '@shared/types';
-import { ProgramName } from '@state/progam-factory/types';
+import { ProgramName, OtherProgramName } from '@state/progam-factory/types';
 import { SCREEN_WIDTH_POINTS } from '@shared/styles';
 import { ProcessesListItemController } from './controller';
 
@@ -119,7 +119,7 @@ export class ProcessesListItem extends BaseComponent<ProcessesListItemController
     attribute: 'program-name',
     type: String,
   })
-  programName: string = ProgramName.shareServer;
+  programName: string = OtherProgramName.shareServer;
 
   protected controller: ProcessesListItemController;
 
