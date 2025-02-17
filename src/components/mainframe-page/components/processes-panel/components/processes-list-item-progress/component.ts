@@ -2,7 +2,7 @@ import { t } from 'i18next';
 import { css, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
-import { ProgramName } from '@state/progam-factory/types';
+import { ProgramName, OtherProgramName } from '@state/progam-factory/types';
 import { ProcessesListItemProgressController } from './controller';
 
 @customElement('ca-processes-list-item-progress')
@@ -17,7 +17,7 @@ export class ProcessesListItemProgressColumn extends BaseComponent<ProcessesList
     attribute: 'program-name',
     type: String,
   })
-  programName: string = ProgramName.shareServer;
+  programName: string = OtherProgramName.shareServer;
 
   protected controller: ProcessesListItemProgressController;
 

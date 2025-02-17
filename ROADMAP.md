@@ -46,10 +46,6 @@ Each company member has their own level. Level requirements do not depend on cur
 
 To get new levels, company members must reach certain thresholds of experience. Experience gain can be increased by increasing intellect and using certain items.
 
-### Shock
-
-Shock accumulates when member is incapacitated or receives a new augmentation. Installing augmentation gives some amount of shock for each. Incapacitation maxes shock out. Shock will gradually decrease over 1 hour if member is alive and restored. Until shock reaches 0, member is unable to participate in combat. Shock will also decrease attributes and skills linearly. Max amount of shock depends on endurance.
-
 ### HP
 
 HP indicates how much damage can company member take. When HP reaches 0 or lower, company member is incapacitated and all actions related to them are cancelled. Incapacitated company members have to be paid to be restored manually or by program. After restoration, member shock is maxed out.
@@ -162,7 +158,7 @@ Unlocked in specific city after joining certain faction.
 
 ## Augmentations
 
-Augmentations are another way to buff company members. Like equipment, each augmentation has level and quality, which affect requirements and stats. Augmentation is not free, each augmentation costs money and adds shock which prevents from participating in combat.
+Augmentations are another way to buff company members. Like equipment, each augmentation has level and quality, which affect requirements and stats. Augmentation is not free, each augmentation costs money.
 
 Each company member has following augmentations slots:
 
@@ -201,7 +197,7 @@ Each district has reward for capturing it for player selected faction. This rewa
 
 ### Factions
 
-Each city has it's own set factions that try to claim city for themself. Player can join one faction if development level requirements are met. Once faction is joined, player cannot leave it unless they relocate.
+Each city has it's own set factions that try to claim city for themself. Player can join one faction if development level requirements are met. Once faction is joined, player cannot leave it unless they relocate. Player also can go rogue if it's unlocked and they're not in faction. Going rogue will prevent player from joining factions. All neutral districts will be available immediately, but other districts cannot be conquered. It will enable certain operations against all other factions.
 
 Each factions has it's own starting power level, affecting initial distribution of districts.
 
@@ -221,20 +217,9 @@ When map is generated, district are split between neutral forces and factions. A
 
 ## Relocation
 
-Relocation is the prestige. After relocating, almost everything will be lost. Certain favors allow to keep money, company members, their equipment and programs at a price. Each city has it's own price to relocate.
+Relocation is the prestige. After relocating, almost everything will be lost. Relocating will update highest level for scenario, potentially increasing rewards in subsequent re-runs.
 
-Relocation losses can be mitigated by getting favors, either by buying, capturing districts, performing operations or reaching certaing thresholds of respect.
-
-Relocation favors include
-
-- Retaining money after relocations (10 tiers, each tier retain 10% more)
-- Keep weapons (7 tiers, each tier will allow to keep weapons with quality not above it's corresponding tier)
-- Keep armors (7 tiers, each tier will allow to keep armors with quality not above it's corresponding tier)
-- Keep utility items (7 tiers, each tier will allow to keep items with quality not above it's corresponding tier)
-- Keep additional company members (10 tiers, each tier allow to keep 1 more)
-- Keep programs (7 tiers, each tier will allow to keep programs with quality not above it's corresponding tier)
-
-Augmentations and designs are not affected by relocation.
+Programs are not affected by relocation.
 
 ## Orders
 
@@ -252,7 +237,7 @@ Quality increases requirements and gains. Each quality also has it's own require
 
 ### Contracts
 
-Main way to gain resources. Each district has it's own set of counters for each contract type of each quality. Each 10 minutes districts can receive new random contracts. If district has contract available, player can assign multiple company members to perform it. Contracts have maximal caps.
+Main way to gain resources. Each district has it's own set of counters for each contract type of each quality. Each 10 minutes districts can receive new random contracts. If district has contract available, player can assign multiple company members to perform it.
 
 Unlike side jobs, contracts require some time. Contracts are unlocked after joining faction in starting city and can be done only after joining faction. Each faction has it's own set of contracts and multipliers for contracts.
 
@@ -270,7 +255,7 @@ Operations allow feats such as:
 
 - Raid enemy territory. Will not capture it, but will increase power level and resources. If it's captured before operation is finished, operation will be cancelled. Will give favors
 - Capturing enemy territory with assist of player. Same as above, but will capture territory and will give favors
-- Raiding enemy faction HQ for money, favors and designs. Only one operation can be succeeded for each quality level and for each enemy faction HQ. Possibly not time-gated and completing one will lead to another for same enemy HQ with higher quality. Will give favors
+- Raiding enemy faction HQ for money, favors and designs. Only one operation can be succeeded for each quality level and for each enemy faction HQ. Possibly not time-gated and completing one will lead to another for same enemy HQ with higher quality. Available only if player has gone rogue
 
 ## Combat
 
@@ -328,6 +313,7 @@ Examples of programs:
 
 - Share server, for passive money generation. Will use unused RAM and cores. Mainframe level will increase rewards.
 - Predictive computator, for passive increase of other processes speed. Will use unused RAM and cores. Cannot be ran at same time with share server.
+- Field assistant, for increasing speed of fininsh active jobs and increasing rewards for side jobs.
 - Code generator, for generating computational base points.
 - Info searching programs, for generating connectivity points.
 - Automatic action assignment, to assign contracts and operations, it will act as looping queue.
@@ -335,7 +321,7 @@ Examples of programs:
 
 ## Hacking
 
-Hacking is done only by mainframe. Each district has it's own server, hacking it will yield money and, possibly, designs (only for enemy factions, first time only). Faction servers cannot be hacked until faction is joined.
+Hacking is done only by mainframe. Each district has it's own server(s), hacking it will yield money and, possibly, designs (only for enemy factions, first time only, similar to operations). Faction servers cannot be hacked until faction is joined. Each hacked server can also provide additional cores and RAM to mainframe.
 
 Hacking requires filling completion scale and avoid filling alert scale while hacking is active.
 
@@ -370,19 +356,13 @@ Science city has two factions: **Gamma security** and **Steelmen**. It has large
 
 Completing science city will reward player with unlocking factions. Maximum 6 levels are available.
 
-### Smuggler's city
-
-Smuggler's city has two factions: **placeholder** and random.
-
-Completing smuggler's city will increase starting quality cap of weapons to purchase. Maximum 6 levels are available.
-
 ### Slums
 
 Slums has three-four factions - **Jackals** and **Militia**. Size is medium. Designed to be a tutorial .
 
 Has following unlocks:
 
-- Wanted level and crimes, which will increase level, requirements and rewards of almost all orders.
+- Wanted level and crimes. Wanted level can increase base level of all side jobs and orders, making them harder but more profitable. Wanted level is affected by notoriety points, which are increased by crimes. Wanted level must be changed manually. Potentially, decreasing wanted level will remove notoriety points?
 - Combat
 
 ### Android city

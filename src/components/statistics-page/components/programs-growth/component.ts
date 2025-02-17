@@ -20,12 +20,12 @@ export class StatisticsProgramsGrowth extends BaseComponent<StatisticsProgramsGr
   renderContent() {
     const formatter = this.controller.formatter;
 
-    const computationalBase = this.controller.computationalBase;
+    const codeBase = this.controller.codeBase;
 
     return html`
       <h4 class="title">${t('statistics.growth.pointsByPrograms.title', { ns: 'ui' })}</h4>
 
-      ${computationalBase > 0
+      ${codeBase > 0
         ? html`
             <div class="parameters-table">
               <span>
@@ -37,7 +37,7 @@ export class StatisticsProgramsGrowth extends BaseComponent<StatisticsProgramsGr
                   <sl-icon name="question-circle"></sl-icon>
                 </sl-tooltip>
               </span>
-              <span> ${formatter.formatNumberFloat(computationalBase)} </span>
+              <span> ${formatter.formatNumberFloat(codeBase)} </span>
             </div>
           `
         : nothing}

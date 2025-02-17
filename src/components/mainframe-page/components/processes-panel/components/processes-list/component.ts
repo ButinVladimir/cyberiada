@@ -8,7 +8,7 @@ import {
   ConfirmationAlertOpenEvent,
   ConfirmationAlertSubmitEvent,
 } from '@components/game-screen/components/confirmation-alert/events';
-import { IProcess } from '@state/mainframe/mainframe-processes-state/interfaces/process';
+import { IProcess } from '@state/mainframe-state/states/mainframe-processes-state/interfaces/process';
 import { ProgramName } from '@state/progam-factory/types';
 import { SCREEN_WIDTH_POINTS } from '@shared/styles';
 import { SortableElementMovedEvent } from '@components/shared/sortable-list/events/sortable-element-moved';

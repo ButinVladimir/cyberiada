@@ -14,10 +14,11 @@ export class MenuBarValuesController extends BaseController {
   }
 
   get developmentGrowth(): number {
-    return this.globalState.developmentGrowth.totalGrowth;
+    return this.growthState.developmentGrowth.totalGrowth;
   }
 
   get developmentPointsUntilNextLevel(): number {
-    return this.globalState.development.getNextLevelPoints() - this.globalState.development.points;
+    const development = this.globalState.development;
+    return development.getNextLevelPoints(development.level) - this.globalState.development.points;
   }
 }

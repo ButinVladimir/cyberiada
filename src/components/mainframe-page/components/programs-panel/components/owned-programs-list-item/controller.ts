@@ -11,13 +11,13 @@ export class OwnedProgramsListItemController extends BaseController {
         this.removeEventListenersByEmitter(this._ownedProgram);
       }
 
-      this._ownedProgram = this.mainframeProgramsState.getOwnedProgramByName(programName);
+      this._ownedProgram = this.mainframeState.programs.getOwnedProgramByName(programName);
     }
 
     return this._ownedProgram;
   }
 
   upgradeMaxProgram(programName: ProgramName) {
-    this.mainframeProgramsState.upgradeMaxProgram(programName);
+    this.mainframeState.programs.upgradeMaxProgram(programName);
   }
 }

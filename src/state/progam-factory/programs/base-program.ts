@@ -5,10 +5,8 @@ import { EventBatcher } from '@shared/event-batcher';
 import { IExponent } from '@shared/interfaces/exponent';
 import { calculatePow } from '@shared/helpers';
 import { IGlobalState } from '@state/global-state/interfaces/global-state';
-import { IMainframeProgramsState } from '@state/mainframe/mainframe-programs-state/interfaces/mainframe-programs-state';
-import { IMainframeProcessesState } from '@state/mainframe/mainframe-processes-state/interfaces/mainframe-processes-state';
-import { IMainframeHardwareState } from '@state/mainframe/mainframe-hardware-state/interfaces/mainframe-hardware-state';
-import { IScenarioState } from '@state/scenario-state/interfaces/scenario-state';
+import { IGrowthState } from '@state/growth-state/interfaces/growth-state';
+import { IMainframeState } from '@state/mainframe-state/interfaces/mainframe-state';
 import { Feature } from '@shared/types';
 import { ProgramName } from '../types';
 import { IMakeProgramParameters } from '../interfaces/make-program-parameters';
@@ -21,10 +19,8 @@ export abstract class BaseProgram implements IProgram {
 
   protected stateUiConnector: IStateUIConnector;
   protected globalState: IGlobalState;
-  protected mainframeProgramsState: IMainframeProgramsState;
-  protected mainframeProcessesState: IMainframeProcessesState;
-  protected mainframeHardwareState: IMainframeHardwareState;
-  protected scenarioState: IScenarioState;
+  protected growthState: IGrowthState;
+  protected mainframeState: IMainframeState;
   protected formatter: IFormatter;
 
   private _level!: number;
@@ -36,10 +32,8 @@ export abstract class BaseProgram implements IProgram {
   constructor(parameters: IBaseProgramParameters) {
     this.stateUiConnector = parameters.stateUiConnector;
     this.globalState = parameters.globalState;
-    this.mainframeProgramsState = parameters.mainframeProgramsState;
-    this.mainframeProcessesState = parameters.mainframeProcessesState;
-    this.mainframeHardwareState = parameters.mainframeHardwareState;
-    this.scenarioState = parameters.scenarioState;
+    this.growthState = parameters.growthState;
+    this.mainframeState = parameters.mainframeState;
     this.formatter = parameters.formatter;
 
     this._level = parameters.level;
@@ -79,7 +73,7 @@ export abstract class BaseProgram implements IProgram {
     this._autoUpgradeEnabled = value;
 
     this.uiEventBatcher.enqueueEvent(PROGRAMS_UI_EVENTS.PROGRAM_UPGRADED);
-    this.mainframeProgramsState.requestUiUpdate();
+    this.mainframeState.programs.requestUiUpdate();
   }
 
   abstract get isRepeatable(): boolean;
@@ -90,7 +84,8 @@ export abstract class BaseProgram implements IProgram {
     const programData = programs[this.name];
 
     return (
-      (1 - this.globalState.computationalBase.discount) *
+      this.globalState.multipliers.connectivity.totalCostMultiplier *
+      this.globalState.multipliers.codeBase.totalCostMultiplier *
       calculatePow(this.level - 1, programData.cost as IExponent) *
       Math.pow(programData.costQualityMultiplier, this.quality)
     );
@@ -118,15 +113,15 @@ export abstract class BaseProgram implements IProgram {
     this._level = newProgram.level;
     this._quality = newProgram.quality;
 
-    this.mainframeProcessesState.requestUpdateProcesses();
+    this.mainframeState.processes.requestUpdateProcesses();
 
     this.uiEventBatcher.enqueueEvent(PROGRAMS_UI_EVENTS.PROGRAM_UPGRADED);
   }
 
   calculateCompletionDelta(threads: number, usedCores: number, passedTime: number): number {
-    const currentSpeed = usedCores * this.globalState.programCompletionSpeed.speed;
+    const currentSpeed = usedCores * this.growthState.programCompletionSpeed.totalMultiplier;
     const allowedSpeed =
-      (threads * this.completionPoints) / this.scenarioState.currentValues.mainframeSoftware.minCompletionTime;
+      (threads * this.completionPoints) / this.globalState.scenario.currentValues.mainframeSoftware.minCompletionTime;
 
     return passedTime * Math.min(currentSpeed, allowedSpeed);
   }

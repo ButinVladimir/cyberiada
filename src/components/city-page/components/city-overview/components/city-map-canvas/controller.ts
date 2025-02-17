@@ -14,10 +14,10 @@ export class CityMapController extends BaseController {
   }
 
   get mapWidth(): number {
-    return this.scenarioState.currentValues.mapWidth;
+    return this.globalState.scenario.currentValues.mapWidth;
   }
 
   get mapHeight(): number {
-    return this.scenarioState.currentValues.mapHeight;
+    return this.globalState.scenario.currentValues.mapHeight;
   }
 }

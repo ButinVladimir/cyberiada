@@ -27,8 +27,35 @@
     "cost": { "baseMultiplier": 60000, "base": 1.15 },
     "costQualityMultiplier": 10,
     "unlockFeatures": [],
+    "codeBaseLevelMultiplier": 1,
+    "codeBaseQualityMultiplier": 900
+  },
+  "circuitDesigner": {
+    "ram": 1,
+    "completionPoints": { "baseMultiplier": 120000, "base": 1 },
+    "cost": { "baseMultiplier": 60000, "base": 1.15 },
+    "costQualityMultiplier": 10,
+    "unlockFeatures": [],
     "computationalBaseLevelMultiplier": 1,
     "computationalBaseQualityMultiplier": 900
+  },
+  "informationCollector": {
+    "ram": 1,
+    "completionPoints": { "baseMultiplier": 120000, "base": 1 },
+    "cost": { "baseMultiplier": 60000, "base": 1.15 },
+    "costQualityMultiplier": 10,
+    "unlockFeatures": [],
+    "connectivityLevelMultiplier": 1,
+    "connectivityQualityMultiplier": 900
+  },
+  "dealMaker": {
+    "ram": 1,
+    "completionPoints": { "baseMultiplier": 120000, "base": 1 },
+    "cost": { "baseMultiplier": 60000, "base": 1.15 },
+    "costQualityMultiplier": 10,
+    "unlockFeatures": [],
+    "rewardsLevelMultiplier": 1,
+    "rewardsQualityMultiplier": 900
   },
   "mainframeHardwareAutobuyer": {
     "ram": 3,

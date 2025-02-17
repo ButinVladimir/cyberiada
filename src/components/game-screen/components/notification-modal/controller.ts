@@ -31,7 +31,8 @@ export class NotificationModalController extends BaseController<INotificationMod
   handleCloseModal(notification: INotification, enabled: boolean): void {
     this.settingsState.toggleNotificationType(notification.notificationType, enabled);
     this.notificationsState.popUnreadNotification();
-    this.getUnreadNotification();
+
+    this.handleRefreshUI();
   }
 
   protected handleRefreshUI = (): void => {

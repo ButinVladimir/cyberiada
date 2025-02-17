@@ -6,13 +6,11 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.component.js';
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.component.js';
 import { BaseComponent } from '@shared/base-component';
-import { PROGRAMS } from '@state/progam-factory/constants';
-import { ProgramName } from '@state/progam-factory/types';
+import type { ProgramName } from '@state/progam-factory/types';
 import {
   ConfirmationAlertOpenEvent,
   ConfirmationAlertSubmitEvent,
 } from '@components/game-screen/components/confirmation-alert/events';
-import { QUALITIES } from '@shared/constants';
 import { ProgramAlert } from '@shared/types';
 import {
   inputLabelStyle,
@@ -101,9 +99,9 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
 
   private _programInputRef = createRef<SlSelect>();
 
-  private _levelInputRef = createRef<SlInput>();
-
   private _qualityInputRef = createRef<SlSelect>();
+
+  private _levelInputRef = createRef<SlInput>();
 
   @property({
     attribute: 'is-open',
@@ -115,10 +113,10 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
   private _programName?: ProgramName = undefined;
 
   @state()
-  private _level = 1;
+  private _quality = 0;
 
   @state()
-  private _quality = 0;
+  private _level = 1;
 
   constructor() {
     super();
@@ -145,13 +143,13 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
       const historyState = window.history.state as IMainframePageHistoryState;
 
       this._programName = historyState.programName ?? undefined;
-      this._level = historyState.level ?? this.controller.developmentLevel;
       this._quality = historyState.quality ?? 0;
+      this._level = historyState.level ?? this.controller.developmentLevel;
     }
   }
 
   renderContent() {
-    const { formatter, developmentLevel } = this.controller;
+    const { developmentLevel } = this.controller;
 
     return html`
       <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
@@ -170,10 +168,24 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
             >
               <span class="input-label" slot="label"> ${t('mainframe.program', { ns: 'ui' })} </span>
 
-              ${PROGRAMS.map(
-                (program) =>
-                  html`<sl-option value=${program}> ${t(`${program}.name`, { ns: 'programs' })} </sl-option>`,
-              )}
+              ${this.controller
+                .listAvailablePrograms()
+                .map(
+                  (program) =>
+                    html`<sl-option value=${program}> ${t(`${program}.name`, { ns: 'programs' })} </sl-option>`,
+                )}
+            </sl-select>
+
+            <sl-select
+              ${ref(this._qualityInputRef)}
+              name="quality"
+              value=${this._quality}
+              hoist
+              @sl-change=${this.handleQualityChange}
+            >
+              <span class="input-label" slot="label"> ${t('mainframe.quality', { ns: 'ui' })} </span>
+
+              ${this.renderQualityOptions()}
             </sl-select>
 
             <sl-input
@@ -188,20 +200,6 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
             >
               <span class="input-label" slot="label"> ${t('mainframe.level', { ns: 'ui' })} </span>
             </sl-input>
-
-            <sl-select
-              ${ref(this._qualityInputRef)}
-              name="quality"
-              value=${this._quality}
-              hoist
-              @sl-change=${this.handleQualityChange}
-            >
-              <span class="input-label" slot="label"> ${t('mainframe.quality', { ns: 'ui' })} </span>
-
-              ${QUALITIES.map(
-                (quality) => html` <sl-option value=${quality}> ${formatter.formatQuality(quality)} </sl-option>`,
-              )}
-            </sl-select>
           </div>
 
           ${this._programName
@@ -230,6 +228,20 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
     `;
   }
 
+  private renderQualityOptions = () => {
+    const highestAvailableQuality = this._programName
+      ? this.controller.getHighestAvailableQuality(this._programName)
+      : 0;
+    const formatter = this.controller.formatter;
+
+    const result: unknown[] = [];
+    for (let quality = 0; quality <= highestAvailableQuality; quality++) {
+      result.push(html`<sl-option value=${quality}> ${formatter.formatQuality(quality)} </sl-option>`);
+    }
+
+    return result;
+  };
+
   private handleClose = (event: Event) => {
     event.preventDefault();
     event.stopPropagation();
@@ -246,6 +258,18 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
     this._programName = programName;
 
     const state = { ...window.history.state, programName } as IMainframePageHistoryState;
+    window.history.replaceState(state, '');
+  };
+
+  private handleQualityChange = () => {
+    if (!this._qualityInputRef.value) {
+      return;
+    }
+
+    const quality = +this._qualityInputRef.value.value;
+    this._quality = quality;
+
+    const state = { ...window.history.state, quality } as IMainframePageHistoryState;
     window.history.replaceState(state, '');
   };
 
@@ -271,18 +295,6 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
     window.history.replaceState(state, '');
   };
 
-  private handleQualityChange = () => {
-    if (!this._qualityInputRef.value) {
-      return;
-    }
-
-    const quality = +this._qualityInputRef.value.value;
-    this._quality = quality;
-
-    const state = { ...window.history.state, quality } as IMainframePageHistoryState;
-    window.history.replaceState(state, '');
-  };
-
   private handleOpenConfirmationAlert = (event: Event) => {
     event.stopPropagation();
     event.preventDefault();
@@ -298,8 +310,8 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
 
       const confirmationAlertParameters = {
         programName: this._programName,
-        level: formatter.formatNumberDecimal(ownedProgram.level),
         quality: formatter.formatQuality(ownedProgram.quality),
+        level: formatter.formatNumberDecimal(ownedProgram.level),
       };
 
       this.dispatchEvent(
@@ -325,7 +337,7 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
       return;
     }
 
-    const isBought = this.controller.purchaseProgram(this._programName, this._level, this._quality);
+    const isBought = this.controller.purchaseProgram(this._programName, this._quality, this._level);
 
     if (isBought) {
       this.dispatchEvent(new PurchaseProgramDialogCloseEvent());

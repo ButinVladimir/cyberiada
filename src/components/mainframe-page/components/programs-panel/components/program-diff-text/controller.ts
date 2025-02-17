@@ -6,11 +6,11 @@ export class ProgramDiffTextController extends BaseController {
   private _selectedProgram?: IProgram;
 
   get ram(): number {
-    return this.mainframeHardwareState.ram.level;
+    return this.mainframeState.hardware.ram.level;
   }
 
   get cores(): number {
-    return this.mainframeHardwareState.cores.level;
+    return this.mainframeState.hardware.cores.level;
   }
 
   getSelectedProgram(name: ProgramName, level: number, quality: number): IProgram {
@@ -33,7 +33,7 @@ export class ProgramDiffTextController extends BaseController {
   }
 
   getOwnedProgram(name: ProgramName): IProgram | undefined {
-    return this.mainframeProgramsState.getOwnedProgramByName(name);
+    return this.mainframeState.programs.getOwnedProgramByName(name);
   }
 
   private deleteSelectedProgram() {

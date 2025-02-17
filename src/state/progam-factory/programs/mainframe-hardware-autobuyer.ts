@@ -1,28 +1,28 @@
 import { binarySearchDecimal } from '@shared/helpers';
-import { IMainframeHardwareParameter } from '@state/mainframe/mainframe-hardware-state/interfaces/mainframe-hardware-parameter';
-import { IMainframeHardwareAutomationState } from '@state/automation/mainframe-hardware-automation-state/interfaces/mainframe-hardware-automation-state';
-import { ProgramName } from '../types';
+import { IMainframeHardwareParameter } from '@state/mainframe-state/states/mainframe-hardware-state/interfaces/mainframe-hardware-parameter';
+import { IAutomationState } from '@state/automation-state/interfaces/automation-state';
+import { OtherProgramName } from '../types';
 import { BaseProgram } from './base-program';
 import { IMainframeHardwareAutobuyerParameters } from '../interfaces/program-parameters/mainframe-hardware-autobuyer-parameters';
 
 export class MainframeHardwareAutobuyerProgram extends BaseProgram {
-  public readonly name = ProgramName.mainframeHardwareAutobuyer;
+  public readonly name = OtherProgramName.mainframeHardwareAutobuyer;
   public readonly isRepeatable = true;
   public readonly isAutoscalable = false;
 
-  private _mainframeHardwareAutomationState: IMainframeHardwareAutomationState;
+  private _automationState: IAutomationState;
 
   constructor(parameters: IMainframeHardwareAutobuyerParameters) {
     super(parameters);
 
-    this._mainframeHardwareAutomationState = parameters.mainframeHardwareAutomationState;
+    this._automationState = parameters.automationState;
   }
 
   perform(threads: number): void {
     let actionsLeft = threads;
-    let availableMoney = (this.globalState.money.money * this._mainframeHardwareAutomationState.moneyShare) / 100;
+    let availableMoney = (this.globalState.money.money * this._automationState.mainframeHardware.moneyShare) / 100;
 
-    for (const parameter of this.mainframeHardwareState.listParameters()) {
+    for (const parameter of this.mainframeState.hardware.listParameters()) {
       if (actionsLeft === 0) {
         break;
       }

@@ -1,9 +1,9 @@
 import programs from '@configs/programs.json';
-import { ProgramName } from '../types';
+import { OtherProgramName } from '../types';
 import { BaseProgram } from './base-program';
 
 export class PredictiveComputatorProgram extends BaseProgram {
-  public readonly name = ProgramName.predictiveComputator;
+  public readonly name = OtherProgramName.predictiveComputator;
   public readonly isRepeatable = true;
   public readonly isAutoscalable = true;
 
@@ -20,8 +20,8 @@ export class PredictiveComputatorProgram extends BaseProgram {
           this.level *
           Math.pow(programData.speedModifierQualityMultiplier, this.quality) *
           (1 +
-            (this.mainframeHardwareState.performance.level - 1) *
-              this.scenarioState.currentValues.mainframeSoftware.performanceBoost),
+            (this.mainframeState.hardware.performance.level - 1) *
+              this.globalState.scenario.currentValues.mainframeSoftware.performanceBoost),
     );
   }
 }

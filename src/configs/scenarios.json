@@ -13,11 +13,27 @@
       "performanceBoost": 0.1
     },
     "developmentLevelRequirements": { "baseMultiplier": 30000, "base": 1.5 },
-    "pointsByProgramMultipliers": {
-      "program": 2
-    },
-    "discounts": {
-      "program": 4e6
+    "programMultipliers": {
+      "codeBase": {
+        "pointsPerCompletion": 2,
+        "completionsToMax": 3600,
+        "logBase": 2
+      },
+      "computationalBase": {
+        "pointsPerCompletion": 2,
+        "completionsToMax": 3600,
+        "logBase": 2
+      },
+      "connectivity": {
+        "pointsPerCompletion": 2,
+        "completionsToMax": 3600,
+        "logBase": 2
+      },
+      "rewards": {
+        "pointsPerCompletion": 2,
+        "completionsToMax": 3600,
+        "logBase": 2
+      }
     },
     "storyEvents": [
       {

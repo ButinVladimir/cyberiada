@@ -43,14 +43,14 @@ export class MessageLogState implements IMessageLogState {
       parameters,
     };
 
-    this._messages.unshift(message);
-    this._messages.splice(this._settingsState.messageLogSize);
+    this._messages.push(message);
+    this._messages.splice(0, this._messages.length - this._settingsState.messageLogSize);
 
     this.uiEventBatcher.enqueueEvent(MESSAGE_LOG_UI_EVENTS.UPDATED_MESSAGES);
 
     if (postToast && this._settingsState.toastDuration > 0) {
-      this._toasts.unshift(message);
-      this._toasts.splice(this._settingsState.messageLogSize);
+      this._toasts.push(message);
+      this._toasts.splice(0, this._toasts.length - this._settingsState.messageLogSize);
 
       this.uiEventBatcher.enqueueEvent(MESSAGE_LOG_UI_EVENTS.UPDATED_TOASTS);
     }
@@ -71,10 +71,7 @@ export class MessageLogState implements IMessageLogState {
   getToasts(): IMessage[] {
     this._stateUiConnector.connectEventHandler(this, MESSAGE_LOG_UI_EVENTS.UPDATED_TOASTS);
 
-    const toastsBatch = [...this._toasts];
-    toastsBatch.reverse();
-
-    this._toasts.splice(0);
+    const toastsBatch = this._toasts.splice(0);
 
     return toastsBatch;
   }

@@ -2,7 +2,7 @@ import { t } from 'i18next';
 import { css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
-import type { MainframeHardwareParameterType } from '@state/mainframe/mainframe-hardware-state/types';
+import type { MainframeHardwareParameterType } from '@state/mainframe-state/states/mainframe-hardware-state/types';
 import { MainframeHardwarePanelArticleBuyButtonController } from './controller';
 import { BuyHardwareEvent } from './events';
 

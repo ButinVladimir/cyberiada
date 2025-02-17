@@ -4,18 +4,18 @@ import { ProgramName } from '@state/progam-factory/types';
 
 export class OwnedProgramsListController extends BaseController {
   listOwnedPrograms(): IProgram[] {
-    return this.mainframeProgramsState.listOwnedPrograms();
+    return this.mainframeState.programs.listOwnedPrograms();
   }
 
   toggleAutoupgrade(active: boolean) {
-    this.mainframeProgramsState.toggleProgramsAutoUpgrade(active);
+    this.mainframeState.programs.toggleProgramsAutoUpgrade(active);
   }
 
   moveProgram(programName: ProgramName, newPosition: number) {
-    this.mainframeProgramsState.moveProgram(programName, newPosition);
+    this.mainframeState.programs.moveProgram(programName, newPosition);
   }
 
   upgradeMaxAllPrograms() {
-    this.mainframeProgramsState.upgradeMaxAllPrograms();
+    this.mainframeState.programs.upgradeMaxAllPrograms();
   }
 }
