@@ -2,7 +2,7 @@ import { t } from 'i18next';
 import { css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
-import { ProgramName } from '@state/progam-factory/types';
+import type { ProgramName } from '@state/progam-factory/types';
 import { PurchaseProgramDialogBuyButtonController } from './controller';
 import { BuyProgramEvent } from './events';
 
@@ -37,14 +37,18 @@ export class PurchaseProgramDialogBuyButton extends BaseComponent<PurchaseProgra
   }
 
   renderContent() {
-    const { formatter, money, developmentLevel } = this.controller;
+    const { formatter, money } = this.controller;
 
     const program = this.programName
-      ? this.controller.getSelectedProgram(this.programName, this.level, this.quality)
+      ? this.controller.getSelectedProgram(this.programName, this.quality, this.level)
       : undefined;
     const cost = program ? program.cost : 0;
 
-    const submitButtonDisabled = !(program && this.level <= developmentLevel && cost <= money);
+    const submitButtonDisabled = !(
+      program &&
+      cost <= money &&
+      this.controller.isProgramAvailable(program.name, this.quality, this.level)
+    );
 
     return html`
       <ca-purchase-tooltip cost=${cost} level=${this.level} slot="footer">

@@ -52,7 +52,13 @@ export class MainframeProgramsState implements IMainframeProgramsState {
       return false;
     }
 
-    if (programParameters.level > this._globalState.development.level) {
+    if (
+      !this._globalState.availableItems.programs.isProgramAvailable(
+        programParameters.name,
+        programParameters.quality,
+        programParameters.level,
+      )
+    ) {
       return false;
     }
 
@@ -74,7 +80,7 @@ export class MainframeProgramsState implements IMainframeProgramsState {
       return false;
     }
 
-    const checkProgramUpgrade = this.handleCheckProgramUpgrade(name, existingProgram.quality);
+    const checkProgramUpgrade = this.handleCheckProgramUpgrade(existingProgram);
     const level = binarySearchDecimal(existingProgram.level, this._globalState.development.level, checkProgramUpgrade);
 
     if (level <= existingProgram.level) {
@@ -139,8 +145,8 @@ export class MainframeProgramsState implements IMainframeProgramsState {
       this.addProgram(
         this._programFactory.makeProgram({
           name: programName,
-          level: 1,
           quality: 0,
+          level: 1,
           autoUpgradeEnabled: true,
         }),
       );
@@ -216,15 +222,21 @@ export class MainframeProgramsState implements IMainframeProgramsState {
     this._programsList = [];
   }
 
-  private handleCheckProgramUpgrade = (name: ProgramName, quality: number) => (level: number) => {
-    if (level > this._globalState.development.level) {
+  private handleCheckProgramUpgrade = (existingProgram: IProgram) => (level: number) => {
+    if (
+      !this._globalState.availableItems.programs.isProgramAvailable(
+        existingProgram.name,
+        existingProgram.quality,
+        level,
+      )
+    ) {
       return false;
     }
 
     const program = this._programFactory.makeProgram({
-      name,
+      name: existingProgram.name,
+      quality: existingProgram.quality,
       level,
-      quality,
       autoUpgradeEnabled: true,
     });
 

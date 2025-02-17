@@ -1,0 +1,17 @@
+{
+  "neutral": {
+    "programs": [
+      "shareServer",
+      "predictiveComputator",
+      "codeGenerator",
+      "circuitDesigner",
+      "informationCollector",
+      "dealMaker",
+      "mainframeHardwareAutobuyer",
+      "mainframeProgramsAutobuyer"
+    ]
+  },
+  "wsa": {
+    "programs": []
+  }
+}

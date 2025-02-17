@@ -32,6 +32,11 @@ export enum Scenario {
   tutorial = 'tutorial',
 }
 
+export enum Faction {
+  neutral = 'neutral',
+  wsa = 'wsa',
+}
+
 export enum GameStateEvent {
   gameStarted = 'gameStarted',
   gameSaved = 'gameSaved',

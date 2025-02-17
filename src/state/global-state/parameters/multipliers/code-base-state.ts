@@ -3,10 +3,10 @@ import { decorators } from '@state/container';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import { EventBatcher } from '@shared/event-batcher';
 import { TYPES } from '@state/types';
-import type { IGlobalState } from '../interfaces/global-state';
-import { ICodeBaseState } from '../interfaces/parameters/code-base-state';
-import { ICodeBaseSerializedState } from '../interfaces/serialized-states/code-base-serialized-state';
-import { GLOBAL_STATE_UI_EVENTS } from '../constants';
+import type { IGlobalState } from '../../interfaces/global-state';
+import { ICodeBaseState } from '../../interfaces/parameters/multipliers/code-base-state';
+import { ICodeBaseSerializedState } from '../../interfaces/serialized-states/multipliers/code-base-serialized-state';
+import { GLOBAL_STATE_UI_EVENTS } from '../../constants';
 
 const { lazyInject } = decorators;
 

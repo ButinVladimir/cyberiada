@@ -3,15 +3,15 @@ import { decorators } from '@state/container';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import { EventBatcher } from '@shared/event-batcher';
 import { TYPES } from '@state/types';
-import type { IGlobalState } from '../interfaces/global-state';
-import { IConnectivityState } from '../interfaces/parameters/connectivity-state';
-import { IConnectivitySerializedState } from '../interfaces/serialized-states/connectivity-serialized-state';
-import { GLOBAL_STATE_UI_EVENTS } from '../constants';
+import type { IGlobalState } from '../../interfaces/global-state';
+import { IComputationalBaseState } from '../../interfaces/parameters/multipliers/computational-base-state';
+import { IComputationalBaseSerializedState } from '../../interfaces/serialized-states/multipliers/computational-base-serialized-state';
+import { GLOBAL_STATE_UI_EVENTS } from '../../constants';
 
 const { lazyInject } = decorators;
 
 @injectable()
-export class ConnectivityState implements IConnectivityState {
+export class ComputationalBaseState implements IComputationalBaseState {
   readonly uiEventBatcher: EventBatcher;
 
   @lazyInject(TYPES.StateUIConnector)
@@ -75,7 +75,7 @@ export class ConnectivityState implements IConnectivityState {
   }
 
   // eslint-disable-next-line @typescript-eslint/require-await
-  async deserialize(serializedState: IConnectivitySerializedState): Promise<void> {
+  async deserialize(serializedState: IComputationalBaseSerializedState): Promise<void> {
     this._pointsByProgram = serializedState.pointsByProgram;
     this._costMultiplierByProgram = 1;
     this._totalCostMultiplier = 1;
@@ -83,7 +83,7 @@ export class ConnectivityState implements IConnectivityState {
     this.requestCostMultipliersRecalculation();
   }
 
-  serialize(): IConnectivitySerializedState {
+  serialize(): IComputationalBaseSerializedState {
     return {
       pointsByProgram: this._pointsByProgram,
     };
@@ -103,7 +103,7 @@ export class ConnectivityState implements IConnectivityState {
   }
 
   private updateMultiplierByProgram() {
-    const multipliers = this._globalState.scenario.currentValues.programMultipliers.connectivity;
+    const multipliers = this._globalState.scenario.currentValues.programMultipliers.computationalBase;
 
     const pointsLog =
       Math.log(1 + multipliers.completionsToMax * this._pointsByProgram) / Math.log(multipliers.logBase);

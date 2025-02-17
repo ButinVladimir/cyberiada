@@ -8,23 +8,21 @@ import {
   IUnlockedFeaturesState,
   IStoryEventsState,
   IScenarioState,
-  ICodeBaseState,
-  IComputationalBaseState,
-  IConnectivityState,
-  IRewardsState,
+  IFactionState,
+  IMultipliersState,
+  IAvailableItemsState,
 } from './parameters';
 
 export interface IGlobalState extends ISerializeable<IGlobalSerializedState> {
   randomSeed: number;
   scenario: IScenarioState;
+  faction: IFactionState;
   gameSpeed: GameSpeed;
   money: IMoneyState;
   time: ITimeState;
   development: IDevelopmentState;
-  codeBase: ICodeBaseState;
-  computationalBase: IComputationalBaseState;
-  connectivity: IConnectivityState;
-  rewards: IRewardsState;
+  multipliers: IMultipliersState;
+  availableItems: IAvailableItemsState;
   unlockedFeatures: IUnlockedFeaturesState;
   storyEvents: IStoryEventsState;
   makeNextTick(): void;

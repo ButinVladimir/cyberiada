@@ -62,6 +62,16 @@ export class MainframeProgramsAutobuyerProgram extends BaseProgram {
   private makeCheckProgramFunction =
     (existingProgram: IProgram, availableMoney: number) =>
     (level: number): boolean => {
+      if (
+        !this.globalState.availableItems.programs.isProgramAvailable(
+          existingProgram.name,
+          existingProgram.quality,
+          level,
+        )
+      ) {
+        return false;
+      }
+
       const newProgram = this._programFactory.makeProgram({
         level,
         name: existingProgram.name,

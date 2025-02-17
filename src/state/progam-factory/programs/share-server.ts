@@ -34,7 +34,7 @@ export class ShareServerProgram extends BaseProgram {
     const programData = programs[this.name];
 
     return (
-      this.globalState.rewards.totalMultiplier *
+      this.globalState.multipliers.rewards.totalMultiplier *
       this.calculateModifier(threads, usedRam, passedTime) *
       programData.money *
       Math.pow(programData.moneyQualityMultiplier, this.quality)
@@ -45,7 +45,7 @@ export class ShareServerProgram extends BaseProgram {
     const programData = programs[this.name];
 
     return (
-      this.globalState.rewards.totalMultiplier *
+      this.globalState.multipliers.rewards.totalMultiplier *
       this.calculateModifier(threads, usedRam, passedTime) *
       programData.developmentPoints *
       Math.pow(programData.developmentPointsQualityMultiplier, this.quality)

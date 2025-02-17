@@ -1,6 +1,6 @@
 import { IUIEventEmitter } from '@shared/interfaces/ui-event-emitter';
 import { ISerializeable } from '@shared/interfaces/serializable';
-import { ICodeBaseSerializedState } from '../serialized-states/code-base-serialized-state';
+import { ICodeBaseSerializedState } from '../../serialized-states/multipliers/code-base-serialized-state';
 
 export interface ICodeBaseState extends ISerializeable<ICodeBaseSerializedState>, IUIEventEmitter {
   pointsByProgram: number;

@@ -8,7 +8,7 @@ export class DealMakerProgram extends BaseProgram {
   public readonly isAutoscalable = false;
 
   perform(threads: number): void {
-    this.globalState.rewards.increasePointsByProgram(this.calculateDelta(threads));
+    this.globalState.multipliers.rewards.increasePointsByProgram(this.calculateDelta(threads));
   }
 
   calculateDelta(threads: number): number {

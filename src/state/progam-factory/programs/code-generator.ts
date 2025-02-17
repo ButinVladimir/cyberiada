@@ -8,7 +8,7 @@ export class CodeGeneratorProgram extends BaseProgram {
   public readonly isAutoscalable = false;
 
   perform(threads: number): void {
-    this.globalState.codeBase.increasePointsByProgram(this.calculateDelta(threads));
+    this.globalState.multipliers.codeBase.increasePointsByProgram(this.calculateDelta(threads));
   }
 
   calculateDelta(threads: number): number {

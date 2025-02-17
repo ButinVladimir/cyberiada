@@ -6,18 +6,18 @@ export class StatisticsMultipliersController extends BaseController {
   }
 
   get mainframeProgramCostMultiplier() {
-    return this.globalState.codeBase.totalCostMultiplier;
+    return this.globalState.multipliers.codeBase.totalCostMultiplier;
   }
 
   get mainframeHardwareCostMultiplier() {
-    return this.globalState.computationalBase.totalCostMultiplier;
+    return this.globalState.multipliers.computationalBase.totalCostMultiplier;
   }
 
   get overallCostMultiplier() {
-    return this.globalState.connectivity.totalCostMultiplier;
+    return this.globalState.multipliers.connectivity.totalCostMultiplier;
   }
 
   get rewardsMultiplier() {
-    return this.globalState.rewards.totalMultiplier;
+    return this.globalState.multipliers.rewards.totalMultiplier;
   }
 }

@@ -8,7 +8,7 @@ export class InformationCollectorProgram extends BaseProgram {
   public readonly isAutoscalable = false;
 
   perform(threads: number): void {
-    this.globalState.connectivity.increasePointsByProgram(this.calculateDelta(threads));
+    this.globalState.multipliers.connectivity.increasePointsByProgram(this.calculateDelta(threads));
   }
 
   calculateDelta(threads: number): number {

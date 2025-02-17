@@ -368,7 +368,7 @@
     },
     {
       "name": "ca-purchase-program-dialog",
-      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `_programInputRef` {`Ref<SlSelect>`} - \n\n  * `_levelInputRef` {`Ref<SlInput>`} - \n\n  * `_qualityInputRef` {`Ref<SlSelect>`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `_programName` - \n\n  * `_level` {`number`} - \n\n  * `_quality` {`number`} - \n\n  * `handleClose` - \n\n  * `handleProgramChange` - \n\n  * `handleLevelChange` - \n\n  * `handleQualityChange` - \n\n  * `handleOpenConfirmationAlert` - \n\n  * `handleConfirmConfirmationAlert` - \n\n  * `purchase` - \n\n  * `controller` {`PurchaseProgramDialogController`} - ",
+      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `_programInputRef` {`Ref<SlSelect>`} - \n\n  * `_qualityInputRef` {`Ref<SlSelect>`} - \n\n  * `_levelInputRef` {`Ref<SlInput>`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `_programName` - \n\n  * `_quality` {`number`} - \n\n  * `_level` {`number`} - \n\n  * `renderQualityOptions` - \n\n  * `handleClose` - \n\n  * `handleProgramChange` - \n\n  * `handleQualityChange` - \n\n  * `handleLevelChange` - \n\n  * `handleOpenConfirmationAlert` - \n\n  * `handleConfirmConfirmationAlert` - \n\n  * `purchase` - \n\n  * `controller` {`PurchaseProgramDialogController`} - ",
       "attributes": [
         {
           "name": "is-open",

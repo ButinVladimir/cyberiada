@@ -7,11 +7,10 @@ import type {
   IStoryEventsState,
   IDevelopmentState,
   IMoneyState,
-  ICodeBaseState,
   IUnlockedFeaturesState,
-  IComputationalBaseState,
-  IConnectivityState,
-  IRewardsState,
+  IMultipliersState,
+  IFactionState,
+  IAvailableItemsState,
 } from './interfaces';
 import { IGlobalState } from './interfaces/global-state';
 import { GameSpeed } from './types';
@@ -19,14 +18,12 @@ import { GameSpeed } from './types';
 @injectable()
 export class GlobalState implements IGlobalState {
   private _scenarioState: IScenarioState;
+  private _factionState: IFactionState;
   private _timeState: ITimeState;
   private _developmentState: IDevelopmentState;
   private _moneyState: IMoneyState;
-  private _codeBaseState: ICodeBaseState;
-  private _computationalBaseState: IComputationalBaseState;
-  private _connectivityState: IConnectivityState;
-  private _rewardsState: IRewardsState;
-
+  private _multipliersState: IMultipliersState;
+  private _availableItemsState: IAvailableItemsState;
   private _unlockedFeaturesState: IUnlockedFeaturesState;
   private _storyEventsState: IStoryEventsState;
 
@@ -35,26 +32,24 @@ export class GlobalState implements IGlobalState {
 
   constructor(
     @inject(TYPES.ScenarioState) _scenarioState: IScenarioState,
+    @inject(TYPES.FactionState) _factionState: IFactionState,
     @inject(TYPES.TimeState) _timeState: ITimeState,
     @inject(TYPES.DevelopmentState) _developmentState: IDevelopmentState,
     @inject(TYPES.MoneyState) _moneyState: IMoneyState,
-    @inject(TYPES.CodeBaseState) _codeBaseState: ICodeBaseState,
-    @inject(TYPES.ComputationalBaseState) _computationalBaseState: IComputationalBaseState,
-    @inject(TYPES.ConnectivityState) _connectivityState: IConnectivityState,
-    @inject(TYPES.RewardsState) _rewardsState: IRewardsState,
+    @inject(TYPES.MultipliersState) _multipliersState: IMultipliersState,
+    @inject(TYPES.AvailableItemsState) _availableItemsState: IAvailableItemsState,
     @inject(TYPES.UnlockedFeaturesState) _unlockedFeaturesState: IUnlockedFeaturesState,
     @inject(TYPES.StoryEventsState) _storyEventsState: IStoryEventsState,
   ) {
     this._scenarioState = _scenarioState;
+    this._factionState = _factionState;
     this._timeState = _timeState;
     this._developmentState = _developmentState;
     this._moneyState = _moneyState;
-    this._codeBaseState = _codeBaseState;
-    this._computationalBaseState = _computationalBaseState;
-    this._connectivityState = _connectivityState;
-    this._rewardsState = _rewardsState;
+    this._multipliersState = _multipliersState;
     this._unlockedFeaturesState = _unlockedFeaturesState;
     this._storyEventsState = _storyEventsState;
+    this._availableItemsState = _availableItemsState;
 
     this._randomSeed = 0;
     this._gameSpeed = GameSpeed.normal;
@@ -66,6 +61,10 @@ export class GlobalState implements IGlobalState {
 
   get scenario() {
     return this._scenarioState;
+  }
+
+  get faction() {
+    return this._factionState;
   }
 
   get gameSpeed() {
@@ -88,20 +87,12 @@ export class GlobalState implements IGlobalState {
     return this._developmentState;
   }
 
-  get codeBase(): ICodeBaseState {
-    return this._codeBaseState;
+  get multipliers(): IMultipliersState {
+    return this._multipliersState;
   }
 
-  get computationalBase(): IComputationalBaseState {
-    return this._computationalBaseState;
-  }
-
-  get connectivity(): IConnectivityState {
-    return this._connectivityState;
-  }
-
-  get rewards(): IRewardsState {
-    return this._rewardsState;
+  get availableItems(): IAvailableItemsState {
+    return this._availableItemsState;
   }
 
   get unlockedFeatures(): IUnlockedFeaturesState {
@@ -121,13 +112,12 @@ export class GlobalState implements IGlobalState {
     this._randomSeed = Date.now();
     this._gameSpeed = GameSpeed.normal;
     await this._scenarioState.startNewState();
+    await this._factionState.startNewState();
     await this._moneyState.startNewState();
     await this._timeState.startNewState();
     await this._developmentState.startNewState();
-    await this._codeBaseState.startNewState();
-    await this._computationalBaseState.startNewState();
-    await this._connectivityState.startNewState();
-    await this._rewardsState.startNewState();
+    await this._multipliersState.startNewState();
+    await this._availableItemsState.startNewState();
     await this._unlockedFeaturesState.startNewState();
     this.storyEvents.startNewState();
 
@@ -138,13 +128,12 @@ export class GlobalState implements IGlobalState {
     this._randomSeed = serializedState.randomSeed;
     this._gameSpeed = serializedState.gameSpeed;
     await this._scenarioState.deserialize(serializedState.scenario);
+    await this._factionState.deserialize(serializedState.faction);
     await this._moneyState.deserialize(serializedState.money);
     await this._timeState.deserialize(serializedState.time);
     await this._developmentState.deserialize(serializedState.development);
-    await this._codeBaseState.deserialize(serializedState.codeBase);
-    await this._computationalBaseState.deserialize(serializedState.computationalBase);
-    await this._connectivityState.deserialize(serializedState.connectivity);
-    await this._rewardsState.deserialize(serializedState.rewards);
+    await this._multipliersState.deserialize(serializedState.multipliers);
+    await this._availableItemsState.deserialize(serializedState.availableItems);
     await this._unlockedFeaturesState.deserialize(serializedState.unlockedFeatures);
 
     this.recalculate();
@@ -155,22 +144,18 @@ export class GlobalState implements IGlobalState {
       randomSeed: this.randomSeed,
       gameSpeed: this.gameSpeed,
       scenario: this._scenarioState.serialize(),
+      faction: this._factionState.serialize(),
       money: this._moneyState.serialize(),
       time: this._timeState.serialize(),
       development: this._developmentState.serialize(),
-      codeBase: this._codeBaseState.serialize(),
-      computationalBase: this._computationalBaseState.serialize(),
-      connectivity: this._connectivityState.serialize(),
-      rewards: this._rewardsState.serialize(),
+      multipliers: this._multipliersState.serialize(),
+      availableItems: this._availableItemsState.serialize(),
       unlockedFeatures: this._unlockedFeaturesState.serialize(),
     };
   }
 
   private recalculate() {
     this._developmentState.recalculateLevel();
-    this._codeBaseState.recalculateCostMultipliers();
-    this._computationalBaseState.recalculateCostMultipliers();
-    this._connectivityState.recalculateCostMultipliers();
-    this._rewardsState.recalculateMultipliers();
+    this._multipliersState.recalculate();
   }
 }

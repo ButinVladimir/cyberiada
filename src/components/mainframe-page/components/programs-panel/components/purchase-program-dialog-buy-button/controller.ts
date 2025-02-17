@@ -15,27 +15,27 @@ export class PurchaseProgramDialogBuyButtonController extends BaseController {
     return this.globalState.money.money;
   }
 
-  get developmentLevel(): number {
-    return this.globalState.development.level;
-  }
-
-  getSelectedProgram(name: ProgramName, level: number, quality: number): IProgram {
+  getSelectedProgram(name: ProgramName, quality: number, level: number): IProgram {
     if (
       this._selectedProgram?.name !== name ||
-      this._selectedProgram.level !== level ||
-      this._selectedProgram.quality !== quality
+      this._selectedProgram.quality !== quality ||
+      this._selectedProgram.level !== level
     ) {
       this.deleteSelectedProgram();
 
       this._selectedProgram = this.programFactory.makeProgram({
         name,
-        level,
         quality,
+        level,
         autoUpgradeEnabled: true,
       });
     }
 
     return this._selectedProgram;
+  }
+
+  isProgramAvailable(programName: ProgramName, quality: number, level: number): boolean {
+    return this.globalState.availableItems.programs.isProgramAvailable(programName, quality, level);
   }
 
   private deleteSelectedProgram() {

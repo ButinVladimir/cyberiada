@@ -8,7 +8,7 @@ export class CircuitDesignerProgram extends BaseProgram {
   public readonly isAutoscalable = false;
 
   perform(threads: number): void {
-    this.globalState.computationalBase.increasePointsByProgram(this.calculateDelta(threads));
+    this.globalState.multipliers.computationalBase.increasePointsByProgram(this.calculateDelta(threads));
   }
 
   calculateDelta(threads: number): number {

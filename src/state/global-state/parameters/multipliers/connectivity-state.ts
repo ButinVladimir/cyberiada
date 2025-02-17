@@ -3,15 +3,15 @@ import { decorators } from '@state/container';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import { EventBatcher } from '@shared/event-batcher';
 import { TYPES } from '@state/types';
-import type { IGlobalState } from '../interfaces/global-state';
-import { IComputationalBaseState } from '../interfaces/parameters/computational-base-state';
-import { IComputationalBaseSerializedState } from '../interfaces/serialized-states/computational-base-serialized-state';
-import { GLOBAL_STATE_UI_EVENTS } from '../constants';
+import type { IGlobalState } from '../../interfaces/global-state';
+import { IConnectivityState } from '../../interfaces/parameters/multipliers/connectivity-state';
+import { IConnectivitySerializedState } from '../../interfaces/serialized-states/multipliers/connectivity-serialized-state';
+import { GLOBAL_STATE_UI_EVENTS } from '../../constants';
 
 const { lazyInject } = decorators;
 
 @injectable()
-export class ComputationalBaseState implements IComputationalBaseState {
+export class ConnectivityState implements IConnectivityState {
   readonly uiEventBatcher: EventBatcher;
 
   @lazyInject(TYPES.StateUIConnector)
@@ -75,7 +75,7 @@ export class ComputationalBaseState implements IComputationalBaseState {
   }
 
   // eslint-disable-next-line @typescript-eslint/require-await
-  async deserialize(serializedState: IComputationalBaseSerializedState): Promise<void> {
+  async deserialize(serializedState: IConnectivitySerializedState): Promise<void> {
     this._pointsByProgram = serializedState.pointsByProgram;
     this._costMultiplierByProgram = 1;
     this._totalCostMultiplier = 1;
@@ -83,7 +83,7 @@ export class ComputationalBaseState implements IComputationalBaseState {
     this.requestCostMultipliersRecalculation();
   }
 
-  serialize(): IComputationalBaseSerializedState {
+  serialize(): IConnectivitySerializedState {
     return {
       pointsByProgram: this._pointsByProgram,
     };
@@ -103,7 +103,7 @@ export class ComputationalBaseState implements IComputationalBaseState {
   }
 
   private updateMultiplierByProgram() {
-    const multipliers = this._globalState.scenario.currentValues.programMultipliers.computationalBase;
+    const multipliers = this._globalState.scenario.currentValues.programMultipliers.connectivity;
 
     const pointsLog =
       Math.log(1 + multipliers.completionsToMax * this._pointsByProgram) / Math.log(multipliers.logBase);

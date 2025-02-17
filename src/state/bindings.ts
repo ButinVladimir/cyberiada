@@ -24,6 +24,14 @@ import {
   ConnectivityState,
   IRewardsState,
   RewardsState,
+  IMultipliersState,
+  MultipliersState,
+  IFactionState,
+  FactionState,
+  IAvailableProgramsState,
+  AvailableProgramsState,
+  IAvailableItemsState,
+  AvailableItemsState,
 } from '@state/global-state';
 import {
   IGrowthState,
@@ -95,11 +103,27 @@ container.bind<IRewardsState>(TYPES.RewardsState).to(RewardsState).inSingletonSc
 
 container.bind<IScenarioState>(TYPES.ScenarioState).to(ScenarioState).inSingletonScope().whenTargetIsDefault();
 
+container.bind<IFactionState>(TYPES.FactionState).to(FactionState).inSingletonScope().whenTargetIsDefault();
+
 container.bind<IStoryEventsState>(TYPES.StoryEventsState).to(StoryEventsState).inSingletonScope().whenTargetIsDefault();
 
 container
   .bind<IUnlockedFeaturesState>(TYPES.UnlockedFeaturesState)
   .to(UnlockedFeaturesState)
+  .inSingletonScope()
+  .whenTargetIsDefault();
+
+container.bind<IMultipliersState>(TYPES.MultipliersState).to(MultipliersState).inSingletonScope().whenTargetIsDefault();
+
+container
+  .bind<IAvailableProgramsState>(TYPES.AvailableProgramsState)
+  .to(AvailableProgramsState)
+  .inSingletonScope()
+  .whenTargetIsDefault();
+
+container
+  .bind<IAvailableItemsState>(TYPES.AvailableItemsState)
+  .to(AvailableItemsState)
   .inSingletonScope()
   .whenTargetIsDefault();
 

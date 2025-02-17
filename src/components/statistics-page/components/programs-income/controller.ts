@@ -2,18 +2,18 @@ import { BaseController } from '@shared/base-controller';
 
 export class StatisticsProgramsIncomeController extends BaseController {
   get codeBase() {
-    return this.globalState.codeBase.pointsByProgram;
+    return this.globalState.multipliers.codeBase.pointsByProgram;
   }
 
   get computationalBase() {
-    return this.globalState.computationalBase.pointsByProgram;
+    return this.globalState.multipliers.computationalBase.pointsByProgram;
   }
 
   get connectivity() {
-    return this.globalState.connectivity.pointsByProgram;
+    return this.globalState.multipliers.connectivity.pointsByProgram;
   }
 
   get rewards() {
-    return this.globalState.rewards.pointsByProgram;
+    return this.globalState.multipliers.rewards.pointsByProgram;
   }
 }

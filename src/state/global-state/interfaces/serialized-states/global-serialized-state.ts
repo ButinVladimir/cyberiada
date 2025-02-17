@@ -1,24 +1,22 @@
 import { GameSpeed } from '../../types';
 import { IDevelopmentSerializedState } from './development-serialized-state';
-import { ICodeBaseSerializedState } from './code-base-serialized-state';
 import { IMoneySerializedState } from './money-serialized-state';
 import { ITimeSerializedState } from './time-serialized-state';
 import { IUnlockedFeaturesSerializedState } from './unlocked-features-serialized-state';
 import { IScenarioSerializedState } from './scenario-serialized-state';
-import { IComputationalBaseSerializedState } from './computational-base-serialized-state';
-import { IConnectivitySerializedState } from './connectivity-serialized-state';
-import { IRewardsSerializedState } from './rewards-serialized-state';
+import { IMultipliersSerializedState } from './multipliers-serialized-state';
+import { IFactionSerializedState } from './factions-serialized-state';
+import { IAvailableItemsSerializedState } from './available-items-serialized-state';
 
 export interface IGlobalSerializedState {
   randomSeed: number;
   scenario: IScenarioSerializedState;
+  faction: IFactionSerializedState;
   gameSpeed: GameSpeed;
   money: IMoneySerializedState;
   time: ITimeSerializedState;
   development: IDevelopmentSerializedState;
-  codeBase: ICodeBaseSerializedState;
-  computationalBase: IComputationalBaseSerializedState;
-  connectivity: IConnectivitySerializedState;
-  rewards: IRewardsSerializedState;
+  multipliers: IMultipliersSerializedState;
+  availableItems: IAvailableItemsSerializedState;
   unlockedFeatures: IUnlockedFeaturesSerializedState;
 }
