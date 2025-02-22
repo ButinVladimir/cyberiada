@@ -1,13 +1,8 @@
-import {
-  ICodeBaseSerializedState,
-  IComputationalBaseSerializedState,
-  IConnectivitySerializedState,
-  IRewardsSerializedState,
-} from './multipliers';
+import { IMultiplierSerializedState } from './multiplier-serialized-state';
 
 export interface IMultipliersSerializedState {
-  codeBase: ICodeBaseSerializedState;
-  computationalBase: IComputationalBaseSerializedState;
-  connectivity: IConnectivitySerializedState;
-  rewards: IRewardsSerializedState;
+  codeBase: IMultiplierSerializedState;
+  computationalBase: IMultiplierSerializedState;
+  connectivity: IMultiplierSerializedState;
+  rewards: IMultiplierSerializedState;
 }

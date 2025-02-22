@@ -35,22 +35,22 @@
     "programMultipliers": {
       "codeBase": {
         "pointsPerCompletion": 1,
-        "completionsToMax": 86400,
+        "pointsToMax": 86400,
         "logBase": 20
       },
       "computationalBase": {
         "pointsPerCompletion": 1,
-        "completionsToMax": 86400,
+        "pointsToMax": 86400,
         "logBase": 20
       },
       "connectivity": {
         "pointsPerCompletion": 1,
-        "completionsToMax": 86400,
+        "pointsToMax": 86400,
         "logBase": 20
       },
       "rewards": {
         "pointsPerCompletion": 1,
-        "completionsToMax": 86400,
+        "pointsToMax": 86400,
         "logBase": 20
       }
     },

@@ -43,7 +43,7 @@ export const statisticsPanelContentStyle = [
 
     sl-icon[name='question-circle'] {
       position: relative;
-      top: 0.25em;
+      top: 0.2em;
       margin-left: 0.5em;
       color: var(--ca-hint-color);
       font-size: var(--sl-font-size-large);

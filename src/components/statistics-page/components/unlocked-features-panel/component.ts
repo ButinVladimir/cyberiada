@@ -43,8 +43,5 @@ export class StatisticsUnlockedFeaturesPanel extends BaseComponent<StatisticsUnl
     `;
   }
 
-  private renderFeature = (feature: Feature) => html`
-    <span> ${t(feature, { ns: 'features' })} </span>
-    <span></span>
-  `;
+  private renderFeature = (feature: Feature) => html` <span> ${t(feature, { ns: 'features' })} </span> `;
 }

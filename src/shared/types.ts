@@ -111,3 +111,5 @@ export enum Feature {
   cityOverview = 'cityOverview',
   companyManagement = 'companyManagement',
 }
+
+export type PointsMultiplierType = 'codeBase' | 'computationalBase' | 'connectivity' | 'rewards';

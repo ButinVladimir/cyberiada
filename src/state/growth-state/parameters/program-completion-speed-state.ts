@@ -26,11 +26,13 @@ export class ProgramCompletionSpeedState implements IProgramCompletionSpeedState
   private _mainframeState!: IMainframeState;
 
   private _multiplierByProgram: number;
+  private _multiplierByHardware: number;
   private _totalMultiplier: number;
   private _multiplierUpdateRequested: boolean;
 
   constructor() {
     this._multiplierByProgram = 1;
+    this._multiplierByHardware = 1;
     this._totalMultiplier = 1;
     this._multiplierUpdateRequested = false;
 
@@ -44,13 +46,19 @@ export class ProgramCompletionSpeedState implements IProgramCompletionSpeedState
     return this._multiplierByProgram;
   }
 
+  get multiplierByHardware() {
+    this._stateUiConnector.connectEventHandler(this, GROWTH_STATE_UI_EVENTS.PROGRAM_COMPLETION_SPEED_CHANGED);
+
+    return this._multiplierByHardware;
+  }
+
   get totalMultiplier() {
     this._stateUiConnector.connectEventHandler(this, GROWTH_STATE_UI_EVENTS.PROGRAM_COMPLETION_SPEED_CHANGED);
 
     return this._totalMultiplier;
   }
 
-  requestMultiplierRecalculation() {
+  requestMultipliersRecalculation() {
     this._multiplierUpdateRequested = true;
   }
 
@@ -62,6 +70,7 @@ export class ProgramCompletionSpeedState implements IProgramCompletionSpeedState
     this._multiplierUpdateRequested = false;
 
     this.updateMultiplierByProgram();
+    this.updateMultiplierByHardware();
     this.updateTotalMultiplier();
 
     this.uiEventBatcher.enqueueEvent(GROWTH_STATE_UI_EVENTS.PROGRAM_COMPLETION_SPEED_CHANGED);
@@ -71,27 +80,29 @@ export class ProgramCompletionSpeedState implements IProgramCompletionSpeedState
     const mainframeProcessesState = this._mainframeState.processes;
 
     const predictiveComputatorProcess = mainframeProcessesState.getProcessByName(OtherProgramName.predictiveComputator);
-    let newValue = 1;
 
     if (predictiveComputatorProcess?.isActive) {
-      newValue = (
-        predictiveComputatorProcess.program as PredictiveComputatorProgram
-      ).calculateProgramCompletionSpeedMultiplier(
+      const predictiveComputatorProgram = predictiveComputatorProcess.program as PredictiveComputatorProgram;
+
+      this._multiplierByProgram = predictiveComputatorProgram.calculateProgramCompletionSpeedMultiplier(
         mainframeProcessesState.availableCores,
         mainframeProcessesState.availableRam,
       );
+    } else {
+      this._multiplierByProgram = 1;
     }
+  }
 
-    this._multiplierByProgram = newValue;
+  private updateMultiplierByHardware() {
+    const mainframeHardwareState = this._mainframeState.hardware;
+
+    this._multiplierByHardware =
+      1 +
+      (mainframeHardwareState.performance.level - 1) *
+        this._globalState.scenario.currentValues.mainframeSoftware.performanceBoost;
   }
 
   private updateTotalMultiplier() {
-    const mainframeHardwareState = this._mainframeState.hardware;
-
-    this._totalMultiplier =
-      this._multiplierByProgram *
-      (1 +
-        (mainframeHardwareState.performance.level - 1) *
-          this._globalState.scenario.currentValues.mainframeSoftware.performanceBoost);
+    this._totalMultiplier = this._multiplierByProgram * this._multiplierByHardware;
   }
 }

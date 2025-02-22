@@ -12,17 +12,14 @@ import {
   DevelopmentState,
   IMoneyState,
   MoneyState,
-  ICodeBaseState,
+  IMultiplierState,
   CodeBaseState,
   IStoryEventsState,
   StoryEventsState,
   IUnlockedFeaturesState,
   UnlockedFeaturesState,
-  IComputationalBaseState,
   ComputationalBaseState,
-  IConnectivityState,
   ConnectivityState,
-  IRewardsState,
   RewardsState,
   IMultipliersState,
   MultipliersState,
@@ -40,8 +37,13 @@ import {
   MoneyGrowthState,
   IDevelopmentGrowthState,
   DevelopmentGrowthState,
-  ICodeBaseGrowthState,
+  IMultiplierGrowthState,
   CodeBaseGrowthState,
+  ComputationalBaseGrowthState,
+  ConnectivityGrowthState,
+  RewardsGrowthState,
+  IMultipliersGrowthState,
+  MultipliersGrowthState,
   IProgramCompletionSpeedState,
   ProgramCompletionSpeedState,
 } from '@state/growth-state';
@@ -85,21 +87,21 @@ container.bind<IDevelopmentState>(TYPES.DevelopmentState).to(DevelopmentState).i
 
 container.bind<IMoneyState>(TYPES.MoneyState).to(MoneyState).inSingletonScope().whenTargetIsDefault();
 
-container.bind<ICodeBaseState>(TYPES.CodeBaseState).to(CodeBaseState).inSingletonScope().whenTargetIsDefault();
+container.bind<IMultiplierState>(TYPES.CodeBaseState).to(CodeBaseState).inSingletonScope().whenTargetIsDefault();
 
 container
-  .bind<IComputationalBaseState>(TYPES.ComputationalBaseState)
+  .bind<IMultiplierState>(TYPES.ComputationalBaseState)
   .to(ComputationalBaseState)
   .inSingletonScope()
   .whenTargetIsDefault();
 
 container
-  .bind<IConnectivityState>(TYPES.ConnectivityState)
+  .bind<IMultiplierState>(TYPES.ConnectivityState)
   .to(ConnectivityState)
   .inSingletonScope()
   .whenTargetIsDefault();
 
-container.bind<IRewardsState>(TYPES.RewardsState).to(RewardsState).inSingletonScope().whenTargetIsDefault();
+container.bind<IMultiplierState>(TYPES.RewardsState).to(RewardsState).inSingletonScope().whenTargetIsDefault();
 
 container.bind<IScenarioState>(TYPES.ScenarioState).to(ScenarioState).inSingletonScope().whenTargetIsDefault();
 
@@ -138,8 +140,32 @@ container
   .whenTargetIsDefault();
 
 container
-  .bind<ICodeBaseGrowthState>(TYPES.CodeBaseGrowthState)
+  .bind<IMultiplierGrowthState>(TYPES.CodeBaseGrowthState)
   .to(CodeBaseGrowthState)
+  .inSingletonScope()
+  .whenTargetIsDefault();
+
+container
+  .bind<IMultiplierGrowthState>(TYPES.ComputationalBaseGrowthState)
+  .to(ComputationalBaseGrowthState)
+  .inSingletonScope()
+  .whenTargetIsDefault();
+
+container
+  .bind<IMultiplierGrowthState>(TYPES.ConnectivityGrowthState)
+  .to(ConnectivityGrowthState)
+  .inSingletonScope()
+  .whenTargetIsDefault();
+
+container
+  .bind<IMultiplierGrowthState>(TYPES.RewardsGrowthState)
+  .to(RewardsGrowthState)
+  .inSingletonScope()
+  .whenTargetIsDefault();
+
+container
+  .bind<IMultipliersGrowthState>(TYPES.MultipliersGrowthState)
+  .to(MultipliersGrowthState)
   .inSingletonScope()
   .whenTargetIsDefault();
 

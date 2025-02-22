@@ -9,19 +9,19 @@ shareServer:
   developmentPointsDiff: 'DP: Up to {{developmentPoints}} ({{developmentPointsDiff}}) per second'
 codeGenerator:
   name: Code generator
-  overview: Program to develop other programs. Generates code base points (CBP) and improves mainframe programs cost multiplier.
+  overview: Program to develop other programs. Generates code base points (CBP) and improves mainframe programs cost divisor.
   codeBasePointsProcess: 'CBP: {{value}} per completion ({{avgValue}} per second)'
   codeBasePointsProgram: "CBP: {{value}} per completion ({{minAvgValue}} \u2014 {{maxAvgValue}} per second)"
   codeBasePointsDiff: "CBP: {{value}} ({{valueDiff}}) per completion ({{minAvgValue}} \u2014 {{maxAvgValue}} per second) ({{minAvgValueDiff}} \u2014 {{maxAvgValueDiff}})"
 circuitDesigner:
   name: Circuit designer
-  overview: Program to develop circuit designs. Generates computational base points (CBP) and improves mainframe hardware cost multiplier.
+  overview: Program to develop circuit designs. Generates computational base points (CBP) and improves mainframe hardware cost divisor.
   computationalBasePointsProcess: 'CBP: {{value}} per completion ({{avgValue}} per second)'
   computationalBasePointsProgram: "CBP: {{value}} per completion ({{minAvgValue}} \u2014 {{maxAvgValue}} per second)"
   computationalBasePointsDiff: "CBP: {{value}} ({{valueDiff}}) per completion ({{minAvgValue}} \u2014 {{maxAvgValue}} per second) ({{minAvgValueDiff}} \u2014 {{maxAvgValueDiff}})"
 informationCollector:
   name: Information collector
-  overview: Program to collect all sorts of information. Generates connectivity points (CP) and improves overall cost multiplier and chances to receive new contracts.
+  overview: Program to collect all sorts of information. Generates connectivity points (CP) and improves overall cost divisor and chances to receive new contracts.
   connectivityPointsProcess: 'CP: {{value}} per completion ({{avgValue}} per second)'
   connectivityPointsProgram: "CP: {{value}} per completion ({{minAvgValue}} \u2014 {{maxAvgValue}} per second)"
   connectivityPointsDiff: "CP: {{value}} ({{valueDiff}}) per completion ({{minAvgValue}} \u2014 {{maxAvgValue}} per second) ({{minAvgValueDiff}} \u2014 {{maxAvgValueDiff}})"

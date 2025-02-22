@@ -1,14 +1,14 @@
 import {
-  ICodeBaseGrowthState,
+  IMultipliersGrowthState,
   IDevelopmentGrowthState,
   IMoneyGrowthState,
   IProgramCompletionSpeedState,
 } from './parameters';
 
 export interface IGrowthState {
-  moneyGrowth: IMoneyGrowthState;
-  developmentGrowth: IDevelopmentGrowthState;
-  codeBaseGrowth: ICodeBaseGrowthState;
+  money: IMoneyGrowthState;
+  development: IDevelopmentGrowthState;
+  multipliers: IMultipliersGrowthState;
   programCompletionSpeed: IProgramCompletionSpeedState;
   requestGrowthRecalculation(): void;
   recalculateGrowth(): void;

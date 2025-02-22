@@ -470,32 +470,7 @@
       "attributes": []
     },
     {
-      "name": "ca-statistics-development-growth",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `renderIncomeSource` - \n\n  * `controller` {`StatisticsDevelopmentGrowthController`} - ",
-      "attributes": []
-    },
-    {
-      "name": "ca-statistics-development-income",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `renderIncomeSource` - \n\n  * `controller` {`StatisticsDevelopmentIncomeController`} - ",
-      "attributes": []
-    },
-    {
       "name": "ca-statistics-expenses-panel",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - ",
-      "attributes": []
-    },
-    {
-      "name": "ca-statistics-general-panel",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `controller` {`StatisticsGeneralPanelController`} - ",
-      "attributes": []
-    },
-    {
-      "name": "ca-statistics-growth-panel",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - ",
-      "attributes": []
-    },
-    {
-      "name": "ca-statistics-income-panel",
       "description": "Properties:\n\n  * `styles` {`CSSResult`} - ",
       "attributes": []
     },
@@ -505,8 +480,77 @@
       "attributes": []
     },
     {
+      "name": "ca-statistics-general-panel",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `controller` {`StatisticsGeneralPanelController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-statistics-game-time",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `controller` {`StatisticsGameTimeController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-statistics-multipliers",
+      "description": "Attributes:\n\n  * `type` {`MultipliersType`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `type` {`MultipliersType`} - \n\n  * `controller` {`StatisticsMultipliersController`} - ",
+      "attributes": [
+        {
+          "name": "type",
+          "description": "`type` {`MultipliersType`} - \n\nProperty: type",
+          "values": [
+            {
+              "name": "mainframeHardwareCostDivisors"
+            },
+            {
+              "name": "mainframeProgramsCostDivisors"
+            },
+            {
+              "name": "overallCostDivisors"
+            },
+            {
+              "name": "rewards"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ca-statistics-program-completion-speed",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `controller` {`StatisticsProgramCompletionSpeedController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-statistics-growth-panel",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-statistics-development-growth",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `renderIncomeSource` - \n\n  * `controller` {`StatisticsDevelopmentGrowthController`} - ",
+      "attributes": []
+    },
+    {
       "name": "ca-statistics-money-growth",
       "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `renderIncomeSource` - \n\n  * `controller` {`StatisticsMoneyGrowthController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-statistics-multiplier-points-growth",
+      "description": "Attributes:\n\n  * `type` - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `type` - \n\n  * `controller` {`StatisticsMultiplierPointsGrowthController`} - ",
+      "attributes": [
+        {
+          "name": "type",
+          "description": "`type` - \n\nProperty: type"
+        }
+      ]
+    },
+    {
+      "name": "ca-statistics-income-panel",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-statistics-development-income",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `renderIncomeSource` - \n\n  * `controller` {`StatisticsDevelopmentIncomeController`} - ",
       "attributes": []
     },
     {
@@ -515,24 +559,14 @@
       "attributes": []
     },
     {
-      "name": "ca-statistics-multipliers",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `controller` {`StatisticsMultipliersController`} - ",
-      "attributes": []
-    },
-    {
-      "name": "ca-statistics-program-completion-speed",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `controller` {`StatisticsProgramCompletionSpeedController`} - ",
-      "attributes": []
-    },
-    {
-      "name": "ca-statistics-programs-growth",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `controller` {`StatisticsProgramsGrowthController`} - ",
-      "attributes": []
-    },
-    {
-      "name": "ca-statistics-programs-income",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `controller` {`StatisticsProgramsIncomeController`} - ",
-      "attributes": []
+      "name": "ca-statistics-multiplier-points-income",
+      "description": "Attributes:\n\n  * `type` - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `type` - \n\n  * `controller` {`StatisticsMultiplierPointsIncomeController`} - ",
+      "attributes": [
+        {
+          "name": "type",
+          "description": "`type` - \n\nProperty: type"
+        }
+      ]
     },
     {
       "name": "ca-statistics-unlocked-features-panel",

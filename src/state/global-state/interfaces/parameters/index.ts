@@ -1,4 +1,3 @@
-export * from './multipliers';
 export * from './available-items';
 export * from './development-state';
 export * from './money-state';
@@ -9,3 +8,4 @@ export * from './story-events-state';
 export * from './time-state';
 export * from './unlocked-features-state';
 export * from './faction-state';
+export * from './multiplier-state';

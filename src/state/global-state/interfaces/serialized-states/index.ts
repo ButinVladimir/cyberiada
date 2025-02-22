@@ -1,4 +1,3 @@
-export * from './multipliers';
 export * from './available-items';
 export * from './global-serialized-state';
 export * from './money-serialized-state';
@@ -9,3 +8,4 @@ export * from './available-items-serialized-state';
 export * from './unlocked-features-serialized-state';
 export * from './scenario-serialized-state';
 export * from './factions-serialized-state';
+export * from './multiplier-serialized-state';

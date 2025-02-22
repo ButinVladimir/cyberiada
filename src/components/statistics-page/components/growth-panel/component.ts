@@ -13,9 +13,13 @@ export class StatisticsGrowthPanel extends BaseComponent {
 
       <ca-statistics-development-growth></ca-statistics-development-growth>
 
-      <ca-statistics-program-completion-speed></ca-statistics-program-completion-speed>
+      <ca-statistics-multiplier-points-growth type="rewards"></ca-statistics-multiplier-points-growth>
 
-      <ca-statistics-programs-growth></ca-statistics-programs-growth>
+      <ca-statistics-multiplier-points-growth type="connectivity"></ca-statistics-multiplier-points-growth>
+
+      <ca-statistics-multiplier-points-growth type="codeBase"></ca-statistics-multiplier-points-growth>
+
+      <ca-statistics-multiplier-points-growth type="computationalBase"></ca-statistics-multiplier-points-growth>
     `;
   }
 }

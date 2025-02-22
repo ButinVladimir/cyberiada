@@ -14,7 +14,7 @@ export class MenuBarValuesController extends BaseController {
   }
 
   get developmentGrowth(): number {
-    return this.growthState.developmentGrowth.totalGrowth;
+    return this.growthState.development.totalGrowth;
   }
 
   get developmentPointsUntilNextLevel(): number {

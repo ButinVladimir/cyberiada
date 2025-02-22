@@ -13,7 +13,13 @@ export class StatisticsIncomePanel extends BaseComponent {
 
       <ca-statistics-development-income></ca-statistics-development-income>
 
-      <ca-statistics-programs-income></ca-statistics-programs-income>
+      <ca-statistics-multiplier-points-income type="rewards"></ca-statistics-multiplier-points-income>
+
+      <ca-statistics-multiplier-points-income type="connectivity"></ca-statistics-multiplier-points-income>
+
+      <ca-statistics-multiplier-points-income type="codeBase"></ca-statistics-multiplier-points-income>
+
+      <ca-statistics-multiplier-points-income type="computationalBase"></ca-statistics-multiplier-points-income>
     `;
   }
 }
