@@ -3,5 +3,5 @@ automationMainframeHardware: Mainframe hardware automation
 automationMainframePrograms: Mainframe programs automation
 mainframeHardware: Mainframe hardware
 mainframePrograms: Mainframe programs
-cityOverview: City overview
-companyManagement: Company management
+city: City
+company: Company

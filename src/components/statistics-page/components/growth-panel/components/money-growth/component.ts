@@ -24,16 +24,18 @@ export class StatisticsMoneyGrowth extends BaseComponent<StatisticsMoneyGrowthCo
     const total = this.controller.moneyTotalGrowth;
 
     return html`
-      <h4 class="title">${t('statistics.growth.money.title', { ns: 'ui' })}</h4>
+      <sl-details>
+        <h4 class="title" slot="summary">${t('statistics.growth.money.title', { ns: 'ui' })}</h4>
 
-      <div class="parameters-table">
-        ${INCOME_SOURCES.map((incomeSource) =>
-          this.renderIncomeSource(incomeSource, this.controller.getMoneyGrowthByIncomeSource(incomeSource)),
-        )}
+        <div class="parameters-table">
+          ${INCOME_SOURCES.map((incomeSource) =>
+            this.renderIncomeSource(incomeSource, this.controller.getMoneyGrowthByIncomeSource(incomeSource)),
+          )}
 
-        <span> ${t('statistics.total', { ns: 'ui' })} </span>
-        <span> ${formatter.formatNumberFloat(total)} </span>
-      </div>
+          <span> ${t('statistics.total', { ns: 'ui' })} </span>
+          <span> ${formatter.formatNumberFloat(total)} </span>
+        </div>
+      </sl-details>
     `;
   }
 

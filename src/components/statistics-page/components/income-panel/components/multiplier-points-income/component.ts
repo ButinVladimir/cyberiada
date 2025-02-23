@@ -29,24 +29,26 @@ export class StatisticsCodeBaseIncome extends BaseComponent<StatisticsMultiplier
     const pointsByProgram = this.controller.getPointsByProgram(this.type);
 
     return html`
-      <h4 class="title">
-        ${t(`statistics.income.${this.type}.title`, { ns: 'ui' })}
+      <sl-details>
+        <h4 class="title" slot="summary">
+          ${t(`statistics.income.${this.type}.title`, { ns: 'ui' })}
 
-        <sl-tooltip>
-          <span slot="content"> ${t(`statistics.hints.${this.type}`, { ns: 'ui' })} </span>
+          <sl-tooltip>
+            <span slot="content"> ${t(`statistics.hints.${this.type}`, { ns: 'ui' })} </span>
 
-          <sl-icon name="question-circle"></sl-icon>
-        </sl-tooltip>
-      </h4>
+            <sl-icon name="question-circle"></sl-icon>
+          </sl-tooltip>
+        </h4>
 
-      <div class="parameters-table">
-        ${pointsByProgram > 0
-          ? html`
-              <span> ${t(`statistics.income.${this.type}.pointsByProgram`, { ns: 'ui' })} </span>
-              <span> ${formatter.formatNumberFloat(pointsByProgram)} </span>
-            `
-          : nothing}
-      </div>
+        <div class="parameters-table">
+          ${pointsByProgram > 0
+            ? html`
+                <span> ${t(`statistics.income.${this.type}.pointsByProgram`, { ns: 'ui' })} </span>
+                <span> ${formatter.formatNumberFloat(pointsByProgram)} </span>
+              `
+            : nothing}
+        </div>
+      </sl-details>
     `;
   }
 }

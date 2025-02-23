@@ -68,7 +68,7 @@ export class DevelopmentState implements IDevelopmentState {
     return this._income.get(incomeSource) ?? 0;
   }
 
-  getNextLevelPoints(level: number): number {
+  getLevelPoints(level: number): number {
     if (level <= 0) {
       return 0;
     }

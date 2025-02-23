@@ -17,10 +17,14 @@ export const statisticsPanelContentStyle = [
   css`
     :host {
       display: block;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: var(--sl-spacing-large);
     }
 
     h4.title {
-      margin-bottom: var(--sl-spacing-2x-small);
+      margin-bottom: 0;
     }
 
     .parameters-table {
@@ -29,10 +33,6 @@ export const statisticsPanelContentStyle = [
       row-gap: var(--sl-spacing-3x-small);
       grid-template-columns: auto;
       grid-auto-rows: auto;
-    }
-
-    .parameters-table:not(:last-child) {
-      margin-bottom: var(--sl-spacing-large);
     }
 
     .parameters-table > span:nth-child(even) {

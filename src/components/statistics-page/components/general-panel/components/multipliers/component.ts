@@ -30,19 +30,21 @@ export class StatisticsMultipliers extends BaseComponent<StatisticsMultipliersCo
     const totalMultiplier = this.controller.getTotalMultiplier(this.type);
 
     return html`
-      <h4 class="title">${t(`statistics.general.${this.type}.title`, { ns: 'ui' })}</h4>
+      <sl-details>
+        <h4 class="title" slot="summary">${t(`statistics.general.${this.type}.title`, { ns: 'ui' })}</h4>
 
-      <div class="parameters-table">
-        ${multiplierByProgram > 1
-          ? html`
-              <span> ${t(`statistics.general.${this.type}.multiplierByProgram`, { ns: 'ui' })} </span>
-              <span> ${formatter.formatNumberFloat(multiplierByProgram)} </span>
-            `
-          : nothing}
+        <div class="parameters-table">
+          ${multiplierByProgram > 1
+            ? html`
+                <span> ${t(`statistics.general.${this.type}.multiplierByProgram`, { ns: 'ui' })} </span>
+                <span> ${formatter.formatNumberFloat(multiplierByProgram)} </span>
+              `
+            : nothing}
 
-        <span> ${t('statistics.total', { ns: 'ui' })} </span>
-        <span> ${formatter.formatNumberFloat(totalMultiplier)} </span>
-      </div>
+          <span> ${t('statistics.total', { ns: 'ui' })} </span>
+          <span> ${formatter.formatNumberFloat(totalMultiplier)} </span>
+        </div>
+      </sl-details>
     `;
   }
 }

@@ -24,16 +24,18 @@ export class StatisticsDevelopmentGrowth extends BaseComponent<StatisticsDevelop
     const total = this.controller.developmentTotalGrowth;
 
     return html`
-      <h4 class="title">${t('statistics.growth.developmentPoints.title', { ns: 'ui' })}</h4>
+      <sl-details>
+        <h4 class="title" slot="summary">${t('statistics.growth.developmentPoints.title', { ns: 'ui' })}</h4>
 
-      <div class="parameters-table">
-        ${INCOME_SOURCES.map((incomeSource) =>
-          this.renderIncomeSource(incomeSource, this.controller.getDevelopmentGrowthByIncoumeSource(incomeSource)),
-        )}
+        <div class="parameters-table">
+          ${INCOME_SOURCES.map((incomeSource) =>
+            this.renderIncomeSource(incomeSource, this.controller.getDevelopmentGrowthByIncoumeSource(incomeSource)),
+          )}
 
-        <span> ${t('statistics.total', { ns: 'ui' })} </span>
-        <span> ${formatter.formatNumberFloat(total)} </span>
-      </div>
+          <span> ${t('statistics.total', { ns: 'ui' })} </span>
+          <span> ${formatter.formatNumberFloat(total)} </span>
+        </div>
+      </sl-details>
     `;
   }
 

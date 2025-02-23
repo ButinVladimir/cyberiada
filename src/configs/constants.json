@@ -7,7 +7,7 @@
     "autosaveEnabled": true,
     "autosaveInterval": 60000,
     "fastSpeedMultiplier": 5,
-    "maxUpdatesPerTick": 10000,
+    "maxUpdatesPerTick": 1000,
     "longNumberFormat": "short",
     "mapSize": 3
   },
@@ -66,8 +66,8 @@
     }
   },
   "menuUnlockRequirements": {
-    "cityOverview": "cityOverview",
-    "companyManagement": "companyManagement",
+    "city": "city",
+    "company": "company",
     "automation": "automation"
   }
 }

@@ -50,19 +50,16 @@ export class ProcessesListItemProgressColumn extends BaseComponent<ProcessesList
       progressBarHintTime = '';
     }
 
-    const progresBarValue = (process.currentCompletionPoints / process.maxCompletionPoints) * 100;
+    const progressBarValue = (process.currentCompletionPoints / process.maxCompletionPoints) * 100;
+    const progressBarPercentage = `${formatter.formatNumberFloat(progressBarValue)}%`;
 
     return process.program.isAutoscalable
       ? html`${t('mainframe.processes.instantCompletion', { ns: 'ui' })}`
       : html`<sl-tooltip>
           <span slot="content"> ${t(progressBarHintLabel, { ns: 'ui', time: progressBarHintTime })} </span>
 
-          <sl-progress-bar value=${progresBarValue}>
-            ${t('mainframe.processes.progressBarLabel', {
-              ns: 'ui',
-              currentCompletionPoints: formatter.formatNumberFloat(process.currentCompletionPoints),
-              maxCompletionPoints: formatter.formatNumberFloat(process.maxCompletionPoints),
-            })}
+          <sl-progress-bar value=${progressBarValue}>
+            ${progressBarPercentage}
           </sl-progress-bar>
         </sl-tooltip>`;
   }

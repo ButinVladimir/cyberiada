@@ -105,7 +105,7 @@ export class AlertFilterDialog extends BaseComponent<AlertFilterDialogController
   private renderGameAlertCheckbox = (gameAlert: GameAlert): TemplateResult => {
     return html`
       <sl-checkbox
-        size="medium"
+        size="small"
         name="event"
         value=${gameAlert}
         ?checked=${this.controller.isAlertEnabled(gameAlert)}

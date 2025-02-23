@@ -21,15 +21,17 @@ export class StatisticsGameTime extends BaseComponent<StatisticsGameTimeControll
     const formatter = this.controller.formatter;
 
     return html`
-      <h4 class="title">${t('statistics.general.gameTime.title', { ns: 'ui' })}</h4>
+      <sl-details>
+        <h4 class="title" slot="summary">${t('statistics.general.gameTime.title', { ns: 'ui' })}</h4>
+       
+        <div class="parameters-table">
+          <span> ${t('statistics.general.gameTime.timeThisRun', { ns: 'ui' })} </span>
+          <span> ${formatter.formatTimeShort(this.controller.gameTime)} </span>
 
-      <div class="parameters-table">
-        <span> ${t('statistics.general.gameTime.timeThisRun', { ns: 'ui' })} </span>
-        <span> ${formatter.formatTimeShort(this.controller.gameTime)} </span>
-
-        <span> ${t('statistics.general.gameTime.timeTotal', { ns: 'ui' })} </span>
-        <span> ${formatter.formatTimeShort(this.controller.gameTimeTotal)} </span>
-      </div>
+          <span> ${t('statistics.general.gameTime.timeTotal', { ns: 'ui' })} </span>
+          <span> ${formatter.formatTimeShort(this.controller.gameTimeTotal)} </span>
+        </div>
+      </sl-details>
     `;
   }
 }

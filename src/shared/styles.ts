@@ -16,7 +16,7 @@ export const pageTitleStyle = css`
 
 export const inputLabelStyle = css`
   span.input-label {
-    font-size: var(--sl-font-size-medium);
+    font-size: var(--sl-font-size-small);
     line-height: var(--sl-line-height-dense);
   }
 `;

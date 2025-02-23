@@ -29,24 +29,26 @@ export class StatisticsCodeBaseGrowth extends BaseComponent<StatisticsMultiplier
     const growthByProgram = this.controller.getGrowthByProgram(this.type);
 
     return html`
-      <h4 class="title">
-        ${t(`statistics.growth.${this.type}.title`, { ns: 'ui' })}
+      <sl-details>
+        <h4 class="title" slot="summary">
+          ${t(`statistics.growth.${this.type}.title`, { ns: 'ui' })}
 
-        <sl-tooltip>
-          <span slot="content"> ${t(`statistics.hints.${this.type}`, { ns: 'ui' })} </span>
+          <sl-tooltip>
+            <span slot="content"> ${t(`statistics.hints.${this.type}`, { ns: 'ui' })} </span>
 
-          <sl-icon name="question-circle"></sl-icon>
-        </sl-tooltip>
-      </h4>
+            <sl-icon name="question-circle"></sl-icon>
+          </sl-tooltip>
+        </h4>
 
-      <div class="parameters-table">
-        ${growthByProgram > 0
-          ? html`
-              <span>${t(`statistics.growth.${this.type}.growthByProgram`, { ns: 'ui' })} </span>
-              <span> ${formatter.formatNumberFloat(growthByProgram)} </span>
-            `
-          : nothing}
-      </div>
+        <div class="parameters-table">
+          ${growthByProgram > 0
+            ? html`
+                <span>${t(`statistics.growth.${this.type}.growthByProgram`, { ns: 'ui' })} </span>
+                <span> ${formatter.formatNumberFloat(growthByProgram)} </span>
+              `
+            : nothing}
+        </div>
+      </sl-details>
     `;
   }
 }

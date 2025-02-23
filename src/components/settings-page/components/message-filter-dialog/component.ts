@@ -107,7 +107,7 @@ export class MessageFilterDialog extends BaseComponent<MessageFilterDialogContro
   private renderEventCheckbox = (event: MessageEvent): TemplateResult => {
     return html`
       <sl-checkbox
-        size="medium"
+        size="small"
         name="event"
         value=${event}
         ?checked=${this.controller.isMessageEventEnabled(event)}

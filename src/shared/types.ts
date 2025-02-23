@@ -15,8 +15,9 @@ export enum Theme {
 }
 
 export enum OverviewMenuItem {
-  cityOverview = 'cityOverview',
-  companyManagement = 'companyManagement',
+  overview = 'overview',
+  city = 'city',
+  company = 'company',
   mainframe = 'mainframe',
   automation = 'automation',
   statistics = 'statistics',
@@ -108,8 +109,8 @@ export enum Feature {
   automationMainframePrograms = 'automationMainframePrograms',
   mainframeHardware = 'mainframeHardware',
   mainframePrograms = 'mainframePrograms',
-  cityOverview = 'cityOverview',
-  companyManagement = 'companyManagement',
+  city = 'city',
+  company = 'company',
 }
 
 export type PointsMultiplierType = 'codeBase' | 'computationalBase' | 'connectivity' | 'rewards';

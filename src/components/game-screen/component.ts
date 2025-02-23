@@ -125,7 +125,7 @@ export class GameScreen extends BaseComponent {
   private _menuOpened;
 
   @state()
-  private _selectedMenuItem?: OverviewMenuItem | MiscMenuItem;
+  private _selectedMenuItem?: OverviewMenuItem | MiscMenuItem = OverviewMenuItem.overview;
 
   constructor() {
     super();
@@ -133,7 +133,7 @@ export class GameScreen extends BaseComponent {
     const historyState = history.state as IHistoryState;
 
     this._menuOpened = historyState.menuOpened;
-    this._selectedMenuItem = historyState.selectedMenuItem ?? undefined;
+    this._selectedMenuItem = historyState.selectedMenuItem ?? OverviewMenuItem.overview;
   }
 
   connectedCallback() {

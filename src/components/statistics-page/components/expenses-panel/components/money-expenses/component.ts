@@ -27,16 +27,18 @@ export class StatisticsMoneyExpenses extends BaseComponent<StatisticsMoneyExpens
     );
 
     return html`
-      <h4 class="title">${t('statistics.expenses.money.title', { ns: 'ui' })}</h4>
+      <sl-details>
+        <h4 class="title" slot="summary">${t('statistics.expenses.money.title', { ns: 'ui' })}</h4>
 
-      <div class="parameters-table">
-        ${PURCHASE_TYPES.map((purchaseType) =>
-          this.renderExpenseArticle(purchaseType, this.controller.getMoneyExpenses(purchaseType)),
-        )}
+        <div class="parameters-table">
+          ${PURCHASE_TYPES.map((purchaseType) =>
+            this.renderExpenseArticle(purchaseType, this.controller.getMoneyExpenses(purchaseType)),
+          )}
 
-        <span> ${t('statistics.total', { ns: 'ui' })} </span>
-        <span> ${formatter.formatNumberFloat(moneyTotal)} </span>
-      </div>
+          <span> ${t('statistics.total', { ns: 'ui' })} </span>
+          <span> ${formatter.formatNumberFloat(moneyTotal)} </span>
+        </div>
+      </sl-details>
     `;
   }
 

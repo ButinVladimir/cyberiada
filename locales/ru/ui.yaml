@@ -11,8 +11,9 @@ common:
   higherDevelopmentLevelRequired: Требуется больший уровень развития
   upgrade: Улучшить
 pages:
-  cityOverview: Обзор города
-  companyManagement: Управление компанией
+  overview: Обзор
+  city: Город
+  company: Компания
   mainframe: Мейнфрейм
   statistics: Статистика
   settings: Настройки
@@ -80,7 +81,7 @@ settings:
   notificationTypeFilterHint: Включите уведомления в фильтре, чтобы они появлялись, когда соответствующее события произошли
   notificationTypeToggle: Показывать подобные уведомления в будущем
 city:
-  cityOverview:
+  city:
     title: Обзор города
     hint: Кликните на подсвеченный район, чтобы просмотреть информацию о нем и доступные с ним действия.
     toggleZoomPanel: Показать/скрыть панель масштабирования

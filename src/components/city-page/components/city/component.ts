@@ -4,12 +4,12 @@ import { customElement, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { BaseComponent } from '@shared/base-component';
 import { pageTitleStyle } from '@shared/styles';
-import { CityOverviewController } from './controller';
+import { CityController } from './controller';
 import { CityMapDistrictSelectEvent } from './components/city-map-canvas/events';
 import { MapCellZoomChangeEvent } from './components/map-cell-zoom-panel/events';
 
-@customElement('ca-city-overview')
-export class CityOverview extends BaseComponent<CityOverviewController> {
+@customElement('ca-city')
+export class City extends BaseComponent<CityController> {
   static styles = [
     pageTitleStyle,
     css`
@@ -54,7 +54,7 @@ export class CityOverview extends BaseComponent<CityOverviewController> {
     `,
   ];
 
-  protected controller: CityOverviewController;
+  protected controller: CityController;
 
   @state()
   private _selectedDistrict?: number;
@@ -62,7 +62,7 @@ export class CityOverview extends BaseComponent<CityOverviewController> {
   constructor() {
     super();
 
-    this.controller = new CityOverviewController(this);
+    this.controller = new CityController(this);
   }
 
   renderContent() {

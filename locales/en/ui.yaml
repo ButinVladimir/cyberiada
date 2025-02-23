@@ -11,8 +11,9 @@ common:
   higherDevelopmentLevelRequired: Higher development level required
   upgrade: Upgrade
 pages:
-  cityOverview: City overview
-  companyManagement: Company management
+  overview: Overview
+  city: City
+  company: Company
   mainframe: Mainframe
   statistics: Statistics
   settings: Settings
@@ -79,9 +80,21 @@ settings:
   notificationTypeFilter: Notification type filter
   notificationTypeFilterHint: Enable notification types in filter to make them visible when event happens
   notificationTypeToggle: Show notifications like this in the future
+overview:
+  tabs:
+    progress: Progress
+    multipliers: Multipliers
+    unlockedItems: Unlocked items
+    unlockedFeatures: Unlocked features
+    story: Story
+  overview: Overview
+  progress:
+    nextDevelopmentLevelProgress: Next development level progress
+    nextLevelNotReachable: Next development level is not reachable
+    nextLevelReachedIn: Next development level will be reached in {{time}}
 city:
-  cityOverview:
-    title: City overview
+  city:
+    title: City
     hint: Click on a highlighted district to see it"s info and available actions.
     toggleZoomPanel: Toggle zoom panel
     zoom: Zoom
@@ -197,7 +210,7 @@ statistics:
     programCompletionSpeed:
       title: Process completion speed
       multiplierByHardware: Hardware multiplier
-      multiplierByProgram: By "Predictive computator" program
+      multiplierByProgram: Multiplier by "Predictive computator" program
     mainframeHardwareCostDivisors:
       title: Mainframe hardware cost divisors
       multiplierByProgram: By "Circuit designer" program

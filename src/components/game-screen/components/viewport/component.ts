@@ -53,7 +53,10 @@ export class Viewport extends BaseComponent<ViewportController> {
     }
 
     switch (this.selectedMenuItem) {
-      case OverviewMenuItem.cityOverview:
+      case OverviewMenuItem.overview:
+        return html`<ca-overview-page></ca-overview-page>`;
+
+      case OverviewMenuItem.city:
         return html`<ca-city-page></ca-city-page>`;
 
       case OverviewMenuItem.mainframe:

@@ -84,7 +84,7 @@ export class NotificationModal extends BaseComponent<NotificationModalController
         ? html`
             <sl-checkbox
               ref=${ref(this._notificationTypeToggleRef)}
-              size="medium"
+              size="small"
               name="notification-type"
               ?checked=${this._notificationTypeToggled}
               @sl-change=${this.handleToggleNotificationType}
