@@ -21,7 +21,7 @@ export enum OverviewMenuItem {
   mainframe = 'mainframe',
   automation = 'automation',
   statistics = 'statistics',
-  messageLog = 'message-log',
+  messageLog = 'messageLog',
 }
 
 export enum MiscMenuItem {
@@ -107,10 +107,14 @@ export enum Feature {
   automation = 'automation',
   automationMainframeHardware = 'automationMainframeHardware',
   automationMainframePrograms = 'automationMainframePrograms',
-  mainframeHardware = 'mainframeHardware',
-  mainframePrograms = 'mainframePrograms',
-  city = 'city',
-  company = 'company',
+  mainframeUpgrades = 'mainframeUpgrades',
+  companyManagement = 'companyManagement',
+  codeBasePoints = 'codeBasePoints',
+  computationalBasePoints = 'computationalBasePoints',
+  connectivityPoints = 'connectivityPoints',
+  rewardsPoints = 'rewardsPoints',
 }
 
 export type PointsMultiplierType = 'codeBase' | 'computationalBase' | 'connectivity' | 'rewards';
+
+export type ItemCategory = 'programs';

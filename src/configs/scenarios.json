@@ -44,13 +44,13 @@
       {
         "key": "tutorial_level_2",
         "level": 2,
-        "unlockFeatures": ["mainframeHardware", "mainframePrograms"],
+        "unlockFeatures": ["mainframeUpgrades"],
         "messages": ["tutorial_level_2"]
       },
       {
         "key": "tutorial_level_15",
         "level": 15,
-        "unlockFeatures": ["city", "company"],
+        "unlockFeatures": ["companyManagement"],
         "messages": ["tutorial_level_15"]
       }
     ]

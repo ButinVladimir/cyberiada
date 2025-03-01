@@ -25,7 +25,7 @@ import {
   MultipliersState,
   IFactionState,
   FactionState,
-  IAvailableProgramsState,
+  IAvailableCategoryItemsState,
   AvailableProgramsState,
   IAvailableItemsState,
   AvailableItemsState,
@@ -118,7 +118,7 @@ container
 container.bind<IMultipliersState>(TYPES.MultipliersState).to(MultipliersState).inSingletonScope().whenTargetIsDefault();
 
 container
-  .bind<IAvailableProgramsState>(TYPES.AvailableProgramsState)
+  .bind<IAvailableCategoryItemsState>(TYPES.AvailableProgramsState)
   .to(AvailableProgramsState)
   .inSingletonScope()
   .whenTargetIsDefault();

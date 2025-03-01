@@ -23,7 +23,7 @@ export class StatisticsGameTime extends BaseComponent<StatisticsGameTimeControll
     return html`
       <sl-details>
         <h4 class="title" slot="summary">${t('statistics.general.gameTime.title', { ns: 'ui' })}</h4>
-       
+
         <div class="parameters-table">
           <span> ${t('statistics.general.gameTime.timeThisRun', { ns: 'ui' })} </span>
           <span> ${formatter.formatTimeShort(this.controller.gameTime)} </span>

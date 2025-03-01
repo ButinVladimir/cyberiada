@@ -83,9 +83,6 @@ export class StatisticsPage extends BaseComponent {
 
       case StatisticsPageTabs.expenses:
         return html`<ca-statistics-expenses-panel></ca-statistics-expenses-panel>`;
-
-      case StatisticsPageTabs.unlockedFeatures:
-        return html`<ca-statistics-unlocked-features-panel></ca-statistics-unlocked-features-panel>`;
     }
   };
 

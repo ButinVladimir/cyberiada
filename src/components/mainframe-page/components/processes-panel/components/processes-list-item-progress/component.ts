@@ -58,9 +58,7 @@ export class ProcessesListItemProgressColumn extends BaseComponent<ProcessesList
       : html`<sl-tooltip>
           <span slot="content"> ${t(progressBarHintLabel, { ns: 'ui', time: progressBarHintTime })} </span>
 
-          <sl-progress-bar value=${progressBarValue}>
-            ${progressBarPercentage}
-          </sl-progress-bar>
+          <sl-progress-bar value=${progressBarValue}> ${progressBarPercentage} </sl-progress-bar>
         </sl-tooltip>`;
   }
 }

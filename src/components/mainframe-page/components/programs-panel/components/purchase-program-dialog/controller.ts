@@ -13,7 +13,7 @@ export class PurchaseProgramDialogController extends BaseController {
 
   getHighestAvailableQuality(programName: ProgramName): number {
     try {
-      return this.globalState.availableItems.programs.getProgramHighestAvailableQuality(programName);
+      return this.globalState.availableItems.programs.getItemHighestAvailableQuality(programName);
     } catch (e) {
       console.error(e);
     }
@@ -22,7 +22,7 @@ export class PurchaseProgramDialogController extends BaseController {
   }
 
   listAvailablePrograms(): ProgramName[] {
-    return this.globalState.availableItems.programs.listAvailablePrograms();
+    return this.globalState.availableItems.programs.listAvailableItems();
   }
 
   purchaseProgram(name: ProgramName, quality: number, level: number): boolean {

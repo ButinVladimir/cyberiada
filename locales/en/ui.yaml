@@ -19,7 +19,7 @@ pages:
   settings: Settings
   automation: Automation
   credits: Credits
-  message-log: Message log
+  messageLog: Message log
 topBar:
   menu: Toggle menu
   gameSpeedButtons:
@@ -51,14 +51,16 @@ settings:
   messageLogSizeHint: Excessive messages in log won"t be removed until new message is received
   toastDuration: Message popup duration (s)
   toastDurationHint: Set 0 to disable message popups
-  updateInterval: Update interval (ms)
+  framesPerSecond: Frames per second
+  framesPerSecondHint: Too high number can cause strain on CPU
   autosaveEnabled: Enable autosave
+  autosaveEnabledHint: Game is autosaved at regular intervals and when game tab is closing
   autosaveInterval: Autosave interval (s)
   autosaveIntervalHint: Too low number can cause strain on CPU
   fastSpeedMultiplier: Speed multiplier when game speed is fast
   fastSpeedMultiplierHint: Too high number can cause strain on CPU
-  maxUpdatesPerTick: Maximum amount of updates per tick
-  maxUpdatesPerTickHint: Too high number can cause strain on CPU
+  maxUpdatesPerFrame: Maximum amount of updates per frame
+  maxUpdatesPerFrameHint: Too high number can cause strain on CPU
   longNumberFormat: Long number format
   themes:
     light: Light
@@ -83,7 +85,6 @@ settings:
 overview:
   tabs:
     progress: Progress
-    multipliers: Multipliers
     unlockedItems: Unlocked items
     unlockedFeatures: Unlocked features
     story: Story
@@ -92,6 +93,13 @@ overview:
     nextDevelopmentLevelProgress: Next development level progress
     nextLevelNotReachable: Next development level is not reachable
     nextLevelReachedIn: Next development level will be reached in {{time}}
+    unlockedFeaturesProgress: Unlocked features progress
+  unlockedFeatures:
+    noFeatures: No features has been unlocked yet
+  unlockedItems:
+    noItems: No items has been unlocked yet
+    hint: Loaned items are items received on start and rewarded by capturing districts. Number next to item name is it's maximum quality available.
+    programs: Programs
 city:
   city:
     title: City

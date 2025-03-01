@@ -19,7 +19,7 @@ pages:
   settings: Настройки
   automation: Автоматизация
   credits: Титры
-  message-log: Лог сообщений
+  messageLog: Лог сообщений
 topBar:
   menu: Показать/скрыть меню
   gameSpeedButtons:
@@ -51,14 +51,16 @@ settings:
   messageLogSizeHint: Лишние сообщения не будут удалены, пока не будет получено новое сообщение
   toastDuration: Время, как долго всплывающие сообщения будут на экране (сек)
   toastDurationHint: Выберите 0, чтобы выключить всплывающие сообщения
-  updateInterval: Интервал обновления (мс)
+  framesPerSecond: Кадров в секунду
+  framesPerSecondHint: Слишком большое значение может привести к нагрузке на процессор
   autosaveEnabled: Включить автосохранение
+  autosaveEnabledHint: Игра автоматически сохраняется через регулярные интервалы и когда вкладка с игрой закрывается
   autosaveInterval: Интервал автосохранения (сек)
   autosaveIntervalHint: Слишком малое значение может привести к нагрузке на процессор
   fastSpeedMultiplier: Множитель скорости при быстрой скорости игры
   fastSpeedMultiplierHint: Слишком большое значение может привести к нагрузке на процессор
-  maxUpdatesPerTick: Максимальное количество обновлений за тик
-  maxUpdatesPerTickHint: Слишком большое значение может привести к нагрузке на процессор
+  maxUpdatesPerFrame: Максимальное количество обновлений в кадр
+  maxUpdatesPerFrameHint: Слишком большое значение может привести к нагрузке на процессор
   longNumberFormat: Формат больших чисел
   themes:
     light: Светлая
@@ -80,6 +82,24 @@ settings:
   notificationTypeFilter: Фильтр уведомлений
   notificationTypeFilterHint: Включите уведомления в фильтре, чтобы они появлялись, когда соответствующее события произошли
   notificationTypeToggle: Показывать подобные уведомления в будущем
+overview:
+  tabs:
+    progress: Прогресс
+    unlockedItems: Разблокированные предметы
+    unlockedFeatures: Разблокированные возможности
+    story: История
+  overview: Обзор
+  progress:
+    nextDevelopmentLevelProgress: Прогресс следующего уровня развития
+    nextLevelNotReachable: Следующий уровень развития недостижим
+    nextLevelReachedIn: Следующий уровень развития будет достигнут через {{time}}
+    unlockedFeaturesProgress: Прогресс разблокирования возможностей
+  unlockedFeatures:
+    noFeatures: Нет разблокированных возможностей
+  unlockedItems:
+    noItems: Нет разблокированных предметов
+    hint: Одолженные предметы выдаются в начале и в качестве награды за захват районов. Число справа от названия предмета это его макимально доступное качество.
+    programs: Программы
 city:
   city:
     title: Обзор города

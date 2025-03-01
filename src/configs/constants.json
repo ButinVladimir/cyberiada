@@ -66,8 +66,8 @@
     }
   },
   "menuUnlockRequirements": {
-    "city": "city",
-    "company": "company",
+    "city": "companyManagement",
+    "company": "companyManagement",
     "automation": "automation"
   }
 }

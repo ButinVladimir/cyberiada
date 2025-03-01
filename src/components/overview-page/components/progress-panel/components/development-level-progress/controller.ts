@@ -1,6 +1,6 @@
 import { BaseController } from '@shared/base-controller';
 
-export class OverviewProgressPanelController extends BaseController {
+export class OverviewDevelopmentLevelProgressController extends BaseController {
   getCurrentDevelopmentLevelPoints() {
     const development = this.globalState.development;
 

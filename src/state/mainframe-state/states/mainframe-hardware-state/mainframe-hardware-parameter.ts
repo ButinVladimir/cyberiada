@@ -100,7 +100,7 @@ export abstract class MainframeHardwareParameter implements IMainframeHardwarePa
       return false;
     }
 
-    if (!this.globalState.unlockedFeatures.isFeatureUnlocked(Feature.mainframeHardware)) {
+    if (!this.globalState.unlockedFeatures.isFeatureUnlocked(Feature.mainframeUpgrades)) {
       return false;
     }
 

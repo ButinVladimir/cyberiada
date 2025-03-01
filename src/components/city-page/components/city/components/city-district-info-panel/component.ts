@@ -22,6 +22,6 @@ export class CityDistrictInfoPanel extends BaseComponent {
       return null;
     }
 
-    return html` <p>${t('city.cityOverview.name', { ns: 'ui' })}: ${this.districtInfo.name}</p> `;
+    return html` <p>${t('city.city.name', { ns: 'ui' })}: ${this.districtInfo.name}</p> `;
   }
 }

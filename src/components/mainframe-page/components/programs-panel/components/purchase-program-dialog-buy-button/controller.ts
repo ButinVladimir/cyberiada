@@ -35,7 +35,7 @@ export class PurchaseProgramDialogBuyButtonController extends BaseController {
   }
 
   isProgramAvailable(programName: ProgramName, quality: number, level: number): boolean {
-    return this.globalState.availableItems.programs.isProgramAvailable(programName, quality, level);
+    return this.globalState.availableItems.programs.isItemAvailable(programName, quality, level);
   }
 
   private deleteSelectedProgram() {

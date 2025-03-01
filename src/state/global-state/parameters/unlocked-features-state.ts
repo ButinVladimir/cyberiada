@@ -52,6 +52,8 @@ export class UnlockedFeaturesState implements IUnlockedFeaturesState {
   }
 
   listUnlockedFeatures(): Feature[] {
+    this._stateUiConnector.connectEventHandler(this, GLOBAL_STATE_UI_EVENTS.FEATURE_UNLOCKED);
+
     return Array.from(this._unlockedFeatures.values());
   }
 

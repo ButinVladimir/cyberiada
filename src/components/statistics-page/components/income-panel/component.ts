@@ -1,11 +1,21 @@
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
+import { Feature } from '@shared/types';
 import { statisticsPanelStyle } from '../../styles';
+import { StatisticsIncomePanelController } from './controller';
 
 @customElement('ca-statistics-income-panel')
-export class StatisticsIncomePanel extends BaseComponent {
+export class StatisticsIncomePanel extends BaseComponent<StatisticsIncomePanelController> {
   static styles = statisticsPanelStyle;
+
+  protected controller: StatisticsIncomePanelController;
+
+  constructor() {
+    super();
+
+    this.controller = new StatisticsIncomePanelController(this);
+  }
 
   renderContent() {
     return html`
@@ -13,13 +23,20 @@ export class StatisticsIncomePanel extends BaseComponent {
 
       <ca-statistics-development-income></ca-statistics-development-income>
 
-      <ca-statistics-multiplier-points-income type="rewards"></ca-statistics-multiplier-points-income>
-
-      <ca-statistics-multiplier-points-income type="connectivity"></ca-statistics-multiplier-points-income>
-
-      <ca-statistics-multiplier-points-income type="codeBase"></ca-statistics-multiplier-points-income>
-
-      <ca-statistics-multiplier-points-income type="computationalBase"></ca-statistics-multiplier-points-income>
+      ${this.controller.isFeatureUnlocked(Feature.rewardsPoints)
+        ? html`<ca-statistics-multiplier-points-income type="rewards"></ca-statistics-multiplier-points-income>`
+        : nothing}
+      ${this.controller.isFeatureUnlocked(Feature.connectivityPoints)
+        ? html`<ca-statistics-multiplier-points-income type="connectivity"></ca-statistics-multiplier-points-income>`
+        : nothing}
+      ${this.controller.isFeatureUnlocked(Feature.codeBasePoints)
+        ? html`<ca-statistics-multiplier-points-income type="codeBase"></ca-statistics-multiplier-points-income>`
+        : nothing}
+      ${this.controller.isFeatureUnlocked(Feature.computationalBasePoints)
+        ? html`<ca-statistics-multiplier-points-income
+            type="computationalBase"
+          ></ca-statistics-multiplier-points-income>`
+        : nothing}
     `;
   }
 }

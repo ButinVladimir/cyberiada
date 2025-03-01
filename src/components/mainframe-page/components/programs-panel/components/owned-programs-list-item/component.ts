@@ -3,92 +3,80 @@ import { css, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { OtherProgramName, ProgramName } from '@state/progam-factory/types';
-import { SCREEN_WIDTH_POINTS } from '@shared/styles';
+import { SCREEN_WIDTH_POINTS, hintIconStyle } from '@shared/styles';
 import { OwnedProgramsListItemController } from './controller';
 
 @customElement('ca-owned-programs-list-item')
 export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemController> {
-  static styles = css`
-    :host {
-      display: grid;
-      grid-template-columns: auto;
-      grid-template-rows: repeat(1fr);
-      gap: var(--sl-spacing-small);
-      padding: var(--sl-spacing-small);
-      box-sizing: border-box;
-    }
-
-    #drag-icon {
-      position: relative;
-      top: 0.15em;
-      left: -0.2em;
-      color: var(--ca-hint-color);
-    }
-
-    .desktop {
-      display: none;
-    }
-
-    .program {
-      cursor: grab;
-    }
-
-    .buttons {
-      align-items: center;
-      flex-direction: row;
-      gap: var(--sl-spacing-small);
-    }
-
-    .buttons.desktop {
-      justify-content: flex-end;
-      font-size: var(--sl-font-size-large);
-    }
-
-    .buttons.mobile {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: flex-start;
-    }
-
-    sl-icon[name='grip-vertical'] {
-      position: relative;
-      top: 0.2em;
-      color: var(--ca-hint-color);
-      font-size: var(--sl-font-size-large);
-    }
-
-    sl-icon[name='question-circle'] {
-      position: relative;
-      top: 0.25em;
-      margin-left: 0.5em;
-      color: var(--ca-hint-color);
-      font-size: var(--sl-font-size-large);
-    }
-
-    @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
+  static styles = [
+    hintIconStyle,
+    css`
       :host {
-        grid-template-columns: 2fr 1fr 1fr 0;
-        grid-template-rows: auto;
-        align-items: center;
+        display: grid;
+        grid-template-columns: auto;
+        grid-template-rows: repeat(1fr);
+        gap: var(--sl-spacing-small);
+        padding: var(--sl-spacing-small);
+        box-sizing: border-box;
       }
 
       .desktop {
-        display: block;
-      }
-
-      .mobile {
         display: none;
       }
 
-      .buttons.mobile {
-        display: none;
+      .program {
+        cursor: grab;
+      }
+
+      .buttons {
+        align-items: center;
+        flex-direction: row;
+        gap: var(--sl-spacing-small);
       }
 
       .buttons.desktop {
-        display: flex;
+        justify-content: flex-end;
+        font-size: var(--sl-font-size-large);
       }
-    }
-  `;
+
+      .buttons.mobile {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+      }
+
+      sl-icon[name='grip-vertical'] {
+        position: relative;
+        top: 0.2em;
+        color: var(--ca-hint-color);
+        font-size: var(--sl-font-size-large);
+      }
+
+      @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
+        :host {
+          grid-template-columns: 2fr 1fr 1fr 0;
+          grid-template-rows: auto;
+          align-items: center;
+        }
+
+        .desktop {
+          display: block;
+        }
+
+        .mobile {
+          display: none;
+        }
+
+        .buttons.mobile {
+          display: none;
+        }
+
+        .buttons.desktop {
+          display: flex;
+        }
+      }
+    `,
+  ];
 
   @property({
     attribute: 'program-name',

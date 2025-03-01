@@ -3,5 +3,4 @@ export enum StatisticsPageTabs {
   growth = 'growth',
   income = 'income',
   expenses = 'expenses',
-  unlockedFeatures = 'unlockedFeatures',
 }

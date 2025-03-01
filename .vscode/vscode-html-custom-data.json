@@ -66,8 +66,8 @@
       "attributes": []
     },
     {
-      "name": "ca-city-overview",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_selectedDistrict` {`number | undefined`} - \n\n  * `handleSelectDistrict` - \n\n  * `handleChangeZoom` - \n\n  * `controller` {`CityOverviewController`} - ",
+      "name": "ca-city",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_selectedDistrict` {`number | undefined`} - \n\n  * `handleSelectDistrict` - \n\n  * `handleChangeZoom` - \n\n  * `controller` {`CityController`} - ",
       "attributes": []
     },
     {
@@ -276,7 +276,7 @@
     },
     {
       "name": "ca-processes-list-item",
-      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `handleToggleProcess` - \n\n  * `handleOpenDeleteProcessDialog` - \n\n  * `handleConfirmDeleteProcessDialog` - \n\n  * `handleDragStart` - \n\n  * `controller` {`ProcessesListItemController`} - ",
+      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `programName` {`string`} - \n\n  * `handleToggleProcess` - \n\n  * `handleOpenDeleteProcessDialog` - \n\n  * `handleConfirmDeleteProcessDialog` - \n\n  * `handleDragStart` - \n\n  * `controller` {`ProcessesListItemController`} - ",
       "attributes": [
         {
           "name": "program-name",
@@ -307,7 +307,7 @@
     },
     {
       "name": "ca-owned-programs-list-item",
-      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `handleToggleAutoUpgrade` - \n\n  * `handleDragStart` - \n\n  * `handleUpgradeMax` - \n\n  * `controller` {`OwnedProgramsListItemController`} - ",
+      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `programName` {`string`} - \n\n  * `handleToggleAutoUpgrade` - \n\n  * `handleDragStart` - \n\n  * `handleUpgradeMax` - \n\n  * `controller` {`OwnedProgramsListItemController`} - ",
       "attributes": [
         {
           "name": "program-name",
@@ -388,6 +388,46 @@
       "attributes": []
     },
     {
+      "name": "ca-overview-page",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_tabGroupRef` {`Ref<SlTabGroup>`} - \n\n  * `renderTab` - \n\n  * `renderTabPanel` - \n\n  * `renderTabPanelContent` - \n\n  * `handleTabShow` - \n\n  * `handlePopState` - \n\n  * `_currentTab` {`OverviewPageTabs`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-overview-progress-panel",
+      "description": "Properties:\n\n  * `styles` {`CSSResult[]`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-overview-development-level-progress",
+      "description": "Properties:\n\n  * `styles` {`CSSResult[]`} - \n\n  * `controller` {`OverviewDevelopmentLevelProgressController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-overview-unlocked-features-progress",
+      "description": "Properties:\n\n  * `styles` {`CSSResult[]`} - \n\n  * `controller` {`OverviewUnlockedFeaturesProgressController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-overview-unlocked-features-panel",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `renderFeature` - \n\n  * `controller` {`OverviewUnlockedFeaturesPanelController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-overview-unlocked-items-panel",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `controller` {`OverviewUnlockedItemsPanelController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-overview-unlocked-category-items",
+      "description": "Attributes:\n\n  * `category` - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `category` - \n\n  * `renderList` - \n\n  * `renderListItem` - \n\n  * `controller` {`OverviewUnlockedCategoryItemsController`} - ",
+      "attributes": [
+        {
+          "name": "category",
+          "description": "`category` - \n\nProperty: category"
+        }
+      ]
+    },
+    {
       "name": "ca-settings-page",
       "description": "Properties:\n\n  * `styles` {`any[]`} - ",
       "attributes": []
@@ -437,7 +477,7 @@
     },
     {
       "name": "ca-settings-form",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_languageInputRef` {`Ref<SlSelect>`} - \n\n  * `_themeInputRef` {`Ref<SlSelect>`} - \n\n  * `_messageLogSizeInputRef` {`Ref<SlInput>`} - \n\n  * `_toastDurationInputRef` {`Ref<SlRange>`} - \n\n  * `_updateIntervalInputRef` {`Ref<SlRange>`} - \n\n  * `_autosaveEnabledSwitchRef` {`Ref<SlSwitch>`} - \n\n  * `_autosaveIntervalInputRef` {`Ref<SlRange>`} - \n\n  * `_fastSpeedMultiplierInputRef` {`Ref<SlRange>`} - \n\n  * `_maxUpdatesPerTickInputRef` {`Ref<SlInput>`} - \n\n  * `_longNumberFormatInputRef` {`Ref<SlSelect>`} - \n\n  * `handleChangeLanguage` - \n\n  * `handleChangeTheme` - \n\n  * `handleChangeMessageLogSize` - \n\n  * `handleChangeToastDuration` - \n\n  * `handleChangeUpdateInterval` - \n\n  * `handleChangeAutosaveEnabled` - \n\n  * `handleChangeAutosaveInterval` - \n\n  * `handleChangeFastSpeedMultiplier` - \n\n  * `handleChangeMaxUpdatesPerTick` - \n\n  * `handleChangeLongNumberFormat` - \n\n  * `timeSecondsFormatter` - \n\n  * `decimalNumberFormatter` - \n\n  * `controller` {`SettingsFormController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_languageInputRef` {`Ref<SlSelect>`} - \n\n  * `_themeInputRef` {`Ref<SlSelect>`} - \n\n  * `_messageLogSizeInputRef` {`Ref<SlInput>`} - \n\n  * `_toastDurationInputRef` {`Ref<SlRange>`} - \n\n  * `_updateFPSInputRef` {`Ref<SlRange>`} - \n\n  * `_autosaveEnabledSwitchRef` {`Ref<SlSwitch>`} - \n\n  * `_autosaveIntervalInputRef` {`Ref<SlRange>`} - \n\n  * `_fastSpeedMultiplierInputRef` {`Ref<SlRange>`} - \n\n  * `_maxUpdatesPerTickInputRef` {`Ref<SlInput>`} - \n\n  * `_longNumberFormatInputRef` {`Ref<SlSelect>`} - \n\n  * `handleChangeLanguage` - \n\n  * `handleChangeTheme` - \n\n  * `handleChangeMessageLogSize` - \n\n  * `handleChangeToastDuration` - \n\n  * `handleChangeUpdateFPS` - \n\n  * `handleChangeAutosaveEnabled` - \n\n  * `handleChangeAutosaveInterval` - \n\n  * `handleChangeFastSpeedMultiplier` - \n\n  * `handleChangeMaxUpdatesPerTick` - \n\n  * `handleChangeLongNumberFormat` - \n\n  * `timeSecondsFormatter` - \n\n  * `decimalNumberFormatter` - \n\n  * `controller` {`SettingsFormController`} - ",
       "attributes": []
     },
     {
@@ -520,7 +560,7 @@
     },
     {
       "name": "ca-statistics-growth-panel",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `controller` {`StatisticsGrowthPanelController`} - ",
       "attributes": []
     },
     {
@@ -545,7 +585,7 @@
     },
     {
       "name": "ca-statistics-income-panel",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `controller` {`StatisticsIncomePanelController`} - ",
       "attributes": []
     },
     {
@@ -567,11 +607,6 @@
           "description": "`type` - \n\nProperty: type"
         }
       ]
-    },
-    {
-      "name": "ca-statistics-unlocked-features-panel",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `renderFeature` - \n\n  * `controller` {`StatisticsUnlockedFeaturesPanelController`} - ",
-      "attributes": []
     }
   ],
   "globalAttributes": [],

@@ -67,9 +67,9 @@ export class City extends BaseComponent<CityController> {
 
   renderContent() {
     return html`
-      <h3 class="title">${t('city.cityOverview.title', { ns: 'ui' })}</h3>
+      <h3 class="title">${t('city.city.title', { ns: 'ui' })}</h3>
 
-      <p>${t('city.cityOverview.hint', { ns: 'ui' })}</p>
+      <p>${t('city.city.hint', { ns: 'ui' })}</p>
 
       <ca-map-cell-zoom-panel zoom=${this.controller.mapCellSize} @map-cell-zoom-change=${this.handleChangeZoom}>
       </ca-map-cell-zoom-panel>

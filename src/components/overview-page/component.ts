@@ -74,6 +74,13 @@ export class OverviewPage extends BaseComponent {
     switch (tab) {
       case OverviewPageTabs.progress:
         return html`<ca-overview-progress-panel></ca-overview-progress-panel>`;
+
+      case OverviewPageTabs.unlockedFeatures:
+        return html`<ca-overview-unlocked-features-panel></ca-overview-unlocked-features-panel>`;
+
+      case OverviewPageTabs.unlockedItems:
+        return html`<ca-overview-unlocked-items-panel></ca-overview-unlocked-items-panel>`;
+
       default:
         return html`123`;
     }

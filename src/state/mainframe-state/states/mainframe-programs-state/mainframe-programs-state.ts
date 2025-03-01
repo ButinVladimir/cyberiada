@@ -48,12 +48,12 @@ export class MainframeProgramsState implements IMainframeProgramsState {
   }
 
   purchaseProgram(programParameters: IMakeProgramParameters): boolean {
-    if (!this._globalState.unlockedFeatures.isFeatureUnlocked(Feature.mainframePrograms)) {
+    if (!this._globalState.unlockedFeatures.isFeatureUnlocked(Feature.mainframeUpgrades)) {
       return false;
     }
 
     if (
-      !this._globalState.availableItems.programs.isProgramAvailable(
+      !this._globalState.availableItems.programs.isItemAvailable(
         programParameters.name,
         programParameters.quality,
         programParameters.level,
@@ -224,11 +224,7 @@ export class MainframeProgramsState implements IMainframeProgramsState {
 
   private handleCheckProgramUpgrade = (existingProgram: IProgram) => (level: number) => {
     if (
-      !this._globalState.availableItems.programs.isProgramAvailable(
-        existingProgram.name,
-        existingProgram.quality,
-        level,
-      )
+      !this._globalState.availableItems.programs.isItemAvailable(existingProgram.name, existingProgram.quality, level)
     ) {
       return false;
     }
