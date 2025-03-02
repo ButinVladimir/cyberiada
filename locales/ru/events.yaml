@@ -10,12 +10,6 @@ fastForwarded:
 levelReached:
   name: Уровень развития достигнут
   message: Уровень развития {{level}} достигнут
-featureUnlocked:
-  name: Новая возможность разблокирована
-  message: Новая возможность "$t(features:{{feature}})" разблокирована
-storyEvent:
-  name: Сюжетное событие
-  message: $t(story:{{messageKey}})
 performanceUpgraded:
   name: Производительность мейнфрейма улучшена
   message: Производительность мейнфрейма улучшена до {{level}}

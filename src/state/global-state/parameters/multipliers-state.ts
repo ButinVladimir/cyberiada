@@ -1,26 +1,21 @@
 import { injectable, inject } from 'inversify';
 import { TYPES } from '@state/types';
 import { IMultipliersSerializedState } from '../interfaces/serialized-states/multipliers-serialized-state';
-import type {
-  ICodeBaseState,
-  IComputationalBaseState,
-  IConnectivityState,
-  IRewardsState,
-} from '../interfaces/parameters/multipliers';
-import { IMultipliersState } from '../interfaces/parameters/multipliers-state';
+import type { IMultiplierState } from '../interfaces/parameters/multiplier-state';
+import type { IMultipliersState } from '../interfaces/parameters/multipliers-state';
 
 @injectable()
 export class MultipliersState implements IMultipliersState {
-  private _codeBaseState: ICodeBaseState;
-  private _computationalBaseState: IComputationalBaseState;
-  private _connectivityState: IConnectivityState;
-  private _rewardsState: IRewardsState;
+  private _codeBaseState: IMultiplierState;
+  private _computationalBaseState: IMultiplierState;
+  private _connectivityState: IMultiplierState;
+  private _rewardsState: IMultiplierState;
 
   constructor(
-    @inject(TYPES.CodeBaseState) _codeBaseState: ICodeBaseState,
-    @inject(TYPES.ComputationalBaseState) _computationalBaseState: IComputationalBaseState,
-    @inject(TYPES.ConnectivityState) _connectivityState: IConnectivityState,
-    @inject(TYPES.RewardsState) _rewardsState: IRewardsState,
+    @inject(TYPES.CodeBaseState) _codeBaseState: IMultiplierState,
+    @inject(TYPES.ComputationalBaseState) _computationalBaseState: IMultiplierState,
+    @inject(TYPES.ConnectivityState) _connectivityState: IMultiplierState,
+    @inject(TYPES.RewardsState) _rewardsState: IMultiplierState,
   ) {
     this._codeBaseState = _codeBaseState;
     this._computationalBaseState = _computationalBaseState;
@@ -28,27 +23,27 @@ export class MultipliersState implements IMultipliersState {
     this._rewardsState = _rewardsState;
   }
 
-  get codeBase(): ICodeBaseState {
+  get codeBase() {
     return this._codeBaseState;
   }
 
-  get computationalBase(): IComputationalBaseState {
+  get computationalBase() {
     return this._computationalBaseState;
   }
 
-  get connectivity(): IConnectivityState {
+  get connectivity() {
     return this._connectivityState;
   }
 
-  get rewards(): IRewardsState {
+  get rewards() {
     return this._rewardsState;
   }
 
   recalculate() {
-    this._codeBaseState.recalculateCostMultipliers();
-    this._computationalBaseState.recalculateCostMultipliers();
-    this._connectivityState.recalculateCostMultipliers();
     this._rewardsState.recalculateMultipliers();
+    this._connectivityState.recalculateMultipliers();
+    this._codeBaseState.recalculateMultipliers();
+    this._computationalBaseState.recalculateMultipliers();
   }
 
   async startNewState(): Promise<void> {

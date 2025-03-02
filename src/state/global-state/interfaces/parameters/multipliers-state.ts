@@ -1,11 +1,11 @@
 import { ISerializeable } from '@shared/interfaces/serializable';
 import { IMultipliersSerializedState } from '../serialized-states/multipliers-serialized-state';
-import { ICodeBaseState, IComputationalBaseState, IConnectivityState, IRewardsState } from './multipliers';
+import { IMultiplierState } from './multiplier-state';
 
 export interface IMultipliersState extends ISerializeable<IMultipliersSerializedState> {
-  codeBase: ICodeBaseState;
-  computationalBase: IComputationalBaseState;
-  connectivity: IConnectivityState;
-  rewards: IRewardsState;
+  codeBase: IMultiplierState;
+  computationalBase: IMultiplierState;
+  connectivity: IMultiplierState;
+  rewards: IMultiplierState;
   recalculate(): void;
 }

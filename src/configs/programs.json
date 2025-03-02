@@ -26,7 +26,7 @@
     "completionPoints": { "baseMultiplier": 120000, "base": 1 },
     "cost": { "baseMultiplier": 60000, "base": 1.15 },
     "costQualityMultiplier": 10,
-    "unlockFeatures": [],
+    "unlockFeatures": ["codeBasePoints"],
     "codeBaseLevelMultiplier": 1,
     "codeBaseQualityMultiplier": 900
   },
@@ -35,7 +35,7 @@
     "completionPoints": { "baseMultiplier": 120000, "base": 1 },
     "cost": { "baseMultiplier": 60000, "base": 1.15 },
     "costQualityMultiplier": 10,
-    "unlockFeatures": [],
+    "unlockFeatures": ["computationalBasePoints"],
     "computationalBaseLevelMultiplier": 1,
     "computationalBaseQualityMultiplier": 900
   },
@@ -44,7 +44,7 @@
     "completionPoints": { "baseMultiplier": 120000, "base": 1 },
     "cost": { "baseMultiplier": 60000, "base": 1.15 },
     "costQualityMultiplier": 10,
-    "unlockFeatures": [],
+    "unlockFeatures": ["connectivityPoints"],
     "connectivityLevelMultiplier": 1,
     "connectivityQualityMultiplier": 900
   },
@@ -53,7 +53,7 @@
     "completionPoints": { "baseMultiplier": 120000, "base": 1 },
     "cost": { "baseMultiplier": 60000, "base": 1.15 },
     "costQualityMultiplier": 10,
-    "unlockFeatures": [],
+    "unlockFeatures": ["rewardsPoints"],
     "rewardsLevelMultiplier": 1,
     "rewardsQualityMultiplier": 900
   },

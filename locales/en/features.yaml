@@ -1,7 +1,45 @@
-automation: Automation
-automationMainframeHardware: Mainframe hardware automation
-automationMainframePrograms: Mainframe programs automation
-mainframeHardware: Mainframe hardware
-mainframePrograms: Mainframe programs
-cityOverview: City overview
-companyManagement: Company management
+automation:
+  title: Automation
+  hint: Automation page is available
+  unlockedMessage: Automation page is now available.
+automationMainframeHardware:
+  title: Mainframe hardware automation
+  hint: Mainframe hardware automation settings are available on automation page
+  unlockedMessage: Mainframe hardware automation settings are now available on automation page.
+automationMainframePrograms:
+  title: Mainframe programs automation
+  hint: Mainframe programs automation settings are available on automation page
+  unlockedMessage: Mainframe programs automation settings are now available on automation page.
+mainframeUpgrades:
+  title: Mainframe upgrades
+  hint: Mainframe hardware and programs are upgradable
+  unlockedMessage: Mainframe hardware and programs are now upgradable.
+companyManagement:
+  title: Company management
+  hint: Makes possible making clones from templates and sending them to perform side jobs in the city
+  unlockedMessage: Company management is now available.
+    It's now possible to make clones from templates and send them to perform side jobs in the city.
+codeBasePoints:
+  title: Code base points
+  hint: Reduces cost of purchasing mainframe programs
+  unlockedMessage: Code base points are now available.
+    Increase them to make mainframe programs cheaper.
+    Multipliers for programs and districts stack.
+computationalBasePoints:
+  title: Computational base points
+  hint: Reduces cost of upgrading mainframe hardware
+  unlockedMessage: Computational base points are now available.
+    Increase them to make mainframe hardware cheaper.
+    Multipliers for programs and districts stack.
+connectivityPoints:
+  title: Connectivity points
+  hint: Reduces cost of everything and increases chances to receive new contracts from selected faction
+  unlockedMessage: Connectivity points are now available.
+    Increase them to make everything cheaper and to increase chances of receiving new contracts from selected faction.
+    Multipliers for programs and districts stack.
+rewardsPoints:
+  title: Rewards points
+  hint: Increases rewards from everything
+  unlockedMessage: Rewards points are now available.
+    Increase them to get more rewards from everything.
+    Multipliers for programs and districts stack.

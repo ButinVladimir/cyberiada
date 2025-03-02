@@ -7,7 +7,7 @@
     "autosaveEnabled": true,
     "autosaveInterval": 60000,
     "fastSpeedMultiplier": 5,
-    "maxUpdatesPerTick": 10000,
+    "maxUpdatesPerTick": 1000,
     "longNumberFormat": "short",
     "mapSize": 3
   },
@@ -35,22 +35,22 @@
     "programMultipliers": {
       "codeBase": {
         "pointsPerCompletion": 1,
-        "completionsToMax": 86400,
+        "pointsToMax": 86400,
         "logBase": 20
       },
       "computationalBase": {
         "pointsPerCompletion": 1,
-        "completionsToMax": 86400,
+        "pointsToMax": 86400,
         "logBase": 20
       },
       "connectivity": {
         "pointsPerCompletion": 1,
-        "completionsToMax": 86400,
+        "pointsToMax": 86400,
         "logBase": 20
       },
       "rewards": {
         "pointsPerCompletion": 1,
-        "completionsToMax": 86400,
+        "pointsToMax": 86400,
         "logBase": 20
       }
     },
@@ -66,8 +66,8 @@
     }
   },
   "menuUnlockRequirements": {
-    "cityOverview": "cityOverview",
-    "companyManagement": "companyManagement",
+    "city": "companyManagement",
+    "company": "companyManagement",
     "automation": "automation"
   }
 }

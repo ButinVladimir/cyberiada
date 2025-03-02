@@ -78,7 +78,7 @@ export class ConfirmationAlert extends BaseComponent<ConfirmationAlertController
 
         <sl-checkbox
           ref=${ref(this._gameAlertToggleRef)}
-          size="medium"
+          size="small"
           name="game-alert"
           ?checked=${this._alertToggled}
           @sl-change=${this.handleToggleAlert}

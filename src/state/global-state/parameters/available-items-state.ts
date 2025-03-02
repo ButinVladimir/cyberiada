@@ -1,18 +1,18 @@
 import { injectable, inject } from 'inversify';
 import { TYPES } from '@state/types';
 import { IAvailableItemsSerializedState } from '../interfaces/serialized-states/available-items-serialized-state';
-import type { IAvailableProgramsState } from '../interfaces/parameters/available-items';
 import { IAvailableItemsState } from '../interfaces/parameters/available-items-state';
+import type { IAvailableCategoryItemsState } from '../interfaces/parameters/available-category-items-state';
 
 @injectable()
 export class AvailableItemsState implements IAvailableItemsState {
-  private _availableProgramsState: IAvailableProgramsState;
+  private _availableProgramsState: IAvailableCategoryItemsState;
 
-  constructor(@inject(TYPES.AvailableProgramsState) _availableProgramsState: IAvailableProgramsState) {
+  constructor(@inject(TYPES.AvailableProgramsState) _availableProgramsState: IAvailableCategoryItemsState) {
     this._availableProgramsState = _availableProgramsState;
   }
 
-  get programs(): IAvailableProgramsState {
+  get programs(): IAvailableCategoryItemsState {
     return this._availableProgramsState;
   }
 

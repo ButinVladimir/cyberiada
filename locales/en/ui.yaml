@@ -11,14 +11,15 @@ common:
   higherDevelopmentLevelRequired: Higher development level required
   upgrade: Upgrade
 pages:
-  cityOverview: City overview
-  companyManagement: Company management
+  overview: Overview
+  city: City
+  company: Company
   mainframe: Mainframe
   statistics: Statistics
   settings: Settings
   automation: Automation
   credits: Credits
-  message-log: Message log
+  messageLog: Message log
 topBar:
   menu: Toggle menu
   gameSpeedButtons:
@@ -50,14 +51,16 @@ settings:
   messageLogSizeHint: Excessive messages in log won"t be removed until new message is received
   toastDuration: Message popup duration (s)
   toastDurationHint: Set 0 to disable message popups
-  updateInterval: Update interval (ms)
+  framesPerSecond: Frames per second
+  framesPerSecondHint: Too high number can cause strain on CPU
   autosaveEnabled: Enable autosave
+  autosaveEnabledHint: Game is autosaved at regular intervals and when game tab is closing
   autosaveInterval: Autosave interval (s)
   autosaveIntervalHint: Too low number can cause strain on CPU
   fastSpeedMultiplier: Speed multiplier when game speed is fast
   fastSpeedMultiplierHint: Too high number can cause strain on CPU
-  maxUpdatesPerTick: Maximum amount of updates per tick
-  maxUpdatesPerTickHint: Too high number can cause strain on CPU
+  maxUpdatesPerFrame: Maximum amount of updates per frame
+  maxUpdatesPerFrameHint: Too high number can cause strain on CPU
   longNumberFormat: Long number format
   themes:
     light: Light
@@ -79,9 +82,37 @@ settings:
   notificationTypeFilter: Notification type filter
   notificationTypeFilterHint: Enable notification types in filter to make them visible when event happens
   notificationTypeToggle: Show notifications like this in the future
+overview:
+  tabs:
+    progress: Progress
+    unlockedItems: Unlocked items
+    unlockedFeatures: Unlocked features
+    story: Story
+  overview: Overview
+  progress:
+    nextDevelopmentLevelProgress: Next development level progress
+    nextLevelNotReachable: Next development level is not reachable
+    nextLevelReachedIn: Next development level will be reached in {{time}}
+    unlockedFeaturesProgress: Unlocked features progress
+  unlockedFeatures:
+    noFeatures: No features has been unlocked yet
+  unlockedItems:
+    noItems: No items has been unlocked yet
+    hint: Loaned items are items received on start and rewarded by capturing districts. Number next to item name is it's maximum quality available.
+    programs: Programs
+  story:
+    requirements:
+      level: development level {{level}}
+    unlockedFeatures: 'Unlocked features: {{features}}'
+    stateFilter: Event state filter
+    stateFilterOptions:
+      all: All events
+      available: Only available events
+      notAvailable: Only unavailable events
+      passed: Only passed events
 city:
-  cityOverview:
-    title: City overview
+  city:
+    title: City
     hint: Click on a highlighted district to see it"s info and available actions.
     toggleZoomPanel: Toggle zoom panel
     zoom: Zoom
@@ -186,50 +217,68 @@ statistics:
     unlockedFeatures: Unlocked features
   hints:
     codeBase: Code base affects cost multiplier for mainframe programs
-    computationalBase: Computationalbase affects cost multiplier for mainframe hardware upgrades
+    computationalBase: Computational base affects cost multiplier for mainframe hardware upgrades
     connectivity: Connectivity affects all cost multipliers and chances to receive new contracts
     rewards: Rewards affect all gains
   general:
-    time:
+    gameTime:
       title: In-game passed time
       timeThisRun: Since arrival to the city
       timeTotal: Total time
-    multipliers:
-      title: Multipliers and discounts
-      programCompletionSpeed: Predictive computator multiplier
-      mainframeHardwareCostMultiplier: Mainframe hardware cost multiplier (%)
-      mainframeProgramsCostMultiplier: Mainframe programs cost multiplier (%)
-      overallCostMultiplier: Overall cost multiplier (%)
-      rewardsMultilplier: Rewards multiplier (%)
-  growth:
     programCompletionSpeed:
       title: Process completion speed
-      pointsPerSecond: PCP per second
+      multiplierByHardware: Hardware multiplier
+      multiplierByProgram: Multiplier by "Predictive computator" program
+    mainframeHardwareCostDivisors:
+      title: Mainframe hardware cost divisors
+      multiplierByProgram: By "Circuit designer" program
+    mainframeProgramsCostDivisors:
+      title: Mainframe programs cost divisors
+      multiplierByProgram: By "Code generator" program
+    overallCostDivisors:
+      title: Overall cost divisors
+      multiplierByProgram: By "Information collector" program
+    rewards:
+      title: Rewards multipliers
+      multiplierByProgram: By "Deal maker" program
+  growth:
     money:
       title: Money income per second
-      program: By sharing server
+      program: By "Share server" program
     developmentPoints:
       title: Development points per second
-      program: By sharing server
-    pointsByPrograms:
-      title: Points per second generated by programs
-      computationalBase: Computationalbase
-      codeBase: Code base
-      connectivity: Connectivity
-      rewards: Rewards
+      program: By "Share server" program
+    computationalBase:
+      title: Computational base points per second
+      growthByProgram: By "Circuit designer" program
+    codeBase:
+      title: Code base points per second
+      growthByProgram: By "Code generator" program
+    connectivity:
+      title: Connectivity points per second
+      growthByProgram: By "Information collector" program
+    rewards:
+      title: Rewards points per second
+      growthByProgram: By "Deal maker" program
   income:
     money:
       title: Money income
-      program: By sharing server
+      program: By "Share server" program
     developmentPoints:
       title: Development points
-      program: By sharing server
-    pointsByPrograms:
-      title: Points generated by programs
-      computationalBase: Computationalbase
-      codeBase: Code base
-      connectivity: Connectivity
-      rewards: Rewards
+      program: By "Share server" program
+    computationalBase:
+      title: Computational base points
+      pointsByProgram: By "Circuit designer" program
+    codeBase:
+      title: Code base points
+      pointsByProgram: By "Code generator" program
+    connectivity:
+      title: Connectivity points
+      pointsByProgram: By "Information collector" program
+    rewards:
+      title: Rewards points
+      pointsByProgram: By "Deal maker" program
   expenses:
     money:
       title: Money expenses

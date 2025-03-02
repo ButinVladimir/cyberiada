@@ -48,7 +48,7 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
 
   private _toastDurationInputRef = createRef<SlRange>();
 
-  private _updateIntervalInputRef = createRef<SlRange>();
+  private _updateFPSInputRef = createRef<SlRange>();
 
   private _autosaveEnabledSwitchRef = createRef<SlSwitch>();
 
@@ -126,15 +126,17 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
       </sl-range>
 
       <sl-range
-        ${ref(this._updateIntervalInputRef)}
-        min=${constants.UPDATE_INTERVAL_MIN}
-        max=${constants.UPDATE_INTERVAL_MAX}
-        step=${constants.UPDATE_INTERVAL_STEP}
-        name="updateInterval"
-        value=${this.controller.updateInterval}
-        @sl-change=${this.handleChangeUpdateInterval}
+        ${ref(this._updateFPSInputRef)}
+        min=${constants.FPS_MIN}
+        max=${constants.FPS_MAX}
+        step=${constants.FPS_STEP}
+        name="fps"
+        value=${this.controller.fps}
+        @sl-change=${this.handleChangeUpdateFPS}
       >
-        <span class="input-label" slot="label"> ${t('settings.updateInterval', { ns: 'ui' })} </span>
+        <span class="input-label" slot="label"> ${t('settings.framesPerSecond', { ns: 'ui' })} </span>
+
+        <span slot="help-text"> ${t('settings.framesPerSecondHint', { ns: 'ui' })} </span>
       </sl-range>
 
       <sl-range
@@ -156,14 +158,14 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
         name="maxUpdatesPerTick"
         value=${this.controller.maxUpdatesPerTick}
         type="number"
-        min=${constants.MAX_UPDATES_PER_TICK_MIN}
-        max=${constants.MAX_UPDATES_PER_TICK_MAX}
-        step=${constants.MAX_UPDATES_PER_TICK_STEP}
+        min=${constants.MAX_UPDATES_PER_FRAME_MIN}
+        max=${constants.MAX_UPDATES_PER_FRAME_MAX}
+        step=${constants.MAX_UPDATES_PER_FRAME_STEP}
         @sl-change=${this.handleChangeMaxUpdatesPerTick}
       >
-        <span class="input-label" slot="label"> ${t('settings.maxUpdatesPerTick', { ns: 'ui' })} </span>
+        <span class="input-label" slot="label"> ${t('settings.maxUpdatesPerFrame', { ns: 'ui' })} </span>
 
-        <span slot="help-text"> ${t('settings.maxUpdatesPerTickHint', { ns: 'ui' })} </span>
+        <span slot="help-text"> ${t('settings.maxUpdatesPerFrameHint', { ns: 'ui' })} </span>
       </sl-input>
 
       <sl-select
@@ -184,12 +186,14 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
 
       <sl-switch
         ${ref(this._autosaveEnabledSwitchRef)}
-        size="large"
+        size="medium"
         name="autosaveEnabled"
         ?checked=${this.controller.autosaveEnabled}
         @sl-change=${this.handleChangeAutosaveEnabled}
       >
         <span class="input-label"> ${t('settings.autosaveEnabled', { ns: 'ui' })} </span>
+
+        <span slot="help-text"> ${t('settings.autosaveEnabledHint', { ns: 'ui' })} </span>
       </sl-switch>
 
       <sl-range
@@ -219,8 +223,8 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
       this._autosaveIntervalInputRef.value.tooltipFormatter = this.timeSecondsFormatter;
     }
 
-    if (this._updateIntervalInputRef.value) {
-      this._updateIntervalInputRef.value.tooltipFormatter = this.decimalNumberFormatter;
+    if (this._updateFPSInputRef.value) {
+      this._updateFPSInputRef.value.tooltipFormatter = this.decimalNumberFormatter;
     }
 
     if (this._fastSpeedMultiplierInputRef.value) {
@@ -275,12 +279,12 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
     this.controller.setToastDuration(this._toastDurationInputRef.value.value);
   };
 
-  private handleChangeUpdateInterval = () => {
-    if (!this._updateIntervalInputRef.value) {
+  private handleChangeUpdateFPS = () => {
+    if (!this._updateFPSInputRef.value) {
       return;
     }
 
-    this.controller.setUpdateInterval(this._updateIntervalInputRef.value.value);
+    this.controller.setUpdateFPS(this._updateFPSInputRef.value.value);
   };
 
   private handleChangeAutosaveEnabled = () => {
@@ -314,12 +318,12 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
 
     let value = this._maxUpdatesPerTickInputRef.value.valueAsNumber;
 
-    if (value < constants.MAX_UPDATES_PER_TICK_MIN) {
-      value = constants.MAX_UPDATES_PER_TICK_MIN;
+    if (value < constants.MAX_UPDATES_PER_FRAME_MIN) {
+      value = constants.MAX_UPDATES_PER_FRAME_MIN;
     }
 
-    if (value > constants.MAX_UPDATES_PER_TICK_MAX) {
-      value = constants.MAX_UPDATES_PER_TICK_MAX;
+    if (value > constants.MAX_UPDATES_PER_FRAME_MAX) {
+      value = constants.MAX_UPDATES_PER_FRAME_MAX;
     }
 
     this.controller.setMaxUpdatesPerTick(value);

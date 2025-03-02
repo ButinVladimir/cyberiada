@@ -35,7 +35,6 @@ export class GameScreen extends BaseComponent {
     .top-bar-inner-container {
       width: 100vw;
       max-width: var(--ca-width-screen);
-      display: flex;
       padding: var(--sl-spacing-2x-small);
     }
 
@@ -50,20 +49,19 @@ export class GameScreen extends BaseComponent {
     }
 
     .content-inner-container {
+      position: relative;
       width: 100vw;
       max-width: var(--ca-width-screen);
-      display: flex;
-      align-items: stretch;
+      height: 100%;
     }
 
     .menu-bar-container {
-      flex: 0 0 auto;
       box-sizing: border-box;
       background-color: var(--sl-panel-background-color);
-      height: calc(100vh - var(--ca-top-bar-height));
+      height: 100%;
       width: 0;
       position: absolute;
-      top: var(--ca-top-bar-height);
+      top: 0;
       left: 0;
       transition: width var(--sl-transition-x-fast) ease;
     }
@@ -75,9 +73,13 @@ export class GameScreen extends BaseComponent {
     }
 
     .viewport-container {
-      position: relative;
-      flex: 1 1 auto;
-      height: calc(100vh - var(--ca-top-bar-height));
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      scrollbar-width: thin;
+      overflow: auto;
     }
 
     .viewport-overlay {
@@ -103,7 +105,6 @@ export class GameScreen extends BaseComponent {
 
     @media (min-width: ${SCREEN_WIDTH_POINTS.WIDE_SCREEN}) {
       .menu-bar-container {
-        position: static;
         width: var(--ca-menu-bar-max-width);
         background-color: var(--sl-color-neutral-0);
         border-right: var(--ca-border);
@@ -112,6 +113,11 @@ export class GameScreen extends BaseComponent {
       .menu-bar-container.menu-opened {
         width: var(--ca-menu-bar-max-width);
         z-index: 0;
+      }
+
+      .viewport-container {
+        left: var(--ca-menu-bar-max-width);
+        width: calc(100% - var(--ca-menu-bar-max-width));
       }
 
       .viewport-overlay.menu-opened {
@@ -125,7 +131,7 @@ export class GameScreen extends BaseComponent {
   private _menuOpened;
 
   @state()
-  private _selectedMenuItem?: OverviewMenuItem | MiscMenuItem;
+  private _selectedMenuItem?: OverviewMenuItem | MiscMenuItem = OverviewMenuItem.overview;
 
   constructor() {
     super();
@@ -133,7 +139,7 @@ export class GameScreen extends BaseComponent {
     const historyState = history.state as IHistoryState;
 
     this._menuOpened = historyState.menuOpened;
-    this._selectedMenuItem = historyState.selectedMenuItem ?? undefined;
+    this._selectedMenuItem = historyState.selectedMenuItem ?? OverviewMenuItem.overview;
   }
 
   connectedCallback() {

@@ -16,6 +16,7 @@ import '@shoelace-style/shoelace/dist/components/tab-panel/tab-panel.js';
 import '@shoelace-style/shoelace/dist/components/progress-bar/progress-bar.js';
 import '@shoelace-style/shoelace/dist/components/switch/switch.js';
 import '@shoelace-style/shoelace/dist/components/alert/alert.js';
+import '@shoelace-style/shoelace/dist/components/details/details.js';
 
 import './shared';
 import './app-root';
@@ -29,3 +30,4 @@ import './statistics-page';
 import './automation-page';
 import './credits-page';
 import './message-log-page';
+import './overview-page';

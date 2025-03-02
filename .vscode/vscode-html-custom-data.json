@@ -66,8 +66,8 @@
       "attributes": []
     },
     {
-      "name": "ca-city-overview",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_selectedDistrict` {`number | undefined`} - \n\n  * `handleSelectDistrict` - \n\n  * `handleChangeZoom` - \n\n  * `controller` {`CityOverviewController`} - ",
+      "name": "ca-city",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_selectedDistrict` {`number | undefined`} - \n\n  * `handleSelectDistrict` - \n\n  * `handleChangeZoom` - \n\n  * `controller` {`CityController`} - ",
       "attributes": []
     },
     {
@@ -173,11 +173,6 @@
       "attributes": []
     },
     {
-      "name": "ca-top-bar-available-goals",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderTooltipContent` - \n\n  * `renderGoal` - \n\n  * `controller` {`TopBarAvailableGoalsController`} - ",
-      "attributes": []
-    },
-    {
       "name": "ca-game-speed-buttons",
       "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderButton` - \n\n  * `handleChangeGameSpeed` - \n\n  * `handleOpenFastForwardDialog` - \n\n  * `handleConfirmFastForwardDialog` - \n\n  * `controller` {`GameSpeedButtonsController`} - ",
       "attributes": []
@@ -276,7 +271,7 @@
     },
     {
       "name": "ca-processes-list-item",
-      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `handleToggleProcess` - \n\n  * `handleOpenDeleteProcessDialog` - \n\n  * `handleConfirmDeleteProcessDialog` - \n\n  * `handleDragStart` - \n\n  * `controller` {`ProcessesListItemController`} - ",
+      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `programName` {`string`} - \n\n  * `handleToggleProcess` - \n\n  * `handleOpenDeleteProcessDialog` - \n\n  * `handleConfirmDeleteProcessDialog` - \n\n  * `handleDragStart` - \n\n  * `controller` {`ProcessesListItemController`} - ",
       "attributes": [
         {
           "name": "program-name",
@@ -307,7 +302,7 @@
     },
     {
       "name": "ca-owned-programs-list-item",
-      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `handleToggleAutoUpgrade` - \n\n  * `handleDragStart` - \n\n  * `handleUpgradeMax` - \n\n  * `controller` {`OwnedProgramsListItemController`} - ",
+      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `programName` {`string`} - \n\n  * `handleToggleAutoUpgrade` - \n\n  * `handleDragStart` - \n\n  * `handleUpgradeMax` - \n\n  * `controller` {`OwnedProgramsListItemController`} - ",
       "attributes": [
         {
           "name": "program-name",
@@ -388,6 +383,76 @@
       "attributes": []
     },
     {
+      "name": "ca-overview-page",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_tabGroupRef` {`Ref<SlTabGroup>`} - \n\n  * `renderTab` - \n\n  * `renderTabPanel` - \n\n  * `renderTabPanelContent` - \n\n  * `handleTabShow` - \n\n  * `handlePopState` - \n\n  * `_currentTab` {`OverviewPageTabs`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-overview-progress-panel",
+      "description": "Properties:\n\n  * `styles` {`CSSResult[]`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-overview-development-level-progress",
+      "description": "Properties:\n\n  * `styles` {`CSSResult[]`} - \n\n  * `controller` {`OverviewDevelopmentLevelProgressController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-overview-unlocked-features-progress",
+      "description": "Properties:\n\n  * `styles` {`CSSResult[]`} - \n\n  * `controller` {`OverviewUnlockedFeaturesProgressController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-overview-story-panel",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_stateFilterInputRef` {`Ref<SlSelect>`} - \n\n  * `_stateFilter` - \n\n  * `renderGoalsList` - \n\n  * `renderGoal` - \n\n  * `handleStateFilterChange` - \n\n  * `controller` {`OverviewStoryPanelController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-overview-story-goal",
+      "description": "Attributes:\n\n  * `level` {`number | undefined`} - \n\n  * `messages` {`string | undefined`} - \n\n  * `unlock-features` {`string | undefined`} - \n\n  * `state` - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `level` {`number | undefined`} - \n\n  * `messages` {`string | undefined`} - \n\n  * `unlockFeatures` {`string | undefined`} - \n\n  * `state` - \n\n  * `renderSummary` - \n\n  * `renderDetails` - ",
+      "attributes": [
+        {
+          "name": "level",
+          "description": "`level` {`number | undefined`} - \n\nProperty: level",
+          "values": []
+        },
+        {
+          "name": "messages",
+          "description": "`messages` {`string | undefined`} - \n\nProperty: messages",
+          "values": []
+        },
+        {
+          "name": "unlock-features",
+          "description": "`unlock-features` {`string | undefined`} - \n\nProperty: unlockFeatures",
+          "values": []
+        },
+        {
+          "name": "state",
+          "description": "`state` - \n\nProperty: state"
+        }
+      ]
+    },
+    {
+      "name": "ca-overview-unlocked-features-panel",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `renderFeature` - \n\n  * `controller` {`OverviewUnlockedFeaturesPanelController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-overview-unlocked-items-panel",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `controller` {`OverviewUnlockedItemsPanelController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-overview-unlocked-category-items",
+      "description": "Attributes:\n\n  * `category` - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `category` - \n\n  * `renderList` - \n\n  * `renderListItem` - \n\n  * `controller` {`OverviewUnlockedCategoryItemsController`} - ",
+      "attributes": [
+        {
+          "name": "category",
+          "description": "`category` - \n\nProperty: category"
+        }
+      ]
+    },
+    {
       "name": "ca-settings-page",
       "description": "Properties:\n\n  * `styles` {`any[]`} - ",
       "attributes": []
@@ -437,7 +502,7 @@
     },
     {
       "name": "ca-settings-form",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_languageInputRef` {`Ref<SlSelect>`} - \n\n  * `_themeInputRef` {`Ref<SlSelect>`} - \n\n  * `_messageLogSizeInputRef` {`Ref<SlInput>`} - \n\n  * `_toastDurationInputRef` {`Ref<SlRange>`} - \n\n  * `_updateIntervalInputRef` {`Ref<SlRange>`} - \n\n  * `_autosaveEnabledSwitchRef` {`Ref<SlSwitch>`} - \n\n  * `_autosaveIntervalInputRef` {`Ref<SlRange>`} - \n\n  * `_fastSpeedMultiplierInputRef` {`Ref<SlRange>`} - \n\n  * `_maxUpdatesPerTickInputRef` {`Ref<SlInput>`} - \n\n  * `_longNumberFormatInputRef` {`Ref<SlSelect>`} - \n\n  * `handleChangeLanguage` - \n\n  * `handleChangeTheme` - \n\n  * `handleChangeMessageLogSize` - \n\n  * `handleChangeToastDuration` - \n\n  * `handleChangeUpdateInterval` - \n\n  * `handleChangeAutosaveEnabled` - \n\n  * `handleChangeAutosaveInterval` - \n\n  * `handleChangeFastSpeedMultiplier` - \n\n  * `handleChangeMaxUpdatesPerTick` - \n\n  * `handleChangeLongNumberFormat` - \n\n  * `timeSecondsFormatter` - \n\n  * `decimalNumberFormatter` - \n\n  * `controller` {`SettingsFormController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_languageInputRef` {`Ref<SlSelect>`} - \n\n  * `_themeInputRef` {`Ref<SlSelect>`} - \n\n  * `_messageLogSizeInputRef` {`Ref<SlInput>`} - \n\n  * `_toastDurationInputRef` {`Ref<SlRange>`} - \n\n  * `_updateFPSInputRef` {`Ref<SlRange>`} - \n\n  * `_autosaveEnabledSwitchRef` {`Ref<SlSwitch>`} - \n\n  * `_autosaveIntervalInputRef` {`Ref<SlRange>`} - \n\n  * `_fastSpeedMultiplierInputRef` {`Ref<SlRange>`} - \n\n  * `_maxUpdatesPerTickInputRef` {`Ref<SlInput>`} - \n\n  * `_longNumberFormatInputRef` {`Ref<SlSelect>`} - \n\n  * `handleChangeLanguage` - \n\n  * `handleChangeTheme` - \n\n  * `handleChangeMessageLogSize` - \n\n  * `handleChangeToastDuration` - \n\n  * `handleChangeUpdateFPS` - \n\n  * `handleChangeAutosaveEnabled` - \n\n  * `handleChangeAutosaveInterval` - \n\n  * `handleChangeFastSpeedMultiplier` - \n\n  * `handleChangeMaxUpdatesPerTick` - \n\n  * `handleChangeLongNumberFormat` - \n\n  * `timeSecondsFormatter` - \n\n  * `decimalNumberFormatter` - \n\n  * `controller` {`SettingsFormController`} - ",
       "attributes": []
     },
     {
@@ -470,32 +535,7 @@
       "attributes": []
     },
     {
-      "name": "ca-statistics-development-growth",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `renderIncomeSource` - \n\n  * `controller` {`StatisticsDevelopmentGrowthController`} - ",
-      "attributes": []
-    },
-    {
-      "name": "ca-statistics-development-income",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `renderIncomeSource` - \n\n  * `controller` {`StatisticsDevelopmentIncomeController`} - ",
-      "attributes": []
-    },
-    {
       "name": "ca-statistics-expenses-panel",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - ",
-      "attributes": []
-    },
-    {
-      "name": "ca-statistics-general-panel",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `controller` {`StatisticsGeneralPanelController`} - ",
-      "attributes": []
-    },
-    {
-      "name": "ca-statistics-growth-panel",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - ",
-      "attributes": []
-    },
-    {
-      "name": "ca-statistics-income-panel",
       "description": "Properties:\n\n  * `styles` {`CSSResult`} - ",
       "attributes": []
     },
@@ -505,8 +545,77 @@
       "attributes": []
     },
     {
+      "name": "ca-statistics-general-panel",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `controller` {`StatisticsGeneralPanelController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-statistics-game-time",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `controller` {`StatisticsGameTimeController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-statistics-multipliers",
+      "description": "Attributes:\n\n  * `type` {`MultipliersType`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `type` {`MultipliersType`} - \n\n  * `controller` {`StatisticsMultipliersController`} - ",
+      "attributes": [
+        {
+          "name": "type",
+          "description": "`type` {`MultipliersType`} - \n\nProperty: type",
+          "values": [
+            {
+              "name": "mainframeHardwareCostDivisors"
+            },
+            {
+              "name": "mainframeProgramsCostDivisors"
+            },
+            {
+              "name": "overallCostDivisors"
+            },
+            {
+              "name": "rewards"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ca-statistics-program-completion-speed",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `controller` {`StatisticsProgramCompletionSpeedController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-statistics-growth-panel",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `controller` {`StatisticsGrowthPanelController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-statistics-development-growth",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `renderIncomeSource` - \n\n  * `controller` {`StatisticsDevelopmentGrowthController`} - ",
+      "attributes": []
+    },
+    {
       "name": "ca-statistics-money-growth",
       "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `renderIncomeSource` - \n\n  * `controller` {`StatisticsMoneyGrowthController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-statistics-multiplier-points-growth",
+      "description": "Attributes:\n\n  * `type` - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `type` - \n\n  * `controller` {`StatisticsMultiplierPointsGrowthController`} - ",
+      "attributes": [
+        {
+          "name": "type",
+          "description": "`type` - \n\nProperty: type"
+        }
+      ]
+    },
+    {
+      "name": "ca-statistics-income-panel",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `controller` {`StatisticsIncomePanelController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-statistics-development-income",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `renderIncomeSource` - \n\n  * `controller` {`StatisticsDevelopmentIncomeController`} - ",
       "attributes": []
     },
     {
@@ -515,29 +624,14 @@
       "attributes": []
     },
     {
-      "name": "ca-statistics-multipliers",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `controller` {`StatisticsMultipliersController`} - ",
-      "attributes": []
-    },
-    {
-      "name": "ca-statistics-program-completion-speed",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `controller` {`StatisticsProgramCompletionSpeedController`} - ",
-      "attributes": []
-    },
-    {
-      "name": "ca-statistics-programs-growth",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `controller` {`StatisticsProgramsGrowthController`} - ",
-      "attributes": []
-    },
-    {
-      "name": "ca-statistics-programs-income",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `controller` {`StatisticsProgramsIncomeController`} - ",
-      "attributes": []
-    },
-    {
-      "name": "ca-statistics-unlocked-features-panel",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `renderFeature` - \n\n  * `controller` {`StatisticsUnlockedFeaturesPanelController`} - ",
-      "attributes": []
+      "name": "ca-statistics-multiplier-points-income",
+      "description": "Attributes:\n\n  * `type` - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `type` - \n\n  * `controller` {`StatisticsMultiplierPointsIncomeController`} - ",
+      "attributes": [
+        {
+          "name": "type",
+          "description": "`type` - \n\nProperty: type"
+        }
+      ]
     }
   ],
   "globalAttributes": [],

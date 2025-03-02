@@ -1,7 +1,7 @@
 import { ISerializeable } from '@shared/interfaces/serializable';
 import { IAvailableItemsSerializedState } from '../serialized-states/available-items-serialized-state';
-import { IAvailableProgramsState } from './available-items';
+import { IAvailableCategoryItemsState } from './available-category-items-state';
 
 export interface IAvailableItemsState extends ISerializeable<IAvailableItemsSerializedState> {
-  programs: IAvailableProgramsState;
+  programs: IAvailableCategoryItemsState;
 }

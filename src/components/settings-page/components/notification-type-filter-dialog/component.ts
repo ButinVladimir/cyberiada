@@ -101,7 +101,7 @@ export class NotificationTypeFilterDialog extends BaseComponent<NotificationType
   private renderGameAlertCheckbox = (notificationType: NotificationType): TemplateResult => {
     return html`
       <sl-checkbox
-        size="medium"
+        size="small"
         name="event"
         value=${notificationType}
         ?checked=${this.controller.isNotificationTypeEnabled(notificationType)}

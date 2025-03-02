@@ -1,12 +1,7 @@
 import { IExponent } from '@shared/interfaces/exponent';
 import { ProgramName } from '@state/progam-factory/types';
 import { IStoryEvent } from './story-event';
-
-interface IMultiplierScenarioValue {
-  pointsPerCompletion: number;
-  completionsToMax: number;
-  logBase: number;
-}
+import { IMultiplierScenarioParameters } from './multiplier-scenario-parameters';
 
 export interface IScenarioValues {
   mapWidth: number;
@@ -30,10 +25,10 @@ export interface IScenarioValues {
   };
   developmentLevelRequirements: IExponent;
   programMultipliers: {
-    codeBase: IMultiplierScenarioValue;
-    computationalBase: IMultiplierScenarioValue;
-    connectivity: IMultiplierScenarioValue;
-    rewards: IMultiplierScenarioValue;
+    codeBase: IMultiplierScenarioParameters;
+    computationalBase: IMultiplierScenarioParameters;
+    connectivity: IMultiplierScenarioParameters;
+    rewards: IMultiplierScenarioParameters;
   };
   storyEvents: IStoryEvent[];
 }

@@ -5,7 +5,7 @@ import type { ISettingsState } from '@state/settings-state/interfaces/settings-s
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import { TYPES } from '@state/types';
 import { EventBatcher } from '@shared/event-batcher';
-import { GameStateEvent } from '@shared/types';
+import { GameStateEvent, OverviewMenuItem } from '@shared/types';
 import { IHistoryState } from '@shared/interfaces/history-state';
 import { IApp } from './interfaces';
 import { LOCAL_STORAGE_KEY, APP_UI_EVENTS, REFRESH_UI_TIME } from './constants';
@@ -246,7 +246,7 @@ export class App implements IApp {
 
   private setStartingHistoryState(): void {
     const state: IHistoryState = {
-      selectedMenuItem: undefined,
+      selectedMenuItem: OverviewMenuItem.overview,
       showConfirmationAlert: false,
       menuOpened: false,
     };

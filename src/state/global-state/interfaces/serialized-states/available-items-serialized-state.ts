@@ -1,5 +1,5 @@
-import { IAvailableProgramsSerializedState } from './available-items';
+import { IAvailableCategoryItemsSerializedState } from './available-category-items-serialized-state';
 
 export interface IAvailableItemsSerializedState {
-  programs: IAvailableProgramsSerializedState;
+  programs: IAvailableCategoryItemsSerializedState;
 }

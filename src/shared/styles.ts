@@ -16,7 +16,7 @@ export const pageTitleStyle = css`
 
 export const inputLabelStyle = css`
   span.input-label {
-    font-size: var(--sl-font-size-medium);
+    font-size: var(--sl-font-size-small);
     line-height: var(--sl-line-height-dense);
   }
 `;
@@ -51,7 +51,22 @@ export const mediumModalStyle = css`
 
 export const modalBodyScrollStyle = css`
   sl-dialog::part(body) {
-    scrollbar-gutter: stable;
     scrollbar-width: thin;
+  }
+`;
+
+export const detailsStyle = css`
+  sl-details::part(base) {
+    background-color: var(--sl-panel-background-color);
+  }
+`;
+
+export const hintIconStyle = css`
+  sl-icon[name='question-circle'] {
+    position: relative;
+    top: 0.25em;
+    margin-left: 0.5em;
+    color: var(--ca-hint-color);
+    font-size: var(--sl-font-size-large);
   }
 `;

@@ -11,14 +11,15 @@ common:
   higherDevelopmentLevelRequired: Требуется больший уровень развития
   upgrade: Улучшить
 pages:
-  cityOverview: Обзор города
-  companyManagement: Управление компанией
+  overview: Обзор
+  city: Город
+  company: Компания
   mainframe: Мейнфрейм
   statistics: Статистика
   settings: Настройки
   automation: Автоматизация
   credits: Титры
-  message-log: Лог сообщений
+  messageLog: Лог сообщений
 topBar:
   menu: Показать/скрыть меню
   gameSpeedButtons:
@@ -50,14 +51,16 @@ settings:
   messageLogSizeHint: Лишние сообщения не будут удалены, пока не будет получено новое сообщение
   toastDuration: Время, как долго всплывающие сообщения будут на экране (сек)
   toastDurationHint: Выберите 0, чтобы выключить всплывающие сообщения
-  updateInterval: Интервал обновления (мс)
+  framesPerSecond: Кадров в секунду
+  framesPerSecondHint: Слишком большое значение может привести к нагрузке на процессор
   autosaveEnabled: Включить автосохранение
+  autosaveEnabledHint: Игра автоматически сохраняется через регулярные интервалы и когда вкладка с игрой закрывается
   autosaveInterval: Интервал автосохранения (сек)
   autosaveIntervalHint: Слишком малое значение может привести к нагрузке на процессор
   fastSpeedMultiplier: Множитель скорости при быстрой скорости игры
   fastSpeedMultiplierHint: Слишком большое значение может привести к нагрузке на процессор
-  maxUpdatesPerTick: Максимальное количество обновлений за тик
-  maxUpdatesPerTickHint: Слишком большое значение может привести к нагрузке на процессор
+  maxUpdatesPerFrame: Максимальное количество обновлений в кадр
+  maxUpdatesPerFrameHint: Слишком большое значение может привести к нагрузке на процессор
   longNumberFormat: Формат больших чисел
   themes:
     light: Светлая
@@ -79,8 +82,35 @@ settings:
   notificationTypeFilter: Фильтр уведомлений
   notificationTypeFilterHint: Включите уведомления в фильтре, чтобы они появлялись, когда соответствующее события произошли
   notificationTypeToggle: Показывать подобные уведомления в будущем
+overview:
+  tabs:
+    progress: Прогресс
+    unlockedItems: Разблокированные предметы
+    unlockedFeatures: Разблокированные возможности
+    story: История
+  overview: Обзор
+  progress:
+    nextDevelopmentLevelProgress: Прогресс следующего уровня развития
+    nextLevelNotReachable: Следующий уровень развития недостижим
+    nextLevelReachedIn: Следующий уровень развития будет достигнут через {{time}}
+    unlockedFeaturesProgress: Прогресс разблокирования возможностей
+  unlockedFeatures:
+    noFeatures: Нет разблокированных возможностей
+  unlockedItems:
+    noItems: Нет разблокированных предметов
+    hint: Одолженные предметы выдаются в начале и в качестве награды за захват районов. Число справа от названия предмета это его макимально доступное качество.
+    programs: Программы
+  story:
+    requirements:
+      level: уровень разработки {{level}}
+    stateFilter: Фильтр состояния событий
+    stateFilterOptions:
+      all: Все события
+      available: Только доступные события
+      notAvailable: Только недоступные события
+      passed: Только прошедшие события
 city:
-  cityOverview:
+  city:
     title: Обзор города
     hint: Кликните на подсвеченный район, чтобы просмотреть информацию о нем и доступные с ним действия.
     toggleZoomPanel: Показать/скрыть панель масштабирования
@@ -185,40 +215,69 @@ statistics:
     expenses: Расходы
     unlockedFeatures: Разблокированные возможности
   hints:
-    mainframeDiscount: Скидка на продукты для мейнфрейма мультипликативно зависит от очков вычистельной базы, сгенерированных программами и членами команды
-    computationalBase: Вычислительная база влияет на скидку на оборудование и программы для мейнфрейма
+    codeBase: Кодовая база влияет на скидку на программы для мейнфрейма
+    computationalBase: Вычислительная база влияет на скидку на оборудование для мейнфрейма
+    connectivity: Связность влияет на общую скидку и шансы на получение новых контрактов
+    rewards: Награды влияют на все награды
   general:
-    time:
+    gameTime:
       title: Внутриигровое прошедшее время
       timeThisRun: С момента прибытия в город
       timeTotal: Общее время
-    multipliers:
-      title: Множители и скидки
-      programCompletionSpeed: Скорость предсказательного вычислителя
-      mainframeDiscount: Скидка на продукты для мейнфрейма (%)
-  growth:
     programCompletionSpeed:
-      title: Скорость выполнения процесса
-      pointsPerSecond: ОВП в секунду
+      title: Скорость выполнения процессов
+      multiplierByHardware: Множитель оборудования мейнфрейма
+      multiplierByProgram: Множитель программы "Предсказательный вычислитель"
+    mainframeHardwareCostDivisors:
+      title: Делители стоимости оборудования мейнфрейма
+      multiplierByProgram: Программа "Дизайнер микросхем"
+    mainframeProgramsCostDivisors:
+      title: Делители стоимости программ мейнфрейма
+      multiplierByProgram: Программа "Генератор кода"
+    overallCostDivisors:
+      title: Общие делители стоимости
+      multiplierByProgram: Программа "Коллектор информации"
+    rewards:
+      title: Множители наград
+      multiplierByProgram: Программа "Заключатель сделок"
+  growth:
     money:
       title: Деньги в секунду
-      program: Аренда сервера
+      program: Программа "Аренда сервера"
     developmentPoints:
       title: Очки развития в секунду
-      program: Аренда сервера
-    pointsByPrograms:
-      title: Очки в секунду, сгенерированные программами
-      computationalBase: Вычислительная база
+      program: Программа "Аренда сервера"
+    computationalBase:
+      title: Очки вычислительной базы в секунду
+      growthByProgram: Программа "Дизайнер микросхем"
+    codeBase:
+      title: Очки кодовой базы в секунду
+      growthByProgram: Программа "Генератор кода"
+    connectivity:
+      title: Очки связности в секунду
+      growthByProgram: Программа "Коллектор информации"
+    rewards:
+      title: Очки наград в секунду
+      growthByProgram: Программа "Заключатель сделок"
   income:
     money:
       title: Деньги
-      program: Аренда сервера
+      program: Программа "Аренда сервера"
     developmentPoints:
       title: Очки развития
-      program: Аренда сервера
-    pointsByPrograms:
-      title: Очки, сгенерированные программами
-      computationalBase: Вычислительная база
+      program: Программа "Аренда сервера"
+    computationalBase:
+      title: Очки вычислительной базы
+      pointsByProgram: Программа "Дизайнер микросхем"
+    codeBase:
+      title: Очки кодовой базы
+      pointsByProgram: Программа "Генератор кода"
+    connectivity:
+      title: Очки связности
+      pointsByProgram: Программа "Коллектор информации"
+    rewards:
+      title: Очки наград
+      pointsByProgram: Программа "Заключатель сделок"
   expenses:
     money:
       title: Расходы денег

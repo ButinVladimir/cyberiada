@@ -8,112 +8,100 @@ import {
 } from '@components/game-screen/components/confirmation-alert/events';
 import { ProgramAlert } from '@shared/types';
 import { ProgramName, OtherProgramName } from '@state/progam-factory/types';
-import { SCREEN_WIDTH_POINTS } from '@shared/styles';
+import { SCREEN_WIDTH_POINTS, hintIconStyle } from '@shared/styles';
 import { ProcessesListItemController } from './controller';
 
 @customElement('ca-processes-list-item')
 export class ProcessesListItem extends BaseComponent<ProcessesListItemController> {
-  static styles = css`
-    :host {
-      display: grid;
-      grid-template-areas:
-        'program'
-        'progress-bar'
-        'cores'
-        'buttons';
-      grid-template-columns: auto;
-      grid-template-rows: repeat(1fr);
-      gap: var(--sl-spacing-small);
-      padding: var(--sl-spacing-small);
-      box-sizing: border-box;
-    }
-
-    #drag-icon {
-      position: relative;
-      top: 0.15em;
-      left: -0.2em;
-      color: var(--ca-hint-color);
-    }
-
-    .desktop {
-      display: none;
-    }
-
-    .program {
-      cursor: grab;
-      grid-area: program;
-    }
-
-    .cores {
-      grid-area: cores;
-    }
-
-    .progress-bar {
-      grid-area: progress-bar;
-    }
-
-    .buttons {
-      grid-area: buttons;
-      align-items: center;
-      flex-direction: row;
-      gap: var(--sl-spacing-small);
-    }
-
-    .buttons.desktop {
-      justify-content: flex-end;
-      font-size: var(--sl-font-size-large);
-    }
-
-    .buttons.mobile {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: flex-start;
-    }
-
-    sl-icon[name='grip-vertical'] {
-      position: relative;
-      top: 0.2em;
-      color: var(--ca-hint-color);
-      font-size: var(--sl-font-size-large);
-    }
-
-    sl-icon[name='question-circle'] {
-      position: relative;
-      top: 0.25em;
-      margin-left: 0.5em;
-      color: var(--ca-hint-color);
-      font-size: var(--sl-font-size-large);
-    }
-
-    #delete-btn::part(base):hover {
-      color: var(--sl-color-danger-600);
-    }
-
-    @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
+  static styles = [
+    hintIconStyle,
+    css`
       :host {
-        grid-template-areas: 'program cores progress-bar buttons';
-        grid-template-columns: 3fr 1fr 2fr 6rem;
-        grid-template-rows: auto;
-        align-items: center;
+        display: grid;
+        grid-template-areas:
+          'program'
+          'progress-bar'
+          'cores'
+          'buttons';
+        grid-template-columns: auto;
+        grid-template-rows: repeat(1fr);
+        gap: var(--sl-spacing-small);
+        padding: var(--sl-spacing-small);
+        box-sizing: border-box;
       }
 
       .desktop {
-        display: block;
-      }
-
-      .mobile {
         display: none;
       }
 
-      .buttons.mobile {
-        display: none;
+      .program {
+        cursor: grab;
+        grid-area: program;
+      }
+
+      .cores {
+        grid-area: cores;
+      }
+
+      .progress-bar {
+        grid-area: progress-bar;
+      }
+
+      .buttons {
+        grid-area: buttons;
+        align-items: center;
+        flex-direction: row;
+        gap: var(--sl-spacing-small);
       }
 
       .buttons.desktop {
-        display: flex;
+        justify-content: flex-end;
+        font-size: var(--sl-font-size-large);
       }
-    }
-  `;
+
+      .buttons.mobile {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+      }
+
+      sl-icon[name='grip-vertical'] {
+        position: relative;
+        top: 0.2em;
+        color: var(--ca-hint-color);
+        font-size: var(--sl-font-size-large);
+      }
+
+      #delete-btn::part(base):hover {
+        color: var(--sl-color-danger-600);
+      }
+
+      @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
+        :host {
+          grid-template-areas: 'program cores progress-bar buttons';
+          grid-template-columns: 3fr 1fr 2fr 6rem;
+          grid-template-rows: auto;
+          align-items: center;
+        }
+
+        .desktop {
+          display: block;
+        }
+
+        .mobile {
+          display: none;
+        }
+
+        .buttons.mobile {
+          display: none;
+        }
+
+        .buttons.desktop {
+          display: flex;
+        }
+      }
+    `,
+  ];
 
   @property({
     attribute: 'program-name',

@@ -6,7 +6,7 @@ export class PurchaseTooltipController extends BaseController {
   }
 
   get growth() {
-    return this.growthState.moneyGrowth.totalGrowth;
+    return this.growthState.money.totalGrowth;
   }
 
   get developmentLevel() {

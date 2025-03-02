@@ -1,5 +1,6 @@
 import { Language, LongNumberFormat, Theme } from '@shared/types';
 import { BaseController } from '@shared/base-controller';
+import { MS_IN_SECOND } from '@shared/constants';
 
 export class SettingsFormController extends BaseController {
   get language(): Language {
@@ -18,8 +19,8 @@ export class SettingsFormController extends BaseController {
     return this.settingsState.toastDuration;
   }
 
-  get updateInterval(): number {
-    return this.settingsState.updateInterval;
+  get fps(): number {
+    return MS_IN_SECOND / this.settingsState.updateInterval;
   }
 
   get autosaveEnabled(): boolean {
@@ -62,8 +63,8 @@ export class SettingsFormController extends BaseController {
     this.handleRefreshUI();
   }
 
-  setUpdateInterval(updateInterval: number) {
-    this.settingsState.setUpdateInterval(updateInterval);
+  setUpdateFPS(fps: number) {
+    this.settingsState.setUpdateInterval(MS_IN_SECOND / fps);
     this.handleRefreshUI();
   }
 

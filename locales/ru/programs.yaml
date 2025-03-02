@@ -19,6 +19,18 @@ circuitDesigner:
   computationalBasePointsProcess: 'ОВБ: {{value}} за выполнение ({{avgValue}} в секунду)'
   computationalBasePointsProgram: "ОВБ: {{value}} за выполнение ({{minAvgValue}} \u2014 {{maxAvgValue}} в секунду)"
   computationalBasePointsDiff: "ОВБ: {{value}} ({{valueDiff}}) за выполнение ({{minAvgValue}} \u2014 {{maxAvgValue}} в секунду) ({{minAvgValueDiff}} \u2014 {{maxAvgValueDiff}})"
+informationCollector:
+  name: Коллектор информации
+  overview: Программа для сбора всевозможной информации. Генерирует очки связности (ОС) и улучшает общую скидку и шансы на получение новых контрактов.
+  connectivityPointsProcess: 'ОС: {{value}} за выполнение ({{avgValue}} в секунду)'
+  connectivityPointsProgram: "ОС: {{value}} за выполнение ({{minAvgValue}} \u2014 {{maxAvgValue}} в секунду)"
+  connectivityPointsDiff: "ОС: {{value}} ({{valueDiff}}) за выполнение ({{minAvgValue}} \u2014 {{maxAvgValue}} в секунду) ({{minAvgValueDiff}} \u2014 {{maxAvgValueDiff}})"
+dealMaker:
+  name: Заключатель сделок
+  overview: Программа, помогающая заключать сделки. Генерирует очки наград (ОН) и улучшает все награды.
+  rewardsPointsProcess: 'ОН: {{value}} за выполнение ({{avgValue}} в секунду)'
+  rewardsPointsProgram: "ОН: {{value}} за выполнение ({{minAvgValue}} \u2014 {{maxAvgValue}} в секунду)"
+  rewardsPointsDiff: "ОН: {{value}} ({{valueDiff}}) за выполнение ({{minAvgValue}} \u2014 {{maxAvgValue}} в секунду) ({{minAvgValueDiff}} \u2014 {{maxAvgValueDiff}})"
 predictiveComputator:
   name: Предсказательный вычислитель
   overview: Программа для ускорения выполнения других процессов.

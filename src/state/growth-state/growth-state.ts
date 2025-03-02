@@ -1,10 +1,10 @@
 import { injectable, inject } from 'inversify';
 import { TYPES } from '@state/types';
 import type {
-  ICodeBaseGrowthState,
   IDevelopmentGrowthState,
   IMoneyGrowthState,
   IProgramCompletionSpeedState,
+  IMultipliersGrowthState,
 } from './interfaces';
 import { IGrowthState } from './interfaces/growth-state';
 
@@ -12,31 +12,31 @@ import { IGrowthState } from './interfaces/growth-state';
 export class GrowthState implements IGrowthState {
   private _moneyGrowthState: IMoneyGrowthState;
   private _developmentGrowthState: IDevelopmentGrowthState;
-  private _codeBaseGrowthState: ICodeBaseGrowthState;
+  private _multipliersGrowthState: IMultipliersGrowthState;
   private _programCompletionSpeedState: IProgramCompletionSpeedState;
 
   constructor(
     @inject(TYPES.MoneyGrowthState) _moneyGrowthState: IMoneyGrowthState,
     @inject(TYPES.DevelopmentGrowthState) _developmentGrowthState: IDevelopmentGrowthState,
-    @inject(TYPES.CodeBaseGrowthState) _codeBaseGrowthState: ICodeBaseGrowthState,
+    @inject(TYPES.MultipliersGrowthState) _multipliersGrowthState: IMultipliersGrowthState,
     @inject(TYPES.ProgramCompletionSpeedState) _programCompletionSpeedState: IProgramCompletionSpeedState,
   ) {
     this._moneyGrowthState = _moneyGrowthState;
     this._developmentGrowthState = _developmentGrowthState;
-    this._codeBaseGrowthState = _codeBaseGrowthState;
+    this._multipliersGrowthState = _multipliersGrowthState;
     this._programCompletionSpeedState = _programCompletionSpeedState;
   }
 
-  get moneyGrowth(): IMoneyGrowthState {
+  get money(): IMoneyGrowthState {
     return this._moneyGrowthState;
   }
 
-  get developmentGrowth(): IDevelopmentGrowthState {
+  get development(): IDevelopmentGrowthState {
     return this._developmentGrowthState;
   }
 
-  get codeBaseGrowth(): ICodeBaseGrowthState {
-    return this._codeBaseGrowthState;
+  get multipliers(): IMultipliersGrowthState {
+    return this._multipliersGrowthState;
   }
 
   get programCompletionSpeed(): IProgramCompletionSpeedState {
@@ -46,14 +46,14 @@ export class GrowthState implements IGrowthState {
   requestGrowthRecalculation() {
     this._moneyGrowthState.requestGrowthRecalculation();
     this._developmentGrowthState.requestGrowthRecalculation();
-    this._codeBaseGrowthState.requestGrowthRecalculation();
-    this._programCompletionSpeedState.requestMultiplierRecalculation();
+    this._multipliersGrowthState.requestGrowthRecalculation();
+    this._programCompletionSpeedState.requestMultipliersRecalculation();
   }
 
   recalculateGrowth() {
     this._moneyGrowthState.recalculateGrowth();
     this._developmentGrowthState.recalculateGrowth();
-    this._codeBaseGrowthState.recalculateGrowth();
+    this._multipliersGrowthState.recalculateGrowth();
     this._programCompletionSpeedState.recalculateMultipliers();
   }
 }

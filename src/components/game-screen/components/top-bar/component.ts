@@ -33,10 +33,6 @@ export class TopBar extends BaseComponent {
       }
     }
 
-    .gutter {
-      flex: 1 1 auto;
-    }
-
     sl-icon-button::part(base) {
       padding: var(--sl-spacing-small);
     }
@@ -55,12 +51,6 @@ export class TopBar extends BaseComponent {
 
       <div class="group">
         <ca-game-speed-buttons></ca-game-speed-buttons>
-      </div>
-
-      <div class="gutter"></div>
-
-      <div class="group">
-        <ca-top-bar-available-goals></ca-top-bar-available-goals>
       </div>
     `;
   }

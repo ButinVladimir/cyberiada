@@ -10,12 +10,6 @@ fastForwarded:
 levelReached:
   name: Development level reached
   message: Development level {{level}} has been reached
-featureUnlocked:
-  name: New feature unlocked
-  message: New feature "$t(features:{{feature}})" has been unlocked
-storyEvent:
-  name: Story event
-  message: $t(story:{{messageKey}})
 performanceUpgraded:
   name: Mainframe performance upgraded
   message: Mainframe performance has been upgraded to {{level}}

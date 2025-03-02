@@ -66,10 +66,10 @@ export abstract class MainframeHardwareParameter implements IMainframeHardwarePa
     const baseCost = calculatePow(this.level - 1, exp);
 
     return (
-      (this.globalState.multipliers.connectivity.totalCostMultiplier *
-        this.globalState.multipliers.computationalBase.totalCostMultiplier *
-        (baseCost * (Math.pow(exp.base, increase) - 1))) /
-      (exp.base - 1)
+      (baseCost * (Math.pow(exp.base, increase) - 1)) /
+      (exp.base - 1) /
+      this.globalState.multipliers.connectivity.totalMultiplier /
+      this.globalState.multipliers.computationalBase.totalMultiplier
     );
   }
 
@@ -100,7 +100,7 @@ export abstract class MainframeHardwareParameter implements IMainframeHardwarePa
       return false;
     }
 
-    if (!this.globalState.unlockedFeatures.isFeatureUnlocked(Feature.mainframeHardware)) {
+    if (!this.globalState.unlockedFeatures.isFeatureUnlocked(Feature.mainframeUpgrades)) {
       return false;
     }
 

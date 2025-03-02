@@ -9,15 +9,6 @@ import { ViewportController } from './controller';
 @customElement('ca-viewport')
 export class Viewport extends BaseComponent<ViewportController> {
   static styles = css`
-    :host {
-      display: block;
-      width: 100%;
-      height: 100%;
-      scrollbar-gutter: stable;
-      scrollbar-width: thin;
-      overflow: auto;
-    }
-
     div.content-wrapper {
       width: 100%;
       max-width: var(--ca-width-widescreen-content);
@@ -53,7 +44,10 @@ export class Viewport extends BaseComponent<ViewportController> {
     }
 
     switch (this.selectedMenuItem) {
-      case OverviewMenuItem.cityOverview:
+      case OverviewMenuItem.overview:
+        return html`<ca-overview-page></ca-overview-page>`;
+
+      case OverviewMenuItem.city:
         return html`<ca-city-page></ca-city-page>`;
 
       case OverviewMenuItem.mainframe:

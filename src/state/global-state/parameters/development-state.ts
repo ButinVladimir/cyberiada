@@ -68,7 +68,7 @@ export class DevelopmentState implements IDevelopmentState {
     return this._income.get(incomeSource) ?? 0;
   }
 
-  getNextLevelPoints(level: number): number {
+  getLevelPoints(level: number): number {
     if (level <= 0) {
       return 0;
     }
@@ -97,7 +97,7 @@ export class DevelopmentState implements IDevelopmentState {
       this._level = newLevel;
 
       this._messageLogState.postMessage(GameStateEvent.levelReached, { level: newLevel });
-      this._globalState.storyEvents.visitEvents(prevLevel);
+      this._globalState.storyEvents.visitEventsByLevel(prevLevel);
       this.uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.DEVELOPMENT_LEVEL_CHANGED);
     }
   }

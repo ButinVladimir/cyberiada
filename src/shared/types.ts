@@ -15,12 +15,13 @@ export enum Theme {
 }
 
 export enum OverviewMenuItem {
-  cityOverview = 'cityOverview',
-  companyManagement = 'companyManagement',
+  overview = 'overview',
+  city = 'city',
+  company = 'company',
   mainframe = 'mainframe',
   automation = 'automation',
   statistics = 'statistics',
-  messageLog = 'message-log',
+  messageLog = 'messageLog',
 }
 
 export enum MiscMenuItem {
@@ -42,8 +43,6 @@ export enum GameStateEvent {
   gameSaved = 'gameSaved',
   fastForwared = 'fastForwarded',
   levelReached = 'levelReached',
-  featureUnlocked = 'featureUnlocked',
-  storyEvent = 'storyEvent',
 }
 
 export enum PurchaseEvent {
@@ -106,8 +105,14 @@ export enum Feature {
   automation = 'automation',
   automationMainframeHardware = 'automationMainframeHardware',
   automationMainframePrograms = 'automationMainframePrograms',
-  mainframeHardware = 'mainframeHardware',
-  mainframePrograms = 'mainframePrograms',
-  cityOverview = 'cityOverview',
+  mainframeUpgrades = 'mainframeUpgrades',
   companyManagement = 'companyManagement',
+  codeBasePoints = 'codeBasePoints',
+  computationalBasePoints = 'computationalBasePoints',
+  connectivityPoints = 'connectivityPoints',
+  rewardsPoints = 'rewardsPoints',
 }
+
+export type PointsMultiplierType = 'codeBase' | 'computationalBase' | 'connectivity' | 'rewards';
+
+export type ItemCategory = 'programs';

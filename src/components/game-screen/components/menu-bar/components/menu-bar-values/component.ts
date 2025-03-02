@@ -43,12 +43,6 @@ export class MenuBarValues extends BaseComponent<MenuBarValuesController> {
     const moneyFormatted = formatter.formatNumberFloat(this.controller.money);
     const developmentLevelFormatted = formatter.formatNumberDecimal(this.controller.developmentLevel);
 
-    const isDevelopmentGrowing = this.controller.developmentGrowth > 0;
-    const timeUntilNextLevel = isDevelopmentGrowing
-      ? formatter.formatTimeShort(this.controller.developmentPointsUntilNextLevel / this.controller.developmentGrowth)
-      : '';
-    const developmentLabel = isDevelopmentGrowing ? 'developmentLevelNext' : 'developmentLevel';
-
     return html`
       <div class="block">
         <sl-tooltip>
@@ -73,10 +67,9 @@ export class MenuBarValues extends BaseComponent<MenuBarValuesController> {
       <div class="block">
         <sl-tooltip>
           <span slot="content">
-            ${t(`menuBar.${developmentLabel}`, {
+            ${t(`menuBar.developmentLevel`, {
               ns: 'ui',
               level: developmentLevelFormatted,
-              time: timeUntilNextLevel,
             })}
           </span>
 
