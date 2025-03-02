@@ -173,11 +173,6 @@
       "attributes": []
     },
     {
-      "name": "ca-top-bar-available-goals",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderTooltipContent` - \n\n  * `renderGoal` - \n\n  * `controller` {`TopBarAvailableGoalsController`} - ",
-      "attributes": []
-    },
-    {
       "name": "ca-game-speed-buttons",
       "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderButton` - \n\n  * `handleChangeGameSpeed` - \n\n  * `handleOpenFastForwardDialog` - \n\n  * `handleConfirmFastForwardDialog` - \n\n  * `controller` {`GameSpeedButtonsController`} - ",
       "attributes": []
@@ -406,6 +401,36 @@
       "name": "ca-overview-unlocked-features-progress",
       "description": "Properties:\n\n  * `styles` {`CSSResult[]`} - \n\n  * `controller` {`OverviewUnlockedFeaturesProgressController`} - ",
       "attributes": []
+    },
+    {
+      "name": "ca-overview-story-panel",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_stateFilterInputRef` {`Ref<SlSelect>`} - \n\n  * `_stateFilter` - \n\n  * `renderGoalsList` - \n\n  * `renderGoal` - \n\n  * `handleStateFilterChange` - \n\n  * `controller` {`OverviewStoryPanelController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-overview-story-goal",
+      "description": "Attributes:\n\n  * `level` {`number | undefined`} - \n\n  * `messages` {`string | undefined`} - \n\n  * `unlock-features` {`string | undefined`} - \n\n  * `state` - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `level` {`number | undefined`} - \n\n  * `messages` {`string | undefined`} - \n\n  * `unlockFeatures` {`string | undefined`} - \n\n  * `state` - \n\n  * `renderSummary` - \n\n  * `renderDetails` - ",
+      "attributes": [
+        {
+          "name": "level",
+          "description": "`level` {`number | undefined`} - \n\nProperty: level",
+          "values": []
+        },
+        {
+          "name": "messages",
+          "description": "`messages` {`string | undefined`} - \n\nProperty: messages",
+          "values": []
+        },
+        {
+          "name": "unlock-features",
+          "description": "`unlock-features` {`string | undefined`} - \n\nProperty: unlockFeatures",
+          "values": []
+        },
+        {
+          "name": "state",
+          "description": "`state` - \n\nProperty: state"
+        }
+      ]
     },
     {
       "name": "ca-overview-unlocked-features-panel",

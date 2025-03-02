@@ -81,8 +81,8 @@ export class OverviewPage extends BaseComponent {
       case OverviewPageTabs.unlockedItems:
         return html`<ca-overview-unlocked-items-panel></ca-overview-unlocked-items-panel>`;
 
-      default:
-        return html`123`;
+      case OverviewPageTabs.story:
+        return html`<ca-overview-story-panel></ca-overview-story-panel>`;
     }
   };
 

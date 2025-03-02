@@ -97,7 +97,7 @@ export class DevelopmentState implements IDevelopmentState {
       this._level = newLevel;
 
       this._messageLogState.postMessage(GameStateEvent.levelReached, { level: newLevel });
-      this._globalState.storyEvents.visitEvents(prevLevel);
+      this._globalState.storyEvents.visitEventsByLevel(prevLevel);
       this.uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.DEVELOPMENT_LEVEL_CHANGED);
     }
   }

@@ -1,9 +1,8 @@
 import { injectable } from 'inversify';
 import { decorators } from '@state/container';
-import { Feature, GameStateEvent, NotificationType } from '@shared/types';
+import { Feature, NotificationType } from '@shared/types';
 import { EventBatcher } from '@shared/event-batcher';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
-import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
 import type { INotificationsState } from '@state/notifications-state/interfaces/notifications-state';
 import { TYPES } from '@state/types';
 import { IUnlockedFeaturesState } from '../interfaces/parameters/unlocked-features-state';
@@ -18,9 +17,6 @@ export class UnlockedFeaturesState implements IUnlockedFeaturesState {
 
   @lazyInject(TYPES.StateUIConnector)
   private _stateUiConnector!: IStateUIConnector;
-
-  @lazyInject(TYPES.MessageLogState)
-  private _messageLogState!: IMessageLogState;
 
   @lazyInject(TYPES.NotificationsState)
   private _notificationsState!: INotificationsState;
@@ -47,7 +43,6 @@ export class UnlockedFeaturesState implements IUnlockedFeaturesState {
       this._unlockedFeatures.add(feature);
 
       this._notificationsState.pushNotification(NotificationType.featureUnlocked, { feature });
-      this._messageLogState.postMessage(GameStateEvent.featureUnlocked, { feature }, false);
     }
   }
 
