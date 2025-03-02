@@ -42,6 +42,7 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
         width: 100%;
         display: flex;
         flex-direction: row;
+        flex-wrap: wrap;
         justify-content: flex-end;
         gap: var(--sl-spacing-small);
       }

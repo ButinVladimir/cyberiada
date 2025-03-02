@@ -42,6 +42,9 @@ messageLog:
 fastForwardingScreen:
   fastForwarding: Spending accumulated time...
   stop: Stop
+notifications:
+  readNextNotification: Read next notification
+  closeAllNotifications: Close all notifications
 settings:
   settings: Settings
   language: Language
@@ -103,7 +106,6 @@ overview:
   story:
     requirements:
       level: development level {{level}}
-    unlockedFeatures: 'Unlocked features: {{features}}'
     stateFilter: Event state filter
     stateFilterOptions:
       all: All events

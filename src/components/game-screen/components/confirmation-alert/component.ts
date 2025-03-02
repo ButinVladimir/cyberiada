@@ -21,6 +21,7 @@ export class ConfirmationAlert extends BaseComponent<ConfirmationAlertController
         width: 100%;
         display: flex;
         flex-direction: row;
+        flex-wrap: wrap;
         justify-content: flex-end;
         gap: var(--sl-spacing-small);
       }
@@ -120,6 +121,7 @@ export class ConfirmationAlert extends BaseComponent<ConfirmationAlertController
 
   private handleClose = (event: Event) => {
     event.stopPropagation();
+    event.preventDefault();
 
     window.history.back();
   };

@@ -42,6 +42,9 @@ messageLog:
 fastForwardingScreen:
   fastForwarding: Трата накопленного времени...
   stop: Стоп
+notifications:
+  readNextNotification: Прочесть следующее уведомление
+  closeAllNotifications: Закрыть все уведомления
 settings:
   settings: Настройки
   language: Язык

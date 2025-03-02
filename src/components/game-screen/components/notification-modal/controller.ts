@@ -1,43 +1,47 @@
 import { BaseController } from '@shared/base-controller';
 import { INotification } from '@state/notifications-state/interfaces/notitification';
-import { NOTIFICATION_STATE_UI_EVENTS } from '@state/notifications-state/constants';
 import { IHistoryState } from '@shared/interfaces/history-state';
-import { INotificationModal } from './interfaces';
 
-export class NotificationModalController extends BaseController<INotificationModal> {
-  hostConnected() {
-    super.hostConnected();
+export class NotificationModalController extends BaseController {
+  private _addedHistoryState = false;
 
-    this.addEventListener(this.notificationsState, NOTIFICATION_STATE_UI_EVENTS.UPDATED_NOTIFICATIONS);
+  hasUnreadNotifications(): boolean {
+    const hasNotifications = this.notificationsState.hasUnreadNotifications();
 
-    this.getUnreadNotification();
-  }
-
-  getUnreadNotification(): void {
-    const notification = this.notificationsState.getUnreadNotification();
-
-    if (this.host.notification !== notification) {
-      this.host.notification = notification;
-
-      if (notification) {
-        const newHistoryState: IHistoryState = {
-          ...(window.history.state as IHistoryState),
-        };
-        window.history.pushState(newHistoryState, '');
-      }
+    if (hasNotifications && !this._addedHistoryState) {
+      const newHistoryState: IHistoryState = {
+        ...(window.history.state as IHistoryState),
+      };
+      window.history.pushState(newHistoryState, '');
     }
+
+    this._addedHistoryState = hasNotifications;
+
+    return hasNotifications;
   }
 
-  handleCloseModal(notification: INotification, enabled: boolean): void {
-    this.settingsState.toggleNotificationType(notification.notificationType, enabled);
-    this.notificationsState.popUnreadNotification();
+  hasNextNotification(): boolean {
+    return this.notificationsState.hasNextNotification();
+  }
 
+  getUnreadNotification(): INotification | undefined {
+    return this.notificationsState.getFirstUnreadNotification();
+  }
+
+  clearNotifications() {
+    this.notificationsState.clearNotifications();
     this.handleRefreshUI();
   }
 
-  protected handleRefreshUI = (): void => {
-    this.getUnreadNotification();
+  popNotification(enabled: boolean): void {
+    const notification = this.getUnreadNotification();
 
-    this.host.requestUpdate();
-  };
+    if (notification) {
+      this.settingsState.toggleNotificationType(notification.notificationType, enabled);
+      this.notificationsState.popUnreadNotification();
+      this.handleRefreshUI();
+    }
+
+    this._addedHistoryState = false;
+  }
 }
