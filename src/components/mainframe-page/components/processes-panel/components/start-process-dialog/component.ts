@@ -42,6 +42,7 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
         width: 100%;
         display: flex;
         flex-direction: row;
+        flex-wrap: wrap;
         justify-content: flex-end;
         gap: var(--sl-spacing-small);
       }

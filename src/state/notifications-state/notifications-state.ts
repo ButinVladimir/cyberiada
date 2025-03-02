@@ -41,7 +41,7 @@ export class NotificationsState implements INotificationsState {
     this.uiEventBatcher.enqueueEvent(NOTIFICATION_STATE_UI_EVENTS.UPDATED_NOTIFICATIONS);
   }
 
-  getUnreadNotification(): INotification | undefined {
+  getFirstUnreadNotification(): INotification | undefined {
     this._stateUiConnector.connectEventHandler(this, NOTIFICATION_STATE_UI_EVENTS.UPDATED_NOTIFICATIONS);
 
     while (this.hasUnreadNotifications()) {
@@ -63,11 +63,21 @@ export class NotificationsState implements INotificationsState {
     return this._notifications.length > 0;
   }
 
+  hasNextNotification(): boolean {
+    this._stateUiConnector.connectEventHandler(this, NOTIFICATION_STATE_UI_EVENTS.UPDATED_NOTIFICATIONS);
+
+    return this._notifications.length > 1;
+  }
+
   popUnreadNotification() {
     if (this.hasUnreadNotifications()) {
       this._notifications.shift();
 
       this.uiEventBatcher.enqueueEvent(NOTIFICATION_STATE_UI_EVENTS.UPDATED_NOTIFICATIONS);
     }
+  }
+
+  clearNotifications() {
+    this._notifications.splice(0);
   }
 }

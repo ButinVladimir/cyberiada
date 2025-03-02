@@ -1,23 +1,26 @@
 import { t } from 'i18next';
 import { css, html, nothing } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import { customElement, state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
-import type { INotification } from '@state/notifications-state/interfaces/notitification';
 import SlCheckbox from '@shoelace-style/shoelace/dist/components/checkbox/checkbox.component.js';
 import { BaseComponent } from '@shared/base-component';
 import { FORCE_NOTIFICATION_TYPES } from '@shared/constants';
 import { modalBodyScrollStyle, smallModalStyle } from '@shared/styles';
 import { NotificationModalController } from './controller';
-import { INotificationModal } from './interfaces';
 
 @customElement('ca-notification-modal')
-export class NotificationModal extends BaseComponent<NotificationModalController> implements INotificationModal {
+export class NotificationModal extends BaseComponent<NotificationModalController> {
   static styles = [
     smallModalStyle,
     modalBodyScrollStyle,
     css`
       sl-dialog::part(footer) {
-        text-align: right;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: var(--sl-spacing-small);
       }
 
       p {
@@ -28,11 +31,6 @@ export class NotificationModal extends BaseComponent<NotificationModalController
   ];
 
   protected controller: NotificationModalController;
-
-  @property({
-    attribute: false,
-  })
-  notification?: INotification;
 
   private _notificationTypeToggleRef = createRef<SlCheckbox>();
 
@@ -58,27 +56,42 @@ export class NotificationModal extends BaseComponent<NotificationModalController
   }
 
   renderContent() {
+    const hasNotifications = this.controller.hasUnreadNotifications();
+    const hasNextNotification = this.controller.hasNextNotification();
+
     return html`
-      <sl-dialog no-header ?open=${!!this.notification} @sl-request-close=${this.handleClose}>
+      <sl-dialog no-header ?open=${hasNotifications} @sl-request-close=${this.handleCloseCurrentNotification}>
         ${this.renderModalContent()}
 
-        <sl-button slot="footer" size="medium" variant="primary" @click=${this.handleClose}>
-          ${t('common.continue', { ns: 'ui' })}
+        <sl-button
+          slot="footer"
+          ?disabled=${!hasNextNotification}
+          size="medium"
+          variant="primary"
+          @click=${this.handleCloseCurrentNotification}
+        >
+          ${t('notifications.readNextNotification', { ns: 'ui' })}
+        </sl-button>
+
+        <sl-button slot="footer" size="medium" variant="danger" @click=${this.handleCloseAllNotifications}>
+          ${t('notifications.closeAllNotifications', { ns: 'ui' })}
         </sl-button>
       </sl-dialog>
     `;
   }
 
   private renderModalContent = () => {
-    if (!this.notification) {
+    const notification = this.controller.getUnreadNotification();
+
+    if (!notification) {
       return nothing;
     }
 
-    const parameters = this.notification.parameters ?? {};
-    const showToggle = !FORCE_NOTIFICATION_TYPES.has(this.notification.notificationType);
+    const parameters = notification.parameters ?? {};
+    const showToggle = !FORCE_NOTIFICATION_TYPES.has(notification.notificationType);
 
     return html`
-      <p>${t(`${this.notification.notificationType}.message`, { ns: 'notifications', ...parameters })}</p>
+      <p>${t(`${notification.notificationType}.message`, { ns: 'notifications', ...parameters })}</p>
 
       ${showToggle
         ? html`
@@ -96,10 +109,18 @@ export class NotificationModal extends BaseComponent<NotificationModalController
     `;
   };
 
-  private handleClose = (event: Event) => {
+  private handleCloseCurrentNotification = (event: Event) => {
+    event.preventDefault();
     event.stopPropagation();
 
     window.history.back();
+  };
+
+  private handleCloseAllNotifications = (event: Event) => {
+    event.stopPropagation();
+
+    window.history.back();
+    this.controller.clearNotifications();
   };
 
   private handleToggleNotificationType = (event: Event) => {
@@ -111,8 +132,10 @@ export class NotificationModal extends BaseComponent<NotificationModalController
   };
 
   private handlePopState = () => {
-    if (this.notification) {
-      this.controller.handleCloseModal(this.notification, this._notificationTypeToggled);
+    const notification = this.controller.getUnreadNotification();
+
+    if (notification) {
+      this.controller.popNotification(this._notificationTypeToggled);
       this._notificationTypeToggled = true;
     }
   };

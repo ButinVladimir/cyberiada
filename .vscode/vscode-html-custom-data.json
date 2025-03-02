@@ -153,7 +153,7 @@
     },
     {
       "name": "ca-notification-modal",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_notificationTypeToggleRef` {`Ref<SlCheckbox>`} - \n\n  * `_notificationTypeToggled` {`boolean`} - \n\n  * `renderModalContent` - \n\n  * `handleClose` - \n\n  * `handleToggleNotificationType` - \n\n  * `handlePopState` - \n\n  * `controller` {`NotificationModalController`} - \n\n  * `notification` - \n\n  * `updateComplete` {`Promise<boolean>`} - Returns a Promise that resolves when the host has completed updating.\nThe Promise value is a boolean that is `true` if the element completed the\nupdate without triggering another update. The Promise result is `false` if\na property was set inside `updated()`. If the Promise is rejected, an\nexception was thrown during the update.",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_notificationTypeToggleRef` {`Ref<SlCheckbox>`} - \n\n  * `_notificationTypeToggled` {`boolean`} - \n\n  * `renderModalContent` - \n\n  * `handleCloseCurrentNotification` - \n\n  * `handleCloseAllNotifications` - \n\n  * `handleToggleNotificationType` - \n\n  * `handlePopState` - \n\n  * `controller` {`NotificationModalController`} - ",
       "attributes": []
     },
     {

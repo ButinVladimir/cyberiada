@@ -8,6 +8,10 @@ Cyberiada is currenly under development. It has roadmap available but info here 
 
 Discord for discussions and feedback is available here: https://discord.gg/CmsTxU2EMw
 
+## Known issues
+
+- Double tapping while dialog is closing moves navigation back
+
 ## Local development and contribution
 
 Currently, game doesn't have development page but it can be ran locally. To start development server, install dependencies first by running this command:
