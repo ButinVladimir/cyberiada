@@ -79,5 +79,7 @@ export class NotificationsState implements INotificationsState {
 
   clearNotifications() {
     this._notifications.splice(0);
+
+    this.uiEventBatcher.enqueueEvent(NOTIFICATION_STATE_UI_EVENTS.UPDATED_NOTIFICATIONS);
   }
 }

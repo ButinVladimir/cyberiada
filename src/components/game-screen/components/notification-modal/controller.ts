@@ -1,23 +1,9 @@
 import { BaseController } from '@shared/base-controller';
 import { INotification } from '@state/notifications-state/interfaces/notitification';
-import { IHistoryState } from '@shared/interfaces/history-state';
 
 export class NotificationModalController extends BaseController {
-  private _addedHistoryState = false;
-
   hasUnreadNotifications(): boolean {
-    const hasNotifications = this.notificationsState.hasUnreadNotifications();
-
-    if (hasNotifications && !this._addedHistoryState) {
-      const newHistoryState: IHistoryState = {
-        ...(window.history.state as IHistoryState),
-      };
-      window.history.pushState(newHistoryState, '');
-    }
-
-    this._addedHistoryState = hasNotifications;
-
-    return hasNotifications;
+    return this.notificationsState.hasUnreadNotifications();
   }
 
   hasNextNotification(): boolean {
@@ -30,6 +16,7 @@ export class NotificationModalController extends BaseController {
 
   clearNotifications() {
     this.notificationsState.clearNotifications();
+
     this.handleRefreshUI();
   }
 
@@ -41,7 +28,5 @@ export class NotificationModalController extends BaseController {
       this.notificationsState.popUnreadNotification();
       this.handleRefreshUI();
     }
-
-    this._addedHistoryState = false;
   }
 }

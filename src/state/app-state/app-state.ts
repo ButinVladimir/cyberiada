@@ -87,7 +87,7 @@ export class AppState implements IAppState {
     this._growthState.recalculateGrowth();
   }
 
-  serialize(): string {
+  serialize(): ISerializedState {
     const saveState: ISerializedState = {
       gameVersion: CURRENT_VERSION,
       global: this._globalState.serialize(),
@@ -97,17 +97,12 @@ export class AppState implements IAppState {
       automation: this._automationState.serialize(),
     };
 
-    const encodedSaveState = btoa(JSON.stringify(saveState));
-
-    return encodedSaveState;
+    return saveState;
   }
 
-  async deserialize(saveData: string): Promise<void> {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const parsedSaveData = JSON.parse(atob(saveData));
-
+  async deserialize(saveData: ISerializedState): Promise<void> {
     const migrator = new Migrator();
-    const migratedSaveData = migrator.migrate(parsedSaveData);
+    const migratedSaveData = migrator.migrate(saveData);
 
     if (migrator.hasMigrated) {
       this._notificationsState.pushNotification(NotificationType.gameVersionUpdated, undefined, true);

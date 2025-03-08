@@ -153,7 +153,7 @@
     },
     {
       "name": "ca-notification-modal",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_notificationTypeToggleRef` {`Ref<SlCheckbox>`} - \n\n  * `_notificationTypeToggled` {`boolean`} - \n\n  * `renderModalContent` - \n\n  * `handleCloseCurrentNotification` - \n\n  * `handleCloseAllNotifications` - \n\n  * `handleToggleNotificationType` - \n\n  * `handlePopState` - \n\n  * `controller` {`NotificationModalController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_notificationTypeToggleRef` {`Ref<SlCheckbox>`} - \n\n  * `_addedHistory` {`boolean`} - \n\n  * `_notificationTypeToggled` {`boolean`} - \n\n  * `renderModalContent` - \n\n  * `handleCloseCurrentNotification` - \n\n  * `handleCloseAllNotifications` - \n\n  * `handleToggleNotificationType` - \n\n  * `handlePopState` - \n\n  * `controller` {`NotificationModalController`} - ",
       "attributes": []
     },
     {

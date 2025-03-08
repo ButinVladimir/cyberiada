@@ -23,7 +23,8 @@ export class OverviewDevelopmentLevelProgress extends BaseComponent<OverviewDeve
     const currentDevelopmentLevelPoints = this.controller.getCurrentDevelopmentLevelPoints();
     const nextDevelopmentLevelPoints = this.controller.getNextDevelopmentLevelPoints();
 
-    const nextDevelopmentLevelProgressBarValue = (currentDevelopmentLevelPoints / nextDevelopmentLevelPoints) * 100;
+    const nextDevelopmentLevelProgressBarValue =
+      Math.max(currentDevelopmentLevelPoints / nextDevelopmentLevelPoints, 0) * 100;
     const nextDevelopmentLevelProgressBarPercentage = `${formatter.formatNumberFloat(nextDevelopmentLevelProgressBarValue)}%`;
 
     const developmentGrowth = this.controller.getDevelopmentGrowth();

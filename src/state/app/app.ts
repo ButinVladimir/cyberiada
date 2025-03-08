@@ -1,5 +1,7 @@
 import { inject, injectable } from 'inversify';
+import { compressToUTF16, decompressFromUTF16 } from 'lz-string';
 import type { IAppState } from '@state/app-state/interfaces/app-state';
+import { ISerializedState } from '@state/app-state/interfaces/serialized-state';
 import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
 import type { ISettingsState } from '@state/settings-state/interfaces/settings-state';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
@@ -59,7 +61,7 @@ export class App implements IApp {
 
     if (saveData) {
       try {
-        await this._appState.deserialize(saveData);
+        await this.deserializeState(saveData);
       } catch (e) {
         console.error(e);
         await this._appState.startNewState();
@@ -73,7 +75,7 @@ export class App implements IApp {
   }
 
   saveGame = (): void => {
-    const encodedSaveData = this._appState.serialize();
+    const encodedSaveData = this.serializeState();
 
     localStorage.setItem(LOCAL_STORAGE_KEY, encodedSaveData);
     this._messageLogState.postMessage(GameStateEvent.gameSaved);
@@ -95,8 +97,7 @@ export class App implements IApp {
     const fileReader = new FileReader();
 
     fileReader.addEventListener('load', () => {
-      this._appState
-        .deserialize(fileReader.result as string)
+      this.deserializeState(fileReader.result as string)
         .then(() => {
           this.startRunningGame();
         })
@@ -116,7 +117,7 @@ export class App implements IApp {
   }
 
   exportSavefile(): void {
-    const saveData = this._appState.serialize();
+    const saveData = this.serializeState();
     const savefileName = `cyberiada-savefile-${new Date().toLocaleString()}.txt`;
 
     const file = new File([saveData], savefileName, { endings: 'transparent' });
@@ -169,6 +170,16 @@ export class App implements IApp {
     this._appStage = AppStage.running;
     this._messageLogState.postMessage(GameStateEvent.fastForwared);
     this.emitChangedAppStageEvent();
+  }
+
+  private serializeState(): string {
+    return compressToUTF16(JSON.stringify(this._appState.serialize()));
+  }
+
+  private async deserializeState(savedState: string): Promise<void> {
+    const serializedState = JSON.parse(decompressFromUTF16(savedState)) as ISerializedState;
+
+    await this._appState.deserialize(serializedState);
   }
 
   private startLoadingGame = (): void => {
@@ -248,6 +259,7 @@ export class App implements IApp {
     const state: IHistoryState = {
       selectedMenuItem: OverviewMenuItem.overview,
       showConfirmationAlert: false,
+      showNotification: false,
       menuOpened: false,
     };
 

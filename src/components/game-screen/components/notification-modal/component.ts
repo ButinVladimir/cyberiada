@@ -6,6 +6,7 @@ import SlCheckbox from '@shoelace-style/shoelace/dist/components/checkbox/checkb
 import { BaseComponent } from '@shared/base-component';
 import { FORCE_NOTIFICATION_TYPES } from '@shared/constants';
 import { modalBodyScrollStyle, smallModalStyle } from '@shared/styles';
+import { IHistoryState } from '@shared/interfaces/history-state';
 import { NotificationModalController } from './controller';
 
 @customElement('ca-notification-modal')
@@ -34,6 +35,8 @@ export class NotificationModal extends BaseComponent<NotificationModalController
 
   private _notificationTypeToggleRef = createRef<SlCheckbox>();
 
+  private _addedHistory = false;
+
   @state()
   private _notificationTypeToggled = true;
 
@@ -53,6 +56,21 @@ export class NotificationModal extends BaseComponent<NotificationModalController
     super.disconnectedCallback();
 
     window.removeEventListener('popstate', this.handlePopState);
+  }
+
+  updated(_changedProperties: Map<string, any>) {
+    super.updated(_changedProperties);
+
+    const hasNotifications = this.controller.hasUnreadNotifications();
+    if (hasNotifications && !this._addedHistory) {
+      const newHistoryState: IHistoryState = {
+        ...(window.history.state as IHistoryState),
+        showNotification: true,
+      };
+      window.history.pushState(newHistoryState, '');
+    }
+
+    this._addedHistory = hasNotifications;
   }
 
   renderContent() {
@@ -131,12 +149,13 @@ export class NotificationModal extends BaseComponent<NotificationModalController
     }
   };
 
-  private handlePopState = () => {
-    const notification = this.controller.getUnreadNotification();
+  private handlePopState = (event: PopStateEvent) => {
+    const state = event.state as IHistoryState;
 
-    if (notification) {
+    if (!state.showNotification && this._addedHistory) {
       this.controller.popNotification(this._notificationTypeToggled);
       this._notificationTypeToggled = true;
+      this._addedHistory = false;
     }
   };
 }
