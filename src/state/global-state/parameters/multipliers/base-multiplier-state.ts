@@ -66,7 +66,6 @@ export abstract class BaseMultiplierState implements IMultiplierState {
     this._multiplierUpdateRequested = true;
   }
 
-  // eslint-disable-next-line @typescript-eslint/require-await
   async startNewState(): Promise<void> {
     this._pointsByProgram = 0;
     this._multiplierByProgram = 1;
@@ -75,7 +74,6 @@ export abstract class BaseMultiplierState implements IMultiplierState {
     this.requestMultipliersRecalculation();
   }
 
-  // eslint-disable-next-line @typescript-eslint/require-await
   async deserialize(serializedState: IMultiplierSerializedState): Promise<void> {
     this._pointsByProgram = serializedState.pointsByProgram;
     this._multiplierByProgram = 1;

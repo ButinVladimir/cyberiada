@@ -1,25 +1,29 @@
 import { inject, injectable } from 'inversify';
+import { decorators } from '@state/container';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
-import { IMakeProgramParameters } from '@state/progam-factory/interfaces/make-program-parameters';
-import type { IProgramFactory } from '@state/progam-factory/interfaces/program-factory';
-import { IProgram } from '@state/progam-factory/interfaces/program';
 import type { IGlobalState } from '@state/global-state/interfaces/global-state';
 import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
 import type { IFormatter } from '@shared/interfaces/formatter';
+import type { IMainframeState } from '@state/mainframe-state/interfaces/mainframe-state';
 import { TYPES } from '@state/types';
-import { ProgramName } from '@state/progam-factory/types';
 import { Feature, PurchaseEvent, PurchaseType } from '@shared/types';
 import { EventBatcher } from '@shared/event-batcher';
 import { binarySearchDecimal, moveElementInArray } from '@shared/helpers';
 import { IMainframeProgramsState, IMainframeProgramsSerializedState } from './interfaces';
 import { MAINFRAME_PROGRAMS_STATE_UI_EVENTS } from './constants';
+import { ProgramName } from '../progam-factory/types';
+import { IMakeProgramParameters, IProgram } from '../progam-factory/interfaces';
+
+const { lazyInject } = decorators;
 
 @injectable()
 export class MainframeProgramsState implements IMainframeProgramsState {
   readonly uiEventBatcher: EventBatcher;
 
+  @lazyInject(TYPES.MainframeState)
+  private _mainframeState!: IMainframeState;
+
   private _stateUiConnector: IStateUIConnector;
-  private _programFactory: IProgramFactory;
   private _globalState: IGlobalState;
   private _messageLogState: IMessageLogState;
   private _formatter: IFormatter;
@@ -29,13 +33,11 @@ export class MainframeProgramsState implements IMainframeProgramsState {
 
   constructor(
     @inject(TYPES.StateUIConnector) _stateUiConnector: IStateUIConnector,
-    @inject(TYPES.ProgramFactory) _programFactory: IProgramFactory,
     @inject(TYPES.GlobalState) _globalState: IGlobalState,
     @inject(TYPES.MessageLogState) _messageLogState: IMessageLogState,
     @inject(TYPES.Formatter) _formatter: IFormatter,
   ) {
     this._stateUiConnector = _stateUiConnector;
-    this._programFactory = _programFactory;
     this._globalState = _globalState;
     this._messageLogState = _messageLogState;
     this._formatter = _formatter;
@@ -62,7 +64,7 @@ export class MainframeProgramsState implements IMainframeProgramsState {
       return false;
     }
 
-    const program = this._programFactory.makeProgram(programParameters);
+    const program = this._mainframeState.programFactory.makeProgram(programParameters);
 
     const bought = this._globalState.money.purchase(
       program.cost,
@@ -137,13 +139,12 @@ export class MainframeProgramsState implements IMainframeProgramsState {
     this.requestUiUpdate();
   }
 
-  // eslint-disable-next-line @typescript-eslint/require-await
   async startNewState(): Promise<void> {
     this.clearState();
 
     for (const programName of this._globalState.scenario.currentValues.mainframeSoftware.programs) {
       this.addProgram(
-        this._programFactory.makeProgram({
+        this._mainframeState.programFactory.makeProgram({
           name: programName,
           quality: 0,
           level: 1,
@@ -155,12 +156,11 @@ export class MainframeProgramsState implements IMainframeProgramsState {
     this.requestUiUpdate();
   }
 
-  // eslint-disable-next-line @typescript-eslint/require-await
   async deserialize(serializedState: IMainframeProgramsSerializedState): Promise<void> {
     this.clearState();
 
     serializedState.ownedPrograms.forEach((programParameters) => {
-      const program = this._programFactory.makeProgram(programParameters);
+      const program = this._mainframeState.programFactory.makeProgram(programParameters);
       this._ownedPrograms.set(programParameters.name, program);
       this._programsList.push(program);
     });
@@ -180,10 +180,6 @@ export class MainframeProgramsState implements IMainframeProgramsState {
 
   removeUiEventListener(eventName: symbol, handler: (...args: any[]) => void) {
     this.uiEventBatcher.removeListener(eventName, handler);
-  }
-
-  fireUiEvents() {
-    this.uiEventBatcher.fireEvents();
   }
 
   private addProgram(newProgram: IProgram): void {
@@ -229,7 +225,7 @@ export class MainframeProgramsState implements IMainframeProgramsState {
       return false;
     }
 
-    const program = this._programFactory.makeProgram({
+    const program = this._mainframeState.programFactory.makeProgram({
       name: existingProgram.name,
       quality: existingProgram.quality,
       level,

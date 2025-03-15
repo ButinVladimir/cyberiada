@@ -115,12 +115,10 @@ export abstract class MainframeHardwareParameter implements IMainframeHardwarePa
     return cost <= this.globalState.money.money;
   };
 
-  // eslint-disable-next-line @typescript-eslint/require-await
   async startNewState(): Promise<void> {
     this._autoUpgradeEnabled = true;
   }
 
-  // eslint-disable-next-line @typescript-eslint/require-await
   async deserialize(serializedState: IMainframeHardwareParameterSerializedState): Promise<void> {
     this._level = serializedState.level;
     this._autoUpgradeEnabled = serializedState.autoUpgradeEnabled;

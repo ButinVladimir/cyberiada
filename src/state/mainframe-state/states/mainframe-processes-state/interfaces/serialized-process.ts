@@ -1,4 +1,4 @@
-import { ProgramName } from '@state/progam-factory/types';
+import { ProgramName } from '@state/mainframe-state/states/progam-factory/types';
 
 export interface ISerializedProcess {
   programName: ProgramName;

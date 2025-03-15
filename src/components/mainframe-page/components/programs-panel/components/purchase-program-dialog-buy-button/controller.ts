@@ -1,6 +1,6 @@
 import { BaseController } from '@shared/base-controller';
-import { IProgram } from '@state/progam-factory/interfaces/program';
-import { ProgramName } from '@state/progam-factory/types';
+import { IProgram } from '@state/mainframe-state/states/progam-factory/interfaces/program';
+import { ProgramName } from '@state/mainframe-state/states/progam-factory/types';
 
 export class PurchaseProgramDialogBuyButtonController extends BaseController {
   private _selectedProgram?: IProgram;
@@ -23,7 +23,7 @@ export class PurchaseProgramDialogBuyButtonController extends BaseController {
     ) {
       this.deleteSelectedProgram();
 
-      this._selectedProgram = this.programFactory.makeProgram({
+      this._selectedProgram = this.mainframeState.programFactory.makeProgram({
         name,
         quality,
         level,

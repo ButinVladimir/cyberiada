@@ -2,7 +2,7 @@ import { t } from 'i18next';
 import { css, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
-import { OtherProgramName, ProgramName } from '@state/progam-factory/types';
+import { OtherProgramName, ProgramName } from '@state/mainframe-state/states/progam-factory/types';
 import { SCREEN_WIDTH_POINTS, hintIconStyle } from '@shared/styles';
 import { OwnedProgramsListItemController } from './controller';
 

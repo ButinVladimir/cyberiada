@@ -52,14 +52,12 @@ export class UnlockedFeaturesState implements IUnlockedFeaturesState {
     return Array.from(this._unlockedFeatures.values());
   }
 
-  // eslint-disable-next-line @typescript-eslint/require-await
   async startNewState(): Promise<void> {
     this._unlockedFeatures.clear();
 
     this.uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.FEATURE_UNLOCKED);
   }
 
-  // eslint-disable-next-line @typescript-eslint/require-await
   async deserialize(serializedState: IUnlockedFeaturesSerializedState): Promise<void> {
     this._unlockedFeatures.clear();
 

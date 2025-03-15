@@ -50,12 +50,10 @@ export class FactionState implements IFactionState {
     return merge({}, factions[faction]) as IFactionValues;
   }
 
-  // eslint-disable-next-line @typescript-eslint/require-await
   async startNewState(): Promise<void> {
     this.currentFaction = undefined;
   }
 
-  // eslint-disable-next-line @typescript-eslint/require-await
   async deserialize(serializedState: IFactionSerializedState): Promise<void> {
     this.currentFaction = serializedState.currentFaction;
   }

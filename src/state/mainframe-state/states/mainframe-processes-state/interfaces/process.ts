@@ -1,4 +1,4 @@
-import { IProgram } from '@state/progam-factory/interfaces/program';
+import { IProgram } from '@state/mainframe-state/states/progam-factory/interfaces/program';
 import { IUIEventEmitter } from '@shared/interfaces/ui-event-emitter';
 import { ISerializedProcess } from './serialized-process';
 

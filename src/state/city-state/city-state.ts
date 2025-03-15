@@ -35,7 +35,6 @@ export class CityState implements ICityState {
     await this.generateMap();
   }
 
-  // eslint-disable-next-line @typescript-eslint/require-await
   async deserialize(serializedState: ICitySerializedState): Promise<void> {
     this._map = [];
     for (let x = 0; x < this._globalState.scenario.currentValues.mapWidth; x++) {

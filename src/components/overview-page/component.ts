@@ -87,7 +87,6 @@ export class OverviewPage extends BaseComponent {
   };
 
   private handleTabShow = (event: Event) => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     const tab: OverviewPageTabs = (event as any).detail.name as OverviewPageTabs;
 
     if (tab !== this._currentTab) {

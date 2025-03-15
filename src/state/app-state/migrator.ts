@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { CURRENT_VERSION } from '@shared/constants';
 import { GameVersion } from '@shared/types';
 import { IMigration, IMigrator, ISerializedState } from './interfaces';

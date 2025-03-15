@@ -15,6 +15,8 @@ import {
   NotificationType,
   GameVersion,
   Feature,
+  Attribute,
+  Skill,
 } from './types';
 
 export const CURRENT_VERSION = GameVersion['0.1.3'];
@@ -60,3 +62,7 @@ export const INCOME_SOURCES: IncomeSource[] = Object.values(IncomeSource);
 export const EMPTY_IMAGE = new Image();
 
 export const FEATURES: Feature[] = Object.values(Feature);
+
+export const ATTRIBUTES: Attribute[] = Object.values(Attribute);
+
+export const SKILLS: Skill[] = Object.values(Skill);

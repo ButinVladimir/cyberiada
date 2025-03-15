@@ -4,7 +4,7 @@ import { EventBatcher } from '@shared/event-batcher';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import type { IMainframeState } from '@state/mainframe-state/interfaces/mainframe-state';
 import { TYPES } from '@state/types';
-import { ProgramName } from '@state/progam-factory/types';
+import { ProgramName } from '@state/mainframe-state/states/progam-factory/types';
 import { IProcess } from '@state/mainframe-state/states/mainframe-processes-state/interfaces/process';
 import { IMultiplierGrowthState } from '../../interfaces/parameters/multiplier-growth-state';
 import { GROWTH_STATE_UI_EVENTS } from '../../constants';

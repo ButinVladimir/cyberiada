@@ -50,8 +50,9 @@ import {
 import { SettingsState, ISettingsState } from '@state/settings-state';
 import { CityState, ICityState } from '@state/city-state';
 import { IMessageLogState, MessageLogState } from '@state/message-log-state';
-import { IProgramFactory, ProgramFactory } from '@state/progam-factory';
 import {
+  IProgramFactory,
+  ProgramFactory,
   IMainframeHardwareState,
   MainframeHardwareState,
   IMainframeProgramsState,

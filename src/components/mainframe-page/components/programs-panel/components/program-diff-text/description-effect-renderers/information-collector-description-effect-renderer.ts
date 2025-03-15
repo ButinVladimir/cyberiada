@@ -1,6 +1,6 @@
 import { t } from 'i18next';
 import { html } from 'lit';
-import { InformationCollectorProgram } from '@state/progam-factory/programs/information-collector';
+import { InformationCollectorProgram } from '@state/mainframe-state/states/progam-factory/programs/information-collector';
 import { IFormatter } from '@shared/interfaces/formatter';
 import { diffFormatterParametersLong } from '@shared/formatter-parameters';
 import { MS_IN_SECOND } from '@shared/constants';

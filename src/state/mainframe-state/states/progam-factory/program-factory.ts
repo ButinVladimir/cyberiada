@@ -8,8 +8,7 @@ import type { IMainframeState } from '@state/mainframe-state/interfaces/mainfram
 import type { ISettingsState } from '@state/settings-state/interfaces/settings-state';
 import type { IAutomationState } from '@state/automation-state/interfaces/automation-state';
 import type { IFormatter } from '@shared/interfaces/formatter';
-import { IProgramFactory } from './interfaces/program-factory';
-import { IBaseProgramParameters, IMakeProgramParameters, IProgram } from './interfaces';
+import { IBaseProgramParameters, IMakeProgramParameters, IProgram, IProgramFactory } from './interfaces';
 import { OtherProgramName, MultiplierProgramName } from './types';
 import {
   ShareServerProgram,

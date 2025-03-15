@@ -87,7 +87,6 @@ export class StatisticsPage extends BaseComponent {
   };
 
   private handleTabShow = (event: Event) => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     const tab: StatisticsPageTabs = (event as any).detail.name as StatisticsPageTabs;
 
     if (tab !== this._currentTab) {

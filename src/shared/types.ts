@@ -116,3 +116,21 @@ export enum Feature {
 export type PointsMultiplierType = 'codeBase' | 'computationalBase' | 'connectivity' | 'rewards';
 
 export type ItemCategory = 'programs';
+
+export enum Attribute {
+  strength = 'strength',
+  endurance = 'endurance',
+  agility = 'agility',
+  perception = 'perception',
+  intellect = 'intellect',
+  charisma = 'charisma',
+}
+
+export enum Skill {
+  closeCombat = 'closeCombat',
+  rangedCombat = 'rangedCombat',
+  engineering = 'engineering',
+  hacking = 'hacking',
+  stealth = 'stealth',
+  diplomacy = 'diplomacy',
+}

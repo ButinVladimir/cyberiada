@@ -34,12 +34,10 @@ export class ScenarioState implements IScenarioState {
     return merge({}, constants.defaultScenarioSettings, scenarios[scenario]) as IScenarioValues;
   }
 
-  // eslint-disable-next-line @typescript-eslint/require-await
   async startNewState(): Promise<void> {
     this.scenario = constants.startingScenario as Scenario;
   }
 
-  // eslint-disable-next-line @typescript-eslint/require-await
   async deserialize(serializedState: IScenarioSerializedState): Promise<void> {
     this.scenario = serializedState.scenario;
   }

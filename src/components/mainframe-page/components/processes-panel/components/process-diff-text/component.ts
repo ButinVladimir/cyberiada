@@ -2,7 +2,11 @@ import { t } from 'i18next';
 import { css, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
-import { ProgramName, OtherProgramName, MultiplierProgramName } from '@state/progam-factory/types';
+import {
+  ProgramName,
+  OtherProgramName,
+  MultiplierProgramName,
+} from '@state/mainframe-state/states/progam-factory/types';
 import { diffFormatterParametersDecimal, diffFormatterParametersShortTime } from '@shared/formatter-parameters';
 import {
   CodeGeneratorDescriptionEffectRenderer,

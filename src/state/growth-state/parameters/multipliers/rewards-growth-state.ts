@@ -1,6 +1,6 @@
 import { injectable } from 'inversify';
-import { MultiplierProgramName } from '@state/progam-factory/types';
-import { DealMakerProgram } from '@state/progam-factory/programs/deal-maker';
+import { MultiplierProgramName } from '@state/mainframe-state/states/progam-factory/types';
+import { DealMakerProgram } from '@state/mainframe-state/states/progam-factory/programs/deal-maker';
 import { IProcess } from '@state/mainframe-state/states/mainframe-processes-state/interfaces/process';
 import { BaseMultiplierGrowthState } from './base-multiplier-growth-state';
 

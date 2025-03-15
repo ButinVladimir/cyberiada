@@ -6,7 +6,6 @@ import { ISettingsState } from '@state/settings-state/interfaces/settings-state'
 import { ICityState } from '@state/city-state/interfaces/city-state';
 import { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
 import { IMainframeState } from '@state/mainframe-state/interfaces/mainframe-state';
-import { IProgramFactory } from '@state/progam-factory';
 import { INotificationsState } from '@state/notifications-state/interfaces/notifications-state';
 import { IGrowthState } from '@state/growth-state/interfaces/growth-state';
 import { IAutomationState } from '@state/automation-state';
@@ -124,10 +123,6 @@ export class BaseController<T extends ReactiveControllerHost = ReactiveControlle
 
   protected get mainframeState(): IMainframeState {
     return container.get<IMainframeState>(TYPES.MainframeState);
-  }
-
-  protected get programFactory(): IProgramFactory {
-    return container.get<IProgramFactory>(TYPES.ProgramFactory);
   }
 
   protected get automationState(): IAutomationState {

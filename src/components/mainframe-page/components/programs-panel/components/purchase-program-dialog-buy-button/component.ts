@@ -2,7 +2,7 @@ import { t } from 'i18next';
 import { css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
-import type { ProgramName } from '@state/progam-factory/types';
+import type { ProgramName } from '@state/mainframe-state/states/progam-factory/types';
 import { PurchaseProgramDialogBuyButtonController } from './controller';
 import { BuyProgramEvent } from './events';
 

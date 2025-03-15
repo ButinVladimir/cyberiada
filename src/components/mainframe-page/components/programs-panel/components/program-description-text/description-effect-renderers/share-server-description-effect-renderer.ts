@@ -1,6 +1,6 @@
 import { t } from 'i18next';
 import { html } from 'lit';
-import { ShareServerProgram } from '@state/progam-factory/programs/share-server';
+import { ShareServerProgram } from '@state/mainframe-state/states/progam-factory/programs/share-server';
 import { IFormatter } from '@shared/interfaces/formatter';
 import { MS_IN_SECOND } from '@shared/constants';
 import { IDescriptionParameters, IDescriptionEffectRenderer } from '../interfaces';

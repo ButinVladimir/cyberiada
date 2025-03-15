@@ -1,6 +1,6 @@
 import { t } from 'i18next';
 import { html } from 'lit';
-import { DealMakerProgram } from '@state/progam-factory/programs/deal-maker';
+import { DealMakerProgram } from '@state/mainframe-state/states/progam-factory/programs/deal-maker';
 import { IFormatter } from '@shared/interfaces/formatter';
 import { MS_IN_SECOND } from '@shared/constants';
 import { IProcess } from '@state/mainframe-state/states/mainframe-processes-state/interfaces/process';

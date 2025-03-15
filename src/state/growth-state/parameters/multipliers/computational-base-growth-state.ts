@@ -1,6 +1,6 @@
 import { injectable } from 'inversify';
-import { MultiplierProgramName } from '@state/progam-factory/types';
-import { CircuitDesignerProgram } from '@state/progam-factory/programs/circuit-designer';
+import { MultiplierProgramName } from '@state/mainframe-state/states/progam-factory/types';
+import { CircuitDesignerProgram } from '@state/mainframe-state/states/progam-factory/programs/circuit-designer';
 import { IProcess } from '@state/mainframe-state/states/mainframe-processes-state/interfaces/process';
 import { BaseMultiplierGrowthState } from './base-multiplier-growth-state';
 

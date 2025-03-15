@@ -1,4 +1,4 @@
-import { ProgramName } from '@state/progam-factory/types';
+import { ProgramName } from '@state/mainframe-state/states/progam-factory/types';
 import { ISerializeable, IUIEventEmitter } from '@shared/interfaces';
 import { IProcess } from './process';
 import { IMainframeProcessesSerializedState } from './mainframe-processes-serialized-state';

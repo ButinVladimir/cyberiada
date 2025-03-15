@@ -6,7 +6,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.component.js';
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.component.js';
 import { BaseComponent } from '@shared/base-component';
-import type { ProgramName } from '@state/progam-factory/types';
+import type { ProgramName } from '@state/mainframe-state/states/progam-factory/types';
 import {
   ConfirmationAlertOpenEvent,
   ConfirmationAlertSubmitEvent,

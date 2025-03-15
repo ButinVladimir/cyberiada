@@ -71,7 +71,6 @@ export abstract class BaseAvailableCategoryItemsState implements IAvailableCateg
     return result;
   }
 
-  // eslint-disable-next-line @typescript-eslint/require-await
   async startNewState(): Promise<void> {
     this._loanedQuality = 6;
     this._loanedItems.clear();
@@ -80,7 +79,6 @@ export abstract class BaseAvailableCategoryItemsState implements IAvailableCateg
     this.recalculateList();
   }
 
-  // eslint-disable-next-line @typescript-eslint/require-await
   async deserialize(serializedState: IAvailableCategoryItemsSerializedState): Promise<void> {
     this._loanedQuality = serializedState.loanedQuality;
     this._loanedItems.clear();

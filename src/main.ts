@@ -14,7 +14,6 @@ window.i18next = i18n;
 
 i18n
   .init({
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     resources,
     fallbackLng: 'en',
     debug: import.meta.env.DEV,

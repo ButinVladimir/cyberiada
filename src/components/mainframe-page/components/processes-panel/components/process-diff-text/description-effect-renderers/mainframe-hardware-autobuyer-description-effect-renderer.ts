@@ -1,6 +1,6 @@
 import { t } from 'i18next';
 import { html } from 'lit';
-import { MainframeHardwareAutobuyerProgram } from '@state/progam-factory/programs/mainframe-hardware-autobuyer';
+import { MainframeHardwareAutobuyerProgram } from '@state/mainframe-state/states/progam-factory/programs/mainframe-hardware-autobuyer';
 import { IFormatter } from '@shared/interfaces/formatter';
 import { diffFormatterParametersDecimal, diffFormatterParametersFloat } from '@shared/formatter-parameters';
 import { MS_IN_SECOND } from '@shared/constants';

@@ -108,7 +108,6 @@ export class MainframePage extends BaseComponent<MainframePageController> {
   };
 
   private handleTabShow = (event: Event) => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     const tab: MainframePageTabs = (event as any).detail.name as MainframePageTabs;
 
     if (tab !== this._currentTab) {

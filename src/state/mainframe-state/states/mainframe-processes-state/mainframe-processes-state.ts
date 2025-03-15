@@ -1,12 +1,12 @@
 import { inject, injectable } from 'inversify';
 import { decorators } from '@state/container';
-import { ProgramName } from '@state/progam-factory/types';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
-import type { IMainframeState } from '../../interfaces/mainframe-state';
 import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
 import type { ISettingsState } from '@state/settings-state/interfaces/settings-state';
 import type { IFormatter } from '@shared/interfaces/formatter';
 import type { IGrowthState } from '@state/growth-state/interfaces/growth-state';
+import type { IMainframeState } from '../../interfaces/mainframe-state';
+import { ProgramName } from '../progam-factory/types';
 import { TYPES } from '@state/types';
 import { EventBatcher } from '@shared/event-batcher';
 import { ProgramsEvent } from '@shared/types';
@@ -239,14 +239,12 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     this.requestUpdateProcesses();
   }
 
-  // eslint-disable-next-line @typescript-eslint/require-await
   async startNewState(): Promise<void> {
     this.clearState();
 
     this.requestUpdateProcesses();
   }
 
-  // eslint-disable-next-line @typescript-eslint/require-await
   async deserialize(serializedState: IMainframeProcessesSerializedState): Promise<void> {
     this.clearState();
 

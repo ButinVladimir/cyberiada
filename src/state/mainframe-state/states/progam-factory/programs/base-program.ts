@@ -3,7 +3,8 @@ import { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui
 import { IFormatter } from '@shared/interfaces/formatter';
 import { EventBatcher } from '@shared/event-batcher';
 import { IExponent } from '@shared/interfaces/exponent';
-import { calculatePow } from '@shared/helpers';
+import { IExponentWithQuality } from '@shared/interfaces/exponent-with-quality';
+import { calculatePow, calculatePowWithQuality } from '@shared/helpers';
 import { IGlobalState } from '@state/global-state/interfaces/global-state';
 import { IGrowthState } from '@state/growth-state/interfaces/growth-state';
 import { IMainframeState } from '@state/mainframe-state/interfaces/mainframe-state';
@@ -84,9 +85,7 @@ export abstract class BaseProgram implements IProgram {
     const programData = programs[this.name];
 
     return (
-      (calculatePow(this.level - 1, programData.cost as IExponent) *
-        Math.pow(programData.costQualityMultiplier, this.quality)) /
-      this.globalState.multipliers.connectivity.totalMultiplier /
+      calculatePowWithQuality(this.level - 1, this.quality, programData.cost as IExponentWithQuality) /
       this.globalState.multipliers.codeBase.totalMultiplier
     );
   }

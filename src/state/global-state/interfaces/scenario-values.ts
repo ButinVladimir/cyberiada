@@ -1,5 +1,5 @@
 import { IExponent } from '@shared/interfaces/exponent';
-import { ProgramName } from '@state/progam-factory/types';
+import { ProgramName } from '@state/mainframe-state/states/progam-factory/types';
 import { IStoryEvent } from './story-event';
 import { IMultiplierScenarioParameters } from './multiplier-scenario-parameters';
 

@@ -21,12 +21,10 @@ export class MainframeHardwareAutomationState implements IMainframeHardwareAutom
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/require-await
   async startNewState(): Promise<void> {
     this._moneyShare = constants.defaultAutomationSettings.mainframeHardwareAutobuyer.moneyShare;
   }
 
-  // eslint-disable-next-line @typescript-eslint/require-await
   async deserialize(serializedState: IMainframeHardwareAutomationSerializedState): Promise<void> {
     this._moneyShare = serializedState.moneyShare;
   }

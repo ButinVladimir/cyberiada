@@ -1,6 +1,6 @@
 import { t } from 'i18next';
 import { html } from 'lit';
-import { CircuitDesignerProgram } from '@state/progam-factory/programs/circuit-designer';
+import { CircuitDesignerProgram } from '@state/mainframe-state/states/progam-factory/programs/circuit-designer';
 import { IFormatter } from '@shared/interfaces/formatter';
 import { MS_IN_SECOND } from '@shared/constants';
 import { IDescriptionParameters, IDescriptionEffectRenderer } from '../interfaces';

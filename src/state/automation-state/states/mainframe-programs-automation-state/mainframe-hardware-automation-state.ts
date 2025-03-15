@@ -21,12 +21,10 @@ export class MainframeProgramsAutomationState implements IMainframeProgramsAutom
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/require-await
   async startNewState(): Promise<void> {
     this._moneyShare = constants.defaultAutomationSettings.mainframeProgramsAutobuyer.moneyShare;
   }
 
-  // eslint-disable-next-line @typescript-eslint/require-await
   async deserialize(serializedState: IMainframeProgramsAutomationSerializedState): Promise<void> {
     this._moneyShare = serializedState.moneyShare;
   }

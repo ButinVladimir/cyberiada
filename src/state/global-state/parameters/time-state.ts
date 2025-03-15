@@ -123,7 +123,6 @@ export class TimeState implements ITimeState {
     this.uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.GAME_TIME_CHANGED);
   }
 
-  // eslint-disable-next-line @typescript-eslint/require-await
   async startNewState(): Promise<void> {
     this._lastUpdateTime = Date.now();
     this._accumulatedTime = this._globalState.scenario.currentValues.accumulatedTime;
@@ -132,7 +131,6 @@ export class TimeState implements ITimeState {
     this._gameTimeTotal = 0;
   }
 
-  // eslint-disable-next-line @typescript-eslint/require-await
   async deserialize(serializedState: ITimeSerializedState): Promise<void> {
     this._lastUpdateTime = serializedState.lastUpdateTime;
     this._accumulatedTime = serializedState.accumulatedTime;

@@ -5,8 +5,8 @@ import { createRef, ref } from 'lit/directives/ref.js';
 import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.component.js';
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.component.js';
 import { BaseComponent } from '@shared/base-component';
-import type { ProgramName } from '@state/progam-factory/types';
-import { IProgram } from '@state/progam-factory/interfaces/program';
+import type { ProgramName } from '@state/mainframe-state/states/progam-factory/types';
+import { IProgram } from '@state/mainframe-state/states/progam-factory/interfaces/program';
 import {
   ConfirmationAlertOpenEvent,
   ConfirmationAlertSubmitEvent,

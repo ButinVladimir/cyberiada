@@ -1,6 +1,6 @@
 import { t } from 'i18next';
 import { html } from 'lit';
-import { CodeGeneratorProgram } from '@state/progam-factory/programs/code-generator';
+import { CodeGeneratorProgram } from '@state/mainframe-state/states/progam-factory/programs/code-generator';
 import { IFormatter } from '@shared/interfaces/formatter';
 import { diffFormatterParametersLong } from '@shared/formatter-parameters';
 import { MS_IN_SECOND } from '@shared/constants';

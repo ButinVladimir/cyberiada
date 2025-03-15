@@ -78,14 +78,12 @@ export class MoneyState implements IMoneyState {
     return this._expenses.get(purchaseType) ?? 0;
   }
 
-  // eslint-disable-next-line @typescript-eslint/require-await
   async startNewState(): Promise<void> {
     this._money = this._globalState.scenario.currentValues.money;
     this._income.clear();
     this._expenses.clear();
   }
 
-  // eslint-disable-next-line @typescript-eslint/require-await
   async deserialize(serializedState: IMoneySerializedState): Promise<void> {
     this._money = serializedState.money;
 

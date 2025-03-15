@@ -52,6 +52,7 @@ export const DECIMAL_LONG_FORMATTER_OPTIONS: Intl.NumberFormatOptions = {
 export const FLOAT_LONG_FORMATTER_OPTIONS: Intl.NumberFormatOptions = {
   minimumFractionDigits: 3,
   maximumFractionDigits: 3,
+  roundingMode: 'floor',
 };
 
 export const FLOAT_SHORT_FORMATTER_OPTIONS: Intl.NumberFormatOptions = {
@@ -59,18 +60,21 @@ export const FLOAT_SHORT_FORMATTER_OPTIONS: Intl.NumberFormatOptions = {
   compactDisplay: 'short',
   minimumFractionDigits: 3,
   maximumFractionDigits: 3,
+  roundingMode: 'floor',
 };
 
 export const FLOAT_SCIENTIFIC_FORMATTER_OPTIONS: Intl.NumberFormatOptions = {
   notation: 'scientific',
   minimumFractionDigits: 3,
   maximumFractionDigits: 3,
+  roundingMode: 'floor',
 };
 
 export const FLOAT_ENGINEERING_FORMATTER_OPTIONS: Intl.NumberFormatOptions = {
   notation: 'engineering',
   minimumFractionDigits: 3,
   maximumFractionDigits: 3,
+  roundingMode: 'floor',
 };
 
 export const DATE_TIME_FORMATTER_OPTIONS: Intl.DateTimeFormatOptions = {

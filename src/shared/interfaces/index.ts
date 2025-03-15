@@ -8,3 +8,4 @@ export * from './formatter';
 export * from './exponent';
 export * from './formatter-parameters';
 export * from './history-state';
+export * from './exponent-with-quality';

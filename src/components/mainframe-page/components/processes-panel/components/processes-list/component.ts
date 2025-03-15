@@ -9,7 +9,7 @@ import {
   ConfirmationAlertSubmitEvent,
 } from '@components/game-screen/components/confirmation-alert/events';
 import { IProcess } from '@state/mainframe-state/states/mainframe-processes-state/interfaces/process';
-import { ProgramName } from '@state/progam-factory/types';
+import { ProgramName } from '@state/mainframe-state/states/progam-factory/types';
 import { SCREEN_WIDTH_POINTS } from '@shared/styles';
 import { SortableElementMovedEvent } from '@components/shared/sortable-list/events/sortable-element-moved';
 import { ProcessesListController } from './controller';

@@ -1,4 +1,4 @@
-import { IProgram } from '@state/progam-factory/interfaces/program';
+import { IProgram } from '@state/mainframe-state/states/progam-factory/interfaces/program';
 import { EventBatcher } from '@shared/event-batcher';
 import { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import { IMainframeProcessesState, IProcess, IProcessParameters, ISerializedProcess } from './interfaces';

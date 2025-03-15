@@ -7,7 +7,7 @@ import {
   ConfirmationAlertSubmitEvent,
 } from '@components/game-screen/components/confirmation-alert/events';
 import { ProgramAlert } from '@shared/types';
-import { ProgramName, OtherProgramName } from '@state/progam-factory/types';
+import { ProgramName, OtherProgramName } from '@state/mainframe-state/states/progam-factory/types';
 import { SCREEN_WIDTH_POINTS, hintIconStyle } from '@shared/styles';
 import { ProcessesListItemController } from './controller';
 

@@ -5,6 +5,7 @@ import { EventBatcher } from '@shared/event-batcher';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
 import { TYPES } from '@state/types';
+import { calculateGeometricProgressionSum, reverseGeometricProgressionSum } from '@shared/helpers';
 import { IDevelopmentState } from '../interfaces/parameters/development-state';
 import { IDevelopmentSerializedState } from '../interfaces/serialized-states/development-serialized-state';
 import type { IGlobalState } from '../interfaces/global-state';
@@ -68,14 +69,15 @@ export class DevelopmentState implements IDevelopmentState {
     return this._income.get(incomeSource) ?? 0;
   }
 
-  getLevelPoints(level: number): number {
+  getLevelRequirements(level: number): number {
     if (level <= 0) {
       return 0;
     }
 
-    const { base, baseMultiplier } = this._globalState.scenario.currentValues.developmentLevelRequirements;
-
-    return (baseMultiplier * (Math.pow(base, level) - 1)) / (base - 1);
+    return calculateGeometricProgressionSum(
+      this._level,
+      this._globalState.scenario.currentValues.developmentLevelRequirements,
+    );
   }
 
   requestLevelRecalculation() {
@@ -89,9 +91,11 @@ export class DevelopmentState implements IDevelopmentState {
 
     this._levelUpdateRequested = false;
 
-    const { base, baseMultiplier } = this._globalState.scenario.currentValues.developmentLevelRequirements;
     const prevLevel = this._level;
-    const newLevel = Math.floor(Math.log(1 + (this._points * (base - 1)) / baseMultiplier) / Math.log(base)) + 1;
+    const newLevel = reverseGeometricProgressionSum(
+      this._points,
+      this._globalState.scenario.currentValues.developmentLevelRequirements,
+    );
 
     if (newLevel > prevLevel) {
       this._level = newLevel;
@@ -102,7 +106,6 @@ export class DevelopmentState implements IDevelopmentState {
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/require-await
   async startNewState(): Promise<void> {
     this._points = 0;
     this._level = this._globalState.scenario.currentValues.developmentLevel;
@@ -111,7 +114,6 @@ export class DevelopmentState implements IDevelopmentState {
     this.requestLevelRecalculation();
   }
 
-  // eslint-disable-next-line @typescript-eslint/require-await
   async deserialize(serializedState: IDevelopmentSerializedState): Promise<void> {
     this._points = serializedState.points;
     this._level = serializedState.level;

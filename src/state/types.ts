@@ -38,5 +38,8 @@ export const TYPES = {
   AutomationState: Symbol('AutomationState'),
   MainframeHardwareAutomationState: Symbol('MainframeHardwareAutomationState'),
   MainframeProgramsAutomationState: Symbol('MainframeProgramsAutomationState'),
+  CompanyState: Symbol('CompanyState'),
+  CloneFactory: Symbol('CloneFactory'),
+  CompanyClonesState: Symbol('CompanyClonesState'),
   Formatter: Symbol('Formatter'),
 };

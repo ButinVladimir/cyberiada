@@ -1,7 +1,12 @@
+import { IExponentWithQuality } from './interfaces/exponent-with-quality';
 import { IExponent } from './interfaces/exponent';
 
 export const calculatePow = (exponent: number, params: IExponent): number => {
   return params.baseMultiplier * Math.pow(params.base, exponent);
+};
+
+export const calculatePowWithQuality = (exponent: number, quality: number, params: IExponentWithQuality): number => {
+  return params.baseMultiplier * Math.pow(params.base, exponent) * Math.pow(quality, params.qualityMultiplier);
 };
 
 export const binarySearchDecimal = (
@@ -67,3 +72,9 @@ export function moveElementInArray<T>(array: T[], fromIndex: number, toIndex: nu
 
   array[fixedToIndex] = movedElement;
 }
+
+export const calculateGeometricProgressionSum = (level: number, params: IExponent): number =>
+  (params.baseMultiplier * (Math.pow(params.base, level) - 1)) / (params.base - 1);
+
+export const reverseGeometricProgressionSum = (points: number, params: IExponent): number =>
+  Math.floor(Math.log(1 + (points * (params.base - 1)) / params.baseMultiplier) / Math.log(params.base)) + 1;

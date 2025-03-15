@@ -1,6 +1,6 @@
 import { t } from 'i18next';
 import { html } from 'lit';
-import { PredictiveComputatorProgram } from '@state/progam-factory/programs/predictive-computator';
+import { PredictiveComputatorProgram } from '@state/mainframe-state/states/progam-factory/programs/predictive-computator';
 import { IFormatter } from '@shared/interfaces/formatter';
 import { diffFormatterParametersFloat } from '@shared/formatter-parameters';
 import { IDescriptionParameters, IDescriptionEffectRenderer } from '../interfaces';
