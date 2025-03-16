@@ -134,10 +134,10 @@ mainframe:
       requirementsScalable: Requirements for autoscalable program
       ram: 'RAM: {{ram}}'
       ramDiff: 'RAM: {{ram}} ({{ramDiff}})'
-      ramAllUnused: 'RAM: All unused'
+      ramAllUnused: 'RAM: 1 + All available'
       cores: 'Cores: Up to {{cores}}'
       coresDiff: 'Cores: Up to {{cores}} ({{coresDiff}})'
-      coresAllUnused: 'Cores: All unused'
+      coresAllUnused: 'Cores: 1 + All available'
       completionTime: "Completion time: {{minTime}} \u2014 {{maxTime}}"
       completionTimeProcess: 'Completion time: {{time}}'
       completionTimeProcessNoCores: 'Completion time: Requires assigned cores to be completed'

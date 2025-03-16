@@ -9,7 +9,7 @@ export class FastForwardingScreen extends BaseComponent<FastForwardingScreenCont
   static styles = css`
     :host {
       width: 100vw;
-      height: 100vh;
+      height: 100dvh;
       display: flex;
       flex-direction: column;
       align-items: center;

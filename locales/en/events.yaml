@@ -34,3 +34,12 @@ processDeleted:
 allProcessesDeleted:
   name: All processes deleted
   message: All process have been deleted
+clonePurchased:
+  name: Clone purchased
+  message: Clone "{{name}}" of template "$t(cloneTemplates:{{cloneTemplateName}}:name)" with level {{level}} and quality {{quality}} has been purchased
+cloneDeleted:
+  name: Clone deleted
+  message: Clone "{{name}}" has been deleted
+allClonesDeleted:
+  name: All clones deleted
+  message: All clones have been deleted

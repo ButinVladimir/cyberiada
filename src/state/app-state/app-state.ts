@@ -6,6 +6,7 @@ import type { IMainframeState } from '@state/mainframe-state/interfaces/mainfram
 import type { IGlobalState } from '@state/global-state/interfaces/global-state';
 import type { IAutomationState } from '@state/automation-state/interfaces/automation-state';
 import type { IGrowthState } from '@state/growth-state/interfaces/growth-state';
+import type { ICompanyState } from '@state/company-state/interfaces/company-state';
 import { GameSpeed } from '@state/global-state/types';
 import { TYPES } from '@state/types';
 import { NotificationType } from '@shared/types';
@@ -22,6 +23,7 @@ export class AppState implements IAppState {
   private _cityState: ICityState;
   private _mainframeState: IMainframeState;
   private _automationState: IAutomationState;
+  private _companyState: ICompanyState;
 
   constructor(
     @inject(TYPES.NotificationsState) _notificationsState: INotificationsState,
@@ -32,6 +34,7 @@ export class AppState implements IAppState {
     @inject(TYPES.MainframeState) _mainframeState: IMainframeState,
     @inject(TYPES.AutomationState)
     _automationState: IAutomationState,
+    @inject(TYPES.CompanyState) _companyState: ICompanyState,
   ) {
     this._notificationsState = _notificationsState;
     this._globalState = _globalState;
@@ -40,6 +43,7 @@ export class AppState implements IAppState {
     this._cityState = _cityState;
     this._mainframeState = _mainframeState;
     this._automationState = _automationState;
+    this._companyState = _companyState;
   }
 
   updateState() {
@@ -83,6 +87,7 @@ export class AppState implements IAppState {
     await this._cityState.startNewState();
     await this._mainframeState.startNewState();
     await this._automationState.startNewState();
+    await this._companyState.startNewState();
 
     this._growthState.recalculateGrowth();
   }
@@ -95,6 +100,7 @@ export class AppState implements IAppState {
       city: this._cityState.serialize(),
       mainframe: this._mainframeState.serialize(),
       automation: this._automationState.serialize(),
+      company: this._companyState.serialize(),
     };
 
     return saveState;
@@ -118,6 +124,7 @@ export class AppState implements IAppState {
     await this._cityState.deserialize(migratedSaveData.city);
     await this._mainframeState.deserialize(migratedSaveData.mainframe);
     await this._automationState.deserialize(migratedSaveData.automation);
+    await this._companyState.deserialize(migratedSaveData.company);
 
     this._growthState.recalculateGrowth();
   }
@@ -134,6 +141,7 @@ export class AppState implements IAppState {
 
   private processSingleTick = () => {
     this._mainframeState.processes.processTick();
+    this._companyState.clones.processTick();
     this._globalState.makeNextTick();
     this._growthState.recalculateGrowth();
   };

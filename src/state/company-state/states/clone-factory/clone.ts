@@ -3,23 +3,29 @@ import { Attribute, Skill } from '@shared/types';
 import { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import { EventBatcher } from '@shared/event-batcher';
 import { ATTRIBUTES, SKILLS } from '@shared/constants';
-import { calculatePowWithQuality, reverseGeometricProgressionSum } from '@shared/helpers';
+import {
+  calculateGeometricProgressionSum,
+  calculatePowWithQuality,
+  reverseGeometricProgressionSum,
+} from '@shared/helpers';
 import { IClone, IBaseCloneParameters, IMakeCloneParameters, ICloneParameterValues } from './interfaces';
 import { CloneTemplateName } from './types';
 import { ICloneTemplate } from './interfaces/clone-template';
+import { CLONES_UI_EVENTS } from './constants';
 
 export class Clone implements IClone {
   readonly uiEventBatcher: EventBatcher;
 
   private _stateUiConnector: IStateUIConnector;
 
+  private _id: string;
   private _name: string;
   private _templateName: CloneTemplateName;
   private _template: ICloneTemplate;
   private _experience: number;
   private _level: number;
   private _quality: number;
-  private _control!: number;
+  private _ram!: number;
   private _autoUpgradeEnabled: boolean;
 
   private _attributes!: Map<Attribute, ICloneParameterValues>;
@@ -31,6 +37,7 @@ export class Clone implements IClone {
   constructor(parameters: IBaseCloneParameters) {
     this._stateUiConnector = parameters.stateUiConnector;
 
+    this._id = parameters.id;
     this._name = parameters.name;
     this._templateName = parameters.templateName;
     this._template = cloneTemplates[parameters.templateName] as ICloneTemplate;
@@ -53,35 +60,63 @@ export class Clone implements IClone {
     this.recalculate();
   }
 
+  get id() {
+    this._stateUiConnector.connectEventHandler(this, CLONES_UI_EVENTS.CLONE_CHANGED);
+
+    return this._id;
+  }
+
   get name() {
+    this._stateUiConnector.connectEventHandler(this, CLONES_UI_EVENTS.CLONE_CHANGED);
+
     return this._name;
   }
 
   set name(value: string) {
     this._name = value;
+
+    this.uiEventBatcher.enqueueEvent(CLONES_UI_EVENTS.CLONE_CHANGED);
   }
 
   get templateName() {
+    this._stateUiConnector.connectEventHandler(this, CLONES_UI_EVENTS.CLONE_CHANGED);
+
     return this._templateName;
   }
 
   get experience() {
+    this._stateUiConnector.connectEventHandler(this, CLONES_UI_EVENTS.CLONE_EXPERIENCE_CHANGED);
+
     return this._experience;
   }
 
   get level() {
+    this._stateUiConnector.connectEventHandler(this, CLONES_UI_EVENTS.CLONE_CHANGED);
+
     return this._level;
   }
 
   get quality() {
+    this._stateUiConnector.connectEventHandler(this, CLONES_UI_EVENTS.CLONE_CHANGED);
+
     return this._quality;
   }
 
-  get control() {
-    return this._control;
+  get ram() {
+    this._stateUiConnector.connectEventHandler(this, CLONES_UI_EVENTS.CLONE_CHANGED);
+
+    return this._ram;
+  }
+
+  get cores() {
+    this._stateUiConnector.connectEventHandler(this, CLONES_UI_EVENTS.CLONE_CHANGED);
+
+    return this._quality + 1;
   }
 
   get autoUpgradeEnabled() {
+    this._stateUiConnector.connectEventHandler(this, CLONES_UI_EVENTS.CLONE_CHANGED);
+
     return this._autoUpgradeEnabled;
   }
 
@@ -90,37 +125,49 @@ export class Clone implements IClone {
   }
 
   get cost() {
+    this._stateUiConnector.connectEventHandler(this, CLONES_UI_EVENTS.CLONE_CHANGED);
+
     return calculatePowWithQuality(this.level - 1, this.quality, this._template.cost);
   }
 
   increaseExperience(delta: number) {
+    this.uiEventBatcher.enqueueEvent(CLONES_UI_EVENTS.CLONE_EXPERIENCE_CHANGED);
+
     this._experience += delta;
     this.requestLevelRecalculation();
   }
 
   getLevelRequirements(level: number): number {
+    this._stateUiConnector.connectEventHandler(this, CLONES_UI_EVENTS.CLONE_CHANGED);
+
     if (level <= 0) {
       return 0;
     }
 
-    const { base, baseMultiplier } = this._template.levelRequirements;
-
-    return (baseMultiplier * (Math.pow(base, level) - 1)) / (base - 1);
+    return calculateGeometricProgressionSum(level, this._template.levelRequirements);
   }
 
   getBaseAttributeValue(attribute: Attribute): number {
+    this._stateUiConnector.connectEventHandler(this, CLONES_UI_EVENTS.CLONE_CHANGED);
+
     return this._attributes.get(attribute)!.baseValue;
   }
 
   getTotalAttributeValue(attribute: Attribute): number {
+    this._stateUiConnector.connectEventHandler(this, CLONES_UI_EVENTS.CLONE_CHANGED);
+
     return this._attributes.get(attribute)!.totalValue;
   }
 
   getBaseSkillValue(skill: Skill): number {
+    this._stateUiConnector.connectEventHandler(this, CLONES_UI_EVENTS.CLONE_CHANGED);
+
     return this._skills.get(skill)!.baseValue;
   }
 
   getTotalSkillValue(skill: Skill): number {
+    this._stateUiConnector.connectEventHandler(this, CLONES_UI_EVENTS.CLONE_CHANGED);
+
     return this._skills.get(skill)!.totalValue;
   }
 
@@ -135,6 +182,7 @@ export class Clone implements IClone {
 
   serialize(): IMakeCloneParameters {
     return {
+      id: this.id,
       name: this.name,
       templateName: this.templateName,
       experience: this.experience,
@@ -145,8 +193,9 @@ export class Clone implements IClone {
   }
 
   private initControl() {
-    this._control =
-      this._template.control.baseMultiplier * Math.pow(this._template.control.qualityMultiplier, this._quality);
+    this._ram = Math.ceil(
+      this._template.ram.baseMultiplier * Math.pow(this._template.ram.qualityMultiplier, this._quality),
+    );
   }
 
   private initExperience() {
@@ -198,6 +247,8 @@ export class Clone implements IClone {
       this._level = newLevel;
       this.requestParametersRecalculation();
     }
+
+    this.uiEventBatcher.enqueueEvent(CLONES_UI_EVENTS.CLONE_CHANGED);
   }
 
   private recalculateParameters(): void {
@@ -207,6 +258,13 @@ export class Clone implements IClone {
 
     this._parametersRecalculationRequested = false;
 
+    this.recalculateAttributes();
+    this.recalculateSkills();
+
+    this.uiEventBatcher.enqueueEvent(CLONES_UI_EVENTS.CLONE_CHANGED);
+  }
+
+  private recalculateAttributes(): void {
     ATTRIBUTES.forEach((attribute) => {
       const currentValues = this._attributes.get(attribute)!;
       const templateValues = this._template.attributes[attribute];
@@ -217,7 +275,9 @@ export class Clone implements IClone {
 
       currentValues.totalValue = currentValues.baseValue;
     });
+  }
 
+  private recalculateSkills(): void {
     SKILLS.forEach((skill) => {
       const currentValues = this._skills.get(skill)!;
       const templateValues = this._template.skills[skill];

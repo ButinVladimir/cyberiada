@@ -8,7 +8,7 @@ export class LoadingScreen extends BaseComponent {
   static styles = css`
     :host {
       width: 100vw;
-      height: 100vh;
+      height: 100dvh;
       display: flex;
       align-items: center;
       justify-content: center;

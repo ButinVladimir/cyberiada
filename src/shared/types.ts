@@ -50,6 +50,7 @@ export enum PurchaseEvent {
   coresUpgraded = 'coresUpgraded',
   ramUpgraded = 'ramUpgraded',
   programPurchased = 'programPurchased',
+  clonePurchased = 'clonePurchased',
 }
 
 export enum ProgramsEvent {
@@ -59,7 +60,12 @@ export enum ProgramsEvent {
   allProcessesDeleted = 'allProcessesDeleted',
 }
 
-export type MessageEvent = GameStateEvent | PurchaseEvent | ProgramsEvent;
+export enum ClonesEvent {
+  cloneDeleted = 'cloneDeleted',
+  allClonesDeleted = 'allClonesDeleted',
+}
+
+export type MessageEvent = GameStateEvent | PurchaseEvent | ProgramsEvent | ClonesEvent;
 
 export enum GameStateAlert {
   saveImport = 'saveImport',
@@ -76,7 +82,12 @@ export enum ProgramAlert {
   deleteAllProcesses = 'deleteAllProcesses',
 }
 
-export type GameAlert = GameStateAlert | ProgramAlert;
+export enum CloneAlert {
+  cloneDelete = 'cloneDelete',
+  deleteAllClones = 'deleteAllClones',
+}
+
+export type GameAlert = GameStateAlert | ProgramAlert | CloneAlert;
 
 export enum NotificationType {
   storyEvent = 'storyEvent',
@@ -95,6 +106,7 @@ export enum LongNumberFormat {
 export enum PurchaseType {
   mainframeHardware = 'mainframeHardware',
   mainframePrograms = 'mainframePrograms',
+  clones = 'clones',
 }
 
 export enum IncomeSource {
@@ -115,7 +127,7 @@ export enum Feature {
 
 export type PointsMultiplierType = 'codeBase' | 'computationalBase' | 'connectivity' | 'rewards';
 
-export type ItemCategory = 'programs';
+export type ItemCategory = 'programs' | 'cloneTemplates';
 
 export enum Attribute {
   strength = 'strength',

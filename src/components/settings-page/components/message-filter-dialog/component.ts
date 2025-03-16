@@ -4,7 +4,7 @@ import { customElement, property } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { BaseComponent } from '@shared/base-component';
 import SlCheckbox from '@shoelace-style/shoelace/dist/components/checkbox/checkbox.component.js';
-import { GAME_STATE_EVENTS, PURCHASE_EVENTS, PROGRAM_EVENTS } from '@shared/constants';
+import { GAME_STATE_EVENTS, PURCHASE_EVENTS, PROGRAM_EVENTS, CLONE_EVENTS } from '@shared/constants';
 import { MessageEvent } from '@shared/types';
 import {
   hintStyle,
@@ -95,6 +95,10 @@ export class MessageFilterDialog extends BaseComponent<MessageFilterDialogContro
           <sl-divider></sl-divider>
 
           <div class="events-container">${repeat(PROGRAM_EVENTS, (event) => event, this.renderEventCheckbox)}</div>
+
+          <sl-divider></sl-divider>
+
+          <div class="events-container">${repeat(CLONE_EVENTS, (event) => event, this.renderEventCheckbox)}</div>
         </div>
 
         <sl-button slot="footer" size="medium" variant="default" outline @click=${this.handleClose}>

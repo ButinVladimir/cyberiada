@@ -75,7 +75,7 @@ export class DevelopmentState implements IDevelopmentState {
     }
 
     return calculateGeometricProgressionSum(
-      this._level,
+      level,
       this._globalState.scenario.currentValues.developmentLevelRequirements,
     );
   }

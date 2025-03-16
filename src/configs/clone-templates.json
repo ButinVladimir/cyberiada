@@ -2,7 +2,7 @@
   "anthrodrone": {
     "cost": { "baseMultiplier": 10000, "base": 1.15, "qualityMultiplier": 10 },
     "levelRequirements": { "baseMultiplier": 1000, "base": 1.5 },
-    "control": { "baseMultiplier": 1, "qualityMultiplier": 1.1 },
+    "ram": { "baseMultiplier": 1, "qualityMultiplier": 1.1 },
     "attributes": {
       "strength": {
         "base": 1,

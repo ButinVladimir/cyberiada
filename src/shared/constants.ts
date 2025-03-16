@@ -17,6 +17,7 @@ import {
   Feature,
   Attribute,
   Skill,
+  ClonesEvent,
 } from './types';
 
 export const CURRENT_VERSION = GameVersion['0.1.3'];
@@ -36,6 +37,8 @@ export const GAME_STATE_EVENTS: GameStateEvent[] = Object.values(GameStateEvent)
 export const PURCHASE_EVENTS: PurchaseEvent[] = Object.values(PurchaseEvent);
 
 export const PROGRAM_EVENTS: ProgramsEvent[] = Object.values(ProgramsEvent);
+
+export const CLONE_EVENTS: ClonesEvent[] = Object.values(ClonesEvent);
 
 export const GAME_STATE_ALERTS: GameStateAlert[] = Object.values(GameStateAlert);
 

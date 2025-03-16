@@ -75,6 +75,14 @@ import { Formatter } from '@shared/formatter';
 import { IFormatter } from '@shared/interfaces/formatter';
 import { TYPES } from './types';
 import { container } from './container';
+import {
+  ICloneFactory,
+  CloneFactory,
+  ICompanyClonesState,
+  CompanyClonesState,
+  ICompanyState,
+  CompanyState,
+} from '@state/company-state';
 
 container.bind<IStateUIConnector>(TYPES.StateUIConnector).to(StateUIConnector).inSingletonScope().whenTargetIsDefault();
 
@@ -227,3 +235,13 @@ container
 container.bind<IAutomationState>(TYPES.AutomationState).to(AutomationState).inSingletonScope().whenTargetIsDefault();
 
 container.bind<IFormatter>(TYPES.Formatter).to(Formatter).inSingletonScope().whenTargetIsDefault();
+
+container.bind<ICloneFactory>(TYPES.CloneFactory).to(CloneFactory).inSingletonScope().whenTargetIsDefault();
+
+container
+  .bind<ICompanyClonesState>(TYPES.CompanyClonesState)
+  .to(CompanyClonesState)
+  .inSingletonScope()
+  .whenTargetIsDefault();
+
+container.bind<ICompanyState>(TYPES.CompanyState).to(CompanyState).inSingletonScope().whenTargetIsDefault();

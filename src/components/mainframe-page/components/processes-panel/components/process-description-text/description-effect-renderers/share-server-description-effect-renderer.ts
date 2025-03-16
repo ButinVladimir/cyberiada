@@ -11,12 +11,12 @@ export class ShareServerDescriptionEffectRenderer implements IDescriptionEffectR
 
   private _formatter: IFormatter;
 
-  private _availableRam: number;
+  private _autoscalableProcessRam: number;
 
   constructor(parameters: IDescriptionParameters) {
     this._process = parameters.process;
     this._formatter = parameters.formatter;
-    this._availableRam = parameters.availableRam;
+    this._autoscalableProcessRam = parameters.autoscalableProcessRam;
   }
 
   public renderEffect = () => {
@@ -28,7 +28,7 @@ export class ShareServerDescriptionEffectRenderer implements IDescriptionEffectR
         ${t('shareServer.moneyProcess', {
           ns: 'programs',
           money: this._formatter.formatNumberFloat(
-            program.calculateMoneyDelta(usedCores, this._availableRam, MS_IN_SECOND),
+            program.calculateMoneyDelta(usedCores, this._autoscalableProcessRam, MS_IN_SECOND),
           ),
         })}
       </p>
@@ -37,7 +37,7 @@ export class ShareServerDescriptionEffectRenderer implements IDescriptionEffectR
         ${t('shareServer.developmentPointsProcess', {
           ns: 'programs',
           developmentPoints: this._formatter.formatNumberFloat(
-            program.calculateDevelopmentPointsDelta(usedCores, this._availableRam, MS_IN_SECOND),
+            program.calculateDevelopmentPointsDelta(usedCores, this._autoscalableProcessRam, MS_IN_SECOND),
           ),
         })}
       </p>

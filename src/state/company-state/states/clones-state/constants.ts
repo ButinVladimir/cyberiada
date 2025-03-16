@@ -1,0 +1,3 @@
+export const COMPANY_CLONES_STATE_UI_EVENTS = {
+  CLONES_UPDATED: Symbol('CLONES_UPDATED'),
+};

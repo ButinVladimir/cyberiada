@@ -73,8 +73,8 @@ export class MoneyGrowthState implements IMoneyGrowthState {
 
     if (shareServerProcess?.isActive) {
       incomeByProgram = (shareServerProcess.program as ShareServerProgram).calculateMoneyDelta(
-        mainframeProcessesState.availableCores,
-        mainframeProcessesState.availableRam,
+        shareServerProcess.usedCores,
+        shareServerProcess.totalRam,
         1,
       );
     }

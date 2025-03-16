@@ -3,6 +3,7 @@ import { ICitySerializedState } from '@state/city-state/interfaces/city-serializ
 import { IMainframeSerializedState } from '@state/mainframe-state/interfaces/mainframe-serialized-state';
 import { IGlobalSerializedState } from '@state/global-state/interfaces/serialized-states/global-serialized-state';
 import { IAutomationSerializedState } from '@state/automation-state/interfaces/automation-serialized-state';
+import { ICompanySerializedState } from '@state/company-state/interfaces/company-serialized-state';
 import { GameVersion } from '@shared/types';
 
 export interface ISerializedState {
@@ -12,4 +13,5 @@ export interface ISerializedState {
   city: ICitySerializedState;
   mainframe: IMainframeSerializedState;
   automation: IAutomationSerializedState;
+  company: ICompanySerializedState;
 }

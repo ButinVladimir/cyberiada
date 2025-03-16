@@ -5,8 +5,8 @@ import { ProgramName } from '@state/mainframe-state/states/progam-factory/types'
 export class ProcessDescriptionTextController extends BaseController {
   private _process?: IProcess;
 
-  get availableRam(): number {
-    return this.mainframeState.processes.availableRam;
+  get autoscalableProcessRam(): number {
+    return this.mainframeState.processes.availableRam + 1;
   }
 
   getProcess(programName: ProgramName) {

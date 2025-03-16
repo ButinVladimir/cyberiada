@@ -20,9 +20,6 @@ export class Toasts extends BaseComponent<ToastsController> {
 
   renderContent() {
     const toastDuration = this.controller.getToastDuration();
-    if (toastDuration === 0) {
-      return nothing;
-    }
 
     const toasts = this.controller.getToasts();
 

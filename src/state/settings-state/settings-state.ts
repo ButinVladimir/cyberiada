@@ -1,19 +1,16 @@
 import { injectable } from 'inversify';
 import i18n from 'i18next';
 import { decorators } from '@state/container';
+import { GameAlert, Language, LongNumberFormat, MessageEvent, Theme, NotificationType } from '@shared/types';
 import {
-  GameAlert,
-  GameStateAlert,
-  ProgramAlert,
-  Language,
-  LongNumberFormat,
-  MessageEvent,
-  Theme,
-  ProgramsEvent,
-  PurchaseEvent,
-  GameStateEvent,
-  NotificationType,
-} from '@shared/types';
+  CLONE_EVENTS,
+  GAME_STATE_ALERTS,
+  GAME_STATE_EVENTS,
+  NOTIFICATION_TYPES,
+  PROGRAM_ALERTS,
+  PROGRAM_EVENTS,
+  PURCHASE_EVENTS,
+} from '@shared/constants';
 import type { IApp } from '@state/app/interfaces/app';
 import { TYPES } from '@state/types';
 import themes from '@configs/themes.json';
@@ -276,14 +273,14 @@ export class SettingsState implements ISettingsState {
   }
 
   private getAllMessageEvents(): MessageEvent[] {
-    return [...Object.values(GameStateEvent), ...Object.values(PurchaseEvent), ...Object.values(ProgramsEvent)];
+    return [...GAME_STATE_EVENTS, ...PURCHASE_EVENTS, ...PROGRAM_EVENTS, ...CLONE_EVENTS];
   }
 
   private getAllGameAlerts(): GameAlert[] {
-    return [...Object.values(GameStateAlert), ...Object.values(ProgramAlert)];
+    return [...GAME_STATE_ALERTS, ...PROGRAM_ALERTS];
   }
 
   private getAllNotificationTypes(): NotificationType[] {
-    return Object.values(NotificationType);
+    return NOTIFICATION_TYPES;
   }
 }

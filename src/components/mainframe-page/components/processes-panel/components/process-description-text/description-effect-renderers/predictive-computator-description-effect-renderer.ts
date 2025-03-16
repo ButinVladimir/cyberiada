@@ -10,12 +10,12 @@ export class PredictiveComputatorDescriptionEffectRenderer implements IDescripti
 
   private _formatter: IFormatter;
 
-  private _availableRam: number;
+  private _autoscalableProcessRam: number;
 
   constructor(parameters: IDescriptionParameters) {
     this._process = parameters.process;
     this._formatter = parameters.formatter;
-    this._availableRam = parameters.availableRam;
+    this._autoscalableProcessRam = parameters.autoscalableProcessRam;
   }
 
   public renderEffect = () => {
@@ -27,7 +27,7 @@ export class PredictiveComputatorDescriptionEffectRenderer implements IDescripti
         ${t('predictiveComputator.speedMultiplierProcess', {
           ns: 'programs',
           value: this._formatter.formatNumberFloat(
-            program.calculateProgramCompletionSpeedMultiplier(usedCores, this._availableRam),
+            program.calculateProgramCompletionSpeedMultiplier(usedCores, this._autoscalableProcessRam),
           ),
         })}
       </p>

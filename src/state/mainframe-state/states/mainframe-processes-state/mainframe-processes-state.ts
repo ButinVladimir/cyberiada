@@ -6,6 +6,7 @@ import type { ISettingsState } from '@state/settings-state/interfaces/settings-s
 import type { IFormatter } from '@shared/interfaces/formatter';
 import type { IGrowthState } from '@state/growth-state/interfaces/growth-state';
 import type { IMainframeState } from '../../interfaces/mainframe-state';
+import type { ICompanyState } from '@state/company-state/interfaces/company-state';
 import { ProgramName } from '../progam-factory/types';
 import { TYPES } from '@state/types';
 import { EventBatcher } from '@shared/event-batcher';
@@ -28,6 +29,9 @@ export class MainframeProcessesState implements IMainframeProcessesState {
 
   @lazyInject(TYPES.MainframeState)
   private _mainframeState!: IMainframeState;
+
+  @lazyInject(TYPES.CompanyState)
+  private _companyState!: ICompanyState;
 
   private _stateUiConnector: IStateUIConnector;
   private _growthState: IGrowthState;
@@ -155,7 +159,7 @@ export class MainframeProcessesState implements IMainframeProcessesState {
   }
 
   toggleAllProcesses(active: boolean): void {
-    for (const process of this._processesMap.values()) {
+    for (const process of this._processesList) {
       process.toggleActive(active);
     }
 
@@ -164,15 +168,10 @@ export class MainframeProcessesState implements IMainframeProcessesState {
 
   deleteProcess(programName: ProgramName): void {
     const process: IProcess | undefined = this.getProcessByName(programName);
+    const index = this._processesList.findIndex((process) => process.program.name === programName);
 
-    let index = 0;
-
-    while (index < this._processesList.length) {
-      if (this._processesList[index].program.name === programName) {
-        this._processesList.splice(index, 1);
-      } else {
-        index++;
-      }
+    if (index >= 0) {
+      this._processesList.splice(index, 1);
     }
 
     if (process) {
@@ -207,7 +206,10 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     }
 
     if (this._runningScalableProcess?.isActive) {
-      this._runningScalableProcess.program.perform(this._availableCores, this._availableRam);
+      this._runningScalableProcess.program.perform(
+        this._runningScalableProcess.usedCores,
+        this._runningScalableProcess.totalRam,
+      );
     }
 
     let hasFinishedProcesses = false;
@@ -265,10 +267,20 @@ export class MainframeProcessesState implements IMainframeProcessesState {
 
   private updateRunningProcesses = () => {
     this._processUpdateRequested = false;
-    this._availableCores = this._mainframeState.hardware.cores.level;
-    this._availableRam = this._mainframeState.hardware.ram.level;
+    this._availableCores = this._mainframeState.hardware.cores.level - this._companyState.clones.reservedCores;
+    this._availableRam = this._mainframeState.hardware.ram.level - this._companyState.clones.reservedRam;
     this._runningProcesses.splice(0);
     this._runningScalableProcess = this._processesList.find((process) => process.program.isAutoscalable);
+
+    if (this._runningScalableProcess) {
+      this._availableRam--;
+      this._runningScalableProcess.usedCores = 0;
+    }
+
+    if (this._availableCores > 0 && this._runningScalableProcess?.isActive) {
+      this._runningScalableProcess.usedCores = 1;
+      this._availableCores--;
+    }
 
     let processRam = 0;
     let usedCores = 0;
@@ -297,8 +309,8 @@ export class MainframeProcessesState implements IMainframeProcessesState {
       }
     }
 
-    if (this._runningScalableProcess) {
-      this._runningScalableProcess.usedCores = this._runningScalableProcess.isActive ? this._availableCores : 0;
+    if (this._runningScalableProcess?.isActive) {
+      this._runningScalableProcess.usedCores += this._availableCores;
     }
 
     this._growthState.requestGrowthRecalculation();
@@ -355,7 +367,7 @@ export class MainframeProcessesState implements IMainframeProcessesState {
   }
 
   private clearState() {
-    for (const process of this._processesMap.values()) {
+    for (const process of this._processesList) {
       process.removeEventListeners();
     }
 

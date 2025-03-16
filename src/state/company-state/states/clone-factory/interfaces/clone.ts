@@ -4,13 +4,15 @@ import { CloneTemplateName } from '../types';
 import { IMakeCloneParameters } from './make-clone-parameters';
 
 export interface IClone extends IUIEventEmitter {
+  id: string;
   name: string;
   templateName: CloneTemplateName;
   experience: number;
   level: number;
   quality: number;
   cost: number;
-  control: number;
+  ram: number;
+  cores: number;
   autoUpgradeEnabled: boolean;
   increaseExperience(delta: number): void;
   getLevelRequirements(level: number): number;

@@ -6,7 +6,7 @@ export const calculatePow = (exponent: number, params: IExponent): number => {
 };
 
 export const calculatePowWithQuality = (exponent: number, quality: number, params: IExponentWithQuality): number => {
-  return params.baseMultiplier * Math.pow(params.base, exponent) * Math.pow(quality, params.qualityMultiplier);
+  return params.baseMultiplier * Math.pow(params.base, exponent) * Math.pow(params.qualityMultiplier, quality);
 };
 
 export const binarySearchDecimal = (

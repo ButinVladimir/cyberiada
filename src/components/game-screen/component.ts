@@ -13,8 +13,7 @@ export class GameScreen extends BaseComponent {
   static styles = css`
     .game-screen {
       width: 100vw;
-      height: 100vh;
-      max-height: 100vh;
+      height: 100dvh;
       display: flex;
       flex-direction: column;
       align-items: stretch;
@@ -40,7 +39,7 @@ export class GameScreen extends BaseComponent {
 
     .content-outer-container {
       box-sizing: border-box;
-      height: calc(100vh - var(--ca-top-bar-height));
+      height: calc(100dvh - var(--ca-top-bar-height));
       box-shadow: var(--sl-shadow-small);
       display: flex;
       justify-content: center;

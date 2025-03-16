@@ -85,8 +85,8 @@ export class ProgramCompletionSpeedState implements IProgramCompletionSpeedState
       const predictiveComputatorProgram = predictiveComputatorProcess.program as PredictiveComputatorProgram;
 
       this._multiplierByProgram = predictiveComputatorProgram.calculateProgramCompletionSpeedMultiplier(
-        mainframeProcessesState.availableCores,
-        mainframeProcessesState.availableRam,
+        predictiveComputatorProcess.usedCores,
+        predictiveComputatorProcess.totalRam,
       );
     } else {
       this._multiplierByProgram = 1;

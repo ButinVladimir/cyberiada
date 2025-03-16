@@ -136,7 +136,7 @@ export class ProcessDescriptionText extends BaseComponent<ProcessDescriptionText
 
     const parameters: IDescriptionParameters = {
       formatter: this.controller.formatter,
-      availableRam: this.controller.availableRam,
+      autoscalableProcessRam: this.controller.autoscalableProcessRam,
       process,
     };
 
