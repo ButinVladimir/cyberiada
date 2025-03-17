@@ -44,7 +44,7 @@ export class MainframeHardwarePanel extends BaseComponent {
     this.removeEventListener('dragend', this.handleDragEnd);
   }
 
-  renderContent() {
+  render() {
     return html`
       <div ${ref(this._listRef)} part="list" class="list" @dragover=${this.handleDragOver}>
         <slot @slotchange=${this.handleChildrenUpdate}></slot>

@@ -132,7 +132,7 @@ export class ProcessesList extends BaseComponent<ProcessesListController> {
     document.removeEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmAllDeleteProcessesDialog);
   }
 
-  renderContent() {
+  render() {
     const processesActive = this.checkSomeProcessesActive();
 
     const toggleProcessesIcon = processesActive ? 'play-fill' : 'pause-fill';

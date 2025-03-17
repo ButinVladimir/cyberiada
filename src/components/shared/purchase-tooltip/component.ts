@@ -28,7 +28,7 @@ export class PurchaseTooltip extends BaseComponent<PurchaseTooltipController> {
     this.controller = new PurchaseTooltipController(this);
   }
 
-  renderContent() {
+  render() {
     return html`
       <sl-tooltip>
         <span slot="content"> ${this.renderMessage()} </span>

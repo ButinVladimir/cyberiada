@@ -25,7 +25,7 @@ export class SettingsPage extends BaseComponent {
     `,
   ];
 
-  renderContent() {
+  render() {
     return html`
       <h3 class="title">${t('settings.settings', { ns: 'ui' })}</h3>
 

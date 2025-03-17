@@ -35,7 +35,7 @@ export class CityMapCanvas extends BaseComponent<CityMapController> {
     this.controller = new CityMapController(this);
   }
 
-  renderContent() {
+  render() {
     const cellSizeWithBorder = this.cellSizeWithBorder;
     const width = this.controller.mapWidth * cellSizeWithBorder;
     const height = this.controller.mapHeight * cellSizeWithBorder;

@@ -65,7 +65,7 @@ export class OverviewUnlockedCategoryItems extends BaseComponent<OverviewUnlocke
     this.controller = new OverviewUnlockedCategoryItemsController(this);
   }
 
-  renderContent() {
+  render() {
     return html`
       <sl-details>
         <h4 class="title" slot="summary">${t(`overview.unlockedItems.${this.category}`, { ns: 'ui' })}</h4>

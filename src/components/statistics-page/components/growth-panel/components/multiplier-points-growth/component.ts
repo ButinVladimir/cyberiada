@@ -23,7 +23,7 @@ export class StatisticsCodeBaseGrowth extends BaseComponent<StatisticsMultiplier
     this.controller = new StatisticsMultiplierPointsGrowthController(this);
   }
 
-  renderContent() {
+  render() {
     const formatter = this.controller.formatter;
 
     const growthByProgram = this.controller.getGrowthByProgram(this.type);

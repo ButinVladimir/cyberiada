@@ -23,7 +23,7 @@ export class StatisticsCodeBaseIncome extends BaseComponent<StatisticsMultiplier
     this.controller = new StatisticsMultiplierPointsIncomeController(this);
   }
 
-  renderContent() {
+  render() {
     const formatter = this.controller.formatter;
 
     const pointsByProgram = this.controller.getPointsByProgram(this.type);

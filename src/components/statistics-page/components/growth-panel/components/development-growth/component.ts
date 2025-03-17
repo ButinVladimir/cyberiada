@@ -19,7 +19,7 @@ export class StatisticsDevelopmentGrowth extends BaseComponent<StatisticsDevelop
     this.controller = new StatisticsDevelopmentGrowthController(this);
   }
 
-  renderContent() {
+  render() {
     const formatter = this.controller.formatter;
     const total = this.controller.developmentTotalGrowth;
 

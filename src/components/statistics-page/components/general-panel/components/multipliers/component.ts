@@ -23,7 +23,7 @@ export class StatisticsMultipliers extends BaseComponent<StatisticsMultipliersCo
     this.controller = new StatisticsMultipliersController(this);
   }
 
-  renderContent() {
+  render() {
     const formatter = this.controller.formatter;
 
     const multiplierByProgram = this.controller.getMultiplierByProgram(this.type);

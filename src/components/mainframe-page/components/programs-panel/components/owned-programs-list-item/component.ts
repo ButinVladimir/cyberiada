@@ -92,7 +92,7 @@ export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemCo
     this.controller = new OwnedProgramsListItemController(this);
   }
 
-  renderContent() {
+  render() {
     const formatter = this.controller.formatter;
 
     const program = this.controller.getProgram(this.programName as ProgramName);

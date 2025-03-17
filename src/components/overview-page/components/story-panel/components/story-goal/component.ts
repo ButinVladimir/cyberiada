@@ -53,7 +53,7 @@ export class OverviewStoryPanel extends BaseComponent {
   })
   state!: StoryGoalState;
 
-  renderContent() {
+  render() {
     return html`
       <sl-details ?disabled=${this.state !== StoryGoalState.passed}>
         <h4 class="title" slot="summary">${this.renderSummary()}</h4>

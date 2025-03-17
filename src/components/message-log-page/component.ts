@@ -52,7 +52,7 @@ export class MessageLogPage extends BaseComponent<MessageLogBarController> {
     document.removeEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmClearMessagesDialog);
   }
 
-  renderContent() {
+  render() {
     return html`
       <h3 class="title">${t('messageLog.messageLog', { ns: 'ui' })}</h3>
 

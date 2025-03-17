@@ -17,7 +17,7 @@ export class CityDistrictInfoPanel extends BaseComponent {
   })
   districtInfo?: IDistrictInfo;
 
-  renderContent() {
+  render() {
     if (!this.districtInfo) {
       return null;
     }

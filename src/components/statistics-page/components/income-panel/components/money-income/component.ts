@@ -19,7 +19,7 @@ export class StatisticsMoneyIncome extends BaseComponent<StatisticsMoneyIncomeCo
     this.controller = new StatisticsMoneyIncomeController(this);
   }
 
-  renderContent() {
+  render() {
     const formatter = this.controller.formatter;
     const total = INCOME_SOURCES.reduce((sum, incomeSource) => sum + this.controller.getMoneyIncome(incomeSource), 0);
 

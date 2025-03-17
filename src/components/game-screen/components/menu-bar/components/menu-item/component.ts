@@ -56,7 +56,7 @@ export class MenuItem extends BaseComponent {
   })
   selected = false;
 
-  renderContent() {
+  render() {
     const classes = classMap({
       selected: this.selected,
     });

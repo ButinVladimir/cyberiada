@@ -40,19 +40,7 @@ export class FastForwardingScreen extends BaseComponent<FastForwardingScreenCont
     this.controller = new FastForwardingScreenController(this);
   }
 
-  connectedCallback() {
-    super.connectedCallback();
-
-    window.addEventListener('popstate', this.handlePopState);
-  }
-
-  disconnectedCallback() {
-    super.disconnectedCallback();
-
-    window.removeEventListener('popstate', this.handlePopState);
-  }
-
-  renderContent() {
+  render() {
     const formatter = this.controller.formatter;
 
     const accumulatedTime = this.controller.accumulatedTime;
@@ -77,10 +65,6 @@ export class FastForwardingScreen extends BaseComponent<FastForwardingScreenCont
     event.stopPropagation();
     event.preventDefault();
 
-    history.back();
-  };
-
-  private handlePopState = () => {
     this.controller.stopFastForwarding();
   };
 }

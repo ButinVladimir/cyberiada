@@ -66,7 +66,7 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
     this.controller = new SettingsFormController(this);
   }
 
-  renderContent() {
+  render() {
     return html`
       <sl-select
         ${ref(this._languageInputRef)}

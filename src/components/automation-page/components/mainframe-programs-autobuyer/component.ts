@@ -21,7 +21,7 @@ export class AutomationMainframeProgramsAutobuyer extends BaseComponent<Automati
     this.controller = new AutomationMainframeProgramsAutobuyerController(this);
   }
 
-  renderContent() {
+  render() {
     const { moneyShare } = this.controller;
 
     return html`

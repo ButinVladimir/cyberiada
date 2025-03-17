@@ -3,7 +3,7 @@
   "defaultSettings": {
     "messageLogSize": 30,
     "toastDuration": 5000,
-    "updateInterval": 50,
+    "updateInterval": 100,
     "autosaveEnabled": true,
     "autosaveInterval": 60000,
     "fastSpeedMultiplier": 5,

@@ -18,7 +18,7 @@ export class OverviewUnlockedFeaturesProgress extends BaseComponent<OverviewUnlo
     this.controller = new OverviewUnlockedFeaturesProgressController(this);
   }
 
-  renderContent() {
+  render() {
     const formatter = this.controller.formatter;
 
     const unlockedFeaturesCount = this.controller.getUnlockedFeaturesCount();
@@ -27,7 +27,7 @@ export class OverviewUnlockedFeaturesProgress extends BaseComponent<OverviewUnlo
     const formattedCount = formatter.formatNumberDecimal(unlockedFeaturesCount);
     const formattedMaxCount = formatter.formatNumberDecimal(unlockedFeaturesMaxCount);
 
-    const unlockedFeaturesProgressBarValue = (unlockedFeaturesCount / unlockedFeaturesMaxCount) * 100;
+    const unlockedFeaturesProgressBarValue = Math.floor(unlockedFeaturesCount / unlockedFeaturesMaxCount) * 100;
     const unlockedFeaturesProgressBarPercentage = `${formattedCount}/${formattedMaxCount}`;
 
     return html`

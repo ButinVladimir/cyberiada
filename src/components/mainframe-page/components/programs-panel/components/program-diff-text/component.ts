@@ -64,7 +64,7 @@ export class ProgramDiffText extends BaseComponent<ProgramDiffTextController> {
     this.controller = new ProgramDiffTextController(this);
   }
 
-  renderContent() {
+  render() {
     const program = this.controller.getSelectedProgram(this.programName as ProgramName, this.level, this.quality);
 
     const requirements = program.isAutoscalable

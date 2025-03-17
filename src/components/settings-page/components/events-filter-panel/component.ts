@@ -2,9 +2,6 @@ import { t } from 'i18next';
 import { html, css } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
-import { MiscMenuItem } from '@shared/types';
-import { IHistoryState } from '@shared/interfaces/history-state';
-import { ISettingsEventsFilterHistoryState } from './interfaces';
 
 @customElement('ca-events-filter-panel')
 export class EventsFilterPanel extends BaseComponent {
@@ -27,19 +24,7 @@ export class EventsFilterPanel extends BaseComponent {
   @state()
   private _isNotificationTypeFilterOpen = false;
 
-  connectedCallback() {
-    super.connectedCallback();
-
-    window.addEventListener('popstate', this.handlePopState);
-  }
-
-  disconnectedCallback() {
-    super.disconnectedCallback();
-
-    window.removeEventListener('popstate', this.handlePopState);
-  }
-
-  renderContent() {
+  render() {
     return html`
       <div class="buttons-list">
         <sl-button variant="default" size="medium" @click=${this.handleMessageFilterDialogOpen}>
@@ -83,16 +68,13 @@ export class EventsFilterPanel extends BaseComponent {
     event.stopPropagation();
 
     this._isMessageFilterOpen = true;
-
-    const state = { ...window.history.state, messageFilterOpen: true } as ISettingsEventsFilterHistoryState;
-    window.history.pushState(state, '');
   };
 
   private handleMessageFilterDialogClose = (event: Event) => {
     event.preventDefault();
     event.stopPropagation();
 
-    window.history.back();
+    this._isMessageFilterOpen = false;
   };
 
   private handleAlertFilterDialogOpen = (event: Event) => {
@@ -100,16 +82,13 @@ export class EventsFilterPanel extends BaseComponent {
     event.stopPropagation();
 
     this._isAlertFilterOpen = true;
-
-    const state = { ...window.history.state, alertFilterOpen: true } as ISettingsEventsFilterHistoryState;
-    window.history.pushState(state, '');
   };
 
   private handleAlertFilterDialogClose = (event: Event) => {
     event.preventDefault();
     event.stopPropagation();
 
-    window.history.back();
+    this._isAlertFilterOpen = false;
   };
 
   private handleNotificationTypeFilterDialogOpen = (event: Event) => {
@@ -117,25 +96,12 @@ export class EventsFilterPanel extends BaseComponent {
     event.stopPropagation();
 
     this._isNotificationTypeFilterOpen = true;
-
-    const state = { ...window.history.state, notificationTypeFilterOpen: true } as ISettingsEventsFilterHistoryState;
-    window.history.pushState(state, '');
   };
 
   private handleNotificationTypeFilterDialogClose = (event: Event) => {
     event.preventDefault();
     event.stopPropagation();
 
-    window.history.back();
-  };
-
-  private handlePopState = (event: PopStateEvent) => {
-    if ((event.state as IHistoryState).selectedMenuItem === MiscMenuItem.settings) {
-      const state = event.state as ISettingsEventsFilterHistoryState;
-
-      this._isAlertFilterOpen = !!state.alertFilterOpen;
-      this._isMessageFilterOpen = !!state.messageFilterOpen;
-      this._isNotificationTypeFilterOpen = !!state.notificationTypeFilterOpen;
-    }
+    this._isNotificationTypeFilterOpen = false;
   };
 }

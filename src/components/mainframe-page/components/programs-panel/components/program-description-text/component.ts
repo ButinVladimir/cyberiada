@@ -50,7 +50,7 @@ export class ProgramDescriptionText extends BaseComponent<ProgramDescriptionText
     this.controller = new ProgramDescriptionTextController(this);
   }
 
-  renderContent() {
+  render() {
     const program = this.controller.getProgram(this.programName as ProgramName);
 
     if (!program) {

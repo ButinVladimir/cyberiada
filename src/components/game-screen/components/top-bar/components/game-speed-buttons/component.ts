@@ -46,7 +46,7 @@ export class GameSpeedButtons extends BaseComponent<GameSpeedButtonsController> 
     document.removeEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmFastForwardDialog);
   }
 
-  renderContent() {
+  render() {
     const gameSpeed = this.controller.gameSpeed;
 
     return html`

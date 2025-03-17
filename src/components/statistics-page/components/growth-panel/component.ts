@@ -17,7 +17,7 @@ export class StatisticsGrowthPanel extends BaseComponent<StatisticsGrowthPanelCo
     this.controller = new StatisticsGrowthPanelController(this);
   }
 
-  renderContent() {
+  render() {
     return html`
       <ca-statistics-money-growth></ca-statistics-money-growth>
 

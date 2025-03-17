@@ -19,7 +19,7 @@ export class StatisticsMoneyExpenses extends BaseComponent<StatisticsMoneyExpens
     this.controller = new StatisticsMoneyExpensesController(this);
   }
 
-  renderContent() {
+  render() {
     const formatter = this.controller.formatter;
     const moneyTotal = PURCHASE_TYPES.reduce(
       (sum, purchaseType) => sum + this.controller.getMoneyExpenses(purchaseType),

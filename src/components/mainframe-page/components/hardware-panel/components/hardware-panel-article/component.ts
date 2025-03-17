@@ -101,7 +101,7 @@ export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwa
     this.controller = new MainframeHardwarePanelArticleController(this);
   }
 
-  renderContent() {
+  render() {
     const formatter = this.controller.formatter;
 
     const level = this.controller.getLevel(this.type);

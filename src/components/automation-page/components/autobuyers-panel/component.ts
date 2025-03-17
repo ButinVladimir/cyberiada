@@ -24,7 +24,7 @@ export class AutomationAutobuyersPanel extends BaseComponent<AutomationAutobuyer
     this.controller = new AutomationAutobuyersPanelController(this);
   }
 
-  renderContent() {
+  render() {
     return html`
       ${this.controller.isFeatureUnlocked(Feature.automationMainframeHardware)
         ? html`<ca-automation-mainframe-hardware-autobuyer></ca-automation-mainframe-hardware-autobuyer>`

@@ -37,7 +37,7 @@
     },
     {
       "name": "ca-app-root",
-      "description": "Properties:\n\n  * `handleUnload` - \n\n  * `controller` {`AppRootController`} - ",
+      "description": "Properties:\n\n  * `controller` {`AppRootController`} - ",
       "attributes": []
     },
     {
@@ -107,17 +107,17 @@
     },
     {
       "name": "ca-fast-forwarding-screen",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_maxTime` {`number`} - \n\n  * `handleStopFastForwarding` - \n\n  * `handlePopState` - \n\n  * `controller` {`FastForwardingScreenController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_maxTime` {`number`} - \n\n  * `handleStopFastForwarding` - \n\n  * `controller` {`FastForwardingScreenController`} - ",
       "attributes": []
     },
     {
       "name": "ca-game-screen",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `handleMenuToggle` - \n\n  * `handleMenuItemSelect` - \n\n  * `handlePopState` - \n\n  * `_menuOpened` - \n\n  * `_selectedMenuItem` - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `handleMenuToggle` - \n\n  * `handleMenuItemSelect` - \n\n  * `_menuOpened` - \n\n  * `_selectedMenuItem` - ",
       "attributes": []
     },
     {
       "name": "ca-confirmation-alert",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_gameAlertToggleRef` {`Ref<SlCheckbox>`} - \n\n  * `_gameAlert` - \n\n  * `_gameAlertKey` {`string | undefined`} - \n\n  * `_messageParams` - \n\n  * `_isOpen` {`boolean`} - \n\n  * `_alertToggled` {`boolean`} - \n\n  * `handleOpen` - \n\n  * `handleClose` - \n\n  * `handleSubmit` - \n\n  * `handleToggleAlert` - \n\n  * `handlePopState` - \n\n  * `controller` {`ConfirmationAlertController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_gameAlertToggleRef` {`Ref<SlCheckbox>`} - \n\n  * `_gameAlert` - \n\n  * `_gameAlertKey` {`string | undefined`} - \n\n  * `_messageParams` - \n\n  * `_isOpen` {`boolean`} - \n\n  * `_alertToggled` {`boolean`} - \n\n  * `handleOpen` - \n\n  * `handleClose` - \n\n  * `handleSubmit` - \n\n  * `handleToggleAlert` - \n\n  * `controller` {`ConfirmationAlertController`} - ",
       "attributes": []
     },
     {
@@ -153,7 +153,7 @@
     },
     {
       "name": "ca-notification-modal",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_notificationTypeToggleRef` {`Ref<SlCheckbox>`} - \n\n  * `_addedHistory` {`boolean`} - \n\n  * `_notificationTypeToggled` {`boolean`} - \n\n  * `renderModalContent` - \n\n  * `handleCloseCurrentNotification` - \n\n  * `handleCloseAllNotifications` - \n\n  * `handleToggleNotificationType` - \n\n  * `handlePopState` - \n\n  * `controller` {`NotificationModalController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_notificationTypeToggleRef` {`Ref<SlCheckbox>`} - \n\n  * `_notificationTypeToggled` {`boolean`} - \n\n  * `renderModalContent` - \n\n  * `handleCloseCurrentNotification` - \n\n  * `handleCloseAllNotifications` - \n\n  * `handleToggleNotificationType` - \n\n  * `closeCurrentNotification` - \n\n  * `controller` {`NotificationModalController`} - ",
       "attributes": []
     },
     {
@@ -194,7 +194,7 @@
     },
     {
       "name": "ca-mainframe-page",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_tabGroupRef` {`Ref<SlTabGroup>`} - \n\n  * `isTabUnlocked` - \n\n  * `renderTab` - \n\n  * `renderTabPanel` - \n\n  * `renderTabPanelContent` - \n\n  * `handleTabShow` - \n\n  * `handlePopState` - \n\n  * `_currentTab` {`MainframePageTabs`} - \n\n  * `controller` {`MainframePageController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `isTabUnlocked` - \n\n  * `renderTab` - \n\n  * `renderTabPanel` - \n\n  * `renderTabPanelContent` - \n\n  * `controller` {`MainframePageController`} - ",
       "attributes": []
     },
     {
@@ -232,7 +232,7 @@
     },
     {
       "name": "ca-mainframe-processes-panel",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_isStartProcessDialogOpen` {`boolean`} - \n\n  * `handleStartProcessDialogOpen` - \n\n  * `handleStartProcessDialogClose` - \n\n  * `handlePopState` - \n\n  * `controller` {`ProcessesPanelController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_isStartProcessDialogOpen` {`boolean`} - \n\n  * `handleStartProcessDialogOpen` - \n\n  * `handleStartProcessDialogClose` - \n\n  * `controller` {`ProcessesPanelController`} - ",
       "attributes": []
     },
     {
@@ -297,7 +297,7 @@
     },
     {
       "name": "ca-mainframe-programs-panel",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_isPurchaseProgramDialogOpen` {`boolean`} - \n\n  * `handlePurchaseProgramDialogOpen` - \n\n  * `handlePurchaseProgramDialogClose` - \n\n  * `handlePopState` - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_isPurchaseProgramDialogOpen` {`boolean`} - \n\n  * `handlePurchaseProgramDialogOpen` - \n\n  * `handlePurchaseProgramDialogClose` - ",
       "attributes": []
     },
     {
@@ -384,7 +384,7 @@
     },
     {
       "name": "ca-overview-page",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_tabGroupRef` {`Ref<SlTabGroup>`} - \n\n  * `renderTab` - \n\n  * `renderTabPanel` - \n\n  * `renderTabPanelContent` - \n\n  * `handleTabShow` - \n\n  * `handlePopState` - \n\n  * `_currentTab` {`OverviewPageTabs`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `renderTab` - \n\n  * `renderTabPanel` - \n\n  * `renderTabPanelContent` - ",
       "attributes": []
     },
     {
@@ -394,7 +394,7 @@
     },
     {
       "name": "ca-overview-development-level-progress",
-      "description": "Properties:\n\n  * `styles` {`CSSResult[]`} - \n\n  * `controller` {`OverviewDevelopmentLevelProgressController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `renderHint` - \n\n  * `controller` {`OverviewDevelopmentLevelProgressController`} - ",
       "attributes": []
     },
     {
@@ -470,7 +470,7 @@
     },
     {
       "name": "ca-events-filter-panel",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_isMessageFilterOpen` {`boolean`} - \n\n  * `_isAlertFilterOpen` {`boolean`} - \n\n  * `_isNotificationTypeFilterOpen` {`boolean`} - \n\n  * `handleMessageFilterDialogOpen` - \n\n  * `handleMessageFilterDialogClose` - \n\n  * `handleAlertFilterDialogOpen` - \n\n  * `handleAlertFilterDialogClose` - \n\n  * `handleNotificationTypeFilterDialogOpen` - \n\n  * `handleNotificationTypeFilterDialogClose` - \n\n  * `handlePopState` - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_isMessageFilterOpen` {`boolean`} - \n\n  * `_isAlertFilterOpen` {`boolean`} - \n\n  * `_isNotificationTypeFilterOpen` {`boolean`} - \n\n  * `handleMessageFilterDialogOpen` - \n\n  * `handleMessageFilterDialogClose` - \n\n  * `handleAlertFilterDialogOpen` - \n\n  * `handleAlertFilterDialogClose` - \n\n  * `handleNotificationTypeFilterDialogOpen` - \n\n  * `handleNotificationTypeFilterDialogClose` - ",
       "attributes": []
     },
     {
@@ -531,7 +531,7 @@
     },
     {
       "name": "ca-statistics-page",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_tabGroupRef` {`Ref<SlTabGroup>`} - \n\n  * `renderTab` - \n\n  * `renderTabPanel` - \n\n  * `renderTabPanelContent` - \n\n  * `handleTabShow` - \n\n  * `handlePopState` - \n\n  * `_currentTab` {`StatisticsPageTabs`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `renderTab` - \n\n  * `renderTabPanel` - \n\n  * `renderTabPanelContent` - ",
       "attributes": []
     },
     {

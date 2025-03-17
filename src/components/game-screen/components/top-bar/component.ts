@@ -38,7 +38,7 @@ export class TopBar extends BaseComponent {
     }
   `;
 
-  renderContent() {
+  render() {
     return html`
       <div class="group menu-group">
         <sl-tooltip>

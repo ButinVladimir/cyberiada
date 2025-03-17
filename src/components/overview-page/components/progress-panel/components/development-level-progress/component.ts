@@ -1,13 +1,23 @@
 import { t } from 'i18next';
-import { html } from 'lit';
+import { html, nothing, css } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
+import { hintStyle } from '@shared/styles';
 import { OverviewDevelopmentLevelProgressController } from './controller';
 import { progressBlockStyle } from '../../styles';
 
 @customElement('ca-overview-development-level-progress')
 export class OverviewDevelopmentLevelProgress extends BaseComponent<OverviewDevelopmentLevelProgressController> {
-  static styles = [progressBlockStyle];
+  static styles = [
+    progressBlockStyle,
+    hintStyle,
+    css`
+      p.hint {
+        margin-top: var(--sl-spacing-3x-small);
+        margin-bottom: 0;
+      }
+    `,
+  ];
 
   protected controller: OverviewDevelopmentLevelProgressController;
 
@@ -17,7 +27,7 @@ export class OverviewDevelopmentLevelProgress extends BaseComponent<OverviewDeve
     this.controller = new OverviewDevelopmentLevelProgressController(this);
   }
 
-  renderContent() {
+  render() {
     const formatter = this.controller.formatter;
 
     const currentDevelopmentLevelPoints = this.controller.getCurrentDevelopmentLevelPoints();
@@ -27,31 +37,36 @@ export class OverviewDevelopmentLevelProgress extends BaseComponent<OverviewDeve
       Math.max(currentDevelopmentLevelPoints / nextDevelopmentLevelPoints, 0) * 100;
     const nextDevelopmentLevelProgressBarPercentage = `${formatter.formatNumberFloat(nextDevelopmentLevelProgressBarValue)}%`;
 
-    const developmentGrowth = this.controller.getDevelopmentGrowth();
-    let timeUntilNextLevel = '';
-    let developmentLabel = 'nextLevelNotReachable';
-
-    if (developmentGrowth > 0) {
-      timeUntilNextLevel = formatter.formatTimeShort(
-        this.controller.getDevelopmentPointsUntilNextLevel() / developmentGrowth,
-      );
-      developmentLabel = 'nextLevelReachedIn';
-    }
-
     return html`
       <div class="block">
         <div class="title">${t('overview.progress.nextDevelopmentLevelProgress', { ns: 'ui' })}</div>
 
-        <sl-tooltip>
-          <span slot="content">
-            ${t(`overview.progress.${developmentLabel}`, { ns: 'ui', time: timeUntilNextLevel })}
-          </span>
+        <sl-progress-bar value=${nextDevelopmentLevelProgressBarValue}>
+          ${nextDevelopmentLevelProgressBarPercentage}
+        </sl-progress-bar>
 
-          <sl-progress-bar value=${nextDevelopmentLevelProgressBarValue}>
-            ${nextDevelopmentLevelProgressBarPercentage}
-          </sl-progress-bar>
-        </sl-tooltip>
+        ${this.renderHint()}
       </div>
     `;
   }
+
+  private renderHint = () => {
+    const developmentGrowth = this.controller.getDevelopmentGrowth();
+    const formatter = this.controller.formatter;
+
+    if (developmentGrowth > 0) {
+      const formattedTime = formatter.formatTimeShort(
+        this.controller.getDevelopmentPointsUntilNextLevel() / developmentGrowth,
+      );
+
+      return html`<p class="hint">
+        ${t(`overview.progress.nextLevelReachedIn`, {
+          ns: 'ui',
+          time: formattedTime,
+        })}
+      </p>`;
+    }
+
+    return nothing;
+  };
 }

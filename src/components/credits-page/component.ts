@@ -36,7 +36,7 @@ export class CreditsPage extends BaseComponent {
     `,
   ];
 
-  renderContent() {
+  render() {
     return html`
       <h3 class="title">Cyberiada v${CURRENT_VERSION}</h3>
 

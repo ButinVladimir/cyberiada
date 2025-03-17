@@ -31,7 +31,7 @@ export class Viewport extends BaseComponent<ViewportController> {
     this.controller = new ViewportController(this);
   }
 
-  renderContent() {
+  render() {
     return html` <div class="content-wrapper">${this.renderPage()}</div> `;
   }
 

@@ -1,15 +1,10 @@
 import { t } from 'i18next';
 import { css, html, nothing } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import { createRef, ref } from 'lit/directives/ref.js';
-import SlTabGroup from '@shoelace-style/shoelace/dist/components/tab-group/tab-group.component.js';
 import { BaseComponent } from '@shared/base-component';
 import { pageTitleStyle } from '@shared/styles';
-import { OverviewMenuItem } from '@shared/types';
-import { IHistoryState } from '@shared/interfaces/history-state';
 import { MainframePageController } from './controller';
 import { MainframePageTabs } from './types';
-import { IMainframePageHistoryState } from './interfaces';
 import { MAINFRAME_PAGE_TABS_LIST } from './constants';
 
 @customElement('ca-mainframe-page')
@@ -25,36 +20,17 @@ export class MainframePage extends BaseComponent<MainframePageController> {
 
   protected controller: MainframePageController;
 
-  private _currentTab: MainframePageTabs;
-
-  private _tabGroupRef = createRef<SlTabGroup>();
-
   constructor() {
     super();
-
-    const state = window.history.state as IMainframePageHistoryState;
-    this._currentTab = state.selectedTab ?? MainframePageTabs.processes;
 
     this.controller = new MainframePageController(this);
   }
 
-  connectedCallback() {
-    super.connectedCallback();
-
-    window.addEventListener('popstate', this.handlePopState);
-  }
-
-  disconnectedCallback() {
-    super.disconnectedCallback();
-
-    window.removeEventListener('popstate', this.handlePopState);
-  }
-
-  renderContent() {
+  render() {
     return html`
       <h3 class="title">${t('mainframe.mainframe', { ns: 'ui' })}</h3>
 
-      <sl-tab-group ${ref(this._tabGroupRef)} @sl-tab-show=${this.handleTabShow}>
+      <sl-tab-group>
         ${MAINFRAME_PAGE_TABS_LIST.map((tab) => this.renderTab(tab))}
         ${MAINFRAME_PAGE_TABS_LIST.map((tab) => this.renderTabPanel(tab))}
       </sl-tab-group>
@@ -77,11 +53,7 @@ export class MainframePage extends BaseComponent<MainframePageController> {
       return nothing;
     }
 
-    return html`
-      <sl-tab ?active=${this._currentTab === tab} slot="nav" panel=${tab}>
-        ${t(`mainframe.tabs.${tab}`, { ns: 'ui' })}
-      </sl-tab>
-    `;
+    return html` <sl-tab slot="nav" panel=${tab}> ${t(`mainframe.tabs.${tab}`, { ns: 'ui' })} </sl-tab> `;
   };
 
   private renderTabPanel = (tab: MainframePageTabs) => {
@@ -89,9 +61,7 @@ export class MainframePage extends BaseComponent<MainframePageController> {
       return nothing;
     }
 
-    return html`
-      <sl-tab-panel ?active=${this._currentTab === tab} name=${tab}> ${this.renderTabPanelContent(tab)} </sl-tab-panel>
-    `;
+    return html` <sl-tab-panel name=${tab}> ${this.renderTabPanelContent(tab)} </sl-tab-panel> `;
   };
 
   private renderTabPanelContent = (tab: MainframePageTabs) => {
@@ -104,33 +74,6 @@ export class MainframePage extends BaseComponent<MainframePageController> {
 
       case MainframePageTabs.programs:
         return html`<ca-mainframe-programs-panel></ca-mainframe-programs-panel>`;
-    }
-  };
-
-  private handleTabShow = (event: Event) => {
-    const tab: MainframePageTabs = (event as any).detail.name as MainframePageTabs;
-
-    if (tab !== this._currentTab) {
-      this._currentTab = tab;
-
-      const state: IMainframePageHistoryState = {
-        ...(window.history.state as IHistoryState),
-        selectedMenuItem: OverviewMenuItem.mainframe,
-        selectedTab: tab,
-      };
-
-      window.history.pushState(state, '');
-    }
-  };
-
-  private handlePopState = (event: PopStateEvent) => {
-    const state = event.state as IMainframePageHistoryState;
-
-    const tab = state.selectedTab ?? MainframePageTabs.processes;
-
-    if (this._tabGroupRef.value) {
-      this._currentTab = tab;
-      this._tabGroupRef.value.show(tab);
     }
   };
 }

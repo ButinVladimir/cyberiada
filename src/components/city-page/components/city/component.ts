@@ -65,7 +65,7 @@ export class City extends BaseComponent<CityController> {
     this.controller = new CityController(this);
   }
 
-  renderContent() {
+  render() {
     return html`
       <h3 class="title">${t('city.city.title', { ns: 'ui' })}</h3>
 

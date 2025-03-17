@@ -6,10 +6,8 @@ import SlCheckbox from '@shoelace-style/shoelace/dist/components/checkbox/checkb
 import { BaseComponent } from '@shared/base-component';
 import type { GameAlert } from '@shared/types';
 import { smallModalStyle, modalBodyScrollStyle } from '@shared/styles';
-import { IHistoryState } from '@shared/interfaces';
 import { ConfirmationAlertOpenEvent, ConfirmationAlertCloseEvent, ConfirmationAlertSubmitEvent } from './events';
 import { ConfirmationAlertController } from './controller';
-import { SUBMIT_DELAY } from './constants';
 
 @customElement('ca-confirmation-alert')
 export class ConfirmationAlert extends BaseComponent<ConfirmationAlertController> {
@@ -62,17 +60,15 @@ export class ConfirmationAlert extends BaseComponent<ConfirmationAlertController
     super.connectedCallback();
 
     document.addEventListener(ConfirmationAlertOpenEvent.type, this.handleOpen);
-    window.addEventListener('popstate', this.handlePopState);
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
 
     document.removeEventListener(ConfirmationAlertOpenEvent.type, this.handleOpen);
-    window.removeEventListener('popstate', this.handlePopState);
   }
 
-  renderContent() {
+  render() {
     return html`
       <sl-dialog no-header ?open=${this._isOpen} @sl-request-close=${this.handleClose}>
         <p>${t(`${this._gameAlert}.message`, { ns: 'alerts', ...this._messageParams })}</p>
@@ -109,9 +105,6 @@ export class ConfirmationAlert extends BaseComponent<ConfirmationAlertController
     if (this.controller.isGameAlertEnabled(this._gameAlert)) {
       this._isOpen = true;
       this._alertToggled = true;
-
-      const historyState = { ...window.history.state, showConfirmationAlert: true } as IHistoryState;
-      window.history.pushState(historyState, '');
     } else {
       this._isOpen = false;
 
@@ -123,24 +116,24 @@ export class ConfirmationAlert extends BaseComponent<ConfirmationAlertController
     event.stopPropagation();
     event.preventDefault();
 
-    window.history.back();
+    this._isOpen = false;
+
+    if (this._gameAlert) {
+      this.dispatchEvent(new ConfirmationAlertCloseEvent(this._gameAlert, this._gameAlertKey));
+    }
   };
 
   private handleSubmit = (event: Event) => {
     event.stopPropagation();
 
     if (this._gameAlert) {
-      window.history.back();
+      this._isOpen = false;
 
       if (this._gameAlertToggleRef.value) {
         this.controller.toggleGameAlert(this._gameAlert, this._alertToggled);
       }
 
-      const gameAlert = this._gameAlert;
-      const gameAlertKey = this._gameAlertKey;
-      setTimeout(() => {
-        this.dispatchEvent(new ConfirmationAlertSubmitEvent(gameAlert, gameAlertKey));
-      }, SUBMIT_DELAY);
+      this.dispatchEvent(new ConfirmationAlertSubmitEvent(this._gameAlert, this._gameAlertKey));
     }
   };
 
@@ -149,16 +142,6 @@ export class ConfirmationAlert extends BaseComponent<ConfirmationAlertController
 
     if (this._gameAlert && this._gameAlertToggleRef.value) {
       this._alertToggled = this._gameAlertToggleRef.value.checked;
-    }
-  };
-
-  private handlePopState = (event: PopStateEvent) => {
-    const state = event.state as IHistoryState;
-
-    this._isOpen = state.showConfirmationAlert;
-
-    if (this._gameAlert) {
-      this.dispatchEvent(new ConfirmationAlertCloseEvent(this._gameAlert, this._gameAlertKey));
     }
   };
 }

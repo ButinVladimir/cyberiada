@@ -17,7 +17,7 @@ export class StatisticsGameTime extends BaseComponent<StatisticsGameTimeControll
     this.controller = new StatisticsGameTimeController(this);
   }
 
-  renderContent() {
+  render() {
     const formatter = this.controller.formatter;
 
     return html`

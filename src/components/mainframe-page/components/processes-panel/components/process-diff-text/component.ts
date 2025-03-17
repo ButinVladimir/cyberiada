@@ -58,7 +58,7 @@ export class ProgramDiffText extends BaseComponent<ProcessDiffTextController> {
     this.controller = new ProcessDiffTextController(this);
   }
 
-  renderContent() {
+  render() {
     const program = this.controller.getProgram(this.programName as ProgramName);
 
     if (!program) {

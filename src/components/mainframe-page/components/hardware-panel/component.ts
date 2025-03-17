@@ -76,7 +76,7 @@ export class MainframeHardwarePanel extends BaseComponent<MainframeHardwarePanel
     window.removeEventListener('keyup', this.handleKeypress);
   }
 
-  renderContent() {
+  render() {
     return html`
       <p class="hint">${t('mainframe.hardware.hardwareHint', { ns: 'ui' })}</p>
 

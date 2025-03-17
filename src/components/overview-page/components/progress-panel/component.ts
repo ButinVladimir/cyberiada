@@ -16,7 +16,7 @@ export class OverviewProgressPanel extends BaseComponent {
     `,
   ];
 
-  renderContent() {
+  render() {
     return html`
       <ca-overview-development-level-progress></ca-overview-development-level-progress>
       <ca-overview-unlocked-features-progress></ca-overview-unlocked-features-progress>

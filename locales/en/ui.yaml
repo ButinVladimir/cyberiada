@@ -32,10 +32,9 @@ topBar:
     titleNoGoals: No available development level goals
     reachLevel: Reach development level {{level}}
 menuBar:
-  accumulatedTime: 'Accumulated time: {{time}}'
-  money: 'Money: {{money}}'
-  developmentLevel: 'Development level: {{level}}'
-  developmentLevelNext: 'Development level: {{level}}, next level will be reached in {{time}}'
+  accumulatedTime: Accumulated time
+  money: Money
+  developmentLevel: Development level
 messageLog:
   messageLog: Message log
   clearMessages: Clear messages

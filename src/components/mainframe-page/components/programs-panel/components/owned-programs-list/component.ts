@@ -111,7 +111,7 @@ export class OwnedProgramsList extends BaseComponent<OwnedProgramsListController
     this.controller = new OwnedProgramsListController(this);
   }
 
-  renderContent() {
+  render() {
     const isAutoupgradeActive = this.checkSomeProgramsAutoupgradeActive();
 
     const autoupgradeIcon = isAutoupgradeActive ? 'arrow-up-circle-fill' : 'arrow-up-circle';

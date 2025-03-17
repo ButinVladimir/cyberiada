@@ -36,7 +36,7 @@ export class MessageLogContent extends BaseComponent<MessageLogContentController
     this.controller = new MessageLogContentController(this);
   }
 
-  renderContent() {
+  render() {
     const messages = this.controller.getMessages();
 
     return html` <div class="log-content">${repeat(messages, (message) => message.id, this.renderMessage)}</div> `;

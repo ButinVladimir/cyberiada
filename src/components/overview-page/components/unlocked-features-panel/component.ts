@@ -32,7 +32,7 @@ export class OverviewUnlockedFeaturesPanel extends BaseComponent<OverviewUnlocke
     this.controller = new OverviewUnlockedFeaturesPanelController(this);
   }
 
-  renderContent() {
+  render() {
     const features = this.controller.listUnlockedFeatures();
 
     if (features.length === 0) {

@@ -78,7 +78,7 @@ export class NotificationTypeFilterDialog extends BaseComponent<NotificationType
     this.controller = new NotificationTypeFilterDialogController(this);
   }
 
-  renderContent() {
+  render() {
     return html`
       <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
         <h4 slot="label" class="title">${t('settings.notificationTypeFilter', { ns: 'ui' })}</h4>

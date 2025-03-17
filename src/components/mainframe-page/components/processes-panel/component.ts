@@ -5,9 +5,6 @@ import { BaseComponent } from '@shared/base-component';
 import { hintStyle } from '@shared/styles';
 import { SCREEN_WIDTH_POINTS } from '@shared/styles';
 import { ProcessesPanelController } from './controller';
-import { OverviewMenuItem } from '@shared/types';
-import { IHistoryState } from '@shared/interfaces/history-state';
-import { IMainframePageHistoryState } from '../../interfaces';
 
 @customElement('ca-mainframe-processes-panel')
 export class MainframeProcessesPanel extends BaseComponent<ProcessesPanelController> {
@@ -71,19 +68,7 @@ export class MainframeProcessesPanel extends BaseComponent<ProcessesPanelControl
     this.controller = new ProcessesPanelController(this);
   }
 
-  connectedCallback() {
-    super.connectedCallback();
-
-    window.addEventListener('popstate', this.handlePopState);
-  }
-
-  disconnectedCallback() {
-    super.disconnectedCallback();
-
-    window.removeEventListener('popstate', this.handlePopState);
-  }
-
-  renderContent() {
+  render() {
     const formatter = this.controller.formatter;
 
     return html`
@@ -124,23 +109,12 @@ export class MainframeProcessesPanel extends BaseComponent<ProcessesPanelControl
     event.stopPropagation();
 
     this._isStartProcessDialogOpen = true;
-
-    const state = { ...window.history.state, startProcessModalOpen: true } as IMainframePageHistoryState;
-    window.history.pushState(state, '');
   };
 
   private handleStartProcessDialogClose = (event: Event) => {
     event.preventDefault();
     event.stopPropagation();
 
-    window.history.back();
-  };
-
-  private handlePopState = (event: PopStateEvent) => {
-    if ((event.state as IHistoryState).selectedMenuItem === OverviewMenuItem.mainframe) {
-      const state = event.state as IMainframePageHistoryState;
-
-      this._isStartProcessDialogOpen = !!state.startProcessModalOpen;
-    }
+    this._isStartProcessDialogOpen = false;
   };
 }

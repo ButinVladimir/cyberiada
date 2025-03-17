@@ -32,10 +32,9 @@ topBar:
     titleNoGoals: Доступных целей уроня развития нет
     reachLevel: Достичь уровень развития {{level}}
 menuBar:
-  accumulatedTime: 'Накопленное время: {{time}}'
-  money: 'Деньги: {{money}}'
-  developmentLevel: 'Уровень развития: {{level}}'
-  developmentLevelNext: 'Уровень развития: {{level}}, следующий уровень будет достигнут через {{time}}'
+  accumulatedTime: Накопленное время
+  money: Деньги
+  developmentLevel: Уровень развития
 messageLog:
   messageLog: Лог сообщений
   clearMessages: Удалить сообщения

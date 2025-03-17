@@ -22,7 +22,6 @@ import {
 } from '@shared/styles';
 import { PurchaseProgramDialogCloseEvent } from './events';
 import { PurchaseProgramDialogController } from './controller';
-import { IMainframePageHistoryState } from '../../../../interfaces';
 
 @customElement('ca-purchase-program-dialog')
 export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogController> {
@@ -141,15 +140,13 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
     super.updated(_changedProperties);
 
     if (_changedProperties.get('isOpen') === false) {
-      const historyState = window.history.state as IMainframePageHistoryState;
-
-      this._programName = historyState.programName ?? undefined;
-      this._quality = historyState.quality ?? 0;
-      this._level = historyState.level ?? this.controller.developmentLevel;
+      this._programName = undefined;
+      this._quality = 0;
+      this._level = this.controller.developmentLevel;
     }
   }
 
-  renderContent() {
+  render() {
     const { developmentLevel } = this.controller;
 
     return html`
@@ -257,9 +254,6 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
 
     const programName = this._programInputRef.value.value as ProgramName;
     this._programName = programName;
-
-    const state = { ...window.history.state, programName } as IMainframePageHistoryState;
-    window.history.replaceState(state, '');
   };
 
   private handleQualityChange = () => {
@@ -269,9 +263,6 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
 
     const quality = +this._qualityInputRef.value.value;
     this._quality = quality;
-
-    const state = { ...window.history.state, quality } as IMainframePageHistoryState;
-    window.history.replaceState(state, '');
   };
 
   private handleLevelChange = () => {
@@ -291,9 +282,6 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
 
     this._level = level;
     this._levelInputRef.value.valueAsNumber = level;
-
-    const state = { ...window.history.state, level } as IMainframePageHistoryState;
-    window.history.replaceState(state, '');
   };
 
   private handleOpenConfirmationAlert = (event: Event) => {

@@ -27,7 +27,7 @@ export class ProcessesListItemProgressColumn extends BaseComponent<ProcessesList
     this.controller = new ProcessesListItemProgressController(this);
   }
 
-  renderContent() {
+  render() {
     const formatter = this.controller.formatter;
 
     const process = this.controller.getProcess(this.programName as ProgramName);

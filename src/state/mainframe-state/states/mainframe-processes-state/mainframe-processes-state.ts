@@ -185,6 +185,7 @@ export class MainframeProcessesState implements IMainframeProcessesState {
       });
     }
 
+    this._growthState.requestGrowthRecalculation();
     this.requestUpdateProcesses();
   }
 
@@ -193,6 +194,7 @@ export class MainframeProcessesState implements IMainframeProcessesState {
 
     this._messageLogState.postMessage(ProgramsEvent.allProcessesDeleted);
 
+    this._growthState.requestGrowthRecalculation();
     this.requestUpdateProcesses();
   }
 
@@ -272,13 +274,14 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     this._runningProcesses.splice(0);
     this._runningScalableProcess = this._processesList.find((process) => process.program.isAutoscalable);
 
+    let runningScalableProcessCores = 0;
+
     if (this._runningScalableProcess) {
       this._availableRam--;
-      this._runningScalableProcess.usedCores = 0;
     }
 
     if (this._availableCores > 0 && this._runningScalableProcess?.isActive) {
-      this._runningScalableProcess.usedCores = 1;
+      runningScalableProcessCores = 1;
       this._availableCores--;
     }
 
@@ -294,11 +297,14 @@ export class MainframeProcessesState implements IMainframeProcessesState {
       this._availableRam -= processRam;
 
       if (!process.isActive) {
-        process.usedCores = 0;
-        continue;
+        usedCores = 0;
+      } else {
+        usedCores = Math.min(process.maxCores, this._availableCores);
       }
 
-      usedCores = Math.min(process.maxCores, this._availableCores);
+      if (usedCores !== process.usedCores) {
+        this._growthState.requestGrowthRecalculation();
+      }
 
       if (usedCores > 0) {
         process.usedCores = usedCores;
@@ -310,10 +316,13 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     }
 
     if (this._runningScalableProcess?.isActive) {
-      this._runningScalableProcess.usedCores += this._availableCores;
+      runningScalableProcessCores += this._availableCores;
     }
 
-    this._growthState.requestGrowthRecalculation();
+    if (this._runningScalableProcess && this._runningScalableProcess?.usedCores !== runningScalableProcessCores) {
+      this._runningScalableProcess.usedCores = runningScalableProcessCores;
+      this._growthState.requestGrowthRecalculation();
+    }
 
     this.uiEventBatcher.enqueueEvent(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESSES_UPDATED);
   };

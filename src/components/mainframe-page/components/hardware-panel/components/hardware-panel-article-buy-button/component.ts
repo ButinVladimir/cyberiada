@@ -30,7 +30,7 @@ export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwa
     this.controller = new MainframeHardwarePanelArticleBuyButtonController(this);
   }
 
-  renderContent() {
+  render() {
     const increase = this.calculateIncrease();
     const formatter = this.controller.formatter;
 

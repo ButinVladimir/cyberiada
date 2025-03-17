@@ -66,7 +66,7 @@ export class MapCellZoomPanel extends BaseComponent<MapCellZoomPanelController> 
     this.controller = new MapCellZoomPanelController(this);
   }
 
-  renderContent() {
+  render() {
     const rangeContainerClasses = classMap({
       'range-container': true,
       'show-range': this._showRange,

@@ -15,7 +15,7 @@ export class AutomationPage extends BaseComponent {
     `,
   ];
 
-  renderContent() {
+  render() {
     return html`
       <h3 class="title">${t('automation.automation', { ns: 'ui' })}</h3>
 

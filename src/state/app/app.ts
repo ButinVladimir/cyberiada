@@ -7,8 +7,7 @@ import type { ISettingsState } from '@state/settings-state/interfaces/settings-s
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import { TYPES } from '@state/types';
 import { EventBatcher } from '@shared/event-batcher';
-import { GameStateEvent, OverviewMenuItem } from '@shared/types';
-import { IHistoryState } from '@shared/interfaces/history-state';
+import { GameStateEvent } from '@shared/types';
 import { IApp } from './interfaces';
 import { LOCAL_STORAGE_KEY, APP_UI_EVENTS, REFRESH_UI_TIME } from './constants';
 import { AppStage } from './types';
@@ -70,7 +69,6 @@ export class App implements IApp {
       await this._appState.startNewState();
     }
 
-    this.setStartingHistoryState();
     this.startRunningGame();
   }
 
@@ -155,12 +153,6 @@ export class App implements IApp {
   }
 
   fastForward() {
-    const newHistoryState: IHistoryState = {
-      ...(window.history.state as IHistoryState),
-    };
-
-    window.history.pushState(newHistoryState, '');
-
     this._appStage = AppStage.fastForward;
 
     this.emitChangedAppStageEvent();
@@ -233,8 +225,6 @@ export class App implements IApp {
 
       case AppStage.fastForward:
         if (!this._appState.fastForwardState()) {
-          window.history.back();
-
           this._appStage = AppStage.running;
           this._messageLogState.postMessage(GameStateEvent.fastForwared);
           this.emitChangedAppStageEvent();
@@ -250,19 +240,15 @@ export class App implements IApp {
   private handleVisibilityChange = (): void => {
     this._uiVisible = !document.hidden;
 
-    if (this._uiVisible) {
+    if (!this._uiVisible) {
+      const gameIsRunning = this.appStage === AppStage.fastForward || this.appStage === AppStage.running;
+      const autosaveEnabled = this._settingsState.autosaveEnabled;
+
+      if (gameIsRunning && autosaveEnabled) {
+        this.saveGame();
+      }
+    } else {
       this._stateUIConnector.fireUIEvents();
     }
   };
-
-  private setStartingHistoryState(): void {
-    const state: IHistoryState = {
-      selectedMenuItem: OverviewMenuItem.overview,
-      showConfirmationAlert: false,
-      showNotification: false,
-      menuOpened: false,
-    };
-
-    window.history.replaceState(state, '');
-  }
 }

@@ -49,7 +49,7 @@ export class MenuBar extends BaseComponent<MenuBarController> {
     this.controller = new MenuBarController(this);
   }
 
-  renderContent() {
+  render() {
     return html`
       <aside>
         <ca-menu-bar-values></ca-menu-bar-values>

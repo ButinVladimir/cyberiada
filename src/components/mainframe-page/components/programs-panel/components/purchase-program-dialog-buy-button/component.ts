@@ -36,7 +36,7 @@ export class PurchaseProgramDialogBuyButton extends BaseComponent<PurchaseProgra
     this.controller = new PurchaseProgramDialogBuyButtonController(this);
   }
 
-  renderContent() {
+  render() {
     const { formatter, money } = this.controller;
 
     const program = this.programName

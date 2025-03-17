@@ -17,7 +17,7 @@ export class StatisticsProgramCompletionSpeed extends BaseComponent<StatisticsPr
     this.controller = new StatisticsProgramCompletionSpeedController(this);
   }
 
-  renderContent() {
+  render() {
     const formatter = this.controller.formatter;
 
     const { totalMultiplier, multiplierByHardware, multiplierByProgram } = this.controller;

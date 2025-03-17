@@ -50,7 +50,7 @@ export class ProcessDescriptionText extends BaseComponent<ProcessDescriptionText
     this.controller = new ProcessDescriptionTextController(this);
   }
 
-  renderContent() {
+  render() {
     const process = this.controller.getProcess(this.programName as ProgramName);
 
     if (!process) {

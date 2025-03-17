@@ -51,7 +51,7 @@ export class OverviewStoryPanel extends BaseComponent<OverviewStoryPanelControll
     this.controller = new OverviewStoryPanelController(this);
   }
 
-  renderContent() {
+  render() {
     const goals = this.controller.listGoals();
 
     return html`

@@ -22,7 +22,6 @@ import {
 } from '@shared/styles';
 import { StartProcessDialogCloseEvent } from './events';
 import { StartProcessDialogController } from './controller';
-import { IMainframePageHistoryState } from '../../../../interfaces';
 
 @customElement('ca-start-process-dialog')
 export class StartProcessDialog extends BaseComponent<StartProcessDialogController> {
@@ -136,14 +135,12 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
     super.updated(_changedProperties);
 
     if (_changedProperties.get('isOpen') === false) {
-      const historyState = window.history.state as IMainframePageHistoryState;
-
-      this._programName = historyState.programName ?? undefined;
-      this._threads = historyState.threads ?? 1;
+      this._programName = undefined;
+      this._threads = 1;
     }
   }
 
-  renderContent() {
+  render() {
     const program = this._programName ? this.controller.getProgram(this._programName) : undefined;
     const maxThreads = this.calculateMaxThreads();
 
@@ -225,9 +222,6 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
 
     const programName = this._programInputRef.value.value as ProgramName;
     this._programName = programName;
-
-    const state = { ...window.history.state, programName } as IMainframePageHistoryState;
-    window.history.replaceState(state, '');
   };
 
   private handleThreadsChange = () => {
@@ -248,9 +242,6 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
 
     this._threads = threads;
     this._threadsInputRef.value.valueAsNumber = threads;
-
-    const state = { ...window.history.state, threads } as IMainframePageHistoryState;
-    window.history.replaceState(state, '');
   };
 
   private handleOpenConfirmationAlert = (event: Event) => {

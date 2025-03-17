@@ -50,7 +50,7 @@ export class SavefilePanel extends BaseComponent<SavefilePanelController> {
     document.removeEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmDeleteSaveDataDialog);
   }
 
-  renderContent() {
+  render() {
     return html`
       <input ${ref(this._importInputRef)} type="file" id="import-file" @change=${this.handleChangeImportSavefile} />
 

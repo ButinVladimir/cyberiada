@@ -22,7 +22,7 @@ export class LoadingScreen extends BaseComponent {
     }
   `;
 
-  renderContent() {
+  render() {
     return html` <span> ${t('common.loading', { ns: 'ui' })} </span> `;
   }
 }

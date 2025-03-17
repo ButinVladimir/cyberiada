@@ -129,7 +129,7 @@ export class ProcessesListItem extends BaseComponent<ProcessesListItemController
     document.removeEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmDeleteProcessDialog);
   }
 
-  renderContent() {
+  render() {
     const formatter = this.controller.formatter;
     const process = this.controller.getProcess(this.programName as ProgramName);
 

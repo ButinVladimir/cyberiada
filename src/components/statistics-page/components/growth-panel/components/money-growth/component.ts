@@ -19,7 +19,7 @@ export class StatisticsMoneyGrowth extends BaseComponent<StatisticsMoneyGrowthCo
     this.controller = new StatisticsMoneyGrowthController(this);
   }
 
-  renderContent() {
+  render() {
     const formatter = this.controller.formatter;
     const total = this.controller.moneyTotalGrowth;
 

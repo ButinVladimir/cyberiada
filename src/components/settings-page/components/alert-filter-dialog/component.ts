@@ -78,7 +78,7 @@ export class AlertFilterDialog extends BaseComponent<AlertFilterDialogController
     this.controller = new AlertFilterDialogController(this);
   }
 
-  renderContent() {
+  render() {
     return html`
       <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
         <h4 slot="label" class="title">${t('settings.alertFilter', { ns: 'ui' })}</h4>

@@ -78,7 +78,7 @@ export class MessageFilterDialog extends BaseComponent<MessageFilterDialogContro
     this.controller = new MessageFilterDialogController(this);
   }
 
-  renderContent() {
+  render() {
     return html`
       <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
         <h4 slot="label" class="title">${t('settings.messageFilter', { ns: 'ui' })}</h4>

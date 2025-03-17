@@ -37,7 +37,7 @@ export class MenuBarValues extends BaseComponent<MenuBarValuesController> {
     this.controller = new MenuBarValuesController(this);
   }
 
-  renderContent() {
+  render() {
     const formatter = this.controller.formatter;
     const accumulatedTimeFormatted = formatter.formatTimeShort(this.controller.accumulatedTime);
     const moneyFormatted = formatter.formatNumberFloat(this.controller.money);
@@ -46,37 +46,26 @@ export class MenuBarValues extends BaseComponent<MenuBarValuesController> {
     return html`
       <div class="block">
         <sl-tooltip>
-          <span slot="content"> ${t('menuBar.accumulatedTime', { ns: 'ui', time: accumulatedTimeFormatted })} </span>
-
+          <span slot="content"> ${t('menuBar.accumulatedTime', { ns: 'ui' })} </span>
           <sl-icon name="clock"> </sl-icon>
-
-          <span class="text"> ${accumulatedTimeFormatted} </span>
         </sl-tooltip>
+        <span class="text"> ${accumulatedTimeFormatted} </span>
       </div>
 
       <div class="block">
         <sl-tooltip>
-          <span slot="content"> ${t('menuBar.money', { ns: 'ui', money: moneyFormatted })} </span>
-
+          <span slot="content"> ${t('menuBar.money', { ns: 'ui' })} </span>
           <sl-icon name="currency-bitcoin"> </sl-icon>
-
-          <span class="text"> ${moneyFormatted} </span>
         </sl-tooltip>
+        <span class="text"> ${moneyFormatted} </span>
       </div>
 
       <div class="block">
         <sl-tooltip>
-          <span slot="content">
-            ${t(`menuBar.developmentLevel`, {
-              ns: 'ui',
-              level: developmentLevelFormatted,
-            })}
-          </span>
-
+          <span slot="content"> ${t(`menuBar.developmentLevel`, { ns: 'ui' })} </span>
           <sl-icon name="star"> </sl-icon>
-
-          <span class="text"> ${developmentLevelFormatted} </span>
         </sl-tooltip>
+        <span class="text"> ${developmentLevelFormatted} </span>
       </div>
     `;
   }
