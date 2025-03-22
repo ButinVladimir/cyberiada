@@ -22,7 +22,7 @@ export class PurchaseProgramDialogController extends BaseController {
   }
 
   listAvailablePrograms(): ProgramName[] {
-    return this.globalState.availableItems.programs.listAvailableItems();
+    return this.globalState.availableItems.programs.listAvailableItems() as ProgramName[];
   }
 
   purchaseProgram(name: ProgramName, quality: number, level: number): boolean {

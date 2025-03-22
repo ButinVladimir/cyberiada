@@ -12,7 +12,7 @@ export class Viewport extends BaseComponent<ViewportController> {
     div.content-wrapper {
       width: 100%;
       max-width: var(--ca-width-widescreen-content);
-      padding: var(--sl-spacing-large);
+      padding: var(--sl-spacing-2x-large);
       box-sizing: border-box;
     }
   `;

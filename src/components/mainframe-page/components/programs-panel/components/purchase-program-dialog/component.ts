@@ -139,7 +139,7 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
   updated(_changedProperties: Map<string, any>) {
     super.updated(_changedProperties);
 
-    if (_changedProperties.get('isOpen') === false) {
+    if (_changedProperties.has('isOpen')) {
       this._programName = undefined;
       this._quality = 0;
       this._level = this.controller.developmentLevel;
@@ -191,6 +191,7 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
               name="level"
               value=${this._level}
               type="number"
+              inputmode="decimal"
               min="1"
               max=${developmentLevel}
               step="1"
@@ -210,18 +211,15 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
             : nothing}
         </div>
 
-        <sl-button slot="footer" size="medium" variant="default" outline @click=${this.handleClose}>
-          ${t('common.close', { ns: 'ui' })}
-        </sl-button>
-
-        <ca-purchase-program-dialog-buy-button
+        <ca-purchase-program-dialog-buttons
           slot="footer"
           program-name=${ifDefined(this._programName)}
           level=${this._level}
           quality=${this._quality}
           @buy-program=${this.handleOpenConfirmationAlert}
+          @cancel=${this.handleClose}
         >
-        </ca-purchase-program-dialog-buy-button>
+        </ca-purchase-program-dialog-buttons>
       </sl-dialog>
     `;
   }

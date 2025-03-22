@@ -4,7 +4,7 @@
     "messageLogSize": 30,
     "toastDuration": 5000,
     "updateInterval": 100,
-    "autosaveEnabled": true,
+    "autosaveEnabledOnHide": true,
     "autosaveInterval": 60000,
     "fastSpeedMultiplier": 5,
     "maxUpdatesPerTick": 1000,

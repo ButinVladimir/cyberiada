@@ -25,6 +25,15 @@ export const hintStyle = css`
   p.hint {
     color: var(--ca-hint-color);
     font-size: var(--ca-hint-font-size);
+    line-height: var(--ca-hint-line-height);
+  }
+`;
+
+export const warningStyle = css`
+  p.warning {
+    color: var(--ca-warning-color);
+    font-size: var(--ca-warning-font-size);
+    line-height: var(--ca-warning-line-height);
   }
 `;
 

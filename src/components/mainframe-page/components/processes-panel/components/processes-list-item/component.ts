@@ -1,6 +1,7 @@
 import { t } from 'i18next';
 import { css, html, nothing } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
 import { BaseComponent } from '@shared/base-component';
 import {
   ConfirmationAlertOpenEvent,
@@ -35,7 +36,6 @@ export class ProcessesListItem extends BaseComponent<ProcessesListItemController
       }
 
       .program {
-        cursor: grab;
         grid-area: program;
       }
 
@@ -76,6 +76,29 @@ export class ProcessesListItem extends BaseComponent<ProcessesListItemController
         color: var(--sl-color-danger-600);
       }
 
+      .program-title {
+        cursor: grab;
+      }
+
+      .program-title sl-icon-button#description-button {
+        position: relative;
+        top: 3px;
+      }
+
+      .program-description {
+        box-sizing: border-box;
+        height: 0;
+        overflow: hidden;
+        color: var(--ca-hint-color);
+        font-size: var(--ca-hint-font-size);
+        line-height: var(--ca-hint-line-height);
+      }
+
+      .program-description.visible {
+        height: auto;
+        padding-top: var(--sl-spacing-medium);
+      }
+
       @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
         :host {
           grid-template-areas: 'program cores progress-bar buttons';
@@ -109,6 +132,9 @@ export class ProcessesListItem extends BaseComponent<ProcessesListItemController
   })
   programName: string = OtherProgramName.shareServer;
 
+  @state()
+  _descriptionVisible = false;
+
   protected controller: ProcessesListItemController;
 
   constructor() {
@@ -137,6 +163,13 @@ export class ProcessesListItem extends BaseComponent<ProcessesListItemController
       return nothing;
     }
 
+    const descriptionButtonName = this._descriptionVisible ? 'chevron-down' : 'chevron-right';
+    const descriptionButtonLabel = this._descriptionVisible ? 'hideDescription' : 'showDescription';
+    const descriptionClasses = classMap({
+      'program-description': true,
+      visible: this._descriptionVisible,
+    });
+
     const cores = process.program.isAutoscalable
       ? t('mainframe.processes.autoscalable', { ns: 'ui' })
       : t('mainframe.processes.usesCores', {
@@ -157,16 +190,27 @@ export class ProcessesListItem extends BaseComponent<ProcessesListItemController
     const toggleVariant = process.isActive ? 'neutral' : 'default';
 
     return html`
-      <div class="program" draggable="true" @dragstart=${this.handleDragStart}>
-        <sl-icon name="grip-vertical"> </sl-icon>
+      <div class="program">
+        <div class="program-title" draggable="true" @dragstart=${this.handleDragStart}>
+          <sl-icon name="grip-vertical"> </sl-icon>
 
-        ${t(`${process.program.name}.name`, { ns: 'programs' })}
+          ${t(`${process.program.name}.name`, { ns: 'programs' })}
 
-        <sl-tooltip>
-          <sl-icon name="question-circle"></sl-icon>
+          <sl-tooltip>
+            <span slot="content">${t(`mainframe.hints.${descriptionButtonLabel}`, { ns: 'ui' })}</span>
 
-          <ca-process-description-text slot="content" program-name=${this.programName}></ca-process-description-text>
-        </sl-tooltip>
+            <sl-icon-button
+              name=${descriptionButtonName}
+              id="description-button"
+              @click=${this.handleToggleDescription}
+            >
+            </sl-icon-button>
+          </sl-tooltip>
+        </div>
+
+        <div class=${descriptionClasses}>
+          <ca-process-description-text program-name=${this.programName}></ca-process-description-text>
+        </div>
       </div>
 
       <div class="cores mobile">${coresFull}</div>
@@ -213,6 +257,13 @@ export class ProcessesListItem extends BaseComponent<ProcessesListItemController
       </div>
     `;
   }
+
+  private handleToggleDescription = (event: Event) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    this._descriptionVisible = !this._descriptionVisible;
+  };
 
   private handleToggleProcess = (event: Event) => {
     event.preventDefault();

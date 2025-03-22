@@ -7,9 +7,16 @@ common:
   continue: Continue
   notEnoughMoney: Not enough money
   available: Available
+  upgrade: Upgrade
+errors:
   willBeAvailableIn: Will be available in {{time}}
   higherDevelopmentLevelRequired: Higher development level required
-  upgrade: Upgrade
+  notEnoughMoney: Not enough money
+  selectProgram: Select program
+  programAlreadyBought: Program is already bought with level {{level}} and quality {{quality}}
+  notEnoughRam: Not enough RAM
+  processForSameProgramRunning: Process for same program with threads {{threads}} is already running
+  autoscalableProcessRunning: Autoscalable process for program "$t(programs:{{programName}}:name)" is already running
 pages:
   overview: Overview
   city: City
@@ -55,10 +62,9 @@ settings:
   toastDurationHint: Set 0 to disable message popups
   framesPerSecond: Frames per second
   framesPerSecondHint: Too high number can cause strain on CPU
-  autosaveEnabled: Enable autosave
-  autosaveEnabledHint: Game is autosaved at regular intervals and when game tab is closing
+  autosaveEnabledOnHide: Enable autosave when game tab hides or closes
   autosaveInterval: Autosave interval (s)
-  autosaveIntervalHint: Too low number can cause strain on CPU
+  autosaveIntervalHint: Too low number can cause strain on CPU. Select 0 to disable regular autosave
   fastSpeedMultiplier: Speed multiplier when game speed is fast
   fastSpeedMultiplierHint: Too high number can cause strain on CPU
   maxUpdatesPerFrame: Maximum amount of updates per frame
@@ -125,6 +131,9 @@ mainframe:
   quality: Quality
   threads: Threads
   cores: Cores
+  hints:
+    showDescription: Show description
+    hideDescription: Hide description
   programDescription:
     requirements:
       requirementsProcess: Requirements for {{threads}} threads
@@ -192,9 +201,7 @@ mainframe:
       Threads allow to run multiple instances of same program at same time, but additional threads require additional memory.
     emptyListNotification: You don't have any processes
     programSelectItem: $t(programs:{{programName}}:name), level {{level}}, quality {{quality}}
-    progressBarLabel: "{{currentCompletionPoints}} \/ {{maxCompletionPoints}}"
-    progressBarHintActive: 'Process will be completed in {{time}}'
-    progressBarHintPaused: "Process isn't active"
+    progressBarHint: 'Process will be completed in {{time}}'
     enableProcess: Enable process
     disableProcess: Disable process
     enableAllProcesses: Enable all processes

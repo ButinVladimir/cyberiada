@@ -35,6 +35,7 @@ export class AutomationMainframeProgramsAutobuyer extends BaseComponent<Automati
           name="moneyShare"
           value=${moneyShare}
           type="number"
+          inputmode="decimal"
           min="0"
           max="100"
           step="1"

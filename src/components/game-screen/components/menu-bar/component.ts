@@ -19,7 +19,7 @@ export class MenuBar extends BaseComponent<MenuBarController> {
 
     aside {
       box-sizing: border-box;
-      padding: var(--sl-spacing-small) var(--sl-spacing-2x-small);
+      padding: var(--sl-spacing-large) var(--sl-spacing-2x-small);
       width: 100%;
       display: flex;
       flex-direction: column;

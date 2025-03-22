@@ -1,6 +1,7 @@
 import { t } from 'i18next';
 import { css, html, nothing } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
 import { BaseComponent } from '@shared/base-component';
 import { OtherProgramName, ProgramName } from '@state/mainframe-state/states/progam-factory/types';
 import { SCREEN_WIDTH_POINTS, hintIconStyle } from '@shared/styles';
@@ -22,10 +23,6 @@ export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemCo
 
       .desktop {
         display: none;
-      }
-
-      .program {
-        cursor: grab;
       }
 
       .buttons {
@@ -50,6 +47,29 @@ export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemCo
         top: 0.2em;
         color: var(--ca-hint-color);
         font-size: var(--sl-font-size-large);
+      }
+
+      .program-title {
+        cursor: grab;
+      }
+
+      .program-title sl-icon-button#description-button {
+        position: relative;
+        top: 3px;
+      }
+
+      .program-description {
+        box-sizing: border-box;
+        height: 0;
+        overflow: hidden;
+        color: var(--ca-hint-color);
+        font-size: var(--ca-hint-font-size);
+        line-height: var(--ca-hint-line-height);
+      }
+
+      .program-description.visible {
+        height: auto;
+        padding-top: var(--sl-spacing-medium);
       }
 
       @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
@@ -84,6 +104,9 @@ export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemCo
   })
   programName: string = OtherProgramName.shareServer;
 
+  @state()
+  _descriptionVisible = false;
+
   protected controller: OwnedProgramsListItemController;
 
   constructor() {
@@ -101,6 +124,13 @@ export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemCo
       return nothing;
     }
 
+    const descriptionButtonName = this._descriptionVisible ? 'chevron-down' : 'chevron-right';
+    const descriptionButtonLabel = this._descriptionVisible ? 'hideDescription' : 'showDescription';
+    const descriptionClasses = classMap({
+      'program-description': true,
+      visible: this._descriptionVisible,
+    });
+
     const autoupgradeIcon = program.autoUpgradeEnabled ? 'arrow-up-circle-fill' : 'arrow-up-circle';
     const autoupgradeLabel = program.autoUpgradeEnabled ? 'disableAutoupgrade' : 'enableAutoupgrade';
     const autoupgradeVariant = program.autoUpgradeEnabled ? 'neutral' : 'default';
@@ -109,16 +139,27 @@ export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemCo
     const formattedQuality = formatter.formatQuality(program.quality);
 
     return html`
-      <div class="program" draggable="true" @dragstart=${this.handleDragStart}>
-        <sl-icon name="grip-vertical"> </sl-icon>
+      <div class="program">
+        <div class="program-title" draggable="true" @dragstart=${this.handleDragStart}>
+          <sl-icon name="grip-vertical"> </sl-icon>
 
-        ${t(`${program.name}.name`, { ns: 'programs' })}
+          ${t(`${program.name}.name`, { ns: 'programs' })}
 
-        <sl-tooltip>
-          <sl-icon name="question-circle"></sl-icon>
+          <sl-tooltip>
+            <span slot="content">${t(`mainframe.hints.${descriptionButtonLabel}`, { ns: 'ui' })}</span>
 
-          <ca-program-description-text slot="content" program-name=${this.programName}></ca-program-description-text>
-        </sl-tooltip>
+            <sl-icon-button
+              name=${descriptionButtonName}
+              id="description-button"
+              @click=${this.handleToggleDescription}
+            >
+            </sl-icon-button>
+          </sl-tooltip>
+        </div>
+
+        <div class=${descriptionClasses}>
+          <ca-process-description-text program-name=${this.programName}></ca-process-description-text>
+        </div>
       </div>
 
       <div class="mobile">${t(`mainframe.programs.level`, { ns: 'ui', level: formattedLevel })}</div>
@@ -164,6 +205,13 @@ export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemCo
       </div>
     `;
   }
+
+  private handleToggleDescription = (event: Event) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    this._descriptionVisible = !this._descriptionVisible;
+  };
 
   private handleToggleAutoUpgrade = (event: Event) => {
     event.stopPropagation();

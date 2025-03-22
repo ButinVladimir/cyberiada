@@ -15,7 +15,7 @@ export class AppRootController extends BaseController {
   }
 
   get autosaveEnabled(): boolean {
-    return this.settingsState.autosaveEnabled;
+    return this.settingsState.autosaveEnabledOnHide;
   }
 
   saveGame() {

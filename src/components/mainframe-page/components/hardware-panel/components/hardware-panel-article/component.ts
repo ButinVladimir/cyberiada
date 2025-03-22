@@ -30,8 +30,7 @@ export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwa
 
       div.button-container {
         grid-area: buttons;
-        display: flex;
-        gap: var(--sl-spacing-medium);
+        height: 100%;
       }
 
       div.title-row {
@@ -72,11 +71,6 @@ export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwa
           grid-template-rows: auto auto;
           grid-template-columns: 1fr auto;
         }
-      }
-
-      div.button-container {
-        align-items: center;
-        height: 100%;
       }
     `,
   ];
@@ -135,16 +129,13 @@ export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwa
       <p class="hint">${t(`mainframe.hardware.${this.type}Hint`, { ns: 'ui' })}</p>
 
       <div class="button-container">
-        <sl-button variant="default" type="button" size="medium" @click=${this.handleBuyMax}>
-          ${t('mainframe.hardware.buyMax', { ns: 'ui' })}
-        </sl-button>
-
-        <ca-mainframe-hardware-panel-article-buy-button
+        <ca-mainframe-hardware-panel-article-buttons
           max-increase=${this.maxIncrease}
           type=${this.type}
           @buy-hardware=${this.handleBuy}
+          @buy-max-hardware=${this.handleBuyMax}
         >
-        </ca-mainframe-hardware-panel-article-buy-button>
+        </ca-mainframe-hardware-panel-article-buttons>
       </div>
     `;
   }

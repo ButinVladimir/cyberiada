@@ -7,7 +7,7 @@ export interface ISettingsSerializedState {
   messageLogSize: number;
   toastDuration: number;
   updateInterval: number;
-  autosaveEnabled: boolean;
+  autosaveEnabledOnHide: boolean;
   autosaveInterval: number;
   fastSpeedMultiplier: number;
   maxUpdatesPerTick: number;

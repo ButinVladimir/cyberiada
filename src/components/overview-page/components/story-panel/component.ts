@@ -26,7 +26,7 @@ export class OverviewStoryPanel extends BaseComponent<OverviewStoryPanelControll
         display: flex;
         flex-direction: column;
         align-items: stretch;
-        gap: var(--sl-spacing-medium);
+        gap: var(--sl-spacing-large);
       }
 
       @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {

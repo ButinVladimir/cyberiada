@@ -8,9 +8,11 @@ Cyberiada is currenly under development. It has roadmap available but info here 
 
 Discord for discussions and feedback is available here: https://discord.gg/CmsTxU2EMw
 
-## Known issues
+## Troubleshooting
 
-- Double tapping while dialog is closing moves navigation back
+- Autosave on page hide may use a lot of memory if game page visibility is switched often. This can be disable in settings
+- Message popups can use a lot of memory over time. They can be disabled in settings
+- Max FPS can be reduced to 1 but it gameplay won't be smooth
 
 ## Local development and contribution
 

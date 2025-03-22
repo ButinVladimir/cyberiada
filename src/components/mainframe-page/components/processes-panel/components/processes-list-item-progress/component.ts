@@ -2,16 +2,25 @@ import { t } from 'i18next';
 import { css, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
+import { hintStyle } from '@shared/styles';
 import { ProgramName, OtherProgramName } from '@state/mainframe-state/states/progam-factory/types';
 import { ProcessesListItemProgressController } from './controller';
 
 @customElement('ca-processes-list-item-progress')
 export class ProcessesListItemProgressColumn extends BaseComponent<ProcessesListItemProgressController> {
-  static styles = css`
-    :host {
-      flex: 1 1 auto;
-    }
-  `;
+  static styles = [
+    hintStyle,
+    css`
+      :host {
+        flex: 1 1 auto;
+      }
+
+      p.hint {
+        margin-top: var(--sl-spacing-3x-small);
+        margin-bottom: 0;
+      }
+    `,
+  ];
 
   @property({
     attribute: 'program-name',
@@ -36,29 +45,25 @@ export class ProcessesListItemProgressColumn extends BaseComponent<ProcessesList
       return nothing;
     }
 
-    const processCompletionDelta = process.calculateCompletionDelta(1);
-    let progressBarHintLabel: string;
-    let progressBarHintTime: string;
-
-    if (processCompletionDelta > 0) {
-      progressBarHintLabel = 'mainframe.processes.progressBarHintActive';
-      progressBarHintTime = formatter.formatTimeShort(
-        (process.maxCompletionPoints - process.currentCompletionPoints) / processCompletionDelta,
-      );
-    } else {
-      progressBarHintLabel = 'mainframe.processes.progressBarHintPaused';
-      progressBarHintTime = '';
+    if (process.program.isAutoscalable) {
+      return html`${t('mainframe.processes.instantCompletion', { ns: 'ui' })}`;
     }
 
     const progressBarValue = (process.currentCompletionPoints / process.maxCompletionPoints) * 100;
     const progressBarPercentage = `${formatter.formatNumberFloat(progressBarValue)}%`;
+    const processCompletionDelta = process.calculateCompletionDelta(1);
 
-    return process.program.isAutoscalable
-      ? html`${t('mainframe.processes.instantCompletion', { ns: 'ui' })}`
-      : html`<sl-tooltip>
-          <span slot="content"> ${t(progressBarHintLabel, { ns: 'ui', time: progressBarHintTime })} </span>
+    if (processCompletionDelta > 0) {
+      const hintTime = formatter.formatTimeShort(
+        (process.maxCompletionPoints - process.currentCompletionPoints) / processCompletionDelta,
+      );
 
-          <sl-progress-bar value=${progressBarValue}> ${progressBarPercentage} </sl-progress-bar>
-        </sl-tooltip>`;
+      return html`
+        <sl-progress-bar value=${progressBarValue}> ${progressBarPercentage} </sl-progress-bar>
+        <p class="hint">${t('mainframe.processes.progressBarHint', { ns: 'ui', time: hintTime })}</p>
+      `;
+    }
+
+    return html` <sl-progress-bar value=${progressBarValue}> ${progressBarPercentage} </sl-progress-bar> `;
   }
 }

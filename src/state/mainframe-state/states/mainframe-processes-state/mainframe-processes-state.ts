@@ -274,14 +274,12 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     this._runningProcesses.splice(0);
     this._runningScalableProcess = this._processesList.find((process) => process.program.isAutoscalable);
 
-    let runningScalableProcessCores = 0;
-
     if (this._runningScalableProcess) {
       this._availableRam--;
     }
 
     if (this._availableCores > 0 && this._runningScalableProcess?.isActive) {
-      runningScalableProcessCores = 1;
+      this._runningScalableProcess.usedCores = 1;
       this._availableCores--;
     }
 
@@ -302,10 +300,6 @@ export class MainframeProcessesState implements IMainframeProcessesState {
         usedCores = Math.min(process.maxCores, this._availableCores);
       }
 
-      if (usedCores !== process.usedCores) {
-        this._growthState.requestGrowthRecalculation();
-      }
-
       if (usedCores > 0) {
         process.usedCores = usedCores;
         this._runningProcesses.push(process);
@@ -316,13 +310,10 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     }
 
     if (this._runningScalableProcess?.isActive) {
-      runningScalableProcessCores += this._availableCores;
+      this._runningScalableProcess.usedCores += this._availableCores;
     }
 
-    if (this._runningScalableProcess && this._runningScalableProcess?.usedCores !== runningScalableProcessCores) {
-      this._runningScalableProcess.usedCores = runningScalableProcessCores;
-      this._growthState.requestGrowthRecalculation();
-    }
+    this._growthState.requestGrowthRecalculation();
 
     this.uiEventBatcher.enqueueEvent(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESSES_UPDATED);
   };

@@ -20,8 +20,8 @@ processReplace:
   name: Replace a process
   message: Are you sure want to overwrite process for program "$t(programs:{{programName}}:name)"? This will replace your current process with {{threads}} threads.
 scalableProcessReplace:
-  name: Replace a scalable process
-  message: Are you sure want to replace scalable process? This will delete your current process for program "$t(programs:{{programName}}:name)".
+  name: Replace a autoscalable process
+  message: Are you sure want to replace autoscalable process? This will delete your current process for program "$t(programs:{{programName}}:name)".
 deleteAllProcesses:
   name: Delete all process
   message: Are you sure want to delete all processes? Their progress will be lost.

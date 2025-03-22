@@ -147,7 +147,7 @@ export class App implements IApp {
   restartAutosaveTimer() {
     this.stopAutosaveTimer();
 
-    if (this._settingsState.autosaveEnabled) {
+    if (this._settingsState.autosaveInterval) {
       this._autosaveTimer = setInterval(this.saveGame, this._settingsState.autosaveInterval);
     }
   }
@@ -242,9 +242,9 @@ export class App implements IApp {
 
     if (!this._uiVisible) {
       const gameIsRunning = this.appStage === AppStage.fastForward || this.appStage === AppStage.running;
-      const autosaveEnabled = this._settingsState.autosaveEnabled;
+      const autosaveEnabledOnHide = this._settingsState.autosaveEnabledOnHide;
 
-      if (gameIsRunning && autosaveEnabled) {
+      if (gameIsRunning && autosaveEnabledOnHide) {
         this.saveGame();
       }
     } else {

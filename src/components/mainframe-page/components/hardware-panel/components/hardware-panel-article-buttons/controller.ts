@@ -2,9 +2,17 @@ import { BaseController } from '@shared/base-controller';
 import { IMainframeHardwareParameter } from '@state/mainframe-state/states/mainframe-hardware-state/interfaces/mainframe-hardware-parameter';
 import { MainframeHardwareParameterType } from '@state/mainframe-state/states/mainframe-hardware-state/types';
 
-export class MainframeHardwarePanelArticleBuyButtonController extends BaseController {
+export class MainframeHardwarePanelArticleButtonsController extends BaseController {
   get developmentLevel() {
     return this.globalState.development.level;
+  }
+
+  get money(): number {
+    return this.globalState.money.money;
+  }
+
+  get moneyGrowth(): number {
+    return this.growthState.money.totalGrowth;
   }
 
   getLevel(type: MainframeHardwareParameterType): number {

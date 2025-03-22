@@ -22,6 +22,7 @@ import {
 } from '@shared/styles';
 import { StartProcessDialogCloseEvent } from './events';
 import { StartProcessDialogController } from './controller';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 @customElement('ca-start-process-dialog')
 export class StartProcessDialog extends BaseComponent<StartProcessDialogController> {
@@ -134,7 +135,7 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
   updated(_changedProperties: Map<string, any>) {
     super.updated(_changedProperties);
 
-    if (_changedProperties.get('isOpen') === false) {
+    if (_changedProperties.has('isOpen')) {
       this._programName = undefined;
       this._threads = 1;
     }
@@ -145,10 +146,6 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
     const maxThreads = this.calculateMaxThreads();
 
     const threadsInputDisabled = !(program && !program.isAutoscalable);
-    const submitButtonDisabled = !(
-      program &&
-      (program.isAutoscalable || (this._threads >= 1 && this._threads <= maxThreads))
-    );
 
     return html`
       <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
@@ -175,6 +172,7 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
               name="threads"
               value=${this._threads}
               type="number"
+              inputmode="decimal"
               min="1"
               max=${Math.max(maxThreads, 1)}
               step="1"
@@ -191,19 +189,14 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
             : nothing}
         </div>
 
-        <sl-button slot="footer" size="medium" variant="default" outline @click=${this.handleClose}>
-          ${t('common.close', { ns: 'ui' })}
-        </sl-button>
-
-        <sl-button
-          ?disabled=${submitButtonDisabled}
+        <ca-start-process-dialog-buttons
           slot="footer"
-          size="medium"
-          variant="primary"
-          @click=${this.handleOpenConfirmationAlert}
+          program-name=${ifDefined(this._programName)}
+          threads=${this._threads}
+          @start-process=${this.handleOpenConfirmationAlert}
+          @cancel=${this.handleClose}
         >
-          ${t('mainframe.processes.startProcess', { ns: 'ui' })}
-        </sl-button>
+        </ca-start-process-dialog-buttons>
       </sl-dialog>
     `;
   }

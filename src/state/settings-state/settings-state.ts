@@ -29,7 +29,7 @@ export class SettingsState implements ISettingsState {
   private _messageLogSize: number;
   private _toastDuration: number;
   private _updateInterval: number;
-  private _autosaveEnabled: boolean;
+  private _autosaveEnabledOnHide: boolean;
   private _autosaveInterval: number;
   private _fastSpeedMultiplier: number;
   private _maxUpdatesPerTick: number;
@@ -45,7 +45,7 @@ export class SettingsState implements ISettingsState {
     this._messageLogSize = constants.defaultSettings.messageLogSize;
     this._toastDuration = constants.defaultSettings.toastDuration;
     this._updateInterval = constants.defaultSettings.updateInterval;
-    this._autosaveEnabled = constants.defaultSettings.autosaveEnabled;
+    this._autosaveEnabledOnHide = constants.defaultSettings.autosaveEnabledOnHide;
     this._autosaveInterval = constants.defaultSettings.autosaveInterval;
     this._fastSpeedMultiplier = constants.defaultSettings.fastSpeedMultiplier;
     this._maxUpdatesPerTick = constants.defaultSettings.maxUpdatesPerTick;
@@ -76,8 +76,8 @@ export class SettingsState implements ISettingsState {
     return this._updateInterval;
   }
 
-  get autosaveEnabled() {
-    return this._autosaveEnabled;
+  get autosaveEnabledOnHide() {
+    return this._autosaveEnabledOnHide;
   }
 
   get autosaveInterval() {
@@ -140,8 +140,8 @@ export class SettingsState implements ISettingsState {
     this._app.restartUpdateTimer();
   }
 
-  setAutosaveEnabled(autosaveEnabled: boolean) {
-    this._autosaveEnabled = autosaveEnabled;
+  setAutosaveEnabledOnHide(autosaveEnabled: boolean) {
+    this._autosaveEnabledOnHide = autosaveEnabled;
     this._app.restartAutosaveTimer();
   }
 
@@ -198,7 +198,7 @@ export class SettingsState implements ISettingsState {
     this.setMessageLogSize(constants.defaultSettings.messageLogSize);
     this.setToastDuration(constants.defaultSettings.toastDuration);
     this.setUpdateInterval(constants.defaultSettings.updateInterval);
-    this.setAutosaveEnabled(constants.defaultSettings.autosaveEnabled);
+    this.setAutosaveEnabledOnHide(constants.defaultSettings.autosaveEnabledOnHide);
     this.setAutosaveInterval(constants.defaultSettings.autosaveInterval);
     this.setFastSpeedMultiplier(constants.defaultSettings.fastSpeedMultiplier);
     this.setMaxUpdatesPerTick(constants.defaultSettings.maxUpdatesPerTick);
@@ -215,7 +215,7 @@ export class SettingsState implements ISettingsState {
     this.setMessageLogSize(serializedState.messageLogSize);
     this.setToastDuration(serializedState.toastDuration);
     this.setUpdateInterval(serializedState.updateInterval);
-    this.setAutosaveEnabled(serializedState.autosaveEnabled);
+    this.setAutosaveEnabledOnHide(serializedState.autosaveEnabledOnHide);
     this.setAutosaveInterval(serializedState.autosaveInterval);
     this.setFastSpeedMultiplier(serializedState.fastSpeedMultiplier);
     this.setMaxUpdatesPerTick(serializedState.maxUpdatesPerTick);
@@ -233,7 +233,7 @@ export class SettingsState implements ISettingsState {
       messageLogSize: this.messageLogSize,
       toastDuration: this.toastDuration,
       updateInterval: this.updateInterval,
-      autosaveEnabled: this.autosaveEnabled,
+      autosaveEnabledOnHide: this.autosaveEnabledOnHide,
       autosaveInterval: this.autosaveInterval,
       fastSpeedMultiplier: this.fastSpeedMultiplier,
       maxUpdatesPerTick: this.maxUpdatesPerTick,

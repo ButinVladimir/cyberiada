@@ -12,7 +12,7 @@ export class AutomationAutobuyersPanel extends BaseComponent<AutomationAutobuyer
       display: flex;
       align-items: stretch;
       flex-direction: column;
-      gap: var(--sl-spacing-medium);
+      gap: var(--sl-spacing-large);
     }
   `;
 

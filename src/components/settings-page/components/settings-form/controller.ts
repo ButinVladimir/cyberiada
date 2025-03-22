@@ -23,8 +23,8 @@ export class SettingsFormController extends BaseController {
     return MS_IN_SECOND / this.settingsState.updateInterval;
   }
 
-  get autosaveEnabled(): boolean {
-    return this.settingsState.autosaveEnabled;
+  get autosaveEnabledOnHide(): boolean {
+    return this.settingsState.autosaveEnabledOnHide;
   }
 
   get autosaveInterval(): number {
@@ -69,7 +69,7 @@ export class SettingsFormController extends BaseController {
   }
 
   setAutosaveEnabled(autosaveEnabled: boolean) {
-    this.settingsState.setAutosaveEnabled(autosaveEnabled);
+    this.settingsState.setAutosaveEnabledOnHide(autosaveEnabled);
     this.handleRefreshUI();
   }
 

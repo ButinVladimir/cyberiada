@@ -2,7 +2,7 @@ import { BaseController } from '@shared/base-controller';
 import { IProgram } from '@state/mainframe-state/states/progam-factory/interfaces/program';
 import { ProgramName } from '@state/mainframe-state/states/progam-factory/types';
 
-export class PurchaseProgramDialogBuyButtonController extends BaseController {
+export class PurchaseProgramDialogButtonsController extends BaseController {
   private _selectedProgram?: IProgram;
 
   hostDisconnected() {
@@ -13,6 +13,10 @@ export class PurchaseProgramDialogBuyButtonController extends BaseController {
 
   get money(): number {
     return this.globalState.money.money;
+  }
+
+  get moneyGrowth(): number {
+    return this.growthState.money.totalGrowth;
   }
 
   getSelectedProgram(name: ProgramName, quality: number, level: number): IProgram {
@@ -36,6 +40,10 @@ export class PurchaseProgramDialogBuyButtonController extends BaseController {
 
   isProgramAvailable(programName: ProgramName, quality: number, level: number): boolean {
     return this.globalState.availableItems.programs.isItemAvailable(programName, quality, level);
+  }
+
+  getOwnedProgram(programName: ProgramName): IProgram | undefined {
+    return this.mainframeState.programs.getOwnedProgramByName(programName);
   }
 
   private deleteSelectedProgram() {

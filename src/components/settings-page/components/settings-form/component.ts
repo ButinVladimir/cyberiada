@@ -50,7 +50,7 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
 
   private _updateFPSInputRef = createRef<SlRange>();
 
-  private _autosaveEnabledSwitchRef = createRef<SlSwitch>();
+  private _autosaveEnabledOnHideSwitchRef = createRef<SlSwitch>();
 
   private _autosaveIntervalInputRef = createRef<SlRange>();
 
@@ -101,6 +101,7 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
         name="messageLogSize"
         value=${this.controller.messageLogSize}
         type="number"
+        inputmode="decimal"
         min=${constants.MESSAGE_LOG_SIZE_MIN}
         max=${constants.MESSAGE_LOG_SIZE_MAX}
         step=${constants.MESSAGE_LOG_SIZE_STEP}
@@ -158,6 +159,7 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
         name="maxUpdatesPerTick"
         value=${this.controller.maxUpdatesPerTick}
         type="number"
+        inputmode="decimal"
         min=${constants.MAX_UPDATES_PER_FRAME_MIN}
         max=${constants.MAX_UPDATES_PER_FRAME_MAX}
         step=${constants.MAX_UPDATES_PER_FRAME_STEP}
@@ -185,15 +187,13 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
       </sl-select>
 
       <sl-switch
-        ${ref(this._autosaveEnabledSwitchRef)}
+        ${ref(this._autosaveEnabledOnHideSwitchRef)}
         size="medium"
-        name="autosaveEnabled"
-        ?checked=${this.controller.autosaveEnabled}
-        @sl-change=${this.handleChangeAutosaveEnabled}
+        name="autosaveEnabledOnHide"
+        ?checked=${this.controller.autosaveEnabledOnHide}
+        @sl-change=${this.handleChangeAutosaveEnabledOnHide}
       >
-        <span class="input-label"> ${t('settings.autosaveEnabled', { ns: 'ui' })} </span>
-
-        <span slot="help-text"> ${t('settings.autosaveEnabledHint', { ns: 'ui' })} </span>
+        <span class="input-label"> ${t('settings.autosaveEnabledOnHide', { ns: 'ui' })} </span>
       </sl-switch>
 
       <sl-range
@@ -287,12 +287,12 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
     this.controller.setUpdateFPS(this._updateFPSInputRef.value.value);
   };
 
-  private handleChangeAutosaveEnabled = () => {
-    if (!this._autosaveEnabledSwitchRef.value) {
+  private handleChangeAutosaveEnabledOnHide = () => {
+    if (!this._autosaveEnabledOnHideSwitchRef.value) {
       return;
     }
 
-    this.controller.setAutosaveEnabled(this._autosaveEnabledSwitchRef.value.checked);
+    this.controller.setAutosaveEnabled(this._autosaveEnabledOnHideSwitchRef.value.checked);
   };
 
   private handleChangeAutosaveInterval = () => {
