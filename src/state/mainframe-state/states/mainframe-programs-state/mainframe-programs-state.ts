@@ -215,7 +215,7 @@ export class MainframeProgramsState implements IMainframeProgramsState {
     }
 
     this._ownedPrograms.clear();
-    this._programsList = [];
+    this._programsList.length = 0;
   }
 
   private handleCheckProgramUpgrade = (existingProgram: IProgram) => (level: number) => {

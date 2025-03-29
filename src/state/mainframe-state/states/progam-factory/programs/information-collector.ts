@@ -4,8 +4,11 @@ import { BaseProgram } from './base-program';
 
 export class InformationCollectorProgram extends BaseProgram {
   public readonly name = MultiplierProgramName.informationCollector;
-  public readonly isRepeatable = true;
   public readonly isAutoscalable = false;
+
+  handlePerformanceUpdate(): void {
+    this.growthState.multipliers.connectivity.requestGrowthRecalculation();
+  }
 
   perform(threads: number): void {
     this.globalState.multipliers.connectivity.increasePointsByProgram(this.calculateDelta(threads));

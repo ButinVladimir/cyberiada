@@ -44,13 +44,19 @@ export class MessageLogState implements IMessageLogState {
     };
 
     this._messages.push(message);
-    this._messages.splice(0, this._messages.length - this._settingsState.messageLogSize);
+
+    while (this._messages.length > this._settingsState.messageLogSize) {
+      this._messages.shift();
+    }
 
     this.uiEventBatcher.enqueueEvent(MESSAGE_LOG_UI_EVENTS.UPDATED_MESSAGES);
 
     if (postToast && this._settingsState.toastDuration > 0) {
       this._toasts.push(message);
-      this._toasts.splice(0, this._toasts.length - this._settingsState.messageLogSize);
+
+      while (this._toasts.length > this._settingsState.messageLogSize) {
+        this._toasts.shift();
+      }
 
       this.uiEventBatcher.enqueueEvent(MESSAGE_LOG_UI_EVENTS.UPDATED_TOASTS);
     }
@@ -63,7 +69,7 @@ export class MessageLogState implements IMessageLogState {
   }
 
   clearMessages() {
-    this._messages.splice(0);
+    this._messages.length = 0;
 
     this.uiEventBatcher.enqueueEvent(MESSAGE_LOG_UI_EVENTS.UPDATED_MESSAGES);
   }

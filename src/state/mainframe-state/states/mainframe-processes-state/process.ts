@@ -67,7 +67,10 @@ export class Process implements IProcess {
   }
 
   set usedCores(value: number) {
-    this._usedCores = value;
+    if (this._usedCores !== value) {
+      this._usedCores = value;
+      this._program.handlePerformanceUpdate();
+    }
 
     this.uiEventBatcher.enqueueEvent(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESS_UPDATED);
   }
@@ -113,6 +116,7 @@ export class Process implements IProcess {
     this._threads = threads;
     this.resetCompletion();
     this._mainframeProcessesState.requestUpdateProcesses();
+    this.program.handlePerformanceUpdate();
 
     this.uiEventBatcher.enqueueEvent(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESS_UPDATED);
   }

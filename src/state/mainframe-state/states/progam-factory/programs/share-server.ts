@@ -7,7 +7,6 @@ import { BaseProgram } from './base-program';
 
 export class ShareServerProgram extends BaseProgram {
   public readonly name = OtherProgramName.shareServer;
-  public readonly isRepeatable = true;
   public readonly isAutoscalable = true;
 
   private _settingsState: ISettingsState;
@@ -16,6 +15,11 @@ export class ShareServerProgram extends BaseProgram {
     super(parameters);
 
     this._settingsState = parameters.settingsState;
+  }
+
+  handlePerformanceUpdate(): void {
+    this.growthState.money.requestGrowthRecalculation();
+    this.growthState.development.requestGrowthRecalculation();
   }
 
   perform(threads: number, usedRam: number): void {

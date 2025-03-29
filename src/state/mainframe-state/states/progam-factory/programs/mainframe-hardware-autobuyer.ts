@@ -7,7 +7,6 @@ import { IMainframeHardwareAutobuyerParameters } from '../interfaces/program-par
 
 export class MainframeHardwareAutobuyerProgram extends BaseProgram {
   public readonly name = OtherProgramName.mainframeHardwareAutobuyer;
-  public readonly isRepeatable = true;
   public readonly isAutoscalable = false;
 
   private _automationState: IAutomationState;
@@ -17,6 +16,8 @@ export class MainframeHardwareAutobuyerProgram extends BaseProgram {
 
     this._automationState = parameters.automationState;
   }
+
+  handlePerformanceUpdate(): void {}
 
   perform(threads: number): void {
     let actionsLeft = threads;

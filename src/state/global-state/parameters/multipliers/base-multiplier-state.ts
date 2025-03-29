@@ -1,6 +1,7 @@
 import { injectable } from 'inversify';
 import { decorators } from '@state/container';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
+import type { IGrowthState } from '@state/growth-state/interfaces/growth-state';
 import { EventBatcher } from '@shared/event-batcher';
 import { TYPES } from '@state/types';
 import type { IGlobalState } from '../../interfaces/global-state';
@@ -21,9 +22,12 @@ export abstract class BaseMultiplierState implements IMultiplierState {
   @lazyInject(TYPES.GlobalState)
   protected globalState!: IGlobalState;
 
+  @lazyInject(TYPES.GrowthState)
+  protected growthState!: IGrowthState;
+
   private _pointsByProgram: number;
-  private _multiplierByProgram: number;
-  private _totalMultiplier: number;
+  protected _multiplierByProgram: number;
+  protected _totalMultiplier: number;
   private _multiplierUpdateRequested: boolean;
 
   constructor() {
@@ -108,7 +112,7 @@ export abstract class BaseMultiplierState implements IMultiplierState {
       1 + Math.log(1 + this._pointsByProgram / parameters.pointsToMax) / Math.log(parameters.logBase);
   }
 
-  private updateTotalMultiplier() {
+  protected updateTotalMultiplier() {
     this._totalMultiplier = this._multiplierByProgram;
   }
 

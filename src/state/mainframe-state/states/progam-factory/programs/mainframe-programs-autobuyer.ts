@@ -11,7 +11,6 @@ import {
 
 export class MainframeProgramsAutobuyerProgram extends BaseProgram {
   public readonly name = OtherProgramName.mainframeProgramsAutobuyer;
-  public readonly isRepeatable = true;
   public readonly isAutoscalable = false;
 
   private _programFactory: IProgramFactory;
@@ -23,6 +22,8 @@ export class MainframeProgramsAutobuyerProgram extends BaseProgram {
     this._programFactory = parameters.programFactory;
     this._automationState = parameters.automationState;
   }
+
+  handlePerformanceUpdate(): void {}
 
   perform(threads: number): void {
     let actionsLeft = threads;

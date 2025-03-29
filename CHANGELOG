@@ -3,8 +3,14 @@
 ## 0.2 (not released yet)
 
 - Added support for factions
-- New parameters: code base, connectivity and rewards
-- New programs: circuit designer, information collector and deal maker
+- New parameters:
+- - Code base, improves mainframe programs price multiplier
+- - Connectivity, unlocks better sidejobs and contracts
+- - Rewards, improves rewards
+- New programs:
+- - Circuit designer, increases computational base points
+- - Information collector, increases connectivity points
+- - Deal maker, increases reward points
 - New Overview page to see overall progress
 - - Removed available goals icon from top bar, remade as story tab in overview
 - - Reworked unlocked features, moved unlocked features tab from statistics to overview

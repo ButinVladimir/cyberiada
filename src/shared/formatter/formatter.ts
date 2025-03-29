@@ -42,16 +42,19 @@ export class Formatter implements IFormatter {
 
   formatTimeShort(time: number, parameters: IFormatterParameters = DEFAULT_TIME_SHORT_FORMAT_PARAMETERS): string {
     let remainingTime = Math.abs(time);
-    const result = [];
+    let formattedTime = '';
 
-    for (const { units } of TIME_PARTS) {
+    for (let unitNumber = 0; unitNumber < TIME_PARTS.length; unitNumber++) {
+      const { units } = TIME_PARTS[unitNumber];
       const value = Math.floor(remainingTime / units);
       remainingTime = remainingTime - value * units;
 
-      result.push(value.toString().padStart(2, '0'));
-    }
+      formattedTime += value.toString().padStart(2, '0');
 
-    const formattedTime = result.join(':');
+      if (unitNumber < TIME_PARTS.length - 1) {
+        formattedTime += ':';
+      }
+    }
 
     return this.applyNumberFormatterParameters(time, formattedTime, parameters);
   }

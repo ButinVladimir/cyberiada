@@ -2,13 +2,12 @@ import { inject, injectable } from 'inversify';
 import { decorators } from '@state/container';
 import { EventBatcher } from '@shared/event-batcher';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
-import type { IMainframeState } from '@state/mainframe-state/interfaces/mainframe-state';
 import type { IGlobalState } from '@state/global-state/interfaces/global-state';
 import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
 import type { IFormatter } from '@shared/interfaces/formatter';
 import { TYPES } from '@state/types';
 import { ClonesEvent, Feature, PurchaseEvent, PurchaseType } from '@shared/types';
-import { moveElementInArray } from '@shared/helpers';
+import { moveElementInArray, removeElementsFromArray } from '@shared/helpers';
 import type { ICompanyState } from '../../interfaces/company-state';
 import { IClone } from '../clone-factory/interfaces/clone';
 import { IMakeCloneParameters } from '../clone-factory/interfaces/make-clone-parameters';
@@ -24,16 +23,15 @@ export class CompanyClonesState implements ICompanyClonesState {
   @lazyInject(TYPES.CompanyState)
   private _companyState!: ICompanyState;
 
-  @lazyInject(TYPES.MainframeState)
-  private _mainframeState!: IMainframeState;
-
   private _stateUiConnector: IStateUIConnector;
   private _globalState: IGlobalState;
   private _messageLogState: IMessageLogState;
   private _formatter: IFormatter;
 
-  private _reservedCores: number;
-  private _reservedRam: number;
+  private _totalSynchronization: number;
+  private _availableSynchronization: number;
+  private _experienceModifier: number;
+  private _extraExperience: number;
   private _clonesList: IClone[];
   private _clonesMap: Map<string, IClone>;
 
@@ -48,8 +46,10 @@ export class CompanyClonesState implements ICompanyClonesState {
     this._messageLogState = _messageLogState;
     this._formatter = _formatter;
 
-    this._reservedCores = 0;
-    this._reservedRam = 0;
+    this._totalSynchronization = 0;
+    this._availableSynchronization = 0;
+    this._experienceModifier = 0;
+    this._extraExperience = 0;
     this._clonesList = [];
     this._clonesMap = new Map<string, IClone>();
 
@@ -57,16 +57,28 @@ export class CompanyClonesState implements ICompanyClonesState {
     this._stateUiConnector.registerEventEmitter(this);
   }
 
-  get reservedCores() {
-    this._stateUiConnector.connectEventHandler(this, COMPANY_CLONES_STATE_UI_EVENTS.CLONES_UPDATED);
+  get totalSynchronization() {
+    this._stateUiConnector.connectEventHandler(this, COMPANY_CLONES_STATE_UI_EVENTS.EXPERIENCE_MODIFIERS_UPDATED);
 
-    return this._reservedCores;
+    return this._totalSynchronization;
   }
 
-  get reservedRam() {
-    this._stateUiConnector.connectEventHandler(this, COMPANY_CLONES_STATE_UI_EVENTS.CLONES_UPDATED);
+  get availableSynchronization() {
+    this._stateUiConnector.connectEventHandler(this, COMPANY_CLONES_STATE_UI_EVENTS.EXPERIENCE_MODIFIERS_UPDATED);
 
-    return this._reservedRam;
+    return this._availableSynchronization;
+  }
+
+  get experienceModifier() {
+    this._stateUiConnector.connectEventHandler(this, COMPANY_CLONES_STATE_UI_EVENTS.EXPERIENCE_MODIFIERS_UPDATED);
+
+    return this._experienceModifier;
+  }
+
+  get extraExperience() {
+    this._stateUiConnector.connectEventHandler(this, COMPANY_CLONES_STATE_UI_EVENTS.EXTRA_EXPERIENCE_UPDATED);
+
+    return this._extraExperience;
   }
 
   listClones(): IClone[] {
@@ -92,11 +104,7 @@ export class CompanyClonesState implements ICompanyClonesState {
 
     const clone = this._companyState.cloneFactory.makeClone(cloneParameters);
 
-    if (clone.cores + this._reservedCores > this._mainframeState.hardware.cores.level) {
-      return false;
-    }
-
-    if (clone.ram > this._mainframeState.processes.availableRam) {
+    if (clone.synchonization + this.availableSynchronization > this.totalSynchronization) {
       return false;
     }
 
@@ -116,7 +124,7 @@ export class CompanyClonesState implements ICompanyClonesState {
     const index = this._clonesList.findIndex((clone) => clone.id === id);
 
     if (index >= 0) {
-      this._clonesList.splice(index, 1);
+      removeElementsFromArray(this._clonesList, index, 1);
     }
 
     if (clone) {
@@ -129,7 +137,7 @@ export class CompanyClonesState implements ICompanyClonesState {
       });
     }
 
-    this.recalculateReservedMainframeValues();
+    this.recalculateSynchronization();
 
     this.uiEventBatcher.enqueueEvent(COMPANY_CLONES_STATE_UI_EVENTS.CLONES_UPDATED);
   }
@@ -138,8 +146,6 @@ export class CompanyClonesState implements ICompanyClonesState {
     this.clearState();
 
     this._messageLogState.postMessage(ClonesEvent.allClonesDeleted);
-
-    this.recalculateReservedMainframeValues();
 
     this.uiEventBatcher.enqueueEvent(COMPANY_CLONES_STATE_UI_EVENTS.CLONES_UPDATED);
   }
@@ -160,6 +166,22 @@ export class CompanyClonesState implements ICompanyClonesState {
     this.uiEventBatcher.enqueueEvent(COMPANY_CLONES_STATE_UI_EVENTS.CLONES_UPDATED);
   }
 
+  earnExtraExperience(delta: number) {
+    const modifiedDelta = Math.max(delta * (this.experienceModifier - 1), 0);
+    this._extraExperience += modifiedDelta;
+
+    this.uiEventBatcher.enqueueEvent(COMPANY_CLONES_STATE_UI_EVENTS.EXTRA_EXPERIENCE_UPDATED);
+  }
+
+  spendExtraExperience() {
+    for (const clone of this._clonesList) {
+      clone.increaseExperience(this._extraExperience);
+    }
+
+    this._extraExperience = 0;
+    this.uiEventBatcher.enqueueEvent(COMPANY_CLONES_STATE_UI_EVENTS.EXTRA_EXPERIENCE_UPDATED);
+  }
+
   async startNewState(): Promise<void> {
     this.clearState();
 
@@ -175,7 +197,7 @@ export class CompanyClonesState implements ICompanyClonesState {
       this._clonesMap.set(clone.id, clone);
     });
 
-    this.recalculateReservedMainframeValues();
+    this.recalculateSynchronization();
 
     this.uiEventBatcher.enqueueEvent(COMPANY_CLONES_STATE_UI_EVENTS.CLONES_UPDATED);
   }
@@ -183,19 +205,29 @@ export class CompanyClonesState implements ICompanyClonesState {
   serialize(): ICompanyClonesSerializedState {
     return {
       clones: this._clonesList.map((clone) => clone.serialize()),
+      extraExperience: this.extraExperience,
     };
   }
 
-  private recalculateReservedMainframeValues() {
-    this._reservedCores = 0;
-    this._reservedRam = 0;
+  private recalculateSynchronization() {
+    this._totalSynchronization = this._globalState.scenario.currentValues.baseSynchronization;
+    this._availableSynchronization = this._totalSynchronization;
 
     for (const clone of this._clonesList) {
-      this._reservedCores += clone.cores;
-      this._reservedRam += clone.ram;
+      this._availableSynchronization -= clone.synchonization;
     }
 
-    this._mainframeState.processes.requestUpdateProcesses();
+    const usedSynchronization = this._totalSynchronization - this._availableSynchronization;
+
+    this._availableSynchronization = Math.max(0, this._availableSynchronization);
+
+    if (!this._globalState.unlockedFeatures.isFeatureUnlocked(Feature.experienceShare)) {
+      this._experienceModifier = 1;
+    } else if (usedSynchronization > 0) {
+      this._experienceModifier = this._totalSynchronization / usedSynchronization;
+    } else {
+      this._experienceModifier = 0;
+    }
   }
 
   private clearState() {
@@ -203,8 +235,10 @@ export class CompanyClonesState implements ICompanyClonesState {
       clone.removeEventListeners();
     }
 
-    this._clonesList = [];
+    this._clonesList.length = 0;
     this._clonesMap.clear();
+
+    this.recalculateSynchronization();
   }
 
   private addClone(clone: IClone) {
@@ -214,7 +248,7 @@ export class CompanyClonesState implements ICompanyClonesState {
 
     this._clonesMap.set(clone.id, clone);
 
-    this.recalculateReservedMainframeValues();
+    this.recalculateSynchronization();
   }
 
   private handlePurhaseClone = (clone: IClone) => () => {

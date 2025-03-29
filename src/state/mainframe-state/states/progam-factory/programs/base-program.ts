@@ -77,8 +77,6 @@ export abstract class BaseProgram implements IProgram {
     this.mainframeState.programs.requestUiUpdate();
   }
 
-  abstract get isRepeatable(): boolean;
-
   abstract get isAutoscalable(): boolean;
 
   get cost(): number {
@@ -102,6 +100,8 @@ export abstract class BaseProgram implements IProgram {
     return programs[this.name].unlockFeatures as Feature[];
   }
 
+  abstract handlePerformanceUpdate(): void;
+
   abstract perform(usedCores: number, usedRam: number): void;
 
   upgrade(newProgram: IProgram): void {
@@ -112,6 +112,7 @@ export abstract class BaseProgram implements IProgram {
     this._level = newProgram.level;
     this._quality = newProgram.quality;
 
+    this.handlePerformanceUpdate();
     this.mainframeState.processes.requestUpdateProcesses();
 
     this.uiEventBatcher.enqueueEvent(PROGRAMS_UI_EVENTS.PROGRAM_UPGRADED);

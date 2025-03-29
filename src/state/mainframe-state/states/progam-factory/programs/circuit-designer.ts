@@ -4,8 +4,11 @@ import { BaseProgram } from './base-program';
 
 export class CircuitDesignerProgram extends BaseProgram {
   public readonly name = MultiplierProgramName.circuitDesigner;
-  public readonly isRepeatable = true;
   public readonly isAutoscalable = false;
+
+  handlePerformanceUpdate(): void {
+    this.growthState.multipliers.computationalBase.requestGrowthRecalculation();
+  }
 
   perform(threads: number): void {
     this.globalState.multipliers.computationalBase.increasePointsByProgram(this.calculateDelta(threads));

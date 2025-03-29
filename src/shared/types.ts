@@ -123,6 +123,7 @@ export enum Feature {
   computationalBasePoints = 'computationalBasePoints',
   connectivityPoints = 'connectivityPoints',
   rewardsPoints = 'rewardsPoints',
+  experienceShare = 'experienceShare',
 }
 
 export type PointsMultiplierType = 'codeBase' | 'computationalBase' | 'connectivity' | 'rewards';

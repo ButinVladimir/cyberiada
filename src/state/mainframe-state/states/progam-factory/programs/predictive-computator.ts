@@ -4,8 +4,11 @@ import { BaseProgram } from './base-program';
 
 export class PredictiveComputatorProgram extends BaseProgram {
   public readonly name = OtherProgramName.predictiveComputator;
-  public readonly isRepeatable = true;
   public readonly isAutoscalable = true;
+
+  handlePerformanceUpdate(): void {
+    this.growthState.programCompletionSpeed.requestMultipliersRecalculation();
+  }
 
   perform(): void {}
 

@@ -10,7 +10,7 @@ interface ICloneTemplateParameter {
 
 export interface ICloneTemplate {
   cost: IExponentWithQuality;
-  ram: {
+  synchronization: {
     baseMultiplier: number;
     qualityMultiplier: number;
   };

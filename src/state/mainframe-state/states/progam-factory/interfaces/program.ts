@@ -8,7 +8,6 @@ export interface IProgram extends IUIEventEmitter {
   level: number;
   quality: number;
   completionPoints: number;
-  isRepeatable: boolean;
   isAutoscalable: boolean;
   cost: number;
   ram: number;
@@ -17,6 +16,7 @@ export interface IProgram extends IUIEventEmitter {
   unlockFeatures: Feature[];
   upgrade(newProgram: IProgram): void;
   removeEventListeners(): void;
+  handlePerformanceUpdate(): void;
   perform(threads: number, usedRam: number): void;
   calculateCompletionDelta(threads: number, usedCores: number, passedTime: number): number;
   calculateCompletionTime(threads: number, usedCores: number): number;

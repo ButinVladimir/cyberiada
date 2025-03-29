@@ -78,3 +78,19 @@ export const calculateGeometricProgressionSum = (level: number, params: IExponen
 
 export const reverseGeometricProgressionSum = (points: number, params: IExponent): number =>
   Math.floor(Math.log(1 + (points * (params.base - 1)) / params.baseMultiplier) / Math.log(params.base)) + 1;
+
+export function removeElementsFromArray<T>(array: T[], fromIndex: number, count: number): void {
+  if (fromIndex + count >= array.length) {
+    array.length = fromIndex;
+    return;
+  }
+
+  let index = fromIndex;
+
+  while (index + count < array.length) {
+    array[index] = array[index + count];
+    index++;
+  }
+
+  array.length -= count;
+}

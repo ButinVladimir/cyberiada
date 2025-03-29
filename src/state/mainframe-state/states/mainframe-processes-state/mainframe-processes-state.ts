@@ -4,20 +4,19 @@ import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/sta
 import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
 import type { ISettingsState } from '@state/settings-state/interfaces/settings-state';
 import type { IFormatter } from '@shared/interfaces/formatter';
-import type { IGrowthState } from '@state/growth-state/interfaces/growth-state';
-import type { IMainframeState } from '../../interfaces/mainframe-state';
-import type { ICompanyState } from '@state/company-state/interfaces/company-state';
-import { ProgramName } from '../progam-factory/types';
 import { TYPES } from '@state/types';
 import { EventBatcher } from '@shared/event-batcher';
 import { ProgramsEvent } from '@shared/types';
-import { moveElementInArray } from '@shared/helpers';
+import { moveElementInArray, removeElementsFromArray } from '@shared/helpers';
+import type { IMainframeState } from '../../interfaces/mainframe-state';
+import { ProgramName } from '../progam-factory/types';
 import {
   IMainframeProcessesSerializedState,
   IMainframeProcessesState,
   IProcess,
   ISerializedProcess,
 } from './interfaces';
+
 import { Process } from './process';
 import { MAINFRAME_PROCESSES_STATE_UI_EVENTS } from './constants';
 
@@ -30,11 +29,7 @@ export class MainframeProcessesState implements IMainframeProcessesState {
   @lazyInject(TYPES.MainframeState)
   private _mainframeState!: IMainframeState;
 
-  @lazyInject(TYPES.CompanyState)
-  private _companyState!: ICompanyState;
-
   private _stateUiConnector: IStateUIConnector;
-  private _growthState: IGrowthState;
   private _settingsState: ISettingsState;
   private _messageLogState: IMessageLogState;
   private _formatter: IFormatter;
@@ -46,16 +41,15 @@ export class MainframeProcessesState implements IMainframeProcessesState {
   private _availableRam: number;
   private _runningScalableProcess?: IProcess;
   private _processUpdateRequested: boolean;
+  private _performanceUpdateRequested: boolean;
 
   constructor(
     @inject(TYPES.StateUIConnector) _stateUiConnector: IStateUIConnector,
-    @inject(TYPES.GrowthState) _growthState: IGrowthState,
     @inject(TYPES.SettingsState) _settingsState: ISettingsState,
     @inject(TYPES.MessageLogState) _messageLogState: IMessageLogState,
     @inject(TYPES.Formatter) _formatter: IFormatter,
   ) {
     this._stateUiConnector = _stateUiConnector;
-    this._growthState = _growthState;
     this._settingsState = _settingsState;
     this._messageLogState = _messageLogState;
     this._formatter = _formatter;
@@ -66,6 +60,7 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     this._availableCores = 0;
     this._availableRam = 0;
     this._processUpdateRequested = false;
+    this._performanceUpdateRequested = false;
 
     this.uiEventBatcher = new EventBatcher();
     this._stateUiConnector.registerEventEmitter(this);
@@ -96,6 +91,8 @@ export class MainframeProcessesState implements IMainframeProcessesState {
   }
 
   getProcessByName(programName: ProgramName): IProcess | undefined {
+    this._stateUiConnector.connectEventHandler(this, MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESSES_UPDATED);
+
     return this._processesMap.get(programName);
   }
 
@@ -155,6 +152,8 @@ export class MainframeProcessesState implements IMainframeProcessesState {
       threads: this._formatter.formatNumberDecimal(threadCount),
     });
 
+    this.uiEventBatcher.enqueueEvent(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESSES_UPDATED);
+
     return true;
   }
 
@@ -171,10 +170,11 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     const index = this._processesList.findIndex((process) => process.program.name === programName);
 
     if (index >= 0) {
-      this._processesList.splice(index, 1);
+      removeElementsFromArray(this._processesList, index, 1);
     }
 
     if (process) {
+      process.usedCores = 0;
       process.removeEventListeners();
 
       this._processesMap.delete(programName);
@@ -185,7 +185,8 @@ export class MainframeProcessesState implements IMainframeProcessesState {
       });
     }
 
-    this._growthState.requestGrowthRecalculation();
+    this.uiEventBatcher.enqueueEvent(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESSES_UPDATED);
+
     this.requestUpdateProcesses();
   }
 
@@ -194,7 +195,8 @@ export class MainframeProcessesState implements IMainframeProcessesState {
 
     this._messageLogState.postMessage(ProgramsEvent.allProcessesDeleted);
 
-    this._growthState.requestGrowthRecalculation();
+    this.uiEventBatcher.enqueueEvent(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESSES_UPDATED);
+
     this.requestUpdateProcesses();
   }
 
@@ -202,9 +204,17 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     this._processUpdateRequested = true;
   }
 
+  requestUpdatePerformance() {
+    this._performanceUpdateRequested = true;
+  }
+
   processTick() {
     if (this._processUpdateRequested) {
       this.updateRunningProcesses();
+    }
+
+    if (this._performanceUpdateRequested) {
+      this.updatePerformance();
     }
 
     if (this._runningScalableProcess?.isActive) {
@@ -269,18 +279,20 @@ export class MainframeProcessesState implements IMainframeProcessesState {
 
   private updateRunningProcesses = () => {
     this._processUpdateRequested = false;
-    this._availableCores = this._mainframeState.hardware.cores.level - this._companyState.clones.reservedCores;
-    this._availableRam = this._mainframeState.hardware.ram.level - this._companyState.clones.reservedRam;
-    this._runningProcesses.splice(0);
+
+    this._availableCores = this._mainframeState.hardware.cores.level;
+    this._availableRam = this._mainframeState.hardware.ram.level;
+    this._runningProcesses.length = 0;
     this._runningScalableProcess = this._processesList.find((process) => process.program.isAutoscalable);
+    let runningScalableProcessCores = 0;
 
     if (this._runningScalableProcess) {
       this._availableRam--;
     }
 
     if (this._availableCores > 0 && this._runningScalableProcess?.isActive) {
-      this._runningScalableProcess.usedCores = 1;
       this._availableCores--;
+      runningScalableProcessCores++;
     }
 
     let processRam = 0;
@@ -310,10 +322,12 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     }
 
     if (this._runningScalableProcess?.isActive) {
-      this._runningScalableProcess.usedCores += this._availableCores;
+      runningScalableProcessCores += this._availableCores;
     }
 
-    this._growthState.requestGrowthRecalculation();
+    if (this._runningScalableProcess) {
+      this._runningScalableProcess.usedCores = runningScalableProcessCores;
+    }
 
     this.uiEventBatcher.enqueueEvent(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESSES_UPDATED);
   };
@@ -325,22 +339,15 @@ export class MainframeProcessesState implements IMainframeProcessesState {
       const process = this._processesList[index];
 
       if (!process.program.isAutoscalable && process.currentCompletionPoints >= process.maxCompletionPoints) {
-        this._processesList.splice(index, 1);
-
-        if (process.program.isRepeatable) {
-          process.resetCompletion();
-          this._processesList.push(process);
-        } else {
-          process.removeEventListeners();
-          this._messageLogState.postMessage(ProgramsEvent.processDeleted, {
-            programName: process.program.name,
-            threads: this._formatter.formatNumberDecimal(process.threads),
-          });
-        }
+        removeElementsFromArray(this._processesList, index, 1);
+        process.resetCompletion();
+        this._processesList.push(process);
       } else {
         index++;
       }
     }
+
+    this.uiEventBatcher.enqueueEvent(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESSES_UPDATED);
   }
 
   private createProcess = (processParameters: ISerializedProcess): IProcess => {
@@ -368,10 +375,19 @@ export class MainframeProcessesState implements IMainframeProcessesState {
 
   private clearState() {
     for (const process of this._processesList) {
+      process.usedCores = 0;
       process.removeEventListeners();
     }
 
-    this._processesList = [];
+    this._processesList.length = 0;
     this._processesMap.clear();
+  }
+
+  private updatePerformance() {
+    this._performanceUpdateRequested = false;
+
+    for (const process of this._processesList) {
+      process.program.handlePerformanceUpdate();
+    }
   }
 }

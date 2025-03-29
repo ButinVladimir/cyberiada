@@ -2,6 +2,7 @@ import { injectable } from 'inversify';
 import { v4 as uuid } from 'uuid';
 import { decorators } from '@state/container';
 import { TYPES } from '@state/types';
+import type { ICompanyState } from '@state/company-state/interfaces/company-state';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import { ICloneFactory, IClone, IMakeCloneParameters, IBaseCloneParameters } from './interfaces';
 import { Clone } from './clone';
@@ -10,6 +11,9 @@ const { lazyInject } = decorators;
 
 @injectable()
 export class CloneFactory implements ICloneFactory {
+  @lazyInject(TYPES.CompanyState)
+  private _companyState!: ICompanyState;
+
   @lazyInject(TYPES.StateUIConnector)
   private _stateUiConnector!: IStateUIConnector;
 
@@ -17,6 +21,7 @@ export class CloneFactory implements ICloneFactory {
     const cloneParameters: IBaseCloneParameters = {
       ...parameters,
       id: parameters.id ?? uuid(),
+      companyState: this._companyState,
       stateUiConnector: this._stateUiConnector,
     };
 

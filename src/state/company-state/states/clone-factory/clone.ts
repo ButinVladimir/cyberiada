@@ -8,6 +8,7 @@ import {
   calculatePowWithQuality,
   reverseGeometricProgressionSum,
 } from '@shared/helpers';
+import { ICompanyState } from '@state/company-state/interfaces/company-state';
 import { IClone, IBaseCloneParameters, IMakeCloneParameters, ICloneParameterValues } from './interfaces';
 import { CloneTemplateName } from './types';
 import { ICloneTemplate } from './interfaces/clone-template';
@@ -16,6 +17,7 @@ import { CLONES_UI_EVENTS } from './constants';
 export class Clone implements IClone {
   readonly uiEventBatcher: EventBatcher;
 
+  private _companyState: ICompanyState;
   private _stateUiConnector: IStateUIConnector;
 
   private _id: string;
@@ -25,7 +27,7 @@ export class Clone implements IClone {
   private _experience: number;
   private _level: number;
   private _quality: number;
-  private _ram!: number;
+  private _synchronization!: number;
   private _autoUpgradeEnabled: boolean;
 
   private _attributes!: Map<Attribute, ICloneParameterValues>;
@@ -35,6 +37,7 @@ export class Clone implements IClone {
   private _parametersRecalculationRequested: boolean;
 
   constructor(parameters: IBaseCloneParameters) {
+    this._companyState = parameters.companyState;
     this._stateUiConnector = parameters.stateUiConnector;
 
     this._id = parameters.id;
@@ -52,7 +55,7 @@ export class Clone implements IClone {
     this.uiEventBatcher = new EventBatcher();
     this._stateUiConnector.registerEventEmitter(this);
 
-    this.initControl();
+    this.initSynchronization();
     this.initExperience();
     this.initAttributes();
     this.initSkills();
@@ -102,16 +105,10 @@ export class Clone implements IClone {
     return this._quality;
   }
 
-  get ram() {
+  get synchonization() {
     this._stateUiConnector.connectEventHandler(this, CLONES_UI_EVENTS.CLONE_CHANGED);
 
-    return this._ram;
-  }
-
-  get cores() {
-    this._stateUiConnector.connectEventHandler(this, CLONES_UI_EVENTS.CLONE_CHANGED);
-
-    return this._quality + 1;
+    return this._synchronization;
   }
 
   get autoUpgradeEnabled() {
@@ -135,6 +132,13 @@ export class Clone implements IClone {
 
     this._experience += delta;
     this.requestLevelRecalculation();
+  }
+
+  earnExperience(delta: number) {
+    const modifier = Math.min(1, this._companyState.clones.experienceModifier);
+
+    this.increaseExperience(modifier * delta);
+    this._companyState.clones.earnExtraExperience(delta);
   }
 
   getLevelRequirements(level: number): number {
@@ -192,9 +196,10 @@ export class Clone implements IClone {
     };
   }
 
-  private initControl() {
-    this._ram = Math.ceil(
-      this._template.ram.baseMultiplier * Math.pow(this._template.ram.qualityMultiplier, this._quality),
+  private initSynchronization() {
+    this._synchronization = Math.ceil(
+      this._template.synchronization.baseMultiplier *
+        Math.pow(this._template.synchronization.qualityMultiplier, this._quality),
     );
   }
 

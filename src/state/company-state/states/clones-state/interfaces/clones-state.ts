@@ -4,8 +4,10 @@ import { IClone } from '../../clone-factory/interfaces/clone';
 import { IMakeCloneParameters } from '../../clone-factory/interfaces/make-clone-parameters';
 
 export interface ICompanyClonesState extends IUIEventEmitter, ISerializeable<ICompanyClonesSerializedState> {
-  reservedCores: number;
-  reservedRam: number;
+  totalSynchronization: number;
+  availableSynchronization: number;
+  experienceModifier: number;
+  extraExperience: number;
   listClones(): IClone[];
   getCloneById(id: string): IClone | undefined;
   purchaseClone(cloneParameters: IMakeCloneParameters): boolean;
@@ -14,4 +16,6 @@ export interface ICompanyClonesState extends IUIEventEmitter, ISerializeable<ICo
   deleteAllClones(): void;
   processTick(): void;
   moveClone(id: string, newPosition: number): void;
+  earnExtraExperience(delta: number): void;
+  spendExtraExperience(): void;
 }

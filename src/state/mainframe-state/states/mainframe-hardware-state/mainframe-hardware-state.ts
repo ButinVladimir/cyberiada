@@ -3,7 +3,6 @@ import constants from '@configs/constants.json';
 import { decorators } from '@state/container';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import type { IGlobalState } from '@state/global-state/interfaces/global-state';
-import type { IGrowthState } from '@state/growth-state/interfaces/growth-state';
 import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
 import type { IMainframeState } from '../../interfaces/mainframe-state';
 import type { IFormatter } from '@shared/interfaces/formatter';
@@ -33,7 +32,6 @@ export class MainframeHardwareState implements IMainframeHardwareState {
 
   private _stateUiConnector: IStateUIConnector;
   private _globalState: IGlobalState;
-  private _growthState: IGrowthState;
   private _messageLogState: IMessageLogState;
   private _formatter: IFormatter;
 
@@ -45,13 +43,11 @@ export class MainframeHardwareState implements IMainframeHardwareState {
   constructor(
     @inject(TYPES.StateUIConnector) _stateUiConnector: IStateUIConnector,
     @inject(TYPES.GlobalState) _globalState: IGlobalState,
-    @inject(TYPES.GrowthState) _growthState: IGrowthState,
     @inject(TYPES.MessageLogState) _messageLogState: IMessageLogState,
     @inject(TYPES.Formatter) _formatter: IFormatter,
   ) {
     this._stateUiConnector = _stateUiConnector;
     this._globalState = _globalState;
-    this._growthState = _growthState;
     this._messageLogState = _messageLogState;
     this._formatter = _formatter;
 
@@ -121,7 +117,7 @@ export class MainframeHardwareState implements IMainframeHardwareState {
 
   emitUpgradedEvent() {
     this._mainframeState.processes.requestUpdateProcesses();
-    this._growthState.requestGrowthRecalculation();
+    this._mainframeState.processes.requestUpdatePerformance();
     this.uiEventBatcher.enqueueEvent(MAINFRAME_HARDWARE_STATE_UI_EVENTS.HARDWARE_UPGRADED);
   }
 

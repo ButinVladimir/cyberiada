@@ -10,6 +10,7 @@ export interface IScenarioValues {
   money: number;
   developmentLevel: number;
   accumulatedTime: number;
+  baseSynchronization: number;
   mainframeHardware: {
     performanceLevel: number;
     coresLevel: number;
