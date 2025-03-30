@@ -237,7 +237,7 @@ export class MainframeProcessesState implements IMainframeProcessesState {
 
     if (hasFinishedProcesses) {
       this.updateFinishedProcesses();
-      this.updateRunningProcesses();
+      this.requestUpdateProcesses();
     }
   }
 

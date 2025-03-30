@@ -17,8 +17,8 @@ export class ShareServerDescriptionEffectRenderer implements IDescriptionEffectR
   constructor(parameters: IDescriptionParameters) {
     this._program = parameters.program as ShareServerProgram;
     this._formatter = parameters.formatter;
-    this._ram = parameters.ram;
-    this._cores = parameters.cores;
+    this._ram = parameters.maxRam;
+    this._cores = parameters.maxCores;
   }
 
   public renderEffect = () => {

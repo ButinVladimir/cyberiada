@@ -19,6 +19,7 @@ export class CodeGeneratorProgram extends BaseProgram {
 
     return (
       this.globalState.scenario.currentValues.programMultipliers.codeBase.pointsPerCompletion *
+      this.globalState.multipliers.rewards.multiplierByProgram *
       threads *
       programData.codeBaseLevelMultiplier *
       this.level *

@@ -141,7 +141,7 @@ mainframe:
       requirementsSingle: Requirements for single thread
       requirementsScalable: Requirements for autoscalable program
       ram: 'RAM: {{ram}}'
-      ramDiff: 'RAM: {{ram}} ({{ramDiff}})'
+      ramDiff: 'RAM: {{ram}} / {{availableRam}} ({{ramDiff}})'
       ramAllUnused: 'RAM: 1 + All available'
       cores: 'Cores: Up to {{cores}}'
       coresDiff: 'Cores: Up to {{cores}} ({{coresDiff}})'
@@ -212,8 +212,8 @@ mainframe:
     instantCompletion: Instant completion
     usesCores: "{{cores}} \/ {{maxCores}}"
     usesCoresFull: "Uses cores: {{cores}} \/ {{maxCores}}"
-    availableCores: 'Available cores: {{cores}}'
-    availableRam: 'Available RAM: {{ram}}'
+    availableCores: 'Available cores: {{cores}} / {{maxCores}}'
+    availableRam: 'Available RAM: {{ram}} / {{maxRam}}'
 statistics:
   statistics: Statistics
   total: Total
@@ -306,3 +306,8 @@ automation:
     percentageHint: Percentage of available money reserved for buying programs
 credits:
   OmniLRenegadE: Idea, coding, design, balance
+company:
+  company: Company
+  tabs:
+    clones: Clones
+    sidejobs: Sidejobs

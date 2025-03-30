@@ -6,11 +6,15 @@ import { IProcess } from '@state/mainframe-state/states/mainframe-processes-stat
 export class ProcessDiffTextController extends BaseController {
   private _program?: IProgram;
 
-  get ram(): number {
+  get maxRam(): number {
     return this.mainframeState.hardware.ram.level;
   }
 
-  get cores(): number {
+  get availableRam(): number {
+    return this.mainframeState.processes.availableRam;
+  }
+
+  get maxCores(): number {
     return this.mainframeState.hardware.cores.level;
   }
 

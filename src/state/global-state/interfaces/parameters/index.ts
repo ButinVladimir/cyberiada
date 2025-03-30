@@ -9,3 +9,5 @@ export * from './time-state';
 export * from './unlocked-features-state';
 export * from './faction-state';
 export * from './multiplier-state';
+export * from './rewards-state';
+export * from './connectivity-state';

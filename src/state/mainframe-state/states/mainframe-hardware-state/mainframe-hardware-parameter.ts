@@ -68,7 +68,6 @@ export abstract class MainframeHardwareParameter implements IMainframeHardwarePa
     return (
       (baseCost * (Math.pow(exp.base, increase) - 1)) /
       (exp.base - 1) /
-      this.globalState.multipliers.connectivity.totalMultiplier /
       this.globalState.multipliers.computationalBase.totalMultiplier
     );
   }

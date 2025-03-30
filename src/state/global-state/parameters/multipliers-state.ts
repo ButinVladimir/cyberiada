@@ -1,21 +1,20 @@
 import { injectable, inject } from 'inversify';
 import { TYPES } from '@state/types';
 import { IMultipliersSerializedState } from '../interfaces/serialized-states/multipliers-serialized-state';
-import type { IMultiplierState } from '../interfaces/parameters/multiplier-state';
-import type { IMultipliersState } from '../interfaces/parameters/multipliers-state';
+import type { IConnectivityState, IRewardsState, IMultiplierState, IMultipliersState } from '../interfaces/parameters';
 
 @injectable()
 export class MultipliersState implements IMultipliersState {
   private _codeBaseState: IMultiplierState;
   private _computationalBaseState: IMultiplierState;
-  private _connectivityState: IMultiplierState;
-  private _rewardsState: IMultiplierState;
+  private _connectivityState: IConnectivityState;
+  private _rewardsState: IRewardsState;
 
   constructor(
     @inject(TYPES.CodeBaseState) _codeBaseState: IMultiplierState,
     @inject(TYPES.ComputationalBaseState) _computationalBaseState: IMultiplierState,
-    @inject(TYPES.ConnectivityState) _connectivityState: IMultiplierState,
-    @inject(TYPES.RewardsState) _rewardsState: IMultiplierState,
+    @inject(TYPES.ConnectivityState) _connectivityState: IConnectivityState,
+    @inject(TYPES.RewardsState) _rewardsState: IRewardsState,
   ) {
     this._codeBaseState = _codeBaseState;
     this._computationalBaseState = _computationalBaseState;
@@ -41,7 +40,6 @@ export class MultipliersState implements IMultipliersState {
 
   recalculate() {
     this._rewardsState.recalculateMultipliers();
-    this._connectivityState.recalculateMultipliers();
     this._codeBaseState.recalculateMultipliers();
     this._computationalBaseState.recalculateMultipliers();
   }

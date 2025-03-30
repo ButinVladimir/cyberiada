@@ -7,7 +7,13 @@ export class PredictiveComputatorProgram extends BaseProgram {
   public readonly isAutoscalable = true;
 
   handlePerformanceUpdate(): void {
-    this.growthState.programCompletionSpeed.requestMultipliersRecalculation();
+    for (const process of this.mainframeState.processes.listProcesses()) {
+      if (process.program.name === PredictiveComputatorProgram.name) {
+        continue;
+      }
+
+      process.program.handlePerformanceUpdate();
+    }
   }
 
   perform(): void {}

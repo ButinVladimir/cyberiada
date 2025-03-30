@@ -103,11 +103,6 @@ export class ProgramCompletionSpeedState implements IProgramCompletionSpeedState
   }
 
   private updateTotalMultiplier() {
-    const newTotalMultiplier = this._multiplierByProgram * this._multiplierByHardware;
-
-    if (this._totalMultiplier !== newTotalMultiplier) {
-      this._totalMultiplier = newTotalMultiplier;
-      this._mainframeState.processes.requestUpdatePerformance();
-    }
+    this._totalMultiplier = this._multiplierByProgram * this._multiplierByHardware;
   }
 }

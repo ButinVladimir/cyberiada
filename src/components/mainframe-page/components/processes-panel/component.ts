@@ -25,8 +25,8 @@ export class MainframeProcessesPanel extends BaseComponent<ProcessesPanelControl
       div.top-container {
         display: grid;
         grid-template-areas:
-          'cores'
           'ram'
+          'cores'
           'start-process';
         gap: var(--sl-spacing-medium);
       }
@@ -49,7 +49,7 @@ export class MainframeProcessesPanel extends BaseComponent<ProcessesPanelControl
 
       @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
         div.top-container {
-          grid-template-areas: 'start-process cores ram';
+          grid-template-areas: 'start-process ram cores';
           align-items: center;
           gap: var(--sl-spacing-3x-large);
         }
@@ -79,17 +79,19 @@ export class MainframeProcessesPanel extends BaseComponent<ProcessesPanelControl
           ${t('mainframe.processes.startProcess', { ns: 'ui' })}
         </sl-button>
 
-        <div class="cores">
-          ${t('mainframe.processes.availableCores', {
-            ns: 'ui',
-            cores: formatter.formatNumberDecimal(this.controller.availableCores),
-          })}
-        </div>
-
         <div class="ram">
           ${t('mainframe.processes.availableRam', {
             ns: 'ui',
             ram: formatter.formatNumberDecimal(this.controller.availableRam),
+            maxRam: formatter.formatNumberDecimal(this.controller.maxRam),
+          })}
+        </div>
+
+        <div class="cores">
+          ${t('mainframe.processes.availableCores', {
+            ns: 'ui',
+            cores: formatter.formatNumberDecimal(this.controller.availableCores),
+            maxCores: formatter.formatNumberDecimal(this.controller.maxCores),
           })}
         </div>
       </div>

@@ -101,6 +101,16 @@
       ]
     },
     {
+      "name": "ca-company-page",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `renderTab` - \n\n  * `renderTabPanel` - \n\n  * `renderTabPanelContent` - \n\n  * `controller` {`CompanyPageController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-company-clones-panel",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - ",
+      "attributes": []
+    },
+    {
       "name": "ca-credits-page",
       "description": "Properties:\n\n  * `styles` {`any[]`} - ",
       "attributes": []
@@ -556,23 +566,17 @@
     },
     {
       "name": "ca-statistics-multipliers",
-      "description": "Attributes:\n\n  * `type` {`MultipliersType`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `type` {`MultipliersType`} - \n\n  * `controller` {`StatisticsMultipliersController`} - ",
+      "description": "Attributes:\n\n  * `type` {`CostDivisorsType`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `type` {`CostDivisorsType`} - \n\n  * `controller` {`StatisticsMultipliersController`} - ",
       "attributes": [
         {
           "name": "type",
-          "description": "`type` {`MultipliersType`} - \n\nProperty: type",
+          "description": "`type` {`CostDivisorsType`} - \n\nProperty: type",
           "values": [
             {
               "name": "mainframeHardwareCostDivisors"
             },
             {
               "name": "mainframeProgramsCostDivisors"
-            },
-            {
-              "name": "overallCostDivisors"
-            },
-            {
-              "name": "rewards"
             }
           ]
         }
@@ -581,6 +585,11 @@
     {
       "name": "ca-statistics-program-completion-speed",
       "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `controller` {`StatisticsProgramCompletionSpeedController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-statistics-rewards",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `controller` {`StatisticsRewardsController`} - ",
       "attributes": []
     },
     {

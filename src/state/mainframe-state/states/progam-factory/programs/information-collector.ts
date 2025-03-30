@@ -19,6 +19,7 @@ export class InformationCollectorProgram extends BaseProgram {
 
     return (
       this.globalState.scenario.currentValues.programMultipliers.connectivity.pointsPerCompletion *
+      this.globalState.multipliers.rewards.multiplierByProgram *
       threads *
       programData.connectivityLevelMultiplier *
       this.level *

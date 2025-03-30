@@ -132,7 +132,7 @@ mainframe:
       requirementsSingle: Требования для одного потока
       requirementsScalable: Требования для автомасштабируемой программы
       ram: 'Память: {{ram}}'
-      ramDiff: 'Память: {{ram}} ({{ramDiff}})'
+      ramDiff: 'Память: {{ram}} / {{availableRam}} ({{ramDiff}})'
       ramAllUnused: 'Память: Вся неиспользуемая'
       cores: 'Ядра: До {{cores}}'
       coresDiff: 'Ядра: до {{cores}} ({{coresDiff}})'
@@ -205,8 +205,8 @@ mainframe:
     instantCompletion: Мгновенное выполнение
     usesCores: "{{cores}} \/ {{maxCores}}"
     usesCoresFull: "Использует ядра: {{cores}} \/ {{maxCores}}"
-    availableCores: 'Доступные ядра: {{cores}}'
-    availableRam: 'Доступная память: {{ram}}'
+    availableCores: 'Доступные ядра: {{cores}} / {{maxCores}}'
+    availableRam: 'Доступная память: {{ram}} / {{maxRam}}'
 statistics:
   statistics: Статистика
   total: Всего

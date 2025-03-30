@@ -106,8 +106,9 @@ export class ProgramDiffText extends BaseComponent<ProcessDiffTextController> {
 
     const threadsDiff = this.threads - currentThreads;
 
-    const ram = program.ram * this.threads;
-    const ramDiff = ram - program.ram * currentThreads;
+    const programRam = program.ram * this.threads;
+    const ramDiff = programRam - program.ram * currentThreads;
+    const availableRam = this.controller.availableRam + program.ram * currentThreads;
 
     const cores = program.cores * this.threads;
     const coresDiff = cores - program.cores * currentThreads;
@@ -135,7 +136,8 @@ export class ProgramDiffText extends BaseComponent<ProcessDiffTextController> {
       <p>
         ${t('mainframe.programDescription.requirements.ramDiff', {
           ns: 'ui',
-          ram: formatter.formatNumberDecimal(ram),
+          ram: formatter.formatNumberDecimal(programRam),
+          availableRam: formatter.formatNumberDecimal(availableRam),
           ramDiff: formatter.formatNumberDecimal(ramDiff, diffFormatterParametersDecimal),
         })}
       </p>
@@ -168,8 +170,8 @@ export class ProgramDiffText extends BaseComponent<ProcessDiffTextController> {
     const parameters: IDescriptionParameters = {
       formatter: this.controller.formatter,
       program,
-      cores: this.controller.cores,
-      ram: this.controller.ram,
+      maxCores: this.controller.maxCores,
+      maxRam: this.controller.maxRam,
       threads: this.threads,
       currentThreads,
     };

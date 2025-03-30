@@ -25,6 +25,7 @@ import './fast-forwarding-screen';
 import './game-screen';
 import './settings-page';
 import './city-page';
+import './company-page';
 import './mainframe-page';
 import './statistics-page';
 import './automation-page';

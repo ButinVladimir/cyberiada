@@ -4,7 +4,7 @@ import { customElement, property } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { StatisticsMultipliersController } from './controller';
 import { statisticsPanelContentStyle } from '../../../../styles';
-import type { MultipliersType } from '../../types';
+import type { CostDivisorsType } from '../../types';
 
 @customElement('ca-statistics-multipliers')
 export class StatisticsMultipliers extends BaseComponent<StatisticsMultipliersController> {
@@ -13,7 +13,7 @@ export class StatisticsMultipliers extends BaseComponent<StatisticsMultipliersCo
   @property({
     attribute: true,
   })
-  type!: MultipliersType;
+  type!: CostDivisorsType;
 
   protected controller: StatisticsMultipliersController;
 

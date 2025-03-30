@@ -26,8 +26,8 @@ export abstract class BaseMultiplierState implements IMultiplierState {
   protected growthState!: IGrowthState;
 
   private _pointsByProgram: number;
-  protected _multiplierByProgram: number;
-  protected _totalMultiplier: number;
+  private _multiplierByProgram: number;
+  private _totalMultiplier: number;
   private _multiplierUpdateRequested: boolean;
 
   constructor() {
@@ -112,7 +112,7 @@ export abstract class BaseMultiplierState implements IMultiplierState {
       1 + Math.log(1 + this._pointsByProgram / parameters.pointsToMax) / Math.log(parameters.logBase);
   }
 
-  protected updateTotalMultiplier() {
+  private updateTotalMultiplier() {
     this._totalMultiplier = this._multiplierByProgram;
   }
 

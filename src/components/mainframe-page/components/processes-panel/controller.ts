@@ -5,7 +5,15 @@ export class ProcessesPanelController extends BaseController {
     return this.mainframeState.processes.availableCores;
   }
 
+  get maxCores(): number {
+    return this.mainframeState.hardware.cores.level;
+  }
+
   get availableRam(): number {
     return this.mainframeState.processes.availableRam;
+  }
+
+  get maxRam(): number {
+    return this.mainframeState.hardware.ram.level;
   }
 }

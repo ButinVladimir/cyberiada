@@ -50,6 +50,9 @@ export class Viewport extends BaseComponent<ViewportController> {
       case OverviewMenuItem.city:
         return html`<ca-city-page></ca-city-page>`;
 
+      case OverviewMenuItem.company:
+        return html`<ca-company-page></ca-company-page>`;
+
       case OverviewMenuItem.mainframe:
         return html`<ca-mainframe-page></ca-mainframe-page>`;
 
