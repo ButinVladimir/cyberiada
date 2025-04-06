@@ -45,8 +45,6 @@ export class Process implements IProcess {
   }
 
   get currentCompletionPoints() {
-    this._stateUiConnector.connectEventHandler(this, MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESS_PROGRESS_UPDATED);
-
     return this._currentCompletionPoints;
   }
 
@@ -102,14 +100,10 @@ export class Process implements IProcess {
     if (this._currentCompletionPoints > maxCompletionPoints) {
       this._currentCompletionPoints = maxCompletionPoints;
     }
-
-    this.uiEventBatcher.enqueueEvent(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESS_PROGRESS_UPDATED);
   }
 
   resetCompletion(): void {
     this._currentCompletionPoints = 0;
-
-    this.uiEventBatcher.enqueueEvent(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESS_PROGRESS_UPDATED);
   }
 
   update(threads: number) {

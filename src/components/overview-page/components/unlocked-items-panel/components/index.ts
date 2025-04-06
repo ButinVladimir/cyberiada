@@ -1,1 +1,1 @@
-import './unlocked-category-items';
+import './unlocked-programs';

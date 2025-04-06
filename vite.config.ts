@@ -48,6 +48,10 @@ export default defineConfig({
         replacement: path.resolve(__dirname, './src/workers'),
       },
       {
+        find: '@texts',
+        replacement: path.resolve(__dirname, './src/texts'),
+      },
+      {
         find: /\/assets\/icons\/(.+)/,
         replacement: `${iconsPath}/$1`,
       },

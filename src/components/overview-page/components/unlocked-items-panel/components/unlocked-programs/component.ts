@@ -1,13 +1,15 @@
-import { t } from 'i18next';
 import { html, css } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { localized, msg } from '@lit/localize';
+import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
-import type { ItemCategory } from '@shared/types';
 import { sectionTitleStyle, detailsStyle, hintIconStyle, SCREEN_WIDTH_POINTS } from '@shared/styles';
-import { OverviewUnlockedCategoryItemsController } from './controller';
+import { PROGRAM_TEXTS } from '@texts/index';
+import { OverviewUnlockedProgramsController } from './controller';
+import { ProgramName } from '@state/mainframe-state/states/progam-factory/types';
 
-@customElement('ca-overview-unlocked-category-items')
-export class OverviewUnlockedCategoryItems extends BaseComponent<OverviewUnlockedCategoryItemsController> {
+@localized()
+@customElement('ca-overview-unlocked-programs')
+export class OverviewUnlockedPrograms extends BaseComponent<OverviewUnlockedProgramsController> {
   static styles = [
     sectionTitleStyle,
     detailsStyle,
@@ -52,23 +54,18 @@ export class OverviewUnlockedCategoryItems extends BaseComponent<OverviewUnlocke
     `,
   ];
 
-  @property({
-    attribute: true,
-  })
-  category!: ItemCategory;
-
-  protected controller: OverviewUnlockedCategoryItemsController;
+  protected controller: OverviewUnlockedProgramsController;
 
   constructor() {
     super();
 
-    this.controller = new OverviewUnlockedCategoryItemsController(this);
+    this.controller = new OverviewUnlockedProgramsController(this);
   }
 
   render() {
     return html`
       <sl-details>
-        <h4 class="title" slot="summary">${t(`overview.unlockedItems.${this.category}`, { ns: 'ui' })}</h4>
+        <h4 class="title" slot="summary">${msg('Programs')}</h4>
 
         <div class="content-table">${this.renderList()}</div>
       </sl-details>
@@ -76,20 +73,20 @@ export class OverviewUnlockedCategoryItems extends BaseComponent<OverviewUnlocke
   }
 
   private renderList = () => {
-    const itemNames = this.controller.listItems(this.category);
+    const itemNames = this.controller.listItems();
 
     return itemNames.map(this.renderListItem);
   };
 
-  private renderListItem = (itemName: string) => {
-    const quality = this.controller.getItemHighestAvailableQuality(this.category, itemName);
+  private renderListItem = (itemName: ProgramName) => {
+    const quality = this.controller.getItemHighestAvailableQuality(itemName);
 
     return html`
       <span>
-        ${t(`${itemName}.name`, { ns: this.category })}
+        ${PROGRAM_TEXTS[itemName].title()}
 
         <sl-tooltip>
-          <span slot="content"> ${t(`${itemName}.overview`, { ns: this.category })} </span>
+          <span slot="content"> ${PROGRAM_TEXTS[itemName].overview()} </span>
 
           <sl-icon name="question-circle"></sl-icon>
         </sl-tooltip>

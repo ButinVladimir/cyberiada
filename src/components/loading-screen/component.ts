@@ -1,8 +1,9 @@
-import { t } from 'i18next';
 import { html, css } from 'lit';
 import { customElement } from 'lit/decorators.js';
+import { localized, msg } from '@lit/localize';
 import { BaseComponent } from '@shared/base-component';
 
+@localized()
 @customElement('ca-loading-screen')
 export class LoadingScreen extends BaseComponent {
   static styles = css`
@@ -23,6 +24,6 @@ export class LoadingScreen extends BaseComponent {
   `;
 
   render() {
-    return html` <span> ${t('common.loading', { ns: 'ui' })} </span> `;
+    return html` <span> ${msg('Loading...')} </span> `;
   }
 }

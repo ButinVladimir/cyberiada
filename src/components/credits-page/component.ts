@@ -1,10 +1,11 @@
-import { t } from 'i18next';
 import { css, html } from 'lit';
+import { msg, localized } from '@lit/localize';
 import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { CURRENT_VERSION } from '@shared/constants';
 import { pageTitleStyle } from '@shared/styles';
 
+@localized()
 @customElement('ca-credits-page')
 export class CreditsPage extends BaseComponent {
   static styles = [
@@ -45,7 +46,7 @@ export class CreditsPage extends BaseComponent {
         <a target="_blank" href="https://github.com/ButinVladimir/cyberiada">GitHub</a>
       </p>
 
-      <p class="contributors">Vladimir Butin (OmniLRenegadE) - ${t('credits.OmniLRenegadE', { ns: 'ui' })}</p>
+      <p class="contributors">Vladimir Butin (OmniLRenegadE) - ${msg('Idea, coding, design, balance')}</p>
     `;
   }
 }

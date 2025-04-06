@@ -91,8 +91,6 @@ export class MainframeProcessesState implements IMainframeProcessesState {
   }
 
   getProcessByName(programName: ProgramName): IProcess | undefined {
-    this._stateUiConnector.connectEventHandler(this, MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESSES_UPDATED);
-
     return this._processesMap.get(programName);
   }
 

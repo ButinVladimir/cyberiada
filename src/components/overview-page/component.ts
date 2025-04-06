@@ -1,11 +1,12 @@
-import { t } from 'i18next';
 import { css, html } from 'lit';
+import { msg, localized } from '@lit/localize';
 import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { pageTitleStyle } from '@shared/styles';
 import { OverviewPageTabs } from './types';
-import { OVERVIEW_PAGE_TABS_LIST } from './constants';
+import { OVERVIEW_PAGE_TAB_TITLES, OVERVIEW_PAGE_TABS_LIST } from './constants';
 
+@localized()
 @customElement('ca-overview-page')
 export class OverviewPage extends BaseComponent {
   static styles = [
@@ -19,7 +20,7 @@ export class OverviewPage extends BaseComponent {
 
   render() {
     return html`
-      <h3 class="title">${t('overview.overview', { ns: 'ui' })}</h3>
+      <h3 class="title">${msg('Overview')}</h3>
 
       <sl-tab-group>
         ${OVERVIEW_PAGE_TABS_LIST.map((tab) => this.renderTab(tab))}
@@ -29,7 +30,7 @@ export class OverviewPage extends BaseComponent {
   }
 
   private renderTab = (tab: OverviewPageTabs) => {
-    return html` <sl-tab slot="nav" panel=${tab}> ${t(`overview.tabs.${tab}`, { ns: 'ui' })} </sl-tab> `;
+    return html` <sl-tab slot="nav" panel=${tab}> ${OVERVIEW_PAGE_TAB_TITLES[tab]()} </sl-tab> `;
   };
 
   private renderTabPanel = (tab: OverviewPageTabs) => {

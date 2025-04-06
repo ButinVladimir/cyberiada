@@ -1,14 +1,13 @@
-import { html, css } from 'lit';
+import { html, css, LitElement } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { BaseComponent } from '@shared/base-component';
 import { MiscMenuItem, OverviewMenuItem } from '@shared/types';
 import { SCREEN_WIDTH_POINTS } from '@shared/styles';
 import { MenuItemSelectedEvent } from './components/menu-bar/events';
 
 @customElement('ca-game-screen')
-export class GameScreen extends BaseComponent {
+export class GameScreen extends LitElement {
   static styles = css`
     .game-screen {
       width: 100vw;

@@ -1,13 +1,10 @@
 import { injectable } from 'inversify';
 import { decorators } from '@state/container';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
-import type { IGrowthState } from '@state/growth-state/interfaces/growth-state';
 import { EventBatcher } from '@shared/event-batcher';
 import { TYPES } from '@state/types';
-import type { IGlobalState } from '../../interfaces/global-state';
 import { IConnectivityState } from '../../interfaces/parameters/connectivity-state';
 import { IMultiplierSerializedState } from '../../interfaces/serialized-states/multiplier-serialized-state';
-import { GLOBAL_STATE_UI_EVENTS } from '../../constants';
 
 const { lazyInject } = decorators;
 
@@ -17,12 +14,6 @@ export class ConnectivityState implements IConnectivityState {
 
   @lazyInject(TYPES.StateUIConnector)
   private _stateUiConnector!: IStateUIConnector;
-
-  @lazyInject(TYPES.GlobalState)
-  private globalState!: IGlobalState;
-
-  @lazyInject(TYPES.GrowthState)
-  private growthState!: IGrowthState;
 
   private _pointsByProgram: number;
 
@@ -34,15 +25,11 @@ export class ConnectivityState implements IConnectivityState {
   }
 
   get pointsByProgram() {
-    this._stateUiConnector.connectEventHandler(this, GLOBAL_STATE_UI_EVENTS.POINTS_BY_PROGRAM_CHANGED);
-
     return this._pointsByProgram;
   }
 
   increasePointsByProgram(delta: number) {
     this._pointsByProgram += delta;
-
-    this.uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.POINTS_BY_PROGRAM_CHANGED);
   }
 
   async startNewState(): Promise<void> {

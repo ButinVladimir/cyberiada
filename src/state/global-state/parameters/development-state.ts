@@ -42,8 +42,6 @@ export class DevelopmentState implements IDevelopmentState {
   }
 
   get points() {
-    this._stateUiConnector.connectEventHandler(this, GLOBAL_STATE_UI_EVENTS.DEVELOPMENT_POINTS_CHANGED);
-
     return this._points;
   }
 
@@ -59,13 +57,9 @@ export class DevelopmentState implements IDevelopmentState {
     this._income.set(incomeSource, prevIncome + pointsDelta);
 
     this.requestLevelRecalculation();
-
-    this.uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.DEVELOPMENT_POINTS_CHANGED);
   }
 
   getIncome(incomeSource: IncomeSource): number {
-    this._stateUiConnector.connectEventHandler(this, GLOBAL_STATE_UI_EVENTS.DEVELOPMENT_POINTS_CHANGED);
-
     return this._income.get(incomeSource) ?? 0;
   }
 

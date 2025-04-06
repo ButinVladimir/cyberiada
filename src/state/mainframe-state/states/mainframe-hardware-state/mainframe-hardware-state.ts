@@ -90,7 +90,7 @@ export class MainframeHardwareState implements IMainframeHardwareState {
   }
 
   listParameters(): IMainframeHardwareParameter[] {
-    this._stateUiConnector.connectEventHandler(this, MAINFRAME_HARDWARE_STATE_UI_EVENTS.AUTOBUYER_UPDATED);
+    this._stateUiConnector.connectEventHandler(this, MAINFRAME_HARDWARE_STATE_UI_EVENTS.HARDWARE_AUTOBUYER_UPDATED);
 
     return this._parametersList;
   }
@@ -122,7 +122,7 @@ export class MainframeHardwareState implements IMainframeHardwareState {
   }
 
   emitAutobuyerUpdatedEvent() {
-    this.uiEventBatcher.enqueueEvent(MAINFRAME_HARDWARE_STATE_UI_EVENTS.AUTOBUYER_UPDATED);
+    this.uiEventBatcher.enqueueEvent(MAINFRAME_HARDWARE_STATE_UI_EVENTS.HARDWARE_AUTOBUYER_UPDATED);
   }
 
   async startNewState(): Promise<void> {

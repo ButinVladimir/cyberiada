@@ -43,7 +43,7 @@ export abstract class MainframeHardwareParameter implements IMainframeHardwarePa
   get autoUpgradeEnabled() {
     this.stateUiConnector.connectEventHandler(
       this.mainframeHardwareState,
-      MAINFRAME_HARDWARE_STATE_UI_EVENTS.AUTOBUYER_UPDATED,
+      MAINFRAME_HARDWARE_STATE_UI_EVENTS.HARDWARE_AUTOBUYER_UPDATED,
     );
 
     return this._autoUpgradeEnabled;

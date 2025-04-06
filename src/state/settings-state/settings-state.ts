@@ -16,6 +16,7 @@ import { TYPES } from '@state/types';
 import themes from '@configs/themes.json';
 import constants from '@configs/constants.json';
 import { ISettingsState, ISettingsSerializedState } from './interfaces';
+import { getLocale, setLocale } from '@/configure-localization';
 
 const { lazyInject } = decorators;
 
@@ -115,8 +116,9 @@ export class SettingsState implements ISettingsState {
   async setLanguage(language: Language): Promise<void> {
     this._language = language;
 
-    await i18n.changeLanguage(this.language);
-    document.documentElement.lang = this.language;
+    await i18n.changeLanguage(language);
+    await setLocale(language);
+    document.documentElement.lang = language;
 
     this._app.refreshUI();
   }
@@ -124,7 +126,7 @@ export class SettingsState implements ISettingsState {
   setTheme(theme: Theme) {
     this._theme = theme;
 
-    document.body.className = themes[this.theme].classes;
+    document.body.className = themes[theme].classes;
   }
 
   setMessageLogSize(messageLogSize: number) {
@@ -193,7 +195,7 @@ export class SettingsState implements ISettingsState {
   async startNewState(): Promise<void> {
     await i18n.changeLanguage();
 
-    await this.setLanguage(i18n.resolvedLanguage! as Language);
+    this.setLanguage(getLocale() as Language);
     this.setTheme(window.matchMedia('(prefers-color-scheme:dark)').matches ? Theme.dark : Theme.light);
     this.setMessageLogSize(constants.defaultSettings.messageLogSize);
     this.setToastDuration(constants.defaultSettings.toastDuration);

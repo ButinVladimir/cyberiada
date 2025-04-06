@@ -7,7 +7,6 @@ import { TYPES } from '@state/types';
 import type { IGlobalState } from '../../interfaces/global-state';
 import { IRewardsState } from '../../interfaces/parameters/rewards-state';
 import { IMultiplierSerializedState } from '../../interfaces/serialized-states/multiplier-serialized-state';
-import { GLOBAL_STATE_UI_EVENTS } from '../../constants';
 import { IMultiplierScenarioParameters } from '../../interfaces/multiplier-scenario-parameters';
 
 const { lazyInject } = decorators;
@@ -39,14 +38,10 @@ export class RewardsState implements IRewardsState {
   }
 
   get pointsByProgram() {
-    this._stateUiConnector.connectEventHandler(this, GLOBAL_STATE_UI_EVENTS.POINTS_BY_PROGRAM_CHANGED);
-
     return this._pointsByProgram;
   }
 
   get multiplierByProgram() {
-    this._stateUiConnector.connectEventHandler(this, GLOBAL_STATE_UI_EVENTS.MULTIPLIER_CHANGED);
-
     return this._multiplierByProgram;
   }
 
@@ -54,12 +49,12 @@ export class RewardsState implements IRewardsState {
     this._pointsByProgram += delta;
 
     this.requestMultipliersRecalculation();
-
-    this.uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.POINTS_BY_PROGRAM_CHANGED);
   }
 
   requestMultipliersRecalculation() {
     this._multiplierUpdateRequested = true;
+
+    this.growthState.requestGrowthRecalculation();
   }
 
   async startNewState(): Promise<void> {
@@ -90,8 +85,6 @@ export class RewardsState implements IRewardsState {
     this._multiplierUpdateRequested = false;
 
     this.updateMultiplierByProgram();
-
-    this.uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.MULTIPLIER_CHANGED);
   }
 
   private updateMultiplierByProgram() {

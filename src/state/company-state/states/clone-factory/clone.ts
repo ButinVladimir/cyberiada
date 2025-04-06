@@ -88,8 +88,6 @@ export class Clone implements IClone {
   }
 
   get experience() {
-    this._stateUiConnector.connectEventHandler(this, CLONES_UI_EVENTS.CLONE_EXPERIENCE_CHANGED);
-
     return this._experience;
   }
 
@@ -122,8 +120,6 @@ export class Clone implements IClone {
   }
 
   get cost() {
-    this._stateUiConnector.connectEventHandler(this, CLONES_UI_EVENTS.CLONE_CHANGED);
-
     return calculatePowWithQuality(this.level - 1, this.quality, this._template.cost);
   }
 
@@ -142,8 +138,6 @@ export class Clone implements IClone {
   }
 
   getLevelRequirements(level: number): number {
-    this._stateUiConnector.connectEventHandler(this, CLONES_UI_EVENTS.CLONE_CHANGED);
-
     if (level <= 0) {
       return 0;
     }

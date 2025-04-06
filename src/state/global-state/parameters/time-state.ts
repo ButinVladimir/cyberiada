@@ -10,7 +10,6 @@ import { NotificationType } from '@shared/types';
 import { ITimeState } from '../interfaces/parameters/time-state';
 import { ITimeSerializedState } from '../interfaces/serialized-states/time-serialized-state';
 import type { IGlobalState } from '../interfaces/global-state';
-import { GLOBAL_STATE_UI_EVENTS } from '../constants';
 
 const { lazyInject } = decorators;
 
@@ -55,8 +54,6 @@ export class TimeState implements ITimeState {
   }
 
   get accumulatedTime() {
-    this._stateUiConnector.connectEventHandler(this, GLOBAL_STATE_UI_EVENTS.ACCUMULATED_TIME_CHANGED);
-
     return this._accumulatedTime;
   }
 
@@ -65,14 +62,10 @@ export class TimeState implements ITimeState {
   }
 
   get gameTime() {
-    this._stateUiConnector.connectEventHandler(this, GLOBAL_STATE_UI_EVENTS.GAME_TIME_CHANGED);
-
     return this._gameTime;
   }
 
   get gameTimeTotal() {
-    this._stateUiConnector.connectEventHandler(this, GLOBAL_STATE_UI_EVENTS.GAME_TIME_CHANGED);
-
     return this._gameTimeTotal;
   }
 
@@ -87,8 +80,6 @@ export class TimeState implements ITimeState {
         time: this._formatter.formatTimeShort(earnedTime),
       });
     }
-
-    this.uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.ACCUMULATED_TIME_CHANGED);
   }
 
   updateActiveTime() {
@@ -114,13 +105,10 @@ export class TimeState implements ITimeState {
       this._activeTime -= this._settingsState.updateInterval;
     } else if (this._accumulatedTime >= this._settingsState.updateInterval) {
       this._accumulatedTime -= this._settingsState.updateInterval;
-      this.uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.ACCUMULATED_TIME_CHANGED);
     }
 
     this._gameTime += this._settingsState.updateInterval;
     this._gameTimeTotal += this._settingsState.updateInterval;
-
-    this.uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.GAME_TIME_CHANGED);
   }
 
   async startNewState(): Promise<void> {

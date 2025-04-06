@@ -58,26 +58,24 @@ export class CompanyClonesState implements ICompanyClonesState {
   }
 
   get totalSynchronization() {
-    this._stateUiConnector.connectEventHandler(this, COMPANY_CLONES_STATE_UI_EVENTS.EXPERIENCE_MODIFIERS_UPDATED);
+    this._stateUiConnector.connectEventHandler(this, COMPANY_CLONES_STATE_UI_EVENTS.SYNCHRONIZATION_UPDATED);
 
     return this._totalSynchronization;
   }
 
   get availableSynchronization() {
-    this._stateUiConnector.connectEventHandler(this, COMPANY_CLONES_STATE_UI_EVENTS.EXPERIENCE_MODIFIERS_UPDATED);
+    this._stateUiConnector.connectEventHandler(this, COMPANY_CLONES_STATE_UI_EVENTS.SYNCHRONIZATION_UPDATED);
 
     return this._availableSynchronization;
   }
 
   get experienceModifier() {
-    this._stateUiConnector.connectEventHandler(this, COMPANY_CLONES_STATE_UI_EVENTS.EXPERIENCE_MODIFIERS_UPDATED);
+    this._stateUiConnector.connectEventHandler(this, COMPANY_CLONES_STATE_UI_EVENTS.SYNCHRONIZATION_UPDATED);
 
     return this._experienceModifier;
   }
 
   get extraExperience() {
-    this._stateUiConnector.connectEventHandler(this, COMPANY_CLONES_STATE_UI_EVENTS.EXTRA_EXPERIENCE_UPDATED);
-
     return this._extraExperience;
   }
 
@@ -169,8 +167,6 @@ export class CompanyClonesState implements ICompanyClonesState {
   earnExtraExperience(delta: number) {
     const modifiedDelta = Math.max(delta * (this.experienceModifier - 1), 0);
     this._extraExperience += modifiedDelta;
-
-    this.uiEventBatcher.enqueueEvent(COMPANY_CLONES_STATE_UI_EVENTS.EXTRA_EXPERIENCE_UPDATED);
   }
 
   spendExtraExperience() {
@@ -179,7 +175,6 @@ export class CompanyClonesState implements ICompanyClonesState {
     }
 
     this._extraExperience = 0;
-    this.uiEventBatcher.enqueueEvent(COMPANY_CLONES_STATE_UI_EVENTS.EXTRA_EXPERIENCE_UPDATED);
   }
 
   async startNewState(): Promise<void> {
@@ -228,6 +223,8 @@ export class CompanyClonesState implements ICompanyClonesState {
     } else {
       this._experienceModifier = 0;
     }
+
+    this.uiEventBatcher.enqueueEvent(COMPANY_CLONES_STATE_UI_EVENTS.SYNCHRONIZATION_UPDATED);
   }
 
   private clearState() {

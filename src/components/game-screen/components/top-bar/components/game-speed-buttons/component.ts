@@ -1,5 +1,5 @@
-import { t } from 'i18next';
 import { html, css, TemplateResult } from 'lit';
+import { localized, msg } from '@lit/localize';
 import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { GameSpeed } from '@state/global-state/types';
@@ -8,9 +8,11 @@ import {
   ConfirmationAlertSubmitEvent,
 } from '@components/game-screen/components/confirmation-alert/events';
 import { GameStateAlert } from '@shared/types';
+import { GAME_SPEED_TEXTS } from '@texts/game-speed';
 import { GameSpeedButtonsController } from './controller';
 import { GameSpeedButtonProps } from './interfaces';
 
+@localized()
 @customElement('ca-game-speed-buttons')
 export class GameSpeedButtons extends BaseComponent<GameSpeedButtonsController> {
   static styles = css`
@@ -52,25 +54,22 @@ export class GameSpeedButtons extends BaseComponent<GameSpeedButtonsController> 
     return html`
       ${this.renderButton({
         gameSpeed: GameSpeed.paused,
-        label: 'pause',
         icon: gameSpeed === GameSpeed.paused ? 'pause-fill' : 'pause',
       })}
       ${this.renderButton({
         gameSpeed: GameSpeed.normal,
-        label: 'playNormal',
         icon: gameSpeed === GameSpeed.normal ? 'play-fill' : 'play',
       })}
       ${this.renderButton({
         gameSpeed: GameSpeed.fast,
-        label: 'playFast',
         icon: gameSpeed === GameSpeed.fast ? 'fast-forward-fill' : 'fast-forward',
       })}
       <sl-tooltip>
-        <span slot="content"> ${t('topBar.gameSpeedButtons.fastForward', { ns: 'ui' })} </span>
+        <span slot="content"> ${msg('Spend all accumulated time')} </span>
 
         <sl-icon-button
           name="skip-end"
-          label=${t(`topBar.gameSpeedButtons.fastForward`, { ns: 'ui' })}
+          label=${msg('Spend all accumulated time')}
           @click=${this.handleOpenFastForwardDialog}
         >
         </sl-icon-button>
@@ -79,15 +78,15 @@ export class GameSpeedButtons extends BaseComponent<GameSpeedButtonsController> 
   }
 
   renderButton = (props: GameSpeedButtonProps): TemplateResult => {
-    const { label, gameSpeed, icon } = props;
+    const { gameSpeed, icon } = props;
 
     return html`
       <sl-tooltip>
-        <span slot="content"> ${t(`topBar.gameSpeedButtons.${label}`, { ns: 'ui' })} </span>
+        <span slot="content"> ${GAME_SPEED_TEXTS[gameSpeed]()} </span>
 
         <sl-icon-button
           name=${icon}
-          label=${t(`topBar.gameSpeedButtons.${label}`, { ns: 'ui' })}
+          label=${GAME_SPEED_TEXTS[gameSpeed]()}
           @click=${this.handleChangeGameSpeed(gameSpeed)}
         >
         </sl-icon-button>

@@ -1,6 +1,7 @@
 {
   "tutorial": {
     "districtsNum": 5,
+    "baseSynchronization": 30,
     "mainframeHardware": {
       "performanceLevel": 1,
       "coresLevel": 1,

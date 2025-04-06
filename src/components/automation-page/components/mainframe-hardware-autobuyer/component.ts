@@ -1,13 +1,14 @@
-import { t } from 'i18next';
 import { html } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { customElement } from 'lit/decorators.js';
+import { msg, localized } from '@lit/localize';
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.component.js';
 import { BaseComponent } from '@shared/base-component';
 import { normalizePercentage } from '@shared/helpers';
 import { AutomationMainframeHardwareAutobuyerController } from './controller';
 import { autobuyerStyles } from '../../styles';
 
+@localized()
 @customElement('ca-automation-mainframe-hardware-autobuyer')
 export class AutomationMainframeHardwareAutobuyer extends BaseComponent<AutomationMainframeHardwareAutobuyerController> {
   static styles = autobuyerStyles;
@@ -26,9 +27,11 @@ export class AutomationMainframeHardwareAutobuyer extends BaseComponent<Automati
     const { moneyShare } = this.controller;
 
     return html`
-      <h4 class="title">${t('automation.mainframeHardwareAutobuyer.mainframeHardwareAutobuyer', { ns: 'ui' })}</h4>
+      <h4 class="title">${msg('Mainframe hardware autobuyer')}</h4>
 
-      <p class="hint">${t('automation.mainframeHardwareAutobuyer.percentageHint', { ns: 'ui' })}</p>
+      <p class="hint">
+        ${msg('Percentage of available money reserved for upgrading mainframe hardware')}
+      </p>
 
       <div class="input-container">
         <sl-input

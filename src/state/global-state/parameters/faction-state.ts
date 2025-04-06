@@ -27,6 +27,7 @@ export class FactionState implements IFactionState {
     this._neutralFactionValues = this.getFactionValues(Faction.neutral);
 
     this.uiEventBatcher = new EventBatcher();
+    this._stateUiConnector.registerEventEmitter(this);
   }
 
   get currentFaction(): Faction | undefined {

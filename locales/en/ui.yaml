@@ -17,37 +17,9 @@ errors:
   notEnoughRam: Not enough RAM
   processForSameProgramRunning: Process for same program with threads {{threads}} is already running
   autoscalableProcessRunning: Autoscalable process for program "$t(programs:{{programName}}:name)" is already running
-pages:
-  overview: Overview
-  city: City
-  company: Company
-  mainframe: Mainframe
-  statistics: Statistics
-  settings: Settings
-  automation: Automation
-  credits: Credits
-  messageLog: Message log
-topBar:
-  menu: Toggle menu
-  gameSpeedButtons:
-    pause: Pause
-    playNormal: Play on normal speed (without accumulated time)
-    playFast: Play on fast speed (with accumulated time)
-    fastForward: Spend all accumulated time
-  availableGoals:
-    titleGoalsExist: 'Available development level goals:'
-    titleNoGoals: No available development level goals
-    reachLevel: Reach development level {{level}}
-menuBar:
-  accumulatedTime: Accumulated time
-  money: Money
-  developmentLevel: Development level
 messageLog:
   messageLog: Message log
   clearMessages: Clear messages
-fastForwardingScreen:
-  fastForwarding: Spending accumulated time...
-  stop: Stop
 notifications:
   readNextNotification: Read next notification
   closeAllNotifications: Close all notifications
@@ -90,40 +62,6 @@ settings:
   notificationTypeFilter: Notification type filter
   notificationTypeFilterHint: Enable notification types in filter to make them visible when event happens
   notificationTypeToggle: Show notifications like this in the future
-overview:
-  tabs:
-    progress: Progress
-    unlockedItems: Unlocked items
-    unlockedFeatures: Unlocked features
-    story: Story
-  overview: Overview
-  progress:
-    nextDevelopmentLevelProgress: Next development level progress
-    nextLevelNotReachable: Next development level is not reachable
-    nextLevelReachedIn: Next development level will be reached in {{time}}
-    unlockedFeaturesProgress: Unlocked features progress
-  unlockedFeatures:
-    noFeatures: No features has been unlocked yet
-  unlockedItems:
-    noItems: No items has been unlocked yet
-    hint: Loaned items are items received on start and rewarded by capturing districts. Number next to item name is it's maximum quality available.
-    programs: Programs
-  story:
-    requirements:
-      level: development level {{level}}
-    stateFilter: Event state filter
-    stateFilterOptions:
-      all: All events
-      available: Only available events
-      notAvailable: Only unavailable events
-      passed: Only passed events
-city:
-  city:
-    title: City
-    hint: Click on a highlighted district to see it"s info and available actions.
-    toggleZoomPanel: Toggle zoom panel
-    zoom: Zoom
-    name: Name
 mainframe:
   mainframe: Mainframe
   program: Program
@@ -156,21 +94,6 @@ mainframe:
     processes: Processes
     hardware: Hardware
     programs: Programs
-  hardware:
-    hardwareHint: Press either Ctrl or Shift to buy 10 levels. Press both Ctrl and Shift to buy 100 levels.
-      Hardware autoupgrade priority can be changed by dragging it by the title.
-      Upgrades on top have higher priority.
-    performance: 'Performance level: {{level}}'
-    performanceHint: Higher performance level leads to faster running processes
-    cores: 'Cores level: {{level}}'
-    coresHint: Additional cores allow better scalability and running more processes at same time
-    ram: 'RAM level: {{level}}'
-    ramHint: Additional RAM allows to keep more processes in memory so they could ran later or in bigger batches
-    buy: Buy x{{increase}} for {{cost}}
-    buyMax: Buy max
-    buyMaxAllUpgrades: Buy all upgrades
-    enableAutoupgrade: Enable autoupgrade
-    disableAutoupgrade: Disable autoupgrade
   programs:
     programsHint: Program autoupgrade priority can be changed by dragging it by the title.
       Programs on top have higher priority. Autoupgrade for programs won"t change their quality but will attempt to increase level.
@@ -294,20 +217,3 @@ statistics:
       mainframePrograms: On mainframe programs
   unlockedFeatures:
     title: Unlocked features
-automation:
-  automation: Automation
-  tabs:
-    autobuyers: Autobuyers
-  mainframeHardwareAutobuyer:
-    mainframeHardwareAutobuyer: Mainframe hardware autobuyer
-    percentageHint: Percentage of available money reserved for upgrading mainframe hardware
-  mainframeProgramsAutobuyer:
-    mainframeProgramsAutobuyer: Mainframe programs autobuyer
-    percentageHint: Percentage of available money reserved for buying programs
-credits:
-  OmniLRenegadE: Idea, coding, design, balance
-company:
-  company: Company
-  tabs:
-    clones: Clones
-    sidejobs: Sidejobs

@@ -1,11 +1,13 @@
-import { t } from 'i18next';
-import { css, html } from 'lit';
+import { css, html, PropertyValues } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { createRef, ref } from 'lit/directives/ref.js';
+import SlButton from '@shoelace-style/shoelace/dist/components/button/button.component.js';
 import { BaseComponent } from '@shared/base-component';
 import { SCREEN_WIDTH_POINTS, warningStyle } from '@shared/styles';
 import type { MainframeHardwareParameterType } from '@state/mainframe-state/states/mainframe-hardware-state/types';
 import { MainframeHardwarePanelArticleButtonsController } from './controller';
 import { BuyHardwareEvent, BuyMaxHardwareEvent } from './events';
+import { COMMON_TEXTS } from '@/texts';
 
 @customElement('ca-mainframe-hardware-panel-article-buttons')
 export class MainframeHardwarePanelArticleButtons extends BaseComponent<MainframeHardwarePanelArticleButtonsController> {
@@ -48,43 +50,40 @@ export class MainframeHardwarePanelArticleButtons extends BaseComponent<Mainfram
 
   protected controller: MainframeHardwarePanelArticleButtonsController;
 
+  private _buyButtonRef = createRef<SlButton>();
+  private _warningRef = createRef<HTMLParagraphElement>();
+
   constructor() {
     super();
 
-    this.controller = new MainframeHardwarePanelArticleButtonsController(this);
+    this.controller = new MainframeHardwarePanelArticleButtonsController(this, this.handlePartialUpdate);
+  }
+
+  updated(_changedProperties: PropertyValues) {
+    super.updated(_changedProperties);
+
+    this.handlePartialUpdate();
   }
 
   render() {
-    const increase = this.calculateIncrease();
-    const formatter = this.controller.formatter;
-
-    const buttonDisabled = !this.controller.checkCanPurchase(increase, this.type);
-    const cost = this.controller.getPurchaseCost(increase, this.type);
-
-    const warning = this.getWarning();
-
     return html`
       <div class="buttons">
         <sl-button variant="default" type="button" size="medium" @click=${this.handleBuyMax}>
-          ${t('mainframe.hardware.buyMax', { ns: 'ui' })}
+          ${COMMON_TEXTS.buyMax()}
         </sl-button>
 
         <sl-button
+          ${ref(this._buyButtonRef)}
+          disabled
           variant="primary"
           type="button"
           size="medium"
-          ?disabled=${buttonDisabled}
           @click=${this.handlePurchase}
         >
-          ${t('mainframe.hardware.buy', {
-            ns: 'ui',
-            cost: formatter.formatNumberFloat(cost),
-            increase: formatter.formatNumberDecimal(increase),
-          })}
         </sl-button>
       </div>
 
-      <p class="warning">${warning}</p>
+      <p ${ref(this._warningRef)} class="warning"></p>
     `;
   }
 
@@ -97,7 +96,7 @@ export class MainframeHardwarePanelArticleButtons extends BaseComponent<Mainfram
 
   private getWarning(): string {
     if (this.controller.developmentLevel === this.controller.getLevel(this.type)) {
-      return t('errors.higherDevelopmentLevelRequired', { ns: 'ui' });
+      return COMMON_TEXTS.higherDevelopmentLevelRequired();
     }
 
     const increase = this.calculateIncrease();
@@ -107,12 +106,12 @@ export class MainframeHardwarePanelArticleButtons extends BaseComponent<Mainfram
 
     if (moneyDiff > 0) {
       if (moneyGrowth <= 0) {
-        return t('errors.notEnoughMoney', { ns: 'ui' });
+        return COMMON_TEXTS.notEnoughMoney();
       }
 
       const time = this.controller.formatter.formatTimeShort(moneyDiff / moneyGrowth);
 
-      return t('errors.willBeAvailableIn', { ns: 'ui', time });
+      return COMMON_TEXTS.willBeAvailableIn(time);
     }
 
     return '';
@@ -130,5 +129,27 @@ export class MainframeHardwarePanelArticleButtons extends BaseComponent<Mainfram
     event.stopPropagation();
 
     this.dispatchEvent(new BuyMaxHardwareEvent());
+  };
+
+  private handlePartialUpdate = () => {
+    if (this._warningRef.value) {
+      const warning = this.getWarning();
+
+      this._warningRef.value.textContent = warning;
+    }
+
+    if (this._buyButtonRef.value) {
+      const formatter = this.controller.formatter;
+      const increase = this.calculateIncrease();
+  
+      const buttonDisabled = !this.controller.checkCanPurchase(increase, this.type);
+      const cost = this.controller.getPurchaseCost(increase, this.type);
+      
+      const formattedIncrease = formatter.formatNumberDecimal(increase);
+      const formattedCost = formatter.formatNumberFloat(cost);
+
+      this._buyButtonRef.value.textContent = COMMON_TEXTS.buyIncrease(formattedIncrease, formattedCost);
+      this._buyButtonRef.value.disabled = buttonDisabled;
+    }
   };
 }

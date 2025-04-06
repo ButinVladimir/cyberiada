@@ -231,8 +231,9 @@ export class App implements IApp {
         }
         break;
     }
-
+   
     if (this._uiVisible) {
+      this.uiEventBatcher.enqueueEvent(APP_UI_EVENTS.UI_FRAME_UPDATE);
       this._stateUIConnector.fireUIEvents();
     }
   };

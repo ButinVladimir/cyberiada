@@ -9,7 +9,6 @@ import { OtherProgramName } from '@state/mainframe-state/states/progam-factory/t
 import { ShareServerProgram } from '@state/mainframe-state/states/progam-factory/programs/share-server';
 import { INCOME_SOURCES } from '@shared/constants';
 import { IMoneyGrowthState } from '../interfaces/parameters/money-growth-state';
-import { GROWTH_STATE_UI_EVENTS } from '../constants';
 
 const { lazyInject } = decorators;
 
@@ -37,14 +36,10 @@ export class MoneyGrowthState implements IMoneyGrowthState {
   }
 
   get totalGrowth() {
-    this._stateUiConnector.connectEventHandler(this, GROWTH_STATE_UI_EVENTS.MONEY_GROWTH_CHANGED);
-
     return this._totalGrowth;
   }
 
   getGrowth(incomeSource: IncomeSource): number {
-    this._stateUiConnector.connectEventHandler(this, GROWTH_STATE_UI_EVENTS.MONEY_GROWTH_CHANGED);
-
     return this._growth.get(incomeSource) ?? 0;
   }
 
@@ -61,8 +56,6 @@ export class MoneyGrowthState implements IMoneyGrowthState {
 
     this.updateGrowthByProgram();
     this.updateTotalGrowth();
-
-    this.uiEventBatcher.enqueueEvent(GROWTH_STATE_UI_EVENTS.MONEY_GROWTH_CHANGED);
   }
 
   private updateGrowthByProgram() {

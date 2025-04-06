@@ -1,11 +1,16 @@
-import { t } from 'i18next';
 import { css, html, nothing } from 'lit';
+import { localized, msg, str } from '@lit/localize';
 import { customElement, property } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
+import { capitalizeFirstLetter } from '@shared/helpers';
 import { StoryGoalState } from '@state/global-state/types';
 import { sectionTitleStyle, detailsStyle } from '@shared/styles';
+import { UNLOCKED_FEATURE_TEXTS } from '@texts/unlocked-features';
+import { STORY_MESSAGES } from '@texts/story';
+import { Feature } from '@shared/types';
 import { KEYS_SEPARATOR } from '../../../../constants';
 
+@localized()
 @customElement('ca-overview-story-goal')
 export class OverviewStoryPanel extends BaseComponent {
   static styles = [
@@ -67,11 +72,10 @@ export class OverviewStoryPanel extends BaseComponent {
     const requirements = [];
 
     if (this.level !== undefined) {
-      requirements.push(t('overview.story.requirements.level', { ns: 'ui', level: this.level }));
+      requirements.push(msg(str`development level ${this.level}`))
     }
 
-    const requirementsString = requirements.join(', ');
-    const result = requirementsString.charAt(0).toUpperCase() + requirementsString.slice(1);
+    const result = capitalizeFirstLetter(requirements.join(', '));
 
     return result;
   };
@@ -84,14 +88,14 @@ export class OverviewStoryPanel extends BaseComponent {
     const result = [];
 
     if (this.messages) {
-      result.push(...this.messages.split(KEYS_SEPARATOR).map((message) => html`<p>${t(message, { ns: 'story' })}</p>`));
+      result.push(...this.messages.split(KEYS_SEPARATOR).map((message) => html`<p>${STORY_MESSAGES[message]()}</p>`));
     }
 
     if (this.unlockFeatures) {
       result.push(
         ...this.unlockFeatures
           .split(KEYS_SEPARATOR)
-          .map((feature) => html`<p>${t(`${feature}.unlockedMessage`, { ns: 'features' })}</p>`),
+          .map((feature) => html`<p>${UNLOCKED_FEATURE_TEXTS[feature as Feature].message()}</p>`),
       );
     }
 

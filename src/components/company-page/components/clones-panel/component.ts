@@ -1,9 +1,10 @@
-import { t } from 'i18next';
 import { css, html } from 'lit';
+import { msg, localized } from '@lit/localize';
 import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { hintStyle } from '@shared/styles';
 
+@localized()
 @customElement('ca-company-clones-panel')
 export class CompanyClonesPanel extends BaseComponent {
   static styles = [
@@ -23,6 +24,6 @@ export class CompanyClonesPanel extends BaseComponent {
   ];
 
   render() {
-    return html` <p class="hint">${t('company.clones.clonesHint', { ns: 'ui' })}</p> `;
+    return html` <p class="hint">${msg('Stuff about clones')}</p> `;
   }
 }

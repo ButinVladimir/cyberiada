@@ -6,7 +6,6 @@ import type { IMainframeState } from '@state/mainframe-state/interfaces/mainfram
 import { OtherProgramName } from '@state/mainframe-state/states/progam-factory/types';
 import { PredictiveComputatorProgram } from '@state/mainframe-state/states/progam-factory/programs/predictive-computator';
 import { TYPES } from '@state/types';
-import { GROWTH_STATE_UI_EVENTS } from '../constants';
 import type { IGlobalState } from '@state/global-state/interfaces/global-state';
 import { IProgramCompletionSpeedState } from '../interfaces/parameters/program-completion-speed-state';
 
@@ -41,20 +40,14 @@ export class ProgramCompletionSpeedState implements IProgramCompletionSpeedState
   }
 
   get multiplierByProgram() {
-    this._stateUiConnector.connectEventHandler(this, GROWTH_STATE_UI_EVENTS.PROGRAM_COMPLETION_SPEED_CHANGED);
-
     return this._multiplierByProgram;
   }
 
   get multiplierByHardware() {
-    this._stateUiConnector.connectEventHandler(this, GROWTH_STATE_UI_EVENTS.PROGRAM_COMPLETION_SPEED_CHANGED);
-
     return this._multiplierByHardware;
   }
 
   get totalMultiplier() {
-    this._stateUiConnector.connectEventHandler(this, GROWTH_STATE_UI_EVENTS.PROGRAM_COMPLETION_SPEED_CHANGED);
-
     return this._totalMultiplier;
   }
 
@@ -72,8 +65,6 @@ export class ProgramCompletionSpeedState implements IProgramCompletionSpeedState
     this.updateMultiplierByProgram();
     this.updateMultiplierByHardware();
     this.updateTotalMultiplier();
-
-    this.uiEventBatcher.enqueueEvent(GROWTH_STATE_UI_EVENTS.PROGRAM_COMPLETION_SPEED_CHANGED);
   }
 
   private updateMultiplierByProgram() {
