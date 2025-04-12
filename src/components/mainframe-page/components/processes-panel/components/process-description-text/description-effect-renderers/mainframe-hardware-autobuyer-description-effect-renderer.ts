@@ -1,5 +1,5 @@
-import { t } from 'i18next';
 import { html } from 'lit';
+import { msg, str } from '@lit/localize';
 import { MainframeHardwareAutobuyerProgram } from '@state/mainframe-state/states/progam-factory/programs/mainframe-hardware-autobuyer';
 import { IFormatter } from '@shared/interfaces/formatter';
 import { MS_IN_SECOND } from '@shared/constants';
@@ -23,14 +23,11 @@ export class MainframeHardwareAutobuyerDescriptionEffectRenderer implements IDes
     const time = program.calculateCompletionTime(threads, usedCores);
     const avgValue = (threads / time) * MS_IN_SECOND;
 
-    return html`
-      <p>
-        ${t('mainframeHardwareAutobuyer.actionsProcess', {
-          ns: 'programs',
-          value: this._formatter.formatNumberFloat(threads),
-          avgValue: this._formatter.formatNumberFloat(avgValue),
-        })}
-      </p>
-    `;
+    const formattedValue = this._formatter.formatNumberDecimal(threads);
+    const formattedAvgValue = this._formatter.formatNumberFloat(avgValue);
+
+    return html` <p>${msg(str`Actions: ${formattedValue} per completion (${formattedAvgValue} per second)`)}</p> `;
   };
+
+  public partialUpdate() {}
 }

@@ -1,4 +1,5 @@
 import { inject, injectable } from 'inversify';
+import { msg } from '@lit/localize';
 import { compressToUTF16, decompressFromUTF16 } from 'lz-string';
 import type { IAppState } from '@state/app-state/interfaces/app-state';
 import { ISerializedState } from '@state/app-state/interfaces/serialized-state';
@@ -76,7 +77,7 @@ export class App implements IApp {
     const encodedSaveData = this.serializeState();
 
     localStorage.setItem(LOCAL_STORAGE_KEY, encodedSaveData);
-    this._messageLogState.postMessage(GameStateEvent.gameSaved);
+    this._messageLogState.postMessage(GameStateEvent.gameSaved, msg('Game has been saved'));
   };
 
   refreshUI(): void {
@@ -160,7 +161,10 @@ export class App implements IApp {
 
   stopFastForwarding() {
     this._appStage = AppStage.running;
-    this._messageLogState.postMessage(GameStateEvent.fastForwared);
+    this._messageLogState.postMessage(
+      GameStateEvent.fastForwared,
+      msg('Spending accumulated time has been interrupted'),
+    );
     this.emitChangedAppStageEvent();
   }
 
@@ -191,7 +195,7 @@ export class App implements IApp {
     this.restartUpdateTimer();
     this.restartAutosaveTimer();
 
-    this._messageLogState.postMessage(GameStateEvent.gameStarted);
+    this._messageLogState.postMessage(GameStateEvent.gameStarted, msg('Game has been started'));
 
     this.emitChangedAppStageEvent();
   };
@@ -226,12 +230,12 @@ export class App implements IApp {
       case AppStage.fastForward:
         if (!this._appState.fastForwardState()) {
           this._appStage = AppStage.running;
-          this._messageLogState.postMessage(GameStateEvent.fastForwared);
+          this._messageLogState.postMessage(GameStateEvent.fastForwared, msg('Accumulated time has been spent'));
           this.emitChangedAppStageEvent();
         }
         break;
     }
-   
+
     if (this._uiVisible) {
       this.uiEventBatcher.enqueueEvent(APP_UI_EVENTS.UI_FRAME_UPDATE);
       this._stateUIConnector.fireUIEvents();

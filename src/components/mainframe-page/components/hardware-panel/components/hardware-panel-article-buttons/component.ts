@@ -5,9 +5,9 @@ import SlButton from '@shoelace-style/shoelace/dist/components/button/button.com
 import { BaseComponent } from '@shared/base-component';
 import { SCREEN_WIDTH_POINTS, warningStyle } from '@shared/styles';
 import type { MainframeHardwareParameterType } from '@state/mainframe-state/states/mainframe-hardware-state/types';
+import { COMMON_TEXTS } from '@texts/common';
 import { MainframeHardwarePanelArticleButtonsController } from './controller';
 import { BuyHardwareEvent, BuyMaxHardwareEvent } from './events';
-import { COMMON_TEXTS } from '@/texts';
 
 @customElement('ca-mainframe-hardware-panel-article-buttons')
 export class MainframeHardwarePanelArticleButtons extends BaseComponent<MainframeHardwarePanelArticleButtonsController> {
@@ -141,10 +141,10 @@ export class MainframeHardwarePanelArticleButtons extends BaseComponent<Mainfram
     if (this._buyButtonRef.value) {
       const formatter = this.controller.formatter;
       const increase = this.calculateIncrease();
-  
+
       const buttonDisabled = !this.controller.checkCanPurchase(increase, this.type);
       const cost = this.controller.getPurchaseCost(increase, this.type);
-      
+
       const formattedIncrease = formatter.formatNumberDecimal(increase);
       const formattedCost = formatter.formatNumberFloat(cost);
 

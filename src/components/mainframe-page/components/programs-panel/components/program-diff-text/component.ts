@@ -3,11 +3,11 @@ import { css, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import {
-  ProgramName,
+  type ProgramName,
   OtherProgramName,
   MultiplierProgramName,
 } from '@state/mainframe-state/states/progam-factory/types';
-import { diffFormatterParametersDecimal, diffFormatterParametersShortTime } from '@shared/formatter-parameters';
+import { diffFormatterParameters } from '@shared/formatter-parameters';
 import {
   CodeGeneratorDescriptionEffectRenderer,
   CircuitDesignerDescriptionEffectRenderer,
@@ -42,7 +42,7 @@ export class ProgramDiffText extends BaseComponent<ProgramDiffTextController> {
     attribute: 'program-name',
     type: String,
   })
-  programName!: string;
+  programName!: ProgramName;
 
   @property({
     attribute: 'level',
@@ -126,7 +126,7 @@ export class ProgramDiffText extends BaseComponent<ProgramDiffTextController> {
         ${t('mainframe.programDescription.requirements.coresDiff', {
           ns: 'ui',
           cores: formatter.formatNumberDecimal(program.cores),
-          coresDiff: formatter.formatNumberDecimal(coresDiff, diffFormatterParametersDecimal),
+          coresDiff: formatter.formatNumberDecimal(coresDiff, diffFormatterParameters),
         })}
       </p>
 
@@ -135,8 +135,8 @@ export class ProgramDiffText extends BaseComponent<ProgramDiffTextController> {
           ns: 'ui',
           minTime: formatter.formatTimeShort(minTime),
           maxTime: formatter.formatTimeShort(maxTime),
-          minTimeDiff: formatter.formatTimeShort(minTimeDiff, diffFormatterParametersShortTime),
-          maxTimeDiff: formatter.formatTimeShort(maxTimeDiff, diffFormatterParametersShortTime),
+          minTimeDiff: formatter.formatTimeShort(minTimeDiff, diffFormatterParameters),
+          maxTimeDiff: formatter.formatTimeShort(maxTimeDiff, diffFormatterParameters),
         })}
       </p>
     `;

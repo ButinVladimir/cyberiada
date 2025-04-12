@@ -1,5 +1,5 @@
-import { msg } from "@lit/localize";
-import { StoryGoalStateFilter } from "./types";
+import { msg } from '@lit/localize';
+import { StoryGoalStateFilter } from './types';
 
 export const STORY_GOAL_STATE_FILTER_TITLES: Record<StoryGoalStateFilter, () => string> = {
   all: () => msg('All events'),

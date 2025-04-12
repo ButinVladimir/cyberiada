@@ -1,5 +1,5 @@
-import { t } from 'i18next';
 import { html, css } from 'lit';
+import { localized, msg } from '@lit/localize';
 import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import {
@@ -10,6 +10,7 @@ import { GameStateAlert } from '@shared/types';
 import { pageTitleStyle } from '@shared/styles';
 import { MessageLogBarController } from './controller';
 
+@localized()
 @customElement('ca-message-log-page')
 export class MessageLogPage extends BaseComponent<MessageLogBarController> {
   static styles = [
@@ -54,11 +55,11 @@ export class MessageLogPage extends BaseComponent<MessageLogBarController> {
 
   render() {
     return html`
-      <h3 class="title">${t('messageLog.messageLog', { ns: 'ui' })}</h3>
+      <h3 class="title">${msg('Message log')}</h3>
 
       <div>
         <sl-button id="clear-button" variant="danger" size="medium" @click=${this.handleOpenClearMessagesDialog}>
-          ${t('messageLog.clearMessages', { ns: 'ui' })}
+          ${msg('Clear messages')}
         </sl-button>
       </div>
 
@@ -71,7 +72,9 @@ export class MessageLogPage extends BaseComponent<MessageLogBarController> {
   private handleOpenClearMessagesDialog = (event: Event) => {
     event.stopPropagation();
 
-    this.dispatchEvent(new ConfirmationAlertOpenEvent(GameStateAlert.clearMessages, {}));
+    this.dispatchEvent(
+      new ConfirmationAlertOpenEvent(GameStateAlert.clearMessages, msg('Are you sure want to clear log messages?')),
+    );
   };
 
   private handleConfirmClearMessagesDialog = (event: Event) => {

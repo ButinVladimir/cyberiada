@@ -44,14 +44,13 @@ export class OverviewDevelopmentLevelProgress extends BaseComponent<OverviewDeve
       <div class="block">
         <div class="title">${msg('Next development level progress')}</div>
 
-        <sl-progress-bar ${ref(this._progressBarRef)}>
-        </sl-progress-bar>
+        <sl-progress-bar ${ref(this._progressBarRef)}> </sl-progress-bar>
 
         <p ${ref(this._hintRef)} class="hint"></p>
       </div>
     `;
   }
-  
+
   private handlePartialUpdate = () => {
     const formatter = this.controller.formatter;
 

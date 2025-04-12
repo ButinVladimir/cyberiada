@@ -1,4 +1,5 @@
 import { injectable } from 'inversify';
+import { msg, str } from '@lit/localize';
 import { decorators } from '@state/container';
 import { EventBatcher } from '@shared/event-batcher';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
@@ -76,9 +77,11 @@ export class TimeState implements ITimeState {
     this._lastUpdateTime = updateTime;
 
     if (showNotification && earnedTime > 0) {
-      this._notificationsState.pushNotification(NotificationType.timeAccumulated, {
-        time: this._formatter.formatTimeShort(earnedTime),
-      });
+      const formattedTime = this._formatter.formatTimeShort(earnedTime);
+      this._notificationsState.pushNotification(
+        NotificationType.timeAccumulated,
+        msg(str`While you were away, you've earned ${formattedTime} accumulated time`),
+      );
     }
   }
 

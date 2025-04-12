@@ -3,7 +3,7 @@ import { html } from 'lit';
 import { ShareServerProgram } from '@state/mainframe-state/states/progam-factory/programs/share-server';
 import { IFormatter } from '@shared/interfaces/formatter';
 import { MS_IN_SECOND } from '@shared/constants';
-import { diffFormatterParametersLong } from '@shared/formatter-parameters';
+import { diffFormatterParameters } from '@shared/formatter-parameters';
 import { IDescriptionParameters, IDescriptionEffectRenderer } from '../interfaces';
 
 export class ShareServerDescriptionEffectRenderer implements IDescriptionEffectRenderer {
@@ -41,7 +41,7 @@ export class ShareServerDescriptionEffectRenderer implements IDescriptionEffectR
         ${t('shareServer.moneyDiff', {
           ns: 'programs',
           money: this._formatter.formatNumberFloat(money),
-          moneyDiff: this._formatter.formatNumberFloat(moneyDiff, diffFormatterParametersLong),
+          moneyDiff: this._formatter.formatNumberFloat(moneyDiff, diffFormatterParameters),
         })}
       </p>
 
@@ -49,7 +49,7 @@ export class ShareServerDescriptionEffectRenderer implements IDescriptionEffectR
         ${t('shareServer.developmentPointsDiff', {
           ns: 'programs',
           developmentPoints: this._formatter.formatNumberFloat(developmentPoints),
-          developmentPointsDiff: this._formatter.formatNumberFloat(developmentPointsDiff, diffFormatterParametersLong),
+          developmentPointsDiff: this._formatter.formatNumberFloat(developmentPointsDiff, diffFormatterParameters),
         })}
       </p>
     `;

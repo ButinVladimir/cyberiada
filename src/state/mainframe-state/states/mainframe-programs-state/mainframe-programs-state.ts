@@ -1,4 +1,5 @@
 import { inject, injectable } from 'inversify';
+import { msg, str } from '@lit/localize';
 import { decorators } from '@state/container';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import type { IGlobalState } from '@state/global-state/interfaces/global-state';
@@ -9,6 +10,7 @@ import { TYPES } from '@state/types';
 import { Feature, PurchaseEvent, PurchaseType } from '@shared/types';
 import { EventBatcher } from '@shared/event-batcher';
 import { binarySearchDecimal, moveElementInArray } from '@shared/helpers';
+import { PROGRAM_TEXTS } from '@texts/programs';
 import { IMainframeProgramsState, IMainframeProgramsSerializedState } from './interfaces';
 import { MAINFRAME_PROGRAMS_STATE_UI_EVENTS } from './constants';
 import { ProgramName } from '../progam-factory/types';
@@ -198,11 +200,15 @@ export class MainframeProgramsState implements IMainframeProgramsState {
   private handlePurchaseProgram = (newProgram: IProgram) => () => {
     this.addProgram(newProgram);
 
-    this._messageLogState.postMessage(PurchaseEvent.programPurchased, {
-      programName: newProgram.name,
-      level: this._formatter.formatNumberDecimal(newProgram.level),
-      quality: this._formatter.formatQuality(newProgram.quality),
-    });
+    const programTitle = PROGRAM_TEXTS[newProgram.name].title();
+    const formattedLevel = this._formatter.formatNumberDecimal(newProgram.level);
+    const formattedQuality = this._formatter.formatQuality(newProgram.quality);
+    this._messageLogState.postMessage(
+      PurchaseEvent.programPurchased,
+      msg(
+        str`Program "${programTitle}" with level ${formattedLevel} and quality ${formattedQuality} has been purchased`,
+      ),
+    );
 
     for (const feature of newProgram.unlockFeatures) {
       this._globalState.unlockedFeatures.unlockFeature(feature);

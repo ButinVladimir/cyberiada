@@ -2,7 +2,7 @@ import { t } from 'i18next';
 import { html } from 'lit';
 import { MainframeProgramsAutobuyerProgram } from '@state/mainframe-state/states/progam-factory/programs/mainframe-programs-autobuyer';
 import { IFormatter } from '@shared/interfaces/formatter';
-import { diffFormatterParametersFloat } from '@shared/formatter-parameters';
+import { diffFormatterParameters } from '@shared/formatter-parameters';
 import { MS_IN_SECOND } from '@shared/constants';
 import { IDescriptionParameters, IDescriptionEffectRenderer } from '../interfaces';
 
@@ -44,8 +44,8 @@ export class MainframeProgramsAutobuyerDescriptionEffectRenderer implements IDes
           ns: 'programs',
           minAvgValue: this._formatter.formatNumberFloat(minAvgValue),
           maxAvgValue: this._formatter.formatNumberFloat(maxAvgValue),
-          minAvgValueDiff: this._formatter.formatNumberFloat(minAvgValueDiff, diffFormatterParametersFloat),
-          maxAvgValueDiff: this._formatter.formatNumberFloat(maxAvgValueDiff, diffFormatterParametersFloat),
+          minAvgValueDiff: this._formatter.formatNumberFloat(minAvgValueDiff, diffFormatterParameters),
+          maxAvgValueDiff: this._formatter.formatNumberFloat(maxAvgValueDiff, diffFormatterParameters),
         })}
       </p>
     `;

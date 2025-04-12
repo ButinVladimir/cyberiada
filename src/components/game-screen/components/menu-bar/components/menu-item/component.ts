@@ -3,9 +3,9 @@ import { localized } from '@lit/localize';
 import { customElement, property } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { BaseComponent } from '@shared/base-component';
-import { MENU_ITEMS } from '@texts/menu-items';
-import { MenuItemSelectedEvent } from '../../events/menu-item-selected-event';
 import { MiscMenuItem, OverviewMenuItem } from '@shared/types';
+import { MenuItemSelectedEvent } from '../../events/menu-item-selected-event';
+import { MENU_ITEMS } from './constants';
 
 @localized()
 @customElement('ca-menu-item')
@@ -66,7 +66,7 @@ export class MenuItem extends BaseComponent {
 
     return html`
       <button type="button" class=${classes} @click=${this.handleClick}>
-        ${MENU_ITEMS[this.name as (OverviewMenuItem | MiscMenuItem)]()}
+        ${MENU_ITEMS[this.name as OverviewMenuItem | MiscMenuItem]()}
       </button>
     `;
   }

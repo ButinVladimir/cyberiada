@@ -41,7 +41,7 @@ export class SettingsState implements ISettingsState {
   private _enabledNotificationTypes: Set<NotificationType>;
 
   constructor() {
-    this._language = Language.en;
+    this._language = getLocale() as Language;
     this._theme = Theme.light;
     this._messageLogSize = constants.defaultSettings.messageLogSize;
     this._toastDuration = constants.defaultSettings.toastDuration;
@@ -195,7 +195,7 @@ export class SettingsState implements ISettingsState {
   async startNewState(): Promise<void> {
     await i18n.changeLanguage();
 
-    this.setLanguage(getLocale() as Language);
+    await this.setLanguage(getLocale() as Language);
     this.setTheme(window.matchMedia('(prefers-color-scheme:dark)').matches ? Theme.dark : Theme.light);
     this.setMessageLogSize(constants.defaultSettings.messageLogSize);
     this.setToastDuration(constants.defaultSettings.toastDuration);

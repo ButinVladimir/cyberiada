@@ -4,8 +4,9 @@ import { customElement, property } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import type { MainframeHardwareParameterType } from '@state/mainframe-state/states/mainframe-hardware-state/types';
 import { hintStyle, sectionTitleStyle, SCREEN_WIDTH_POINTS } from '@shared/styles';
+import { COMMON_TEXTS } from '@texts/common';
 import { MainframeHardwarePanelArticleController } from './controller';
-import { MAINFRAME_HARDWARE_TEXTS, COMMON_TEXTS } from '@texts/index';
+import { MAINFRAME_HARDWARE_TEXTS } from './constants';
 
 @localized()
 @customElement('ca-mainframe-hardware-panel-article')
@@ -105,7 +106,9 @@ export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwa
     const isAutoupgradeEnabled = this.controller.isAutoUpgradeEnabled(this.type);
 
     const autoupgradeIcon = isAutoupgradeEnabled ? 'arrow-up-circle-fill' : 'arrow-up-circle';
-    const autoupgradeLabel = isAutoupgradeEnabled ? COMMON_TEXTS.disableAutoupgrade() : COMMON_TEXTS.enableAutoupgrade();
+    const autoupgradeLabel = isAutoupgradeEnabled
+      ? COMMON_TEXTS.disableAutoupgrade()
+      : COMMON_TEXTS.enableAutoupgrade();
 
     return html`
       <div class="title-row">

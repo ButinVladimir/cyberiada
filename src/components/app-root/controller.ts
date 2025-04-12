@@ -1,7 +1,7 @@
 import { BaseController } from '@shared/base-controller';
 import { AppStage } from '@state/app/types';
 
-export class AppRootController extends BaseController { 
+export class AppRootController extends BaseController {
   hostConnected() {
     super.hostConnected();
 

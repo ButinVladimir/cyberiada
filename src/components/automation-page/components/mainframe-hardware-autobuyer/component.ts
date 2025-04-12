@@ -29,9 +29,7 @@ export class AutomationMainframeHardwareAutobuyer extends BaseComponent<Automati
     return html`
       <h4 class="title">${msg('Mainframe hardware autobuyer')}</h4>
 
-      <p class="hint">
-        ${msg('Percentage of available money reserved for upgrading mainframe hardware')}
-      </p>
+      <p class="hint">${msg('Percentage of available money reserved for upgrading mainframe hardware')}</p>
 
       <div class="input-container">
         <sl-input

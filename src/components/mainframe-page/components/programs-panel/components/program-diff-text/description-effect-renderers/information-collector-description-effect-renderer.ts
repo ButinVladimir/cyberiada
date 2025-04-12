@@ -2,7 +2,7 @@ import { t } from 'i18next';
 import { html } from 'lit';
 import { InformationCollectorProgram } from '@state/mainframe-state/states/progam-factory/programs/information-collector';
 import { IFormatter } from '@shared/interfaces/formatter';
-import { diffFormatterParametersLong } from '@shared/formatter-parameters';
+import { diffFormatterParameters } from '@shared/formatter-parameters';
 import { MS_IN_SECOND } from '@shared/constants';
 import { IDescriptionParameters, IDescriptionEffectRenderer } from '../interfaces';
 
@@ -47,11 +47,11 @@ export class InformationCollectorDescriptionEffectRenderer implements IDescripti
         ${t('informationCollector.connectivityPointsDiff', {
           ns: 'programs',
           value: this._formatter.formatNumberFloat(value),
-          valueDiff: this._formatter.formatNumberFloat(valueDiff, diffFormatterParametersLong),
+          valueDiff: this._formatter.formatNumberFloat(valueDiff, diffFormatterParameters),
           minAvgValue: this._formatter.formatNumberFloat(minAvgValue),
           maxAvgValue: this._formatter.formatNumberFloat(maxAvgValue),
-          minAvgValueDiff: this._formatter.formatNumberFloat(minAvgValueDiff, diffFormatterParametersLong),
-          maxAvgValueDiff: this._formatter.formatNumberFloat(maxAvgValueDiff, diffFormatterParametersLong),
+          minAvgValueDiff: this._formatter.formatNumberFloat(minAvgValueDiff, diffFormatterParameters),
+          maxAvgValueDiff: this._formatter.formatNumberFloat(maxAvgValueDiff, diffFormatterParameters),
         })}
       </p>
     `;

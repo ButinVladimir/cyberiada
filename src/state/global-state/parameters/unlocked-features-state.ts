@@ -8,6 +8,7 @@ import { TYPES } from '@state/types';
 import { IUnlockedFeaturesState } from '../interfaces/parameters/unlocked-features-state';
 import { IUnlockedFeaturesSerializedState } from '../interfaces/serialized-states/unlocked-features-serialized-state';
 import { GLOBAL_STATE_UI_EVENTS } from '../constants';
+import { UNLOCKED_FEATURE_TEXTS } from '@/texts';
 
 const { lazyInject } = decorators;
 
@@ -42,7 +43,10 @@ export class UnlockedFeaturesState implements IUnlockedFeaturesState {
 
       this._unlockedFeatures.add(feature);
 
-      this._notificationsState.pushNotification(NotificationType.featureUnlocked, { feature });
+      this._notificationsState.pushNotification(
+        NotificationType.featureUnlocked,
+        UNLOCKED_FEATURE_TEXTS[feature].message(),
+      );
     }
   }
 

@@ -70,9 +70,7 @@ export class City extends BaseComponent<CityController> {
     return html`
       <h3 class="title">${msg('City')}</h3>
 
-      <p>
-        ${msg('Click on a highlighted district to see it"s info and available actions.')}
-      </p>
+      <p>${msg('Click on a highlighted district to see it"s info and available actions.')}</p>
 
       <ca-map-cell-zoom-panel zoom=${this.controller.mapCellSize} @map-cell-zoom-change=${this.handleChangeZoom}>
       </ca-map-cell-zoom-panel>

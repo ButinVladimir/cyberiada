@@ -72,7 +72,7 @@ export class OverviewStoryPanel extends BaseComponent {
     const requirements = [];
 
     if (this.level !== undefined) {
-      requirements.push(msg(str`development level ${this.level}`))
+      requirements.push(msg(str`development level ${this.level}`));
     }
 
     const result = capitalizeFirstLetter(requirements.join(', '));

@@ -95,6 +95,6 @@ export function removeElementsFromArray<T>(array: T[], fromIndex: number, count:
   array.length -= count;
 }
 
-export function capitalizeFirstLetter(text: string ) {
+export function capitalizeFirstLetter(text: string) {
   return text.charAt(0).toUpperCase() + text.slice(1);
 }

@@ -1,5 +1,5 @@
-import { msg } from "@lit/localize";
-import { OverviewMenuItem, MiscMenuItem } from "@shared/types";
+import { msg } from '@lit/localize';
+import { OverviewMenuItem, MiscMenuItem } from '@shared/types';
 
 export const MENU_ITEMS: Record<OverviewMenuItem | MiscMenuItem, () => string> = {
   [OverviewMenuItem.automation]: () => msg('Automation'),

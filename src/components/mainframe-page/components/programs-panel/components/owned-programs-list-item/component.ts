@@ -1,12 +1,15 @@
-import { t } from 'i18next';
 import { css, html, nothing } from 'lit';
+import { localized } from '@lit/localize';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { BaseComponent } from '@shared/base-component';
-import { OtherProgramName, ProgramName } from '@state/mainframe-state/states/progam-factory/types';
+import { OtherProgramName, type ProgramName } from '@state/mainframe-state/states/progam-factory/types';
 import { SCREEN_WIDTH_POINTS, hintIconStyle } from '@shared/styles';
+import { COMMON_TEXTS } from '@texts/common';
 import { OwnedProgramsListItemController } from './controller';
+import { PROGRAM_TEXTS } from '@/texts';
 
+@localized()
 @customElement('ca-owned-programs-list-item')
 export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemController> {
   static styles = [
@@ -102,7 +105,7 @@ export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemCo
     attribute: 'program-name',
     type: String,
   })
-  programName: string = OtherProgramName.shareServer;
+  programName: ProgramName = OtherProgramName.shareServer;
 
   @state()
   _descriptionVisible = false;
@@ -118,23 +121,28 @@ export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemCo
   render() {
     const formatter = this.controller.formatter;
 
-    const program = this.controller.getProgram(this.programName as ProgramName);
+    const program = this.controller.getProgram(this.programName);
 
     if (!program) {
       return nothing;
     }
 
     const descriptionButtonName = this._descriptionVisible ? 'chevron-down' : 'chevron-right';
-    const descriptionButtonLabel = this._descriptionVisible ? 'hideDescription' : 'showDescription';
+    const descriptionButtonLabel = this._descriptionVisible
+      ? COMMON_TEXTS.hideDescription()
+      : COMMON_TEXTS.showDescription();
     const descriptionClasses = classMap({
       'program-description': true,
       visible: this._descriptionVisible,
     });
 
     const autoupgradeIcon = program.autoUpgradeEnabled ? 'arrow-up-circle-fill' : 'arrow-up-circle';
-    const autoupgradeLabel = program.autoUpgradeEnabled ? 'disableAutoupgrade' : 'enableAutoupgrade';
+    const autoupgradeLabel = program.autoUpgradeEnabled
+      ? COMMON_TEXTS.disableAutoupgrade()
+      : COMMON_TEXTS.enableAutoupgrade();
     const autoupgradeVariant = program.autoUpgradeEnabled ? 'neutral' : 'default';
 
+    const programTitle = PROGRAM_TEXTS[this.programName].title();
     const formattedLevel = formatter.formatNumberDecimal(program.level);
     const formattedQuality = formatter.formatQuality(program.quality);
 
@@ -143,10 +151,10 @@ export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemCo
         <div class="program-title" draggable="true" @dragstart=${this.handleDragStart}>
           <sl-icon name="grip-vertical"> </sl-icon>
 
-          ${t(`${program.name}.name`, { ns: 'programs' })}
+          ${programTitle}
 
           <sl-tooltip>
-            <span slot="content">${t(`mainframe.hints.${descriptionButtonLabel}`, { ns: 'ui' })}</span>
+            <span slot="content">${descriptionButtonLabel}</span>
 
             <sl-icon-button
               name=${descriptionButtonName}
@@ -158,48 +166,40 @@ export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemCo
         </div>
 
         <div class=${descriptionClasses}>
-          <ca-process-description-text program-name=${this.programName}></ca-process-description-text>
+          <ca-program-description-text program-name=${this.programName}></ca-program-description-text>
         </div>
       </div>
 
-      <div class="mobile">${t(`mainframe.programs.level`, { ns: 'ui', level: formattedLevel })}</div>
+      <div class="mobile">${COMMON_TEXTS.level()}</div>
 
       <div class="desktop">${formattedLevel}</div>
 
-      <div class="mobile">${t(`mainframe.programs.quality`, { ns: 'ui', quality: formattedQuality })}</div>
+      <div class="mobile">${COMMON_TEXTS.quality()}</div>
 
       <div class="desktop">${formattedQuality}</div>
 
       <div class="buttons mobile">
         <sl-button variant="default" size="medium" @click=${this.handleUpgradeMax}>
-          ${t('common.upgrade', { ns: 'ui' })}
+          ${COMMON_TEXTS.upgrade()}
         </sl-button>
 
         <sl-button variant=${autoupgradeVariant} size="medium" @click=${this.handleToggleAutoUpgrade}>
-          ${t(`mainframe.programs.${autoupgradeLabel}`, { ns: 'ui' })}
+          ${autoupgradeLabel}
         </sl-button>
       </div>
 
       <div class="buttons desktop">
         <sl-tooltip>
-          <span slot="content"> ${t('common.upgrade', { ns: 'ui' })} </span>
+          <span slot="content"> ${COMMON_TEXTS.upgrade()} </span>
 
-          <sl-icon-button
-            name="chevron-double-up"
-            label=${t('common.upgrade', { ns: 'ui' })}
-            @click=${this.handleUpgradeMax}
-          >
+          <sl-icon-button name="chevron-double-up" label=${COMMON_TEXTS.upgrade()} @click=${this.handleUpgradeMax}>
           </sl-icon-button>
         </sl-tooltip>
 
         <sl-tooltip>
-          <span slot="content"> ${t(`mainframe.programs.${autoupgradeLabel}`, { ns: 'ui' })} </span>
+          <span slot="content"> ${autoupgradeLabel} </span>
 
-          <sl-icon-button
-            name=${autoupgradeIcon}
-            label=${t(`mainframe.programs.${autoupgradeLabel}`, { ns: 'ui' })}
-            @click=${this.handleToggleAutoUpgrade}
-          >
+          <sl-icon-button name=${autoupgradeIcon} label=${autoupgradeLabel} @click=${this.handleToggleAutoUpgrade}>
           </sl-icon-button>
         </sl-tooltip>
       </div>

@@ -8,9 +8,9 @@ import {
   ConfirmationAlertSubmitEvent,
 } from '@components/game-screen/components/confirmation-alert/events';
 import { GameStateAlert } from '@shared/types';
-import { GAME_SPEED_TEXTS } from '@texts/game-speed';
 import { GameSpeedButtonsController } from './controller';
 import { GameSpeedButtonProps } from './interfaces';
+import { GAME_SPEED_TEXTS } from './constants';
 
 @localized()
 @customElement('ca-game-speed-buttons')
@@ -104,7 +104,9 @@ export class GameSpeedButtons extends BaseComponent<GameSpeedButtonsController> 
   private handleOpenFastForwardDialog = (event: Event) => {
     event.stopPropagation();
 
-    this.dispatchEvent(new ConfirmationAlertOpenEvent(GameStateAlert.fastForward, {}));
+    this.dispatchEvent(
+      new ConfirmationAlertOpenEvent(GameStateAlert.fastForward, msg('Are you sure want to spend accumulated time?')),
+    );
   };
 
   private handleConfirmFastForwardDialog = (event: Event) => {

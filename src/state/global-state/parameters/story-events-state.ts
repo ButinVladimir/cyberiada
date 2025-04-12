@@ -10,6 +10,7 @@ import { IStoryEventsState } from '../interfaces/parameters/story-events-state';
 import { IStoryGoal } from '../interfaces/story-goal';
 import { StoryGoalState } from '../types';
 import { GLOBAL_STATE_UI_EVENTS } from '../constants';
+import { STORY_MESSAGES } from '@/texts';
 
 const { lazyInject } = decorators;
 
@@ -76,7 +77,7 @@ export class StoryEventsState implements IStoryEventsState {
 
       if (storyEvent.messages) {
         storyEvent.messages.forEach((messageKey) => {
-          this._notificationsState.pushNotification(NotificationType.storyEvent, { messageKey });
+          this._notificationsState.pushNotification(NotificationType.storyEvent, STORY_MESSAGES[messageKey]());
         });
       }
 

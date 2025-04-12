@@ -56,7 +56,7 @@ export class FastForwardingScreen extends BaseComponent<FastForwardingScreenCont
         <span> ${msg('Spending accumulated time...')} </span>
       </div>
 
-      <sl-progress-bar ${ref(this._progressBarRef)} value=0></sl-progress-bar>
+      <sl-progress-bar ${ref(this._progressBarRef)} value="0"></sl-progress-bar>
 
       <sl-button variant="danger" size="medium" @click=${this.handleStopFastForwarding}>
         ${msg('Stop fast forwarding')}
@@ -77,7 +77,7 @@ export class FastForwardingScreen extends BaseComponent<FastForwardingScreenCont
 
       const accumulatedTime = this.controller.accumulatedTime;
       this._maxTime = Math.max(this._maxTime, accumulatedTime);
-  
+
       const progressBarValue = ((this._maxTime - accumulatedTime) / this._maxTime) * 100;
       const formattedAccumulatedTime = formatter.formatTimeShort(accumulatedTime);
 

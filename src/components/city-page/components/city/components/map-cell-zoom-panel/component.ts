@@ -91,11 +91,7 @@ export class MapCellZoomPanel extends BaseComponent<MapCellZoomPanelController> 
         <sl-tooltip placement="bottom">
           <span slot="content"> ${msg('Toggle zoom panel')} </span>
 
-          <sl-icon-button
-            name="zoom-in"
-            label=${msg('Toggle zoom panel')}
-            @click=${this.handleToggleZoomPanel}
-          >
+          <sl-icon-button name="zoom-in" label=${msg('Toggle zoom panel')} @click=${this.handleToggleZoomPanel}>
           </sl-icon-button>
         </sl-tooltip>
       </div>

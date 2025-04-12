@@ -1,5 +1,5 @@
-import { t } from 'i18next';
 import { css, html, nothing } from 'lit';
+import { localized, msg, str } from '@lit/localize';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { BaseComponent } from '@shared/base-component';
@@ -8,10 +8,13 @@ import {
   ConfirmationAlertSubmitEvent,
 } from '@components/game-screen/components/confirmation-alert/events';
 import { ProgramAlert } from '@shared/types';
-import { ProgramName, OtherProgramName } from '@state/mainframe-state/states/progam-factory/types';
+import * as types from '@state/mainframe-state/states/progam-factory/types';
 import { SCREEN_WIDTH_POINTS, hintIconStyle } from '@shared/styles';
+import { type ProgramName } from '@state/mainframe-state/states/progam-factory/types';
+import { COMMON_TEXTS, PROGRAM_TEXTS } from '@texts/index';
 import { ProcessesListItemController } from './controller';
 
+@localized()
 @customElement('ca-processes-list-item')
 export class ProcessesListItem extends BaseComponent<ProcessesListItemController> {
   static styles = [
@@ -130,7 +133,7 @@ export class ProcessesListItem extends BaseComponent<ProcessesListItemController
     attribute: 'program-name',
     type: String,
   })
-  programName: string = OtherProgramName.shareServer;
+  programName: ProgramName = types.OtherProgramName.shareServer;
 
   @state()
   _descriptionVisible = false;
@@ -157,47 +160,45 @@ export class ProcessesListItem extends BaseComponent<ProcessesListItemController
 
   render() {
     const formatter = this.controller.formatter;
-    const process = this.controller.getProcess(this.programName as ProgramName);
+    const process = this.controller.getProcess(this.programName as types.ProgramName);
 
     if (!process) {
       return nothing;
     }
 
+    const programTitle = PROGRAM_TEXTS[this.programName].title();
+
     const descriptionButtonName = this._descriptionVisible ? 'chevron-down' : 'chevron-right';
-    const descriptionButtonLabel = this._descriptionVisible ? 'hideDescription' : 'showDescription';
+    const descriptionButtonLabel = this._descriptionVisible
+      ? COMMON_TEXTS.hideDescription()
+      : COMMON_TEXTS.showDescription();
     const descriptionClasses = classMap({
       'program-description': true,
       visible: this._descriptionVisible,
     });
 
-    const cores = process.program.isAutoscalable
-      ? t('mainframe.processes.autoscalable', { ns: 'ui' })
-      : t('mainframe.processes.usesCores', {
-          ns: 'ui',
-          cores: formatter.formatNumberDecimal(process.usedCores),
-          maxCores: formatter.formatNumberDecimal(process.maxCores),
-        });
+    const formattedUsedCores = formatter.formatNumberDecimal(process.usedCores);
+    const formattedMaxCores = formatter.formatNumberDecimal(process.maxCores);
+    const cores = process.program.isAutoscalable ? msg('Autoscalable') : `${formattedUsedCores} / ${formattedMaxCores}`;
     const coresFull = process.program.isAutoscalable
-      ? t('mainframe.processes.autoscalable', { ns: 'ui' })
-      : t('mainframe.processes.usesCoresFull', {
-          ns: 'ui',
-          cores: formatter.formatNumberDecimal(process.usedCores),
-          maxCores: formatter.formatNumberDecimal(process.maxCores),
-        });
+      ? msg('Autoscalable')
+      : msg(str`Uses cores: ${formattedUsedCores} / ${formattedMaxCores}`);
 
     const toggleIcon = process.isActive ? 'play-fill' : 'pause-fill';
-    const toggleLabel = process.isActive ? 'disableProcess' : 'enableProcess';
+    const toggleLabel = process.isActive ? msg('Disable process') : msg('Enable process');
     const toggleVariant = process.isActive ? 'neutral' : 'default';
+
+    const deleteProcessLabel = msg('Delete process');
 
     return html`
       <div class="program">
         <div class="program-title" draggable="true" @dragstart=${this.handleDragStart}>
           <sl-icon name="grip-vertical"> </sl-icon>
 
-          ${t(`${process.program.name}.name`, { ns: 'programs' })}
+          ${programTitle}
 
           <sl-tooltip>
-            <span slot="content">${t(`mainframe.hints.${descriptionButtonLabel}`, { ns: 'ui' })}</span>
+            <span slot="content">${descriptionButtonLabel}</span>
 
             <sl-icon-button
               name=${descriptionButtonName}
@@ -223,33 +224,28 @@ export class ProcessesListItem extends BaseComponent<ProcessesListItemController
 
       <div class="buttons mobile">
         <sl-button variant=${toggleVariant} size="medium" @click=${this.handleToggleProcess}>
-          ${t(`mainframe.processes.${toggleLabel}`, { ns: 'ui' })}
+          ${toggleLabel}
         </sl-button>
 
         <sl-button variant="danger" size="medium" @click=${this.handleOpenDeleteProcessDialog}>
-          ${t('mainframe.processes.processDelete', { ns: 'ui' })}
+          ${deleteProcessLabel}
         </sl-button>
       </div>
 
       <div class="buttons desktop">
         <sl-tooltip>
-          <span slot="content"> ${t(`mainframe.processes.${toggleLabel}`, { ns: 'ui' })} </span>
+          <span slot="content"> ${toggleLabel} </span>
 
-          <sl-icon-button
-            name=${toggleIcon}
-            label=${t(`mainframe.processes.${toggleLabel}`, { ns: 'ui' })}
-            @click=${this.handleToggleProcess}
-          >
-          </sl-icon-button>
+          <sl-icon-button name=${toggleIcon} label=${toggleLabel} @click=${this.handleToggleProcess}> </sl-icon-button>
         </sl-tooltip>
 
         <sl-tooltip>
-          <span slot="content"> ${t('mainframe.processes.processDelete', { ns: 'ui' })} </span>
+          <span slot="content"> ${deleteProcessLabel} </span>
 
           <sl-icon-button
             id="delete-btn"
             name="x-lg"
-            label=${t('mainframe.processes.processDelete', { ns: 'ui' })}
+            label=${deleteProcessLabel}
             @click=${this.handleOpenDeleteProcessDialog}
           >
           </sl-icon-button>
@@ -276,12 +272,14 @@ export class ProcessesListItem extends BaseComponent<ProcessesListItemController
     event.preventDefault();
     event.stopPropagation();
 
-    const confirmationAlertParameters = {
-      programName: this.programName,
-    };
+    const programTitle = PROGRAM_TEXTS[this.programName].title();
 
     this.dispatchEvent(
-      new ConfirmationAlertOpenEvent(ProgramAlert.processDelete, confirmationAlertParameters, this.programName),
+      new ConfirmationAlertOpenEvent(
+        ProgramAlert.processDelete,
+        msg(str`Are you sure want to delete process for program "${programTitle}"? It's progress will be lost.`),
+        this.programName,
+      ),
     );
   };
 

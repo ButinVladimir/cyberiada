@@ -1,9 +1,9 @@
 import { html, css } from 'lit';
-import { localized, msg } from '@lit/localize';
+import { localized } from '@lit/localize';
 import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { sectionTitleStyle, detailsStyle, hintIconStyle, SCREEN_WIDTH_POINTS } from '@shared/styles';
-import { PROGRAM_TEXTS } from '@texts/index';
+import { CATEGORIES, PROGRAM_TEXTS } from '@texts/index';
 import { OverviewUnlockedProgramsController } from './controller';
 import { ProgramName } from '@state/mainframe-state/states/progam-factory/types';
 
@@ -63,9 +63,11 @@ export class OverviewUnlockedPrograms extends BaseComponent<OverviewUnlockedProg
   }
 
   render() {
+    const programsCategory = CATEGORIES.programs();
+
     return html`
       <sl-details>
-        <h4 class="title" slot="summary">${msg('Programs')}</h4>
+        <h4 class="title" slot="summary">${programsCategory}</h4>
 
         <div class="content-table">${this.renderList()}</div>
       </sl-details>
@@ -79,14 +81,16 @@ export class OverviewUnlockedPrograms extends BaseComponent<OverviewUnlockedProg
   };
 
   private renderListItem = (itemName: ProgramName) => {
+    const programTitle = PROGRAM_TEXTS[itemName].title();
+    const programOverview = PROGRAM_TEXTS[itemName].overview();
     const quality = this.controller.getItemHighestAvailableQuality(itemName);
 
     return html`
       <span>
-        ${PROGRAM_TEXTS[itemName].title()}
+        ${programTitle}
 
         <sl-tooltip>
-          <span slot="content"> ${PROGRAM_TEXTS[itemName].overview()} </span>
+          <span slot="content"> ${programOverview} </span>
 
           <sl-icon name="question-circle"></sl-icon>
         </sl-tooltip>

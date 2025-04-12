@@ -45,8 +45,7 @@ export class TopBar extends BaseComponent {
         <sl-tooltip>
           <span slot="content"> ${msg('Toggle menu')} </span>
 
-          <sl-icon-button name="list" label=${msg('Toggle menu')} @click=${this.handleMenuClick}>
-          </sl-icon-button>
+          <sl-icon-button name="list" label=${msg('Toggle menu')} @click=${this.handleMenuClick}> </sl-icon-button>
         </sl-tooltip>
       </div>
 

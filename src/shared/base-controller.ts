@@ -16,7 +16,7 @@ import { IFormatter, IUIEventEmitter, IUIEventListener } from './interfaces';
 
 export type PartialUpdateFunction = () => void;
 
-export class BaseController<T extends ReactiveControllerHost & HTMLElement = ReactiveControllerHost & HTMLElement >
+export class BaseController<T extends ReactiveControllerHost & HTMLElement = ReactiveControllerHost & HTMLElement>
   implements ReactiveController, IUIEventListener
 {
   private static _containerValuesCache = new Map<symbol, any>();
@@ -43,7 +43,7 @@ export class BaseController<T extends ReactiveControllerHost & HTMLElement = Rea
     host.addController(this);
 
     this.eventsEmitterMap = new Map<IUIEventEmitter, Set<symbol>>();
-    
+
     this._partialUpdateFn = partialUpdateFn;
   }
 

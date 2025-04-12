@@ -1,5 +1,5 @@
-import { t } from 'i18next';
 import { css, html } from 'lit';
+import { localized, msg } from '@lit/localize';
 import { customElement } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { BaseComponent } from '@shared/base-component';
@@ -7,8 +7,10 @@ import { IProgram } from '@state/mainframe-state/states/progam-factory/interface
 import { ProgramName } from '@state/mainframe-state/states/progam-factory/types';
 import { SortableElementMovedEvent } from '@components/shared/sortable-list/events/sortable-element-moved';
 import { SCREEN_WIDTH_POINTS } from '@shared/styles';
+import { COMMON_TEXTS } from '@texts/common';
 import { OwnedProgramsListController } from './controller';
 
+@localized()
 @customElement('ca-owned-programs-list')
 export class OwnedProgramsList extends BaseComponent<OwnedProgramsListController> {
   static styles = css`
@@ -115,47 +117,47 @@ export class OwnedProgramsList extends BaseComponent<OwnedProgramsListController
     const isAutoupgradeActive = this.checkSomeProgramsAutoupgradeActive();
 
     const autoupgradeIcon = isAutoupgradeActive ? 'arrow-up-circle-fill' : 'arrow-up-circle';
-    const autoupgradeLabel = isAutoupgradeActive ? 'disableAutoupgradeAll' : 'enableAutoupgradeAll';
+    const autoupgradeLabel = isAutoupgradeActive
+      ? COMMON_TEXTS.disableAutoupgradeAll()
+      : COMMON_TEXTS.enableAutoupgradeAll();
     const autoupgradeVariant = isAutoupgradeActive ? 'neutral' : 'default';
 
     const ownedPrograms = this.controller.listOwnedPrograms();
 
+    const upgradeAllProgramsLabel = COMMON_TEXTS.upgradeAll();
+
     return html`
       <div class="header">
-        <div class="header-column">${t('mainframe.program', { ns: 'ui' })}</div>
-        <div class="header-column">${t('mainframe.level', { ns: 'ui' })}</div>
-        <div class="header-column">${t('mainframe.quality', { ns: 'ui' })}</div>
+        <div class="header-column">${msg('Program')}</div>
+        <div class="header-column">${COMMON_TEXTS.level()}</div>
+        <div class="header-column">${COMMON_TEXTS.quality()}</div>
         <div class="buttons desktop">
           <sl-tooltip>
-            <span slot="content"> ${t('mainframe.programs.upgradeMaxAllPrograms', { ns: 'ui' })} </span>
+            <span slot="content"> ${upgradeAllProgramsLabel} </span>
 
             <sl-icon-button
               name="chevron-double-up"
-              label=${t('mainframe.programs.upgradeMaxAllPrograms', { ns: 'ui' })}
+              label=${upgradeAllProgramsLabel}
               @click=${this.handleUpgradeMaxAllPrograms}
             >
             </sl-icon-button>
           </sl-tooltip>
 
           <sl-tooltip>
-            <span slot="content"> ${t(`mainframe.programs.${autoupgradeLabel}`, { ns: 'ui' })} </span>
+            <span slot="content"> ${autoupgradeLabel} </span>
 
-            <sl-icon-button
-              name=${autoupgradeIcon}
-              label=${t(`mainframe.programs.${autoupgradeLabel}`, { ns: 'ui' })}
-              @click=${this.handleToggleAutoupgrade}
-            >
+            <sl-icon-button name=${autoupgradeIcon} label=${autoupgradeLabel} @click=${this.handleToggleAutoupgrade}>
             </sl-icon-button>
           </sl-tooltip>
         </div>
 
         <div class="buttons mobile">
           <sl-button variant="default" size="medium" @click=${this.handleUpgradeMaxAllPrograms}>
-            ${t('mainframe.programs.upgradeMaxAllPrograms', { ns: 'ui' })}
+            ${upgradeAllProgramsLabel}
           </sl-button>
 
           <sl-button variant=${autoupgradeVariant} size="medium" @click=${this.handleToggleAutoupgrade}>
-            ${t(`mainframe.programs.${autoupgradeLabel}`, { ns: 'ui' })}
+            ${autoupgradeLabel}
           </sl-button>
         </div>
       </div>
@@ -171,7 +173,7 @@ export class OwnedProgramsList extends BaseComponent<OwnedProgramsListController
   }
 
   private renderEmptyListNotification = () => {
-    return html` <div class="notification">${t('mainframe.programs.emptyListNotification', { ns: 'ui' })}</div> `;
+    return html` <div class="notification">${msg("You don't have any owned programs")}</div> `;
   };
 
   private renderProgram = (program: IProgram) => {

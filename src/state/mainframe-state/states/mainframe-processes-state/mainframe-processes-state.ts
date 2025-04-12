@@ -1,4 +1,5 @@
 import { inject, injectable } from 'inversify';
+import { msg, str } from '@lit/localize';
 import { decorators } from '@state/container';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
@@ -8,6 +9,7 @@ import { TYPES } from '@state/types';
 import { EventBatcher } from '@shared/event-batcher';
 import { ProgramsEvent } from '@shared/types';
 import { moveElementInArray, removeElementsFromArray } from '@shared/helpers';
+import { PROGRAM_TEXTS } from '@texts/programs';
 import type { IMainframeState } from '../../interfaces/mainframe-state';
 import { ProgramName } from '../progam-factory/types';
 import {
@@ -16,7 +18,6 @@ import {
   IProcess,
   ISerializedProcess,
 } from './interfaces';
-
 import { Process } from './process';
 import { MAINFRAME_PROCESSES_STATE_UI_EVENTS } from './constants';
 
@@ -145,10 +146,12 @@ export class MainframeProcessesState implements IMainframeProcessesState {
 
     this.requestUpdateProcesses();
 
-    this._messageLogState.postMessage(ProgramsEvent.processStarted, {
-      programName: program.name,
-      threads: this._formatter.formatNumberDecimal(threadCount),
-    });
+    const programTitle = PROGRAM_TEXTS[program.name].title();
+    const formattedThreads = this._formatter.formatNumberDecimal(threadCount);
+    this._messageLogState.postMessage(
+      ProgramsEvent.processStarted,
+      msg(str`Process for program "${programTitle}" with ${formattedThreads} threads has been started`),
+    );
 
     this.uiEventBatcher.enqueueEvent(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESSES_UPDATED);
 
@@ -177,10 +180,12 @@ export class MainframeProcessesState implements IMainframeProcessesState {
 
       this._processesMap.delete(programName);
 
-      this._messageLogState.postMessage(ProgramsEvent.processDeleted, {
-        programName,
-        threads: this._formatter.formatNumberDecimal(process.threads),
-      });
+      const programTitle = PROGRAM_TEXTS[programName].title();
+      const formattedThreads = this._formatter.formatNumberDecimal(process.threads);
+      this._messageLogState.postMessage(
+        ProgramsEvent.processStarted,
+        msg(str`Process for program "${programTitle}" with ${formattedThreads} threads has been deleted`),
+      );
     }
 
     this.uiEventBatcher.enqueueEvent(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESSES_UPDATED);
@@ -191,7 +196,7 @@ export class MainframeProcessesState implements IMainframeProcessesState {
   deleteAllProcesses() {
     this.clearState();
 
-    this._messageLogState.postMessage(ProgramsEvent.allProcessesDeleted);
+    this._messageLogState.postMessage(ProgramsEvent.allProcessesDeleted, msg('All process have been deleted'));
 
     this.uiEventBatcher.enqueueEvent(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESSES_UPDATED);
 

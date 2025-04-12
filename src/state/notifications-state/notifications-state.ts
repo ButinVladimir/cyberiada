@@ -28,14 +28,14 @@ export class NotificationsState implements INotificationsState {
     this._stateUiConnector.registerEventEmitter(this);
   }
 
-  pushNotification(notificationType: NotificationType, parameters?: Record<string, any>, force?: boolean) {
+  pushNotification(notificationType: NotificationType, message: string, force?: boolean) {
     if (!force && !this._settingsState.isNotificationTypeEnabled(notificationType)) {
       return;
     }
 
     this._notifications.push({
       notificationType,
-      parameters,
+      message,
     });
 
     this.uiEventBatcher.enqueueEvent(NOTIFICATION_STATE_UI_EVENTS.UPDATED_NOTIFICATIONS);

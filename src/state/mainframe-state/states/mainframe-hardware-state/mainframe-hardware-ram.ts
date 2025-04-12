@@ -1,3 +1,4 @@
+import { msg, str } from '@lit/localize';
 import { IExponent } from '@shared/interfaces';
 import { PurchaseEvent } from '@shared/types';
 import { MainframeHardwareParameter } from './mainframe-hardware-parameter';
@@ -10,8 +11,13 @@ export class MainframeHardwareRam extends MainframeHardwareParameter {
     return this.globalState.scenario.currentValues.mainframeHardware.ramPrice;
   }
 
-  protected get purchaseEvent(): PurchaseEvent {
-    return PurchaseEvent.ramUpgraded;
+  protected postPurchaseMessge(): void {
+    const formattedLevel = this.formatter.formatNumberDecimal(this._level);
+
+    this.messageLogState.postMessage(
+      PurchaseEvent.ramUpgraded,
+      msg(str`Mainframe RAM has been upgraded to ${formattedLevel}`),
+    );
   }
 
   async startNewState(): Promise<void> {

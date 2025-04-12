@@ -1,11 +1,12 @@
-import { t } from 'i18next';
 import { css, html } from 'lit';
+import { localized, msg, str } from '@lit/localize';
 import { customElement, state } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { hintStyle } from '@shared/styles';
 import { SCREEN_WIDTH_POINTS } from '@shared/styles';
 import { ProcessesPanelController } from './controller';
 
+@localized()
 @customElement('ca-mainframe-processes-panel')
 export class MainframeProcessesPanel extends BaseComponent<ProcessesPanelController> {
   static styles = [
@@ -71,29 +72,30 @@ export class MainframeProcessesPanel extends BaseComponent<ProcessesPanelControl
   render() {
     const formatter = this.controller.formatter;
 
+    const formattedAvailableRam = formatter.formatNumberDecimal(this.controller.availableRam);
+    const formattedMaxRam = formatter.formatNumberDecimal(this.controller.maxRam);
+
+    const formattedAvailableCores = formatter.formatNumberDecimal(this.controller.availableCores);
+    const formattedMaxCores = formatter.formatNumberDecimal(this.controller.maxCores);
+
     return html`
-      <p class="hint">${t('mainframe.processes.processesHint', { ns: 'ui' })}</p>
+      <p class="hint">
+        ${msg(`To make a program run, a process has to be start for it.
+Topmost processes for non-scalable programs have more priority when cores are assigned to processes.
+Process for scalable program has cores and RAM assigned last.
+Only one process for scalable program can run at same time.
+Process minimal completion time is limited.
+Processes can be rearranged by dragging them by their title.`)}
+      </p>
 
       <div class="top-container">
         <sl-button class="start-process" variant="primary" size="medium" @click=${this.handleStartProcessDialogOpen}>
-          ${t('mainframe.processes.startProcess', { ns: 'ui' })}
+          ${msg('Start process')}
         </sl-button>
 
-        <div class="ram">
-          ${t('mainframe.processes.availableRam', {
-            ns: 'ui',
-            ram: formatter.formatNumberDecimal(this.controller.availableRam),
-            maxRam: formatter.formatNumberDecimal(this.controller.maxRam),
-          })}
-        </div>
+        <div class="ram">${msg(str`Available RAM: ${formattedAvailableRam} / ${formattedMaxRam}`)}</div>
 
-        <div class="cores">
-          ${t('mainframe.processes.availableCores', {
-            ns: 'ui',
-            cores: formatter.formatNumberDecimal(this.controller.availableCores),
-            maxCores: formatter.formatNumberDecimal(this.controller.maxCores),
-          })}
-        </div>
+        <div class="cores">${msg(str`Available cores: ${formattedAvailableCores} / ${formattedMaxCores}`)}</div>
       </div>
 
       <ca-processes-list></ca-processes-list>

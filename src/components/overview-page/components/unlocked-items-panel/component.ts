@@ -55,9 +55,7 @@ export class OverviewUnlockedItemsPanel extends BaseComponent<OverviewUnlockedIt
 Number next to item name is it's maximum quality available.`)}
       </p>
       <div class="categories">
-        ${programsUnlocked
-          ? html`<ca-overview-unlocked-programs></ca-overview-unlocked-programs>`
-          : nothing}
+        ${programsUnlocked ? html`<ca-overview-unlocked-programs></ca-overview-unlocked-programs>` : nothing}
       </div>
     `;
   }

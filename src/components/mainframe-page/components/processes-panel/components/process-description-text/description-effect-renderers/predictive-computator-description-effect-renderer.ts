@@ -1,5 +1,5 @@
-import { t } from 'i18next';
 import { html } from 'lit';
+import { msg, str } from '@lit/localize';
 import { PredictiveComputatorProgram } from '@state/mainframe-state/states/progam-factory/programs/predictive-computator';
 import { IFormatter } from '@shared/interfaces/formatter';
 import { IProcess } from '@state/mainframe-state/states/mainframe-processes-state/interfaces/process';
@@ -22,15 +22,12 @@ export class PredictiveComputatorDescriptionEffectRenderer implements IDescripti
     const { usedCores } = this._process;
     const program = this._process.program as PredictiveComputatorProgram;
 
-    return html`
-      <p>
-        ${t('predictiveComputator.speedMultiplierProcess', {
-          ns: 'programs',
-          value: this._formatter.formatNumberFloat(
-            program.calculateProgramCompletionSpeedMultiplier(usedCores, this._autoscalableProcessRam),
-          ),
-        })}
-      </p>
-    `;
+    const value = this._formatter.formatNumberFloat(
+      program.calculateProgramCompletionSpeedMultiplier(usedCores, this._autoscalableProcessRam),
+    );
+
+    return html` <p>${msg(str`Speed multiplier: ${value}`)}</p> `;
   };
+
+  public partialUpdate() {}
 }

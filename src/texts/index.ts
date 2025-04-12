@@ -3,7 +3,4 @@ export * from './unlocked-features';
 export * from './categories';
 export * from './programs';
 export * from './clone-templates';
-export * from './menu-items';
-export * from './game-speed';
-export * from './mainframe-hardware';
 export * from './common';

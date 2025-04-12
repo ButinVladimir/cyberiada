@@ -2,7 +2,7 @@ import { t } from 'i18next';
 import { html } from 'lit';
 import { PredictiveComputatorProgram } from '@state/mainframe-state/states/progam-factory/programs/predictive-computator';
 import { IFormatter } from '@shared/interfaces/formatter';
-import { diffFormatterParametersFloat } from '@shared/formatter-parameters';
+import { diffFormatterParameters } from '@shared/formatter-parameters';
 import { IDescriptionParameters, IDescriptionEffectRenderer } from '../interfaces';
 
 export class PredictiveComputatorDescriptionEffectRenderer implements IDescriptionEffectRenderer {
@@ -35,7 +35,7 @@ export class PredictiveComputatorDescriptionEffectRenderer implements IDescripti
         ${t('predictiveComputator.speedMultiplierDiff', {
           ns: 'programs',
           value: this._formatter.formatNumberFloat(value),
-          valueDiff: this._formatter.formatNumberFloat(valueDiff, diffFormatterParametersFloat),
+          valueDiff: this._formatter.formatNumberFloat(valueDiff, diffFormatterParameters),
         })}
       </p>
     `;

@@ -1,4 +1,5 @@
 import { inject, injectable } from 'inversify';
+import { msg } from '@lit/localize';
 import type { INotificationsState } from '@state/notifications-state/interfaces/notifications-state';
 import type { ISettingsState } from '@state/settings-state/interfaces/settings-state';
 import type { ICityState } from '@state/city-state/interfaces/city-state';
@@ -111,7 +112,11 @@ export class AppState implements IAppState {
     const migratedSaveData = migrator.migrate(saveData);
 
     if (migrator.hasMigrated) {
-      this._notificationsState.pushNotification(NotificationType.gameVersionUpdated, undefined, true);
+      this._notificationsState.pushNotification(
+        NotificationType.gameVersionUpdated,
+        msg('Game version has been updated'),
+        true,
+      );
     }
 
     if (!migratedSaveData) {
