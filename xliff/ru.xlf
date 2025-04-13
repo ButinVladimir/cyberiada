@@ -841,7 +841,7 @@ Generates rewards points and improves all rewards.</source>
 </trans-unit>
 <trans-unit id="sd855ec6d66fe2200">
   <source>Development points: <x id="0" equiv-text="${formattedValue}"/> per second</source>
-  <target>Очки разработки: <x id="0" equiv-text="${formattedValue}"/> в секунду</target>
+  <target>Очки развития: <x id="0" equiv-text="${formattedValue}"/> в секунду</target>
 </trans-unit>
 <trans-unit id="scb6fc07cf6ef6e2b">
   <source>Code base points: <x id="0" equiv-text="${formattedValue}"/> per completion (<x id="1" equiv-text="${formattedAvgValue}"/> per second)</source>
@@ -913,7 +913,7 @@ Generates rewards points and improves all rewards.</source>
 </trans-unit>
 <trans-unit id="s191c2f9a31fa0d2a">
   <source>Development points: Up to <x id="0" equiv-text="${formattedPoints}"/> per second</source>
-  <target>Очки разработки: До <x id="0" equiv-text="${formattedPoints}"/> в секунду</target>
+  <target>Очки развития: До <x id="0" equiv-text="${formattedPoints}"/> в секунду</target>
 </trans-unit>
 <trans-unit id="s2d31ef3bc5bd767f">
   <source>Code base points: <x id="0" equiv-text="${formattedValue}"/> (<x id="1" equiv-text="${formattedValueDiff}"/>) per completion (<x id="2" equiv-text="${formattedMinAvgValue}"/> — <x id="3" equiv-text="${formattedMaxAvgValue}"/> per second) (<x id="4" equiv-text="${formattedMinAvgValueDiff}"/> — <x id="5" equiv-text="${formattedMaxAvgValueDiff}"/>)</source>
@@ -996,6 +996,298 @@ Programs on top have higher priority. Autoupgrade for programs won"t change thei
 <trans-unit id="sa7fbe073b55c9c4a">
   <source>Program is already bought with level <x id="0" equiv-text="${formattedLevel}"/> and quality <x id="1" equiv-text="${formattedQuality}"/></source>
   <target>Программа уже куплена с уровнем <x id="0" equiv-text="${formattedLevel}"/> и качеством <x id="1" equiv-text="${formattedQuality}"/></target>
+</trans-unit>
+<trans-unit id="s0184ea2abd8583db">
+  <source>Money: Up to <x id="0" equiv-text="${formattedMoney}"/> (<x id="1" equiv-text="${formattedMoneyDiff}"/>) per second</source>
+  <target>Деньги: До <x id="0" equiv-text="${formattedMoney}"/> (<x id="1" equiv-text="${formattedMoneyDiff}"/>) в секунду</target>
+</trans-unit>
+<trans-unit id="s3564509e8d898af1">
+  <source>Development points: Up to <x id="0" equiv-text="${formattedPoints}"/> (<x id="1" equiv-text="${formattedPointsDiff}"/>) per second</source>
+  <target>Очки развития: До <x id="0" equiv-text="${formattedPoints}"/> (<x id="1" equiv-text="${formattedPointsDiff}"/>) в секунду</target>
+</trans-unit>
+<trans-unit id="s02933e9b3454ef2e">
+  <source>Speed multiplier: Up to <x id="0" equiv-text="${formattedValue}"/> (<x id="1" equiv-text="${formattedValueDiff}"/>)</source>
+  <target>Множитель скорости: До <x id="0" equiv-text="${formattedValue}"/> (<x id="1" equiv-text="${formattedValueDiff}"/>)</target>
+</trans-unit>
+<trans-unit id="sb8e6ccc8f5a89137">
+  <source>Actions: 1 per completion (<x id="0" equiv-text="${formattedMinAvgValue}"/> — <x id="1" equiv-text="${formattedMaxAvgValue}"/> per second) (<x id="2" equiv-text="${formattedMinAvgValueDiff}"/> — <x id="3" equiv-text="${formattedMaxAvgValueDiff}"/>)</source>
+  <target>Действия: 1 за выполнение (<x id="0" equiv-text="${formattedMinAvgValue}"/> — <x id="1" equiv-text="${formattedMaxAvgValue}"/> в секунду) (<x id="2" equiv-text="${formattedMinAvgValueDiff}"/> — <x id="3" equiv-text="${formattedMaxAvgValueDiff}"/>)</target>
+</trans-unit>
+<trans-unit id="s7122c5e0297ca6fe">
+  <source>Game started</source>
+  <target>Игра началась</target>
+</trans-unit>
+<trans-unit id="s820b2b70b4c9f0c4">
+  <source>Game saved</source>
+  <target>Игра сохранена</target>
+</trans-unit>
+<trans-unit id="s10a7cde62292d916">
+  <source>Accumulated time spent</source>
+  <target>Накопленное время потрачено</target>
+</trans-unit>
+<trans-unit id="s462610ab082955de">
+  <source>Development level reached</source>
+  <target>Уровень развития достигнут</target>
+</trans-unit>
+<trans-unit id="sb2b2f8d27942f965">
+  <source>Mainframe performance upgraded</source>
+  <target>Производительность мейнфрейма улучшена</target>
+</trans-unit>
+<trans-unit id="scece0808efc67d0b">
+  <source>Mainframe cores upgraded</source>
+  <target>Ядра мейнфрейма улучшены</target>
+</trans-unit>
+<trans-unit id="sfbc3c6e456ea7de3">
+  <source>Mainframe ram upgraded</source>
+  <target>Память мейнфрейма улучшена</target>
+</trans-unit>
+<trans-unit id="s327a44a3ec252cee">
+  <source>Program purchased</source>
+  <target>Программа приобретена</target>
+</trans-unit>
+<trans-unit id="scc8534fb753e7f9b">
+  <source>Clone purchased</source>
+  <target>Клон приобретен</target>
+</trans-unit>
+<trans-unit id="sd4f0627b634ecd5f">
+  <source>Process started</source>
+  <target>Процесс начат</target>
+</trans-unit>
+<trans-unit id="s33368fe0f5c78fa7">
+  <source>Process deleted</source>
+  <target>Процесс удален</target>
+</trans-unit>
+<trans-unit id="s3e68649b30910a60">
+  <source>All processes deleted</source>
+  <target>Все процессы удалены</target>
+</trans-unit>
+<trans-unit id="s4963a37fcedc00ff">
+  <source>Clone deleted</source>
+  <target>Клон удален</target>
+</trans-unit>
+<trans-unit id="s465fdc54f7001b5b">
+  <source>All clones deleted</source>
+  <target>Все клоны удалены</target>
+</trans-unit>
+<trans-unit id="sb48058412cd638ee">
+  <source>Message filter</source>
+  <target>Фильтр сообщений</target>
+</trans-unit>
+<trans-unit id="s4c7c60d1bc202bcf">
+  <source>Enable events in filter to receive messages about them in the log and as popups</source>
+  <target>Включите события в фильтре, чтобы получать сообщения в логе и в виде всплывающих окон</target>
+</trans-unit>
+<trans-unit id="s8d5afe7f6d376f30">
+  <source>Clear log messages</source>
+  <target>Удаление сообшений</target>
+</trans-unit>
+<trans-unit id="s49c92d596c68d112">
+  <source>Spend accumulated time</source>
+  <target>Трата накопленного времени</target>
+</trans-unit>
+<trans-unit id="sc556d0f1d86af75c">
+  <source>Purchase an already owned program</source>
+  <target>Покупка уже купленной програмы</target>
+</trans-unit>
+<trans-unit id="sf42c5152f5cceeb5">
+  <source>Replace a process</source>
+  <target>Замена процесса</target>
+</trans-unit>
+<trans-unit id="sd4cce515d8a0d8e4">
+  <source>Delete a process</source>
+  <target>Удаление процесса</target>
+</trans-unit>
+<trans-unit id="sfb6f78cf22e6b664">
+  <source>Delete all process</source>
+  <target>Удаление всех процессов</target>
+</trans-unit>
+<trans-unit id="s623785262471cba5">
+  <source>Replace a autoscalable process</source>
+  <target>Замена автомасштабируемого процесса</target>
+</trans-unit>
+<trans-unit id="s2502d47b0a97f414">
+  <source>Delete a clone</source>
+  <target>Удаление клона</target>
+</trans-unit>
+<trans-unit id="s25a4ae61b2b13785">
+  <source>Delete all clones</source>
+  <target>Удаление всех клонов</target>
+</trans-unit>
+<trans-unit id="s4431ebce4db711e5">
+  <source>Alert filter</source>
+  <target>Фильтр предупреждений</target>
+</trans-unit>
+<trans-unit id="sfdc0d1b6aa9e6506">
+  <source>Enable alerts in filter to make them visible when event happens</source>
+  <target>Включите предупреждения в фильтре, чтобы они появлялись, когда соответствующее события произошли</target>
+</trans-unit>
+<trans-unit id="s3bace62300439e40">
+  <source>Notification type filter</source>
+  <target>Фильтр уведомлений</target>
+</trans-unit>
+<trans-unit id="s18f7c8ed55b74f82">
+  <source>Story event</source>
+  <target>Сюжетное событие</target>
+</trans-unit>
+<trans-unit id="s101cec3d18d22960">
+  <source>Game version updated</source>
+  <target>Версия игры обновлена</target>
+</trans-unit>
+<trans-unit id="sb800e8246bb73bfc">
+  <source>New feature unlocked</source>
+  <target>Новая возможность разблокирована</target>
+</trans-unit>
+<trans-unit id="sa6023933add2a212">
+  <source>Time accumulated</source>
+  <target>Накоплено время</target>
+</trans-unit>
+<trans-unit id="sb5ec6128adb482ef">
+  <source>Enable notification types in filter to make them visible when event happens</source>
+  <target>Включите уведомления в фильтре, чтобы они появлялись, когда соответствующее события произошли</target>
+</trans-unit>
+<trans-unit id="s93670069199e8dda">
+  <source>Light theme</source>
+  <target>Светлая тема</target>
+</trans-unit>
+<trans-unit id="s3ac6d6bc5baddf30">
+  <source>Dark theme</source>
+  <target>Темная тема</target>
+</trans-unit>
+<trans-unit id="s5c2a1a52c0389c30">
+  <source>Engineering</source>
+  <target>Инженерный</target>
+</trans-unit>
+<trans-unit id="sa8754b2e68c07f48">
+  <source>Scientific</source>
+  <target>Научный</target>
+</trans-unit>
+<trans-unit id="s00b00f227a35de67">
+  <source>Short numbers</source>
+  <target>Короткие числа</target>
+</trans-unit>
+<trans-unit id="sf7894b85027759a5">
+  <source>Long numbers</source>
+  <target>Длинные числа</target>
+</trans-unit>
+<trans-unit id="sefcf950b3cc4fc3b">
+  <source>Language</source>
+  <target>Язык</target>
+</trans-unit>
+<trans-unit id="saab875d8cfcfe712">
+  <source>Theme</source>
+  <target>Тема</target>
+</trans-unit>
+<trans-unit id="s75d5f0b592ec79c7">
+  <source> Maximum amount of messages in log</source>
+  <target>Максимальное количество сообщений</target>
+</trans-unit>
+<trans-unit id="s43d974667921d1f5">
+  <source>Excessive messages in log won't be removed until new message is received</source>
+  <target>Лишние сообщения не будут удалены, пока не будет получено новое сообщение</target>
+</trans-unit>
+<trans-unit id="sd05b62a59d5e7d02">
+  <source>Message popup duration (s)</source>
+  <target>Время, как долго всплывающие сообщения будут на экране (сек)</target>
+</trans-unit>
+<trans-unit id="sc72af95d979c60de">
+  <source>Set 0 to disable message popups</source>
+  <target>Выберите 0, чтобы выключить всплывающие сообщения</target>
+</trans-unit>
+<trans-unit id="s836f876b51a97c50">
+  <source>Frames per second</source>
+  <target>Кадры в секунду</target>
+</trans-unit>
+<trans-unit id="sc083ff4257f95e1d">
+  <source>Too high number can cause strain on CPU</source>
+  <target>Слишком большое значение может привести к нагрузке на процессор</target>
+</trans-unit>
+<trans-unit id="sb95abc5157220ff8">
+  <source>Speed multiplier when game speed is fast</source>
+  <target>Множитель скорости при быстрой скорости игры</target>
+</trans-unit>
+<trans-unit id="s2a6a5d7bfd865fc0">
+  <source>Maximum amount of updates per frame</source>
+  <target>Максимальное количество обновлений в кадр</target>
+</trans-unit>
+<trans-unit id="s5dbdc27d59cb046f">
+  <source>Long number format</source>
+  <target>Формат больших чисел</target>
+</trans-unit>
+<trans-unit id="se9852a8cd86ca78e">
+  <source>Enable autosave when game tab hides or closes</source>
+  <target>Включить автосохранение, когда вкладка с игрой скрывается или закрывается</target>
+</trans-unit>
+<trans-unit id="s29128151b7efccac">
+  <source>Autosave interval (s)</source>
+  <target>Интервал автосохранения (сек)</target>
+</trans-unit>
+<trans-unit id="sbc5239184b4a4146">
+  <source>Too low number can cause strain on CPU. Select 0 to disable regular autosave</source>
+  <target>Слишком малое значение может привести к нагрузке на процессор. Выберите 0, чтобы выключить регулярные автосохранения</target>
+</trans-unit>
+<trans-unit id="s11d9ef06c96591b1">
+  <source>By programs</source>
+  <target>С помощью программ</target>
+</trans-unit>
+<trans-unit id="sedecaf77fe9ce276">
+  <source>In-game passed time</source>
+  <target>Внутриигровое прошедшее время</target>
+</trans-unit>
+<trans-unit id="sdc7177226d0f69c9">
+  <source>Since arrival to the city</source>
+  <target>С момента прибытия в город</target>
+</trans-unit>
+<trans-unit id="sd5e28ee1c3ede3b6">
+  <source>Total time</source>
+  <target>Общее время</target>
+</trans-unit>
+<trans-unit id="s188235ddbd0d98cf">
+  <source>Process completion speed</source>
+  <target>Скорость выполнения процессов</target>
+</trans-unit>
+<trans-unit id="s86f15735f83bac60">
+  <source>Hardware multiplier</source>
+  <target>Множитель оборудования мейнфрейма</target>
+</trans-unit>
+<trans-unit id="s04a422dddf59a0e8">
+  <source>Multiplier by "Predictive computator" program</source>
+  <target>Множитель программы "Предсказательный вычислитель"</target>
+</trans-unit>
+<trans-unit id="sed8ec5e3c64fa25d">
+  <source>Total</source>
+  <target>Всего</target>
+</trans-unit>
+<trans-unit id="s02800f07e1ae657b">
+  <source>Money income per second</source>
+  <target>Деньги в секунду</target>
+</trans-unit>
+<trans-unit id="sfa11a35d1d70a76a">
+  <source>Development points per second</source>
+  <target>Очки развития в секунду</target>
+</trans-unit>
+<trans-unit id="s011be7230fc86479">
+  <source>Development points</source>
+  <target>Очки развития</target>
+</trans-unit>
+<trans-unit id="s779a676a04f81794">
+  <source>Money expenses</source>
+  <target>Денежные расходы</target>
+</trans-unit>
+<trans-unit id="scfadf8e99ce7ae1c">
+  <source>Expenses</source>
+  <target>Расходы</target>
+</trans-unit>
+<trans-unit id="sc3ac225273c8316b">
+  <source>General</source>
+  <target>Общее</target>
+</trans-unit>
+<trans-unit id="sadfab7328f6cc346">
+  <source>Growth</source>
+  <target>Прирост</target>
+</trans-unit>
+<trans-unit id="s3ba6651e42358dde">
+  <source>Income</source>
+  <target>Накопления</target>
 </trans-unit>
 </body>
 </file>

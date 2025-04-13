@@ -1,4 +1,5 @@
 import { msg, str } from '@lit/localize';
+import { IncomeSource } from '@shared/types';
 
 export const COMMON_TEXTS = {
   notEnoughMoney: () => msg('Not enough money'),
@@ -21,4 +22,8 @@ export const COMMON_TEXTS = {
   continue: () => msg('Continue'),
   close: () => msg('Close'),
   purchase: (cost: string) => msg(str`Purchase for ${cost}`),
+};
+
+export const INCOME_SOURCE_NAMES: Record<IncomeSource, () => string> = {
+  [IncomeSource.program]: () => msg('By programs'),
 };

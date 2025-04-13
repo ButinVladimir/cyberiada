@@ -1,10 +1,11 @@
-import { t } from 'i18next';
 import { html, nothing } from 'lit';
+import { msg, localized } from '@lit/localize';
 import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { StatisticsProgramCompletionSpeedController } from './controller';
 import { statisticsPanelContentStyle } from '../../../../styles';
 
+@localized()
 @customElement('ca-statistics-program-completion-speed')
 export class StatisticsProgramCompletionSpeed extends BaseComponent<StatisticsProgramCompletionSpeedController> {
   static styles = statisticsPanelContentStyle;
@@ -24,23 +25,23 @@ export class StatisticsProgramCompletionSpeed extends BaseComponent<StatisticsPr
 
     return html`
       <sl-details>
-        <h4 class="title" slot="summary">${t('statistics.general.programCompletionSpeed.title', { ns: 'ui' })}</h4>
+        <h4 class="title" slot="summary">${msg('Process completion speed')}</h4>
 
         <div class="parameters-table">
           ${multiplierByHardware > 1
             ? html`
-                <span> ${t('statistics.general.programCompletionSpeed.multiplierByHardware', { ns: 'ui' })} </span>
+                <span> ${msg('Hardware multiplier')} </span>
                 <span> ${formatter.formatNumberFloat(multiplierByHardware)} </span>
               `
             : nothing}
           ${multiplierByProgram > 1
             ? html`
-                <span> ${t('statistics.general.programCompletionSpeed.multiplierByProgram', { ns: 'ui' })} </span>
+                <span> ${msg('Multiplier by "Predictive computator" program')} </span>
                 <span> ${formatter.formatNumberFloat(multiplierByProgram)} </span>
               `
             : nothing}
 
-          <span> ${t('statistics.total', { ns: 'ui' })} </span>
+          <span> ${msg('Total')} </span>
           <span> ${formatter.formatNumberFloat(totalMultiplier)} </span>
         </div>
       </sl-details>

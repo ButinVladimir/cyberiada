@@ -68,13 +68,13 @@ export class MainframeProcessesState implements IMainframeProcessesState {
   }
 
   get availableCores() {
-    this._stateUiConnector.connectEventHandler(this, MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESSES_UPDATED);
+    this._stateUiConnector.connectEventHandler(this, MAINFRAME_PROCESSES_STATE_UI_EVENTS.AVAILABLE_CORES_UPDATED);
 
     return this._availableCores;
   }
 
   get availableRam() {
-    this._stateUiConnector.connectEventHandler(this, MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESSES_UPDATED);
+    this._stateUiConnector.connectEventHandler(this, MAINFRAME_PROCESSES_STATE_UI_EVENTS.AVAILABLE_RAM_UPDATED);
 
     return this._availableRam;
   }
@@ -283,18 +283,18 @@ export class MainframeProcessesState implements IMainframeProcessesState {
   private updateRunningProcesses = () => {
     this._processUpdateRequested = false;
 
-    this._availableCores = this._mainframeState.hardware.cores.level;
-    this._availableRam = this._mainframeState.hardware.ram.level;
+    let availableCores = this._mainframeState.hardware.cores.level;
+    let availableRam = this._mainframeState.hardware.ram.level;
     this._runningProcesses.length = 0;
     this._runningScalableProcess = this._processesList.find((process) => process.program.isAutoscalable);
     let runningScalableProcessCores = 0;
 
     if (this._runningScalableProcess) {
-      this._availableRam--;
+      availableRam--;
     }
 
-    if (this._availableCores > 0 && this._runningScalableProcess?.isActive) {
-      this._availableCores--;
+    if (availableCores > 0 && this._runningScalableProcess?.isActive) {
+      availableCores--;
       runningScalableProcessCores++;
     }
 
@@ -307,29 +307,39 @@ export class MainframeProcessesState implements IMainframeProcessesState {
       }
 
       processRam = process.totalRam;
-      this._availableRam -= processRam;
+      availableRam -= processRam;
 
       if (!process.isActive) {
         usedCores = 0;
       } else {
-        usedCores = Math.min(process.maxCores, this._availableCores);
+        usedCores = Math.min(process.maxCores, availableCores);
       }
 
       if (usedCores > 0) {
         process.usedCores = usedCores;
         this._runningProcesses.push(process);
-        this._availableCores -= usedCores;
+        availableCores -= usedCores;
       } else {
         process.usedCores = 0;
       }
     }
 
     if (this._runningScalableProcess?.isActive) {
-      runningScalableProcessCores += this._availableCores;
+      runningScalableProcessCores += availableCores;
     }
 
     if (this._runningScalableProcess) {
       this._runningScalableProcess.usedCores = runningScalableProcessCores;
+    }
+
+    if (this._availableRam !== availableRam) {
+      this._availableRam = availableRam;
+      this.uiEventBatcher.enqueueEvent(MAINFRAME_PROCESSES_STATE_UI_EVENTS.AVAILABLE_RAM_UPDATED);
+    }
+
+    if (this._availableCores !== availableCores) {
+      this._availableCores = availableCores;
+      this.uiEventBatcher.enqueueEvent(MAINFRAME_PROCESSES_STATE_UI_EVENTS.AVAILABLE_CORES_UPDATED);
     }
 
     this.uiEventBatcher.enqueueEvent(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESSES_UPDATED);

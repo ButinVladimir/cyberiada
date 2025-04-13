@@ -68,9 +68,8 @@ export class Process implements IProcess {
     if (this._usedCores !== value) {
       this._usedCores = value;
       this._program.handlePerformanceUpdate();
+      this.uiEventBatcher.enqueueEvent(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESS_UPDATED);
     }
-
-    this.uiEventBatcher.enqueueEvent(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESS_UPDATED);
   }
 
   get maxCores() {

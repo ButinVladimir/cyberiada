@@ -55,7 +55,6 @@ export enum PurchaseEvent {
 
 export enum ProgramsEvent {
   processStarted = 'processStarted',
-  processFinished = 'processFinished',
   processDeleted = 'processDeleted',
   allProcessesDeleted = 'allProcessesDeleted',
 }

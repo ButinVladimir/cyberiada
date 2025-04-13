@@ -1,11 +1,12 @@
-import { t } from 'i18next';
 import { css, html } from 'lit';
+import { msg, localized } from '@lit/localize';
 import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { pageTitleStyle } from '@shared/styles';
 import { StatisticsPageTabs } from './types';
-import { STATISTICS_PAGE_TABS_LIST } from './constants';
+import { STATISTICS_PAGE_TAB_NAMES, STATISTICS_PAGE_TABS_LIST } from './constants';
 
+@localized()
 @customElement('ca-statistics-page')
 export class StatisticsPage extends BaseComponent {
   static styles = [
@@ -19,7 +20,7 @@ export class StatisticsPage extends BaseComponent {
 
   render() {
     return html`
-      <h3 class="title">${t('statistics.statistics', { ns: 'ui' })}</h3>
+      <h3 class="title">${msg('Statistics')}</h3>
 
       <sl-tab-group>
         ${STATISTICS_PAGE_TABS_LIST.map((tab) => this.renderTab(tab))}
@@ -29,7 +30,7 @@ export class StatisticsPage extends BaseComponent {
   }
 
   private renderTab = (tab: StatisticsPageTabs) => {
-    return html` <sl-tab slot="nav" panel=${tab}> ${t(`statistics.tabs.${tab}`, { ns: 'ui' })} </sl-tab> `;
+    return html` <sl-tab slot="nav" panel=${tab}> ${STATISTICS_PAGE_TAB_NAMES[tab]()} </sl-tab> `;
   };
 
   private renderTabPanel = (tab: StatisticsPageTabs) => {

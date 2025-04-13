@@ -245,9 +245,8 @@ export class Clone implements IClone {
     if (newLevel > this._level) {
       this._level = newLevel;
       this.requestParametersRecalculation();
+      this.uiEventBatcher.enqueueEvent(CLONES_UI_EVENTS.CLONE_CHANGED);
     }
-
-    this.uiEventBatcher.enqueueEvent(CLONES_UI_EVENTS.CLONE_CHANGED);
   }
 
   private recalculateParameters(): void {

@@ -1,10 +1,12 @@
-import { t } from 'i18next';
 import { html } from 'lit';
+import { msg, str } from '@lit/localize';
 import { DealMakerProgram } from '@state/mainframe-state/states/progam-factory/programs/deal-maker';
 import { IFormatter } from '@shared/interfaces/formatter';
 import { diffFormatterParameters } from '@shared/formatter-parameters';
 import { MS_IN_SECOND } from '@shared/constants';
 import { IDescriptionParameters, IDescriptionEffectRenderer } from '../interfaces';
+
+const PARAGRAPH_NAME_POINTS = 'points';
 
 export class DealMakerDescriptionEffectRenderer implements IDescriptionEffectRenderer {
   private _program: DealMakerProgram;
@@ -20,6 +22,18 @@ export class DealMakerDescriptionEffectRenderer implements IDescriptionEffectRen
   }
 
   public renderEffect = () => {
+    return html` <p data-name=${PARAGRAPH_NAME_POINTS}></p> `;
+  };
+
+  public partialUpdate(nodeList: NodeListOf<HTMLParagraphElement>): void {
+    nodeList.forEach((element) => {
+      if (element.dataset.name === PARAGRAPH_NAME_POINTS) {
+        this.partialUpdatePoints(element);
+      }
+    });
+  }
+
+  private partialUpdatePoints(element: HTMLParagraphElement) {
     const value = this._program.calculateDelta(1);
     const minTime = this._program.calculateCompletionMinTime(1);
     const maxTime = this._program.calculateCompletionMaxTime(1);
@@ -42,18 +56,15 @@ export class DealMakerDescriptionEffectRenderer implements IDescriptionEffectRen
       maxAvgValueDiff = maxAvgValue - ownedMaxAvgValue;
     }
 
-    return html`
-      <p>
-        ${t('dealMaker.rewardsPointsDiff', {
-          ns: 'programs',
-          value: this._formatter.formatNumberFloat(value),
-          valueDiff: this._formatter.formatNumberFloat(valueDiff, diffFormatterParameters),
-          minAvgValue: this._formatter.formatNumberFloat(minAvgValue),
-          maxAvgValue: this._formatter.formatNumberFloat(maxAvgValue),
-          minAvgValueDiff: this._formatter.formatNumberFloat(minAvgValueDiff, diffFormatterParameters),
-          maxAvgValueDiff: this._formatter.formatNumberFloat(maxAvgValueDiff, diffFormatterParameters),
-        })}
-      </p>
-    `;
-  };
+    const formattedValue = this._formatter.formatNumberFloat(value);
+    const formattedValueDiff = this._formatter.formatNumberFloat(valueDiff, diffFormatterParameters);
+    const formattedMinAvgValue = this._formatter.formatNumberFloat(minAvgValue);
+    const formattedMaxAvgValue = this._formatter.formatNumberFloat(maxAvgValue);
+    const formattedMinAvgValueDiff = this._formatter.formatNumberFloat(minAvgValueDiff, diffFormatterParameters);
+    const formattedMaxAvgValueDiff = this._formatter.formatNumberFloat(maxAvgValueDiff, diffFormatterParameters);
+
+    element.textContent = msg(
+      str`Rewards points: ${formattedValue} (${formattedValueDiff}) per completion (${formattedMinAvgValue} \u2014 ${formattedMaxAvgValue} per second) (${formattedMinAvgValueDiff} \u2014 ${formattedMaxAvgValueDiff})`,
+    );
+  }
 }

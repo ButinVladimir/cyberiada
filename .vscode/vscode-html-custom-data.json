@@ -351,7 +351,7 @@
     },
     {
       "name": "ca-program-diff-text",
-      "description": "Attributes:\n\n  * `program-name` - \n\n  * `level` {`number`} - \n\n  * `quality` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` - \n\n  * `level` {`number`} - \n\n  * `quality` {`number`} - \n\n  * `renderAutoscalableRequirements` - \n\n  * `renderNormalRequirements` - \n\n  * `renderEffects` - \n\n  * `controller` {`ProgramDiffTextController`} - ",
+      "description": "Attributes:\n\n  * `program-name` - \n\n  * `level` {`number`} - \n\n  * `quality` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` - \n\n  * `level` {`number`} - \n\n  * `quality` {`number`} - \n\n  * `_renderer` {`IDescriptionEffectRenderer | undefined`} - \n\n  * `_paragraphs` {`NodeListOf<HTMLParagraphElement>`} - \n\n  * `renderAutoscalableRequirements` - \n\n  * `renderNormalRequirements` - \n\n  * `renderEffects` - \n\n  * `handlePartialUpdate` - \n\n  * `controller` {`ProgramDiffTextController`} - ",
       "attributes": [
         {
           "name": "program-name",

@@ -148,8 +148,6 @@ export class ProgramDescriptionText extends BaseComponent<ProgramDescriptionText
       ram: this.controller.ram,
     };
 
-    console.log(this.programName);
-
     switch (this.programName) {
       case OtherProgramName.shareServer:
         this._renderer = new ShareServerDescriptionEffectRenderer(parameters);
@@ -172,7 +170,6 @@ export class ProgramDescriptionText extends BaseComponent<ProgramDescriptionText
         break;
 
       case OtherProgramName.predictiveComputator:
-        console.log('Rendering preditive computator');
         this._renderer = new PredictiveComputatorDescriptionEffectRenderer(parameters);
         break;
 
