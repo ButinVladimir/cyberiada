@@ -1,5 +1,5 @@
 import { msg } from '@lit/localize';
-import { CloneTemplateName } from '@/state/company-state';
+import { CloneTemplateName } from '@state/company-state';
 
 interface ICloneTemplateTexts {
   title: () => string;

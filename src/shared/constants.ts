@@ -69,3 +69,7 @@ export const FEATURES: Feature[] = Object.values(Feature);
 export const ATTRIBUTES: Attribute[] = Object.values(Attribute);
 
 export const SKILLS: Skill[] = Object.values(Skill);
+
+export const COMMON_UI_EVENTS = {
+  REMOVE_EVENT_LISTENERS_BY_EMITTER: Symbol('REMOVE_EVENT_LISTENERS_BY_EMITTER'),
+};

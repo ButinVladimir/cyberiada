@@ -44,8 +44,7 @@ export class ProgramDiffTextController extends BaseController {
 
   private deleteSelectedProgram() {
     if (this._selectedProgram) {
-      this.removeEventListenersByEmitter(this._selectedProgram);
-      this._selectedProgram.removeEventListeners();
+      this._selectedProgram.removeAllEventListeners();
     }
   }
 }

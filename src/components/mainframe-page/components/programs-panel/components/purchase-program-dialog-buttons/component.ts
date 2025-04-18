@@ -6,9 +6,9 @@ import SlButton from '@shoelace-style/shoelace/dist/components/button/button.com
 import { BaseComponent } from '@shared/base-component';
 import { warningStyle } from '@shared/styles';
 import type { ProgramName } from '@state/mainframe-state/states/progam-factory/types';
+import { COMMON_TEXTS } from '@texts/common';
 import { PurchaseProgramDialogButtonsController } from './controller';
 import { BuyProgramEvent, CancelEvent } from './events';
-import { COMMON_TEXTS } from '@/texts';
 
 @localized()
 @customElement('ca-purchase-program-dialog-buttons')

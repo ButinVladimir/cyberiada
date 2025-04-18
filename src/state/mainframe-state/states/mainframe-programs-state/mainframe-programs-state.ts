@@ -74,6 +74,10 @@ export class MainframeProgramsState implements IMainframeProgramsState {
       this.handlePurchaseProgram(program),
     );
 
+    if (!bought) {
+      program.removeAllEventListeners();
+    }
+
     return bought;
   }
 
@@ -176,19 +180,12 @@ export class MainframeProgramsState implements IMainframeProgramsState {
     };
   }
 
-  addUiEventListener(eventName: symbol, handler: (...args: any[]) => void) {
-    this.uiEventBatcher.addListener(eventName, handler);
-  }
-
-  removeUiEventListener(eventName: symbol, handler: (...args: any[]) => void) {
-    this.uiEventBatcher.removeListener(eventName, handler);
-  }
-
   private addProgram(newProgram: IProgram): void {
     const existingProgram = this._ownedPrograms.get(newProgram.name);
 
     if (existingProgram) {
       existingProgram.upgrade(newProgram);
+      newProgram.removeAllEventListeners();
     } else {
       this._ownedPrograms.set(newProgram.name, newProgram);
       this._programsList.push(newProgram);
@@ -217,7 +214,7 @@ export class MainframeProgramsState implements IMainframeProgramsState {
 
   private clearState() {
     for (const ownedProgram of this._programsList) {
-      ownedProgram.removeEventListeners();
+      ownedProgram.removeAllEventListeners();
     }
 
     this._ownedPrograms.clear();
@@ -237,6 +234,7 @@ export class MainframeProgramsState implements IMainframeProgramsState {
       level,
       autoUpgradeEnabled: true,
     });
+    program.removeAllEventListeners();
 
     return program.cost <= this._globalState.money.money;
   };

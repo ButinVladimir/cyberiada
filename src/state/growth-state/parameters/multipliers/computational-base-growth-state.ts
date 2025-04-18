@@ -13,7 +13,6 @@ export class ComputationalBaseGrowthState extends BaseMultiplierGrowthState {
   handleUpdateByProgram(process: IProcess) {
     const program = process.program as CircuitDesignerProgram;
 
-    this._growthByProgram =
-      (program.calculateDelta(process.threads) * process.calculateCompletionDelta(1)) / process.maxCompletionPoints;
+    this._growthByProgram = program.calculateDelta(process.threads) / process.calculateCompletionTime();
   }
 }

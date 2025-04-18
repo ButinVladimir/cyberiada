@@ -1,4 +1,3 @@
-import i18n from 'i18next';
 import { injectable, inject } from 'inversify';
 import type { ISettingsState } from '@state/settings-state/interfaces/settings-state';
 import { TYPES } from '@state/types';
@@ -36,8 +35,6 @@ export class Formatter implements IFormatter {
     this._settingsState = _settingsState;
 
     this.updateBuiltInFormatters();
-
-    i18n.on('languageChanged', this.updateBuiltInFormatters);
   }
 
   formatTimeShort(time: number, parameters: IFormatterParameters = DEFAULT_TIME_SHORT_FORMAT_PARAMETERS): string {
@@ -106,18 +103,24 @@ export class Formatter implements IFormatter {
     return this._dateTimeFormatter.format(value);
   }
 
-  private updateBuiltInFormatters = () => {
-    this._decimalLongFormatter = new Intl.NumberFormat(i18n.language, DECIMAL_LONG_FORMATTER_OPTIONS);
+  updateBuiltInFormatters = () => {
+    this._decimalLongFormatter = new Intl.NumberFormat(this._settingsState.language, DECIMAL_LONG_FORMATTER_OPTIONS);
 
-    this._floatLongFormatter = new Intl.NumberFormat(i18n.language, FLOAT_LONG_FORMATTER_OPTIONS);
+    this._floatLongFormatter = new Intl.NumberFormat(this._settingsState.language, FLOAT_LONG_FORMATTER_OPTIONS);
 
-    this._floatShortFormatter = new Intl.NumberFormat(i18n.language, FLOAT_SHORT_FORMATTER_OPTIONS);
+    this._floatShortFormatter = new Intl.NumberFormat(this._settingsState.language, FLOAT_SHORT_FORMATTER_OPTIONS);
 
-    this._floatScientificFormatter = new Intl.NumberFormat(i18n.language, FLOAT_SCIENTIFIC_FORMATTER_OPTIONS);
+    this._floatScientificFormatter = new Intl.NumberFormat(
+      this._settingsState.language,
+      FLOAT_SCIENTIFIC_FORMATTER_OPTIONS,
+    );
 
-    this._floatEngineeringFormatter = new Intl.NumberFormat(i18n.language, FLOAT_ENGINEERING_FORMATTER_OPTIONS);
+    this._floatEngineeringFormatter = new Intl.NumberFormat(
+      this._settingsState.language,
+      FLOAT_ENGINEERING_FORMATTER_OPTIONS,
+    );
 
-    this._dateTimeFormatter = new Intl.DateTimeFormat(i18n.language, DATE_TIME_FORMATTER_OPTIONS);
+    this._dateTimeFormatter = new Intl.DateTimeFormat(this._settingsState.language, DATE_TIME_FORMATTER_OPTIONS);
   };
 
   private applyNumberFormatterParameters(value: number, formattedValue: string, parameters: IFormatterParameters) {

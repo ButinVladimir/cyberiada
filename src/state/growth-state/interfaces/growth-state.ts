@@ -10,6 +10,5 @@ export interface IGrowthState {
   development: IDevelopmentGrowthState;
   multipliers: IMultipliersGrowthState;
   programCompletionSpeed: IProgramCompletionSpeedState;
-  requestGrowthRecalculation(): void;
   recalculateGrowth(): void;
 }

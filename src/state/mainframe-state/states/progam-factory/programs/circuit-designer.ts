@@ -19,7 +19,7 @@ export class CircuitDesignerProgram extends BaseProgram {
 
     return (
       this.globalState.scenario.currentValues.programMultipliers.computationalBase.pointsPerCompletion *
-      this.globalState.multipliers.rewards.multiplierByProgram *
+      this.globalState.multipliers.rewards.totalMultiplier *
       threads *
       programData.computationalBaseLevelMultiplier *
       this.level *

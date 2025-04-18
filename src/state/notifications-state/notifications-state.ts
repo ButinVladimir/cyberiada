@@ -3,9 +3,9 @@ import { EventBatcher } from '@shared/event-batcher';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import type { ISettingsState } from '@state/settings-state/interfaces/settings-state';
 import { TYPES } from '@state/types';
+import { NotificationType } from '@shared/types';
 import { INotificationsState, INotification } from './interfaces';
 import { NOTIFICATION_STATE_UI_EVENTS } from './constants';
-import { NotificationType } from '@shared/types';
 
 @injectable()
 export class NotificationsState implements INotificationsState {

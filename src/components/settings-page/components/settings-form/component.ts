@@ -104,7 +104,7 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
         step=${constants.MESSAGE_LOG_SIZE_STEP}
         @sl-change=${this.handleChangeMessageLogSize}
       >
-        <span class="input-label" slot="label"> ${msg(' Maximum amount of messages in log')} </span>
+        <span class="input-label" slot="label"> ${msg('Maximum amount of messages in log')} </span>
 
         <span slot="help-text">
           ${msg("Excessive messages in log won't be removed until new message is received")}

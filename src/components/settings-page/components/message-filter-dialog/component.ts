@@ -13,9 +13,9 @@ import {
   modalBodyScrollStyle,
   SCREEN_WIDTH_POINTS,
 } from '@shared/styles';
+import { COMMON_TEXTS } from '@texts/common';
 import { MessageFilterDialogCloseEvent } from './events';
 import { MessageFilterDialogController } from './controller';
-import { COMMON_TEXTS } from '@/texts';
 import { MESSAGE_EVENT_NAMES } from './constants';
 
 @localized()

@@ -128,7 +128,7 @@ export class CompanyClonesState implements ICompanyClonesState {
     }
 
     if (clone) {
-      clone.removeEventListeners();
+      clone.removeAllEventListeners();
 
       this._clonesMap.delete(id);
 
@@ -229,7 +229,7 @@ export class CompanyClonesState implements ICompanyClonesState {
 
   private clearState() {
     for (const clone of this._clonesList) {
-      clone.removeEventListeners();
+      clone.removeAllEventListeners();
     }
 
     this._clonesList.length = 0;

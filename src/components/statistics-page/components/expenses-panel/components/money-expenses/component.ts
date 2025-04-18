@@ -4,8 +4,10 @@ import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { PurchaseType } from '@shared/types';
 import { PURCHASE_TYPES } from '@shared/constants';
+import { STATISTIC_PAGE_TEXTS } from '@components/statistics-page/constants';
 import { StatisticsMoneyExpensesController } from './controller';
 import { statisticsPanelContentStyle } from '../../../../styles';
+import { MONEY_EXPENSE_NAMES } from './constants';
 
 @localized()
 @customElement('ca-statistics-money-expenses')
@@ -36,7 +38,7 @@ export class StatisticsMoneyExpenses extends BaseComponent<StatisticsMoneyExpens
             this.renderExpenseArticle(purchaseType, this.controller.getMoneyExpenses(purchaseType)),
           )}
 
-          <span> ${msg('Total')} </span>
+          <span> ${STATISTIC_PAGE_TEXTS.total()} </span>
           <span> ${formatter.formatNumberFloat(moneyTotal)} </span>
         </div>
       </sl-details>

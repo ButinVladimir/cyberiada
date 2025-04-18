@@ -6,8 +6,8 @@ import { BaseComponent } from '@shared/base-component';
 import { OtherProgramName, type ProgramName } from '@state/mainframe-state/states/progam-factory/types';
 import { SCREEN_WIDTH_POINTS, hintIconStyle } from '@shared/styles';
 import { COMMON_TEXTS } from '@texts/common';
+import { PROGRAM_TEXTS } from '@texts/programs';
 import { OwnedProgramsListItemController } from './controller';
-import { PROGRAM_TEXTS } from '@/texts';
 
 @localized()
 @customElement('ca-owned-programs-list-item')

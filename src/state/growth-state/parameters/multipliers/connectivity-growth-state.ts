@@ -13,7 +13,6 @@ export class ConnectivityGrowthState extends BaseMultiplierGrowthState {
   handleUpdateByProgram(process: IProcess) {
     const program = process.program as InformationCollectorProgram;
 
-    this._growthByProgram =
-      (program.calculateDelta(process.threads) * process.calculateCompletionDelta(1)) / process.maxCompletionPoints;
+    this._growthByProgram = program.calculateDelta(process.threads) / process.calculateCompletionTime();
   }
 }

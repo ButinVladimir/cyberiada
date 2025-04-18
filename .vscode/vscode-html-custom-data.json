@@ -556,22 +556,25 @@
     },
     {
       "name": "ca-statistics-game-time",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `controller` {`StatisticsGameTimeController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_gameTimeRef` {`Ref<HTMLSpanElement>`} - \n\n  * `_gameTotalTimeRef` {`Ref<HTMLSpanElement>`} - \n\n  * `handlePartialUpdate` - \n\n  * `controller` {`StatisticsGameTimeController`} - ",
       "attributes": []
     },
     {
       "name": "ca-statistics-multipliers",
-      "description": "Attributes:\n\n  * `type` {`CostDivisorsType`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `type` {`CostDivisorsType`} - \n\n  * `controller` {`StatisticsMultipliersController`} - ",
+      "description": "Attributes:\n\n  * `type` {`MultipliersType`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `type` {`MultipliersType`} - \n\n  * `_programMultiplierRef` {`Ref<HTMLSpanElement>`} - \n\n  * `_totalMultiplierRef` {`Ref<HTMLSpanElement>`} - \n\n  * `handlePartialUpdate` - \n\n  * `controller` {`StatisticsMultipliersController`} - ",
       "attributes": [
         {
           "name": "type",
-          "description": "`type` {`CostDivisorsType`} - \n\nProperty: type",
+          "description": "`type` {`MultipliersType`} - \n\nProperty: type",
           "values": [
             {
               "name": "mainframeHardwareCostDivisors"
             },
             {
               "name": "mainframeProgramsCostDivisors"
+            },
+            {
+              "name": "rewards"
             }
           ]
         }
@@ -583,28 +586,23 @@
       "attributes": []
     },
     {
-      "name": "ca-statistics-rewards",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `controller` {`StatisticsRewardsController`} - ",
-      "attributes": []
-    },
-    {
       "name": "ca-statistics-growth-panel",
       "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `controller` {`StatisticsGrowthPanelController`} - ",
       "attributes": []
     },
     {
       "name": "ca-statistics-development-growth",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `renderIncomeSource` - \n\n  * `controller` {`StatisticsDevelopmentGrowthController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_incomeSourceElements` {`NodeListOf<HTMLSpanElement>`} - \n\n  * `_totalGrowthRef` {`Ref<HTMLSpanElement>`} - \n\n  * `renderIncomeSource` - \n\n  * `handlePartialUpdate` - \n\n  * `controller` {`StatisticsDevelopmentGrowthController`} - ",
       "attributes": []
     },
     {
       "name": "ca-statistics-money-growth",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `renderIncomeSource` - \n\n  * `controller` {`StatisticsMoneyGrowthController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_incomeSourceElements` {`NodeListOf<HTMLSpanElement>`} - \n\n  * `_totalGrowthRef` {`Ref<HTMLSpanElement>`} - \n\n  * `renderIncomeSource` - \n\n  * `handlePartialUpdate` - \n\n  * `controller` {`StatisticsMoneyGrowthController`} - ",
       "attributes": []
     },
     {
       "name": "ca-statistics-multiplier-points-growth",
-      "description": "Attributes:\n\n  * `type` - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `type` - \n\n  * `controller` {`StatisticsMultiplierPointsGrowthController`} - ",
+      "description": "Attributes:\n\n  * `type` - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `type` - \n\n  * `_programGrowthRef` {`Ref<HTMLSpanElement>`} - \n\n  * `handlePartialUpdate` - \n\n  * `controller` {`StatisticsMultiplierPointsGrowthController`} - ",
       "attributes": [
         {
           "name": "type",
@@ -619,17 +617,17 @@
     },
     {
       "name": "ca-statistics-development-income",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `renderIncomeSource` - \n\n  * `controller` {`StatisticsDevelopmentIncomeController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_incomeSourceElements` {`NodeListOf<HTMLSpanElement>`} - \n\n  * `_totalIncomeRef` {`Ref<HTMLSpanElement>`} - \n\n  * `renderIncomeSource` - \n\n  * `handlePartialUpdate` - \n\n  * `controller` {`StatisticsDevelopmentIncomeController`} - ",
       "attributes": []
     },
     {
       "name": "ca-statistics-money-income",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `renderIncomeSource` - \n\n  * `controller` {`StatisticsMoneyIncomeController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_incomeSourceElements` {`NodeListOf<HTMLSpanElement>`} - \n\n  * `_totalIncomeRef` {`Ref<HTMLSpanElement>`} - \n\n  * `renderIncomeSource` - \n\n  * `handlePartialUpdate` - \n\n  * `controller` {`StatisticsMoneyIncomeController`} - ",
       "attributes": []
     },
     {
       "name": "ca-statistics-multiplier-points-income",
-      "description": "Attributes:\n\n  * `type` - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `type` - \n\n  * `controller` {`StatisticsMultiplierPointsIncomeController`} - ",
+      "description": "Attributes:\n\n  * `type` - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `type` - \n\n  * `_programPointsRef` {`Ref<HTMLSpanElement>`} - \n\n  * `handlePartialUpdate` - \n\n  * `controller` {`StatisticsMultiplierPointsIncomeController`} - ",
       "attributes": [
         {
           "name": "type",

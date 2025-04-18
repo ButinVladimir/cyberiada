@@ -134,7 +134,7 @@
 </trans-unit>
 <trans-unit id="sfc3f7439b793141a">
   <source>Rewards points</source>
-  <target>Очки связности</target>
+  <target>Очки наград</target>
 </trans-unit>
 <trans-unit id="s8dbc2fbaa8eb2262">
   <source>Experience share</source>
@@ -194,7 +194,7 @@
 </trans-unit>
 <trans-unit id="sdfc4d195e8c8877e">
   <source>development level <x id="0" equiv-text="${this.level}"/></source>
-  <target>уровень разработки <x id="0" equiv-text="${this.level}"/></target>
+  <target>уровень развития <x id="0" equiv-text="${this.level}"/></target>
 </trans-unit>
 <trans-unit id="s5d9cf1ae8a0e6a35">
   <source>All events</source>
@@ -1177,10 +1177,6 @@ Programs on top have higher priority. Autoupgrade for programs won"t change thei
   <source>Theme</source>
   <target>Тема</target>
 </trans-unit>
-<trans-unit id="s75d5f0b592ec79c7">
-  <source> Maximum amount of messages in log</source>
-  <target>Максимальное количество сообщений</target>
-</trans-unit>
 <trans-unit id="s43d974667921d1f5">
   <source>Excessive messages in log won't be removed until new message is received</source>
   <target>Лишние сообщения не будут удалены, пока не будет получено новое сообщение</target>
@@ -1241,18 +1237,6 @@ Programs on top have higher priority. Autoupgrade for programs won"t change thei
   <source>Total time</source>
   <target>Общее время</target>
 </trans-unit>
-<trans-unit id="s188235ddbd0d98cf">
-  <source>Process completion speed</source>
-  <target>Скорость выполнения процессов</target>
-</trans-unit>
-<trans-unit id="s86f15735f83bac60">
-  <source>Hardware multiplier</source>
-  <target>Множитель оборудования мейнфрейма</target>
-</trans-unit>
-<trans-unit id="s04a422dddf59a0e8">
-  <source>Multiplier by "Predictive computator" program</source>
-  <target>Множитель программы "Предсказательный вычислитель"</target>
-</trans-unit>
 <trans-unit id="sed8ec5e3c64fa25d">
   <source>Total</source>
   <target>Всего</target>
@@ -1288,6 +1272,74 @@ Programs on top have higher priority. Autoupgrade for programs won"t change thei
 <trans-unit id="s3ba6651e42358dde">
   <source>Income</source>
   <target>Накопления</target>
+</trans-unit>
+<trans-unit id="sf88672ff8e010f65">
+  <source>Maximum amount of messages in log</source>
+  <target>Максимальное количество сообщений</target>
+</trans-unit>
+<trans-unit id="sb7d89d471013a97f">
+  <source>Code base affects cost multiplier for mainframe programs</source>
+  <target>Кодовая база влияет на скидку на программы для мейнфрейма</target>
+</trans-unit>
+<trans-unit id="s2ad0a048b95c0aec">
+  <source>Computational base affects cost multiplier for mainframe hardware upgrades</source>
+  <target>Вычислительная база влияет на скидку на оборудование для мейнфрейма</target>
+</trans-unit>
+<trans-unit id="s8dfafed4caa274ee">
+  <source>Connectivity affects chances to receive new contracts and sidejobs</source>
+  <target>Связность влияет на шансы на получение новых контрактов и подработок</target>
+</trans-unit>
+<trans-unit id="sed892473e0673087">
+  <source>Rewards affect all gains</source>
+  <target>Награды влияют на все доходы</target>
+</trans-unit>
+<trans-unit id="s346e89c0d59fbea7">
+  <source>Process completion speed multipliers</source>
+  <target>Множители скорости выполнения процессов</target>
+</trans-unit>
+<trans-unit id="s04a5e40ee6172dcc">
+  <source>By hardware</source>
+  <target>С помощью оборудования мейнфрема</target>
+</trans-unit>
+<trans-unit id="s69a8e89425b0491f">
+  <source>Mainframe hardware cost divisors</source>
+  <target>Делители стоимости оборудования мейнфрейма</target>
+</trans-unit>
+<trans-unit id="sb925ccaf4ca00336">
+  <source>Mainframe programs cost divisors</source>
+  <target>Делители стоимости программ мейнфрейма</target>
+</trans-unit>
+<trans-unit id="s815160de1d589c83">
+  <source>Rewards multipliers</source>
+  <target>Множители наград</target>
+</trans-unit>
+<trans-unit id="sd3fa803140fea7dd">
+  <source>Code base points per second</source>
+  <target>Очки кодовой базы в секунду</target>
+</trans-unit>
+<trans-unit id="s1b146f28a26e586a">
+  <source>Computational base points per second</source>
+  <target>Очки вычислительной базы в секунду</target>
+</trans-unit>
+<trans-unit id="s17140d6a2bddf372">
+  <source>Connectivity points per second</source>
+  <target>Очки связности в секунду</target>
+</trans-unit>
+<trans-unit id="sda8f8c3d6b55adff">
+  <source>Rewards points per second</source>
+  <target>Очки наград в секунду</target>
+</trans-unit>
+<trans-unit id="s66813830db39c65b">
+  <source>On mainframe programs</source>
+  <target>На программы мейнфрейма</target>
+</trans-unit>
+<trans-unit id="scf49852a0b44b9ae">
+  <source>On mainframe hardware</source>
+  <target>На оборудование мейнфрейма</target>
+</trans-unit>
+<trans-unit id="s768f2b0fd3fc4bba">
+  <source>On clones</source>
+  <target>На клонов</target>
 </trans-unit>
 </body>
 </file>

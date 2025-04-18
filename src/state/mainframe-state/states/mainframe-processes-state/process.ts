@@ -1,6 +1,7 @@
 import { IProgram } from '@state/mainframe-state/states/progam-factory/interfaces/program';
 import { EventBatcher } from '@shared/event-batcher';
 import { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
+import { COMMON_UI_EVENTS } from '@shared/constants';
 import { IMainframeProcessesState, IProcess, IProcessParameters, ISerializedProcess } from './interfaces';
 import { MAINFRAME_PROCESSES_STATE_UI_EVENTS } from './constants';
 
@@ -123,7 +124,9 @@ export class Process implements IProcess {
     };
   }
 
-  removeEventListeners() {
+  removeAllEventListeners() {
+    this.uiEventBatcher.fireImmediateEvent(COMMON_UI_EVENTS.REMOVE_EVENT_LISTENERS_BY_EMITTER);
+    this.uiEventBatcher.removeAllListeners();
     this._stateUiConnector.unregisterEventEmitter(this);
   }
 }

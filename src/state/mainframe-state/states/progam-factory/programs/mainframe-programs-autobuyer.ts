@@ -51,6 +51,7 @@ export class MainframeProgramsAutobuyerProgram extends BaseProgram {
         };
 
         const newProgram = this._programFactory.makeProgram(programParameters);
+        newProgram.removeAllEventListeners();
 
         if (this.mainframeState.programs.purchaseProgram(programParameters)) {
           availableMoney -= newProgram.cost;
@@ -75,6 +76,7 @@ export class MainframeProgramsAutobuyerProgram extends BaseProgram {
         quality: existingProgram.quality,
         autoUpgradeEnabled: existingProgram.autoUpgradeEnabled,
       });
+      newProgram.removeAllEventListeners();
 
       const canAfford = newProgram.cost <= availableMoney;
 

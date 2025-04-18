@@ -5,12 +5,12 @@ import { NotificationType } from '@shared/types';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import type { INotificationsState } from '@state/notifications-state/interfaces/notifications-state';
 import { TYPES } from '@state/types';
+import { STORY_MESSAGES } from '@texts/story';
 import type { IGlobalState } from '../interfaces/global-state';
 import { IStoryEventsState } from '../interfaces/parameters/story-events-state';
 import { IStoryGoal } from '../interfaces/story-goal';
 import { StoryGoalState } from '../types';
 import { GLOBAL_STATE_UI_EVENTS } from '../constants';
-import { STORY_MESSAGES } from '@/texts';
 
 const { lazyInject } = decorators;
 

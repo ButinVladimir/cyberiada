@@ -6,4 +6,5 @@ export interface IFormatter {
   formatNumberDecimal(value: number, parameters?: IFormatterParameters): string;
   formatQuality(value: number, parameters?: IFormatterParameters): string;
   formatDateTime(date: Date): string;
+  updateBuiltInFormatters(): void;
 }

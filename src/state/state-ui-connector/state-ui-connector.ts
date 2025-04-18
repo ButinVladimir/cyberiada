@@ -41,7 +41,7 @@ export class StateUIConnector implements IStateUIConnector {
 
   fireUIEvents(): void {
     for (const eventEmitter of this._registeredEventEmitters.values()) {
-      eventEmitter.uiEventBatcher.fireEvents();
+      eventEmitter.uiEventBatcher.fireEnqueuedEvents();
     }
   }
 }

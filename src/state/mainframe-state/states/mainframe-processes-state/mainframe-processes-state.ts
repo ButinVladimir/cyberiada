@@ -176,7 +176,7 @@ export class MainframeProcessesState implements IMainframeProcessesState {
 
     if (process) {
       process.usedCores = 0;
-      process.removeEventListeners();
+      process.removeAllEventListeners();
 
       this._processesMap.delete(programName);
 
@@ -389,7 +389,7 @@ export class MainframeProcessesState implements IMainframeProcessesState {
   private clearState() {
     for (const process of this._processesList) {
       process.usedCores = 0;
-      process.removeEventListeners();
+      process.removeAllEventListeners();
     }
 
     this._processesList.length = 0;

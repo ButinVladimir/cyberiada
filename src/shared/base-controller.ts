@@ -13,6 +13,7 @@ import { container } from '@state/container';
 import { TYPES } from '@state/types';
 import { APP_UI_EVENTS, IApp } from '@state/app';
 import { IFormatter, IUIEventEmitter, IUIEventListener } from './interfaces';
+import { COMMON_UI_EVENTS } from './constants';
 
 export type PartialUpdateFunction = () => void;
 
@@ -34,6 +35,8 @@ export class BaseController<T extends ReactiveControllerHost & HTMLElement = Rea
 
   protected host: T;
 
+  protected removeEventsEmitterMap: Map<IUIEventEmitter, () => void>;
+
   protected eventsEmitterMap: Map<IUIEventEmitter, Set<symbol>>;
 
   private _partialUpdateFn?: PartialUpdateFunction;
@@ -42,12 +45,17 @@ export class BaseController<T extends ReactiveControllerHost & HTMLElement = Rea
     this.host = host;
     host.addController(this);
 
+    this.removeEventsEmitterMap = new Map<IUIEventEmitter, () => void>();
     this.eventsEmitterMap = new Map<IUIEventEmitter, Set<symbol>>();
 
     this._partialUpdateFn = partialUpdateFn;
   }
 
   hostConnected() {
+    for (const [eventEmitter, callback] of this.removeEventsEmitterMap.entries()) {
+      eventEmitter.uiEventBatcher.addListener(COMMON_UI_EVENTS.REMOVE_EVENT_LISTENERS_BY_EMITTER, callback);
+    }
+
     for (const [eventEmitter, eventSet] of this.eventsEmitterMap.entries()) {
       for (const event of eventSet.values()) {
         eventEmitter.uiEventBatcher.addListener(event, this.handleRefreshUI);
@@ -60,6 +68,10 @@ export class BaseController<T extends ReactiveControllerHost & HTMLElement = Rea
   }
 
   hostDisconnected() {
+    for (const [eventEmitter, callback] of this.removeEventsEmitterMap.entries()) {
+      eventEmitter.uiEventBatcher.removeListener(COMMON_UI_EVENTS.REMOVE_EVENT_LISTENERS_BY_EMITTER, callback);
+    }
+
     for (const [eventEmitter, eventSet] of this.eventsEmitterMap.entries()) {
       this.clearEventSet(eventEmitter, eventSet);
     }
@@ -70,6 +82,16 @@ export class BaseController<T extends ReactiveControllerHost & HTMLElement = Rea
   }
 
   addEventListener(eventEmitter: IUIEventEmitter, event: symbol) {
+    if (!this.removeEventsEmitterMap.has(eventEmitter)) {
+      const removeEventEmitterCallback = this.handleRemoveEventEmitterCallback(eventEmitter);
+
+      this.removeEventsEmitterMap.set(eventEmitter, removeEventEmitterCallback);
+      eventEmitter.uiEventBatcher.addListener(
+        COMMON_UI_EVENTS.REMOVE_EVENT_LISTENERS_BY_EMITTER,
+        removeEventEmitterCallback,
+      );
+    }
+
     let eventSet: Set<symbol> | undefined = this.eventsEmitterMap.get(eventEmitter);
 
     if (!eventSet) {
@@ -91,6 +113,7 @@ export class BaseController<T extends ReactiveControllerHost & HTMLElement = Rea
     }
 
     this.eventsEmitterMap.delete(eventEmitter);
+    this.removeEventsEmitterMap.delete(eventEmitter);
   }
 
   removeAllEventListeners() {
@@ -99,6 +122,7 @@ export class BaseController<T extends ReactiveControllerHost & HTMLElement = Rea
     }
 
     this.eventsEmitterMap.clear();
+    this.removeEventsEmitterMap.clear();
   }
 
   startRendering() {
@@ -166,4 +190,8 @@ export class BaseController<T extends ReactiveControllerHost & HTMLElement = Rea
       eventEmitter.uiEventBatcher.removeListener(event, this.handleRefreshUI);
     }
   }
+
+  private handleRemoveEventEmitterCallback = (eventEmitter: IUIEventEmitter) => () => {
+    this.removeEventListenersByEmitter(eventEmitter);
+  };
 }

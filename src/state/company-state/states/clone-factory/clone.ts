@@ -2,7 +2,7 @@ import cloneTemplates from '@configs/clone-templates.json';
 import { Attribute, Skill } from '@shared/types';
 import { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import { EventBatcher } from '@shared/event-batcher';
-import { ATTRIBUTES, SKILLS } from '@shared/constants';
+import { ATTRIBUTES, COMMON_UI_EVENTS, SKILLS } from '@shared/constants';
 import {
   calculateGeometricProgressionSum,
   calculatePowWithQuality,
@@ -174,10 +174,6 @@ export class Clone implements IClone {
     this.recalculateParameters();
   }
 
-  removeEventListeners(): void {
-    this._stateUiConnector.unregisterEventEmitter(this);
-  }
-
   serialize(): IMakeCloneParameters {
     return {
       id: this.id,
@@ -188,6 +184,12 @@ export class Clone implements IClone {
       quality: this.quality,
       autoUpgradeEnabled: this.autoUpgradeEnabled,
     };
+  }
+
+  removeAllEventListeners() {
+    this.uiEventBatcher.fireImmediateEvent(COMMON_UI_EVENTS.REMOVE_EVENT_LISTENERS_BY_EMITTER);
+    this.uiEventBatcher.removeAllListeners();
+    this._stateUiConnector.unregisterEventEmitter(this);
   }
 
   private initSynchronization() {

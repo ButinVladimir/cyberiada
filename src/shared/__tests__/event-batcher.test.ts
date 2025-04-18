@@ -12,7 +12,7 @@ describe('Event batcher', () => {
 
     eventBatcher.enqueueEvent(usedEventType);
 
-    eventBatcher.fireEvents();
+    eventBatcher.fireEnqueuedEvents();
 
     expect(listener).toBeCalled();
   });
@@ -24,7 +24,7 @@ describe('Event batcher', () => {
 
     eventBatcher.enqueueEvent(usedEventType);
 
-    eventBatcher.fireEvents();
+    eventBatcher.fireEnqueuedEvents();
 
     expect(listener).not.toBeCalled();
   });
@@ -37,7 +37,7 @@ describe('Event batcher', () => {
 
     eventBatcher.enqueueEvent(usedEventType);
 
-    eventBatcher.fireEvents();
+    eventBatcher.fireEnqueuedEvents();
 
     expect(listener).not.toBeCalled();
   });

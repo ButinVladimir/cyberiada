@@ -4,7 +4,7 @@ import { IMultiplierSerializedState } from '../serialized-states/multiplier-seri
 
 export interface IMultiplierState extends ISerializeable<IMultiplierSerializedState>, IUIEventEmitter {
   pointsByProgram: number;
-  multiplierByProgram: number;
+  programMultiplier: number;
   totalMultiplier: number;
   increasePointsByProgram(pointsDelta: number): void;
   requestMultipliersRecalculation(): void;

@@ -43,7 +43,7 @@ export abstract class BaseMultiplierState implements IMultiplierState {
     return this._pointsByProgram;
   }
 
-  get multiplierByProgram() {
+  get programMultiplier() {
     return this._multiplierByProgram;
   }
 
