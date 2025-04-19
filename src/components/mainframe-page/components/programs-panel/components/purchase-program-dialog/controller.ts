@@ -26,11 +26,6 @@ export class PurchaseProgramDialogController extends BaseController {
   }
 
   purchaseProgram(name: ProgramName, quality: number, level: number): boolean {
-    return this.mainframeState.programs.purchaseProgram({
-      name,
-      level,
-      quality,
-      autoUpgradeEnabled: true,
-    });
+    return this.mainframeState.programs.purchaseProgram(name, quality, level);
   }
 }

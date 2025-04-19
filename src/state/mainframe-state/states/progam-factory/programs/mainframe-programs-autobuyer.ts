@@ -2,24 +2,17 @@ import { binarySearchDecimal } from '@shared/helpers';
 import { IAutomationState } from '@state/automation-state/interfaces/automation-state';
 import { OtherProgramName } from '../types';
 import { BaseProgram } from './base-program';
-import {
-  IMainframeProgramsAutobuyerParameters,
-  IMakeProgramParameters,
-  IProgram,
-  IProgramFactory,
-} from '../interfaces';
+import { IMainframeProgramsAutobuyerParameters, IProgram } from '../interfaces';
 
 export class MainframeProgramsAutobuyerProgram extends BaseProgram {
   public readonly name = OtherProgramName.mainframeProgramsAutobuyer;
   public readonly isAutoscalable = false;
 
-  private _programFactory: IProgramFactory;
   private _automationState: IAutomationState;
 
   constructor(parameters: IMainframeProgramsAutobuyerParameters) {
     super(parameters);
 
-    this._programFactory = parameters.programFactory;
     this._automationState = parameters.automationState;
   }
 
@@ -43,18 +36,14 @@ export class MainframeProgramsAutobuyerProgram extends BaseProgram {
       const newLevel = binarySearchDecimal(existingProgram.level, this.globalState.development.level, checkProgram);
 
       if (newLevel > existingProgram.level) {
-        const programParameters: IMakeProgramParameters = {
-          level: newLevel,
-          name: existingProgram.name,
-          quality: existingProgram.quality,
-          autoUpgradeEnabled: existingProgram.autoUpgradeEnabled,
-        };
+        const cost = this.mainframeState.programs.getProgramCost(
+          existingProgram.name,
+          existingProgram.quality,
+          newLevel,
+        );
 
-        const newProgram = this._programFactory.makeProgram(programParameters);
-        newProgram.removeAllEventListeners();
-
-        if (this.mainframeState.programs.purchaseProgram(programParameters)) {
-          availableMoney -= newProgram.cost;
+        if (this.mainframeState.programs.purchaseProgram(existingProgram.name, existingProgram.quality, newLevel)) {
+          availableMoney -= cost;
           actionsLeft--;
         }
       }
@@ -70,16 +59,8 @@ export class MainframeProgramsAutobuyerProgram extends BaseProgram {
         return false;
       }
 
-      const newProgram = this._programFactory.makeProgram({
-        level,
-        name: existingProgram.name,
-        quality: existingProgram.quality,
-        autoUpgradeEnabled: existingProgram.autoUpgradeEnabled,
-      });
-      newProgram.removeAllEventListeners();
+      const cost = this.mainframeState.programs.getProgramCost(existingProgram.name, existingProgram.quality, level);
 
-      const canAfford = newProgram.cost <= availableMoney;
-
-      return canAfford;
+      return cost <= availableMoney;
     };
 }

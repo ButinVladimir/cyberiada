@@ -1,20 +1,23 @@
 import { inject, injectable } from 'inversify';
 import { msg, str } from '@lit/localize';
 import { decorators } from '@state/container';
+import programs from '@configs/programs.json';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import type { IGlobalState } from '@state/global-state/interfaces/global-state';
 import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
 import type { IFormatter } from '@shared/interfaces/formatter';
+import { IExponentWithQuality } from '@shared/interfaces/exponent-with-quality';
 import type { IMainframeState } from '@state/mainframe-state/interfaces/mainframe-state';
 import { TYPES } from '@state/types';
 import { Feature, PurchaseEvent, PurchaseType } from '@shared/types';
+import { calculatePowWithQuality } from '@shared/helpers';
 import { EventBatcher } from '@shared/event-batcher';
 import { binarySearchDecimal, moveElementInArray } from '@shared/helpers';
 import { PROGRAM_TEXTS } from '@texts/programs';
 import { IMainframeProgramsState, IMainframeProgramsSerializedState } from './interfaces';
 import { MAINFRAME_PROGRAMS_STATE_UI_EVENTS } from './constants';
 import { ProgramName } from '../progam-factory/types';
-import { IMakeProgramParameters, IProgram } from '../progam-factory/interfaces';
+import { IProgram } from '../progam-factory/interfaces';
 
 const { lazyInject } = decorators;
 
@@ -51,32 +54,31 @@ export class MainframeProgramsState implements IMainframeProgramsState {
     this._stateUiConnector.registerEventEmitter(this);
   }
 
-  purchaseProgram(programParameters: IMakeProgramParameters): boolean {
+  getProgramCost(name: ProgramName, quality: number, level: number): number {
+    const programData = programs[name];
+
+    return (
+      calculatePowWithQuality(level - 1, quality, programData.cost as IExponentWithQuality) /
+      this._globalState.multipliers.codeBase.totalMultiplier
+    );
+  }
+
+  purchaseProgram(name: ProgramName, quality: number, level: number): boolean {
     if (!this._globalState.unlockedFeatures.isFeatureUnlocked(Feature.mainframeUpgrades)) {
       return false;
     }
 
-    if (
-      !this._globalState.availableItems.programs.isItemAvailable(
-        programParameters.name,
-        programParameters.quality,
-        programParameters.level,
-      )
-    ) {
+    if (!this._globalState.availableItems.programs.isItemAvailable(name, quality, level)) {
       return false;
     }
 
-    const program = this._mainframeState.programFactory.makeProgram(programParameters);
+    const cost = this.getProgramCost(name, quality, level);
 
     const bought = this._globalState.money.purchase(
-      program.cost,
+      cost,
       PurchaseType.mainframePrograms,
-      this.handlePurchaseProgram(program),
+      this.handlePurchaseProgram(name, quality, level),
     );
-
-    if (!bought) {
-      program.removeAllEventListeners();
-    }
 
     return bought;
   }
@@ -95,12 +97,7 @@ export class MainframeProgramsState implements IMainframeProgramsState {
       return false;
     }
 
-    return this.purchaseProgram({
-      name,
-      quality: existingProgram.quality,
-      level,
-      autoUpgradeEnabled: true,
-    });
+    return this.purchaseProgram(name, existingProgram.quality, level);
   }
 
   upgradeMaxAllPrograms(): void {
@@ -149,14 +146,7 @@ export class MainframeProgramsState implements IMainframeProgramsState {
     this.clearState();
 
     for (const programName of this._globalState.scenario.currentValues.mainframeSoftware.programs) {
-      this.addProgram(
-        this._mainframeState.programFactory.makeProgram({
-          name: programName,
-          quality: 0,
-          level: 1,
-          autoUpgradeEnabled: true,
-        }),
-      );
+      this.addProgram(programName, 0, 1);
     }
 
     this.requestUiUpdate();
@@ -180,36 +170,42 @@ export class MainframeProgramsState implements IMainframeProgramsState {
     };
   }
 
-  private addProgram(newProgram: IProgram): void {
-    const existingProgram = this._ownedPrograms.get(newProgram.name);
+  private addProgram(name: ProgramName, quality: number, level: number): void {
+    const existingProgram = this._ownedPrograms.get(name);
 
     if (existingProgram) {
-      existingProgram.upgrade(newProgram);
-      newProgram.removeAllEventListeners();
+      existingProgram.upgrade(quality, level);
     } else {
+      const newProgram = this._mainframeState.programFactory.makeProgram({
+        name,
+        quality,
+        level,
+        autoUpgradeEnabled: true,
+      });
+
       this._ownedPrograms.set(newProgram.name, newProgram);
       this._programsList.push(newProgram);
+
+      for (const feature of newProgram.unlockFeatures) {
+        this._globalState.unlockedFeatures.unlockFeature(feature);
+      }
     }
 
     this.requestUiUpdate();
   }
 
-  private handlePurchaseProgram = (newProgram: IProgram) => () => {
-    this.addProgram(newProgram);
+  private handlePurchaseProgram = (name: ProgramName, quality: number, level: number) => () => {
+    this.addProgram(name, quality, level);
 
-    const programTitle = PROGRAM_TEXTS[newProgram.name].title();
-    const formattedLevel = this._formatter.formatNumberDecimal(newProgram.level);
-    const formattedQuality = this._formatter.formatQuality(newProgram.quality);
+    const programTitle = PROGRAM_TEXTS[name].title();
+    const formattedLevel = this._formatter.formatNumberDecimal(level);
+    const formattedQuality = this._formatter.formatQuality(quality);
     this._messageLogState.postMessage(
       PurchaseEvent.programPurchased,
       msg(
-        str`Program "${programTitle}" with level ${formattedLevel} and quality ${formattedQuality} has been purchased`,
+        str`Program "${programTitle}" with quality ${formattedQuality} and level ${formattedLevel} has been purchased`,
       ),
     );
-
-    for (const feature of newProgram.unlockFeatures) {
-      this._globalState.unlockedFeatures.unlockFeature(feature);
-    }
   };
 
   private clearState() {
@@ -228,14 +224,8 @@ export class MainframeProgramsState implements IMainframeProgramsState {
       return false;
     }
 
-    const program = this._mainframeState.programFactory.makeProgram({
-      name: existingProgram.name,
-      quality: existingProgram.quality,
-      level,
-      autoUpgradeEnabled: true,
-    });
-    program.removeAllEventListeners();
+    const cost = this.getProgramCost(existingProgram.name, existingProgram.quality, level);
 
-    return program.cost <= this._globalState.money.money;
+    return cost <= this._globalState.money.money;
   };
 }

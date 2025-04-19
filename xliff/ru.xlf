@@ -543,10 +543,6 @@ If you already have program with same name, old one will be replaced with new on
   <source>Program</source>
   <target>Программа</target>
 </trans-unit>
-<trans-unit id="s729c5ee7e318ffa4">
-  <source>Are you sure want to purchase program "<x id="0" equiv-text="${programTitle}"/>"? This will replace your current program with level <x id="1" equiv-text="${formattedLevel}"/> and quality <x id="2" equiv-text="${formattedQuality}"/>.</source>
-  <target>Вы действительно хотите приобрести программу "<x id="0" equiv-text="${programTitle}"/>"? Это заменит вашу текущую программу с уровнем <x id="1" equiv-text="${formattedLevel}"/> и качеством <x id="2" equiv-text="${formattedQuality}"/>.</target>
-</trans-unit>
 <trans-unit id="s05ccfc6906124ae2">
   <source>Start process</source>
   <target>Начать процесс</target>
@@ -574,10 +570,6 @@ Threads allow to run multiple instances of same program at same time, but additi
 <trans-unit id="s2dfd2c76046baa55">
   <source>Are you sure want to replace autoscalable process? This will delete your current process for program "<x id="0" equiv-text="${programTitle}"/>".</source>
   <target>Вы действительно хотите заменить автомасштабируемый процесс? Это удалит текущий процесс для программы "<x id="0" equiv-text="${programTitle}"/>".</target>
-</trans-unit>
-<trans-unit id="s2c02c293cf875236">
-  <source><x id="0" equiv-text="${programTitle}"/>, level <x id="1" equiv-text="${formattedLevel}"/>, quality <x id="2" equiv-text="${formattedQuality}"/></source>
-  <target><x id="0" equiv-text="${programTitle}"/>, уровень <x id="1" equiv-text="${formattedLevel}"/>, качество <x id="2" equiv-text="${formattedQuality}"/></target>
 </trans-unit>
 <trans-unit id="s8aeb5e9301762d21">
   <source>Disable all processes</source>
@@ -691,25 +683,17 @@ Threads allow to run multiple instances of same program at same time, but additi
   <source>All clones have been deleted</source>
   <target>Все клоны удалены</target>
 </trans-unit>
-<trans-unit id="sce61ee1ae91ab05d">
-  <source>Clone <x id="0" equiv-text="${clone.name}"/> with template <x id="1" equiv-text="${CLONE_TEMPLATE_TEXTS[clone.templateName].title()}"/>, level <x id="2" equiv-text="${formattedLevel}"/> and quality <x id="3" equiv-text="${formattedQuality}"/> has been purchased</source>
-  <target>Клон <x id="0" equiv-text="${clone.name}"/> с шаблоном <x id="1" equiv-text="${CLONE_TEMPLATE_TEXTS[clone.templateName].title()}"/>, уровнем <x id="2" equiv-text="${formattedLevel}"/> и качеством <x id="3" equiv-text="${formattedQuality}"/> приобретен</target>
-</trans-unit>
 <trans-unit id="s65e76b965ff17358">
   <source>Mainframe performance has been upgraded to <x id="0" equiv-text="${formattedLevel}"/></source>
   <target>Производительность мейнфрейма улучшена до <x id="0" equiv-text="${formattedLevel}"/></target>
 </trans-unit>
 <trans-unit id="s3a0a087331180232">
   <source>Mainframe cores has been upgraded to <x id="0" equiv-text="${formattedLevel}"/></source>
-  <target>Ядра мейнфрейма улучшена до <x id="0" equiv-text="${formattedLevel}"/></target>
+  <target>Ядра мейнфрейма улучшены до <x id="0" equiv-text="${formattedLevel}"/></target>
 </trans-unit>
 <trans-unit id="sab1ed27b4dadea6a">
   <source>Mainframe RAM has been upgraded to <x id="0" equiv-text="${formattedLevel}"/></source>
   <target>Память мейнфрейма улучшена до <x id="0" equiv-text="${formattedLevel}"/></target>
-</trans-unit>
-<trans-unit id="se3dad47ca228fe3c">
-  <source>Program "<x id="0" equiv-text="${programTitle}"/>" with level <x id="1" equiv-text="${formattedLevel}"/> and quality <x id="2" equiv-text="${formattedQuality}"/> has been purchased</source>
-  <target>Программа "<x id="0" equiv-text="${programTitle}"/>" с уровнем <x id="1" equiv-text="${formattedLevel}"/> и качеством <x id="2" equiv-text="${formattedQuality}"/> приобретена</target>
 </trans-unit>
 <trans-unit id="s43cdc41f878fd2a1">
   <source>Process for program "<x id="0" equiv-text="${programTitle}"/>" with <x id="1" equiv-text="${formattedThreads}"/> threads has been started</source>
@@ -992,10 +976,6 @@ Programs on top have higher priority. Autoupgrade for programs won"t change thei
 <trans-unit id="s9ae028d34cb955db">
   <source>Purchase for <x id="0" equiv-text="${cost}"/></source>
   <target>Купить за  <x id="0" equiv-text="${cost}"/></target>
-</trans-unit>
-<trans-unit id="sa7fbe073b55c9c4a">
-  <source>Program is already bought with level <x id="0" equiv-text="${formattedLevel}"/> and quality <x id="1" equiv-text="${formattedQuality}"/></source>
-  <target>Программа уже куплена с уровнем <x id="0" equiv-text="${formattedLevel}"/> и качеством <x id="1" equiv-text="${formattedQuality}"/></target>
 </trans-unit>
 <trans-unit id="s0184ea2abd8583db">
   <source>Money: Up to <x id="0" equiv-text="${formattedMoney}"/> (<x id="1" equiv-text="${formattedMoneyDiff}"/>) per second</source>
@@ -1340,6 +1320,34 @@ Programs on top have higher priority. Autoupgrade for programs won"t change thei
 <trans-unit id="s768f2b0fd3fc4bba">
   <source>On clones</source>
   <target>На клонов</target>
+</trans-unit>
+<trans-unit id="sb19aebe30029cc68">
+  <source>Program "<x id="0" equiv-text="${programTitle}"/>" with quality <x id="1" equiv-text="${formattedQuality}"/> and level <x id="2" equiv-text="${formattedLevel}"/> has been purchased</source>
+  <target>Программа "<x id="0" equiv-text="${programTitle}"/>" с качеством <x id="1" equiv-text="${formattedQuality}"/> и уровнем <x id="2" equiv-text="${formattedLevel}"/> приобретена</target>
+</trans-unit>
+<trans-unit id="s69876e8733226f91">
+  <source>Clone <x id="0" equiv-text="${clone.name}"/> with template <x id="1" equiv-text="${CLONE_TEMPLATE_TEXTS[clone.templateName].title()}"/>, quality <x id="2" equiv-text="${formattedQuality}"/> and level <x id="3" equiv-text="${formattedLevel}"/> has been purchased</source>
+  <target>Клон <x id="0" equiv-text="${clone.name}"/> с шаблоном <x id="1" equiv-text="${CLONE_TEMPLATE_TEXTS[clone.templateName].title()}"/>, качеством <x id="2" equiv-text="${formattedQuality}"/> и уровнем <x id="3" equiv-text="${formattedLevel}"/> приобретен</target>
+</trans-unit>
+<trans-unit id="s6ca3251c33e66b50">
+  <source>Are you sure want to purchase program "<x id="0" equiv-text="${programTitle}"/>"? This will replace your current program with quality <x id="1" equiv-text="${formattedQuality}"/> and level <x id="2" equiv-text="${formattedLevel}"/>.</source>
+  <target>Вы действительно хотите приобрести программу "<x id="0" equiv-text="${programTitle}"/>"? Это заменит вашу текущую программу с качеством <x id="1" equiv-text="${formattedQuality}"/> и уровнем <x id="2" equiv-text="${formattedLevel}"/>.</target>
+</trans-unit>
+<trans-unit id="scd96f2727eead846">
+  <source>Program is already bought with quality <x id="0" equiv-text="${formattedQuality}"/> and level <x id="1" equiv-text="${formattedLevel}"/></source>
+  <target>Программа уже куплена с качеством <x id="0" equiv-text="${formattedQuality}"/> и уровнем <x id="1" equiv-text="${formattedLevel}"/></target>
+</trans-unit>
+<trans-unit id="s54f9319c565e273c">
+  <source><x id="0" equiv-text="${programTitle}"/>, quality <x id="1" equiv-text="${formattedQuality}"/>, level <x id="2" equiv-text="${formattedLevel}"/></source>
+  <target><x id="0" equiv-text="${programTitle}"/>, качество <x id="1" equiv-text="${formattedQuality}"/>, уровень <x id="2" equiv-text="${formattedLevel}"/></target>
+</trans-unit>
+<trans-unit id="sf5d560a6580e364e">
+  <source>Process for program "<x id="0" equiv-text="${programTitle}"/>" has been started</source>
+  <target>Процесс для программы "<x id="0" equiv-text="${programTitle}"/>" начат</target>
+</trans-unit>
+<trans-unit id="s61c772d6a7eefcfa">
+  <source>Process for program "<x id="0" equiv-text="${programTitle}"/>" has been deleted</source>
+  <target>Процесс для программы "<x id="0" equiv-text="${programTitle}"/>" удален</target>
 </trans-unit>
 </body>
 </file>

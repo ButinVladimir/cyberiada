@@ -322,7 +322,7 @@ Threads allow to run multiple instances of same program at same time, but additi
     const formattedQuality = formatter.formatQuality(program.quality);
 
     return html`<sl-option value=${program.name}>
-      ${msg(str`${programTitle}, level ${formattedLevel}, quality ${formattedQuality}`)}
+      ${msg(str`${programTitle}, quality ${formattedQuality}, level ${formattedLevel}`)}
     </sl-option>`;
   };
 

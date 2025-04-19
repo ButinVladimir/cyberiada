@@ -307,7 +307,7 @@ If you already have program with same name, old one will be replaced with new on
         new ConfirmationAlertOpenEvent(
           ProgramAlert.purchaseProgramOverwrite,
           msg(
-            str`Are you sure want to purchase program "${programTitle}"? This will replace your current program with level ${formattedLevel} and quality ${formattedQuality}.`,
+            str`Are you sure want to purchase program "${programTitle}"? This will replace your current program with quality ${formattedQuality} and level ${formattedLevel}.`,
           ),
         ),
       );

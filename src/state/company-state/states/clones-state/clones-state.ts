@@ -257,7 +257,7 @@ export class CompanyClonesState implements ICompanyClonesState {
     this._messageLogState.postMessage(
       PurchaseEvent.clonePurchased,
       msg(
-        str`Clone ${clone.name} with template ${CLONE_TEMPLATE_TEXTS[clone.templateName].title()}, level ${formattedLevel} and quality ${formattedQuality} has been purchased`,
+        str`Clone ${clone.name} with template ${CLONE_TEMPLATE_TEXTS[clone.templateName].title()}, quality ${formattedQuality} and level ${formattedLevel} has been purchased`,
       ),
     );
   };

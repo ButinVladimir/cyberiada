@@ -147,11 +147,20 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     this.requestUpdateProcesses();
 
     const programTitle = PROGRAM_TEXTS[program.name].title();
-    const formattedThreads = this._formatter.formatNumberDecimal(threadCount);
-    this._messageLogState.postMessage(
-      ProgramsEvent.processStarted,
-      msg(str`Process for program "${programTitle}" with ${formattedThreads} threads has been started`),
-    );
+
+    if (program.isAutoscalable) {
+      this._messageLogState.postMessage(
+        ProgramsEvent.processStarted,
+        msg(str`Process for program "${programTitle}" has been started`),
+      );
+    } else {
+      const formattedThreads = this._formatter.formatNumberDecimal(threadCount);
+
+      this._messageLogState.postMessage(
+        ProgramsEvent.processStarted,
+        msg(str`Process for program "${programTitle}" with ${formattedThreads} threads has been started`),
+      );
+    }
 
     this.uiEventBatcher.enqueueEvent(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESSES_UPDATED);
 
@@ -181,11 +190,20 @@ export class MainframeProcessesState implements IMainframeProcessesState {
       this._processesMap.delete(programName);
 
       const programTitle = PROGRAM_TEXTS[programName].title();
-      const formattedThreads = this._formatter.formatNumberDecimal(process.threads);
-      this._messageLogState.postMessage(
-        ProgramsEvent.processStarted,
-        msg(str`Process for program "${programTitle}" with ${formattedThreads} threads has been deleted`),
-      );
+
+      if (process.program.isAutoscalable) {
+        this._messageLogState.postMessage(
+          ProgramsEvent.processStarted,
+          msg(str`Process for program "${programTitle}" has been deleted`),
+        );
+      } else {
+        const formattedThreads = this._formatter.formatNumberDecimal(process.threads);
+
+        this._messageLogState.postMessage(
+          ProgramsEvent.processStarted,
+          msg(str`Process for program "${programTitle}" with ${formattedThreads} threads has been deleted`),
+        );
+      }
     }
 
     this.uiEventBatcher.enqueueEvent(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESSES_UPDATED);

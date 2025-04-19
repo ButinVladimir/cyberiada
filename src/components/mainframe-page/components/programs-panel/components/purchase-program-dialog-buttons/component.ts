@@ -89,17 +89,13 @@ export class PurchaseProgramDialogButtons extends BaseComponent<PurchaseProgramD
   };
 
   private getWarning(): string {
-    const program = this.programName
-      ? this.controller.getSelectedProgram(this.programName, this.quality, this.level)
-      : undefined;
-
-    if (!program) {
+    if (!this.programName) {
       return msg('Select program');
     }
 
     const formatter = this.controller.formatter;
 
-    const cost = program.cost;
+    const cost = this.controller.getProgramCost(this.programName, this.quality, this.level);
     const moneyGrowth = this.controller.moneyGrowth;
     const moneyDiff = cost - this.controller.money;
 
@@ -118,7 +114,7 @@ export class PurchaseProgramDialogButtons extends BaseComponent<PurchaseProgramD
       const formattedLevel = formatter.formatNumberDecimal(ownedProgram.level);
       const formattedQuality = formatter.formatQuality(ownedProgram.quality);
 
-      return msg(str`Program is already bought with level ${formattedLevel} and quality ${formattedQuality}`);
+      return msg(str`Program is already bought with quality ${formattedQuality} and level ${formattedLevel}`);
     }
 
     return '';
@@ -127,15 +123,12 @@ export class PurchaseProgramDialogButtons extends BaseComponent<PurchaseProgramD
   private updatePurchaseButton(): void {
     const { formatter, money } = this.controller;
 
-    const program = this.programName
-      ? this.controller.getSelectedProgram(this.programName, this.quality, this.level)
-      : undefined;
-    const cost = program ? program.cost : 0;
+    const cost = this.programName ? this.controller.getProgramCost(this.programName, this.quality, this.level) : 0;
 
     const purchaseButtonDisabled = !(
-      program &&
+      this.programName &&
       cost <= money &&
-      this.controller.isProgramAvailable(program.name, this.quality, this.level)
+      this.controller.isProgramAvailable(this.programName, this.quality, this.level)
     );
 
     const formattedCost = formatter.formatNumberFloat(cost);

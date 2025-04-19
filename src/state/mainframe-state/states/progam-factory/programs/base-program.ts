@@ -105,13 +105,9 @@ export abstract class BaseProgram implements IProgram {
 
   abstract perform(usedCores: number, usedRam: number): void;
 
-  upgrade(newProgram: IProgram): void {
-    if (this.name !== newProgram.name) {
-      throw new Error(`Unable to update program ${this.name} with ${newProgram.name}`);
-    }
-
-    this._level = newProgram.level;
-    this._quality = newProgram.quality;
+  upgrade(quality: number, level: number): void {
+    this._quality = quality;
+    this._level = level;
 
     this.handlePerformanceUpdate();
     this.mainframeState.processes.requestUpdateProcesses();
