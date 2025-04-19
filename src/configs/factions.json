@@ -9,9 +9,11 @@
       "dealMaker",
       "mainframeHardwareAutobuyer",
       "mainframeProgramsAutobuyer"
-    ]
+    ],
+    "cloneTemplates": ["anthrodrone"]
   },
   "wsa": {
-    "programs": []
+    "programs": [],
+    "cloneTemplates": []
   }
 }

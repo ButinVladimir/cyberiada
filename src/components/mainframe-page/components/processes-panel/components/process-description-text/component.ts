@@ -102,7 +102,7 @@ export class ProcessDescriptionText extends BaseComponent<ProcessDescriptionText
 
   private renderNormalRequirements = () => {
     const formatter = this.controller.formatter;
-    const process = this.controller.getProcess(this.programName as ProgramName)!;
+    const process = this.controller.getProcess(this.programName)!;
 
     const completionDelta = process.program.calculateCompletionDelta(process.threads, process.usedCores, 1);
 

@@ -1,7 +1,7 @@
 import { CloneTemplateName } from '../types';
 
 export interface IMakeCloneParameters {
-  id?: string;
+  id: string;
   name: string;
   templateName: CloneTemplateName;
   experience: number;

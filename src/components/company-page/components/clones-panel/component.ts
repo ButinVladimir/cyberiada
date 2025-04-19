@@ -1,12 +1,13 @@
 import { css, html } from 'lit';
-import { msg, localized } from '@lit/localize';
-import { customElement } from 'lit/decorators.js';
+import { msg, localized, str } from '@lit/localize';
+import { customElement, state } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
-import { hintStyle } from '@shared/styles';
+import { hintStyle, SCREEN_WIDTH_POINTS } from '@shared/styles';
+import { ClonesPanelController } from './controller';
 
 @localized()
 @customElement('ca-company-clones-panel')
-export class CompanyClonesPanel extends BaseComponent {
+export class CompanyClonesPanel extends BaseComponent<ClonesPanelController> {
   static styles = [
     hintStyle,
     css`
@@ -14,16 +15,94 @@ export class CompanyClonesPanel extends BaseComponent {
         display: flex;
         align-items: flex-start;
         flex-direction: column;
-        gap: var(--sl-spacing-large);
       }
 
       p.hint {
         margin: 0;
+        margin-bottom: var(--sl-spacing-large);
+      }
+
+      div.top-container {
+        display: grid;
+        grid-template-areas:
+          'synchronization'
+          'purchase-clone';
+        gap: var(--sl-spacing-medium);
+      }
+
+      .purchase-clone {
+        grid-area: purchase-clone;
+      }
+
+      .synchronization {
+        grid-area: synchronization;
+      }
+
+      @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
+        div.top-container {
+          grid-template-areas: 'purchase-clone synchronization';
+          align-items: center;
+          gap: var(--sl-spacing-3x-large);
+        }
       }
     `,
   ];
 
-  render() {
-    return html` <p class="hint">${msg('Stuff about clones')}</p> `;
+  @state()
+  private _isPurchaseCloneDialogOpen = false;
+
+  protected controller: ClonesPanelController;
+
+  constructor() {
+    super();
+
+    this.controller = new ClonesPanelController(this);
   }
+
+  render() {
+    const formatter = this.controller.formatter;
+
+    const formattedAvailableSynchronization = formatter.formatNumberDecimal(this.controller.availableSynchronization);
+    const formattedTotalSynchronization = formatter.formatNumberDecimal(this.controller.totalSynchronization);
+
+    return html`
+      <p class="hint">
+        ${msg(`Clone autoupgrade priority can be changed by dragging it by the name.
+Clones on top have higher priority.`)}
+      </p>
+
+      <div class="top-container">
+        <sl-button class="purchase-clone" variant="primary" size="medium" @click=${this.handlePurchaseCloneDialogOpen}>
+          ${msg('Purchase clone')}
+        </sl-button>
+
+        <div class="synchronization">
+          ${msg(
+            str`Available synchronization: ${formattedAvailableSynchronization} / ${formattedTotalSynchronization}`,
+          )}
+        </div>
+      </div>
+
+      List goes here
+
+      <ca-purchase-clone-dialog
+        ?is-open=${this._isPurchaseCloneDialogOpen}
+        @purchase-clone-dialog-close=${this.handlePurchaseCloneDialogClose}
+      ></ca-purchase-clone-dialog>
+    `;
+  }
+
+  private handlePurchaseCloneDialogOpen = (event: Event) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    this._isPurchaseCloneDialogOpen = true;
+  };
+
+  private handlePurchaseCloneDialogClose = (event: Event) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    this._isPurchaseCloneDialogOpen = false;
+  };
 }

@@ -8,7 +8,8 @@ import { IMessageLogState } from '@state/message-log-state/interfaces/message-lo
 import { IMainframeState } from '@state/mainframe-state/interfaces/mainframe-state';
 import { INotificationsState } from '@state/notifications-state/interfaces/notifications-state';
 import { IGrowthState } from '@state/growth-state/interfaces/growth-state';
-import { IAutomationState } from '@state/automation-state';
+import { IAutomationState } from '@state/automation-state/interfaces/automation-state';
+import { ICompanyState } from '@state/company-state/interfaces/company-state';
 import { container } from '@state/container';
 import { TYPES } from '@state/types';
 import { APP_UI_EVENTS, IApp } from '@state/app';
@@ -179,6 +180,10 @@ export class BaseController<T extends ReactiveControllerHost & HTMLElement = Rea
 
   protected get automationState(): IAutomationState {
     return BaseController.getContainerValue(TYPES.AutomationState);
+  }
+
+  protected get companyState(): ICompanyState {
+    return BaseController.getContainerValue(TYPES.CompanyState);
   }
 
   protected handleRefreshUI = (): void => {

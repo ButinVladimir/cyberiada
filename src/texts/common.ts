@@ -1,4 +1,5 @@
 import { msg, str } from '@lit/localize';
+import { Attribute, ItemCategory, Skill } from '@shared/types';
 
 export const COMMON_TEXTS = {
   notEnoughMoney: () => msg('Not enough money'),
@@ -21,4 +22,27 @@ export const COMMON_TEXTS = {
   continue: () => msg('Continue'),
   close: () => msg('Close'),
   purchase: (cost: string) => msg(str`Purchase for ${cost}`),
+};
+
+export const CATEGORY_TEXTS: Record<ItemCategory, () => string> = {
+  programs: () => msg('Programs'),
+  cloneTemplates: () => msg('Clone templates'),
+};
+
+export const ATTRIBUTE_TEXTS: Record<Attribute, () => string> = {
+  strength: () => msg('Strength'),
+  agility: () => msg('Agility'),
+  charisma: () => msg('Charisma'),
+  endurance: () => msg('Endurance'),
+  intellect: () => msg('Intellect'),
+  perception: () => msg('Perception'),
+};
+
+export const SKILL_TEXTS: Record<Skill, () => string> = {
+  closeCombat: () => msg('Close combat'),
+  rangedCombat: () => msg('Ranged combat'),
+  diplomacy: () => msg('Diplomacy'),
+  engineering: () => msg('Engineering'),
+  hacking: () => msg('Hacking'),
+  stealth: () => msg('Stealth'),
 };

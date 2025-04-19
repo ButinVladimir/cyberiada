@@ -2,8 +2,7 @@ import { css, html } from 'lit';
 import { localized, msg, str } from '@lit/localize';
 import { customElement, state } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
-import { hintStyle } from '@shared/styles';
-import { SCREEN_WIDTH_POINTS } from '@shared/styles';
+import { hintStyle, SCREEN_WIDTH_POINTS } from '@shared/styles';
 import { ProcessesPanelController } from './controller';
 
 @localized()

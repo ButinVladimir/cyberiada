@@ -1,17 +1,11 @@
 import { css, html, nothing } from 'lit';
-import { localized, msg, str } from '@lit/localize';
+import { localized, msg } from '@lit/localize';
 import { customElement, property, state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.component.js';
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.component.js';
 import { BaseComponent } from '@shared/base-component';
-import type { ProgramName } from '@state/mainframe-state/states/progam-factory/types';
-import {
-  ConfirmationAlertOpenEvent,
-  ConfirmationAlertSubmitEvent,
-} from '@components/game-screen/components/confirmation-alert/events';
-import { ProgramAlert } from '@shared/types';
+import { CloneTemplateName } from '@state/company-state/states/clone-factory/types';
 import {
   inputLabelStyle,
   hintStyle,
@@ -20,13 +14,13 @@ import {
   modalBodyScrollStyle,
   SCREEN_WIDTH_POINTS,
 } from '@shared/styles';
-import { PROGRAM_TEXTS, COMMON_TEXTS } from '@texts/index';
-import { PurchaseProgramDialogCloseEvent } from './events';
-import { PurchaseProgramDialogController } from './controller';
+import { COMMON_TEXTS, CLONE_TEMPLATE_TEXTS } from '@texts/index';
+import { PurchaseCloneDialogCloseEvent } from './events';
+import { PurchaseCloneDialogController } from './controller';
 
 @localized()
-@customElement('ca-purchase-program-dialog')
-export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogController> {
+@customElement('ca-purchase-clone-dialog')
+export class PurchaseCloneDialog extends BaseComponent<PurchaseCloneDialogController> {
   static styles = [
     inputLabelStyle,
     hintStyle,
@@ -64,6 +58,7 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
         row-gap: var(--sl-spacing-medium);
         grid-template-columns: auto;
         grid-template-rows: auto;
+        margin-bottom: var(--sl-spacing-medium);
       }
 
       p.hint {
@@ -71,18 +66,24 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
         margin-bottom: var(--sl-spacing-medium);
       }
 
+      div.footer {
+        display: flex;
+      }
+
       @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
         div.inputs-container {
-          grid-template-rows: auto;
-          grid-template-columns: 2fr 1fr 1fr;
+          grid-template-rows: 1fr 1fr;
+          grid-template-columns: 1fr 1fr;
         }
       }
     `,
   ];
 
-  protected controller: PurchaseProgramDialogController;
+  protected controller: PurchaseCloneDialogController;
 
-  private _programInputRef = createRef<SlSelect>();
+  private _nameInputRef = createRef<SlInput>();
+
+  private _cloneTemplateInputRef = createRef<SlSelect>();
 
   private _qualityInputRef = createRef<SlSelect>();
 
@@ -95,7 +96,10 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
   isOpen = false;
 
   @state()
-  private _programName?: ProgramName = undefined;
+  private _name = '';
+
+  @state()
+  private _cloneTemplateName?: CloneTemplateName = undefined;
 
   @state()
   private _quality = 0;
@@ -106,26 +110,14 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
   constructor() {
     super();
 
-    this.controller = new PurchaseProgramDialogController(this);
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-
-    document.addEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmConfirmationAlert);
-  }
-
-  disconnectedCallback() {
-    super.disconnectedCallback();
-
-    document.removeEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmConfirmationAlert);
+    this.controller = new PurchaseCloneDialogController(this);
   }
 
   updated(_changedProperties: Map<string, any>) {
     super.updated(_changedProperties);
 
     if (_changedProperties.has('isOpen')) {
-      this._programName = undefined;
+      this._cloneTemplateName = undefined;
       this._quality = 0;
       this._level = this.controller.developmentLevel;
     }
@@ -136,29 +128,37 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
 
     return html`
       <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
-        <h4 slot="label" class="title">${msg('Purchase program')}</h4>
+        <h4 slot="label" class="title">${msg('Purchase clone')}</h4>
 
         <div class="body">
           <p class="hint">
-            ${msg(`Select program type, level and quality to purchase it.
+            ${msg(`Select clone template, level and quality to purchase it.
 Level cannot be above current development level.
-Quality is limited depending on gained favors.
-If you already have program with same name, old one will be replaced with new one.`)}
+Quality is limited depending on gained favors.`)}
           </p>
 
           <div class="inputs-container">
+            <sl-input ${ref(this._nameInputRef)} name="name" value=${this._name} @sl-change=${this.handleNameChange}>
+              <span class="input-label" slot="label"> ${msg('Name')} </span>
+            </sl-input>
+
             <sl-select
-              ${ref(this._programInputRef)}
-              name="program"
-              value=${this._programName ?? ''}
+              ${ref(this._cloneTemplateInputRef)}
+              name="cloneTemplate"
+              value=${this._cloneTemplateName ?? ''}
               hoist
-              @sl-change=${this.handleProgramChange}
+              @sl-change=${this.handleCloneTemplateChange}
             >
-              <span class="input-label" slot="label"> ${msg('Program')} </span>
+              <span class="input-label" slot="label"> ${msg('Clone template')} </span>
 
               ${this.controller
-                .listAvailablePrograms()
-                .map((program) => html`<sl-option value=${program}> ${PROGRAM_TEXTS[program].title()} </sl-option>`)}
+                .listAvailableCloneTemplates()
+                .map(
+                  (cloneTemplate) =>
+                    html`<sl-option value=${cloneTemplate}>
+                      ${CLONE_TEMPLATE_TEXTS[cloneTemplate].title()}
+                    </sl-option>`,
+                )}
             </sl-select>
 
             <sl-select
@@ -188,32 +188,21 @@ If you already have program with same name, old one will be replaced with new on
             </sl-input>
           </div>
 
-          ${this._programName
-            ? html`<ca-program-diff-text
-                program-name=${this._programName}
-                level=${this._level}
+          ${this._cloneTemplateName
+            ? html`<ca-clone-dialog-description-text
+                clone-template-name=${this._cloneTemplateName}
                 quality=${this._quality}
-              >
-              </ca-program-diff-text>`
+                level=${this._level}
+              ></ca-clone-dialog-description-text>`
             : nothing}
         </div>
-
-        <ca-purchase-program-dialog-buttons
-          slot="footer"
-          program-name=${ifDefined(this._programName)}
-          level=${this._level}
-          quality=${this._quality}
-          @buy-program=${this.handleOpenConfirmationAlert}
-          @cancel=${this.handleClose}
-        >
-        </ca-purchase-program-dialog-buttons>
       </sl-dialog>
     `;
   }
 
   private renderQualityOptions = () => {
-    const highestAvailableQuality = this._programName
-      ? this.controller.getHighestAvailableQuality(this._programName)
+    const highestAvailableQuality = this._cloneTemplateName
+      ? this.controller.getHighestAvailableQuality(this._cloneTemplateName)
       : 0;
     const formatter = this.controller.formatter;
 
@@ -229,16 +218,24 @@ If you already have program with same name, old one will be replaced with new on
     event.preventDefault();
     event.stopPropagation();
 
-    this.dispatchEvent(new PurchaseProgramDialogCloseEvent());
+    this.dispatchEvent(new PurchaseCloneDialogCloseEvent());
   };
 
-  private handleProgramChange = () => {
-    if (!this._programInputRef.value) {
+  private handleNameChange = () => {
+    if (!this._nameInputRef.value) {
       return;
     }
 
-    const programName = this._programInputRef.value.value as ProgramName;
-    this._programName = programName;
+    this._name = this._nameInputRef.value.value;
+  };
+
+  private handleCloneTemplateChange = () => {
+    if (!this._cloneTemplateInputRef.value) {
+      return;
+    }
+
+    const cloneTemplateName = this._cloneTemplateInputRef.value.value as CloneTemplateName;
+    this._cloneTemplateName = cloneTemplateName;
   };
 
   private handleQualityChange = () => {
@@ -269,55 +266,18 @@ If you already have program with same name, old one will be replaced with new on
     this._levelInputRef.value.valueAsNumber = level;
   };
 
-  private handleOpenConfirmationAlert = (event: Event) => {
+  private handlePurchaseClone = (event: Event) => {
     event.stopPropagation();
     event.preventDefault();
 
-    if (!this._programName) {
+    if (!this._cloneTemplateName) {
       return;
     }
 
-    const ownedProgram = this.controller.getOwnedProgram(this._programName);
-
-    if (ownedProgram) {
-      const formatter = this.controller.formatter;
-
-      const programTitle = PROGRAM_TEXTS[this._programName].title();
-      const formattedLevel = formatter.formatNumberDecimal(ownedProgram.level);
-      const formattedQuality = formatter.formatQuality(ownedProgram.quality);
-
-      this.dispatchEvent(
-        new ConfirmationAlertOpenEvent(
-          ProgramAlert.purchaseProgramOverwrite,
-          msg(
-            str`Are you sure want to purchase program "${programTitle}"? This will replace your current program with quality ${formattedQuality} and level ${formattedLevel}.`,
-          ),
-        ),
-      );
-    } else {
-      this.purchase();
-    }
-  };
-
-  private handleConfirmConfirmationAlert = (event: Event) => {
-    const convertedEvent = event as ConfirmationAlertSubmitEvent;
-
-    if (convertedEvent.gameAlert !== ProgramAlert.purchaseProgramOverwrite) {
-      return;
-    }
-
-    this.purchase();
-  };
-
-  private purchase = () => {
-    if (!this._programName) {
-      return;
-    }
-
-    const isBought = this.controller.purchaseProgram(this._programName, this._quality, this._level);
+    const isBought = this.controller.purchaseClone('Dude', this._cloneTemplateName, this._quality, this._level);
 
     if (isBought) {
-      this.dispatchEvent(new PurchaseProgramDialogCloseEvent());
+      this.dispatchEvent(new PurchaseCloneDialogCloseEvent());
     }
   };
 }

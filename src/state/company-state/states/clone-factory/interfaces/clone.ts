@@ -10,8 +10,6 @@ export interface IClone extends IUIEventEmitter {
   experience: number;
   level: number;
   quality: number;
-  cost: number;
-  synchonization: number;
   autoUpgradeEnabled: boolean;
   increaseExperience(delta: number): void;
   earnExperience(delta: number): void;

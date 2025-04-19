@@ -2,5 +2,4 @@ import { IMakeCloneParameters } from '../../clone-factory/interfaces/make-clone-
 
 export interface ICompanyClonesSerializedState {
   clones: IMakeCloneParameters[];
-  extraExperience: number;
 }

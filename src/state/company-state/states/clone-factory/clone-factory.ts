@@ -1,5 +1,4 @@
 import { injectable } from 'inversify';
-import { v4 as uuid } from 'uuid';
 import { decorators } from '@state/container';
 import { TYPES } from '@state/types';
 import type { ICompanyState } from '@state/company-state/interfaces/company-state';
@@ -20,7 +19,6 @@ export class CloneFactory implements ICloneFactory {
   makeClone(parameters: IMakeCloneParameters): IClone {
     const cloneParameters: IBaseCloneParameters = {
       ...parameters,
-      id: parameters.id ?? uuid(),
       companyState: this._companyState,
       stateUiConnector: this._stateUiConnector,
     };

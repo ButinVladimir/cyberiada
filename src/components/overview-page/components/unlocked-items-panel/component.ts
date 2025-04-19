@@ -48,6 +48,7 @@ export class OverviewUnlockedItemsPanel extends BaseComponent<OverviewUnlockedIt
 
   private renderCategories() {
     const programsUnlocked = this.controller.areProgramsUnlocked();
+    const cloneTemplatesUnlocked = this.controller.areCloneTemplatesUnlocked();
 
     return html`
       <p class="hint">
@@ -56,6 +57,9 @@ Number next to item name is it's maximum quality available.`)}
       </p>
       <div class="categories">
         ${programsUnlocked ? html`<ca-overview-unlocked-programs></ca-overview-unlocked-programs>` : nothing}
+        ${cloneTemplatesUnlocked
+          ? html`<ca-overview-unlocked-clone-templates></ca-overview-unlocked-clone-templates>`
+          : nothing}
       </div>
     `;
   }

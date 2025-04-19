@@ -62,6 +62,7 @@ import {
   MainframeProcessesState,
   IMainframeState,
   MainframeState,
+  ProgramName,
 } from '@state/mainframe-state';
 import {
   IMainframeHardwareAutomationState,
@@ -83,7 +84,9 @@ import {
   CompanyClonesState,
   ICompanyState,
   CompanyState,
+  CloneTemplateName,
 } from '@state/company-state';
+import { AvailableCloneTemplatesState } from './global-state/parameters/available-items/available-clone-templates-state';
 
 container.bind<IStateUIConnector>(TYPES.StateUIConnector).to(StateUIConnector).inSingletonScope().whenTargetIsDefault();
 
@@ -128,8 +131,14 @@ container
 container.bind<IMultipliersState>(TYPES.MultipliersState).to(MultipliersState).inSingletonScope().whenTargetIsDefault();
 
 container
-  .bind<IAvailableCategoryItemsState>(TYPES.AvailableProgramsState)
+  .bind<IAvailableCategoryItemsState<ProgramName>>(TYPES.AvailableProgramsState)
   .to(AvailableProgramsState)
+  .inSingletonScope()
+  .whenTargetIsDefault();
+
+container
+  .bind<IAvailableCategoryItemsState<CloneTemplateName>>(TYPES.AvailableCloneTemplatesState)
+  .to(AvailableCloneTemplatesState)
   .inSingletonScope()
   .whenTargetIsDefault();
 

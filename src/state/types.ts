@@ -16,6 +16,7 @@ export const TYPES = {
   RewardsState: Symbol('RewardsState'),
   AvailableItemsState: Symbol('AvailableItemsState'),
   AvailableProgramsState: Symbol('AvailableProgramsState'),
+  AvailableCloneTemplatesState: Symbol('AvailableCloneTemplatesState'),
   ProgramCompletionSpeedState: Symbol('ProgramCompletionSpeedState'),
   UnlockedFeaturesState: Symbol('UnlockedFeaturesState'),
   GrowthState: Symbol('GrowthState'),

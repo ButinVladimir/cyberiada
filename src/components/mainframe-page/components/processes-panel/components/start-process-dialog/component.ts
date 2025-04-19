@@ -72,23 +72,6 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
         margin-bottom: var(--sl-spacing-medium);
       }
 
-      div.footer {
-        display: flex;
-      }
-
-      div.program-description {
-        margin-top: var(--sl-spacing-medium);
-        margin-bottom: 0;
-      }
-
-      div.program-description p {
-        margin: 0;
-      }
-
-      div.program-description p.line-break {
-        height: var(--sl-spacing-medium);
-      }
-
       @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
         div.inputs-container {
           grid-template-rows: auto;

@@ -10,7 +10,7 @@ import { IAvailableCategoryItemsSerializedState } from '../../interfaces/seriali
 const { lazyInject } = decorators;
 
 @injectable()
-export abstract class BaseAvailableCategoryItemsState implements IAvailableCategoryItemsState {
+export abstract class BaseAvailableCategoryItemsState<Key = string> implements IAvailableCategoryItemsState<Key> {
   readonly uiEventBatcher: EventBatcher;
 
   @lazyInject(TYPES.StateUIConnector)
@@ -20,9 +20,9 @@ export abstract class BaseAvailableCategoryItemsState implements IAvailableCateg
   protected _globalState!: IGlobalState;
 
   protected _loanedQuality: number;
-  protected _neutralItems: Set<string>;
-  protected _loanedItems: Set<string>;
-  protected _itemsList: string[];
+  protected _neutralItems: Set<Key>;
+  protected _loanedItems: Set<Key>;
+  protected _itemsList: Key[];
 
   constructor() {
     this._loanedQuality = 0;
@@ -40,11 +40,11 @@ export abstract class BaseAvailableCategoryItemsState implements IAvailableCateg
     return this._loanedQuality;
   }
 
-  listAvailableItems(): string[] {
+  listAvailableItems(): Key[] {
     return this._itemsList;
   }
 
-  isItemAvailable(itemName: string, quality: number, level: number): boolean {
+  isItemAvailable(itemName: Key, quality: number, level: number): boolean {
     if (!(this._neutralItems.has(itemName) || this._loanedItems.has(itemName))) {
       return false;
     }
@@ -57,7 +57,7 @@ export abstract class BaseAvailableCategoryItemsState implements IAvailableCateg
     return level <= this._globalState.development.level;
   }
 
-  getItemHighestAvailableQuality(itemName: string): number {
+  getItemHighestAvailableQuality(itemName: Key): number {
     let result: number | undefined = undefined;
 
     if (this._neutralItems.has(itemName) || this._loanedItems.has(itemName)) {
@@ -79,7 +79,7 @@ export abstract class BaseAvailableCategoryItemsState implements IAvailableCateg
     this.recalculateList();
   }
 
-  async deserialize(serializedState: IAvailableCategoryItemsSerializedState): Promise<void> {
+  async deserialize(serializedState: IAvailableCategoryItemsSerializedState<Key>): Promise<void> {
     this._loanedQuality = serializedState.loanedQuality;
     this._loanedItems.clear();
 
@@ -91,7 +91,7 @@ export abstract class BaseAvailableCategoryItemsState implements IAvailableCateg
     this.recalculateList();
   }
 
-  serialize(): IAvailableCategoryItemsSerializedState {
+  serialize(): IAvailableCategoryItemsSerializedState<Key> {
     return {
       loanedQuality: this._loanedQuality,
       loanedItems: Array.from(this._loanedItems.values()),

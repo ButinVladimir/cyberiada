@@ -1,58 +1,16 @@
-import { html, css } from 'lit';
+import { html } from 'lit';
 import { localized } from '@lit/localize';
 import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
-import { sectionTitleStyle, detailsStyle, hintIconStyle, SCREEN_WIDTH_POINTS } from '@shared/styles';
-import { CATEGORIES, PROGRAM_TEXTS } from '@texts/index';
+import { CATEGORY_TEXTS, PROGRAM_TEXTS } from '@texts/index';
 import { OverviewUnlockedProgramsController } from './controller';
 import { ProgramName } from '@state/mainframe-state/states/progam-factory/types';
+import { unlockedItemsCategoryStyles } from '../../constants';
 
 @localized()
 @customElement('ca-overview-unlocked-programs')
 export class OverviewUnlockedPrograms extends BaseComponent<OverviewUnlockedProgramsController> {
-  static styles = [
-    sectionTitleStyle,
-    detailsStyle,
-    hintIconStyle,
-    css`
-      :host {
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-        gap: var(--sl-spacing-large);
-      }
-
-      h4.title {
-        margin-bottom: 0;
-      }
-
-      .content-table {
-        display: grid;
-        column-gap: var(--sl-spacing-3x-small);
-        row-gap: var(--sl-spacing-3x-small);
-        grid-template-columns: auto;
-        grid-auto-rows: auto;
-      }
-
-      .content-table > span:nth-child(even) {
-        text-align: start;
-        white-space: nowrap;
-        margin-bottom: var(--sl-spacing-medium);
-      }
-
-      @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
-        .content-table {
-          grid-template-columns: auto auto;
-          row-gap: var(--sl-spacing-small);
-        }
-
-        .content-table > span:nth-child(even) {
-          text-align: end;
-          margin-bottom: 0;
-        }
-      }
-    `,
-  ];
+  static styles = unlockedItemsCategoryStyles;
 
   protected controller: OverviewUnlockedProgramsController;
 
@@ -63,7 +21,7 @@ export class OverviewUnlockedPrograms extends BaseComponent<OverviewUnlockedProg
   }
 
   render() {
-    const programsCategory = CATEGORIES.programs();
+    const programsCategory = CATEGORY_TEXTS.programs();
 
     return html`
       <sl-details>
