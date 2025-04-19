@@ -1,12 +1,13 @@
-import { t } from 'i18next';
 import { css, html, nothing } from 'lit';
+import { msg, localized } from '@lit/localize';
 import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { pageTitleStyle } from '@shared/styles';
 import { MainframePageController } from './controller';
 import { MainframePageTabs } from './types';
-import { MAINFRAME_PAGE_TABS_LIST } from './constants';
+import { MAINFRAME_PAGE_TABS_LIST, MAINFRAMGE_PAGE_TAB_TITLES } from './constants';
 
+@localized()
 @customElement('ca-mainframe-page')
 export class MainframePage extends BaseComponent<MainframePageController> {
   static styles = [
@@ -28,7 +29,7 @@ export class MainframePage extends BaseComponent<MainframePageController> {
 
   render() {
     return html`
-      <h3 class="title">${t('mainframe.mainframe', { ns: 'ui' })}</h3>
+      <h3 class="title">${msg('Mainframe')}</h3>
 
       <sl-tab-group>
         ${MAINFRAME_PAGE_TABS_LIST.map((tab) => this.renderTab(tab))}
@@ -53,7 +54,7 @@ export class MainframePage extends BaseComponent<MainframePageController> {
       return nothing;
     }
 
-    return html` <sl-tab slot="nav" panel=${tab}> ${t(`mainframe.tabs.${tab}`, { ns: 'ui' })} </sl-tab> `;
+    return html` <sl-tab slot="nav" panel=${tab}> ${MAINFRAMGE_PAGE_TAB_TITLES[tab]()} </sl-tab> `;
   };
 
   private renderTabPanel = (tab: MainframePageTabs) => {

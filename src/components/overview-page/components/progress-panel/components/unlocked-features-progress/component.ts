@@ -1,11 +1,12 @@
-import { t } from 'i18next';
 import { html } from 'lit';
+import { localized, msg } from '@lit/localize';
 import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { FEATURES } from '@shared/constants';
 import { OverviewUnlockedFeaturesProgressController } from './controller';
 import { progressBlockStyle } from '../../styles';
 
+@localized()
 @customElement('ca-overview-unlocked-features-progress')
 export class OverviewUnlockedFeaturesProgress extends BaseComponent<OverviewUnlockedFeaturesProgressController> {
   static styles = [progressBlockStyle];
@@ -32,7 +33,7 @@ export class OverviewUnlockedFeaturesProgress extends BaseComponent<OverviewUnlo
 
     return html`
       <div class="block">
-        <div class="title">${t('overview.progress.unlockedFeaturesProgress', { ns: 'ui' })}</div>
+        <div class="title">${msg('Unlocked features progress')}</div>
 
         <sl-progress-bar value=${unlockedFeaturesProgressBarValue}>
           ${unlockedFeaturesProgressBarPercentage}

@@ -13,6 +13,7 @@ import {
   IMoneyState,
   MoneyState,
   IMultiplierState,
+  IConnectivityState,
   CodeBaseState,
   IStoryEventsState,
   StoryEventsState,
@@ -105,7 +106,7 @@ container
   .whenTargetIsDefault();
 
 container
-  .bind<IMultiplierState>(TYPES.ConnectivityState)
+  .bind<IConnectivityState>(TYPES.ConnectivityState)
   .to(ConnectivityState)
   .inSingletonScope()
   .whenTargetIsDefault();

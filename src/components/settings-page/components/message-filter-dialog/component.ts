@@ -1,5 +1,5 @@
-import { t } from 'i18next';
 import { TemplateResult, css, html } from 'lit';
+import { msg, localized } from '@lit/localize';
 import { customElement, property } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { BaseComponent } from '@shared/base-component';
@@ -13,9 +13,12 @@ import {
   modalBodyScrollStyle,
   SCREEN_WIDTH_POINTS,
 } from '@shared/styles';
+import { COMMON_TEXTS } from '@texts/common';
 import { MessageFilterDialogCloseEvent } from './events';
 import { MessageFilterDialogController } from './controller';
+import { MESSAGE_EVENT_NAMES } from './constants';
 
+@localized()
 @customElement('ca-message-filter-dialog')
 export class MessageFilterDialog extends BaseComponent<MessageFilterDialogController> {
   static styles = [
@@ -81,10 +84,10 @@ export class MessageFilterDialog extends BaseComponent<MessageFilterDialogContro
   render() {
     return html`
       <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
-        <h4 slot="label" class="title">${t('settings.messageFilter', { ns: 'ui' })}</h4>
+        <h4 slot="label" class="title">${msg('Message filter')}</h4>
 
         <div class="body">
-          <p class="hint">${t('settings.messageFilterHint', { ns: 'ui' })}</p>
+          <p class="hint">${msg('Enable events in filter to receive messages about them in the log and as popups')}</p>
 
           <div class="events-container">${repeat(GAME_STATE_EVENTS, (event) => event, this.renderEventCheckbox)}</div>
 
@@ -102,7 +105,7 @@ export class MessageFilterDialog extends BaseComponent<MessageFilterDialogContro
         </div>
 
         <sl-button slot="footer" size="medium" variant="default" outline @click=${this.handleClose}>
-          ${t('common.close', { ns: 'ui' })}
+          ${COMMON_TEXTS.close()}
         </sl-button>
       </sl-dialog>
     `;
@@ -117,7 +120,7 @@ export class MessageFilterDialog extends BaseComponent<MessageFilterDialogContro
         ?checked=${this.controller.isMessageEventEnabled(event)}
         @sl-change=${this.handleToggleEvent}
       >
-        ${t(`${event}.name`, { ns: 'events' })}
+        ${MESSAGE_EVENT_NAMES[event]()}
       </sl-checkbox>
     `;
   };

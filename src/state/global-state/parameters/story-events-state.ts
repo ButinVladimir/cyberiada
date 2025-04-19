@@ -5,6 +5,7 @@ import { NotificationType } from '@shared/types';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import type { INotificationsState } from '@state/notifications-state/interfaces/notifications-state';
 import { TYPES } from '@state/types';
+import { STORY_MESSAGES } from '@texts/story';
 import type { IGlobalState } from '../interfaces/global-state';
 import { IStoryEventsState } from '../interfaces/parameters/story-events-state';
 import { IStoryGoal } from '../interfaces/story-goal';
@@ -76,7 +77,7 @@ export class StoryEventsState implements IStoryEventsState {
 
       if (storyEvent.messages) {
         storyEvent.messages.forEach((messageKey) => {
-          this._notificationsState.pushNotification(NotificationType.storyEvent, { messageKey });
+          this._notificationsState.pushNotification(NotificationType.storyEvent, STORY_MESSAGES[messageKey]());
         });
       }
 

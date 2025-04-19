@@ -4,7 +4,7 @@ import type { IMessageLogState } from '@state/message-log-state/interfaces/messa
 import type { IFormatter } from '@shared/interfaces/formatter';
 import { calculatePow } from '@shared/helpers';
 import { IExponent } from '@shared/interfaces/exponent';
-import { Feature, PurchaseEvent, PurchaseType } from '@shared/types';
+import { Feature, PurchaseType } from '@shared/types';
 import { binarySearchDecimal } from '@shared/helpers';
 import {
   IMainframeHardwareParameter,
@@ -43,7 +43,7 @@ export abstract class MainframeHardwareParameter implements IMainframeHardwarePa
   get autoUpgradeEnabled() {
     this.stateUiConnector.connectEventHandler(
       this.mainframeHardwareState,
-      MAINFRAME_HARDWARE_STATE_UI_EVENTS.AUTOBUYER_UPDATED,
+      MAINFRAME_HARDWARE_STATE_UI_EVENTS.HARDWARE_AUTOBUYER_UPDATED,
     );
 
     return this._autoUpgradeEnabled;
@@ -59,7 +59,7 @@ export abstract class MainframeHardwareParameter implements IMainframeHardwarePa
 
   protected abstract get priceExp(): IExponent;
 
-  protected abstract get purchaseEvent(): PurchaseEvent;
+  protected abstract postPurchaseMessge(): void;
 
   getIncreaseCost(increase: number): number {
     const exp = this.priceExp;
@@ -132,9 +132,7 @@ export abstract class MainframeHardwareParameter implements IMainframeHardwarePa
 
   private handlePurchaseIncrease = (increase: number) => () => {
     this._level += increase;
-    this.messageLogState.postMessage(this.purchaseEvent, {
-      level: this.formatter.formatNumberDecimal(this.level),
-    });
+    this.postPurchaseMessge();
 
     this.mainframeHardwareState.emitUpgradedEvent();
   };

@@ -7,7 +7,6 @@ import { TYPES } from '@state/types';
 import { ProgramName } from '@state/mainframe-state/states/progam-factory/types';
 import { IProcess } from '@state/mainframe-state/states/mainframe-processes-state/interfaces/process';
 import { IMultiplierGrowthState } from '../../interfaces/parameters/multiplier-growth-state';
-import { GROWTH_STATE_UI_EVENTS } from '../../constants';
 
 const { lazyInject } = decorators;
 
@@ -34,8 +33,6 @@ export abstract class BaseMultiplierGrowthState implements IMultiplierGrowthStat
   }
 
   get growthByProgram() {
-    this._stateUiConnector.connectEventHandler(this, GROWTH_STATE_UI_EVENTS.MULTIPLIER_GROWTH_CHANGED);
-
     return this._growthByProgram;
   }
 
@@ -51,8 +48,6 @@ export abstract class BaseMultiplierGrowthState implements IMultiplierGrowthStat
     this._updateRequested = false;
 
     this.updateGrowthByProgram();
-
-    this.uiEventBatcher.enqueueEvent(GROWTH_STATE_UI_EVENTS.MULTIPLIER_GROWTH_CHANGED);
   }
 
   private updateGrowthByProgram(): void {

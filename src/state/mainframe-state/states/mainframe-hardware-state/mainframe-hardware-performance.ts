@@ -1,3 +1,4 @@
+import { msg, str } from '@lit/localize';
 import { IExponent } from '@shared/interfaces';
 import { PurchaseEvent } from '@shared/types';
 import { MainframeHardwareParameter } from './mainframe-hardware-parameter';
@@ -10,8 +11,13 @@ export class MainframeHardwarePerformance extends MainframeHardwareParameter {
     return this.globalState.scenario.currentValues.mainframeHardware.performancePrice;
   }
 
-  protected get purchaseEvent(): PurchaseEvent {
-    return PurchaseEvent.performanceUpgraded;
+  protected postPurchaseMessge(): void {
+    const formattedLevel = this.formatter.formatNumberDecimal(this._level);
+
+    this.messageLogState.postMessage(
+      PurchaseEvent.performanceUpgraded,
+      msg(str`Mainframe performance has been upgraded to ${formattedLevel}`),
+    );
   }
 
   async startNewState(): Promise<void> {

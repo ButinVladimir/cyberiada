@@ -1,5 +1,4 @@
 import { injectable } from 'inversify';
-import i18n from 'i18next';
 import { decorators } from '@state/container';
 import { GameAlert, Language, LongNumberFormat, MessageEvent, Theme, NotificationType } from '@shared/types';
 import {
@@ -15,6 +14,8 @@ import type { IApp } from '@state/app/interfaces/app';
 import { TYPES } from '@state/types';
 import themes from '@configs/themes.json';
 import constants from '@configs/constants.json';
+import { type IFormatter } from '@shared/interfaces/formatter';
+import { getLocale, setLocale } from '@/configure-localization';
 import { ISettingsState, ISettingsSerializedState } from './interfaces';
 
 const { lazyInject } = decorators;
@@ -23,6 +24,9 @@ const { lazyInject } = decorators;
 export class SettingsState implements ISettingsState {
   @lazyInject(TYPES.App)
   private _app!: IApp;
+
+  @lazyInject(TYPES.Formatter)
+  private _formatter!: IFormatter;
 
   private _language: Language;
   private _theme: Theme;
@@ -40,7 +44,7 @@ export class SettingsState implements ISettingsState {
   private _enabledNotificationTypes: Set<NotificationType>;
 
   constructor() {
-    this._language = Language.en;
+    this._language = getLocale() as Language;
     this._theme = Theme.light;
     this._messageLogSize = constants.defaultSettings.messageLogSize;
     this._toastDuration = constants.defaultSettings.toastDuration;
@@ -115,16 +119,16 @@ export class SettingsState implements ISettingsState {
   async setLanguage(language: Language): Promise<void> {
     this._language = language;
 
-    await i18n.changeLanguage(this.language);
-    document.documentElement.lang = this.language;
+    await setLocale(language);
+    document.documentElement.lang = language;
 
-    this._app.refreshUI();
+    this._formatter.updateBuiltInFormatters();
   }
 
   setTheme(theme: Theme) {
     this._theme = theme;
 
-    document.body.className = themes[this.theme].classes;
+    document.body.className = themes[theme].classes;
   }
 
   setMessageLogSize(messageLogSize: number) {
@@ -191,9 +195,7 @@ export class SettingsState implements ISettingsState {
   }
 
   async startNewState(): Promise<void> {
-    await i18n.changeLanguage();
-
-    await this.setLanguage(i18n.resolvedLanguage! as Language);
+    await this.setLanguage(getLocale() as Language);
     this.setTheme(window.matchMedia('(prefers-color-scheme:dark)').matches ? Theme.dark : Theme.light);
     this.setMessageLogSize(constants.defaultSettings.messageLogSize);
     this.setToastDuration(constants.defaultSettings.toastDuration);

@@ -1,14 +1,16 @@
-import { t } from 'i18next';
 import { css, html } from 'lit';
+import { localized, msg } from '@lit/localize';
 import { customElement, state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import SlCheckbox from '@shoelace-style/shoelace/dist/components/checkbox/checkbox.component.js';
 import { BaseComponent } from '@shared/base-component';
 import type { GameAlert } from '@shared/types';
 import { smallModalStyle, modalBodyScrollStyle } from '@shared/styles';
+import { COMMON_TEXTS } from '@texts/common';
 import { ConfirmationAlertOpenEvent, ConfirmationAlertCloseEvent, ConfirmationAlertSubmitEvent } from './events';
 import { ConfirmationAlertController } from './controller';
 
+@localized()
 @customElement('ca-confirmation-alert')
 export class ConfirmationAlert extends BaseComponent<ConfirmationAlertController> {
   static styles = [
@@ -42,7 +44,7 @@ export class ConfirmationAlert extends BaseComponent<ConfirmationAlertController
   private _gameAlertKey?: string;
 
   @state()
-  private _messageParams = {};
+  private _message = '';
 
   @state()
   private _isOpen = false;
@@ -71,7 +73,7 @@ export class ConfirmationAlert extends BaseComponent<ConfirmationAlertController
   render() {
     return html`
       <sl-dialog no-header ?open=${this._isOpen} @sl-request-close=${this.handleClose}>
-        <p>${t(`${this._gameAlert}.message`, { ns: 'alerts', ...this._messageParams })}</p>
+        <p>${this._message}</p>
 
         <sl-checkbox
           ref=${ref(this._gameAlertToggleRef)}
@@ -80,15 +82,15 @@ export class ConfirmationAlert extends BaseComponent<ConfirmationAlertController
           ?checked=${this._alertToggled}
           @sl-change=${this.handleToggleAlert}
         >
-          ${t('settings.alertToggle', { ns: 'ui' })}
+          ${msg('Show alerts like this in the future')}
         </sl-checkbox>
 
         <sl-button slot="footer" size="medium" variant="default" outline @click=${this.handleClose}>
-          ${t('common.cancel', { ns: 'ui' })}
+          ${COMMON_TEXTS.cancel()}
         </sl-button>
 
         <sl-button slot="footer" size="medium" variant="danger" @click=${this.handleSubmit}>
-          ${t('common.continue', { ns: 'ui' })}
+          ${COMMON_TEXTS.continue()}
         </sl-button>
       </sl-dialog>
     `;
@@ -99,7 +101,7 @@ export class ConfirmationAlert extends BaseComponent<ConfirmationAlertController
     const convertedEvent = event as ConfirmationAlertOpenEvent;
 
     this._gameAlert = convertedEvent.gameAlert;
-    this._messageParams = convertedEvent.messageParams;
+    this._message = convertedEvent.message;
     this._gameAlertKey = convertedEvent.gameAlertKey;
 
     if (this.controller.isGameAlertEnabled(this._gameAlert)) {

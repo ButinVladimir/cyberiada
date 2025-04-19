@@ -1,11 +1,14 @@
-import { t } from 'i18next';
-import { html, nothing, css } from 'lit';
+import { PropertyValues, html, css } from 'lit';
+import { localized, msg, str } from '@lit/localize';
+import { createRef, ref } from 'lit/directives/ref.js';
 import { customElement } from 'lit/decorators.js';
+import SlProgressBar from '@shoelace-style/shoelace/dist/components/progress-bar/progress-bar.component.js';
 import { BaseComponent } from '@shared/base-component';
 import { hintStyle } from '@shared/styles';
 import { OverviewDevelopmentLevelProgressController } from './controller';
 import { progressBlockStyle } from '../../styles';
 
+@localized()
 @customElement('ca-overview-development-level-progress')
 export class OverviewDevelopmentLevelProgress extends BaseComponent<OverviewDevelopmentLevelProgressController> {
   static styles = [
@@ -21,52 +24,60 @@ export class OverviewDevelopmentLevelProgress extends BaseComponent<OverviewDeve
 
   protected controller: OverviewDevelopmentLevelProgressController;
 
+  private _progressBarRef = createRef<SlProgressBar>();
+  private _hintRef = createRef<HTMLParagraphElement>();
+
   constructor() {
     super();
 
-    this.controller = new OverviewDevelopmentLevelProgressController(this);
+    this.controller = new OverviewDevelopmentLevelProgressController(this, this.handlePartialUpdate);
+  }
+
+  updated(_changedProperties: PropertyValues) {
+    super.updated(_changedProperties);
+
+    this.handlePartialUpdate();
   }
 
   render() {
-    const formatter = this.controller.formatter;
-
-    const currentDevelopmentLevelPoints = this.controller.getCurrentDevelopmentLevelPoints();
-    const nextDevelopmentLevelPoints = this.controller.getNextDevelopmentLevelPoints();
-
-    const nextDevelopmentLevelProgressBarValue =
-      Math.max(currentDevelopmentLevelPoints / nextDevelopmentLevelPoints, 0) * 100;
-    const nextDevelopmentLevelProgressBarPercentage = `${formatter.formatNumberFloat(nextDevelopmentLevelProgressBarValue)}%`;
-
     return html`
       <div class="block">
-        <div class="title">${t('overview.progress.nextDevelopmentLevelProgress', { ns: 'ui' })}</div>
+        <div class="title">${msg('Next development level progress')}</div>
 
-        <sl-progress-bar value=${nextDevelopmentLevelProgressBarValue}>
-          ${nextDevelopmentLevelProgressBarPercentage}
-        </sl-progress-bar>
+        <sl-progress-bar ${ref(this._progressBarRef)}> </sl-progress-bar>
 
-        ${this.renderHint()}
+        <p ${ref(this._hintRef)} class="hint"></p>
       </div>
     `;
   }
 
-  private renderHint = () => {
-    const developmentGrowth = this.controller.getDevelopmentGrowth();
+  private handlePartialUpdate = () => {
     const formatter = this.controller.formatter;
 
-    if (developmentGrowth > 0) {
-      const formattedTime = formatter.formatTimeShort(
-        this.controller.getDevelopmentPointsUntilNextLevel() / developmentGrowth,
-      );
+    if (this._progressBarRef.value) {
+      const currentDevelopmentLevelPoints = this.controller.getCurrentDevelopmentLevelPoints();
+      const nextDevelopmentLevelPoints = this.controller.getNextDevelopmentLevelPoints();
 
-      return html`<p class="hint">
-        ${t(`overview.progress.nextLevelReachedIn`, {
-          ns: 'ui',
-          time: formattedTime,
-        })}
-      </p>`;
+      const nextDevelopmentLevelProgressBarValue =
+        Math.max(currentDevelopmentLevelPoints / nextDevelopmentLevelPoints, 0) * 100;
+      const nextDevelopmentLevelProgressBarPercentage = `${formatter.formatNumberFloat(nextDevelopmentLevelProgressBarValue)}%`;
+
+      this._progressBarRef.value.value = nextDevelopmentLevelProgressBarValue;
+      this._progressBarRef.value.textContent = nextDevelopmentLevelProgressBarPercentage;
     }
 
-    return nothing;
+    const developmentGrowth = this.controller.getDevelopmentGrowth();
+
+    if (this._hintRef.value) {
+      if (developmentGrowth > 0) {
+        const formattedTime = formatter.formatTimeShort(
+          this.controller.getDevelopmentPointsUntilNextLevel() / developmentGrowth,
+        );
+
+        this._hintRef.value.textContent = msg(str`Next development level will be reached in ${formattedTime}`);
+      } else {
+        this._hintRef.value.textContent = msg('Next development level is not reachable');
+      }
+    }
   };
 }

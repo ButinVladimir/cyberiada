@@ -1,7 +1,7 @@
-import { t } from 'i18next';
 import { css, html } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
+import { msg, localized } from '@lit/localize';
 import { BaseComponent } from '@shared/base-component';
 import { IMainframeHardwareParameter } from '@state/mainframe-state/states/mainframe-hardware-state/interfaces/mainframe-hardware-parameter';
 import type { MainframeHardwareParameterType } from '@state/mainframe-state/states/mainframe-hardware-state/types';
@@ -10,6 +10,7 @@ import { hintStyle } from '@shared/styles';
 import { MainframeHardwarePanelController } from './controller';
 import { GAP } from './constants';
 
+@localized()
 @customElement('ca-mainframe-hardware-panel')
 export class MainframeHardwarePanel extends BaseComponent<MainframeHardwarePanelController> {
   static styles = [
@@ -78,11 +79,15 @@ export class MainframeHardwarePanel extends BaseComponent<MainframeHardwarePanel
 
   render() {
     return html`
-      <p class="hint">${t('mainframe.hardware.hardwareHint', { ns: 'ui' })}</p>
+      <p class="hint">
+        ${msg(`Press either Ctrl or Shift to buy 10 levels. Press both Ctrl and Shift to buy 100 levels.
+Hardware autoupgrade priority can be changed by dragging it by the title.
+Upgrades on top have higher priority.`)}
+      </p>
 
       <div class="buttons-block">
         <sl-button variant="default" type="button" size="medium" @click=${this.handleBuyMax}>
-          ${t('mainframe.hardware.buyMaxAllUpgrades', { ns: 'ui' })}
+          ${msg('Buy all upgrades')}
         </sl-button>
       </div>
 

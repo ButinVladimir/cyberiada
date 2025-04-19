@@ -1,5 +1,5 @@
-import { t } from 'i18next';
 import { css, html } from 'lit';
+import { localized, msg } from '@lit/localize';
 import { customElement } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { BaseComponent } from '@shared/base-component';
@@ -14,6 +14,7 @@ import { SCREEN_WIDTH_POINTS } from '@shared/styles';
 import { SortableElementMovedEvent } from '@components/shared/sortable-list/events/sortable-element-moved';
 import { ProcessesListController } from './controller';
 
+@localized()
 @customElement('ca-processes-list')
 export class ProcessesList extends BaseComponent<ProcessesListController> {
   static styles = css`
@@ -136,35 +137,37 @@ export class ProcessesList extends BaseComponent<ProcessesListController> {
     const processesActive = this.checkSomeProcessesActive();
 
     const toggleProcessesIcon = processesActive ? 'play-fill' : 'pause-fill';
-    const toggleProcessesLabel = processesActive ? 'disableAllProcesses' : 'enableAllProcesses';
+    const toggleProcessesLabel = processesActive ? msg('Disable all processes') : msg('Enable all processes');
     const toggleProcessesVariant = processesActive ? 'neutral' : 'default';
+
+    const deleteAllProcessLabel = msg('Delete all processes');
 
     const processes = this.controller.listProcesses();
 
     return html`
       <div class="header">
-        <div class="header-column">${t('mainframe.program', { ns: 'ui' })}</div>
-        <div class="header-column">${t('mainframe.cores', { ns: 'ui' })}</div>
+        <div class="header-column">${msg('Program')}</div>
+        <div class="header-column">${msg('Cores')}</div>
         <div class="header-column"></div>
         <div class="buttons desktop">
           <sl-tooltip>
-            <span slot="content"> ${t(`mainframe.processes.${toggleProcessesLabel}`, { ns: 'ui' })} </span>
+            <span slot="content"> ${toggleProcessesLabel} </span>
 
             <sl-icon-button
               name=${toggleProcessesIcon}
-              label=${t(`mainframe.processes.${toggleProcessesLabel}`, { ns: 'ui' })}
+              label=${toggleProcessesLabel}
               @click=${this.handleToggleAllProcesses}
             >
             </sl-icon-button>
           </sl-tooltip>
 
           <sl-tooltip>
-            <span slot="content"> ${t('mainframe.processes.allProcessesDelete', { ns: 'ui' })} </span>
+            <span slot="content"> ${deleteAllProcessLabel} </span>
 
             <sl-icon-button
               id="delete-btn"
               name="x-lg"
-              label=${t('mainframe.processes.allProcessesDelete', { ns: 'ui' })}
+              label=${deleteAllProcessLabel}
               @click=${this.handleOpenDeleteAllProcessesDialog}
             >
             </sl-icon-button>
@@ -173,11 +176,11 @@ export class ProcessesList extends BaseComponent<ProcessesListController> {
 
         <div class="buttons mobile">
           <sl-button variant=${toggleProcessesVariant} size="medium" @click=${this.handleToggleAllProcesses}>
-            ${t(`mainframe.processes.${toggleProcessesLabel}`, { ns: 'ui' })}
+            ${toggleProcessesLabel}
           </sl-button>
 
           <sl-button variant="danger" size="medium" @click=${this.handleOpenDeleteAllProcessesDialog}>
-            ${t('mainframe.processes.allProcessesDelete', { ns: 'ui' })}
+            ${deleteAllProcessLabel}
           </sl-button>
         </div>
       </div>
@@ -195,7 +198,7 @@ export class ProcessesList extends BaseComponent<ProcessesListController> {
   private renderEmptyListNotification = () => {
     return html`
       <div class="notification">
-        <td colspan="4">${t('mainframe.processes.emptyListNotification', { ns: 'ui' })}</td>
+        <td colspan="4">${msg("You don't have any processes")}</td>
       </div>
     `;
   };
@@ -224,7 +227,12 @@ export class ProcessesList extends BaseComponent<ProcessesListController> {
     event.preventDefault();
     event.stopPropagation();
 
-    this.dispatchEvent(new ConfirmationAlertOpenEvent(ProgramAlert.deleteAllProcesses, {}));
+    this.dispatchEvent(
+      new ConfirmationAlertOpenEvent(
+        ProgramAlert.deleteAllProcesses,
+        msg('Are you sure want to delete all processes? Their progress will be lost.'),
+      ),
+    );
   };
 
   private handleConfirmAllDeleteProcessesDialog = (event: Event) => {

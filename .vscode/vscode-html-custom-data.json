@@ -117,7 +117,7 @@
     },
     {
       "name": "ca-fast-forwarding-screen",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_maxTime` {`number`} - \n\n  * `handleStopFastForwarding` - \n\n  * `controller` {`FastForwardingScreenController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_maxTime` {`number`} - \n\n  * `_progressBarRef` {`Ref<SlProgressBar>`} - \n\n  * `handleStopFastForwarding` - \n\n  * `handlePartialUpdate` - \n\n  * `controller` {`FastForwardingScreenController`} - ",
       "attributes": []
     },
     {
@@ -127,7 +127,7 @@
     },
     {
       "name": "ca-confirmation-alert",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_gameAlertToggleRef` {`Ref<SlCheckbox>`} - \n\n  * `_gameAlert` - \n\n  * `_gameAlertKey` {`string | undefined`} - \n\n  * `_messageParams` - \n\n  * `_isOpen` {`boolean`} - \n\n  * `_alertToggled` {`boolean`} - \n\n  * `handleOpen` - \n\n  * `handleClose` - \n\n  * `handleSubmit` - \n\n  * `handleToggleAlert` - \n\n  * `controller` {`ConfirmationAlertController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_gameAlertToggleRef` {`Ref<SlCheckbox>`} - \n\n  * `_gameAlert` - \n\n  * `_gameAlertKey` {`string | undefined`} - \n\n  * `_message` {`string`} - \n\n  * `_isOpen` {`boolean`} - \n\n  * `_alertToggled` {`boolean`} - \n\n  * `handleOpen` - \n\n  * `handleClose` - \n\n  * `handleSubmit` - \n\n  * `handleToggleAlert` - \n\n  * `controller` {`ConfirmationAlertController`} - ",
       "attributes": []
     },
     {
@@ -143,7 +143,7 @@
     },
     {
       "name": "ca-menu-bar-values",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `controller` {`MenuBarValuesController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_accumulatedTimeRef` {`Ref<HTMLSpanElement>`} - \n\n  * `_moneyRef` {`Ref<HTMLSpanElement>`} - \n\n  * `handlePartialUpdate` - \n\n  * `controller` {`MenuBarValuesController`} - ",
       "attributes": []
     },
     {
@@ -214,7 +214,7 @@
     },
     {
       "name": "ca-mainframe-hardware-panel-article-buttons",
-      "description": "Attributes:\n\n  * `type` - \n\n  * `max-increase` {`number`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `type` - \n\n  * `maxIncrease` {`number`} - \n\n  * `handlePurchase` - \n\n  * `handleBuyMax` - \n\n  * `controller` {`MainframeHardwarePanelArticleButtonsController`} - ",
+      "description": "Attributes:\n\n  * `type` - \n\n  * `max-increase` {`number`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `type` - \n\n  * `maxIncrease` {`number`} - \n\n  * `_buyButtonRef` {`Ref<SlButton>`} - \n\n  * `_warningRef` {`Ref<HTMLParagraphElement>`} - \n\n  * `handlePurchase` - \n\n  * `handleBuyMax` - \n\n  * `handlePartialUpdate` - \n\n  * `controller` {`MainframeHardwarePanelArticleButtonsController`} - ",
       "attributes": [
         {
           "name": "type",
@@ -247,21 +247,21 @@
     },
     {
       "name": "ca-process-description-text",
-      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `renderAutoscalableRequirements` - \n\n  * `renderNormalRequirements` - \n\n  * `renderEffects` - \n\n  * `controller` {`ProcessDescriptionTextController`} - ",
+      "description": "Attributes:\n\n  * `program-name` - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` - \n\n  * `_renderer` {`IDescriptionEffectRenderer | undefined`} - \n\n  * `_paragraphs` {`NodeListOf<HTMLParagraphElement>`} - \n\n  * `renderAutoscalableRequirements` - \n\n  * `renderNormalRequirements` - \n\n  * `renderEffects` - \n\n  * `handlePartialUpdate` - \n\n  * `controller` {`ProcessDescriptionTextController`} - ",
       "attributes": [
         {
           "name": "program-name",
-          "description": "`program-name` {`string`} - \n\nProperty: programName"
+          "description": "`program-name` - \n\nProperty: programName"
         }
       ]
     },
     {
       "name": "ca-process-diff-text",
-      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\n  * `threads` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `threads` {`number`} - \n\n  * `renderAutoscalableRequirements` - \n\n  * `renderNormalRequirements` - \n\n  * `renderEffects` - \n\n  * `controller` {`ProcessDiffTextController`} - ",
+      "description": "Attributes:\n\n  * `program-name` - \n\n  * `threads` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` - \n\n  * `threads` {`number`} - \n\n  * `_renderer` {`IDescriptionEffectRenderer | undefined`} - \n\n  * `_paragraphs` {`NodeListOf<HTMLParagraphElement>`} - \n\n  * `renderAutoscalableRequirements` - \n\n  * `renderNormalRequirements` - \n\n  * `renderEffects` - \n\n  * `handlePartialUpdate` - \n\n  * `controller` {`ProcessDiffTextController`} - ",
       "attributes": [
         {
           "name": "program-name",
-          "description": "`program-name` {`string`} - \n\nProperty: programName"
+          "description": "`program-name` - \n\nProperty: programName"
         },
         {
           "name": "threads",
@@ -271,7 +271,7 @@
     },
     {
       "name": "ca-processes-list-item-progress",
-      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `programName` {`string`} - \n\n  * `controller` {`ProcessesListItemProgressController`} - ",
+      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `programName` {`string`} - \n\n  * `_progressBarRef` {`Ref<SlProgressBar>`} - \n\n  * `_hintRef` {`Ref<HTMLParagraphElement>`} - \n\n  * `handlePartialUpdate` - \n\n  * `controller` {`ProcessesListItemProgressController`} - ",
       "attributes": [
         {
           "name": "program-name",
@@ -281,11 +281,11 @@
     },
     {
       "name": "ca-processes-list-item",
-      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `programName` {`string`} - \n\n  * `_descriptionVisible` {`boolean`} - \n\n  * `handleToggleDescription` - \n\n  * `handleToggleProcess` - \n\n  * `handleOpenDeleteProcessDialog` - \n\n  * `handleConfirmDeleteProcessDialog` - \n\n  * `handleDragStart` - \n\n  * `controller` {`ProcessesListItemController`} - ",
+      "description": "Attributes:\n\n  * `program-name` - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `programName` - \n\n  * `_descriptionVisible` {`boolean`} - \n\n  * `handleToggleDescription` - \n\n  * `handleToggleProcess` - \n\n  * `handleOpenDeleteProcessDialog` - \n\n  * `handleConfirmDeleteProcessDialog` - \n\n  * `handleDragStart` - \n\n  * `controller` {`ProcessesListItemController`} - ",
       "attributes": [
         {
           "name": "program-name",
-          "description": "`program-name` {`string`} - \n\nProperty: programName\n\nDefault: shareServer"
+          "description": "`program-name` - \n\nProperty: programName\n\nDefault: shareServer"
         }
       ]
     },
@@ -326,11 +326,11 @@
     },
     {
       "name": "ca-owned-programs-list-item",
-      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `programName` {`string`} - \n\n  * `_descriptionVisible` {`boolean`} - \n\n  * `handleToggleDescription` - \n\n  * `handleToggleAutoUpgrade` - \n\n  * `handleDragStart` - \n\n  * `handleUpgradeMax` - \n\n  * `controller` {`OwnedProgramsListItemController`} - ",
+      "description": "Attributes:\n\n  * `program-name` - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `programName` - \n\n  * `_descriptionVisible` {`boolean`} - \n\n  * `handleToggleDescription` - \n\n  * `handleToggleAutoUpgrade` - \n\n  * `handleDragStart` - \n\n  * `handleUpgradeMax` - \n\n  * `controller` {`OwnedProgramsListItemController`} - ",
       "attributes": [
         {
           "name": "program-name",
-          "description": "`program-name` {`string`} - \n\nProperty: programName\n\nDefault: shareServer"
+          "description": "`program-name` - \n\nProperty: programName\n\nDefault: shareServer"
         }
       ]
     },
@@ -341,21 +341,21 @@
     },
     {
       "name": "ca-program-description-text",
-      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `renderAutoscalableRequirements` - \n\n  * `renderNormalRequirements` - \n\n  * `renderEffects` - \n\n  * `controller` {`ProgramDescriptionTextController`} - ",
+      "description": "Attributes:\n\n  * `program-name` - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` - \n\n  * `_renderer` {`IDescriptionEffectRenderer | undefined`} - \n\n  * `_paragraphs` {`NodeListOf<HTMLParagraphElement>`} - \n\n  * `renderAutoscalableRequirements` - \n\n  * `renderNormalRequirements` - \n\n  * `renderEffects` - \n\n  * `handlePartialUpdate` - \n\n  * `controller` {`ProgramDescriptionTextController`} - ",
       "attributes": [
         {
           "name": "program-name",
-          "description": "`program-name` {`string`} - \n\nProperty: programName"
+          "description": "`program-name` - \n\nProperty: programName"
         }
       ]
     },
     {
       "name": "ca-program-diff-text",
-      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\n  * `level` {`number`} - \n\n  * `quality` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` {`string`} - \n\n  * `level` {`number`} - \n\n  * `quality` {`number`} - \n\n  * `renderAutoscalableRequirements` - \n\n  * `renderNormalRequirements` - \n\n  * `renderEffects` - \n\n  * `controller` {`ProgramDiffTextController`} - ",
+      "description": "Attributes:\n\n  * `program-name` - \n\n  * `level` {`number`} - \n\n  * `quality` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `programName` - \n\n  * `level` {`number`} - \n\n  * `quality` {`number`} - \n\n  * `_renderer` {`IDescriptionEffectRenderer | undefined`} - \n\n  * `_paragraphs` {`NodeListOf<HTMLParagraphElement>`} - \n\n  * `renderAutoscalableRequirements` - \n\n  * `renderNormalRequirements` - \n\n  * `renderEffects` - \n\n  * `handlePartialUpdate` - \n\n  * `controller` {`ProgramDiffTextController`} - ",
       "attributes": [
         {
           "name": "program-name",
-          "description": "`program-name` {`string`} - \n\nProperty: programName"
+          "description": "`program-name` - \n\nProperty: programName"
         },
         {
           "name": "level",
@@ -369,7 +369,7 @@
     },
     {
       "name": "ca-purchase-program-dialog-buttons",
-      "description": "Attributes:\n\n  * `program-name` - \n\n  * `level` {`number`} - \n\n  * `quality` {`number`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `programName` - \n\n  * `level` {`number`} - \n\n  * `quality` {`number`} - \n\n  * `handleCancel` - \n\n  * `handlePurchase` - \n\n  * `controller` {`PurchaseProgramDialogButtonsController`} - ",
+      "description": "Attributes:\n\n  * `program-name` - \n\n  * `level` {`number`} - \n\n  * `quality` {`number`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `programName` - \n\n  * `level` {`number`} - \n\n  * `quality` {`number`} - \n\n  * `_warningRef` {`Ref<HTMLParagraphElement>`} - \n\n  * `_purchaseButtonRef` {`Ref<SlButton>`} - \n\n  * `handlePartialUpdate` - \n\n  * `handleCancel` - \n\n  * `handlePurchase` - \n\n  * `controller` {`PurchaseProgramDialogButtonsController`} - ",
       "attributes": [
         {
           "name": "program-name",
@@ -418,7 +418,7 @@
     },
     {
       "name": "ca-overview-development-level-progress",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `renderHint` - \n\n  * `controller` {`OverviewDevelopmentLevelProgressController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_progressBarRef` {`Ref<SlProgressBar>`} - \n\n  * `_hintRef` {`Ref<HTMLParagraphElement>`} - \n\n  * `handlePartialUpdate` - \n\n  * `controller` {`OverviewDevelopmentLevelProgressController`} - ",
       "attributes": []
     },
     {
@@ -467,14 +467,9 @@
       "attributes": []
     },
     {
-      "name": "ca-overview-unlocked-category-items",
-      "description": "Attributes:\n\n  * `category` - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `category` - \n\n  * `renderList` - \n\n  * `renderListItem` - \n\n  * `controller` {`OverviewUnlockedCategoryItemsController`} - ",
-      "attributes": [
-        {
-          "name": "category",
-          "description": "`category` - \n\nProperty: category"
-        }
-      ]
+      "name": "ca-overview-unlocked-programs",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `renderList` - \n\n  * `renderListItem` - \n\n  * `controller` {`OverviewUnlockedProgramsController`} - ",
+      "attributes": []
     },
     {
       "name": "ca-settings-page",
@@ -561,22 +556,25 @@
     },
     {
       "name": "ca-statistics-game-time",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `controller` {`StatisticsGameTimeController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_gameTimeRef` {`Ref<HTMLSpanElement>`} - \n\n  * `_gameTotalTimeRef` {`Ref<HTMLSpanElement>`} - \n\n  * `handlePartialUpdate` - \n\n  * `controller` {`StatisticsGameTimeController`} - ",
       "attributes": []
     },
     {
       "name": "ca-statistics-multipliers",
-      "description": "Attributes:\n\n  * `type` {`CostDivisorsType`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `type` {`CostDivisorsType`} - \n\n  * `controller` {`StatisticsMultipliersController`} - ",
+      "description": "Attributes:\n\n  * `type` {`MultipliersType`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `type` {`MultipliersType`} - \n\n  * `_programMultiplierRef` {`Ref<HTMLSpanElement>`} - \n\n  * `_totalMultiplierRef` {`Ref<HTMLSpanElement>`} - \n\n  * `handlePartialUpdate` - \n\n  * `controller` {`StatisticsMultipliersController`} - ",
       "attributes": [
         {
           "name": "type",
-          "description": "`type` {`CostDivisorsType`} - \n\nProperty: type",
+          "description": "`type` {`MultipliersType`} - \n\nProperty: type",
           "values": [
             {
               "name": "mainframeHardwareCostDivisors"
             },
             {
               "name": "mainframeProgramsCostDivisors"
+            },
+            {
+              "name": "rewards"
             }
           ]
         }
@@ -588,28 +586,23 @@
       "attributes": []
     },
     {
-      "name": "ca-statistics-rewards",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `controller` {`StatisticsRewardsController`} - ",
-      "attributes": []
-    },
-    {
       "name": "ca-statistics-growth-panel",
       "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `controller` {`StatisticsGrowthPanelController`} - ",
       "attributes": []
     },
     {
       "name": "ca-statistics-development-growth",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `renderIncomeSource` - \n\n  * `controller` {`StatisticsDevelopmentGrowthController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_incomeSourceElements` {`NodeListOf<HTMLSpanElement>`} - \n\n  * `_totalGrowthRef` {`Ref<HTMLSpanElement>`} - \n\n  * `renderIncomeSource` - \n\n  * `handlePartialUpdate` - \n\n  * `controller` {`StatisticsDevelopmentGrowthController`} - ",
       "attributes": []
     },
     {
       "name": "ca-statistics-money-growth",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `renderIncomeSource` - \n\n  * `controller` {`StatisticsMoneyGrowthController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_incomeSourceElements` {`NodeListOf<HTMLSpanElement>`} - \n\n  * `_totalGrowthRef` {`Ref<HTMLSpanElement>`} - \n\n  * `renderIncomeSource` - \n\n  * `handlePartialUpdate` - \n\n  * `controller` {`StatisticsMoneyGrowthController`} - ",
       "attributes": []
     },
     {
       "name": "ca-statistics-multiplier-points-growth",
-      "description": "Attributes:\n\n  * `type` - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `type` - \n\n  * `controller` {`StatisticsMultiplierPointsGrowthController`} - ",
+      "description": "Attributes:\n\n  * `type` - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `type` - \n\n  * `_programGrowthRef` {`Ref<HTMLSpanElement>`} - \n\n  * `handlePartialUpdate` - \n\n  * `controller` {`StatisticsMultiplierPointsGrowthController`} - ",
       "attributes": [
         {
           "name": "type",
@@ -624,17 +617,17 @@
     },
     {
       "name": "ca-statistics-development-income",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `renderIncomeSource` - \n\n  * `controller` {`StatisticsDevelopmentIncomeController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_incomeSourceElements` {`NodeListOf<HTMLSpanElement>`} - \n\n  * `_totalIncomeRef` {`Ref<HTMLSpanElement>`} - \n\n  * `renderIncomeSource` - \n\n  * `handlePartialUpdate` - \n\n  * `controller` {`StatisticsDevelopmentIncomeController`} - ",
       "attributes": []
     },
     {
       "name": "ca-statistics-money-income",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `renderIncomeSource` - \n\n  * `controller` {`StatisticsMoneyIncomeController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_incomeSourceElements` {`NodeListOf<HTMLSpanElement>`} - \n\n  * `_totalIncomeRef` {`Ref<HTMLSpanElement>`} - \n\n  * `renderIncomeSource` - \n\n  * `handlePartialUpdate` - \n\n  * `controller` {`StatisticsMoneyIncomeController`} - ",
       "attributes": []
     },
     {
       "name": "ca-statistics-multiplier-points-income",
-      "description": "Attributes:\n\n  * `type` - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `type` - \n\n  * `controller` {`StatisticsMultiplierPointsIncomeController`} - ",
+      "description": "Attributes:\n\n  * `type` - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `type` - \n\n  * `_programPointsRef` {`Ref<HTMLSpanElement>`} - \n\n  * `handlePartialUpdate` - \n\n  * `controller` {`StatisticsMultiplierPointsIncomeController`} - ",
       "attributes": [
         {
           "name": "type",

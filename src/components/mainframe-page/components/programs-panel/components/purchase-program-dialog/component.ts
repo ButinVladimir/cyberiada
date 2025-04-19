@@ -1,5 +1,5 @@
-import { t } from 'i18next';
 import { css, html, nothing } from 'lit';
+import { localized, msg, str } from '@lit/localize';
 import { customElement, property, state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -20,9 +20,11 @@ import {
   modalBodyScrollStyle,
   SCREEN_WIDTH_POINTS,
 } from '@shared/styles';
+import { PROGRAM_TEXTS, COMMON_TEXTS } from '@texts/index';
 import { PurchaseProgramDialogCloseEvent } from './events';
 import { PurchaseProgramDialogController } from './controller';
 
+@localized()
 @customElement('ca-purchase-program-dialog')
 export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogController> {
   static styles = [
@@ -151,10 +153,15 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
 
     return html`
       <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
-        <h4 slot="label" class="title">${t('mainframe.programs.purchaseProgram', { ns: 'ui' })}</h4>
+        <h4 slot="label" class="title">${msg('Purchase program')}</h4>
 
         <div class="body">
-          <p class="hint">${t('mainframe.programs.purchaseProgramDialogHint', { ns: 'ui' })}</p>
+          <p class="hint">
+            ${msg(`Select program type, level and quality to purchase it.
+Level cannot be above current development level.
+Quality is limited depending on gained favors.
+If you already have program with same name, old one will be replaced with new one.`)}
+          </p>
 
           <div class="inputs-container">
             <sl-select
@@ -164,14 +171,11 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
               hoist
               @sl-change=${this.handleProgramChange}
             >
-              <span class="input-label" slot="label"> ${t('mainframe.program', { ns: 'ui' })} </span>
+              <span class="input-label" slot="label"> ${msg('Program')} </span>
 
               ${this.controller
                 .listAvailablePrograms()
-                .map(
-                  (program) =>
-                    html`<sl-option value=${program}> ${t(`${program}.name`, { ns: 'programs' })} </sl-option>`,
-                )}
+                .map((program) => html`<sl-option value=${program}> ${PROGRAM_TEXTS[program].title()} </sl-option>`)}
             </sl-select>
 
             <sl-select
@@ -181,7 +185,7 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
               hoist
               @sl-change=${this.handleQualityChange}
             >
-              <span class="input-label" slot="label"> ${t('mainframe.quality', { ns: 'ui' })} </span>
+              <span class="input-label" slot="label"> ${COMMON_TEXTS.quality()} </span>
 
               ${this.renderQualityOptions()}
             </sl-select>
@@ -197,7 +201,7 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
               step="1"
               @sl-change=${this.handleLevelChange}
             >
-              <span class="input-label" slot="label"> ${t('mainframe.level', { ns: 'ui' })} </span>
+              <span class="input-label" slot="label"> ${COMMON_TEXTS.level()} </span>
             </sl-input>
           </div>
 
@@ -295,14 +299,17 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
     if (ownedProgram) {
       const formatter = this.controller.formatter;
 
-      const confirmationAlertParameters = {
-        programName: this._programName,
-        quality: formatter.formatQuality(ownedProgram.quality),
-        level: formatter.formatNumberDecimal(ownedProgram.level),
-      };
+      const programTitle = PROGRAM_TEXTS[this._programName].title();
+      const formattedLevel = formatter.formatNumberDecimal(ownedProgram.level);
+      const formattedQuality = formatter.formatQuality(ownedProgram.quality);
 
       this.dispatchEvent(
-        new ConfirmationAlertOpenEvent(ProgramAlert.purchaseProgramOverwrite, confirmationAlertParameters),
+        new ConfirmationAlertOpenEvent(
+          ProgramAlert.purchaseProgramOverwrite,
+          msg(
+            str`Are you sure want to purchase program "${programTitle}"? This will replace your current program with quality ${formattedQuality} and level ${formattedLevel}.`,
+          ),
+        ),
       );
     } else {
       this.purchase();

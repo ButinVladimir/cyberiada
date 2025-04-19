@@ -1,8 +1,8 @@
-import { t } from 'i18next';
 import { html } from 'lit';
+import { msg, str } from '@lit/localize';
 import { PredictiveComputatorProgram } from '@state/mainframe-state/states/progam-factory/programs/predictive-computator';
 import { IFormatter } from '@shared/interfaces/formatter';
-import { diffFormatterParametersFloat } from '@shared/formatter-parameters';
+import { diffFormatterParameters } from '@shared/formatter-parameters';
 import { IDescriptionParameters, IDescriptionEffectRenderer } from '../interfaces';
 
 export class PredictiveComputatorDescriptionEffectRenderer implements IDescriptionEffectRenderer {
@@ -30,14 +30,11 @@ export class PredictiveComputatorDescriptionEffectRenderer implements IDescripti
       ? value - this._ownedProgram.calculateProgramCompletionSpeedMultiplier(this._cores, this._ram)
       : value;
 
-    return html`
-      <p>
-        ${t('predictiveComputator.speedMultiplierDiff', {
-          ns: 'programs',
-          value: this._formatter.formatNumberFloat(value),
-          valueDiff: this._formatter.formatNumberFloat(valueDiff, diffFormatterParametersFloat),
-        })}
-      </p>
-    `;
+    const formattedValue = this._formatter.formatNumberFloat(value);
+    const formattedValueDiff = this._formatter.formatNumberFloat(valueDiff, diffFormatterParameters);
+
+    return html` <p>${msg(str`Speed multiplier: Up to ${formattedValue} (${formattedValueDiff})`)}</p> `;
   };
+
+  public partialUpdate(): void {}
 }

@@ -5,6 +5,7 @@ import { EventBatcher } from '@shared/event-batcher';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import type { INotificationsState } from '@state/notifications-state/interfaces/notifications-state';
 import { TYPES } from '@state/types';
+import { UNLOCKED_FEATURE_TEXTS } from '@texts/unlocked-features';
 import { IUnlockedFeaturesState } from '../interfaces/parameters/unlocked-features-state';
 import { IUnlockedFeaturesSerializedState } from '../interfaces/serialized-states/unlocked-features-serialized-state';
 import { GLOBAL_STATE_UI_EVENTS } from '../constants';
@@ -42,7 +43,10 @@ export class UnlockedFeaturesState implements IUnlockedFeaturesState {
 
       this._unlockedFeatures.add(feature);
 
-      this._notificationsState.pushNotification(NotificationType.featureUnlocked, { feature });
+      this._notificationsState.pushNotification(
+        NotificationType.featureUnlocked,
+        UNLOCKED_FEATURE_TEXTS[feature].message(),
+      );
     }
   }
 

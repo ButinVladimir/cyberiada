@@ -1,13 +1,14 @@
-import { t } from 'i18next';
 import { css, html, nothing } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { msg, localized } from '@lit/localize';
+import { customElement, property, queryAll } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import {
-  ProgramName,
+  type ProgramName,
   OtherProgramName,
   MultiplierProgramName,
 } from '@state/mainframe-state/states/progam-factory/types';
-import { diffFormatterParametersDecimal, diffFormatterParametersShortTime } from '@shared/formatter-parameters';
+import { diffFormatterParameters } from '@shared/formatter-parameters';
+import { PROGRAM_DESCRIPTION_TEXTS, PROGRAM_TEXTS } from '@texts/programs';
 import {
   CodeGeneratorDescriptionEffectRenderer,
   CircuitDesignerDescriptionEffectRenderer,
@@ -18,9 +19,10 @@ import {
   ShareServerDescriptionEffectRenderer,
   MainframeProgramsAutobuyerDescriptionEffectRenderer,
 } from './description-effect-renderers';
-import { IDescriptionParameters } from './interfaces';
+import { IDescriptionEffectRenderer, IDescriptionParameters } from './interfaces';
 import { ProcessDiffTextController } from './controller';
 
+@localized()
 @customElement('ca-process-diff-text')
 export class ProgramDiffText extends BaseComponent<ProcessDiffTextController> {
   static styles = css`
@@ -42,7 +44,7 @@ export class ProgramDiffText extends BaseComponent<ProcessDiffTextController> {
     attribute: 'program-name',
     type: String,
   })
-  programName!: string;
+  programName!: ProgramName;
 
   @property({
     attribute: 'threads',
@@ -52,10 +54,15 @@ export class ProgramDiffText extends BaseComponent<ProcessDiffTextController> {
 
   protected controller: ProcessDiffTextController;
 
+  private _renderer?: IDescriptionEffectRenderer;
+
+  @queryAll('p[data-name]')
+  private _paragraphs!: NodeListOf<HTMLParagraphElement>;
+
   constructor() {
     super();
 
-    this.controller = new ProcessDiffTextController(this);
+    this.controller = new ProcessDiffTextController(this, this.handlePartialUpdate);
   }
 
   render() {
@@ -69,10 +76,11 @@ export class ProgramDiffText extends BaseComponent<ProcessDiffTextController> {
       ? this.renderAutoscalableRequirements()
       : this.renderNormalRequirements();
 
+    this.updateRenderer();
     const effects = this.renderEffects();
 
     return html`
-      <p>${t(`${this.programName}.overview`, { ns: 'programs' })}</p>
+      <p>${PROGRAM_TEXTS[this.programName].overview()}</p>
 
       <p class="line-break"></p>
 
@@ -80,7 +88,7 @@ export class ProgramDiffText extends BaseComponent<ProcessDiffTextController> {
 
       <p class="line-break"></p>
 
-      <p>${t('mainframe.programDescription.effects', { ns: 'ui' })}</p>
+      <p>${msg('Effects')}</p>
 
       ${effects}
     `;
@@ -88,13 +96,13 @@ export class ProgramDiffText extends BaseComponent<ProcessDiffTextController> {
 
   private renderAutoscalableRequirements = () => {
     return html`
-      <p>${t('mainframe.programDescription.requirements.requirementsScalable', { ns: 'ui' })}</p>
+      <p>${PROGRAM_DESCRIPTION_TEXTS.requirementsAutoscalable()}</p>
 
-      <p>${t('mainframe.programDescription.requirements.ramAllUnused', { ns: 'ui' })}</p>
+      <p>${PROGRAM_DESCRIPTION_TEXTS.ramAllUnused()}</p>
 
-      <p>${t('mainframe.programDescription.requirements.coresAllUnused', { ns: 'ui' })}</p>
+      <p>${PROGRAM_DESCRIPTION_TEXTS.coresAllUnused()}</p>
 
-      <p>${t('mainframe.programDescription.requirements.completionTimeScalable', { ns: 'ui' })}</p>
+      <p>${PROGRAM_DESCRIPTION_TEXTS.completionTimeAutoscalable()}</p>
     `;
   };
 
@@ -107,62 +115,74 @@ export class ProgramDiffText extends BaseComponent<ProcessDiffTextController> {
     const threadsDiff = this.threads - currentThreads;
 
     const programRam = program.ram * this.threads;
+
+    const formattedThreads = formatter.formatNumberDecimal(this.threads);
+    const formattedThreadsDiff = formatter.formatNumberDecimal(threadsDiff, diffFormatterParameters);
+
     const ramDiff = programRam - program.ram * currentThreads;
     const availableRam = this.controller.availableRam + program.ram * currentThreads;
+
+    const formattedRam = formatter.formatNumberDecimal(programRam);
+    const formattedAvailableRam = formatter.formatNumberDecimal(availableRam);
+    const formattedRamDiff = formatter.formatNumberDecimal(ramDiff, diffFormatterParameters);
 
     const cores = program.cores * this.threads;
     const coresDiff = cores - program.cores * currentThreads;
 
+    const formattedCores = formatter.formatNumberDecimal(cores);
+    const formattedCoresDiff = formatter.formatNumberDecimal(coresDiff, diffFormatterParameters);
+
     const minTime = program.calculateCompletionMinTime(this.threads);
     const maxTime = program.calculateCompletionMaxTime(this.threads);
 
-    let minTimeDiff = minTime;
-    let maxTimeDiff = maxTime;
+    let minTimeDiff = 0;
+    let maxTimeDiff = 0;
 
     if (currentThreads > 0) {
       minTimeDiff = minTime - program.calculateCompletionMinTime(currentThreads);
       maxTimeDiff = maxTime - program.calculateCompletionMaxTime(currentThreads);
     }
 
+    const formattedMinTime = formatter.formatTimeShort(minTime);
+    const formattedMaxTime = formatter.formatTimeShort(maxTime);
+    const formattedMinTimeDiff = formatter.formatTimeShort(minTimeDiff, diffFormatterParameters);
+    const formattedMaxTimeDiff = formatter.formatTimeShort(maxTimeDiff, diffFormatterParameters);
+
     return html`
-      <p>
-        ${t('mainframe.programDescription.requirements.requirementsDiff', {
-          ns: 'ui',
-          threads: formatter.formatNumberDecimal(this.threads),
-          threadsDiff: formatter.formatNumberDecimal(threadsDiff, diffFormatterParametersDecimal),
-        })}
-      </p>
+      <p>${PROGRAM_DESCRIPTION_TEXTS.requirementsDiff(formattedThreads, formattedThreadsDiff)}</p>
+
+      <p>${PROGRAM_DESCRIPTION_TEXTS.ramDiff(formattedRam, formattedAvailableRam, formattedRamDiff)}</p>
+
+      <p>${PROGRAM_DESCRIPTION_TEXTS.coresDiff(formattedCores, formattedCoresDiff)}</p>
 
       <p>
-        ${t('mainframe.programDescription.requirements.ramDiff', {
-          ns: 'ui',
-          ram: formatter.formatNumberDecimal(programRam),
-          availableRam: formatter.formatNumberDecimal(availableRam),
-          ramDiff: formatter.formatNumberDecimal(ramDiff, diffFormatterParametersDecimal),
-        })}
-      </p>
-
-      <p>
-        ${t('mainframe.programDescription.requirements.coresDiff', {
-          ns: 'ui',
-          cores: formatter.formatNumberDecimal(cores),
-          coresDiff: formatter.formatNumberDecimal(coresDiff, diffFormatterParametersDecimal),
-        })}
-      </p>
-
-      <p>
-        ${t('mainframe.programDescription.requirements.completionTimeDiff', {
-          ns: 'ui',
-          minTime: formatter.formatTimeShort(minTime),
-          maxTime: formatter.formatTimeShort(maxTime),
-          minTimeDiff: formatter.formatTimeShort(minTimeDiff, diffFormatterParametersShortTime),
-          maxTimeDiff: formatter.formatTimeShort(maxTimeDiff, diffFormatterParametersShortTime),
-        })}
+        ${PROGRAM_DESCRIPTION_TEXTS.completionTimeDiff(
+          formattedMinTime,
+          formattedMaxTime,
+          formattedMinTimeDiff,
+          formattedMaxTimeDiff,
+        )}
       </p>
     `;
   };
 
   private renderEffects = () => {
+    if (!this._renderer) {
+      return nothing;
+    }
+
+    return this._renderer.renderEffect();
+  };
+
+  private handlePartialUpdate = () => {
+    if (!this._renderer) {
+      return;
+    }
+
+    return this._renderer.partialUpdate(this._paragraphs);
+  };
+
+  private updateRenderer(): void {
     const program = this.controller.getProgram(this.programName as ProgramName)!;
     const currentProcess = this.controller.getProcessByName(this.programName as ProgramName);
     const currentThreads = currentProcess ? currentProcess.threads : 0;
@@ -178,31 +198,39 @@ export class ProgramDiffText extends BaseComponent<ProcessDiffTextController> {
 
     switch (this.programName) {
       case OtherProgramName.shareServer:
-        return new ShareServerDescriptionEffectRenderer(parameters).renderEffect();
+        this._renderer = new ShareServerDescriptionEffectRenderer(parameters);
+        break;
 
       case MultiplierProgramName.codeGenerator:
-        return new CodeGeneratorDescriptionEffectRenderer(parameters).renderEffect();
+        this._renderer = new CodeGeneratorDescriptionEffectRenderer(parameters);
+        break;
 
       case MultiplierProgramName.circuitDesigner:
-        return new CircuitDesignerDescriptionEffectRenderer(parameters).renderEffect();
+        this._renderer = new CircuitDesignerDescriptionEffectRenderer(parameters);
+        break;
 
       case MultiplierProgramName.informationCollector:
-        return new InformationCollectorDescriptionEffectRenderer(parameters).renderEffect();
+        this._renderer = new InformationCollectorDescriptionEffectRenderer(parameters);
+        break;
 
       case MultiplierProgramName.dealMaker:
-        return new DealMakerDescriptionEffectRenderer(parameters).renderEffect();
+        this._renderer = new DealMakerDescriptionEffectRenderer(parameters);
+        break;
 
       case OtherProgramName.predictiveComputator:
-        return new PredictiveComputatorDescriptionEffectRenderer(parameters).renderEffect();
+        this._renderer = new PredictiveComputatorDescriptionEffectRenderer(parameters);
+        break;
 
       case OtherProgramName.mainframeHardwareAutobuyer:
-        return new MainframeHardwareAutobuyerDescriptionEffectRenderer(parameters).renderEffect();
+        this._renderer = new MainframeHardwareAutobuyerDescriptionEffectRenderer(parameters);
+        break;
 
       case OtherProgramName.mainframeProgramsAutobuyer:
-        return new MainframeProgramsAutobuyerDescriptionEffectRenderer(parameters).renderEffect();
+        this._renderer = new MainframeProgramsAutobuyerDescriptionEffectRenderer(parameters);
+        break;
 
       default:
-        return nothing;
+        this._renderer = undefined;
     }
-  };
+  }
 }

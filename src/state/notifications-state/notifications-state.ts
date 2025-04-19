@@ -3,9 +3,9 @@ import { EventBatcher } from '@shared/event-batcher';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import type { ISettingsState } from '@state/settings-state/interfaces/settings-state';
 import { TYPES } from '@state/types';
+import { NotificationType } from '@shared/types';
 import { INotificationsState, INotification } from './interfaces';
 import { NOTIFICATION_STATE_UI_EVENTS } from './constants';
-import { NotificationType } from '@shared/types';
 
 @injectable()
 export class NotificationsState implements INotificationsState {
@@ -28,14 +28,14 @@ export class NotificationsState implements INotificationsState {
     this._stateUiConnector.registerEventEmitter(this);
   }
 
-  pushNotification(notificationType: NotificationType, parameters?: Record<string, any>, force?: boolean) {
+  pushNotification(notificationType: NotificationType, message: string, force?: boolean) {
     if (!force && !this._settingsState.isNotificationTypeEnabled(notificationType)) {
       return;
     }
 
     this._notifications.push({
       notificationType,
-      parameters,
+      message,
     });
 
     this.uiEventBatcher.enqueueEvent(NOTIFICATION_STATE_UI_EVENTS.UPDATED_NOTIFICATIONS);

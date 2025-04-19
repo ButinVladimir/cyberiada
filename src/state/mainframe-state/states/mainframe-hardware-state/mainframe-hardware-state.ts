@@ -5,6 +5,7 @@ import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/sta
 import type { IGlobalState } from '@state/global-state/interfaces/global-state';
 import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
 import type { IMainframeState } from '../../interfaces/mainframe-state';
+import type { IGrowthState } from '@state/growth-state/interfaces/growth-state';
 import type { IFormatter } from '@shared/interfaces/formatter';
 import { TYPES } from '@state/types';
 import { EventBatcher } from '@shared/event-batcher';
@@ -29,6 +30,9 @@ export class MainframeHardwareState implements IMainframeHardwareState {
 
   @lazyInject(TYPES.MainframeState)
   private _mainframeState!: IMainframeState;
+
+  @lazyInject(TYPES.GrowthState)
+  private _growthState!: IGrowthState;
 
   private _stateUiConnector: IStateUIConnector;
   private _globalState: IGlobalState;
@@ -90,7 +94,7 @@ export class MainframeHardwareState implements IMainframeHardwareState {
   }
 
   listParameters(): IMainframeHardwareParameter[] {
-    this._stateUiConnector.connectEventHandler(this, MAINFRAME_HARDWARE_STATE_UI_EVENTS.AUTOBUYER_UPDATED);
+    this._stateUiConnector.connectEventHandler(this, MAINFRAME_HARDWARE_STATE_UI_EVENTS.HARDWARE_AUTOBUYER_UPDATED);
 
     return this._parametersList;
   }
@@ -118,11 +122,13 @@ export class MainframeHardwareState implements IMainframeHardwareState {
   emitUpgradedEvent() {
     this._mainframeState.processes.requestUpdateProcesses();
     this._mainframeState.processes.requestUpdatePerformance();
+    this._growthState.programCompletionSpeed.requestMultipliersRecalculation();
+
     this.uiEventBatcher.enqueueEvent(MAINFRAME_HARDWARE_STATE_UI_EVENTS.HARDWARE_UPGRADED);
   }
 
   emitAutobuyerUpdatedEvent() {
-    this.uiEventBatcher.enqueueEvent(MAINFRAME_HARDWARE_STATE_UI_EVENTS.AUTOBUYER_UPDATED);
+    this.uiEventBatcher.enqueueEvent(MAINFRAME_HARDWARE_STATE_UI_EVENTS.HARDWARE_AUTOBUYER_UPDATED);
   }
 
   async startNewState(): Promise<void> {

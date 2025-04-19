@@ -9,13 +9,12 @@ export interface IProgram extends IUIEventEmitter {
   quality: number;
   completionPoints: number;
   isAutoscalable: boolean;
-  cost: number;
   ram: number;
   cores: number;
   autoUpgradeEnabled: boolean;
   unlockFeatures: Feature[];
-  upgrade(newProgram: IProgram): void;
-  removeEventListeners(): void;
+  upgrade(quality: number, level: number): void;
+  removeAllEventListeners(): void;
   handlePerformanceUpdate(): void;
   perform(threads: number, usedRam: number): void;
   calculateCompletionDelta(threads: number, usedCores: number, passedTime: number): number;

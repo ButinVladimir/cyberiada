@@ -10,7 +10,11 @@ export class EventBatcher implements IEventBatcher {
     this._eventEmitter = new EventEmitter();
   }
 
-  fireEvents(): void {
+  fireImmediateEvent(eventType: symbol): void {
+    this._eventEmitter.emit(eventType);
+  }
+
+  fireEnqueuedEvents(): void {
     for (const eventType of this._eventSet.values()) {
       this._eventEmitter.emit(eventType);
     }

@@ -1,11 +1,14 @@
-import { t } from 'i18next';
 import { css, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { createRef, ref } from 'lit/directives/ref.js';
+import SlProgressBar from '@shoelace-style/shoelace/dist/components/progress-bar/progress-bar.component.js';
 import { BaseComponent } from '@shared/base-component';
 import { hintStyle } from '@shared/styles';
 import { ProgramName, OtherProgramName } from '@state/mainframe-state/states/progam-factory/types';
 import { ProcessesListItemProgressController } from './controller';
+import { localized, msg, str } from '@lit/localize';
 
+@localized()
 @customElement('ca-processes-list-item-progress')
 export class ProcessesListItemProgressColumn extends BaseComponent<ProcessesListItemProgressController> {
   static styles = [
@@ -30,15 +33,16 @@ export class ProcessesListItemProgressColumn extends BaseComponent<ProcessesList
 
   protected controller: ProcessesListItemProgressController;
 
+  private _progressBarRef = createRef<SlProgressBar>();
+  private _hintRef = createRef<HTMLParagraphElement>();
+
   constructor() {
     super();
 
-    this.controller = new ProcessesListItemProgressController(this);
+    this.controller = new ProcessesListItemProgressController(this, this.handlePartialUpdate);
   }
 
   render() {
-    const formatter = this.controller.formatter;
-
     const process = this.controller.getProcess(this.programName as ProgramName);
 
     if (!process) {
@@ -46,24 +50,44 @@ export class ProcessesListItemProgressColumn extends BaseComponent<ProcessesList
     }
 
     if (process.program.isAutoscalable) {
-      return html`${t('mainframe.processes.instantCompletion', { ns: 'ui' })}`;
+      return html`${msg('Instant completion')}`;
     }
 
-    const progressBarValue = (process.currentCompletionPoints / process.maxCompletionPoints) * 100;
-    const progressBarPercentage = `${formatter.formatNumberFloat(progressBarValue)}%`;
+    return html`
+      <sl-progress-bar ${ref(this._progressBarRef)}></sl-progress-bar>
+      <p ${ref(this._hintRef)} class="hint"></p>
+    `;
+  }
+
+  private handlePartialUpdate = () => {
+    const process = this.controller.getProcess(this.programName as ProgramName);
+
+    if (!process || process.program.isAutoscalable) {
+      return;
+    }
+
+    const formatter = this.controller.formatter;
+
     const processCompletionDelta = process.calculateCompletionDelta(1);
 
-    if (processCompletionDelta > 0) {
-      const hintTime = formatter.formatTimeShort(
-        (process.maxCompletionPoints - process.currentCompletionPoints) / processCompletionDelta,
-      );
+    if (this._progressBarRef.value) {
+      const progressBarValue = (process.currentCompletionPoints / process.maxCompletionPoints) * 100;
+      const progressBarPercentage = `${formatter.formatNumberFloat(progressBarValue)}%`;
 
-      return html`
-        <sl-progress-bar value=${progressBarValue}> ${progressBarPercentage} </sl-progress-bar>
-        <p class="hint">${t('mainframe.processes.progressBarHint', { ns: 'ui', time: hintTime })}</p>
-      `;
+      this._progressBarRef.value.value = progressBarValue;
+      this._progressBarRef.value.textContent = progressBarPercentage;
     }
 
-    return html` <sl-progress-bar value=${progressBarValue}> ${progressBarPercentage} </sl-progress-bar> `;
-  }
+    if (this._hintRef.value) {
+      if (processCompletionDelta > 0) {
+        const hintTime = formatter.formatTimeShort(
+          (process.maxCompletionPoints - process.currentCompletionPoints) / processCompletionDelta,
+        );
+
+        this._hintRef.value.textContent = msg(str`Process will be completed in ${hintTime}`);
+      } else {
+        this._hintRef.value.textContent = '';
+      }
+    }
+  };
 }

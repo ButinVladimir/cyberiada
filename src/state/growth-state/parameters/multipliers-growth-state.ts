@@ -38,13 +38,6 @@ export class MultipliersGrowthState implements IMultipliersGrowthState {
     return this._rewardsGrowthState;
   }
 
-  requestGrowthRecalculation() {
-    this._codeBaseGrowthState.requestGrowthRecalculation();
-    this._computationalBaseGrowthState.requestGrowthRecalculation();
-    this._connectivityGrowthState.requestGrowthRecalculation();
-    this._rewardsGrowthState.requestGrowthRecalculation();
-  }
-
   recalculateGrowth() {
     this._codeBaseGrowthState.recalculateGrowth();
     this._computationalBaseGrowthState.recalculateGrowth();

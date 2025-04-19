@@ -1,4 +1,5 @@
 import { inject, injectable } from 'inversify';
+import { msg, str } from '@lit/localize';
 import { decorators } from '@state/container';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
@@ -8,6 +9,7 @@ import { TYPES } from '@state/types';
 import { EventBatcher } from '@shared/event-batcher';
 import { ProgramsEvent } from '@shared/types';
 import { moveElementInArray, removeElementsFromArray } from '@shared/helpers';
+import { PROGRAM_TEXTS } from '@texts/programs';
 import type { IMainframeState } from '../../interfaces/mainframe-state';
 import { ProgramName } from '../progam-factory/types';
 import {
@@ -16,7 +18,6 @@ import {
   IProcess,
   ISerializedProcess,
 } from './interfaces';
-
 import { Process } from './process';
 import { MAINFRAME_PROCESSES_STATE_UI_EVENTS } from './constants';
 
@@ -67,13 +68,13 @@ export class MainframeProcessesState implements IMainframeProcessesState {
   }
 
   get availableCores() {
-    this._stateUiConnector.connectEventHandler(this, MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESSES_UPDATED);
+    this._stateUiConnector.connectEventHandler(this, MAINFRAME_PROCESSES_STATE_UI_EVENTS.AVAILABLE_CORES_UPDATED);
 
     return this._availableCores;
   }
 
   get availableRam() {
-    this._stateUiConnector.connectEventHandler(this, MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESSES_UPDATED);
+    this._stateUiConnector.connectEventHandler(this, MAINFRAME_PROCESSES_STATE_UI_EVENTS.AVAILABLE_RAM_UPDATED);
 
     return this._availableRam;
   }
@@ -91,8 +92,6 @@ export class MainframeProcessesState implements IMainframeProcessesState {
   }
 
   getProcessByName(programName: ProgramName): IProcess | undefined {
-    this._stateUiConnector.connectEventHandler(this, MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESSES_UPDATED);
-
     return this._processesMap.get(programName);
   }
 
@@ -147,10 +146,21 @@ export class MainframeProcessesState implements IMainframeProcessesState {
 
     this.requestUpdateProcesses();
 
-    this._messageLogState.postMessage(ProgramsEvent.processStarted, {
-      programName: program.name,
-      threads: this._formatter.formatNumberDecimal(threadCount),
-    });
+    const programTitle = PROGRAM_TEXTS[program.name].title();
+
+    if (program.isAutoscalable) {
+      this._messageLogState.postMessage(
+        ProgramsEvent.processStarted,
+        msg(str`Process for program "${programTitle}" has been started`),
+      );
+    } else {
+      const formattedThreads = this._formatter.formatNumberDecimal(threadCount);
+
+      this._messageLogState.postMessage(
+        ProgramsEvent.processStarted,
+        msg(str`Process for program "${programTitle}" with ${formattedThreads} threads has been started`),
+      );
+    }
 
     this.uiEventBatcher.enqueueEvent(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESSES_UPDATED);
 
@@ -175,14 +185,25 @@ export class MainframeProcessesState implements IMainframeProcessesState {
 
     if (process) {
       process.usedCores = 0;
-      process.removeEventListeners();
+      process.removeAllEventListeners();
 
       this._processesMap.delete(programName);
 
-      this._messageLogState.postMessage(ProgramsEvent.processDeleted, {
-        programName,
-        threads: this._formatter.formatNumberDecimal(process.threads),
-      });
+      const programTitle = PROGRAM_TEXTS[programName].title();
+
+      if (process.program.isAutoscalable) {
+        this._messageLogState.postMessage(
+          ProgramsEvent.processStarted,
+          msg(str`Process for program "${programTitle}" has been deleted`),
+        );
+      } else {
+        const formattedThreads = this._formatter.formatNumberDecimal(process.threads);
+
+        this._messageLogState.postMessage(
+          ProgramsEvent.processStarted,
+          msg(str`Process for program "${programTitle}" with ${formattedThreads} threads has been deleted`),
+        );
+      }
     }
 
     this.uiEventBatcher.enqueueEvent(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESSES_UPDATED);
@@ -193,7 +214,7 @@ export class MainframeProcessesState implements IMainframeProcessesState {
   deleteAllProcesses() {
     this.clearState();
 
-    this._messageLogState.postMessage(ProgramsEvent.allProcessesDeleted);
+    this._messageLogState.postMessage(ProgramsEvent.allProcessesDeleted, msg('All process have been deleted'));
 
     this.uiEventBatcher.enqueueEvent(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESSES_UPDATED);
 
@@ -280,18 +301,18 @@ export class MainframeProcessesState implements IMainframeProcessesState {
   private updateRunningProcesses = () => {
     this._processUpdateRequested = false;
 
-    this._availableCores = this._mainframeState.hardware.cores.level;
-    this._availableRam = this._mainframeState.hardware.ram.level;
+    let availableCores = this._mainframeState.hardware.cores.level;
+    let availableRam = this._mainframeState.hardware.ram.level;
     this._runningProcesses.length = 0;
     this._runningScalableProcess = this._processesList.find((process) => process.program.isAutoscalable);
     let runningScalableProcessCores = 0;
 
     if (this._runningScalableProcess) {
-      this._availableRam--;
+      availableRam--;
     }
 
-    if (this._availableCores > 0 && this._runningScalableProcess?.isActive) {
-      this._availableCores--;
+    if (availableCores > 0 && this._runningScalableProcess?.isActive) {
+      availableCores--;
       runningScalableProcessCores++;
     }
 
@@ -304,29 +325,39 @@ export class MainframeProcessesState implements IMainframeProcessesState {
       }
 
       processRam = process.totalRam;
-      this._availableRam -= processRam;
+      availableRam -= processRam;
 
       if (!process.isActive) {
         usedCores = 0;
       } else {
-        usedCores = Math.min(process.maxCores, this._availableCores);
+        usedCores = Math.min(process.maxCores, availableCores);
       }
 
       if (usedCores > 0) {
         process.usedCores = usedCores;
         this._runningProcesses.push(process);
-        this._availableCores -= usedCores;
+        availableCores -= usedCores;
       } else {
         process.usedCores = 0;
       }
     }
 
     if (this._runningScalableProcess?.isActive) {
-      runningScalableProcessCores += this._availableCores;
+      runningScalableProcessCores += availableCores;
     }
 
     if (this._runningScalableProcess) {
       this._runningScalableProcess.usedCores = runningScalableProcessCores;
+    }
+
+    if (this._availableRam !== availableRam) {
+      this._availableRam = availableRam;
+      this.uiEventBatcher.enqueueEvent(MAINFRAME_PROCESSES_STATE_UI_EVENTS.AVAILABLE_RAM_UPDATED);
+    }
+
+    if (this._availableCores !== availableCores) {
+      this._availableCores = availableCores;
+      this.uiEventBatcher.enqueueEvent(MAINFRAME_PROCESSES_STATE_UI_EVENTS.AVAILABLE_CORES_UPDATED);
     }
 
     this.uiEventBatcher.enqueueEvent(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESSES_UPDATED);
@@ -376,7 +407,7 @@ export class MainframeProcessesState implements IMainframeProcessesState {
   private clearState() {
     for (const process of this._processesList) {
       process.usedCores = 0;
-      process.removeEventListeners();
+      process.removeAllEventListeners();
     }
 
     this._processesList.length = 0;

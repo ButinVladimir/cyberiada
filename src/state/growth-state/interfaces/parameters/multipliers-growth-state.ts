@@ -5,6 +5,5 @@ export interface IMultipliersGrowthState {
   computationalBase: IMultiplierGrowthState;
   connectivity: IMultiplierGrowthState;
   rewards: IMultiplierGrowthState;
-  requestGrowthRecalculation(): void;
   recalculateGrowth(): void;
 }

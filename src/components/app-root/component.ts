@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { AppStage } from '@state/app/types';
 import { BaseComponent } from '@shared/base-component';
@@ -26,7 +26,7 @@ export class AppRoot extends BaseComponent<AppRootController> {
         return html`<ca-fast-forwarding-screen></ca-fast-forwarding-screen>`;
 
       default:
-        return null;
+        return nothing;
     }
   }
 }

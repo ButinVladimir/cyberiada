@@ -9,6 +9,7 @@ import { IGlobalState } from '@state/global-state/interfaces/global-state';
 import { IGrowthState } from '@state/growth-state/interfaces/growth-state';
 import { IMainframeState } from '@state/mainframe-state/interfaces/mainframe-state';
 import { Feature } from '@shared/types';
+import { COMMON_UI_EVENTS } from '@shared/constants';
 import { ProgramName } from '../types';
 import { IMakeProgramParameters } from '../interfaces/make-program-parameters';
 import { IBaseProgramParameters } from '../interfaces/program-parameters/base-program-parameters';
@@ -104,13 +105,9 @@ export abstract class BaseProgram implements IProgram {
 
   abstract perform(usedCores: number, usedRam: number): void;
 
-  upgrade(newProgram: IProgram): void {
-    if (this.name !== newProgram.name) {
-      throw new Error(`Unable to update program ${this.name} with ${newProgram.name}`);
-    }
-
-    this._level = newProgram.level;
-    this._quality = newProgram.quality;
+  upgrade(quality: number, level: number): void {
+    this._quality = quality;
+    this._level = level;
 
     this.handlePerformanceUpdate();
     this.mainframeState.processes.requestUpdateProcesses();
@@ -141,10 +138,6 @@ export abstract class BaseProgram implements IProgram {
     return this.calculateCompletionTime(threads, 1);
   }
 
-  removeEventListeners(): void {
-    this.stateUiConnector.unregisterEventEmitter(this);
-  }
-
   serialize(): IMakeProgramParameters {
     return {
       name: this.name,
@@ -152,5 +145,11 @@ export abstract class BaseProgram implements IProgram {
       quality: this.quality,
       autoUpgradeEnabled: this.autoUpgradeEnabled,
     };
+  }
+
+  removeAllEventListeners() {
+    this.uiEventBatcher.fireImmediateEvent(COMMON_UI_EVENTS.REMOVE_EVENT_LISTENERS_BY_EMITTER);
+    this.uiEventBatcher.removeAllListeners();
+    this.stateUiConnector.unregisterEventEmitter(this);
   }
 }

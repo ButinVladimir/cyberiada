@@ -1,9 +1,11 @@
 import { injectable } from 'inversify';
+import { msg, str } from '@lit/localize';
 import { decorators } from '@state/container';
 import { GameStateEvent, IncomeSource } from '@shared/types';
 import { EventBatcher } from '@shared/event-batcher';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
+import type { IFormatter } from '@shared/interfaces/formatter';
 import { TYPES } from '@state/types';
 import { calculateGeometricProgressionSum, reverseGeometricProgressionSum } from '@shared/helpers';
 import { IDevelopmentState } from '../interfaces/parameters/development-state';
@@ -26,6 +28,9 @@ export class DevelopmentState implements IDevelopmentState {
   @lazyInject(TYPES.MessageLogState)
   private _messageLogState!: IMessageLogState;
 
+  @lazyInject(TYPES.Formatter)
+  private _formatter!: IFormatter;
+
   private _points: number;
   private _level: number;
   private _levelUpdateRequested: boolean;
@@ -42,8 +47,6 @@ export class DevelopmentState implements IDevelopmentState {
   }
 
   get points() {
-    this._stateUiConnector.connectEventHandler(this, GLOBAL_STATE_UI_EVENTS.DEVELOPMENT_POINTS_CHANGED);
-
     return this._points;
   }
 
@@ -59,13 +62,9 @@ export class DevelopmentState implements IDevelopmentState {
     this._income.set(incomeSource, prevIncome + pointsDelta);
 
     this.requestLevelRecalculation();
-
-    this.uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.DEVELOPMENT_POINTS_CHANGED);
   }
 
   getIncome(incomeSource: IncomeSource): number {
-    this._stateUiConnector.connectEventHandler(this, GLOBAL_STATE_UI_EVENTS.DEVELOPMENT_POINTS_CHANGED);
-
     return this._income.get(incomeSource) ?? 0;
   }
 
@@ -99,8 +98,12 @@ export class DevelopmentState implements IDevelopmentState {
 
     if (newLevel > prevLevel) {
       this._level = newLevel;
+      const formattedLevel = this._formatter.formatNumberDecimal(this._level);
 
-      this._messageLogState.postMessage(GameStateEvent.levelReached, { level: newLevel });
+      this._messageLogState.postMessage(
+        GameStateEvent.levelReached,
+        msg(str`Development level ${formattedLevel} has been reached`),
+      );
       this._globalState.storyEvents.visitEventsByLevel(prevLevel);
       this.uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.DEVELOPMENT_LEVEL_CHANGED);
     }

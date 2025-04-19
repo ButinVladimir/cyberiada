@@ -1,5 +1,5 @@
-import { t } from 'i18next';
 import { html, css } from 'lit';
+import { msg, localized } from '@lit/localize';
 import { customElement } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { BaseComponent } from '@shared/base-component';
@@ -13,6 +13,7 @@ import { Language, LongNumberFormat, Theme } from '@shared/types';
 import { SettingsFormController } from './controller';
 import * as constants from './constants';
 
+@localized()
 @customElement('ca-settings-form')
 export class SettingsForm extends BaseComponent<SettingsFormController> {
   static styles = [
@@ -74,9 +75,7 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
         value=${this.controller.language}
         @sl-change=${this.handleChangeLanguage}
       >
-        <span class="input-label" slot="label"> ${t('settings.language', { ns: 'ui' })} </span>
-
-        <span slot="help-text"> ${t('settings.languageHint', { ns: 'ui' })} </span>
+        <span class="input-label" slot="label"> ${msg('Language')} </span>
 
         ${constants.LANGUAGE_OPTIONS.map(
           ([language, optionText]) => html`<sl-option value=${language}> ${optionText} </sl-option>`,
@@ -89,11 +88,9 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
         value=${this.controller.theme}
         @sl-change=${this.handleChangeTheme}
       >
-        <span class="input-label" slot="label"> ${t('settings.theme', { ns: 'ui' })} </span>
+        <span class="input-label" slot="label"> ${msg('Theme')} </span>
 
-        ${THEMES.map(
-          (theme) => html`<sl-option value=${theme}> ${t(`settings.themes.${theme}`, { ns: 'ui' })} </sl-option>`,
-        )}
+        ${THEMES.map((theme) => html`<sl-option value=${theme}> ${constants.THEME_NAMES[theme]()} </sl-option>`)}
       </sl-select>
 
       <sl-input
@@ -107,9 +104,11 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
         step=${constants.MESSAGE_LOG_SIZE_STEP}
         @sl-change=${this.handleChangeMessageLogSize}
       >
-        <span class="input-label" slot="label"> ${t('settings.messageLogSize', { ns: 'ui' })} </span>
+        <span class="input-label" slot="label"> ${msg('Maximum amount of messages in log')} </span>
 
-        <span slot="help-text"> ${t('settings.messageLogSizeHint', { ns: 'ui' })} </span>
+        <span slot="help-text">
+          ${msg("Excessive messages in log won't be removed until new message is received")}
+        </span>
       </sl-input>
 
       <sl-range
@@ -121,9 +120,9 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
         value=${this.controller.toastDuration}
         @sl-change=${this.handleChangeToastDuration}
       >
-        <span class="input-label" slot="label"> ${t('settings.toastDuration', { ns: 'ui' })} </span>
+        <span class="input-label" slot="label"> ${msg('Message popup duration (s)')} </span>
 
-        <span slot="help-text"> ${t('settings.toastDurationHint', { ns: 'ui' })} </span>
+        <span slot="help-text"> ${msg('Set 0 to disable message popups')} </span>
       </sl-range>
 
       <sl-range
@@ -135,9 +134,9 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
         value=${this.controller.fps}
         @sl-change=${this.handleChangeUpdateFPS}
       >
-        <span class="input-label" slot="label"> ${t('settings.framesPerSecond', { ns: 'ui' })} </span>
+        <span class="input-label" slot="label"> ${msg('Frames per second')} </span>
 
-        <span slot="help-text"> ${t('settings.framesPerSecondHint', { ns: 'ui' })} </span>
+        <span slot="help-text"> ${msg('Too high number can cause strain on CPU')} </span>
       </sl-range>
 
       <sl-range
@@ -149,9 +148,9 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
         value=${this.controller.fastSpeedMultiplier}
         @sl-change=${this.handleChangeFastSpeedMultiplier}
       >
-        <span class="input-label" slot="label"> ${t('settings.fastSpeedMultiplier', { ns: 'ui' })} </span>
+        <span class="input-label" slot="label"> ${msg('Speed multiplier when game speed is fast')} </span>
 
-        <span slot="help-text"> ${t('settings.fastSpeedMultiplierHint', { ns: 'ui' })} </span>
+        <span slot="help-text"> ${msg('Too high number can cause strain on CPU')} </span>
       </sl-range>
 
       <sl-input
@@ -165,9 +164,9 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
         step=${constants.MAX_UPDATES_PER_FRAME_STEP}
         @sl-change=${this.handleChangeMaxUpdatesPerTick}
       >
-        <span class="input-label" slot="label"> ${t('settings.maxUpdatesPerFrame', { ns: 'ui' })} </span>
+        <span class="input-label" slot="label"> ${msg('Maximum amount of updates per frame')} </span>
 
-        <span slot="help-text"> ${t('settings.maxUpdatesPerFrameHint', { ns: 'ui' })} </span>
+        <span slot="help-text"> ${msg('Too high number can cause strain on CPU')} </span>
       </sl-input>
 
       <sl-select
@@ -176,12 +175,12 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
         value=${this.controller.longNumberFormat}
         @sl-change=${this.handleChangeLongNumberFormat}
       >
-        <span class="input-label" slot="label"> ${t('settings.longNumberFormat', { ns: 'ui' })} </span>
+        <span class="input-label" slot="label"> ${msg('Long number format')} </span>
 
         ${LONG_NUMBER_FORMATS.map(
           (longNumberFormat) =>
             html` <sl-option value=${longNumberFormat}>
-              ${t(`settings.longNumberFormats.${longNumberFormat}`, { ns: 'ui' })}
+              ${constants.LONG_NUMBER_FORMAT_NAMES[longNumberFormat]()}
             </sl-option>`,
         )}
       </sl-select>
@@ -193,7 +192,7 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
         ?checked=${this.controller.autosaveEnabledOnHide}
         @sl-change=${this.handleChangeAutosaveEnabledOnHide}
       >
-        <span class="input-label"> ${t('settings.autosaveEnabledOnHide', { ns: 'ui' })} </span>
+        <span class="input-label"> ${msg('Enable autosave when game tab hides or closes')} </span>
       </sl-switch>
 
       <sl-range
@@ -205,9 +204,11 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
         value=${this.controller.autosaveInterval}
         @sl-change=${this.handleChangeAutosaveInterval}
       >
-        <span class="input-label" slot="label"> ${t('settings.autosaveInterval', { ns: 'ui' })} </span>
+        <span class="input-label" slot="label"> ${msg('Autosave interval (s)')} </span>
 
-        <span slot="help-text"> ${t('settings.autosaveIntervalHint', { ns: 'ui' })} </span>
+        <span slot="help-text">
+          ${msg('Too low number can cause strain on CPU. Select 0 to disable regular autosave')}
+        </span>
       </sl-range>
     `;
   }

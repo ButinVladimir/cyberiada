@@ -1,12 +1,14 @@
 import { inject, injectable } from 'inversify';
 import { v4 as uuid } from 'uuid';
+import { msg, str } from '@lit/localize';
 import { EventBatcher } from '@shared/event-batcher';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import type { ISettingsState } from '@state/settings-state/interfaces/settings-state';
+import type { IFormatter } from '@shared/interfaces/formatter';
 import { TYPES } from '@state/types';
+import { MessageEvent } from '@shared/types';
 import { IMessageLogState, IMessage } from './interfaces';
 import { MESSAGE_LOG_UI_EVENTS } from './constants';
-import { MessageEvent } from '@shared/types';
 
 @injectable()
 export class MessageLogState implements IMessageLogState {
@@ -14,15 +16,18 @@ export class MessageLogState implements IMessageLogState {
 
   private _stateUiConnector: IStateUIConnector;
   private _settingsState: ISettingsState;
+  private _formatter: IFormatter;
   private readonly _messages: IMessage[];
   private readonly _toasts: IMessage[];
 
   constructor(
     @inject(TYPES.StateUIConnector) _stateUiConnector: IStateUIConnector,
     @inject(TYPES.SettingsState) _settingsState: ISettingsState,
+    @inject(TYPES.Formatter) _formatter: IFormatter,
   ) {
     this._stateUiConnector = _stateUiConnector;
     this._settingsState = _settingsState;
+    this._formatter = _formatter;
 
     this._messages = [];
     this._toasts = [];
@@ -31,19 +36,18 @@ export class MessageLogState implements IMessageLogState {
     this._stateUiConnector.registerEventEmitter(this);
   }
 
-  postMessage(event: MessageEvent, parameters?: Record<string, any>, postToast = true) {
+  postMessage(event: MessageEvent, messageText: string, postToast = true) {
     if (!this._settingsState.isMessageEventEnabled(event)) {
       return;
     }
 
-    const message: IMessage = {
-      date: new Date(),
+    const messageDate = new Date();
+    const formattedTime = this._formatter.formatDateTime(messageDate);
+    this._messages.push({
       id: uuid(),
       event,
-      parameters,
-    };
-
-    this._messages.push(message);
+      messageText: msg(str`[${formattedTime}] ${messageText}`),
+    });
 
     while (this._messages.length > this._settingsState.messageLogSize) {
       this._messages.shift();
@@ -52,7 +56,11 @@ export class MessageLogState implements IMessageLogState {
     this.uiEventBatcher.enqueueEvent(MESSAGE_LOG_UI_EVENTS.UPDATED_MESSAGES);
 
     if (postToast && this._settingsState.toastDuration > 0) {
-      this._toasts.push(message);
+      this._toasts.push({
+        id: uuid(),
+        event,
+        messageText: messageText,
+      });
 
       while (this._toasts.length > this._settingsState.messageLogSize) {
         this._toasts.shift();

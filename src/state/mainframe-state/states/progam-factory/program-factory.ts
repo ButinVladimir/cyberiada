@@ -105,7 +105,6 @@ export class ProgramFactory implements IProgramFactory {
       case OtherProgramName.mainframeProgramsAutobuyer:
         return new MainframeProgramsAutobuyerProgram({
           ...baseParameters,
-          programFactory: this,
           automationState: this._automationState,
         });
     }

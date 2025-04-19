@@ -1,8 +1,9 @@
-import { t } from 'i18next';
 import { html, css } from 'lit';
+import { localized, msg } from '@lit/localize';
 import { customElement, state } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 
+@localized()
 @customElement('ca-events-filter-panel')
 export class EventsFilterPanel extends BaseComponent {
   static styles = css`
@@ -29,17 +30,17 @@ export class EventsFilterPanel extends BaseComponent {
       <div class="buttons-list">
         <sl-button variant="default" size="medium" @click=${this.handleMessageFilterDialogOpen}>
           <sl-icon slot="prefix" name="chat-left-dots"></sl-icon>
-          ${t('settings.messageFilter', { ns: 'ui' })}
+          ${msg('Message filter')}
         </sl-button>
 
         <sl-button variant="default" size="medium" @click=${this.handleAlertFilterDialogOpen}>
           <sl-icon slot="prefix" name="question-circle"></sl-icon>
-          ${t('settings.alertFilter', { ns: 'ui' })}
+          ${msg('Alert filter')}
         </sl-button>
 
         <sl-button variant="default" size="medium" @click=${this.handleNotificationTypeFilterDialogOpen}>
           <sl-icon slot="prefix" name="exclamation-circle"></sl-icon>
-          ${t('settings.notificationTypeFilter', { ns: 'ui' })}
+          ${msg('Notification type filter')}
         </sl-button>
       </div>
 

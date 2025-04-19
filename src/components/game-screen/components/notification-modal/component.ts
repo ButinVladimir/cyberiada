@@ -1,5 +1,5 @@
-import { t } from 'i18next';
 import { css, html, nothing } from 'lit';
+import { msg, localized } from '@lit/localize';
 import { customElement, state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import SlCheckbox from '@shoelace-style/shoelace/dist/components/checkbox/checkbox.component.js';
@@ -8,6 +8,7 @@ import { FORCE_NOTIFICATION_TYPES } from '@shared/constants';
 import { modalBodyScrollStyle, smallModalStyle } from '@shared/styles';
 import { NotificationModalController } from './controller';
 
+@localized()
 @customElement('ca-notification-modal')
 export class NotificationModal extends BaseComponent<NotificationModalController> {
   static styles = [
@@ -58,11 +59,11 @@ export class NotificationModal extends BaseComponent<NotificationModalController
           variant="primary"
           @click=${this.handleCloseCurrentNotification}
         >
-          ${t('notifications.readNextNotification', { ns: 'ui' })}
+          ${msg('Read next notification')}
         </sl-button>
 
         <sl-button slot="footer" size="medium" variant="danger" @click=${this.handleCloseAllNotifications}>
-          ${t('notifications.closeAllNotifications', { ns: 'ui' })}
+          ${msg('Close all notifications')}
         </sl-button>
       </sl-dialog>
     `;
@@ -75,11 +76,10 @@ export class NotificationModal extends BaseComponent<NotificationModalController
       return nothing;
     }
 
-    const parameters = notification.parameters ?? {};
     const showToggle = !FORCE_NOTIFICATION_TYPES.has(notification.notificationType);
 
     return html`
-      <p>${t(`${notification.notificationType}.message`, { ns: 'notifications', ...parameters })}</p>
+      <p>${notification.message}</p>
 
       ${showToggle
         ? html`
@@ -90,7 +90,7 @@ export class NotificationModal extends BaseComponent<NotificationModalController
               ?checked=${this._notificationTypeToggled}
               @sl-change=${this.handleToggleNotificationType}
             >
-              ${t('settings.notificationTypeToggle', { ns: 'ui' })}
+              ${msg('Show notifications like this in the future')}
             </sl-checkbox>
           `
         : nothing}

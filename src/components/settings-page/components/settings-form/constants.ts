@@ -1,4 +1,5 @@
-import { Language } from '@shared/types';
+import { msg } from '@lit/localize';
+import { Language, LongNumberFormat, Theme } from '@shared/types';
 
 export const LANGUAGE_OPTIONS = [
   [Language.en, 'English'],
@@ -28,3 +29,15 @@ export const MAX_UPDATES_PER_FRAME_STEP = 1;
 export const AUTOSAVE_INTERVAL_MIN = 0;
 export const AUTOSAVE_INTERVAL_MAX = 600000;
 export const AUTOSAVE_INTERVAL_STEP = 1000;
+
+export const THEME_NAMES: Record<Theme, () => string> = {
+  [Theme.light]: () => msg('Light theme'),
+  [Theme.dark]: () => msg('Dark theme'),
+};
+
+export const LONG_NUMBER_FORMAT_NAMES: Record<LongNumberFormat, () => string> = {
+  [LongNumberFormat.engineering]: () => msg('Engineering'),
+  [LongNumberFormat.scientific]: () => msg('Scientific'),
+  [LongNumberFormat.short]: () => msg('Short numbers'),
+  [LongNumberFormat.long]: () => msg('Long numbers'),
+};

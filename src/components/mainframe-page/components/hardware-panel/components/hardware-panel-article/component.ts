@@ -1,11 +1,14 @@
-import { t } from 'i18next';
 import { css, html } from 'lit';
+import { localized } from '@lit/localize';
 import { customElement, property } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import type { MainframeHardwareParameterType } from '@state/mainframe-state/states/mainframe-hardware-state/types';
 import { hintStyle, sectionTitleStyle, SCREEN_WIDTH_POINTS } from '@shared/styles';
+import { COMMON_TEXTS } from '@texts/common';
 import { MainframeHardwarePanelArticleController } from './controller';
+import { MAINFRAME_HARDWARE_TEXTS } from './constants';
 
+@localized()
 @customElement('ca-mainframe-hardware-panel-article')
 export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwarePanelArticleController> {
   static styles = [
@@ -103,22 +106,24 @@ export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwa
     const isAutoupgradeEnabled = this.controller.isAutoUpgradeEnabled(this.type);
 
     const autoupgradeIcon = isAutoupgradeEnabled ? 'arrow-up-circle-fill' : 'arrow-up-circle';
-    const autoupgradeLabel = isAutoupgradeEnabled ? 'disableAutoupgrade' : 'enableAutoupgrade';
+    const autoupgradeLabel = isAutoupgradeEnabled
+      ? COMMON_TEXTS.disableAutoupgrade()
+      : COMMON_TEXTS.enableAutoupgrade();
 
     return html`
       <div class="title-row">
         <h4 class="title" draggable="true" @dragstart=${this.handleDragStart}>
           <sl-icon id="drag-icon" name="grip-vertical"> </sl-icon>
 
-          ${t(`mainframe.hardware.${this.type}`, { ns: 'ui', level: formatter.formatNumberDecimal(level) })}
+          ${MAINFRAME_HARDWARE_TEXTS[this.type].title(formatter.formatNumberDecimal(level))}
 
           <sl-tooltip>
-            <span slot="content"> ${t(`mainframe.hardware.${autoupgradeLabel}`, { ns: 'ui' })} </span>
+            <span slot="content"> ${autoupgradeLabel} </span>
 
             <sl-icon-button
               id="toggle-autoupgrade-btn"
               name=${autoupgradeIcon}
-              label=${t(`mainframe.hardware.${autoupgradeLabel}`, { ns: 'ui' })}
+              label=${autoupgradeLabel}
               @click=${this.handleToggleAutoUpgrade}
             >
             </sl-icon-button>
@@ -126,7 +131,7 @@ export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwa
         </h4>
       </div>
 
-      <p class="hint">${t(`mainframe.hardware.${this.type}Hint`, { ns: 'ui' })}</p>
+      <p class="hint">${MAINFRAME_HARDWARE_TEXTS[this.type].hint()}</p>
 
       <div class="button-container">
         <ca-mainframe-hardware-panel-article-buttons

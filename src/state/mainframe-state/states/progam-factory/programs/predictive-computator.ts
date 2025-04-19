@@ -8,12 +8,14 @@ export class PredictiveComputatorProgram extends BaseProgram {
 
   handlePerformanceUpdate(): void {
     for (const process of this.mainframeState.processes.listProcesses()) {
-      if (process.program.name === PredictiveComputatorProgram.name) {
+      if (process.program.name === OtherProgramName.predictiveComputator) {
         continue;
       }
 
       process.program.handlePerformanceUpdate();
     }
+
+    this.growthState.programCompletionSpeed.requestMultipliersRecalculation();
   }
 
   perform(): void {}

@@ -7,7 +7,6 @@ import { TYPES } from '@state/types';
 import type { IGlobalState } from '../../interfaces/global-state';
 import { IMultiplierState } from '../../interfaces/parameters/multiplier-state';
 import { IMultiplierSerializedState } from '../../interfaces/serialized-states/multiplier-serialized-state';
-import { GLOBAL_STATE_UI_EVENTS } from '../../constants';
 import { IMultiplierScenarioParameters } from '../../interfaces/multiplier-scenario-parameters';
 
 const { lazyInject } = decorators;
@@ -41,20 +40,14 @@ export abstract class BaseMultiplierState implements IMultiplierState {
   }
 
   get pointsByProgram() {
-    this._stateUiConnector.connectEventHandler(this, GLOBAL_STATE_UI_EVENTS.POINTS_BY_PROGRAM_CHANGED);
-
     return this._pointsByProgram;
   }
 
-  get multiplierByProgram() {
-    this._stateUiConnector.connectEventHandler(this, GLOBAL_STATE_UI_EVENTS.MULTIPLIER_CHANGED);
-
+  get programMultiplier() {
     return this._multiplierByProgram;
   }
 
   get totalMultiplier() {
-    this._stateUiConnector.connectEventHandler(this, GLOBAL_STATE_UI_EVENTS.MULTIPLIER_CHANGED);
-
     return this._totalMultiplier;
   }
 
@@ -62,8 +55,6 @@ export abstract class BaseMultiplierState implements IMultiplierState {
     this._pointsByProgram += delta;
 
     this.requestMultipliersRecalculation();
-
-    this.uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.POINTS_BY_PROGRAM_CHANGED);
   }
 
   requestMultipliersRecalculation() {
@@ -101,8 +92,6 @@ export abstract class BaseMultiplierState implements IMultiplierState {
 
     this.updateMultiplierByProgram();
     this.updateTotalMultiplier();
-
-    this.uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.MULTIPLIER_CHANGED);
   }
 
   private updateMultiplierByProgram() {

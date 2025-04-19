@@ -1,13 +1,16 @@
-import { t } from 'i18next';
 import { css, html } from 'lit';
+import { localized, msg, str } from '@lit/localize';
 import { customElement, property } from 'lit/decorators.js';
+import { createRef, ref } from 'lit/directives/ref.js';
+import SlButton from '@shoelace-style/shoelace/dist/components/button/button.component.js';
 import { BaseComponent } from '@shared/base-component';
 import { warningStyle } from '@shared/styles';
 import type { ProgramName } from '@state/mainframe-state/states/progam-factory/types';
-import { IProgram } from '@state/mainframe-state/states/progam-factory/interfaces/program';
+import { COMMON_TEXTS } from '@texts/common';
 import { PurchaseProgramDialogButtonsController } from './controller';
 import { BuyProgramEvent, CancelEvent } from './events';
 
+@localized()
 @customElement('ca-purchase-program-dialog-buttons')
 export class PurchaseProgramDialogButtons extends BaseComponent<PurchaseProgramDialogButtonsController> {
   static styles = [
@@ -45,74 +48,93 @@ export class PurchaseProgramDialogButtons extends BaseComponent<PurchaseProgramD
 
   protected controller: PurchaseProgramDialogButtonsController;
 
+  private _warningRef = createRef<HTMLParagraphElement>();
+  private _purchaseButtonRef = createRef<SlButton>();
+
   constructor() {
     super();
 
-    this.controller = new PurchaseProgramDialogButtonsController(this);
+    this.controller = new PurchaseProgramDialogButtonsController(this, this.handlePartialUpdate);
   }
 
   render() {
-    const { formatter, money } = this.controller;
-
-    const program = this.programName
-      ? this.controller.getSelectedProgram(this.programName, this.quality, this.level)
-      : undefined;
-    const cost = program ? program.cost : 0;
-
-    const submitButtonDisabled = !(
-      program &&
-      cost <= money &&
-      this.controller.isProgramAvailable(program.name, this.quality, this.level)
-    );
-
-    const warning = this.getWarning(program);
-
     return html`
-      <p class="warning">${warning}</p>
+      <p ${ref(this._warningRef)} class="warning"></p>
 
       <div class="buttons">
         <sl-button size="medium" variant="default" outline @click=${this.handleCancel}>
-          ${t('common.close', { ns: 'ui' })}
+          ${COMMON_TEXTS.close()}
         </sl-button>
 
-        <sl-button size="medium" variant="primary" ?disabled=${submitButtonDisabled} @click=${this.handlePurchase}>
-          ${t('mainframe.programs.purchase', { ns: 'ui', cost: formatter.formatNumberFloat(cost) })}
+        <sl-button
+          ${ref(this._purchaseButtonRef)}
+          size="medium"
+          variant="primary"
+          disabled
+          @click=${this.handlePurchase}
+        >
         </sl-button>
       </div>
     `;
   }
 
-  private getWarning(program?: IProgram): string {
-    if (!program) {
-      return t('errors.selectProgram', { ns: 'ui' });
+  private handlePartialUpdate = () => {
+    if (this._warningRef.value) {
+      this._warningRef.value.textContent = this.getWarning();
+    }
+
+    if (this._purchaseButtonRef.value) {
+      this.updatePurchaseButton();
+    }
+  };
+
+  private getWarning(): string {
+    if (!this.programName) {
+      return msg('Select program');
     }
 
     const formatter = this.controller.formatter;
 
-    const cost = program.cost;
+    const cost = this.controller.getProgramCost(this.programName, this.quality, this.level);
     const moneyGrowth = this.controller.moneyGrowth;
     const moneyDiff = cost - this.controller.money;
 
     if (moneyDiff > 0) {
       if (moneyGrowth <= 0) {
-        return t('errors.notEnoughMoney', { ns: 'ui' });
+        return COMMON_TEXTS.notEnoughMoney();
       }
 
       const time = formatter.formatTimeShort(moneyDiff / moneyGrowth);
 
-      return t('errors.willBeAvailableIn', { ns: 'ui', time });
+      return COMMON_TEXTS.willBeAvailableIn(time);
     }
 
     const ownedProgram = this.controller.getOwnedProgram(this.programName!);
     if (ownedProgram) {
-      return t('errors.programAlreadyBought', {
-        ns: 'ui',
-        level: formatter.formatNumberDecimal(ownedProgram.level),
-        quality: formatter.formatQuality(ownedProgram.quality),
-      });
+      const formattedLevel = formatter.formatNumberDecimal(ownedProgram.level);
+      const formattedQuality = formatter.formatQuality(ownedProgram.quality);
+
+      return msg(str`Program is already bought with quality ${formattedQuality} and level ${formattedLevel}`);
     }
 
     return '';
+  }
+
+  private updatePurchaseButton(): void {
+    const { formatter, money } = this.controller;
+
+    const cost = this.programName ? this.controller.getProgramCost(this.programName, this.quality, this.level) : 0;
+
+    const purchaseButtonDisabled = !(
+      this.programName &&
+      cost <= money &&
+      this.controller.isProgramAvailable(this.programName, this.quality, this.level)
+    );
+
+    const formattedCost = formatter.formatNumberFloat(cost);
+
+    this._purchaseButtonRef.value!.disabled = purchaseButtonDisabled;
+    this._purchaseButtonRef.value!.textContent = COMMON_TEXTS.purchase(formattedCost);
   }
 
   private handleCancel = (event: Event) => {

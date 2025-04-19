@@ -1,5 +1,5 @@
-import { t } from 'i18next';
 import { html } from 'lit';
+import { msg, str } from '@lit/localize';
 import { PredictiveComputatorProgram } from '@state/mainframe-state/states/progam-factory/programs/predictive-computator';
 import { IFormatter } from '@shared/interfaces/formatter';
 import { IDescriptionParameters, IDescriptionEffectRenderer } from '../interfaces';
@@ -23,13 +23,10 @@ export class PredictiveComputatorDescriptionEffectRenderer implements IDescripti
   public renderEffect = () => {
     const value = this._program.calculateProgramCompletionSpeedMultiplier(this._cores, this._ram);
 
-    return html`
-      <p>
-        ${t('predictiveComputator.speedMultiplierProgram', {
-          ns: 'programs',
-          value: this._formatter.formatNumberFloat(value),
-        })}
-      </p>
-    `;
+    const formattedValue = this._formatter.formatNumberFloat(value);
+
+    return html` <p>${msg(str`Speed multiplier: Up to ${formattedValue}`)}</p> `;
   };
+
+  public partialUpdate(): void {}
 }

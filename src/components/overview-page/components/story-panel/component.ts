@@ -1,5 +1,5 @@
-import { t } from 'i18next';
 import { css, html } from 'lit';
+import { localized, msg } from '@lit/localize';
 import { customElement, state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -11,7 +11,10 @@ import { STORY_GOAL_STATES } from '@state/global-state/constants';
 import { StoryGoalState } from '@state/global-state/types';
 import { OverviewStoryPanelController } from './controller';
 import { KEYS_SEPARATOR } from '../../constants';
+import { STORY_GOAL_STATE_FILTER_TITLES } from './constants';
+import { type StoryGoalStateFilter } from './types';
 
+@localized()
 @customElement('ca-overview-story-panel')
 export class OverviewStoryPanel extends BaseComponent<OverviewStoryPanelController> {
   static styles = [
@@ -43,7 +46,7 @@ export class OverviewStoryPanel extends BaseComponent<OverviewStoryPanelControll
   private _stateFilterInputRef = createRef<SlSelect>();
 
   @state()
-  private _stateFilter: StoryGoalState | 'all' = 'all';
+  private _stateFilter: StoryGoalStateFilter = 'all';
 
   constructor() {
     super();
@@ -63,14 +66,11 @@ export class OverviewStoryPanel extends BaseComponent<OverviewStoryPanelControll
           hoist
           @sl-change=${this.handleStateFilterChange}
         >
-          <span class="input-label" slot="label"> ${t('overview.story.stateFilter', { ns: 'ui' })} </span>
+          <span class="input-label" slot="label"> ${msg('Event state filter')} </span>
 
-          <sl-option value="all"> ${t('overview.story.stateFilterOptions.all', { ns: 'ui' })}</sl-option>
+          <sl-option value="all"> ${STORY_GOAL_STATE_FILTER_TITLES['all']()}</sl-option>
           ${STORY_GOAL_STATES.map(
-            (state) =>
-              html`<sl-option value=${state}>
-                ${t(`overview.story.stateFilterOptions.${state}`, { ns: 'ui' })}</sl-option
-              >`,
+            (state) => html`<sl-option value=${state}> ${STORY_GOAL_STATE_FILTER_TITLES[state]()}</sl-option>`,
           )}
         </sl-select>
       </div>

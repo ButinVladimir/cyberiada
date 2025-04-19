@@ -1,12 +1,13 @@
-import { t } from 'i18next';
 import { html } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { customElement } from 'lit/decorators.js';
+import { msg, localized } from '@lit/localize';
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.component.js';
 import { BaseComponent } from '@shared/base-component';
 import { AutomationMainframeProgramsAutobuyerController } from './controller';
 import { autobuyerStyles } from '../../styles';
 
+@localized()
 @customElement('ca-automation-mainframe-programs-autobuyer')
 export class AutomationMainframeProgramsAutobuyer extends BaseComponent<AutomationMainframeProgramsAutobuyerController> {
   static styles = autobuyerStyles;
@@ -25,9 +26,9 @@ export class AutomationMainframeProgramsAutobuyer extends BaseComponent<Automati
     const { moneyShare } = this.controller;
 
     return html`
-      <h4 class="title">${t('automation.mainframeProgramsAutobuyer.mainframeProgramsAutobuyer', { ns: 'ui' })}</h4>
+      <h4 class="title">${msg('Mainframe programs autobuyer')}</h4>
 
-      <p class="hint">${t('automation.mainframeProgramsAutobuyer.percentageHint', { ns: 'ui' })}</p>
+      <p class="hint">${msg('Percentage of available money reserved for buying programs')}</p>
 
       <div class="input-container">
         <sl-input

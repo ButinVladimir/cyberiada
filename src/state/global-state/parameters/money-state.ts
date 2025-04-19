@@ -35,8 +35,6 @@ export class MoneyState implements IMoneyState {
   }
 
   get money() {
-    this._stateUiConnector.connectEventHandler(this, GLOBAL_STATE_UI_EVENTS.MONEY_CHANGED);
-
     return this._money;
   }
 
@@ -44,9 +42,6 @@ export class MoneyState implements IMoneyState {
     this._money += moneyDelta;
     const prevIncome = this.getIncome(incomeSource);
     this._income.set(incomeSource, prevIncome + moneyDelta);
-
-    this.uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.MONEY_INCREASED);
-    this.uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.MONEY_CHANGED);
   }
 
   purchase(cost: number, purchaseType: PurchaseType, handler: () => void): boolean {
@@ -58,7 +53,6 @@ export class MoneyState implements IMoneyState {
       this._expenses.set(purchaseType, prevExpenses + cost);
 
       this.uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.MONEY_SPENT);
-      this.uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.MONEY_CHANGED);
 
       return true;
     }
@@ -67,8 +61,6 @@ export class MoneyState implements IMoneyState {
   }
 
   getIncome(incomeSource: IncomeSource): number {
-    this._stateUiConnector.connectEventHandler(this, GLOBAL_STATE_UI_EVENTS.MONEY_INCREASED);
-
     return this._income.get(incomeSource) ?? 0;
   }
 

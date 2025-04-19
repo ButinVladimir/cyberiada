@@ -3,14 +3,6 @@ import { IProgram } from '@state/mainframe-state/states/progam-factory/interface
 import { ProgramName } from '@state/mainframe-state/states/progam-factory/types';
 
 export class PurchaseProgramDialogButtonsController extends BaseController {
-  private _selectedProgram?: IProgram;
-
-  hostDisconnected() {
-    super.hostDisconnected();
-
-    this.deleteSelectedProgram();
-  }
-
   get money(): number {
     return this.globalState.money.money;
   }
@@ -19,23 +11,8 @@ export class PurchaseProgramDialogButtonsController extends BaseController {
     return this.growthState.money.totalGrowth;
   }
 
-  getSelectedProgram(name: ProgramName, quality: number, level: number): IProgram {
-    if (
-      this._selectedProgram?.name !== name ||
-      this._selectedProgram.quality !== quality ||
-      this._selectedProgram.level !== level
-    ) {
-      this.deleteSelectedProgram();
-
-      this._selectedProgram = this.mainframeState.programFactory.makeProgram({
-        name,
-        quality,
-        level,
-        autoUpgradeEnabled: true,
-      });
-    }
-
-    return this._selectedProgram;
+  getProgramCost(programName: ProgramName, quality: number, level: number): number {
+    return this.mainframeState.programs.getProgramCost(programName, quality, level);
   }
 
   isProgramAvailable(programName: ProgramName, quality: number, level: number): boolean {
@@ -44,12 +21,5 @@ export class PurchaseProgramDialogButtonsController extends BaseController {
 
   getOwnedProgram(programName: ProgramName): IProgram | undefined {
     return this.mainframeState.programs.getOwnedProgramByName(programName);
-  }
-
-  private deleteSelectedProgram() {
-    if (this._selectedProgram) {
-      this.removeEventListenersByEmitter(this._selectedProgram);
-      this._selectedProgram.removeEventListeners();
-    }
   }
 }

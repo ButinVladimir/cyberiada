@@ -1,10 +1,11 @@
-import { t } from 'i18next';
 import { css, html, nothing } from 'lit';
+import { localized, msg } from '@lit/localize';
 import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { hintStyle } from '@shared/styles';
 import { OverviewUnlockedItemsPanelController } from './controller';
 
+@localized()
 @customElement('ca-overview-unlocked-items-panel')
 export class OverviewUnlockedItemsPanel extends BaseComponent<OverviewUnlockedItemsPanelController> {
   static styles = [
@@ -39,7 +40,7 @@ export class OverviewUnlockedItemsPanel extends BaseComponent<OverviewUnlockedIt
     const noItemsUnlocked = !programsUnlocked;
 
     if (noItemsUnlocked) {
-      return html`${t('overview.unlockedItems.noItems', { ns: 'ui' })}`;
+      return html`${msg('No items has been unlocked yet')}`;
     }
 
     return this.renderCategories();
@@ -49,11 +50,12 @@ export class OverviewUnlockedItemsPanel extends BaseComponent<OverviewUnlockedIt
     const programsUnlocked = this.controller.areProgramsUnlocked();
 
     return html`
-      <p class="hint">${t('overview.unlockedItems.hint', { ns: 'ui' })}</p>
+      <p class="hint">
+        ${msg(`Loaned items are items received on start and rewarded by capturing districts.
+Number next to item name is it's maximum quality available.`)}
+      </p>
       <div class="categories">
-        ${programsUnlocked
-          ? html`<ca-overview-unlocked-category-items category="programs"></ca-overview-unlocked-category-items>`
-          : nothing}
+        ${programsUnlocked ? html`<ca-overview-unlocked-programs></ca-overview-unlocked-programs>` : nothing}
       </div>
     `;
   }

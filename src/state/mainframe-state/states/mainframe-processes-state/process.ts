@@ -1,6 +1,7 @@
 import { IProgram } from '@state/mainframe-state/states/progam-factory/interfaces/program';
 import { EventBatcher } from '@shared/event-batcher';
 import { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
+import { COMMON_UI_EVENTS } from '@shared/constants';
 import { IMainframeProcessesState, IProcess, IProcessParameters, ISerializedProcess } from './interfaces';
 import { MAINFRAME_PROCESSES_STATE_UI_EVENTS } from './constants';
 
@@ -45,8 +46,6 @@ export class Process implements IProcess {
   }
 
   get currentCompletionPoints() {
-    this._stateUiConnector.connectEventHandler(this, MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESS_PROGRESS_UPDATED);
-
     return this._currentCompletionPoints;
   }
 
@@ -70,9 +69,8 @@ export class Process implements IProcess {
     if (this._usedCores !== value) {
       this._usedCores = value;
       this._program.handlePerformanceUpdate();
+      this.uiEventBatcher.enqueueEvent(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESS_UPDATED);
     }
-
-    this.uiEventBatcher.enqueueEvent(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESS_UPDATED);
   }
 
   get maxCores() {
@@ -102,14 +100,10 @@ export class Process implements IProcess {
     if (this._currentCompletionPoints > maxCompletionPoints) {
       this._currentCompletionPoints = maxCompletionPoints;
     }
-
-    this.uiEventBatcher.enqueueEvent(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESS_PROGRESS_UPDATED);
   }
 
   resetCompletion(): void {
     this._currentCompletionPoints = 0;
-
-    this.uiEventBatcher.enqueueEvent(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESS_PROGRESS_UPDATED);
   }
 
   update(threads: number) {
@@ -130,7 +124,9 @@ export class Process implements IProcess {
     };
   }
 
-  removeEventListeners() {
+  removeAllEventListeners() {
+    this.uiEventBatcher.fireImmediateEvent(COMMON_UI_EVENTS.REMOVE_EVENT_LISTENERS_BY_EMITTER);
+    this.uiEventBatcher.removeAllListeners();
     this._stateUiConnector.unregisterEventEmitter(this);
   }
 }

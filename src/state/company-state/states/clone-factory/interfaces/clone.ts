@@ -21,6 +21,6 @@ export interface IClone extends IUIEventEmitter {
   getBaseSkillValue(skill: Skill): number;
   getTotalSkillValue(skill: Skill): number;
   recalculate(): void;
-  removeEventListeners(): void;
+  removeAllEventListeners(): void;
   serialize(): IMakeCloneParameters;
 }

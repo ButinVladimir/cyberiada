@@ -1,13 +1,14 @@
-import { t } from 'i18next';
 import { css, html } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { localized, msg } from '@lit/localize';
 import { BaseComponent } from '@shared/base-component';
 import { pageTitleStyle } from '@shared/styles';
 import { CityController } from './controller';
 import { CityMapDistrictSelectEvent } from './components/city-map-canvas/events';
 import { MapCellZoomChangeEvent } from './components/map-cell-zoom-panel/events';
 
+@localized()
 @customElement('ca-city')
 export class City extends BaseComponent<CityController> {
   static styles = [
@@ -67,9 +68,9 @@ export class City extends BaseComponent<CityController> {
 
   render() {
     return html`
-      <h3 class="title">${t('city.city.title', { ns: 'ui' })}</h3>
+      <h3 class="title">${msg('City')}</h3>
 
-      <p>${t('city.city.hint', { ns: 'ui' })}</p>
+      <p>${msg('Click on a highlighted district to see it"s info and available actions.')}</p>
 
       <ca-map-cell-zoom-panel zoom=${this.controller.mapCellSize} @map-cell-zoom-change=${this.handleChangeZoom}>
       </ca-map-cell-zoom-panel>

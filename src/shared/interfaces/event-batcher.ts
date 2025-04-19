@@ -1,5 +1,6 @@
 export interface IEventBatcher {
-  fireEvents(): void;
+  fireImmediateEvent(eventType: symbol): void;
+  fireEnqueuedEvents(): void;
   enqueueEvent(eventType: symbol): void;
   addListener(eventType: symbol, listener: () => void): void;
   removeListener(eventType: symbol, listener: () => void): void;

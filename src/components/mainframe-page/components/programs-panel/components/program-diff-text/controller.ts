@@ -5,6 +5,12 @@ import { ProgramName } from '@state/mainframe-state/states/progam-factory/types'
 export class ProgramDiffTextController extends BaseController {
   private _selectedProgram?: IProgram;
 
+  hostDisconnected() {
+    super.hostDisconnected();
+
+    this.deleteSelectedProgram();
+  }
+
   get ram(): number {
     return this.mainframeState.hardware.ram.level;
   }
@@ -38,8 +44,7 @@ export class ProgramDiffTextController extends BaseController {
 
   private deleteSelectedProgram() {
     if (this._selectedProgram) {
-      this.removeEventListenersByEmitter(this._selectedProgram);
-      this._selectedProgram.removeEventListeners();
+      this._selectedProgram.removeAllEventListeners();
     }
   }
 }

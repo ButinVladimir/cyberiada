@@ -11,37 +11,87 @@ import { IGrowthState } from '@state/growth-state/interfaces/growth-state';
 import { IAutomationState } from '@state/automation-state';
 import { container } from '@state/container';
 import { TYPES } from '@state/types';
-import { IApp } from '@state/app';
-import { IFormatter, IUIEventListener, IUIEventEmitter } from './interfaces';
+import { APP_UI_EVENTS, IApp } from '@state/app';
+import { IFormatter, IUIEventEmitter, IUIEventListener } from './interfaces';
+import { COMMON_UI_EVENTS } from './constants';
 
-export class BaseController<T extends ReactiveControllerHost = ReactiveControllerHost>
+export type PartialUpdateFunction = () => void;
+
+export class BaseController<T extends ReactiveControllerHost & HTMLElement = ReactiveControllerHost & HTMLElement>
   implements ReactiveController, IUIEventListener
 {
+  private static _containerValuesCache = new Map<symbol, any>();
+
+  private static getContainerValue<T>(type: symbol): T {
+    let result = BaseController._containerValuesCache.get(type);
+
+    if (!result) {
+      result = container.get<T>(type);
+      BaseController._containerValuesCache.set(type, result);
+    }
+
+    return result;
+  }
+
   protected host: T;
+
+  protected removeEventsEmitterMap: Map<IUIEventEmitter, () => void>;
 
   protected eventsEmitterMap: Map<IUIEventEmitter, Set<symbol>>;
 
-  constructor(host: T) {
+  private _partialUpdateFn?: PartialUpdateFunction;
+
+  constructor(host: T, partialUpdateFn?: PartialUpdateFunction) {
     this.host = host;
     host.addController(this);
+
+    this.removeEventsEmitterMap = new Map<IUIEventEmitter, () => void>();
     this.eventsEmitterMap = new Map<IUIEventEmitter, Set<symbol>>();
+
+    this._partialUpdateFn = partialUpdateFn;
   }
 
   hostConnected() {
+    for (const [eventEmitter, callback] of this.removeEventsEmitterMap.entries()) {
+      eventEmitter.uiEventBatcher.addListener(COMMON_UI_EVENTS.REMOVE_EVENT_LISTENERS_BY_EMITTER, callback);
+    }
+
     for (const [eventEmitter, eventSet] of this.eventsEmitterMap.entries()) {
       for (const event of eventSet.values()) {
         eventEmitter.uiEventBatcher.addListener(event, this.handleRefreshUI);
       }
     }
+
+    if (this._partialUpdateFn) {
+      this.app.uiEventBatcher.addListener(APP_UI_EVENTS.UI_FRAME_UPDATE, this._partialUpdateFn);
+    }
   }
 
   hostDisconnected() {
+    for (const [eventEmitter, callback] of this.removeEventsEmitterMap.entries()) {
+      eventEmitter.uiEventBatcher.removeListener(COMMON_UI_EVENTS.REMOVE_EVENT_LISTENERS_BY_EMITTER, callback);
+    }
+
     for (const [eventEmitter, eventSet] of this.eventsEmitterMap.entries()) {
       this.clearEventSet(eventEmitter, eventSet);
+    }
+
+    if (this._partialUpdateFn) {
+      this.app.uiEventBatcher.removeListener(APP_UI_EVENTS.UI_FRAME_UPDATE, this._partialUpdateFn);
     }
   }
 
   addEventListener(eventEmitter: IUIEventEmitter, event: symbol) {
+    if (!this.removeEventsEmitterMap.has(eventEmitter)) {
+      const removeEventEmitterCallback = this.handleRemoveEventEmitterCallback(eventEmitter);
+
+      this.removeEventsEmitterMap.set(eventEmitter, removeEventEmitterCallback);
+      eventEmitter.uiEventBatcher.addListener(
+        COMMON_UI_EVENTS.REMOVE_EVENT_LISTENERS_BY_EMITTER,
+        removeEventEmitterCallback,
+      );
+    }
+
     let eventSet: Set<symbol> | undefined = this.eventsEmitterMap.get(eventEmitter);
 
     if (!eventSet) {
@@ -63,6 +113,7 @@ export class BaseController<T extends ReactiveControllerHost = ReactiveControlle
     }
 
     this.eventsEmitterMap.delete(eventEmitter);
+    this.removeEventsEmitterMap.delete(eventEmitter);
   }
 
   removeAllEventListeners() {
@@ -71,6 +122,7 @@ export class BaseController<T extends ReactiveControllerHost = ReactiveControlle
     }
 
     this.eventsEmitterMap.clear();
+    this.removeEventsEmitterMap.clear();
   }
 
   startRendering() {
@@ -81,52 +133,52 @@ export class BaseController<T extends ReactiveControllerHost = ReactiveControlle
     this.stateUiConnector.popEventListener();
   }
 
-  get formatter(): IFormatter {
-    return container.get<IFormatter>(TYPES.Formatter);
+  protected get stateUiConnector(): IStateUIConnector {
+    return BaseController.getContainerValue(TYPES.StateUIConnector);
   }
 
-  protected get stateUiConnector(): IStateUIConnector {
-    return container.get<IStateUIConnector>(TYPES.StateUIConnector);
+  public get formatter(): IFormatter {
+    return BaseController.getContainerValue(TYPES.Formatter);
   }
 
   protected get app(): IApp {
-    return container.get<IApp>(TYPES.App);
+    return BaseController.getContainerValue(TYPES.App);
   }
 
   protected get appState(): IAppState {
-    return container.get<IAppState>(TYPES.AppState);
+    return BaseController.getContainerValue(TYPES.AppState);
   }
 
   protected get globalState(): IGlobalState {
-    return container.get<IGlobalState>(TYPES.GlobalState);
+    return BaseController.getContainerValue(TYPES.GlobalState);
   }
 
   protected get growthState(): IGrowthState {
-    return container.get<IGrowthState>(TYPES.GrowthState);
+    return BaseController.getContainerValue(TYPES.GrowthState);
   }
 
   protected get settingsState(): ISettingsState {
-    return container.get<ISettingsState>(TYPES.SettingsState);
+    return BaseController.getContainerValue(TYPES.SettingsState);
   }
 
   protected get cityState(): ICityState {
-    return container.get<ICityState>(TYPES.CityState);
+    return BaseController.getContainerValue(TYPES.CityState);
   }
 
   protected get messageLogState(): IMessageLogState {
-    return container.get<IMessageLogState>(TYPES.MessageLogState);
+    return BaseController.getContainerValue(TYPES.MessageLogState);
   }
 
   protected get notificationsState(): INotificationsState {
-    return container.get<INotificationsState>(TYPES.NotificationsState);
+    return BaseController.getContainerValue(TYPES.NotificationsState);
   }
 
   protected get mainframeState(): IMainframeState {
-    return container.get<IMainframeState>(TYPES.MainframeState);
+    return BaseController.getContainerValue(TYPES.MainframeState);
   }
 
   protected get automationState(): IAutomationState {
-    return container.get<IAutomationState>(TYPES.AutomationState);
+    return BaseController.getContainerValue(TYPES.AutomationState);
   }
 
   protected handleRefreshUI = (): void => {
@@ -138,4 +190,8 @@ export class BaseController<T extends ReactiveControllerHost = ReactiveControlle
       eventEmitter.uiEventBatcher.removeListener(event, this.handleRefreshUI);
     }
   }
+
+  private handleRemoveEventEmitterCallback = (eventEmitter: IUIEventEmitter) => () => {
+    this.removeEventListenersByEmitter(eventEmitter);
+  };
 }

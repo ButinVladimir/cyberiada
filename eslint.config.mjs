@@ -9,7 +9,15 @@ import eslintConfigPrettier from 'eslint-config-prettier/flat';
 import { globalIgnores } from 'eslint/config';
 
 export default tsEsConfig.config(
-  globalIgnores(['**/dist/*', '.eslintrc.cjs', 'vite.config.ts', 'vitest.config.ts', '**/*.d.ts', 'postcss.config.js']),
+  globalIgnores([
+    '**/dist/*',
+    '.eslintrc.cjs',
+    'vite.config.ts',
+    'vitest.config.ts',
+    '**/*.d.ts',
+    'postcss.config.js',
+    'src/generated/**/*',
+  ]),
   {
     extends: [
       eslint.configs.recommended,

@@ -19,7 +19,7 @@ export class DealMakerProgram extends BaseProgram {
 
     return (
       this.globalState.scenario.currentValues.programMultipliers.rewards.pointsPerCompletion *
-      this.globalState.multipliers.rewards.multiplierByProgram *
+      this.globalState.multipliers.rewards.totalMultiplier *
       threads *
       programData.rewardsLevelMultiplier *
       this.level *

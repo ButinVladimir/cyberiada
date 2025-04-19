@@ -18,5 +18,5 @@ export interface IProcess extends IUIEventEmitter {
   resetCompletion(): void;
   update(threads: number): void;
   serialize(): ISerializedProcess;
-  removeEventListeners(): void;
+  removeAllEventListeners(): void;
 }

@@ -30,7 +30,7 @@ export class StatisticsGeneralPanel extends BaseComponent<StatisticsGeneralPanel
           `
         : nothing}
       ${this.controller.isFeatureUnlocked(Feature.rewardsPoints)
-        ? html`<ca-statistics-rewards></ca-statistics-rewards>`
+        ? html`<ca-statistics-multipliers type="rewards"></ca-statistics-multipliers>`
         : nothing}
     `;
   }
