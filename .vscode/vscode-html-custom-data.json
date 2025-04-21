@@ -129,6 +129,28 @@
       ]
     },
     {
+      "name": "ca-purchase-clone-dialog-buttons",
+      "description": "Attributes:\n\n  * `clone-template-name` - \n\n  * `quality` {`number`} - \n\n  * `level` {`number`} - \n\n  * `name` {`string`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `cloneTemplateName` - \n\n  * `quality` {`number`} - \n\n  * `level` {`number`} - \n\n  * `name` {`string`} - \n\n  * `_warningRef` {`Ref<HTMLParagraphElement>`} - \n\n  * `_purchaseButtonRef` {`Ref<SlButton>`} - \n\n  * `handlePartialUpdate` - \n\n  * `handleCancel` - \n\n  * `handlePurchaseClone` - \n\n  * `controller` {`PurchaseCloneDialogController`} - ",
+      "attributes": [
+        {
+          "name": "clone-template-name",
+          "description": "`clone-template-name` - \n\nProperty: cloneTemplateName"
+        },
+        {
+          "name": "quality",
+          "description": "`quality` {`number`} - \n\nProperty: quality"
+        },
+        {
+          "name": "level",
+          "description": "`level` {`number`} - \n\nProperty: level"
+        },
+        {
+          "name": "name",
+          "description": "`name` {`string`} - \n\nProperty: name"
+        }
+      ]
+    },
+    {
       "name": "ca-purchase-clone-dialog",
       "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `_nameInputRef` {`Ref<SlInput>`} - \n\n  * `_cloneTemplateInputRef` {`Ref<SlSelect>`} - \n\n  * `_qualityInputRef` {`Ref<SlSelect>`} - \n\n  * `_levelInputRef` {`Ref<SlInput>`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `_name` {`string`} - \n\n  * `_cloneTemplateName` - \n\n  * `_quality` {`number`} - \n\n  * `_level` {`number`} - \n\n  * `renderQualityOptions` - \n\n  * `handleClose` - \n\n  * `handleNameChange` - \n\n  * `handleCloneTemplateChange` - \n\n  * `handleQualityChange` - \n\n  * `handleLevelChange` - \n\n  * `handlePurchaseClone` - \n\n  * `controller` {`PurchaseCloneDialogController`} - ",
       "attributes": [

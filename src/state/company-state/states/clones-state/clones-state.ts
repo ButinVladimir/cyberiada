@@ -104,7 +104,7 @@ export class CompanyClonesState implements ICompanyClonesState {
 
     const synchronization = this.getCloneSynchronization(templateName, quality);
 
-    if (synchronization + this.availableSynchronization > this.totalSynchronization) {
+    if (synchronization > this.availableSynchronization) {
       return false;
     }
 

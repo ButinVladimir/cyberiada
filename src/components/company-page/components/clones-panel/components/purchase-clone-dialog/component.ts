@@ -17,6 +17,7 @@ import {
 import { COMMON_TEXTS, CLONE_TEMPLATE_TEXTS } from '@texts/index';
 import { PurchaseCloneDialogCloseEvent } from './events';
 import { PurchaseCloneDialogController } from './controller';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 @localized()
 @customElement('ca-purchase-clone-dialog')
@@ -117,6 +118,7 @@ export class PurchaseCloneDialog extends BaseComponent<PurchaseCloneDialogContro
     super.updated(_changedProperties);
 
     if (_changedProperties.has('isOpen')) {
+      this._name = '';
       this._cloneTemplateName = undefined;
       this._quality = 0;
       this._level = this.controller.developmentLevel;
@@ -132,9 +134,10 @@ export class PurchaseCloneDialog extends BaseComponent<PurchaseCloneDialogContro
 
         <div class="body">
           <p class="hint">
-            ${msg(`Select clone template, level and quality to purchase it.
+            ${msg(`Select clone name, template, level and quality to purchase it.
 Level cannot be above current development level.
-Quality is limited depending on gained favors.`)}
+Quality is limited depending on gained favors.
+Synchronization is earned by capturing districts and gaining certain favors.`)}
           </p>
 
           <div class="inputs-container">
@@ -196,6 +199,17 @@ Quality is limited depending on gained favors.`)}
               ></ca-clone-dialog-description-text>`
             : nothing}
         </div>
+
+        <ca-purchase-clone-dialog-buttons
+          slot="footer"
+          clone-template-name=${ifDefined(this._cloneTemplateName)}
+          level=${this._level}
+          quality=${this._quality}
+          name=${this._name}
+          @purchase-clone=${this.handlePurchaseClone}
+          @cancel=${this.handleClose}
+        >
+        </ca-purchase-clone-dialog-buttons>
       </sl-dialog>
     `;
   }
@@ -274,7 +288,11 @@ Quality is limited depending on gained favors.`)}
       return;
     }
 
-    const isBought = this.controller.purchaseClone('Dude', this._cloneTemplateName, this._quality, this._level);
+    if (!this._name) {
+      return;
+    }
+
+    const isBought = this.controller.purchaseClone(this._name, this._cloneTemplateName, this._quality, this._level);
 
     if (isBought) {
       this.dispatchEvent(new PurchaseCloneDialogCloseEvent());

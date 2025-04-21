@@ -5,6 +5,12 @@ import { CloneTemplateName } from '@state/company-state/states/clone-factory/typ
 export class CloneDialogDescriptionTextController extends BaseController {
   private _clone?: IClone;
 
+  hostDisconnected() {
+    super.hostDisconnected();
+
+    this.deleteTemporaryClone();
+  }
+
   get availableSynchronization(): number {
     return this.companyState.clones.availableSynchronization;
   }
@@ -19,9 +25,7 @@ export class CloneDialogDescriptionTextController extends BaseController {
       this._clone.quality !== quality ||
       this._clone.level !== level
     ) {
-      if (this._clone) {
-        this._clone.removeAllEventListeners();
-      }
+      this.deleteTemporaryClone();
 
       this._clone = this.companyState.cloneFactory.makeClone({
         id: 'temporary',
@@ -35,5 +39,11 @@ export class CloneDialogDescriptionTextController extends BaseController {
     }
 
     return this._clone;
+  }
+
+  private deleteTemporaryClone() {
+    if (this._clone) {
+      this._clone.removeAllEventListeners();
+    }
   }
 }
