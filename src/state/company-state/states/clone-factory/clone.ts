@@ -117,6 +117,8 @@ export class Clone implements IClone {
 
   set autoUpgradeEnabled(value: boolean) {
     this._autoUpgradeEnabled = value;
+
+    this.uiEventBatcher.enqueueEvent(CLONES_UI_EVENTS.CLONE_CHANGED);
   }
 
   get cost() {
@@ -131,10 +133,7 @@ export class Clone implements IClone {
   }
 
   earnExperience(delta: number) {
-    const modifier = Math.min(1, this._companyState.clones.experienceModifier);
-
-    this.increaseExperience(modifier * delta);
-    this._companyState.clones.earnExtraExperience(delta);
+    this.increaseExperience(delta);
   }
 
   getLevelRequirements(level: number): number {

@@ -9,7 +9,7 @@ import {
 } from '@components/game-screen/components/confirmation-alert/events';
 import { ProgramAlert } from '@shared/types';
 import * as types from '@state/mainframe-state/states/progam-factory/types';
-import { SCREEN_WIDTH_POINTS, hintIconStyle } from '@shared/styles';
+import { DESCRIPTION_ICONS, ENTITY_ACTIVE_VALUES, SCREEN_WIDTH_POINTS, hintIconStyle } from '@shared/styles';
 import { type ProgramName } from '@state/mainframe-state/states/progam-factory/types';
 import { COMMON_TEXTS, PROGRAM_TEXTS } from '@texts/index';
 import { ProcessesListItemController } from './controller';
@@ -168,7 +168,7 @@ export class ProcessesListItem extends BaseComponent<ProcessesListItemController
 
     const programTitle = PROGRAM_TEXTS[this.programName].title();
 
-    const descriptionButtonName = this._descriptionVisible ? 'chevron-down' : 'chevron-right';
+    const descriptionButtonName = this._descriptionVisible ? DESCRIPTION_ICONS.expanded : DESCRIPTION_ICONS.hidden;
     const descriptionButtonLabel = this._descriptionVisible
       ? COMMON_TEXTS.hideDescription()
       : COMMON_TEXTS.showDescription();
@@ -184,9 +184,11 @@ export class ProcessesListItem extends BaseComponent<ProcessesListItemController
       ? msg('Autoscalable')
       : msg(str`Uses cores: ${formattedUsedCores} / ${formattedMaxCores}`);
 
-    const toggleIcon = process.isActive ? 'play-fill' : 'pause-fill';
+    const toggleIcon = process.isActive ? ENTITY_ACTIVE_VALUES.icon.active : ENTITY_ACTIVE_VALUES.icon.stopped;
     const toggleLabel = process.isActive ? msg('Disable process') : msg('Enable process');
-    const toggleVariant = process.isActive ? 'neutral' : 'default';
+    const toggleVariant = process.isActive
+      ? ENTITY_ACTIVE_VALUES.buttonVariant.active
+      : ENTITY_ACTIVE_VALUES.buttonVariant.stopped;
 
     const deleteProcessLabel = msg('Delete process');
 

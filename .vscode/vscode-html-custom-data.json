@@ -112,7 +112,7 @@
     },
     {
       "name": "ca-clone-dialog-description-text",
-      "description": "Attributes:\n\n  * `clone-template-name` - \n\n  * `quality` {`number`} - \n\n  * `level` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `cloneTemplateName` - \n\n  * `quality` {`number`} - \n\n  * `level` {`number`} - \n\n  * `renderSynchronization` - \n\n  * `renderAttributes` - \n\n  * `renderAttribute` - \n\n  * `renderSkills` - \n\n  * `renderSkill` - \n\n  * `controller` {`CloneDialogDescriptionTextController`} - ",
+      "description": "Attributes:\n\n  * `clone-template-name` - \n\n  * `quality` {`number`} - \n\n  * `level` {`number`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `cloneTemplateName` - \n\n  * `quality` {`number`} - \n\n  * `level` {`number`} - \n\n  * `renderSynchronization` - \n\n  * `renderAttributes` - \n\n  * `renderAttribute` - \n\n  * `renderSkills` - \n\n  * `renderSkill` - \n\n  * `controller` {`CloneDialogDescriptionTextController`} - ",
       "attributes": [
         {
           "name": "clone-template-name",
@@ -127,6 +127,11 @@
           "description": "`level` {`number`} - \n\nProperty: level"
         }
       ]
+    },
+    {
+      "name": "ca-clones-list",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderEmptyListNotification` - \n\n  * `renderClone` - \n\n  * `handleToggleAutoupgrade` - \n\n  * `handleMoveClone` - \n\n  * `handleOpenDeleteAllClonesDialog` - \n\n  * `handleConfirmDeleteAllClonesDialog` - \n\n  * `controller` {`ClonesListController`} - ",
+      "attributes": []
     },
     {
       "name": "ca-purchase-clone-dialog-buttons",
@@ -152,7 +157,7 @@
     },
     {
       "name": "ca-purchase-clone-dialog",
-      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `_nameInputRef` {`Ref<SlInput>`} - \n\n  * `_cloneTemplateInputRef` {`Ref<SlSelect>`} - \n\n  * `_qualityInputRef` {`Ref<SlSelect>`} - \n\n  * `_levelInputRef` {`Ref<SlInput>`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `_name` {`string`} - \n\n  * `_cloneTemplateName` - \n\n  * `_quality` {`number`} - \n\n  * `_level` {`number`} - \n\n  * `renderQualityOptions` - \n\n  * `handleClose` - \n\n  * `handleNameChange` - \n\n  * `handleCloneTemplateChange` - \n\n  * `handleQualityChange` - \n\n  * `handleLevelChange` - \n\n  * `handlePurchaseClone` - \n\n  * `controller` {`PurchaseCloneDialogController`} - ",
+      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `_nameInputRef` {`Ref<SlInput>`} - \n\n  * `_cloneTemplateInputRef` {`Ref<SlSelect>`} - \n\n  * `_qualityInputRef` {`Ref<SlSelect>`} - \n\n  * `_levelInputRef` {`Ref<SlInput>`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `_name` {`string`} - \n\n  * `_cloneTemplateName` - \n\n  * `_quality` {`number`} - \n\n  * `_level` {`number`} - \n\n  * `renderQualityOptions` - \n\n  * `handleClose` - \n\n  * `handleNameChange` - \n\n  * `handleCloneTemplateChange` - \n\n  * `handleQualityChange` - \n\n  * `handleLevelChange` - \n\n  * `handlePurchaseClone` - \n\n  * `handleGenerateName` - \n\n  * `controller` {`PurchaseCloneDialogController`} - ",
       "attributes": [
         {
           "name": "is-open",
@@ -342,7 +347,7 @@
     },
     {
       "name": "ca-processes-list",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderEmptyListNotification` - \n\n  * `renderProcess` - \n\n  * `handleToggleAllProcesses` - \n\n  * `handleOpenDeleteAllProcessesDialog` - \n\n  * `handleConfirmAllDeleteProcessesDialog` - \n\n  * `handleMoveProcess` - \n\n  * `controller` {`ProcessesListController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderEmptyListNotification` - \n\n  * `renderProcess` - \n\n  * `handleToggleAllProcesses` - \n\n  * `handleOpenDeleteAllProcessesDialog` - \n\n  * `handleConfirmDeleteAllProcessesDialog` - \n\n  * `handleMoveProcess` - \n\n  * `controller` {`ProcessesListController`} - ",
       "attributes": []
     },
     {

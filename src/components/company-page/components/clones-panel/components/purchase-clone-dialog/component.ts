@@ -122,6 +122,10 @@ export class PurchaseCloneDialog extends BaseComponent<PurchaseCloneDialogContro
       this._cloneTemplateName = undefined;
       this._quality = 0;
       this._level = this.controller.developmentLevel;
+
+      if (this.isOpen) {
+        this.generateName();
+      }
     }
   }
 
@@ -141,8 +145,22 @@ Synchronization is earned by capturing districts and gaining certain favors.`)}
           </p>
 
           <div class="inputs-container">
-            <sl-input ${ref(this._nameInputRef)} name="name" value=${this._name} @sl-change=${this.handleNameChange}>
+            <sl-input
+              ${ref(this._nameInputRef)}
+              name="name"
+              value=${this._name}
+              autocomplete="off"
+              @sl-change=${this.handleNameChange}
+            >
               <span class="input-label" slot="label"> ${msg('Name')} </span>
+
+              <sl-icon-button
+                slot="suffix"
+                label=${msg('Generate name')}
+                name="dice-4"
+                @click=${this.handleGenerateName}
+              >
+              </sl-icon-button>
             </sl-input>
 
             <sl-select
@@ -298,4 +316,20 @@ Synchronization is earned by capturing districts and gaining certain favors.`)}
       this.dispatchEvent(new PurchaseCloneDialogCloseEvent());
     }
   };
+
+  private handleGenerateName = (event: Event) => {
+    event.stopPropagation();
+    event.preventDefault();
+
+    this.generateName();
+  };
+
+  private generateName(): void {
+    this.controller
+      .generateName()
+      .then((name) => {
+        this._name = name;
+      })
+      .catch((e) => console.error(e));
+  }
 }

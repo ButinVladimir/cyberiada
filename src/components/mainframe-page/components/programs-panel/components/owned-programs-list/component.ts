@@ -6,7 +6,7 @@ import { BaseComponent } from '@shared/base-component';
 import { IProgram } from '@state/mainframe-state/states/progam-factory/interfaces/program';
 import { ProgramName } from '@state/mainframe-state/states/progam-factory/types';
 import { SortableElementMovedEvent } from '@components/shared/sortable-list/events/sortable-element-moved';
-import { SCREEN_WIDTH_POINTS } from '@shared/styles';
+import { AUTOUPGRADE_VALUES, SCREEN_WIDTH_POINTS } from '@shared/styles';
 import { COMMON_TEXTS } from '@texts/common';
 import { OwnedProgramsListController } from './controller';
 
@@ -28,7 +28,7 @@ export class OwnedProgramsList extends BaseComponent<OwnedProgramsListController
       gap: var(--sl-spacing-small);
       align-items: center;
       border-bottom: var(--ca-border);
-      padding: var(--sl-spacing-small) 0;
+      padding: var(--sl-spacing-medium) 0;
     }
 
     .header-column {
@@ -116,11 +116,13 @@ export class OwnedProgramsList extends BaseComponent<OwnedProgramsListController
   render() {
     const isAutoupgradeActive = this.checkSomeProgramsAutoupgradeActive();
 
-    const autoupgradeIcon = isAutoupgradeActive ? 'arrow-up-circle-fill' : 'arrow-up-circle';
+    const autoupgradeIcon = isAutoupgradeActive ? AUTOUPGRADE_VALUES.icon.enabled : AUTOUPGRADE_VALUES.icon.disabled;
     const autoupgradeLabel = isAutoupgradeActive
       ? COMMON_TEXTS.disableAutoupgradeAll()
       : COMMON_TEXTS.enableAutoupgradeAll();
-    const autoupgradeVariant = isAutoupgradeActive ? 'neutral' : 'default';
+    const autoupgradeVariant = isAutoupgradeActive
+      ? AUTOUPGRADE_VALUES.buttonVariant.enabled
+      : AUTOUPGRADE_VALUES.buttonVariant.disabled;
 
     const ownedPrograms = this.controller.listOwnedPrograms();
 

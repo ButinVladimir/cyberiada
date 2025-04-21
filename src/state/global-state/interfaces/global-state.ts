@@ -15,6 +15,7 @@ import {
 
 export interface IGlobalState extends ISerializeable<IGlobalSerializedState> {
   randomSeed: number;
+  randomShift: bigint;
   scenario: IScenarioState;
   faction: IFactionState;
   gameSpeed: GameSpeed;
@@ -26,4 +27,5 @@ export interface IGlobalState extends ISerializeable<IGlobalSerializedState> {
   unlockedFeatures: IUnlockedFeaturesState;
   storyEvents: IStoryEventsState;
   makeNextTick(): void;
+  setRandomShift(value: number | bigint | string | boolean): void;
 }

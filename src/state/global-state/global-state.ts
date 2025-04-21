@@ -28,6 +28,7 @@ export class GlobalState implements IGlobalState {
   private _storyEventsState: IStoryEventsState;
 
   private _randomSeed: number;
+  private _randomShift: bigint;
   private _gameSpeed: GameSpeed;
 
   constructor(
@@ -52,11 +53,16 @@ export class GlobalState implements IGlobalState {
     this._availableItemsState = _availableItemsState;
 
     this._randomSeed = 0;
+    this._randomShift = 0n;
     this._gameSpeed = GameSpeed.normal;
   }
 
   get randomSeed() {
     return this._randomSeed;
+  }
+
+  get randomShift() {
+    return this._randomShift;
   }
 
   get scenario() {
@@ -108,9 +114,17 @@ export class GlobalState implements IGlobalState {
     this.recalculate();
   }
 
+  setRandomShift(value: number | bigint | string | boolean) {
+    this._randomShift = BigInt(value);
+  }
+
   async startNewState(): Promise<void> {
-    this._randomSeed = Date.now();
+    const startingSeed = Date.now();
+    this._randomSeed = startingSeed;
+    this.setRandomShift(startingSeed);
+
     this._gameSpeed = GameSpeed.normal;
+
     await this._scenarioState.startNewState();
     await this._factionState.startNewState();
     await this._moneyState.startNewState();
@@ -126,6 +140,7 @@ export class GlobalState implements IGlobalState {
 
   async deserialize(serializedState: IGlobalSerializedState): Promise<void> {
     this._randomSeed = serializedState.randomSeed;
+    this.setRandomShift(serializedState.randomShift);
     this._gameSpeed = serializedState.gameSpeed;
     await this._scenarioState.deserialize(serializedState.scenario);
     await this._factionState.deserialize(serializedState.faction);
@@ -142,6 +157,7 @@ export class GlobalState implements IGlobalState {
   serialize(): IGlobalSerializedState {
     return {
       randomSeed: this.randomSeed,
+      randomShift: this.randomShift.toString(),
       gameSpeed: this.gameSpeed,
       scenario: this._scenarioState.serialize(),
       faction: this._factionState.serialize(),

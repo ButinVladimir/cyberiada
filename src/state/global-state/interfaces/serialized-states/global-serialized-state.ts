@@ -10,6 +10,7 @@ import { IAvailableItemsSerializedState } from './available-items-serialized-sta
 
 export interface IGlobalSerializedState {
   randomSeed: number;
+  randomShift: string;
   scenario: IScenarioSerializedState;
   faction: IFactionSerializedState;
   gameSpeed: GameSpeed;

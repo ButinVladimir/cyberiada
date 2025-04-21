@@ -10,7 +10,7 @@ import {
 } from '@components/game-screen/components/confirmation-alert/events';
 import { IProcess } from '@state/mainframe-state/states/mainframe-processes-state/interfaces/process';
 import { ProgramName } from '@state/mainframe-state/states/progam-factory/types';
-import { SCREEN_WIDTH_POINTS } from '@shared/styles';
+import { ENTITY_ACTIVE_VALUES, SCREEN_WIDTH_POINTS } from '@shared/styles';
 import { SortableElementMovedEvent } from '@components/shared/sortable-list/events/sortable-element-moved';
 import { ProcessesListController } from './controller';
 
@@ -32,7 +32,7 @@ export class ProcessesList extends BaseComponent<ProcessesListController> {
       gap: var(--sl-spacing-small);
       align-items: center;
       border-bottom: var(--ca-border);
-      padding: var(--sl-spacing-small) 0;
+      padding: var(--sl-spacing-medium) 0;
     }
 
     .header-column {
@@ -124,21 +124,23 @@ export class ProcessesList extends BaseComponent<ProcessesListController> {
   connectedCallback() {
     super.connectedCallback();
 
-    document.addEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmAllDeleteProcessesDialog);
+    document.addEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmDeleteAllProcessesDialog);
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
 
-    document.removeEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmAllDeleteProcessesDialog);
+    document.removeEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmDeleteAllProcessesDialog);
   }
 
   render() {
     const processesActive = this.checkSomeProcessesActive();
 
-    const toggleProcessesIcon = processesActive ? 'play-fill' : 'pause-fill';
+    const toggleProcessesIcon = processesActive ? ENTITY_ACTIVE_VALUES.icon.active : ENTITY_ACTIVE_VALUES.icon.stopped;
     const toggleProcessesLabel = processesActive ? msg('Disable all processes') : msg('Enable all processes');
-    const toggleProcessesVariant = processesActive ? 'neutral' : 'default';
+    const toggleProcessesVariant = processesActive
+      ? ENTITY_ACTIVE_VALUES.buttonVariant.active
+      : ENTITY_ACTIVE_VALUES.buttonVariant.stopped;
 
     const deleteAllProcessLabel = msg('Delete all processes');
 
@@ -235,7 +237,7 @@ export class ProcessesList extends BaseComponent<ProcessesListController> {
     );
   };
 
-  private handleConfirmAllDeleteProcessesDialog = (event: Event) => {
+  private handleConfirmDeleteAllProcessesDialog = (event: Event) => {
     const convertedEvent = event as ConfirmationAlertSubmitEvent;
 
     if (convertedEvent.gameAlert !== ProgramAlert.deleteAllProcesses) {

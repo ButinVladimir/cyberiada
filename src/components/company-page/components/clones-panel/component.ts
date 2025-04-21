@@ -38,6 +38,10 @@ export class CompanyClonesPanel extends BaseComponent<ClonesPanelController> {
         grid-area: synchronization;
       }
 
+      ca-clones-list {
+        margin-top: var(--sl-spacing-large);
+      }
+
       @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
         div.top-container {
           grid-template-areas: 'purchase-clone synchronization';
@@ -83,7 +87,7 @@ Clones on top have higher priority.`)}
         </div>
       </div>
 
-      List goes here
+      <ca-clones-list></ca-clones-list>
 
       <ca-purchase-clone-dialog
         ?is-open=${this._isPurchaseCloneDialogOpen}

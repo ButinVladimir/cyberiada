@@ -76,6 +76,8 @@ export class CityState implements ICityState {
       const worker = new Worker(new URL('@workers/map-generator/index.js', import.meta.url), { type: 'module' });
 
       worker.addEventListener('message', (event: MessageEvent<IMapGeneratorResult>) => {
+        this._globalState.setRandomShift(event.data.randomShift);
+
         this._map = event.data.map;
         this._districts.clear();
         for (const [districtNum, district] of Object.entries(event.data.districts)) {

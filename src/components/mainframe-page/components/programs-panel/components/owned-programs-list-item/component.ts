@@ -4,7 +4,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { BaseComponent } from '@shared/base-component';
 import { OtherProgramName, type ProgramName } from '@state/mainframe-state/states/progam-factory/types';
-import { SCREEN_WIDTH_POINTS, hintIconStyle } from '@shared/styles';
+import { AUTOUPGRADE_VALUES, DESCRIPTION_ICONS, SCREEN_WIDTH_POINTS, hintIconStyle } from '@shared/styles';
 import { COMMON_TEXTS } from '@texts/common';
 import { PROGRAM_TEXTS } from '@texts/programs';
 import { OwnedProgramsListItemController } from './controller';
@@ -127,7 +127,7 @@ export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemCo
       return nothing;
     }
 
-    const descriptionButtonName = this._descriptionVisible ? 'chevron-down' : 'chevron-right';
+    const descriptionButtonName = this._descriptionVisible ? DESCRIPTION_ICONS.expanded : DESCRIPTION_ICONS.hidden;
     const descriptionButtonLabel = this._descriptionVisible
       ? COMMON_TEXTS.hideDescription()
       : COMMON_TEXTS.showDescription();
@@ -136,11 +136,15 @@ export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemCo
       visible: this._descriptionVisible,
     });
 
-    const autoupgradeIcon = program.autoUpgradeEnabled ? 'arrow-up-circle-fill' : 'arrow-up-circle';
+    const autoupgradeIcon = program.autoUpgradeEnabled
+      ? AUTOUPGRADE_VALUES.icon.enabled
+      : AUTOUPGRADE_VALUES.icon.disabled;
     const autoupgradeLabel = program.autoUpgradeEnabled
       ? COMMON_TEXTS.disableAutoupgrade()
       : COMMON_TEXTS.enableAutoupgrade();
-    const autoupgradeVariant = program.autoUpgradeEnabled ? 'neutral' : 'default';
+    const autoupgradeVariant = program.autoUpgradeEnabled
+      ? AUTOUPGRADE_VALUES.buttonVariant.enabled
+      : AUTOUPGRADE_VALUES.buttonVariant.disabled;
 
     const programTitle = PROGRAM_TEXTS[this.programName].title();
     const formattedLevel = formatter.formatNumberDecimal(program.level);

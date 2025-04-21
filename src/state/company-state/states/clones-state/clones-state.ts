@@ -76,8 +76,6 @@ export class CompanyClonesState implements ICompanyClonesState {
   }
 
   getCloneById(id: string): IClone | undefined {
-    this._stateUiConnector.connectEventHandler(this, COMPANY_CLONES_STATE_UI_EVENTS.CLONES_UPDATED);
-
     return this._clonesMap.get(id);
   }
 
@@ -119,7 +117,7 @@ export class CompanyClonesState implements ICompanyClonesState {
     return bought;
   }
 
-  toggleAllClones(active: boolean): void {
+  toggleAllClonesAutoupgrade(active: boolean): void {
     for (const clone of this._clonesList) {
       clone.autoUpgradeEnabled = active;
     }
@@ -172,6 +170,8 @@ export class CompanyClonesState implements ICompanyClonesState {
 
   async startNewState(): Promise<void> {
     this.clearState();
+
+    this.recalculateSynchronization();
 
     this.uiEventBatcher.enqueueEvent(COMPANY_CLONES_STATE_UI_EVENTS.CLONES_UPDATED);
   }
@@ -226,6 +226,8 @@ export class CompanyClonesState implements ICompanyClonesState {
     this._clonesMap.set(clone.id, clone);
 
     this.recalculateSynchronization();
+
+    this.uiEventBatcher.enqueueEvent(COMPANY_CLONES_STATE_UI_EVENTS.CLONES_UPDATED);
   }
 
   private handlePurhaseClone =

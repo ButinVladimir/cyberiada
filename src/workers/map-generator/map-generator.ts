@@ -44,7 +44,7 @@ export class MapGenerator implements IMapGenerator {
       this._map[x] = row;
     }
 
-    this._random = new XORShift128Plus(this._args.randomSeed, Date.now());
+    this._random = new XORShift128Plus(this._args.randomSeed, this._args.randomShift);
   }
 
   public generate(): IMapGeneratorResult {
@@ -119,6 +119,7 @@ export class MapGenerator implements IMapGenerator {
     return {
       map: this._map as number[][],
       districts,
+      randomShift: this._random.y,
     };
   }
 

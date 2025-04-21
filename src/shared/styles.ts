@@ -46,6 +46,15 @@ export const sectionTitleStyle = css`
   }
 `;
 
+export const subSectionTitleStyle = css`
+  h5.title {
+    font-size: var(--sl-font-size-normal);
+    font-weight: var(--sl-font-weight-bold);
+    margin-top: 0;
+    line-height: var(--sl-line-height-normal);
+  }
+`;
+
 export const smallModalStyle = css`
   sl-dialog {
     --width: 600px;
@@ -79,3 +88,48 @@ export const hintIconStyle = css`
     font-size: var(--sl-font-size-large);
   }
 `;
+
+export const DESCRIPTION_ICONS = {
+  hidden: 'chevron-right',
+  expanded: 'chevron-down',
+};
+
+export const ENTITY_ACTIVE_VALUES: {
+  icon: {
+    active: string;
+    stopped: string;
+  };
+  buttonVariant: {
+    active: 'neutral';
+    stopped: 'default';
+  };
+} = {
+  icon: {
+    active: 'play-fill',
+    stopped: 'pause-fill',
+  },
+  buttonVariant: {
+    active: 'neutral',
+    stopped: 'default',
+  },
+};
+
+export const AUTOUPGRADE_VALUES: {
+  icon: {
+    enabled: string;
+    disabled: string;
+  };
+  buttonVariant: {
+    enabled: 'neutral';
+    disabled: 'default';
+  };
+} = {
+  icon: {
+    enabled: 'arrow-up-circle-fill',
+    disabled: 'arrow-up-circle',
+  },
+  buttonVariant: {
+    enabled: 'neutral',
+    disabled: 'default',
+  },
+};

@@ -18,6 +18,7 @@ import {
   Attribute,
   Skill,
   ClonesEvent,
+  CloneAlert,
 } from './types';
 
 export const CURRENT_VERSION = GameVersion['0.1.3'];
@@ -43,6 +44,8 @@ export const CLONE_EVENTS: ClonesEvent[] = Object.values(ClonesEvent);
 export const GAME_STATE_ALERTS: GameStateAlert[] = Object.values(GameStateAlert);
 
 export const PROGRAM_ALERTS: ProgramAlert[] = Object.values(ProgramAlert);
+
+export const CLONE_ALERTS: CloneAlert[] = Object.values(CloneAlert);
 
 export const FORCE_NOTIFICATION_TYPES: Set<NotificationType> = new Set<NotificationType>([
   NotificationType.gameVersionUpdated,

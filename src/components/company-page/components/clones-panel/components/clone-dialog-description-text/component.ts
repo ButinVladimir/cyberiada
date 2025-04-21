@@ -7,70 +7,69 @@ import { IClone } from '@state/company-state/states/clone-factory/interfaces/clo
 import { ATTRIBUTE_TEXTS, CLONE_TEMPLATE_TEXTS, SKILL_TEXTS } from '@texts/index';
 import { ATTRIBUTES, SKILLS } from '@shared/constants';
 import { Attribute, Skill } from '@shared/types';
-import { SCREEN_WIDTH_POINTS } from '@shared/styles';
+import { SCREEN_WIDTH_POINTS, subSectionTitleStyle } from '@shared/styles';
 import { CloneDialogDescriptionTextController } from './controller';
 
 @localized()
 @customElement('ca-clone-dialog-description-text')
 export class CloneDescriptionText extends BaseComponent<CloneDialogDescriptionTextController> {
-  static styles = css`
-    :host {
-      display: grid;
-      grid-template-areas:
-        'description'
-        'synchronization'
-        'attributes'
-        'skills';
-      grid-template-columns: auto;
-      grid-template-rows: auto;
-      grid-row-gap: var(--sl-spacing-medium);
-      grid-column-gap: var(--sl-spacing-medium);
-    }
-
-    p.description {
-      grid-area: description;
-      margin: 0;
-    }
-
-    p.synchronization {
-      grid-area: synchronization;
-      margin: 0;
-    }
-
-    h5.title {
-      font-size: var(--sl-font-size-medium);
-      line-height: var(--sl-line-height-normal);
-      font-weight: var(--sl-font-weight-bold);
-      margin-top: 0;
-      margin-bottom: var(--sl-spacing-2x-small);
-    }
-
-    div.table {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      grid-template-rows: auto;
-      grid-column-gap: var(--sl-spacing-medium);
-    }
-
-    div.attributes {
-      grid-area: attributes;
-    }
-
-    div.skills {
-      grid-area: skills;
-    }
-
-    @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
+  static styles = [
+    subSectionTitleStyle,
+    css`
       :host {
+        display: grid;
         grid-template-areas:
-          'description description'
-          'synchronization synchronization'
-          'attributes skills';
-        grid-template-columns: 1fr 1fr;
+          'description'
+          'synchronization'
+          'attributes'
+          'skills';
+        grid-template-columns: auto;
         grid-template-rows: auto;
+        grid-row-gap: var(--sl-spacing-medium);
+        grid-column-gap: var(--sl-spacing-medium);
       }
-    }
-  `;
+
+      p.description {
+        grid-area: description;
+        margin: 0;
+      }
+
+      p.synchronization {
+        grid-area: synchronization;
+        margin: 0;
+      }
+
+      h5.title {
+        margin-bottom: var(--sl-spacing-2x-small);
+      }
+
+      div.table {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        grid-template-rows: auto;
+        grid-column-gap: var(--sl-spacing-medium);
+      }
+
+      div.attributes {
+        grid-area: attributes;
+      }
+
+      div.skills {
+        grid-area: skills;
+      }
+
+      @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
+        :host {
+          grid-template-areas:
+            'description description'
+            'synchronization synchronization'
+            'attributes skills';
+          grid-template-columns: 1fr 1fr;
+          grid-template-rows: auto;
+        }
+      }
+    `,
+  ];
 
   @property({
     attribute: 'clone-template-name',

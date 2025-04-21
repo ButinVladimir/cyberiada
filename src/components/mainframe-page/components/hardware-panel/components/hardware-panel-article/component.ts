@@ -3,7 +3,7 @@ import { localized } from '@lit/localize';
 import { customElement, property } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import type { MainframeHardwareParameterType } from '@state/mainframe-state/states/mainframe-hardware-state/types';
-import { hintStyle, sectionTitleStyle, SCREEN_WIDTH_POINTS } from '@shared/styles';
+import { hintStyle, sectionTitleStyle, SCREEN_WIDTH_POINTS, AUTOUPGRADE_VALUES } from '@shared/styles';
 import { COMMON_TEXTS } from '@texts/common';
 import { MainframeHardwarePanelArticleController } from './controller';
 import { MAINFRAME_HARDWARE_TEXTS } from './constants';
@@ -105,7 +105,7 @@ export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwa
 
     const isAutoupgradeEnabled = this.controller.isAutoUpgradeEnabled(this.type);
 
-    const autoupgradeIcon = isAutoupgradeEnabled ? 'arrow-up-circle-fill' : 'arrow-up-circle';
+    const autoupgradeIcon = isAutoupgradeEnabled ? AUTOUPGRADE_VALUES.icon.enabled : AUTOUPGRADE_VALUES.icon.disabled;
     const autoupgradeLabel = isAutoupgradeEnabled
       ? COMMON_TEXTS.disableAutoupgrade()
       : COMMON_TEXTS.enableAutoupgrade();
