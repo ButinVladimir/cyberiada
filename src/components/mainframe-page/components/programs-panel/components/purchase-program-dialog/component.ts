@@ -1,18 +1,16 @@
-import { t } from 'i18next';
 import { css, html, nothing } from 'lit';
+import { localized, msg, str } from '@lit/localize';
 import { customElement, property, state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.component.js';
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.component.js';
 import { BaseComponent } from '@shared/base-component';
-import { PROGRAMS } from '@state/progam-factory/constants';
-import { ProgramName } from '@state/progam-factory/types';
+import type { ProgramName } from '@state/mainframe-state/states/progam-factory/types';
 import {
   ConfirmationAlertOpenEvent,
   ConfirmationAlertSubmitEvent,
 } from '@components/game-screen/components/confirmation-alert/events';
-import { QUALITIES } from '@shared/constants';
 import { ProgramAlert } from '@shared/types';
 import {
   inputLabelStyle,
@@ -22,10 +20,11 @@ import {
   modalBodyScrollStyle,
   SCREEN_WIDTH_POINTS,
 } from '@shared/styles';
+import { PROGRAM_TEXTS, COMMON_TEXTS } from '@texts/index';
 import { PurchaseProgramDialogCloseEvent } from './events';
 import { PurchaseProgramDialogController } from './controller';
-import { IMainframePageHistoryState } from '../../../../interfaces';
 
+@localized()
 @customElement('ca-purchase-program-dialog')
 export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogController> {
   static styles = [
@@ -44,6 +43,7 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
         width: 100%;
         display: flex;
         flex-direction: row;
+        flex-wrap: wrap;
         justify-content: flex-end;
         gap: var(--sl-spacing-small);
       }
@@ -71,23 +71,6 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
         margin-bottom: var(--sl-spacing-medium);
       }
 
-      div.footer {
-        display: flex;
-      }
-
-      div.program-description {
-        margin-top: var(--sl-spacing-medium);
-        margin-bottom: 0;
-      }
-
-      div.program-description p {
-        margin: 0;
-      }
-
-      div.program-description p.line-break {
-        height: var(--sl-spacing-medium);
-      }
-
       @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
         div.inputs-container {
           grid-template-rows: auto;
@@ -101,9 +84,9 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
 
   private _programInputRef = createRef<SlSelect>();
 
-  private _levelInputRef = createRef<SlInput>();
-
   private _qualityInputRef = createRef<SlSelect>();
+
+  private _levelInputRef = createRef<SlInput>();
 
   @property({
     attribute: 'is-open',
@@ -115,10 +98,10 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
   private _programName?: ProgramName = undefined;
 
   @state()
-  private _level = 1;
+  private _quality = 0;
 
   @state()
-  private _quality = 0;
+  private _level = 1;
 
   constructor() {
     super();
@@ -141,24 +124,27 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
   updated(_changedProperties: Map<string, any>) {
     super.updated(_changedProperties);
 
-    if (_changedProperties.get('isOpen') === false) {
-      const historyState = window.history.state as IMainframePageHistoryState;
-
-      this._programName = historyState.programName ?? undefined;
-      this._level = historyState.level ?? this.controller.developmentLevel;
-      this._quality = historyState.quality ?? 0;
+    if (_changedProperties.has('isOpen')) {
+      this._programName = undefined;
+      this._quality = 0;
+      this._level = this.controller.developmentLevel;
     }
   }
 
-  renderContent() {
-    const { formatter, developmentLevel } = this.controller;
+  render() {
+    const { developmentLevel } = this.controller;
 
     return html`
       <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
-        <h4 slot="label" class="title">${t('mainframe.programs.purchaseProgram', { ns: 'ui' })}</h4>
+        <h4 slot="label" class="title">${msg('Purchase program')}</h4>
 
         <div class="body">
-          <p class="hint">${t('mainframe.programs.purchaseProgramDialogHint', { ns: 'ui' })}</p>
+          <p class="hint">
+            ${msg(`Select program type, level and quality to purchase it.
+Level cannot be above current development level.
+Quality is limited depending on gained favors.
+If you already have program with same name, old one will be replaced with new one.`)}
+          </p>
 
           <div class="inputs-container">
             <sl-select
@@ -168,26 +154,12 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
               hoist
               @sl-change=${this.handleProgramChange}
             >
-              <span class="input-label" slot="label"> ${t('mainframe.program', { ns: 'ui' })} </span>
+              <span class="input-label" slot="label"> ${msg('Program')} </span>
 
-              ${PROGRAMS.map(
-                (program) =>
-                  html`<sl-option value=${program}> ${t(`${program}.name`, { ns: 'programs' })} </sl-option>`,
-              )}
+              ${this.controller
+                .listAvailablePrograms()
+                .map((program) => html`<sl-option value=${program}> ${PROGRAM_TEXTS[program].title()} </sl-option>`)}
             </sl-select>
-
-            <sl-input
-              ${ref(this._levelInputRef)}
-              name="level"
-              value=${this._level}
-              type="number"
-              min="1"
-              max=${developmentLevel}
-              step="1"
-              @sl-change=${this.handleLevelChange}
-            >
-              <span class="input-label" slot="label"> ${t('mainframe.level', { ns: 'ui' })} </span>
-            </sl-input>
 
             <sl-select
               ${ref(this._qualityInputRef)}
@@ -196,12 +168,24 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
               hoist
               @sl-change=${this.handleQualityChange}
             >
-              <span class="input-label" slot="label"> ${t('mainframe.quality', { ns: 'ui' })} </span>
+              <span class="input-label" slot="label"> ${COMMON_TEXTS.quality()} </span>
 
-              ${QUALITIES.map(
-                (quality) => html` <sl-option value=${quality}> ${formatter.formatQuality(quality)} </sl-option>`,
-              )}
+              ${this.renderQualityOptions()}
             </sl-select>
+
+            <sl-input
+              ${ref(this._levelInputRef)}
+              name="level"
+              value=${this._level}
+              type="number"
+              inputmode="decimal"
+              min="1"
+              max=${developmentLevel}
+              step="1"
+              @sl-change=${this.handleLevelChange}
+            >
+              <span class="input-label" slot="label"> ${COMMON_TEXTS.level()} </span>
+            </sl-input>
           </div>
 
           ${this._programName
@@ -214,21 +198,32 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
             : nothing}
         </div>
 
-        <sl-button slot="footer" size="medium" variant="default" outline @click=${this.handleClose}>
-          ${t('common.close', { ns: 'ui' })}
-        </sl-button>
-
-        <ca-purchase-program-dialog-buy-button
+        <ca-purchase-program-dialog-buttons
           slot="footer"
           program-name=${ifDefined(this._programName)}
           level=${this._level}
           quality=${this._quality}
           @buy-program=${this.handleOpenConfirmationAlert}
+          @cancel=${this.handleClose}
         >
-        </ca-purchase-program-dialog-buy-button>
+        </ca-purchase-program-dialog-buttons>
       </sl-dialog>
     `;
   }
+
+  private renderQualityOptions = () => {
+    const highestAvailableQuality = this._programName
+      ? this.controller.getHighestAvailableQuality(this._programName)
+      : 0;
+    const formatter = this.controller.formatter;
+
+    const result: unknown[] = [];
+    for (let quality = 0; quality <= highestAvailableQuality; quality++) {
+      result.push(html`<sl-option value=${quality}> ${formatter.formatQuality(quality)} </sl-option>`);
+    }
+
+    return result;
+  };
 
   private handleClose = (event: Event) => {
     event.preventDefault();
@@ -244,9 +239,15 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
 
     const programName = this._programInputRef.value.value as ProgramName;
     this._programName = programName;
+  };
 
-    const state = { ...window.history.state, programName } as IMainframePageHistoryState;
-    window.history.replaceState(state, '');
+  private handleQualityChange = () => {
+    if (!this._qualityInputRef.value) {
+      return;
+    }
+
+    const quality = +this._qualityInputRef.value.value;
+    this._quality = quality;
   };
 
   private handleLevelChange = () => {
@@ -266,21 +267,6 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
 
     this._level = level;
     this._levelInputRef.value.valueAsNumber = level;
-
-    const state = { ...window.history.state, level } as IMainframePageHistoryState;
-    window.history.replaceState(state, '');
-  };
-
-  private handleQualityChange = () => {
-    if (!this._qualityInputRef.value) {
-      return;
-    }
-
-    const quality = +this._qualityInputRef.value.value;
-    this._quality = quality;
-
-    const state = { ...window.history.state, quality } as IMainframePageHistoryState;
-    window.history.replaceState(state, '');
   };
 
   private handleOpenConfirmationAlert = (event: Event) => {
@@ -296,14 +282,17 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
     if (ownedProgram) {
       const formatter = this.controller.formatter;
 
-      const confirmationAlertParameters = {
-        programName: this._programName,
-        level: formatter.formatNumberDecimal(ownedProgram.level),
-        quality: formatter.formatQuality(ownedProgram.quality),
-      };
+      const programTitle = PROGRAM_TEXTS[this._programName].title();
+      const formattedLevel = formatter.formatNumberDecimal(ownedProgram.level);
+      const formattedQuality = formatter.formatQuality(ownedProgram.quality);
 
       this.dispatchEvent(
-        new ConfirmationAlertOpenEvent(ProgramAlert.purchaseProgramOverwrite, confirmationAlertParameters),
+        new ConfirmationAlertOpenEvent(
+          ProgramAlert.purchaseProgramOverwrite,
+          msg(
+            str`Are you sure want to purchase program "${programTitle}"? This will replace your current program with quality ${formattedQuality} and level ${formattedLevel}.`,
+          ),
+        ),
       );
     } else {
       this.purchase();
@@ -325,7 +314,7 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
       return;
     }
 
-    const isBought = this.controller.purchaseProgram(this._programName, this._level, this._quality);
+    const isBought = this.controller.purchaseProgram(this._programName, this._quality, this._level);
 
     if (isBought) {
       this.dispatchEvent(new PurchaseProgramDialogCloseEvent());

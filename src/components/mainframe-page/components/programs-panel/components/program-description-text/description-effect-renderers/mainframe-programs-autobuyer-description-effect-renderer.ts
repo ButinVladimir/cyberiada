@@ -1,6 +1,6 @@
-import { t } from 'i18next';
 import { html } from 'lit';
-import { MainframeProgramsAutobuyerProgram } from '@state/progam-factory/programs/mainframe-programs-autobuyer';
+import { msg, str } from '@lit/localize';
+import { MainframeProgramsAutobuyerProgram } from '@state/mainframe-state/states/progam-factory/programs/mainframe-programs-autobuyer';
 import { IFormatter } from '@shared/interfaces/formatter';
 import { MS_IN_SECOND } from '@shared/constants';
 import { IDescriptionParameters, IDescriptionEffectRenderer } from '../interfaces';
@@ -21,14 +21,13 @@ export class MainframeProgramsAutobuyerDescriptionEffectRenderer implements IDes
     const minAvgValue = (1 / maxTime) * MS_IN_SECOND;
     const maxAvgValue = (1 / minTime) * MS_IN_SECOND;
 
+    const formattedMinAvgValue = this._formatter.formatNumberFloat(minAvgValue);
+    const formattedMaxAvgValue = this._formatter.formatNumberFloat(maxAvgValue);
+
     return html`
-      <p>
-        ${t('mainframeProgramsAutobuyer.actionsProgram', {
-          ns: 'programs',
-          minAvgValue: this._formatter.formatNumberFloat(minAvgValue),
-          maxAvgValue: this._formatter.formatNumberFloat(maxAvgValue),
-        })}
-      </p>
+      <p>${msg(str`Actions: 1 per completion (${formattedMinAvgValue} \u2014 ${formattedMaxAvgValue} per second)`)}</p>
     `;
   };
+
+  public partialUpdate() {}
 }

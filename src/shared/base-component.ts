@@ -4,17 +4,9 @@ import { IUIEventListener } from './interfaces';
 export abstract class BaseComponent<C extends IUIEventListener | undefined = undefined> extends LitElement {
   protected controller?: C;
 
-  render() {
+  performUpdate() {
     this.controller?.startRendering();
-
-    return this.renderContent();
-  }
-
-  updated(_changedProperties: Map<string, any>) {
-    super.updated(_changedProperties);
-
+    super.performUpdate();
     this.controller?.stopRendering();
   }
-
-  abstract renderContent(): unknown;
 }

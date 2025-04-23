@@ -13,14 +13,13 @@ export class MenuBar extends BaseComponent<MenuBarController> {
       display: block;
       width: 100%;
       height: 100%;
-      scrollbar-gutter: stable;
       scrollbar-width: thin;
       overflow: auto;
     }
 
     aside {
       box-sizing: border-box;
-      padding: var(--sl-spacing-2x-small);
+      padding: var(--sl-spacing-large) var(--sl-spacing-2x-small);
       width: 100%;
       display: flex;
       flex-direction: column;
@@ -50,7 +49,7 @@ export class MenuBar extends BaseComponent<MenuBarController> {
     this.controller = new MenuBarController(this);
   }
 
-  renderContent() {
+  render() {
     return html`
       <aside>
         <ca-menu-bar-values></ca-menu-bar-values>

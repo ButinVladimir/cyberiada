@@ -1,10 +1,12 @@
-import { t } from 'i18next';
 import { html } from 'lit';
-import { CodeGeneratorProgram } from '@state/progam-factory/programs/code-generator';
+import { msg, str } from '@lit/localize';
+import { CodeGeneratorProgram } from '@state/mainframe-state/states/progam-factory/programs/code-generator';
 import { IFormatter } from '@shared/interfaces/formatter';
-import { diffFormatterParametersLong } from '@shared/formatter-parameters';
+import { diffFormatterParameters } from '@shared/formatter-parameters';
 import { MS_IN_SECOND } from '@shared/constants';
 import { IDescriptionParameters, IDescriptionEffectRenderer } from '../interfaces';
+
+const PARAGRAPH_NAME_POINTS = 'points';
 
 export class CodeGeneratorDescriptionEffectRenderer implements IDescriptionEffectRenderer {
   private _program: CodeGeneratorProgram;
@@ -23,6 +25,18 @@ export class CodeGeneratorDescriptionEffectRenderer implements IDescriptionEffec
   }
 
   public renderEffect = () => {
+    return html` <p data-name=${PARAGRAPH_NAME_POINTS}></p> `;
+  };
+
+  public partialUpdate(nodeList: NodeListOf<HTMLParagraphElement>): void {
+    nodeList.forEach((element) => {
+      if (element.dataset.name === PARAGRAPH_NAME_POINTS) {
+        this.partialUpdatePoints(element);
+      }
+    });
+  }
+
+  private partialUpdatePoints(element: HTMLParagraphElement) {
     const value = this._program.calculateDelta(this._threads);
     const minTime = this._program.calculateCompletionMinTime(this._threads);
     const maxTime = this._program.calculateCompletionMaxTime(this._threads);
@@ -45,18 +59,15 @@ export class CodeGeneratorDescriptionEffectRenderer implements IDescriptionEffec
       maxAvgValueDiff = maxAvgValue - currentMaxAvgValue;
     }
 
-    return html`
-      <p>
-        ${t('codeGenerator.computationalBasePointsDiff', {
-          ns: 'programs',
-          value: this._formatter.formatNumberFloat(value),
-          valueDiff: this._formatter.formatNumberFloat(valueDiff, diffFormatterParametersLong),
-          minAvgValue: this._formatter.formatNumberFloat(minAvgValue),
-          maxAvgValue: this._formatter.formatNumberFloat(maxAvgValue),
-          minAvgValueDiff: this._formatter.formatNumberFloat(minAvgValueDiff, diffFormatterParametersLong),
-          maxAvgValueDiff: this._formatter.formatNumberFloat(maxAvgValueDiff, diffFormatterParametersLong),
-        })}
-      </p>
-    `;
-  };
+    const formattedValue = this._formatter.formatNumberFloat(value);
+    const formattedValueDiff = this._formatter.formatNumberFloat(valueDiff, diffFormatterParameters);
+    const formattedMinAvgValue = this._formatter.formatNumberFloat(minAvgValue);
+    const formattedMaxAvgValue = this._formatter.formatNumberFloat(maxAvgValue);
+    const formattedMinAvgValueDiff = this._formatter.formatNumberFloat(minAvgValueDiff, diffFormatterParameters);
+    const formattedMaxAvgValueDiff = this._formatter.formatNumberFloat(maxAvgValueDiff, diffFormatterParameters);
+
+    element.textContent = msg(
+      str`Code base points: ${formattedValue} (${formattedValueDiff}) per completion (${formattedMinAvgValue} \u2014 ${formattedMaxAvgValue} per second) (${formattedMinAvgValueDiff} \u2014 ${formattedMaxAvgValueDiff})`,
+    );
+  }
 }

@@ -1,6 +1,6 @@
 import { BaseController } from '@shared/base-controller';
-import { IProgram } from '@state/progam-factory/interfaces/program';
-import { ProgramName } from '@state/progam-factory/types';
+import { IProgram } from '@state/mainframe-state/states/progam-factory/interfaces/program';
+import { ProgramName } from '@state/mainframe-state/states/progam-factory/types';
 
 export class OwnedProgramsListItemController extends BaseController {
   private _ownedProgram?: IProgram;
@@ -11,13 +11,13 @@ export class OwnedProgramsListItemController extends BaseController {
         this.removeEventListenersByEmitter(this._ownedProgram);
       }
 
-      this._ownedProgram = this.mainframeProgramsState.getOwnedProgramByName(programName);
+      this._ownedProgram = this.mainframeState.programs.getOwnedProgramByName(programName);
     }
 
     return this._ownedProgram;
   }
 
   upgradeMaxProgram(programName: ProgramName) {
-    this.mainframeProgramsState.upgradeMaxProgram(programName);
+    this.mainframeState.programs.upgradeMaxProgram(programName);
   }
 }

@@ -1,0 +1,9 @@
+import './purchase-clone-dialog';
+import './clone-dialog-description-text';
+import './purchase-clone-dialog-buttons';
+import './clones-list';
+import './clones-list-item';
+import './clones-list-item-attributes';
+import './clones-list-item-skills';
+import './clones-list-item-experience';
+import './rename-clone-dialog';

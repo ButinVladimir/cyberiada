@@ -1,0 +1,19 @@
+{
+  "neutral": {
+    "programs": [
+      "shareServer",
+      "predictiveComputator",
+      "codeGenerator",
+      "circuitDesigner",
+      "informationCollector",
+      "dealMaker",
+      "mainframeHardwareAutobuyer",
+      "mainframeProgramsAutobuyer"
+    ],
+    "cloneTemplates": ["anthrodrone"]
+  },
+  "wsa": {
+    "programs": [],
+    "cloneTemplates": []
+  }
+}

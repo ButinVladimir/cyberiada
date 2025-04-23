@@ -1,0 +1,59 @@
+import { html } from 'lit';
+import { localized } from '@lit/localize';
+import { customElement } from 'lit/decorators.js';
+import { BaseComponent } from '@shared/base-component';
+import { CATEGORY_TEXTS, PROGRAM_TEXTS } from '@texts/index';
+import { OverviewUnlockedProgramsController } from './controller';
+import { ProgramName } from '@state/mainframe-state/states/progam-factory/types';
+import { unlockedItemsCategoryStyles } from '../../constants';
+
+@localized()
+@customElement('ca-overview-unlocked-programs')
+export class OverviewUnlockedPrograms extends BaseComponent<OverviewUnlockedProgramsController> {
+  static styles = unlockedItemsCategoryStyles;
+
+  protected controller: OverviewUnlockedProgramsController;
+
+  constructor() {
+    super();
+
+    this.controller = new OverviewUnlockedProgramsController(this);
+  }
+
+  render() {
+    const programsCategory = CATEGORY_TEXTS.programs();
+
+    return html`
+      <sl-details>
+        <h4 class="title" slot="summary">${programsCategory}</h4>
+
+        <div class="content-table">${this.renderList()}</div>
+      </sl-details>
+    `;
+  }
+
+  private renderList = () => {
+    const itemNames = this.controller.listItems();
+
+    return itemNames.map(this.renderListItem);
+  };
+
+  private renderListItem = (itemName: ProgramName) => {
+    const programTitle = PROGRAM_TEXTS[itemName].title();
+    const programOverview = PROGRAM_TEXTS[itemName].overview();
+    const quality = this.controller.getItemHighestAvailableQuality(itemName);
+
+    return html`
+      <span>
+        ${programTitle}
+
+        <sl-tooltip>
+          <span slot="content"> ${programOverview} </span>
+
+          <sl-icon name="question-circle"></sl-icon>
+        </sl-tooltip>
+      </span>
+      <span> ${this.controller.formatter.formatQuality(quality)} </span>
+    `;
+  };
+}

@@ -1,23 +1,10 @@
-import { IFormatterParameters } from '@shared/interfaces/formatter-parameters';
+import { msg } from '@lit/localize';
+import { MainframePageTabs } from './types';
 
-export const diffFormatterParametersDecimal: IFormatterParameters = {
-  alwaysShowSign: true,
+export const MAINFRAME_PAGE_TABS_LIST = Array.from(Object.values(MainframePageTabs));
+
+export const MAINFRAMGE_PAGE_TAB_TITLES: Record<MainframePageTabs, () => string> = {
+  [MainframePageTabs.processes]: () => msg('Processes'),
+  [MainframePageTabs.hardware]: () => msg('Hardware'),
+  [MainframePageTabs.programs]: () => msg('Programs'),
 };
-
-export const diffFormatterParametersFloat: IFormatterParameters = {
-  alwaysShowSign: true,
-};
-
-export const diffFormatterParametersLong: IFormatterParameters = {
-  alwaysShowSign: true,
-};
-
-export const diffFormatterParametersShortTime: IFormatterParameters = {
-  alwaysShowSign: true,
-};
-
-export enum MainframePageTabs {
-  processes = 'processes',
-  hardware = 'hardware',
-  programs = 'programs',
-}

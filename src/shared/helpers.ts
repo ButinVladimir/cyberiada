@@ -1,7 +1,12 @@
+import { IExponentWithQuality } from './interfaces/exponent-with-quality';
 import { IExponent } from './interfaces/exponent';
 
 export const calculatePow = (exponent: number, params: IExponent): number => {
   return params.baseMultiplier * Math.pow(params.base, exponent);
+};
+
+export const calculatePowWithQuality = (exponent: number, quality: number, params: IExponentWithQuality): number => {
+  return params.baseMultiplier * Math.pow(params.base, exponent) * Math.pow(params.qualityMultiplier, quality);
 };
 
 export const binarySearchDecimal = (
@@ -66,4 +71,51 @@ export function moveElementInArray<T>(array: T[], fromIndex: number, toIndex: nu
   }
 
   array[fixedToIndex] = movedElement;
+}
+
+export const calculateGeometricProgressionSum = (level: number, params: IExponent): number =>
+  (params.baseMultiplier * (Math.pow(params.base, level) - 1)) / (params.base - 1);
+
+export const reverseGeometricProgressionSum = (points: number, params: IExponent): number =>
+  Math.floor(Math.log(1 + (points * (params.base - 1)) / params.baseMultiplier) / Math.log(params.base)) + 1;
+
+export function removeElementsFromArray<T>(array: T[], fromIndex: number, count: number): void {
+  if (fromIndex + count >= array.length) {
+    array.length = fromIndex;
+    return;
+  }
+
+  let index = fromIndex;
+
+  while (index + count < array.length) {
+    array[index] = array[index + count];
+    index++;
+  }
+
+  array.length -= count;
+}
+
+export function capitalizeFirstLetter(text: string) {
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
+export function calculateLevelProgressPercentage(
+  basePoints: number,
+  currentPoints: number,
+  nextLevelPoints: number,
+): number {
+  const currentDistance = currentPoints - basePoints;
+  const nextLevelDistance = nextLevelPoints - basePoints;
+
+  const percentage = (currentDistance / nextLevelDistance) * 100;
+
+  if (percentage < 0) {
+    return 0;
+  }
+
+  if (percentage > 100) {
+    return 100;
+  }
+
+  return percentage;
 }

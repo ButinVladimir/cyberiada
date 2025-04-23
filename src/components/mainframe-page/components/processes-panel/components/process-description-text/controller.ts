@@ -1,12 +1,12 @@
 import { BaseController } from '@shared/base-controller';
-import { IProcess } from '@state/mainframe/mainframe-processes-state/interfaces/process';
-import { ProgramName } from '@state/progam-factory/types';
+import { IProcess } from '@state/mainframe-state/states/mainframe-processes-state/interfaces/process';
+import { ProgramName } from '@state/mainframe-state/states/progam-factory/types';
 
 export class ProcessDescriptionTextController extends BaseController {
   private _process?: IProcess;
 
-  get availableRam(): number {
-    return this.mainframeProcessesState.availableRam;
+  get autoscalableProcessRam(): number {
+    return this.mainframeState.processes.availableRam + 1;
   }
 
   getProcess(programName: ProgramName) {
@@ -15,7 +15,7 @@ export class ProcessDescriptionTextController extends BaseController {
         this.removeEventListenersByEmitter(this._process);
       }
 
-      this._process = this.mainframeProcessesState.getProcessByName(programName);
+      this._process = this.mainframeState.processes.getProcessByName(programName);
     }
 
     return this._process;

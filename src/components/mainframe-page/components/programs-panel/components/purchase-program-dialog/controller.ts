@@ -1,56 +1,25 @@
 import { BaseController } from '@shared/base-controller';
-import { IProgram } from '@state/progam-factory/interfaces/program';
-import { ProgramName } from '@state/progam-factory/types';
+import { IProgram } from '@state/mainframe-state/states/progam-factory/interfaces/program';
+import { ProgramName } from '@state/mainframe-state/states/progam-factory/types';
 
 export class PurchaseProgramDialogController extends BaseController {
-  private _selectedProgram?: IProgram;
-
-  hostDisconnected() {
-    super.hostDisconnected();
-
-    this.deleteSelectedProgram();
-  }
-
   get developmentLevel(): number {
     return this.globalState.development.level;
   }
 
-  getSelectedProgram(name: ProgramName, level: number, quality: number): IProgram {
-    if (
-      this._selectedProgram?.name !== name ||
-      this._selectedProgram.level !== level ||
-      this._selectedProgram.quality !== quality
-    ) {
-      this.deleteSelectedProgram();
-
-      this._selectedProgram = this.programFactory.makeProgram({
-        name,
-        level,
-        quality,
-        autoUpgradeEnabled: true,
-      });
-    }
-
-    return this._selectedProgram;
+  getOwnedProgram(programName: ProgramName): IProgram | undefined {
+    return this.mainframeState.programs.getOwnedProgramByName(programName);
   }
 
-  getOwnedProgram(name: ProgramName): IProgram | undefined {
-    return this.mainframeProgramsState.getOwnedProgramByName(name);
+  getHighestAvailableQuality(programName: ProgramName): number {
+    return this.globalState.availableItems.programs.getItemHighestAvailableQuality(programName);
   }
 
-  purchaseProgram(name: ProgramName, level: number, quality: number): boolean {
-    return this.mainframeProgramsState.purchaseProgram({
-      name,
-      level,
-      quality,
-      autoUpgradeEnabled: true,
-    });
+  listAvailablePrograms(): ProgramName[] {
+    return this.globalState.availableItems.programs.listAvailableItems();
   }
 
-  private deleteSelectedProgram() {
-    if (this._selectedProgram) {
-      this.removeEventListenersByEmitter(this._selectedProgram);
-      this._selectedProgram.removeEventListeners();
-    }
+  purchaseProgram(name: ProgramName, quality: number, level: number): boolean {
+    return this.mainframeState.programs.purchaseProgram(name, quality, level);
   }
 }

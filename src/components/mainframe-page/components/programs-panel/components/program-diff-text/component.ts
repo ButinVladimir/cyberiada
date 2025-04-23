@@ -1,19 +1,28 @@
-import { t } from 'i18next';
-import { css, html, nothing } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { css, html, nothing, PropertyValues } from 'lit';
+import { msg, localized } from '@lit/localize';
+import { customElement, property, queryAll } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
-import { ProgramName } from '@state/progam-factory/types';
-import { diffFormatterParametersDecimal, diffFormatterParametersShortTime } from '@shared/formatter-parameters';
+import {
+  type ProgramName,
+  OtherProgramName,
+  MultiplierProgramName,
+} from '@state/mainframe-state/states/progam-factory/types';
+import { diffFormatterParameters } from '@shared/formatter-parameters';
+import { PROGRAM_DESCRIPTION_TEXTS, PROGRAM_TEXTS } from '@texts/programs';
 import {
   CodeGeneratorDescriptionEffectRenderer,
+  CircuitDesignerDescriptionEffectRenderer,
+  DealMakerDescriptionEffectRenderer,
+  InformationCollectorDescriptionEffectRenderer,
   MainframeHardwareAutobuyerDescriptionEffectRenderer,
   PredictiveComputatorDescriptionEffectRenderer,
   ShareServerDescriptionEffectRenderer,
   MainframeProgramsAutobuyerDescriptionEffectRenderer,
 } from './description-effect-renderers';
-import { IDescriptionParameters } from './interfaces';
+import { IDescriptionEffectRenderer, IDescriptionParameters } from './interfaces';
 import { ProgramDiffTextController } from './controller';
 
+@localized()
 @customElement('ca-program-diff-text')
 export class ProgramDiffText extends BaseComponent<ProgramDiffTextController> {
   static styles = css`
@@ -35,7 +44,7 @@ export class ProgramDiffText extends BaseComponent<ProgramDiffTextController> {
     attribute: 'program-name',
     type: String,
   })
-  programName!: string;
+  programName!: ProgramName;
 
   @property({
     attribute: 'level',
@@ -51,23 +60,35 @@ export class ProgramDiffText extends BaseComponent<ProgramDiffTextController> {
 
   protected controller: ProgramDiffTextController;
 
+  private _renderer?: IDescriptionEffectRenderer;
+
+  @queryAll('p[data-name]')
+  private _paragraphs!: NodeListOf<HTMLParagraphElement>;
+
   constructor() {
     super();
 
-    this.controller = new ProgramDiffTextController(this);
+    this.controller = new ProgramDiffTextController(this, this.handlePartialUpdate);
   }
 
-  renderContent() {
+  updated(_changedProperties: PropertyValues) {
+    super.updated(_changedProperties);
+
+    this.handlePartialUpdate();
+  }
+
+  render() {
     const program = this.controller.getSelectedProgram(this.programName as ProgramName, this.level, this.quality);
 
     const requirements = program.isAutoscalable
       ? this.renderAutoscalableRequirements()
       : this.renderNormalRequirements();
 
+    this.updateRenderer();
     const effects = this.renderEffects();
 
     return html`
-      <p>${t(`${this.programName}.overview`, { ns: 'programs' })}</p>
+      <p>${PROGRAM_TEXTS[this.programName].overview()}</p>
 
       <p class="line-break"></p>
 
@@ -75,7 +96,7 @@ export class ProgramDiffText extends BaseComponent<ProgramDiffTextController> {
 
       <p class="line-break"></p>
 
-      <p>${t('mainframe.programDescription.effects', { ns: 'ui' })}</p>
+      <p>${msg('Effects')}</p>
 
       ${effects}
     `;
@@ -83,13 +104,13 @@ export class ProgramDiffText extends BaseComponent<ProgramDiffTextController> {
 
   private renderAutoscalableRequirements = () => {
     return html`
-      <p>${t('mainframe.programDescription.requirements.requirementsScalable', { ns: 'ui' })}</p>
+      <p>${PROGRAM_DESCRIPTION_TEXTS.requirementsAutoscalable()}</p>
 
-      <p>${t('mainframe.programDescription.requirements.ramAllUnused', { ns: 'ui' })}</p>
+      <p>${PROGRAM_DESCRIPTION_TEXTS.ramAllUnused()}</p>
 
-      <p>${t('mainframe.programDescription.requirements.coresAllUnused', { ns: 'ui' })}</p>
+      <p>${PROGRAM_DESCRIPTION_TEXTS.coresAllUnused()}</p>
 
-      <p>${t('mainframe.programDescription.requirements.completionTimeScalable', { ns: 'ui' })}</p>
+      <p>${PROGRAM_DESCRIPTION_TEXTS.completionTimeAutoscalable()}</p>
     `;
   };
 
@@ -105,37 +126,50 @@ export class ProgramDiffText extends BaseComponent<ProgramDiffTextController> {
     const maxTime = program.calculateCompletionMaxTime(1);
     const maxTimeDiff = ownedProgram ? maxTime - ownedProgram.calculateCompletionMaxTime(1) : maxTime;
 
+    const formattedRam = formatter.formatNumberDecimal(program.ram);
+    const formattedCores = formatter.formatNumberDecimal(program.cores);
+    const formattedCoresDiff = formatter.formatNumberDecimal(coresDiff, diffFormatterParameters);
+
+    const formattedMinTime = formatter.formatTimeShort(minTime);
+    const formattedMinTimeDiff = formatter.formatTimeShort(minTimeDiff, diffFormatterParameters);
+    const formattedMaxTime = formatter.formatTimeShort(maxTime);
+    const formattedMaxTimeDiff = formatter.formatTimeShort(maxTimeDiff, diffFormatterParameters);
+
     return html`
-      <p>${t('mainframe.programDescription.requirements.requirementsSingle', { ns: 'ui' })}</p>
+      <p>${PROGRAM_DESCRIPTION_TEXTS.requirementsSingle()}</p>
+
+      <p>${PROGRAM_DESCRIPTION_TEXTS.ram(formattedRam)}</p>
+
+      <p>${PROGRAM_DESCRIPTION_TEXTS.coresDiff(formattedCores, formattedCoresDiff)}</p>
 
       <p>
-        ${t('mainframe.programDescription.requirements.ram', {
-          ns: 'ui',
-          ram: formatter.formatNumberDecimal(program.ram),
-        })}
-      </p>
-
-      <p>
-        ${t('mainframe.programDescription.requirements.coresDiff', {
-          ns: 'ui',
-          cores: formatter.formatNumberDecimal(program.cores),
-          coresDiff: formatter.formatNumberDecimal(coresDiff, diffFormatterParametersDecimal),
-        })}
-      </p>
-
-      <p>
-        ${t('mainframe.programDescription.requirements.completionTimeDiff', {
-          ns: 'ui',
-          minTime: formatter.formatTimeShort(minTime),
-          maxTime: formatter.formatTimeShort(maxTime),
-          minTimeDiff: formatter.formatTimeShort(minTimeDiff, diffFormatterParametersShortTime),
-          maxTimeDiff: formatter.formatTimeShort(maxTimeDiff, diffFormatterParametersShortTime),
-        })}
+        ${PROGRAM_DESCRIPTION_TEXTS.completionTimeDiff(
+          formattedMinTime,
+          formattedMaxTime,
+          formattedMinTimeDiff,
+          formattedMaxTimeDiff,
+        )}
       </p>
     `;
   };
 
   private renderEffects = () => {
+    if (!this._renderer) {
+      return nothing;
+    }
+
+    return this._renderer.renderEffect();
+  };
+
+  private handlePartialUpdate = () => {
+    if (!this._renderer) {
+      return;
+    }
+
+    return this._renderer.partialUpdate(this._paragraphs);
+  };
+
+  private updateRenderer(): void {
     const program = this.controller.getSelectedProgram(this.programName as ProgramName, this.level, this.quality);
     const ownedProgram = this.controller.getOwnedProgram(this.programName as ProgramName);
 
@@ -148,23 +182,40 @@ export class ProgramDiffText extends BaseComponent<ProgramDiffTextController> {
     };
 
     switch (this.programName) {
-      case ProgramName.shareServer:
-        return new ShareServerDescriptionEffectRenderer(parameters).renderEffect();
+      case OtherProgramName.shareServer:
+        this._renderer = new ShareServerDescriptionEffectRenderer(parameters);
+        break;
 
-      case ProgramName.codeGenerator:
-        return new CodeGeneratorDescriptionEffectRenderer(parameters).renderEffect();
+      case MultiplierProgramName.codeGenerator:
+        this._renderer = new CodeGeneratorDescriptionEffectRenderer(parameters);
+        break;
 
-      case ProgramName.predictiveComputator:
-        return new PredictiveComputatorDescriptionEffectRenderer(parameters).renderEffect();
+      case MultiplierProgramName.circuitDesigner:
+        this._renderer = new CircuitDesignerDescriptionEffectRenderer(parameters);
+        break;
 
-      case ProgramName.mainframeHardwareAutobuyer:
-        return new MainframeHardwareAutobuyerDescriptionEffectRenderer(parameters).renderEffect();
+      case MultiplierProgramName.informationCollector:
+        this._renderer = new InformationCollectorDescriptionEffectRenderer(parameters);
+        break;
 
-      case ProgramName.mainframeProgramsAutobuyer:
-        return new MainframeProgramsAutobuyerDescriptionEffectRenderer(parameters).renderEffect();
+      case MultiplierProgramName.dealMaker:
+        this._renderer = new DealMakerDescriptionEffectRenderer(parameters);
+        break;
+
+      case OtherProgramName.predictiveComputator:
+        this._renderer = new PredictiveComputatorDescriptionEffectRenderer(parameters);
+        break;
+
+      case OtherProgramName.mainframeHardwareAutobuyer:
+        this._renderer = new MainframeHardwareAutobuyerDescriptionEffectRenderer(parameters);
+        break;
+
+      case OtherProgramName.mainframeProgramsAutobuyer:
+        this._renderer = new MainframeProgramsAutobuyerDescriptionEffectRenderer(parameters);
+        break;
 
       default:
-        return nothing;
+        this._renderer = undefined;
     }
-  };
+  }
 }

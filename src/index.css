@@ -16,15 +16,26 @@ body {
 .sl-theme-dark {
   --ca-width-screen: 1920px;
   --ca-width-widescreen-content: 1088px;
+
   --ca-top-bar-height: 4rem;
   --ca-menu-bar-max-width: 320px;
+
   --sl-input-font-family: var(--sl-font-sans);
   --sl-input-help-text-color: var(--sl-color-neutral-700);
+
   --ca-hint-color: var(--sl-input-help-text-color);
   --ca-hint-font-size: var(--sl-font-size-small);
+  --ca-hint-line-height: var(--sl-line-height-small);
+
+  --ca-warning-color: var(--sl-color-warning-600);
+  --ca-warning-font-size: var(--sl-font-size-small);
+  --ca-warning-line-height: var(--sl-line-height-small);
+
   --ca-border: var(--sl-panel-border-width) solid var(--sl-panel-border-color);
+
   --ca-table-header-font-weight: var(--sl-font-weight-bold);
   --ca-table-row-odd-color: var(--sl-color-neutral-50);
+
   --ca-dragged-color: var(--sl-color-primary-100);
 }
 

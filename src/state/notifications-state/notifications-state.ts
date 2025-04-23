@@ -3,9 +3,9 @@ import { EventBatcher } from '@shared/event-batcher';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import type { ISettingsState } from '@state/settings-state/interfaces/settings-state';
 import { TYPES } from '@state/types';
+import { NotificationType } from '@shared/types';
 import { INotificationsState, INotification } from './interfaces';
 import { NOTIFICATION_STATE_UI_EVENTS } from './constants';
-import { NotificationType } from '@shared/types';
 
 @injectable()
 export class NotificationsState implements INotificationsState {
@@ -28,20 +28,20 @@ export class NotificationsState implements INotificationsState {
     this._stateUiConnector.registerEventEmitter(this);
   }
 
-  pushNotification(notificationType: NotificationType, parameters?: Record<string, any>, force?: boolean) {
+  pushNotification(notificationType: NotificationType, message: string, force?: boolean) {
     if (!force && !this._settingsState.isNotificationTypeEnabled(notificationType)) {
       return;
     }
 
     this._notifications.push({
       notificationType,
-      parameters,
+      message,
     });
 
     this.uiEventBatcher.enqueueEvent(NOTIFICATION_STATE_UI_EVENTS.UPDATED_NOTIFICATIONS);
   }
 
-  getUnreadNotification(): INotification | undefined {
+  getFirstUnreadNotification(): INotification | undefined {
     this._stateUiConnector.connectEventHandler(this, NOTIFICATION_STATE_UI_EVENTS.UPDATED_NOTIFICATIONS);
 
     while (this.hasUnreadNotifications()) {
@@ -63,11 +63,23 @@ export class NotificationsState implements INotificationsState {
     return this._notifications.length > 0;
   }
 
+  hasNextNotification(): boolean {
+    this._stateUiConnector.connectEventHandler(this, NOTIFICATION_STATE_UI_EVENTS.UPDATED_NOTIFICATIONS);
+
+    return this._notifications.length > 1;
+  }
+
   popUnreadNotification() {
     if (this.hasUnreadNotifications()) {
       this._notifications.shift();
 
       this.uiEventBatcher.enqueueEvent(NOTIFICATION_STATE_UI_EVENTS.UPDATED_NOTIFICATIONS);
     }
+  }
+
+  clearNotifications() {
+    this._notifications.length = 0;
+
+    this.uiEventBatcher.enqueueEvent(NOTIFICATION_STATE_UI_EVENTS.UPDATED_NOTIFICATIONS);
   }
 }

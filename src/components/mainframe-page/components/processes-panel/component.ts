@@ -1,14 +1,11 @@
-import { t } from 'i18next';
 import { css, html } from 'lit';
+import { localized, msg, str } from '@lit/localize';
 import { customElement, state } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
-import { hintStyle } from '@shared/styles';
-import { SCREEN_WIDTH_POINTS } from '@shared/styles';
+import { hintStyle, SCREEN_WIDTH_POINTS } from '@shared/styles';
 import { ProcessesPanelController } from './controller';
-import { OverviewMenuItem } from '@shared/types';
-import { IHistoryState } from '@shared/interfaces/history-state';
-import { IMainframePageHistoryState } from '../../interfaces';
 
+@localized()
 @customElement('ca-mainframe-processes-panel')
 export class MainframeProcessesPanel extends BaseComponent<ProcessesPanelController> {
   static styles = [
@@ -28,8 +25,8 @@ export class MainframeProcessesPanel extends BaseComponent<ProcessesPanelControl
       div.top-container {
         display: grid;
         grid-template-areas:
-          'cores'
           'ram'
+          'cores'
           'start-process';
         gap: var(--sl-spacing-medium);
       }
@@ -52,7 +49,7 @@ export class MainframeProcessesPanel extends BaseComponent<ProcessesPanelControl
 
       @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
         div.top-container {
-          grid-template-areas: 'start-process cores ram';
+          grid-template-areas: 'start-process ram cores';
           align-items: center;
           gap: var(--sl-spacing-3x-large);
         }
@@ -71,42 +68,33 @@ export class MainframeProcessesPanel extends BaseComponent<ProcessesPanelControl
     this.controller = new ProcessesPanelController(this);
   }
 
-  connectedCallback() {
-    super.connectedCallback();
-
-    window.addEventListener('popstate', this.handlePopState);
-  }
-
-  disconnectedCallback() {
-    super.disconnectedCallback();
-
-    window.removeEventListener('popstate', this.handlePopState);
-  }
-
-  renderContent() {
+  render() {
     const formatter = this.controller.formatter;
 
+    const formattedAvailableRam = formatter.formatNumberDecimal(this.controller.availableRam);
+    const formattedMaxRam = formatter.formatNumberDecimal(this.controller.maxRam);
+
+    const formattedAvailableCores = formatter.formatNumberDecimal(this.controller.availableCores);
+    const formattedMaxCores = formatter.formatNumberDecimal(this.controller.maxCores);
+
     return html`
-      <p class="hint">${t('mainframe.processes.processesHint', { ns: 'ui' })}</p>
+      <p class="hint">
+        ${msg(`To make a program run, a process has to be start for it.
+Topmost processes for non-scalable programs have more priority when cores are assigned to processes.
+Process for scalable program has cores and RAM assigned last.
+Only one process for scalable program can run at same time.
+Process minimal completion time is limited.
+Processes can be rearranged by dragging them by their title.`)}
+      </p>
 
       <div class="top-container">
         <sl-button class="start-process" variant="primary" size="medium" @click=${this.handleStartProcessDialogOpen}>
-          ${t('mainframe.processes.startProcess', { ns: 'ui' })}
+          ${msg('Start process')}
         </sl-button>
 
-        <div class="cores">
-          ${t('mainframe.processes.availableCores', {
-            ns: 'ui',
-            cores: formatter.formatNumberDecimal(this.controller.availableCores),
-          })}
-        </div>
+        <div class="ram">${msg(str`Available RAM: ${formattedAvailableRam} / ${formattedMaxRam}`)}</div>
 
-        <div class="ram">
-          ${t('mainframe.processes.availableRam', {
-            ns: 'ui',
-            ram: formatter.formatNumberDecimal(this.controller.availableRam),
-          })}
-        </div>
+        <div class="cores">${msg(str`Available cores: ${formattedAvailableCores} / ${formattedMaxCores}`)}</div>
       </div>
 
       <ca-processes-list></ca-processes-list>
@@ -124,23 +112,12 @@ export class MainframeProcessesPanel extends BaseComponent<ProcessesPanelControl
     event.stopPropagation();
 
     this._isStartProcessDialogOpen = true;
-
-    const state = { ...window.history.state, startProcessModalOpen: true } as IMainframePageHistoryState;
-    window.history.pushState(state, '');
   };
 
   private handleStartProcessDialogClose = (event: Event) => {
     event.preventDefault();
     event.stopPropagation();
 
-    window.history.back();
-  };
-
-  private handlePopState = (event: PopStateEvent) => {
-    if ((event.state as IHistoryState).selectedMenuItem === OverviewMenuItem.mainframe) {
-      const state = event.state as IMainframePageHistoryState;
-
-      this._isStartProcessDialogOpen = !!state.startProcessModalOpen;
-    }
+    this._isStartProcessDialogOpen = false;
   };
 }

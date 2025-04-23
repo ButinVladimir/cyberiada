@@ -6,7 +6,7 @@ import { BaseComponent } from '@shared/base-component';
 export class CityPage extends BaseComponent {
   static styles = css``;
 
-  renderContent() {
-    return html`<ca-city-overview></ca-city-overview>`;
+  render() {
+    return html`<ca-city></ca-city>`;
   }
 }

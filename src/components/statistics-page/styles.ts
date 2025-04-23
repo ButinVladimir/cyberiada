@@ -1,5 +1,5 @@
 import { css } from 'lit';
-import { sectionTitleStyle, SCREEN_WIDTH_POINTS } from '@shared/styles';
+import { sectionTitleStyle, detailsStyle, hintIconStyle, SCREEN_WIDTH_POINTS } from '@shared/styles';
 
 export const statisticsPanelStyle = css`
   :host {
@@ -14,13 +14,18 @@ export const statisticsPanelStyle = css`
 
 export const statisticsPanelContentStyle = [
   sectionTitleStyle,
+  detailsStyle,
+  hintIconStyle,
   css`
     :host {
-      display: block;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: var(--sl-spacing-large);
     }
 
     h4.title {
-      margin-bottom: var(--sl-spacing-2x-small);
+      margin-bottom: 0;
     }
 
     .parameters-table {
@@ -31,22 +36,10 @@ export const statisticsPanelContentStyle = [
       grid-auto-rows: auto;
     }
 
-    .parameters-table:not(:last-child) {
-      margin-bottom: var(--sl-spacing-large);
-    }
-
     .parameters-table > span:nth-child(even) {
       text-align: start;
       white-space: nowrap;
       margin-bottom: var(--sl-spacing-medium);
-    }
-
-    sl-icon[name='question-circle'] {
-      position: relative;
-      top: 0.25em;
-      margin-left: 0.5em;
-      color: var(--ca-hint-color);
-      font-size: var(--sl-font-size-large);
     }
 
     @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {

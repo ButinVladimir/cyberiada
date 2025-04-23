@@ -1,11 +1,12 @@
-import { t } from 'i18next';
 import { TemplateResult, css, html } from 'lit';
+import { msg, localized } from '@lit/localize';
 import { customElement, property } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import SlCheckbox from '@shoelace-style/shoelace/dist/components/checkbox/checkbox.component.js';
 import { BaseComponent } from '@shared/base-component';
 import { NOTIFICATION_TYPES } from '@shared/constants';
 import { NotificationType } from '@shared/types';
+import { COMMON_TEXTS } from '@texts/common';
 import {
   hintStyle,
   sectionTitleStyle,
@@ -15,7 +16,9 @@ import {
 } from '@shared/styles';
 import { NotificationTypeFilterDialogCloseEvent } from './events';
 import { NotificationTypeFilterDialogController } from './controller';
+import { NOTIFICATION_TYPE_NAMES } from './constants';
 
+@localized()
 @customElement('ca-notification-type-filter-dialog')
 export class NotificationTypeFilterDialog extends BaseComponent<NotificationTypeFilterDialogController> {
   static styles = [
@@ -78,13 +81,13 @@ export class NotificationTypeFilterDialog extends BaseComponent<NotificationType
     this.controller = new NotificationTypeFilterDialogController(this);
   }
 
-  renderContent() {
+  render() {
     return html`
       <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
-        <h4 slot="label" class="title">${t('settings.notificationTypeFilter', { ns: 'ui' })}</h4>
+        <h4 slot="label" class="title">${msg('Notification type filter')}</h4>
 
         <div class="body">
-          <p class="hint">${t('settings.notificationTypeFilterHint', { ns: 'ui' })}</p>
+          <p class="hint">${msg('Enable notification types in filter to make them visible when event happens')}</p>
 
           <div class="events-container">
             ${repeat(NOTIFICATION_TYPES, (gameAlert) => gameAlert, this.renderGameAlertCheckbox)}
@@ -92,7 +95,7 @@ export class NotificationTypeFilterDialog extends BaseComponent<NotificationType
         </div>
 
         <sl-button slot="footer" size="medium" variant="default" outline @click=${this.handleClose}>
-          ${t('common.close', { ns: 'ui' })}
+          ${COMMON_TEXTS.close()}
         </sl-button>
       </sl-dialog>
     `;
@@ -101,13 +104,13 @@ export class NotificationTypeFilterDialog extends BaseComponent<NotificationType
   private renderGameAlertCheckbox = (notificationType: NotificationType): TemplateResult => {
     return html`
       <sl-checkbox
-        size="medium"
+        size="small"
         name="event"
         value=${notificationType}
         ?checked=${this.controller.isNotificationTypeEnabled(notificationType)}
         @sl-change=${this.handleToggleAlert}
       >
-        ${t(`${notificationType}.name`, { ns: 'notifications' })}
+        ${NOTIFICATION_TYPE_NAMES[notificationType]()}
       </sl-checkbox>
     `;
   };

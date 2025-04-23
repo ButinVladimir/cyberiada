@@ -1,19 +1,28 @@
-import { t } from 'i18next';
-import { css, html, nothing } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { css, html, nothing, PropertyValues } from 'lit';
+import { msg, localized } from '@lit/localize';
+import { customElement, property, queryAll } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
-import { ProgramName } from '@state/progam-factory/types';
-import { diffFormatterParametersDecimal, diffFormatterParametersShortTime } from '@shared/formatter-parameters';
+import {
+  type ProgramName,
+  OtherProgramName,
+  MultiplierProgramName,
+} from '@state/mainframe-state/states/progam-factory/types';
+import { diffFormatterParameters } from '@shared/formatter-parameters';
+import { PROGRAM_DESCRIPTION_TEXTS, PROGRAM_TEXTS } from '@texts/programs';
 import {
   CodeGeneratorDescriptionEffectRenderer,
+  CircuitDesignerDescriptionEffectRenderer,
+  InformationCollectorDescriptionEffectRenderer,
+  DealMakerDescriptionEffectRenderer,
   MainframeHardwareAutobuyerDescriptionEffectRenderer,
   PredictiveComputatorDescriptionEffectRenderer,
   ShareServerDescriptionEffectRenderer,
   MainframeProgramsAutobuyerDescriptionEffectRenderer,
 } from './description-effect-renderers';
-import { IDescriptionParameters } from './interfaces';
+import { IDescriptionEffectRenderer, IDescriptionParameters } from './interfaces';
 import { ProcessDiffTextController } from './controller';
 
+@localized()
 @customElement('ca-process-diff-text')
 export class ProgramDiffText extends BaseComponent<ProcessDiffTextController> {
   static styles = css`
@@ -35,7 +44,7 @@ export class ProgramDiffText extends BaseComponent<ProcessDiffTextController> {
     attribute: 'program-name',
     type: String,
   })
-  programName!: string;
+  programName!: ProgramName;
 
   @property({
     attribute: 'threads',
@@ -45,13 +54,24 @@ export class ProgramDiffText extends BaseComponent<ProcessDiffTextController> {
 
   protected controller: ProcessDiffTextController;
 
+  private _renderer?: IDescriptionEffectRenderer;
+
+  @queryAll('p[data-name]')
+  private _paragraphs!: NodeListOf<HTMLParagraphElement>;
+
   constructor() {
     super();
 
-    this.controller = new ProcessDiffTextController(this);
+    this.controller = new ProcessDiffTextController(this, this.handlePartialUpdate);
   }
 
-  renderContent() {
+  updated(_changedProperties: PropertyValues) {
+    super.updated(_changedProperties);
+
+    this.handlePartialUpdate();
+  }
+
+  render() {
     const program = this.controller.getProgram(this.programName as ProgramName);
 
     if (!program) {
@@ -62,10 +82,11 @@ export class ProgramDiffText extends BaseComponent<ProcessDiffTextController> {
       ? this.renderAutoscalableRequirements()
       : this.renderNormalRequirements();
 
+    this.updateRenderer();
     const effects = this.renderEffects();
 
     return html`
-      <p>${t(`${this.programName}.overview`, { ns: 'programs' })}</p>
+      <p>${PROGRAM_TEXTS[this.programName].overview()}</p>
 
       <p class="line-break"></p>
 
@@ -73,7 +94,7 @@ export class ProgramDiffText extends BaseComponent<ProcessDiffTextController> {
 
       <p class="line-break"></p>
 
-      <p>${t('mainframe.programDescription.effects', { ns: 'ui' })}</p>
+      <p>${msg('Effects')}</p>
 
       ${effects}
     `;
@@ -81,13 +102,13 @@ export class ProgramDiffText extends BaseComponent<ProcessDiffTextController> {
 
   private renderAutoscalableRequirements = () => {
     return html`
-      <p>${t('mainframe.programDescription.requirements.requirementsScalable', { ns: 'ui' })}</p>
+      <p>${PROGRAM_DESCRIPTION_TEXTS.requirementsAutoscalable()}</p>
 
-      <p>${t('mainframe.programDescription.requirements.ramAllUnused', { ns: 'ui' })}</p>
+      <p>${PROGRAM_DESCRIPTION_TEXTS.ramAllUnused()}</p>
 
-      <p>${t('mainframe.programDescription.requirements.coresAllUnused', { ns: 'ui' })}</p>
+      <p>${PROGRAM_DESCRIPTION_TEXTS.coresAllUnused()}</p>
 
-      <p>${t('mainframe.programDescription.requirements.completionTimeScalable', { ns: 'ui' })}</p>
+      <p>${PROGRAM_DESCRIPTION_TEXTS.completionTimeAutoscalable()}</p>
     `;
   };
 
@@ -99,61 +120,75 @@ export class ProgramDiffText extends BaseComponent<ProcessDiffTextController> {
 
     const threadsDiff = this.threads - currentThreads;
 
-    const ram = program.ram * this.threads;
-    const ramDiff = ram - program.ram * currentThreads;
+    const programRam = program.ram * this.threads;
+
+    const formattedThreads = formatter.formatNumberDecimal(this.threads);
+    const formattedThreadsDiff = formatter.formatNumberDecimal(threadsDiff, diffFormatterParameters);
+
+    const ramDiff = programRam - program.ram * currentThreads;
+    const availableRam = this.controller.availableRam + program.ram * currentThreads;
+
+    const formattedRam = formatter.formatNumberDecimal(programRam);
+    const formattedAvailableRam = formatter.formatNumberDecimal(availableRam);
+    const formattedRamDiff = formatter.formatNumberDecimal(ramDiff, diffFormatterParameters);
 
     const cores = program.cores * this.threads;
     const coresDiff = cores - program.cores * currentThreads;
 
+    const formattedCores = formatter.formatNumberDecimal(cores);
+    const formattedCoresDiff = formatter.formatNumberDecimal(coresDiff, diffFormatterParameters);
+
     const minTime = program.calculateCompletionMinTime(this.threads);
     const maxTime = program.calculateCompletionMaxTime(this.threads);
 
-    let minTimeDiff = minTime;
-    let maxTimeDiff = maxTime;
+    let minTimeDiff = 0;
+    let maxTimeDiff = 0;
 
     if (currentThreads > 0) {
       minTimeDiff = minTime - program.calculateCompletionMinTime(currentThreads);
       maxTimeDiff = maxTime - program.calculateCompletionMaxTime(currentThreads);
     }
 
+    const formattedMinTime = formatter.formatTimeShort(minTime);
+    const formattedMaxTime = formatter.formatTimeShort(maxTime);
+    const formattedMinTimeDiff = formatter.formatTimeShort(minTimeDiff, diffFormatterParameters);
+    const formattedMaxTimeDiff = formatter.formatTimeShort(maxTimeDiff, diffFormatterParameters);
+
     return html`
-      <p>
-        ${t('mainframe.programDescription.requirements.requirementsDiff', {
-          ns: 'ui',
-          threads: formatter.formatNumberDecimal(this.threads),
-          threadsDiff: formatter.formatNumberDecimal(threadsDiff, diffFormatterParametersDecimal),
-        })}
-      </p>
+      <p>${PROGRAM_DESCRIPTION_TEXTS.requirementsDiff(formattedThreads, formattedThreadsDiff)}</p>
+
+      <p>${PROGRAM_DESCRIPTION_TEXTS.ramDiff(formattedRam, formattedAvailableRam, formattedRamDiff)}</p>
+
+      <p>${PROGRAM_DESCRIPTION_TEXTS.coresDiff(formattedCores, formattedCoresDiff)}</p>
 
       <p>
-        ${t('mainframe.programDescription.requirements.ramDiff', {
-          ns: 'ui',
-          ram: formatter.formatNumberDecimal(ram),
-          ramDiff: formatter.formatNumberDecimal(ramDiff, diffFormatterParametersDecimal),
-        })}
-      </p>
-
-      <p>
-        ${t('mainframe.programDescription.requirements.coresDiff', {
-          ns: 'ui',
-          cores: formatter.formatNumberDecimal(cores),
-          coresDiff: formatter.formatNumberDecimal(coresDiff, diffFormatterParametersDecimal),
-        })}
-      </p>
-
-      <p>
-        ${t('mainframe.programDescription.requirements.completionTimeDiff', {
-          ns: 'ui',
-          minTime: formatter.formatTimeShort(minTime),
-          maxTime: formatter.formatTimeShort(maxTime),
-          minTimeDiff: formatter.formatTimeShort(minTimeDiff, diffFormatterParametersShortTime),
-          maxTimeDiff: formatter.formatTimeShort(maxTimeDiff, diffFormatterParametersShortTime),
-        })}
+        ${PROGRAM_DESCRIPTION_TEXTS.completionTimeDiff(
+          formattedMinTime,
+          formattedMaxTime,
+          formattedMinTimeDiff,
+          formattedMaxTimeDiff,
+        )}
       </p>
     `;
   };
 
   private renderEffects = () => {
+    if (!this._renderer) {
+      return nothing;
+    }
+
+    return this._renderer.renderEffect();
+  };
+
+  private handlePartialUpdate = () => {
+    if (!this._renderer) {
+      return;
+    }
+
+    return this._renderer.partialUpdate(this._paragraphs);
+  };
+
+  private updateRenderer(): void {
     const program = this.controller.getProgram(this.programName as ProgramName)!;
     const currentProcess = this.controller.getProcessByName(this.programName as ProgramName);
     const currentThreads = currentProcess ? currentProcess.threads : 0;
@@ -161,30 +196,47 @@ export class ProgramDiffText extends BaseComponent<ProcessDiffTextController> {
     const parameters: IDescriptionParameters = {
       formatter: this.controller.formatter,
       program,
-      cores: this.controller.cores,
-      ram: this.controller.ram,
+      maxCores: this.controller.maxCores,
+      maxRam: this.controller.maxRam,
       threads: this.threads,
       currentThreads,
     };
 
     switch (this.programName) {
-      case ProgramName.shareServer:
-        return new ShareServerDescriptionEffectRenderer(parameters).renderEffect();
+      case OtherProgramName.shareServer:
+        this._renderer = new ShareServerDescriptionEffectRenderer(parameters);
+        break;
 
-      case ProgramName.codeGenerator:
-        return new CodeGeneratorDescriptionEffectRenderer(parameters).renderEffect();
+      case MultiplierProgramName.codeGenerator:
+        this._renderer = new CodeGeneratorDescriptionEffectRenderer(parameters);
+        break;
 
-      case ProgramName.predictiveComputator:
-        return new PredictiveComputatorDescriptionEffectRenderer(parameters).renderEffect();
+      case MultiplierProgramName.circuitDesigner:
+        this._renderer = new CircuitDesignerDescriptionEffectRenderer(parameters);
+        break;
 
-      case ProgramName.mainframeHardwareAutobuyer:
-        return new MainframeHardwareAutobuyerDescriptionEffectRenderer(parameters).renderEffect();
+      case MultiplierProgramName.informationCollector:
+        this._renderer = new InformationCollectorDescriptionEffectRenderer(parameters);
+        break;
 
-      case ProgramName.mainframeProgramsAutobuyer:
-        return new MainframeProgramsAutobuyerDescriptionEffectRenderer(parameters).renderEffect();
+      case MultiplierProgramName.dealMaker:
+        this._renderer = new DealMakerDescriptionEffectRenderer(parameters);
+        break;
+
+      case OtherProgramName.predictiveComputator:
+        this._renderer = new PredictiveComputatorDescriptionEffectRenderer(parameters);
+        break;
+
+      case OtherProgramName.mainframeHardwareAutobuyer:
+        this._renderer = new MainframeHardwareAutobuyerDescriptionEffectRenderer(parameters);
+        break;
+
+      case OtherProgramName.mainframeProgramsAutobuyer:
+        this._renderer = new MainframeProgramsAutobuyerDescriptionEffectRenderer(parameters);
+        break;
 
       default:
-        return nothing;
+        this._renderer = undefined;
     }
-  };
+  }
 }

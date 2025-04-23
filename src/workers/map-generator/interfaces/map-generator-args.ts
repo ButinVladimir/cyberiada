@@ -3,4 +3,5 @@ export interface IMapGeneratorArgs {
   mapHeight: number;
   districtsNum: number;
   randomSeed: number;
+  randomShift: bigint;
 }

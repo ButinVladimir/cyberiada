@@ -1,18 +1,27 @@
-import { t } from 'i18next';
-import { css, html, nothing } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { css, html, nothing, PropertyValues } from 'lit';
+import { msg, localized } from '@lit/localize';
+import { customElement, property, queryAll } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
-import { ProgramName } from '@state/progam-factory/types';
+import {
+  type ProgramName,
+  OtherProgramName,
+  MultiplierProgramName,
+} from '@state/mainframe-state/states/progam-factory/types';
+import { PROGRAM_DESCRIPTION_TEXTS, PROGRAM_TEXTS } from '@texts/programs';
 import {
   CodeGeneratorDescriptionEffectRenderer,
   MainframeHardwareAutobuyerDescriptionEffectRenderer,
   PredictiveComputatorDescriptionEffectRenderer,
   ShareServerDescriptionEffectRenderer,
   MainframeProgramsAutobuyerDescriptionEffectRenderer,
+  CircuitDesignerDescriptionEffectRenderer,
+  InformationCollectorDescriptionEffectRenderer,
+  DealMakerDescriptionEffectRenderer,
 } from './description-effect-renderers';
-import { IDescriptionParameters } from './interfaces';
+import { IDescriptionEffectRenderer, IDescriptionParameters } from './interfaces';
 import { ProgramDescriptionTextController } from './controller';
 
+@localized()
 @customElement('ca-program-description-text')
 export class ProgramDescriptionText extends BaseComponent<ProgramDescriptionTextController> {
   static styles = css`
@@ -33,20 +42,33 @@ export class ProgramDescriptionText extends BaseComponent<ProgramDescriptionText
     attribute: 'program-name',
     type: String,
   })
-  programName!: string;
+  programName!: ProgramName;
 
   protected controller: ProgramDescriptionTextController;
+
+  private _renderer?: IDescriptionEffectRenderer;
+
+  @queryAll('p[data-name]')
+  private _paragraphs!: NodeListOf<HTMLParagraphElement>;
 
   constructor() {
     super();
 
-    this.controller = new ProgramDescriptionTextController(this);
+    this.controller = new ProgramDescriptionTextController(this, this.handlePartialUpdate);
   }
 
-  renderContent() {
+  updated(_changedProperties: PropertyValues) {
+    super.updated(_changedProperties);
+
+    this.handlePartialUpdate();
+  }
+
+  render() {
     const program = this.controller.getProgram(this.programName as ProgramName);
 
     if (!program) {
+      this._renderer = undefined;
+
       return nothing;
     }
 
@@ -54,10 +76,11 @@ export class ProgramDescriptionText extends BaseComponent<ProgramDescriptionText
       ? this.renderAutoscalableRequirements()
       : this.renderNormalRequirements();
 
+    this.updateRenderer();
     const effects = this.renderEffects();
 
     return html`
-      <p>${t(`${this.programName}.overview`, { ns: 'programs' })}</p>
+      <p>${PROGRAM_TEXTS[this.programName].overview()}</p>
 
       <p class="line-break"></p>
 
@@ -65,7 +88,7 @@ export class ProgramDescriptionText extends BaseComponent<ProgramDescriptionText
 
       <p class="line-break"></p>
 
-      <p>${t('mainframe.programDescription.effects', { ns: 'ui' })}</p>
+      <p>${msg('Effects')}</p>
 
       ${effects}
     `;
@@ -73,13 +96,13 @@ export class ProgramDescriptionText extends BaseComponent<ProgramDescriptionText
 
   private renderAutoscalableRequirements = () => {
     return html`
-      <p>${t('mainframe.programDescription.requirements.requirementsScalable', { ns: 'ui' })}</p>
+      <p>${PROGRAM_DESCRIPTION_TEXTS.requirementsAutoscalable()}</p>
 
-      <p>${t('mainframe.programDescription.requirements.ramAllUnused', { ns: 'ui' })}</p>
+      <p>${PROGRAM_DESCRIPTION_TEXTS.ramAllUnused()}</p>
 
-      <p>${t('mainframe.programDescription.requirements.coresAllUnused', { ns: 'ui' })}</p>
+      <p>${PROGRAM_DESCRIPTION_TEXTS.coresAllUnused()}</p>
 
-      <p>${t('mainframe.programDescription.requirements.completionTimeScalable', { ns: 'ui' })}</p>
+      <p>${PROGRAM_DESCRIPTION_TEXTS.completionTimeAutoscalable()}</p>
     `;
   };
 
@@ -87,38 +110,40 @@ export class ProgramDescriptionText extends BaseComponent<ProgramDescriptionText
     const program = this.controller.getProgram(this.programName as ProgramName)!;
     const formatter = this.controller.formatter;
 
+    const formattedRam = formatter.formatNumberDecimal(program.ram);
+    const formattedCores = formatter.formatNumberDecimal(program.cores);
+
+    const formattedMinTime = formatter.formatTimeShort(program.calculateCompletionMinTime(1));
+    const formattedMaxTime = formatter.formatTimeShort(program.calculateCompletionMaxTime(1));
+
     return html`
-      <p>
-        ${t('mainframe.programDescription.requirements.requirementsSingle', {
-          ns: 'ui',
-        })}
-      </p>
+      <p>${PROGRAM_DESCRIPTION_TEXTS.requirementsSingle()}</p>
 
-      <p>
-        ${t('mainframe.programDescription.requirements.ram', {
-          ns: 'ui',
-          ram: formatter.formatNumberDecimal(program.ram),
-        })}
-      </p>
+      <p>${PROGRAM_DESCRIPTION_TEXTS.ram(formattedRam)}</p>
 
-      <p>
-        ${t('mainframe.programDescription.requirements.cores', {
-          ns: 'ui',
-          cores: formatter.formatNumberDecimal(program.cores),
-        })}
-      </p>
+      <p>${PROGRAM_DESCRIPTION_TEXTS.cores(formattedCores)}</p>
 
-      <p>
-        ${t('mainframe.programDescription.requirements.completionTime', {
-          ns: 'ui',
-          minTime: formatter.formatTimeShort(program.calculateCompletionMinTime(1)),
-          maxTime: formatter.formatTimeShort(program.calculateCompletionMaxTime(1)),
-        })}
-      </p>
+      <p>${PROGRAM_DESCRIPTION_TEXTS.completionTimeProgram(formattedMinTime, formattedMaxTime)}</p>
     `;
   };
 
   private renderEffects = () => {
+    if (!this._renderer) {
+      return nothing;
+    }
+
+    return this._renderer.renderEffect();
+  };
+
+  private handlePartialUpdate = () => {
+    if (!this._renderer) {
+      return;
+    }
+
+    return this._renderer.partialUpdate(this._paragraphs);
+  };
+
+  private updateRenderer(): void {
     const program = this.controller.getProgram(this.programName as ProgramName)!;
 
     const parameters: IDescriptionParameters = {
@@ -129,23 +154,40 @@ export class ProgramDescriptionText extends BaseComponent<ProgramDescriptionText
     };
 
     switch (this.programName) {
-      case ProgramName.shareServer:
-        return new ShareServerDescriptionEffectRenderer(parameters).renderEffect();
+      case OtherProgramName.shareServer:
+        this._renderer = new ShareServerDescriptionEffectRenderer(parameters);
+        break;
 
-      case ProgramName.codeGenerator:
-        return new CodeGeneratorDescriptionEffectRenderer(parameters).renderEffect();
+      case MultiplierProgramName.codeGenerator:
+        this._renderer = new CodeGeneratorDescriptionEffectRenderer(parameters);
+        break;
 
-      case ProgramName.predictiveComputator:
-        return new PredictiveComputatorDescriptionEffectRenderer(parameters).renderEffect();
+      case MultiplierProgramName.circuitDesigner:
+        this._renderer = new CircuitDesignerDescriptionEffectRenderer(parameters);
+        break;
 
-      case ProgramName.mainframeHardwareAutobuyer:
-        return new MainframeHardwareAutobuyerDescriptionEffectRenderer(parameters).renderEffect();
+      case MultiplierProgramName.informationCollector:
+        this._renderer = new InformationCollectorDescriptionEffectRenderer(parameters);
+        break;
 
-      case ProgramName.mainframeProgramsAutobuyer:
-        return new MainframeProgramsAutobuyerDescriptionEffectRenderer(parameters).renderEffect();
+      case MultiplierProgramName.dealMaker:
+        this._renderer = new DealMakerDescriptionEffectRenderer(parameters);
+        break;
+
+      case OtherProgramName.predictiveComputator:
+        this._renderer = new PredictiveComputatorDescriptionEffectRenderer(parameters);
+        break;
+
+      case OtherProgramName.mainframeHardwareAutobuyer:
+        this._renderer = new MainframeHardwareAutobuyerDescriptionEffectRenderer(parameters);
+        break;
+
+      case OtherProgramName.mainframeProgramsAutobuyer:
+        this._renderer = new MainframeProgramsAutobuyerDescriptionEffectRenderer(parameters);
+        break;
 
       default:
-        return nothing;
+        this._renderer = undefined;
     }
-  };
+  }
 }

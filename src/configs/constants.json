@@ -3,11 +3,11 @@
   "defaultSettings": {
     "messageLogSize": 30,
     "toastDuration": 5000,
-    "updateInterval": 50,
-    "autosaveEnabled": true,
+    "updateInterval": 100,
+    "autosaveEnabledOnHide": true,
     "autosaveInterval": 60000,
     "fastSpeedMultiplier": 5,
-    "maxUpdatesPerTick": 10000,
+    "maxUpdatesPerTick": 1000,
     "longNumberFormat": "short",
     "mapSize": 3
   },
@@ -18,6 +18,7 @@
     "money": 0,
     "developmentLevel": 1,
     "accumulatedTime": 0,
+    "baseSynchronization": 30,
     "mainframeHardware": {
       "performanceLevel": 1,
       "coresLevel": 1,
@@ -32,11 +33,27 @@
       "minCompletionTime": 1000
     },
     "developmentLevelRequirements": { "baseMultiplier": 60000, "base": 1.5 },
-    "pointsByProgramMultipliers": {
-      "program": 1
-    },
-    "discounts": {
-      "program": 2e13
+    "programMultipliers": {
+      "codeBase": {
+        "pointsPerCompletion": 1,
+        "pointsToMax": 86400,
+        "logBase": 20
+      },
+      "computationalBase": {
+        "pointsPerCompletion": 1,
+        "pointsToMax": 86400,
+        "logBase": 20
+      },
+      "connectivity": {
+        "pointsPerCompletion": 1,
+        "pointsToMax": 86400,
+        "logBase": 20
+      },
+      "rewards": {
+        "pointsPerCompletion": 1,
+        "pointsToMax": 86400,
+        "logBase": 20
+      }
     },
     "storyEvents": []
   },
@@ -50,8 +67,8 @@
     }
   },
   "menuUnlockRequirements": {
-    "cityOverview": "cityOverview",
-    "companyManagement": "companyManagement",
+    "city": "companyManagement",
+    "company": "companyManagement",
     "automation": "automation"
   }
 }

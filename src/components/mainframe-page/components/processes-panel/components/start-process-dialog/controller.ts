@@ -1,16 +1,16 @@
 import { BaseController } from '@shared/base-controller';
-import { IProgram } from '@state/progam-factory/interfaces/program';
-import { ProgramName } from '@state/progam-factory/types';
-import { IProcess } from '@state/mainframe/mainframe-processes-state/interfaces/process';
+import { IProgram } from '@state/mainframe-state/states/progam-factory/interfaces/program';
+import { ProgramName } from '@state/mainframe-state/states/progam-factory/types';
+import { IProcess } from '@state/mainframe-state/states/mainframe-processes-state/interfaces/process';
 
 export class StartProcessDialogController extends BaseController {
   private _program?: IProgram;
 
   getAvailableRamForProgram(programName?: ProgramName): number {
-    let availableRam = this.mainframeProcessesState.availableRam;
+    let availableRam = this.mainframeState.processes.availableRam;
 
     if (programName) {
-      const existingProcess = this.mainframeProcessesState.getProcessByName(programName);
+      const existingProcess = this.mainframeState.processes.getProcessByName(programName);
 
       if (existingProcess) {
         availableRam += existingProcess.totalRam;
@@ -21,7 +21,7 @@ export class StartProcessDialogController extends BaseController {
   }
 
   listPrograms(): IProgram[] {
-    return this.mainframeProgramsState.listOwnedPrograms();
+    return this.mainframeState.programs.listOwnedPrograms();
   }
 
   getProgram(name: ProgramName): IProgram | undefined {
@@ -29,20 +29,20 @@ export class StartProcessDialogController extends BaseController {
       this.removeEventListenersByEmitter(this._program);
     }
 
-    this._program = this.mainframeProgramsState.getOwnedProgramByName(name)!;
+    this._program = this.mainframeState.programs.getOwnedProgramByName(name)!;
 
     return this._program;
   }
 
   getRunningScalableProgram(): IProcess | undefined {
-    return this.mainframeProcessesState.runningScalableProcess;
+    return this.mainframeState.processes.runningScalableProcess;
   }
 
   getProcessByName(name: ProgramName): IProcess | undefined {
-    return this.mainframeProcessesState.getProcessByName(name);
+    return this.mainframeState.processes.getProcessByName(name);
   }
 
   startProcess(name: ProgramName, threads: number): boolean {
-    return this.mainframeProcessesState.addProcess(name, threads);
+    return this.mainframeState.processes.addProcess(name, threads);
   }
 }

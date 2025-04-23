@@ -1,23 +1,22 @@
 import { injectable } from 'inversify';
-import i18n from 'i18next';
 import { decorators } from '@state/container';
+import { GameAlert, Language, LongNumberFormat, MessageEvent, Theme, NotificationType } from '@shared/types';
 import {
-  GameAlert,
-  GameStateAlert,
-  ProgramAlert,
-  Language,
-  LongNumberFormat,
-  MessageEvent,
-  Theme,
-  ProgramsEvent,
-  PurchaseEvent,
-  GameStateEvent,
-  NotificationType,
-} from '@shared/types';
+  CLONE_ALERTS,
+  CLONE_EVENTS,
+  GAME_STATE_ALERTS,
+  GAME_STATE_EVENTS,
+  NOTIFICATION_TYPES,
+  PROGRAM_ALERTS,
+  PROGRAM_EVENTS,
+  PURCHASE_EVENTS,
+} from '@shared/constants';
 import type { IApp } from '@state/app/interfaces/app';
 import { TYPES } from '@state/types';
 import themes from '@configs/themes.json';
 import constants from '@configs/constants.json';
+import { type IFormatter } from '@shared/interfaces/formatter';
+import { getLocale, setLocale } from '@/configure-localization';
 import { ISettingsState, ISettingsSerializedState } from './interfaces';
 
 const { lazyInject } = decorators;
@@ -27,12 +26,15 @@ export class SettingsState implements ISettingsState {
   @lazyInject(TYPES.App)
   private _app!: IApp;
 
+  @lazyInject(TYPES.Formatter)
+  private _formatter!: IFormatter;
+
   private _language: Language;
   private _theme: Theme;
   private _messageLogSize: number;
   private _toastDuration: number;
   private _updateInterval: number;
-  private _autosaveEnabled: boolean;
+  private _autosaveEnabledOnHide: boolean;
   private _autosaveInterval: number;
   private _fastSpeedMultiplier: number;
   private _maxUpdatesPerTick: number;
@@ -43,12 +45,12 @@ export class SettingsState implements ISettingsState {
   private _enabledNotificationTypes: Set<NotificationType>;
 
   constructor() {
-    this._language = Language.en;
+    this._language = getLocale() as Language;
     this._theme = Theme.light;
     this._messageLogSize = constants.defaultSettings.messageLogSize;
     this._toastDuration = constants.defaultSettings.toastDuration;
     this._updateInterval = constants.defaultSettings.updateInterval;
-    this._autosaveEnabled = constants.defaultSettings.autosaveEnabled;
+    this._autosaveEnabledOnHide = constants.defaultSettings.autosaveEnabledOnHide;
     this._autosaveInterval = constants.defaultSettings.autosaveInterval;
     this._fastSpeedMultiplier = constants.defaultSettings.fastSpeedMultiplier;
     this._maxUpdatesPerTick = constants.defaultSettings.maxUpdatesPerTick;
@@ -79,8 +81,8 @@ export class SettingsState implements ISettingsState {
     return this._updateInterval;
   }
 
-  get autosaveEnabled() {
-    return this._autosaveEnabled;
+  get autosaveEnabledOnHide() {
+    return this._autosaveEnabledOnHide;
   }
 
   get autosaveInterval() {
@@ -118,16 +120,16 @@ export class SettingsState implements ISettingsState {
   async setLanguage(language: Language): Promise<void> {
     this._language = language;
 
-    await i18n.changeLanguage(this.language);
-    document.documentElement.lang = this.language;
+    await setLocale(language);
+    document.documentElement.lang = language;
 
-    this._app.refreshUI();
+    this._formatter.updateBuiltInFormatters();
   }
 
   setTheme(theme: Theme) {
     this._theme = theme;
 
-    document.body.className = themes[this.theme].classes;
+    document.body.className = themes[theme].classes;
   }
 
   setMessageLogSize(messageLogSize: number) {
@@ -143,8 +145,8 @@ export class SettingsState implements ISettingsState {
     this._app.restartUpdateTimer();
   }
 
-  setAutosaveEnabled(autosaveEnabled: boolean) {
-    this._autosaveEnabled = autosaveEnabled;
+  setAutosaveEnabledOnHide(autosaveEnabled: boolean) {
+    this._autosaveEnabledOnHide = autosaveEnabled;
     this._app.restartAutosaveTimer();
   }
 
@@ -194,14 +196,12 @@ export class SettingsState implements ISettingsState {
   }
 
   async startNewState(): Promise<void> {
-    await i18n.changeLanguage();
-
-    await this.setLanguage(i18n.resolvedLanguage! as Language);
+    await this.setLanguage(getLocale() as Language);
     this.setTheme(window.matchMedia('(prefers-color-scheme:dark)').matches ? Theme.dark : Theme.light);
     this.setMessageLogSize(constants.defaultSettings.messageLogSize);
     this.setToastDuration(constants.defaultSettings.toastDuration);
     this.setUpdateInterval(constants.defaultSettings.updateInterval);
-    this.setAutosaveEnabled(constants.defaultSettings.autosaveEnabled);
+    this.setAutosaveEnabledOnHide(constants.defaultSettings.autosaveEnabledOnHide);
     this.setAutosaveInterval(constants.defaultSettings.autosaveInterval);
     this.setFastSpeedMultiplier(constants.defaultSettings.fastSpeedMultiplier);
     this.setMaxUpdatesPerTick(constants.defaultSettings.maxUpdatesPerTick);
@@ -218,7 +218,7 @@ export class SettingsState implements ISettingsState {
     this.setMessageLogSize(serializedState.messageLogSize);
     this.setToastDuration(serializedState.toastDuration);
     this.setUpdateInterval(serializedState.updateInterval);
-    this.setAutosaveEnabled(serializedState.autosaveEnabled);
+    this.setAutosaveEnabledOnHide(serializedState.autosaveEnabledOnHide);
     this.setAutosaveInterval(serializedState.autosaveInterval);
     this.setFastSpeedMultiplier(serializedState.fastSpeedMultiplier);
     this.setMaxUpdatesPerTick(serializedState.maxUpdatesPerTick);
@@ -236,7 +236,7 @@ export class SettingsState implements ISettingsState {
       messageLogSize: this.messageLogSize,
       toastDuration: this.toastDuration,
       updateInterval: this.updateInterval,
-      autosaveEnabled: this.autosaveEnabled,
+      autosaveEnabledOnHide: this.autosaveEnabledOnHide,
       autosaveInterval: this.autosaveInterval,
       fastSpeedMultiplier: this.fastSpeedMultiplier,
       maxUpdatesPerTick: this.maxUpdatesPerTick,
@@ -276,14 +276,14 @@ export class SettingsState implements ISettingsState {
   }
 
   private getAllMessageEvents(): MessageEvent[] {
-    return [...Object.values(GameStateEvent), ...Object.values(PurchaseEvent), ...Object.values(ProgramsEvent)];
+    return [...GAME_STATE_EVENTS, ...PURCHASE_EVENTS, ...PROGRAM_EVENTS, ...CLONE_EVENTS];
   }
 
   private getAllGameAlerts(): GameAlert[] {
-    return [...Object.values(GameStateAlert), ...Object.values(ProgramAlert)];
+    return [...GAME_STATE_ALERTS, ...PROGRAM_ALERTS, ...CLONE_ALERTS];
   }
 
   private getAllNotificationTypes(): NotificationType[] {
-    return Object.values(NotificationType);
+    return NOTIFICATION_TYPES;
   }
 }

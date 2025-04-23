@@ -1,17 +1,21 @@
 import { BaseController } from '@shared/base-controller';
-import { IProgram } from '@state/progam-factory/interfaces/program';
-import { ProgramName } from '@state/progam-factory/types';
-import { IProcess } from '@state/mainframe/mainframe-processes-state/interfaces/process';
+import { IProgram } from '@state/mainframe-state/states/progam-factory/interfaces/program';
+import { ProgramName } from '@state/mainframe-state/states/progam-factory/types';
+import { IProcess } from '@state/mainframe-state/states/mainframe-processes-state/interfaces/process';
 
 export class ProcessDiffTextController extends BaseController {
   private _program?: IProgram;
 
-  get ram(): number {
-    return this.mainframeHardwareState.ram.level;
+  get maxRam(): number {
+    return this.mainframeState.hardware.ram.level;
   }
 
-  get cores(): number {
-    return this.mainframeHardwareState.cores.level;
+  get availableRam(): number {
+    return this.mainframeState.processes.availableRam;
+  }
+
+  get maxCores(): number {
+    return this.mainframeState.hardware.cores.level;
   }
 
   getProgram(name: ProgramName): IProgram | undefined {
@@ -19,12 +23,12 @@ export class ProcessDiffTextController extends BaseController {
       this.removeEventListenersByEmitter(this._program);
     }
 
-    this._program = this.mainframeProgramsState.getOwnedProgramByName(name)!;
+    this._program = this.mainframeState.programs.getOwnedProgramByName(name)!;
 
     return this._program;
   }
 
   getProcessByName(name: ProgramName): IProcess | undefined {
-    return this.mainframeProcessesState.getProcessByName(name);
+    return this.mainframeState.processes.getProcessByName(name);
   }
 }

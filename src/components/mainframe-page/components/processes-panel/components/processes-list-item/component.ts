@@ -1,125 +1,143 @@
-import { t } from 'i18next';
 import { css, html, nothing } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { localized, msg, str } from '@lit/localize';
+import { customElement, property, state } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
 import { BaseComponent } from '@shared/base-component';
 import {
   ConfirmationAlertOpenEvent,
   ConfirmationAlertSubmitEvent,
 } from '@components/game-screen/components/confirmation-alert/events';
 import { ProgramAlert } from '@shared/types';
-import { ProgramName } from '@state/progam-factory/types';
-import { SCREEN_WIDTH_POINTS } from '@shared/styles';
+import * as types from '@state/mainframe-state/states/progam-factory/types';
+import {
+  DELETE_VALUES,
+  DESCRIPTION_ICONS,
+  ENTITY_ACTIVE_VALUES,
+  SCREEN_WIDTH_POINTS,
+  dragIconStyle,
+  hintIconStyle,
+} from '@shared/styles';
+import { type ProgramName } from '@state/mainframe-state/states/progam-factory/types';
+import { COMMON_TEXTS, PROGRAM_TEXTS } from '@texts/index';
 import { ProcessesListItemController } from './controller';
 
+@localized()
 @customElement('ca-processes-list-item')
 export class ProcessesListItem extends BaseComponent<ProcessesListItemController> {
-  static styles = css`
-    :host {
-      display: grid;
-      grid-template-areas:
-        'program'
-        'progress-bar'
-        'cores'
-        'buttons';
-      grid-template-columns: auto;
-      grid-template-rows: repeat(1fr);
-      gap: var(--sl-spacing-small);
-      padding: var(--sl-spacing-small);
-      box-sizing: border-box;
-    }
-
-    #drag-icon {
-      position: relative;
-      top: 0.15em;
-      left: -0.2em;
-      color: var(--ca-hint-color);
-    }
-
-    .desktop {
-      display: none;
-    }
-
-    .program {
-      cursor: grab;
-      grid-area: program;
-    }
-
-    .cores {
-      grid-area: cores;
-    }
-
-    .progress-bar {
-      grid-area: progress-bar;
-    }
-
-    .buttons {
-      grid-area: buttons;
-      align-items: center;
-      flex-direction: row;
-      gap: var(--sl-spacing-small);
-    }
-
-    .buttons.desktop {
-      justify-content: flex-end;
-      font-size: var(--sl-font-size-large);
-    }
-
-    .buttons.mobile {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: flex-start;
-    }
-
-    sl-icon[name='grip-vertical'] {
-      position: relative;
-      top: 0.2em;
-      color: var(--ca-hint-color);
-      font-size: var(--sl-font-size-large);
-    }
-
-    sl-icon[name='question-circle'] {
-      position: relative;
-      top: 0.25em;
-      margin-left: 0.5em;
-      color: var(--ca-hint-color);
-      font-size: var(--sl-font-size-large);
-    }
-
-    #delete-btn::part(base):hover {
-      color: var(--sl-color-danger-600);
-    }
-
-    @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
+  static styles = [
+    hintIconStyle,
+    dragIconStyle,
+    css`
       :host {
-        grid-template-areas: 'program cores progress-bar buttons';
-        grid-template-columns: 3fr 1fr 2fr 6rem;
-        grid-template-rows: auto;
-        align-items: center;
+        display: grid;
+        grid-template-areas:
+          'program'
+          'progress-bar'
+          'cores'
+          'buttons';
+        grid-template-columns: auto;
+        grid-template-rows: repeat(1fr);
+        gap: var(--sl-spacing-small);
+        padding: var(--sl-spacing-small);
+        box-sizing: border-box;
       }
 
       .desktop {
-        display: block;
-      }
-
-      .mobile {
         display: none;
       }
 
-      .buttons.mobile {
-        display: none;
+      .program {
+        grid-area: program;
+      }
+
+      .cores {
+        grid-area: cores;
+      }
+
+      .progress-bar {
+        grid-area: progress-bar;
+      }
+
+      .buttons {
+        grid-area: buttons;
+        align-items: center;
+        flex-direction: row;
+        gap: var(--sl-spacing-small);
       }
 
       .buttons.desktop {
-        display: flex;
+        justify-content: flex-end;
+        font-size: var(--sl-font-size-large);
       }
-    }
-  `;
+
+      .buttons.mobile {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+      }
+
+      #delete-btn::part(base):hover {
+        color: var(--sl-color-danger-600);
+      }
+
+      .program-title {
+        cursor: grab;
+      }
+
+      .program-title sl-icon-button.description-button {
+        position: relative;
+        top: 0.25rem;
+      }
+
+      .program-description {
+        box-sizing: border-box;
+        height: 0;
+        overflow: hidden;
+        color: var(--ca-hint-color);
+        font-size: var(--ca-hint-font-size);
+        line-height: var(--ca-hint-line-height);
+      }
+
+      .program-description.visible {
+        height: auto;
+        padding-top: var(--sl-spacing-medium);
+      }
+
+      @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
+        :host {
+          grid-template-areas: 'program cores progress-bar buttons';
+          grid-template-columns: 3fr 1fr 2fr 6rem;
+          grid-template-rows: auto;
+          align-items: center;
+        }
+
+        .desktop {
+          display: block;
+        }
+
+        .mobile {
+          display: none;
+        }
+
+        .buttons.mobile {
+          display: none;
+        }
+
+        .buttons.desktop {
+          display: flex;
+        }
+      }
+    `,
+  ];
 
   @property({
     attribute: 'program-name',
     type: String,
   })
-  programName: string = ProgramName.shareServer;
+  programName: ProgramName = types.OtherProgramName.shareServer;
+
+  @state()
+  _descriptionVisible = false;
 
   protected controller: ProcessesListItemController;
 
@@ -141,44 +159,62 @@ export class ProcessesListItem extends BaseComponent<ProcessesListItemController
     document.removeEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmDeleteProcessDialog);
   }
 
-  renderContent() {
+  render() {
     const formatter = this.controller.formatter;
-    const process = this.controller.getProcess(this.programName as ProgramName);
+    const process = this.controller.getProcess(this.programName as types.ProgramName);
 
     if (!process) {
       return nothing;
     }
 
-    const cores = process.program.isAutoscalable
-      ? t('mainframe.processes.autoscalable', { ns: 'ui' })
-      : t('mainframe.processes.usesCores', {
-          ns: 'ui',
-          cores: formatter.formatNumberDecimal(process.usedCores),
-          maxCores: formatter.formatNumberDecimal(process.maxCores),
-        });
-    const coresFull = process.program.isAutoscalable
-      ? t('mainframe.processes.autoscalable', { ns: 'ui' })
-      : t('mainframe.processes.usesCoresFull', {
-          ns: 'ui',
-          cores: formatter.formatNumberDecimal(process.usedCores),
-          maxCores: formatter.formatNumberDecimal(process.maxCores),
-        });
+    const programTitle = PROGRAM_TEXTS[this.programName].title();
 
-    const toggleIcon = process.isActive ? 'play-fill' : 'pause-fill';
-    const toggleLabel = process.isActive ? 'disableProcess' : 'enableProcess';
-    const toggleVariant = process.isActive ? 'neutral' : 'default';
+    const descriptionButtonName = this._descriptionVisible ? DESCRIPTION_ICONS.expanded : DESCRIPTION_ICONS.hidden;
+    const descriptionButtonLabel = this._descriptionVisible
+      ? COMMON_TEXTS.hideDescription()
+      : COMMON_TEXTS.showDescription();
+    const descriptionClasses = classMap({
+      'program-description': true,
+      visible: this._descriptionVisible,
+    });
+
+    const formattedUsedCores = formatter.formatNumberDecimal(process.usedCores);
+    const formattedMaxCores = formatter.formatNumberDecimal(process.maxCores);
+    const cores = process.program.isAutoscalable ? msg('Autoscalable') : `${formattedUsedCores} / ${formattedMaxCores}`;
+    const coresFull = process.program.isAutoscalable
+      ? msg('Autoscalable')
+      : msg(str`Uses cores: ${formattedUsedCores} / ${formattedMaxCores}`);
+
+    const toggleIcon = process.isActive ? ENTITY_ACTIVE_VALUES.icon.active : ENTITY_ACTIVE_VALUES.icon.stopped;
+    const toggleLabel = process.isActive ? msg('Disable process') : msg('Enable process');
+    const toggleVariant = process.isActive
+      ? ENTITY_ACTIVE_VALUES.buttonVariant.active
+      : ENTITY_ACTIVE_VALUES.buttonVariant.stopped;
+
+    const deleteProcessLabel = msg('Delete process');
 
     return html`
-      <div class="program" draggable="true" @dragstart=${this.handleDragStart}>
-        <sl-icon name="grip-vertical"> </sl-icon>
+      <div class="program">
+        <div class="program-title" draggable="true" @dragstart=${this.handleDragStart}>
+          <sl-icon name="grip-vertical"> </sl-icon>
 
-        ${t(`${process.program.name}.name`, { ns: 'programs' })}
+          ${programTitle}
 
-        <sl-tooltip>
-          <sl-icon name="question-circle"></sl-icon>
+          <sl-tooltip>
+            <span slot="content">${descriptionButtonLabel}</span>
 
-          <ca-process-description-text slot="content" program-name=${this.programName}></ca-process-description-text>
-        </sl-tooltip>
+            <sl-icon-button
+              name=${descriptionButtonName}
+              class="description-button"
+              @click=${this.handleToggleDescription}
+            >
+            </sl-icon-button>
+          </sl-tooltip>
+        </div>
+
+        <div class=${descriptionClasses}>
+          <ca-process-description-text program-name=${this.programName}></ca-process-description-text>
+        </div>
       </div>
 
       <div class="cores mobile">${coresFull}</div>
@@ -191,33 +227,32 @@ export class ProcessesListItem extends BaseComponent<ProcessesListItemController
 
       <div class="buttons mobile">
         <sl-button variant=${toggleVariant} size="medium" @click=${this.handleToggleProcess}>
-          ${t(`mainframe.processes.${toggleLabel}`, { ns: 'ui' })}
+          <sl-icon slot="prefix" name=${toggleIcon}></sl-icon>
+
+          ${toggleLabel}
         </sl-button>
 
-        <sl-button variant="danger" size="medium" @click=${this.handleOpenDeleteProcessDialog}>
-          ${t('mainframe.processes.processDelete', { ns: 'ui' })}
+        <sl-button variant=${DELETE_VALUES.buttonVariant} size="medium" @click=${this.handleOpenDeleteProcessDialog}>
+          <sl-icon slot="prefix" name=${DELETE_VALUES.icon}> </sl-icon>
+
+          ${deleteProcessLabel}
         </sl-button>
       </div>
 
       <div class="buttons desktop">
         <sl-tooltip>
-          <span slot="content"> ${t(`mainframe.processes.${toggleLabel}`, { ns: 'ui' })} </span>
+          <span slot="content"> ${toggleLabel} </span>
 
-          <sl-icon-button
-            name=${toggleIcon}
-            label=${t(`mainframe.processes.${toggleLabel}`, { ns: 'ui' })}
-            @click=${this.handleToggleProcess}
-          >
-          </sl-icon-button>
+          <sl-icon-button name=${toggleIcon} label=${toggleLabel} @click=${this.handleToggleProcess}> </sl-icon-button>
         </sl-tooltip>
 
         <sl-tooltip>
-          <span slot="content"> ${t('mainframe.processes.processDelete', { ns: 'ui' })} </span>
+          <span slot="content"> ${deleteProcessLabel} </span>
 
           <sl-icon-button
             id="delete-btn"
-            name="x-lg"
-            label=${t('mainframe.processes.processDelete', { ns: 'ui' })}
+            name=${DELETE_VALUES.icon}
+            label=${deleteProcessLabel}
             @click=${this.handleOpenDeleteProcessDialog}
           >
           </sl-icon-button>
@@ -225,6 +260,13 @@ export class ProcessesListItem extends BaseComponent<ProcessesListItemController
       </div>
     `;
   }
+
+  private handleToggleDescription = (event: Event) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    this._descriptionVisible = !this._descriptionVisible;
+  };
 
   private handleToggleProcess = (event: Event) => {
     event.preventDefault();
@@ -237,12 +279,14 @@ export class ProcessesListItem extends BaseComponent<ProcessesListItemController
     event.preventDefault();
     event.stopPropagation();
 
-    const confirmationAlertParameters = {
-      programName: this.programName,
-    };
+    const programTitle = PROGRAM_TEXTS[this.programName].title();
 
     this.dispatchEvent(
-      new ConfirmationAlertOpenEvent(ProgramAlert.processDelete, confirmationAlertParameters, this.programName),
+      new ConfirmationAlertOpenEvent(
+        ProgramAlert.processDelete,
+        msg(str`Are you sure want to delete process for program "${programTitle}"? It's progress will be lost.`),
+        this.programName,
+      ),
     );
   };
 
@@ -253,7 +297,7 @@ export class ProcessesListItem extends BaseComponent<ProcessesListItemController
       return;
     }
 
-    this.controller.deleteProcess();
+    this.controller.deleteProcessByName(this.programName);
   };
 
   private handleDragStart = (event: DragEvent) => {

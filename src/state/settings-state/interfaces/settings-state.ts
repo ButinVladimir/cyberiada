@@ -8,7 +8,7 @@ export interface ISettingsState extends ISerializeable<ISettingsSerializedState>
   messageLogSize: number;
   toastDuration: number;
   updateInterval: number;
-  autosaveEnabled: boolean;
+  autosaveEnabledOnHide: boolean;
   autosaveInterval: number;
   fastSpeedMultiplier: number;
   maxUpdatesPerTick: number;
@@ -22,7 +22,7 @@ export interface ISettingsState extends ISerializeable<ISettingsSerializedState>
   setMessageLogSize(messageLogSize: number): void;
   setToastDuration(duration: number): void;
   setUpdateInterval(updateInterval: number): void;
-  setAutosaveEnabled(autosaveEnabled: boolean): void;
+  setAutosaveEnabledOnHide(autosaveEnabled: boolean): void;
   setAutosaveInterval(autosaveInterval: number): void;
   setFastSpeedMultiplier(fastSpeedMultiplier: number): void;
   setMaxUpdatesPerTick(maxUpdatesPerTick: number): void;

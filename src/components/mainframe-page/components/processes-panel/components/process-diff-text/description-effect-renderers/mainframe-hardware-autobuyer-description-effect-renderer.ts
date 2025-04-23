@@ -1,8 +1,8 @@
-import { t } from 'i18next';
 import { html } from 'lit';
-import { MainframeHardwareAutobuyerProgram } from '@state/progam-factory/programs/mainframe-hardware-autobuyer';
+import { msg, str } from '@lit/localize';
+import { MainframeHardwareAutobuyerProgram } from '@state/mainframe-state/states/progam-factory/programs/mainframe-hardware-autobuyer';
 import { IFormatter } from '@shared/interfaces/formatter';
-import { diffFormatterParametersDecimal, diffFormatterParametersFloat } from '@shared/formatter-parameters';
+import { diffFormatterParameters } from '@shared/formatter-parameters';
 import { MS_IN_SECOND } from '@shared/constants';
 import { IDescriptionParameters, IDescriptionEffectRenderer } from '../interfaces';
 
@@ -42,18 +42,21 @@ export class MainframeHardwareAutobuyerDescriptionEffectRenderer implements IDes
       maxAvgValueDiff = maxAvgValue - currentMaxAvgValue;
     }
 
+    const formattedValue = this._formatter.formatNumberFloat(this._threads);
+    const formattedValueDiff = this._formatter.formatNumberFloat(valueDiff, diffFormatterParameters);
+    const formattedMinAvgValue = this._formatter.formatNumberFloat(minAvgValue);
+    const formattedMaxAvgValue = this._formatter.formatNumberFloat(maxAvgValue);
+    const formattedMinAvgValueDiff = this._formatter.formatNumberFloat(minAvgValueDiff, diffFormatterParameters);
+    const formattedMaxAvgValueDiff = this._formatter.formatNumberFloat(maxAvgValueDiff, diffFormatterParameters);
+
     return html`
       <p>
-        ${t('mainframeHardwareAutobuyer.actionsProcessDiff', {
-          ns: 'programs',
-          value: this._formatter.formatNumberDecimal(this._threads),
-          valueDiff: this._formatter.formatNumberDecimal(valueDiff, diffFormatterParametersDecimal),
-          minAvgValue: this._formatter.formatNumberFloat(minAvgValue),
-          maxAvgValue: this._formatter.formatNumberFloat(maxAvgValue),
-          minAvgValueDiff: this._formatter.formatNumberFloat(minAvgValueDiff, diffFormatterParametersFloat),
-          maxAvgValueDiff: this._formatter.formatNumberFloat(maxAvgValueDiff, diffFormatterParametersFloat),
-        })}
+        ${msg(
+          str`Actions: ${formattedValue} (${formattedValueDiff}) per completion (${formattedMinAvgValue} \u2014 ${formattedMaxAvgValue} per second) (${formattedMinAvgValueDiff} \u2014 ${formattedMaxAvgValueDiff})`,
+        )}
       </p>
     `;
   };
+
+  public partialUpdate(): void {}
 }

@@ -1,12 +1,13 @@
-import { t } from 'i18next';
 import { css, html, nothing } from 'lit';
+import { localized, msg, str } from '@lit/localize';
 import { customElement, property, state } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.component.js';
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.component.js';
 import { BaseComponent } from '@shared/base-component';
-import { ProgramName } from '@state/progam-factory/types';
-import { IProgram } from '@state/progam-factory/interfaces/program';
+import type { ProgramName } from '@state/mainframe-state/states/progam-factory/types';
+import { IProgram } from '@state/mainframe-state/states/progam-factory/interfaces/program';
 import {
   ConfirmationAlertOpenEvent,
   ConfirmationAlertSubmitEvent,
@@ -20,10 +21,11 @@ import {
   modalBodyScrollStyle,
   SCREEN_WIDTH_POINTS,
 } from '@shared/styles';
+import { PROGRAM_TEXTS } from '@texts/programs';
 import { StartProcessDialogCloseEvent } from './events';
 import { StartProcessDialogController } from './controller';
-import { IMainframePageHistoryState } from '../../../../interfaces';
 
+@localized()
 @customElement('ca-start-process-dialog')
 export class StartProcessDialog extends BaseComponent<StartProcessDialogController> {
   static styles = [
@@ -42,6 +44,7 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
         width: 100%;
         display: flex;
         flex-direction: row;
+        flex-wrap: wrap;
         justify-content: flex-end;
         gap: var(--sl-spacing-small);
       }
@@ -67,23 +70,6 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
       p.hint {
         margin-top: 0;
         margin-bottom: var(--sl-spacing-medium);
-      }
-
-      div.footer {
-        display: flex;
-      }
-
-      div.program-description {
-        margin-top: var(--sl-spacing-medium);
-        margin-bottom: 0;
-      }
-
-      div.program-description p {
-        margin: 0;
-      }
-
-      div.program-description p.line-break {
-        height: var(--sl-spacing-medium);
       }
 
       @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
@@ -134,30 +120,28 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
   updated(_changedProperties: Map<string, any>) {
     super.updated(_changedProperties);
 
-    if (_changedProperties.get('isOpen') === false) {
-      const historyState = window.history.state as IMainframePageHistoryState;
-
-      this._programName = historyState.programName ?? undefined;
-      this._threads = historyState.threads ?? 1;
+    if (_changedProperties.has('isOpen')) {
+      this._programName = undefined;
+      this._threads = 1;
     }
   }
 
-  renderContent() {
+  render() {
     const program = this._programName ? this.controller.getProgram(this._programName) : undefined;
     const maxThreads = this.calculateMaxThreads();
 
     const threadsInputDisabled = !(program && !program.isAutoscalable);
-    const submitButtonDisabled = !(
-      program &&
-      (program.isAutoscalable || (this._threads >= 1 && this._threads <= maxThreads))
-    );
 
     return html`
       <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
-        <h4 slot="label" class="title">${t('mainframe.processes.startProcess', { ns: 'ui' })}</h4>
+        <h4 slot="label" class="title">${msg('Start process')}</h4>
 
         <div class="body">
-          <p class="hint">${t('mainframe.processes.startProcessDialogHint', { ns: 'ui' })}</p>
+          <p class="hint">
+            ${msg(`Select one of owned programs to start process for it.
+If you already have process for same program, old process will be replaced with new one.
+Threads allow to run multiple instances of same program at same time, but additional threads require additional memory.`)}
+          </p>
 
           <div class="inputs-container">
             <sl-select
@@ -167,7 +151,7 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
               hoist
               @sl-change=${this.handleProgramChange}
             >
-              <span class="input-label" slot="label"> ${t('mainframe.program', { ns: 'ui' })} </span>
+              <span class="input-label" slot="label"> ${msg('Program')} </span>
 
               ${this.controller.listPrograms().map(this.formatProgramSelectItem)}
             </sl-select>
@@ -177,13 +161,14 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
               name="threads"
               value=${this._threads}
               type="number"
+              inputmode="decimal"
               min="1"
               max=${Math.max(maxThreads, 1)}
               step="1"
               ?disabled=${threadsInputDisabled}
               @sl-change=${this.handleThreadsChange}
             >
-              <span class="input-label" slot="label"> ${t('mainframe.threads', { ns: 'ui' })} </span>
+              <span class="input-label" slot="label"> ${msg('Threads')} </span>
             </sl-input>
           </div>
 
@@ -193,19 +178,14 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
             : nothing}
         </div>
 
-        <sl-button slot="footer" size="medium" variant="default" outline @click=${this.handleClose}>
-          ${t('common.close', { ns: 'ui' })}
-        </sl-button>
-
-        <sl-button
-          ?disabled=${submitButtonDisabled}
+        <ca-start-process-dialog-buttons
           slot="footer"
-          size="medium"
-          variant="primary"
-          @click=${this.handleOpenConfirmationAlert}
+          program-name=${ifDefined(this._programName)}
+          threads=${this._threads}
+          @start-process=${this.handleOpenConfirmationAlert}
+          @cancel=${this.handleClose}
         >
-          ${t('mainframe.processes.startProcess', { ns: 'ui' })}
-        </sl-button>
+        </ca-start-process-dialog-buttons>
       </sl-dialog>
     `;
   }
@@ -224,9 +204,6 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
 
     const programName = this._programInputRef.value.value as ProgramName;
     this._programName = programName;
-
-    const state = { ...window.history.state, programName } as IMainframePageHistoryState;
-    window.history.replaceState(state, '');
   };
 
   private handleThreadsChange = () => {
@@ -247,9 +224,6 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
 
     this._threads = threads;
     this._threadsInputRef.value.valueAsNumber = threads;
-
-    const state = { ...window.history.state, threads } as IMainframePageHistoryState;
-    window.history.replaceState(state, '');
   };
 
   private handleOpenConfirmationAlert = (event: Event) => {
@@ -261,25 +235,40 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
     }
 
     const program = this.controller.getProgram(this._programName);
+    const programIsAutoscalable = program!.isAutoscalable;
     const runningScalableProgram = this.controller.getRunningScalableProgram();
 
     const existingProcess = this.controller.getProcessByName(this._programName);
     const formatter = this.controller.formatter;
 
-    if (existingProcess) {
-      const confirmationAlertParameters = {
-        programName: this._programName,
-        threads: formatter.formatNumberDecimal(existingProcess.threads),
-      };
+    const programTitle = PROGRAM_TEXTS[this._programName].title();
 
-      this.dispatchEvent(new ConfirmationAlertOpenEvent(ProgramAlert.processReplace, confirmationAlertParameters));
-    } else if (program?.isAutoscalable && runningScalableProgram) {
-      const confirmationAlertParameters = {
-        programName: runningScalableProgram.program.name,
-      };
+    if (existingProcess && !programIsAutoscalable) {
+      const threads = formatter.formatNumberDecimal(existingProcess.threads);
 
       this.dispatchEvent(
-        new ConfirmationAlertOpenEvent(ProgramAlert.scalableProcessReplace, confirmationAlertParameters),
+        new ConfirmationAlertOpenEvent(
+          ProgramAlert.processReplace,
+          msg(
+            str`Are you sure want to overwrite process for program "${programTitle}"? This will replace your current process with ${threads} threads.`,
+          ),
+        ),
+      );
+    } else if (existingProcess && programIsAutoscalable) {
+      this.dispatchEvent(
+        new ConfirmationAlertOpenEvent(
+          ProgramAlert.processReplace,
+          msg(str`Are you sure want to overwrite process for program "${programTitle}"?`),
+        ),
+      );
+    } else if (runningScalableProgram && programIsAutoscalable) {
+      this.dispatchEvent(
+        new ConfirmationAlertOpenEvent(
+          ProgramAlert.scalableProcessReplace,
+          msg(
+            str`Are you sure want to replace autoscalable process? This will delete your current process for program "${programTitle}".`,
+          ),
+        ),
       );
     } else {
       this.startProcess();
@@ -311,14 +300,12 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
 
   private formatProgramSelectItem = (program: IProgram) => {
     const formatter = this.controller.formatter;
+    const programTitle = PROGRAM_TEXTS[program.name].title();
+    const formattedLevel = formatter.formatNumberDecimal(program.level);
+    const formattedQuality = formatter.formatQuality(program.quality);
 
     return html`<sl-option value=${program.name}>
-      ${t('mainframe.processes.programSelectItem', {
-        ns: 'ui',
-        programName: program.name,
-        level: formatter.formatNumberDecimal(program.level),
-        quality: formatter.formatQuality(program.quality),
-      })}
+      ${msg(str`${programTitle}, quality ${formattedQuality}, level ${formattedLevel}`)}
     </sl-option>`;
   };
 

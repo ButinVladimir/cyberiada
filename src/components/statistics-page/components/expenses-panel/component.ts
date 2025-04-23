@@ -7,7 +7,7 @@ import { statisticsPanelStyle } from '../../styles';
 export class StatisticsExpensesPanel extends BaseComponent {
   static styles = statisticsPanelStyle;
 
-  renderContent() {
+  render() {
     return html` <ca-statistics-money-expenses></ca-statistics-money-expenses> `;
   }
 }

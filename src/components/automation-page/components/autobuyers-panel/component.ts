@@ -12,7 +12,7 @@ export class AutomationAutobuyersPanel extends BaseComponent<AutomationAutobuyer
       display: flex;
       align-items: stretch;
       flex-direction: column;
-      gap: var(--sl-spacing-medium);
+      gap: var(--sl-spacing-large);
     }
   `;
 
@@ -24,7 +24,7 @@ export class AutomationAutobuyersPanel extends BaseComponent<AutomationAutobuyer
     this.controller = new AutomationAutobuyersPanelController(this);
   }
 
-  renderContent() {
+  render() {
     return html`
       ${this.controller.isFeatureUnlocked(Feature.automationMainframeHardware)
         ? html`<ca-automation-mainframe-hardware-autobuyer></ca-automation-mainframe-hardware-autobuyer>`

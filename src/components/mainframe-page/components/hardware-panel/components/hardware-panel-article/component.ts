@@ -1,16 +1,20 @@
-import { t } from 'i18next';
 import { css, html } from 'lit';
+import { localized } from '@lit/localize';
 import { customElement, property } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
-import type { MainframeHardwareParameterType } from '@state/mainframe/mainframe-hardware-state/types';
-import { hintStyle, sectionTitleStyle, SCREEN_WIDTH_POINTS } from '@shared/styles';
+import type { MainframeHardwareParameterType } from '@state/mainframe-state/states/mainframe-hardware-state/types';
+import { hintStyle, sectionTitleStyle, SCREEN_WIDTH_POINTS, AUTOUPGRADE_VALUES, dragIconStyle } from '@shared/styles';
+import { COMMON_TEXTS } from '@texts/common';
 import { MainframeHardwarePanelArticleController } from './controller';
+import { MAINFRAME_HARDWARE_TEXTS } from './constants';
 
+@localized()
 @customElement('ca-mainframe-hardware-panel-article')
 export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwarePanelArticleController> {
   static styles = [
     hintStyle,
     sectionTitleStyle,
+    dragIconStyle,
     css`
       :host {
         width: 100%;
@@ -30,8 +34,7 @@ export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwa
 
       div.button-container {
         grid-area: buttons;
-        display: flex;
-        gap: var(--sl-spacing-medium);
+        height: 100%;
       }
 
       div.title-row {
@@ -54,14 +57,11 @@ export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwa
       #toggle-autoupgrade-btn {
         position: relative;
         top: 0.15em;
-        font-size: var(--sl-font-size-large);
       }
 
-      #drag-icon {
-        position: relative;
+      sl-icon[name='grip-vertical'] {
         top: 0.15em;
         left: -0.2em;
-        color: var(--ca-hint-color);
       }
 
       @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
@@ -72,11 +72,6 @@ export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwa
           grid-template-rows: auto auto;
           grid-template-columns: 1fr auto;
         }
-      }
-
-      div.button-container {
-        align-items: center;
-        height: 100%;
       }
     `,
   ];
@@ -101,30 +96,32 @@ export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwa
     this.controller = new MainframeHardwarePanelArticleController(this);
   }
 
-  renderContent() {
+  render() {
     const formatter = this.controller.formatter;
 
     const level = this.controller.getLevel(this.type);
 
     const isAutoupgradeEnabled = this.controller.isAutoUpgradeEnabled(this.type);
 
-    const autoupgradeIcon = isAutoupgradeEnabled ? 'arrow-up-circle-fill' : 'arrow-up-circle';
-    const autoupgradeLabel = isAutoupgradeEnabled ? 'disableAutoupgrade' : 'enableAutoupgrade';
+    const autoupgradeIcon = isAutoupgradeEnabled ? AUTOUPGRADE_VALUES.icon.enabled : AUTOUPGRADE_VALUES.icon.disabled;
+    const autoupgradeLabel = isAutoupgradeEnabled
+      ? COMMON_TEXTS.disableAutoupgrade()
+      : COMMON_TEXTS.enableAutoupgrade();
 
     return html`
       <div class="title-row">
         <h4 class="title" draggable="true" @dragstart=${this.handleDragStart}>
           <sl-icon id="drag-icon" name="grip-vertical"> </sl-icon>
 
-          ${t(`mainframe.hardware.${this.type}`, { ns: 'ui', level: formatter.formatNumberDecimal(level) })}
+          ${MAINFRAME_HARDWARE_TEXTS[this.type].title(formatter.formatNumberDecimal(level))}
 
           <sl-tooltip>
-            <span slot="content"> ${t(`mainframe.hardware.${autoupgradeLabel}`, { ns: 'ui' })} </span>
+            <span slot="content"> ${autoupgradeLabel} </span>
 
             <sl-icon-button
               id="toggle-autoupgrade-btn"
               name=${autoupgradeIcon}
-              label=${t(`mainframe.hardware.${autoupgradeLabel}`, { ns: 'ui' })}
+              label=${autoupgradeLabel}
               @click=${this.handleToggleAutoUpgrade}
             >
             </sl-icon-button>
@@ -132,19 +129,16 @@ export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwa
         </h4>
       </div>
 
-      <p class="hint">${t(`mainframe.hardware.${this.type}Hint`, { ns: 'ui' })}</p>
+      <p class="hint">${MAINFRAME_HARDWARE_TEXTS[this.type].hint()}</p>
 
       <div class="button-container">
-        <sl-button variant="default" type="button" size="medium" @click=${this.handleBuyMax}>
-          ${t('mainframe.hardware.buyMax', { ns: 'ui' })}
-        </sl-button>
-
-        <ca-mainframe-hardware-panel-article-buy-button
+        <ca-mainframe-hardware-panel-article-buttons
           max-increase=${this.maxIncrease}
           type=${this.type}
           @buy-hardware=${this.handleBuy}
+          @buy-max-hardware=${this.handleBuyMax}
         >
-        </ca-mainframe-hardware-panel-article-buy-button>
+        </ca-mainframe-hardware-panel-article-buttons>
       </div>
     `;
   }

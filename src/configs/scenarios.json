@@ -1,6 +1,7 @@
 {
   "tutorial": {
     "districtsNum": 5,
+    "baseSynchronization": 30,
     "mainframeHardware": {
       "performanceLevel": 1,
       "coresLevel": 1,
@@ -13,11 +14,27 @@
       "performanceBoost": 0.1
     },
     "developmentLevelRequirements": { "baseMultiplier": 30000, "base": 1.5 },
-    "pointsByProgramMultipliers": {
-      "program": 2
-    },
-    "discounts": {
-      "program": 4e6
+    "programMultipliers": {
+      "codeBase": {
+        "pointsPerCompletion": 2,
+        "pointsToMax": 3600,
+        "logBase": 2
+      },
+      "computationalBase": {
+        "pointsPerCompletion": 2,
+        "pointsToMax": 3600,
+        "logBase": 2
+      },
+      "connectivity": {
+        "pointsPerCompletion": 2,
+        "pointsToMax": 3600,
+        "logBase": 2
+      },
+      "rewards": {
+        "pointsPerCompletion": 2,
+        "pointsToMax": 3600,
+        "logBase": 2
+      }
     },
     "storyEvents": [
       {
@@ -28,13 +45,13 @@
       {
         "key": "tutorial_level_2",
         "level": 2,
-        "unlockFeatures": ["mainframeHardware", "mainframePrograms"],
+        "unlockFeatures": ["mainframeUpgrades"],
         "messages": ["tutorial_level_2"]
       },
       {
         "key": "tutorial_level_15",
-        "level": 15,
-        "unlockFeatures": ["cityOverview", "companyManagement"],
+        "level": 3,
+        "unlockFeatures": ["companyManagement"],
         "messages": ["tutorial_level_15"]
       }
     ]

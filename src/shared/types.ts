@@ -15,12 +15,13 @@ export enum Theme {
 }
 
 export enum OverviewMenuItem {
-  cityOverview = 'cityOverview',
-  companyManagement = 'companyManagement',
+  overview = 'overview',
+  city = 'city',
+  company = 'company',
   mainframe = 'mainframe',
   automation = 'automation',
   statistics = 'statistics',
-  messageLog = 'message-log',
+  messageLog = 'messageLog',
 }
 
 export enum MiscMenuItem {
@@ -32,13 +33,16 @@ export enum Scenario {
   tutorial = 'tutorial',
 }
 
+export enum Faction {
+  neutral = 'neutral',
+  wsa = 'wsa',
+}
+
 export enum GameStateEvent {
   gameStarted = 'gameStarted',
   gameSaved = 'gameSaved',
   fastForwared = 'fastForwarded',
   levelReached = 'levelReached',
-  featureUnlocked = 'featureUnlocked',
-  storyEvent = 'storyEvent',
 }
 
 export enum PurchaseEvent {
@@ -46,16 +50,23 @@ export enum PurchaseEvent {
   coresUpgraded = 'coresUpgraded',
   ramUpgraded = 'ramUpgraded',
   programPurchased = 'programPurchased',
+  clonePurchased = 'clonePurchased',
 }
 
 export enum ProgramsEvent {
   processStarted = 'processStarted',
-  processFinished = 'processFinished',
   processDeleted = 'processDeleted',
   allProcessesDeleted = 'allProcessesDeleted',
 }
 
-export type MessageEvent = GameStateEvent | PurchaseEvent | ProgramsEvent;
+export enum ClonesEvent {
+  cloneDeleted = 'cloneDeleted',
+  allClonesDeleted = 'allClonesDeleted',
+  cloneLevelReached = 'cloneLevelReached',
+  cloneRenamed = 'cloneRenamed',
+}
+
+export type MessageEvent = GameStateEvent | PurchaseEvent | ProgramsEvent | ClonesEvent;
 
 export enum GameStateAlert {
   saveImport = 'saveImport',
@@ -72,7 +83,12 @@ export enum ProgramAlert {
   deleteAllProcesses = 'deleteAllProcesses',
 }
 
-export type GameAlert = GameStateAlert | ProgramAlert;
+export enum CloneAlert {
+  cloneDelete = 'cloneDelete',
+  deleteAllClones = 'deleteAllClones',
+}
+
+export type GameAlert = GameStateAlert | ProgramAlert | CloneAlert;
 
 export enum NotificationType {
   storyEvent = 'storyEvent',
@@ -91,6 +107,7 @@ export enum LongNumberFormat {
 export enum PurchaseType {
   mainframeHardware = 'mainframeHardware',
   mainframePrograms = 'mainframePrograms',
+  clones = 'clones',
 }
 
 export enum IncomeSource {
@@ -101,8 +118,33 @@ export enum Feature {
   automation = 'automation',
   automationMainframeHardware = 'automationMainframeHardware',
   automationMainframePrograms = 'automationMainframePrograms',
-  mainframeHardware = 'mainframeHardware',
-  mainframePrograms = 'mainframePrograms',
-  cityOverview = 'cityOverview',
+  mainframeUpgrades = 'mainframeUpgrades',
   companyManagement = 'companyManagement',
+  codeBasePoints = 'codeBasePoints',
+  computationalBasePoints = 'computationalBasePoints',
+  connectivityPoints = 'connectivityPoints',
+  rewardsPoints = 'rewardsPoints',
+  experienceShare = 'experienceShare',
+}
+
+export type PointsMultiplierType = 'codeBase' | 'computationalBase' | 'connectivity' | 'rewards';
+
+export type ItemCategory = 'programs' | 'cloneTemplates';
+
+export enum Attribute {
+  strength = 'strength',
+  endurance = 'endurance',
+  agility = 'agility',
+  perception = 'perception',
+  intellect = 'intellect',
+  charisma = 'charisma',
+}
+
+export enum Skill {
+  closeCombat = 'closeCombat',
+  rangedCombat = 'rangedCombat',
+  engineering = 'engineering',
+  hacking = 'hacking',
+  stealth = 'stealth',
+  diplomacy = 'diplomacy',
 }

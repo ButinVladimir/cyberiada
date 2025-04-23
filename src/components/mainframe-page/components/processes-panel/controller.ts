@@ -2,10 +2,18 @@ import { BaseController } from '@shared/base-controller';
 
 export class ProcessesPanelController extends BaseController {
   get availableCores(): number {
-    return this.mainframeProcessesState.availableCores;
+    return this.mainframeState.processes.availableCores;
+  }
+
+  get maxCores(): number {
+    return this.mainframeState.hardware.cores.level;
   }
 
   get availableRam(): number {
-    return this.mainframeProcessesState.availableRam;
+    return this.mainframeState.processes.availableRam;
+  }
+
+  get maxRam(): number {
+    return this.mainframeState.hardware.ram.level;
   }
 }

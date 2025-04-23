@@ -1,4 +1,3 @@
-import i18n from 'i18next';
 import { injectable, inject } from 'inversify';
 import type { ISettingsState } from '@state/settings-state/interfaces/settings-state';
 import { TYPES } from '@state/types';
@@ -7,18 +6,18 @@ import { IFormatterParameters, IFormatter } from '../interfaces';
 import {
   QUALITY_MAP,
   TIME_PARTS,
-  dateTimeFormatterOptions,
-  defaultNumberDecimalFormatParameters,
-  defaultNumberFloatFormatParameters,
-  defaultNumberQualityFormatParameters,
-  defaultTimeShortFormatParameters,
-  decimalLongFormatterOptions,
-  floatShortFormatterOptions,
-  floatLongFormatterOptions,
-  floatScientificFormatterOptions,
-  floatEngineeringFormatterOptions,
-  longNumberFormatterMaxThreshold,
-  longNumberFormatterMinThreshold,
+  DATE_TIME_FORMATTER_OPTIONS,
+  DEFAULT_NUMBER_DECIMAL_FORMAT_PARAMETERS,
+  DEFAULT_NUMBER_FLOAT_FORMAT_PARAMETERS,
+  DEFAULT_NUMBER_QUALITY_FORMAT_PARAMETERS,
+  DEFAULT_TIME_SHORT_FORMAT_PARAMETERS,
+  DECIMAL_LONG_FORMATTER_OPTIONS,
+  FLOAT_SHORT_FORMATTER_OPTIONS,
+  FLOAT_LONG_FORMATTER_OPTIONS,
+  FLOAT_SCIENTIFIC_FORMATTER_OPTIONS,
+  FLOAT_ENGINEERING_FORMATTER_OPTIONS,
+  LONG_NUMBER_FORMATTER_MAX_THRESHOLD,
+  LONG_NUMBER_FORMATTER_MIN_THRESHOLD,
 } from './constants';
 
 @injectable()
@@ -36,27 +35,28 @@ export class Formatter implements IFormatter {
     this._settingsState = _settingsState;
 
     this.updateBuiltInFormatters();
-
-    i18n.on('languageChanged', this.updateBuiltInFormatters);
   }
 
-  formatTimeShort(time: number, parameters: IFormatterParameters = defaultTimeShortFormatParameters): string {
+  formatTimeShort(time: number, parameters: IFormatterParameters = DEFAULT_TIME_SHORT_FORMAT_PARAMETERS): string {
     let remainingTime = Math.abs(time);
-    const result = [];
+    let formattedTime = '';
 
-    for (const { units } of TIME_PARTS) {
+    for (let unitNumber = 0; unitNumber < TIME_PARTS.length; unitNumber++) {
+      const { units } = TIME_PARTS[unitNumber];
       const value = Math.floor(remainingTime / units);
       remainingTime = remainingTime - value * units;
 
-      result.push(value.toString().padStart(2, '0'));
-    }
+      formattedTime += value.toString().padStart(2, '0');
 
-    const formattedTime = result.join(':');
+      if (unitNumber < TIME_PARTS.length - 1) {
+        formattedTime += ':';
+      }
+    }
 
     return this.applyNumberFormatterParameters(time, formattedTime, parameters);
   }
 
-  formatNumberFloat(value: number, parameters: IFormatterParameters = defaultNumberFloatFormatParameters): string {
+  formatNumberFloat(value: number, parameters: IFormatterParameters = DEFAULT_NUMBER_FLOAT_FORMAT_PARAMETERS): string {
     const absoluteValue = Math.abs(value);
     const isLongValue = this.checkIfLongFormatNeeded(absoluteValue);
 
@@ -69,7 +69,10 @@ export class Formatter implements IFormatter {
     return this.formatLongNumber(value, parameters);
   }
 
-  formatNumberDecimal(value: number, parameters: IFormatterParameters = defaultNumberDecimalFormatParameters): string {
+  formatNumberDecimal(
+    value: number,
+    parameters: IFormatterParameters = DEFAULT_NUMBER_DECIMAL_FORMAT_PARAMETERS,
+  ): string {
     const absoluteValue = Math.abs(value);
     const isLongValue = this.checkIfLongFormatNeeded(absoluteValue);
 
@@ -82,7 +85,7 @@ export class Formatter implements IFormatter {
     return this.formatLongNumber(value, parameters);
   }
 
-  formatQuality(value: number, parameters: IFormatterParameters = defaultNumberQualityFormatParameters): string {
+  formatQuality(value: number, parameters: IFormatterParameters = DEFAULT_NUMBER_QUALITY_FORMAT_PARAMETERS): string {
     let formattedValue = '';
 
     if (value < 0) {
@@ -100,18 +103,24 @@ export class Formatter implements IFormatter {
     return this._dateTimeFormatter.format(value);
   }
 
-  private updateBuiltInFormatters = () => {
-    this._decimalLongFormatter = new Intl.NumberFormat(i18n.language, decimalLongFormatterOptions);
+  updateBuiltInFormatters = () => {
+    this._decimalLongFormatter = new Intl.NumberFormat(this._settingsState.language, DECIMAL_LONG_FORMATTER_OPTIONS);
 
-    this._floatLongFormatter = new Intl.NumberFormat(i18n.language, floatLongFormatterOptions);
+    this._floatLongFormatter = new Intl.NumberFormat(this._settingsState.language, FLOAT_LONG_FORMATTER_OPTIONS);
 
-    this._floatShortFormatter = new Intl.NumberFormat(i18n.language, floatShortFormatterOptions);
+    this._floatShortFormatter = new Intl.NumberFormat(this._settingsState.language, FLOAT_SHORT_FORMATTER_OPTIONS);
 
-    this._floatScientificFormatter = new Intl.NumberFormat(i18n.language, floatScientificFormatterOptions);
+    this._floatScientificFormatter = new Intl.NumberFormat(
+      this._settingsState.language,
+      FLOAT_SCIENTIFIC_FORMATTER_OPTIONS,
+    );
 
-    this._floatEngineeringFormatter = new Intl.NumberFormat(i18n.language, floatEngineeringFormatterOptions);
+    this._floatEngineeringFormatter = new Intl.NumberFormat(
+      this._settingsState.language,
+      FLOAT_ENGINEERING_FORMATTER_OPTIONS,
+    );
 
-    this._dateTimeFormatter = new Intl.DateTimeFormat(i18n.language, dateTimeFormatterOptions);
+    this._dateTimeFormatter = new Intl.DateTimeFormat(this._settingsState.language, DATE_TIME_FORMATTER_OPTIONS);
   };
 
   private applyNumberFormatterParameters(value: number, formattedValue: string, parameters: IFormatterParameters) {
@@ -134,8 +143,8 @@ export class Formatter implements IFormatter {
 
   private checkIfLongFormatNeeded(absoluteValue: number) {
     return (
-      (absoluteValue > 0 && absoluteValue < longNumberFormatterMinThreshold) ||
-      absoluteValue >= longNumberFormatterMaxThreshold
+      (absoluteValue > 0 && absoluteValue < LONG_NUMBER_FORMATTER_MIN_THRESHOLD) ||
+      absoluteValue >= LONG_NUMBER_FORMATTER_MAX_THRESHOLD
     );
   }
 

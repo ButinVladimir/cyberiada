@@ -1,16 +1,22 @@
 import { BaseController } from '@shared/base-controller';
-import { IProgram } from '@state/progam-factory/interfaces/program';
-import { ProgramName } from '@state/progam-factory/types';
+import { IProgram } from '@state/mainframe-state/states/progam-factory/interfaces/program';
+import { ProgramName } from '@state/mainframe-state/states/progam-factory/types';
 
 export class ProgramDiffTextController extends BaseController {
   private _selectedProgram?: IProgram;
 
+  hostDisconnected() {
+    super.hostDisconnected();
+
+    this.deleteSelectedProgram();
+  }
+
   get ram(): number {
-    return this.mainframeHardwareState.ram.level;
+    return this.mainframeState.hardware.ram.level;
   }
 
   get cores(): number {
-    return this.mainframeHardwareState.cores.level;
+    return this.mainframeState.hardware.cores.level;
   }
 
   getSelectedProgram(name: ProgramName, level: number, quality: number): IProgram {
@@ -21,7 +27,7 @@ export class ProgramDiffTextController extends BaseController {
     ) {
       this.deleteSelectedProgram();
 
-      this._selectedProgram = this.programFactory.makeProgram({
+      this._selectedProgram = this.mainframeState.programFactory.makeProgram({
         name,
         level,
         quality,
@@ -33,13 +39,12 @@ export class ProgramDiffTextController extends BaseController {
   }
 
   getOwnedProgram(name: ProgramName): IProgram | undefined {
-    return this.mainframeProgramsState.getOwnedProgramByName(name);
+    return this.mainframeState.programs.getOwnedProgramByName(name);
   }
 
   private deleteSelectedProgram() {
     if (this._selectedProgram) {
-      this.removeEventListenersByEmitter(this._selectedProgram);
-      this._selectedProgram.removeEventListeners();
+      this._selectedProgram.removeAllEventListeners();
     }
   }
 }

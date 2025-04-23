@@ -1,10 +1,11 @@
-import { t } from 'i18next';
 import { nothing } from 'lit';
+import { localized } from '@lit/localize';
 import { customElement, property } from 'lit/decorators.js';
 import SlAlert from '@shoelace-style/shoelace/dist/components/alert/alert.component.js';
 import { BaseComponent } from '@shared/base-component';
 import { ToastsController } from './controller';
 
+@localized()
 @customElement('ca-toasts')
 export class Toasts extends BaseComponent<ToastsController> {
   @property({ attribute: 'selected-menu-item', type: String })
@@ -18,24 +19,19 @@ export class Toasts extends BaseComponent<ToastsController> {
     this.controller = new ToastsController(this);
   }
 
-  renderContent() {
+  render() {
     const toastDuration = this.controller.getToastDuration();
-    if (toastDuration === 0) {
-      return nothing;
-    }
 
     const toasts = this.controller.getToasts();
 
     for (const toast of toasts) {
-      const parameters = toast.parameters ?? {};
-
       const alert = Object.assign(document.createElement('sl-alert'), {
         variant: 'primary',
         closable: true,
         duration: toastDuration,
         innerHTML: `
           <sl-icon slot="icon" name="chat-left-dots"></sl-icon>
-          ${t(`events:${toast.event}:message`, { ns: 'ui', ...parameters })}
+          ${toast.messageText}
         `,
       });
 

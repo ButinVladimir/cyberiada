@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "target": "ES2022",
+    "target": "ES2023",
     "useDefineForClassFields": false,
-    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
     "types": ["reflect-metadata"],
     "module": "ESNext",
     "skipLibCheck": true,
@@ -22,7 +22,8 @@
       "@state/*": ["./src/state/*"],
       "@shared/*": ["./src/shared/*"],
       "@configs/*": ["./src/configs/*"],
-      "@workers/*": ["./src/workers/*"]
+      "@workers/*": ["./src/workers/*"],
+      "@texts/*": ["./src/texts/*"]
     },
 
     /* Linting */
