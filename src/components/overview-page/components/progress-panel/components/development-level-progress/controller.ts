@@ -1,22 +1,16 @@
 import { BaseController } from '@shared/base-controller';
 
 export class OverviewDevelopmentLevelProgressController extends BaseController {
-  getCurrentDevelopmentLevelPoints() {
-    const development = this.globalState.development;
+  getPrevDevelopmentLevelPoints() {
+    return this.globalState.development.getLevelRequirements(this.globalState.development.level - 1);
+  }
 
-    const currentPoints = development.points;
-    const prevLevelPoints = development.getLevelRequirements(development.level - 1);
-
-    return currentPoints - prevLevelPoints;
+  getCurrentDevelopmentPoints() {
+    return this.globalState.development.points;
   }
 
   getNextDevelopmentLevelPoints() {
-    const development = this.globalState.development;
-
-    const nextLevelPoints = development.getLevelRequirements(development.level);
-    const prevLevelPoints = development.getLevelRequirements(development.level - 1);
-
-    return nextLevelPoints - prevLevelPoints;
+    return this.globalState.development.getLevelRequirements(this.globalState.development.level);
   }
 
   getDevelopmentGrowth(): number {

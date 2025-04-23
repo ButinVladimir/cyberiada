@@ -3,6 +3,7 @@ import { localized, msg } from '@lit/localize';
 import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { FEATURES } from '@shared/constants';
+import { calculateLevelProgressPercentage } from '@shared/helpers';
 import { OverviewUnlockedFeaturesProgressController } from './controller';
 import { progressBlockStyle } from '../../styles';
 
@@ -28,7 +29,11 @@ export class OverviewUnlockedFeaturesProgress extends BaseComponent<OverviewUnlo
     const formattedCount = formatter.formatNumberDecimal(unlockedFeaturesCount);
     const formattedMaxCount = formatter.formatNumberDecimal(unlockedFeaturesMaxCount);
 
-    const unlockedFeaturesProgressBarValue = (unlockedFeaturesCount / unlockedFeaturesMaxCount) * 100;
+    const unlockedFeaturesProgressBarValue = calculateLevelProgressPercentage(
+      0,
+      unlockedFeaturesCount,
+      unlockedFeaturesMaxCount,
+    );
     const unlockedFeaturesProgressBarPercentage = `${formattedCount}/${formattedMaxCount}`;
 
     return html`

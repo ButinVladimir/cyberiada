@@ -1,4 +1,4 @@
-import { html, css } from 'lit';
+import { html, css, PropertyValues } from 'lit';
 import { localized, msg } from '@lit/localize';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { customElement } from 'lit/decorators.js';
@@ -40,6 +40,12 @@ export class MenuBarValues extends BaseComponent<MenuBarValuesController> {
     super();
 
     this.controller = new MenuBarValuesController(this, this.handlePartialUpdate);
+  }
+
+  updated(_changedProperties: PropertyValues) {
+    super.updated(_changedProperties);
+
+    this.handlePartialUpdate();
   }
 
   render() {

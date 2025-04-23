@@ -1,4 +1,4 @@
-import { css, html } from 'lit';
+import { css, html, PropertyValues } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { msg, localized } from '@lit/localize';
@@ -61,6 +61,12 @@ export class PurchaseCloneDialogButtons extends BaseComponent<PurchaseCloneDialo
     super();
 
     this.controller = new PurchaseCloneDialogController(this, this.handlePartialUpdate);
+  }
+
+  updated(_changedProperties: PropertyValues) {
+    super.updated(_changedProperties);
+
+    this.handlePartialUpdate();
   }
 
   render() {

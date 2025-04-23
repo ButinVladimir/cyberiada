@@ -136,7 +136,7 @@ export class CompanyClonesState implements ICompanyClonesState {
 
       this._clonesMap.delete(id);
 
-      this._messageLogState.postMessage(ClonesEvent.cloneDeleted, msg(str`Clone ${clone.name} has been deleted`));
+      this._messageLogState.postMessage(ClonesEvent.cloneDeleted, msg(str`Clone "${clone.name}" has been deleted`));
     }
 
     this.recalculateSynchronization();
@@ -154,7 +154,8 @@ export class CompanyClonesState implements ICompanyClonesState {
 
   processTick(): void {
     for (const clone of this._clonesList) {
-      clone.increaseExperience(1);
+      clone.increaseExperience(clone.level);
+      clone.recalculate();
     }
   }
 
@@ -250,7 +251,7 @@ export class CompanyClonesState implements ICompanyClonesState {
       this._messageLogState.postMessage(
         PurchaseEvent.clonePurchased,
         msg(
-          str`Clone ${clone.name} with template ${CLONE_TEMPLATE_TEXTS[clone.templateName].title()}, quality ${formattedQuality} and level ${formattedLevel} has been purchased`,
+          str`Clone "${clone.name}" with template "${CLONE_TEMPLATE_TEXTS[clone.templateName].title()}", quality ${formattedQuality} and level ${formattedLevel} has been purchased`,
         ),
       );
     };

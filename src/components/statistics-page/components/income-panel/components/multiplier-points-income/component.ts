@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html, PropertyValues } from 'lit';
 import { localized } from '@lit/localize';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { customElement, property } from 'lit/decorators.js';
@@ -27,6 +27,12 @@ export class StatisticsMultiplierPointsIncome extends BaseComponent<StatisticsMu
     super();
 
     this.controller = new StatisticsMultiplierPointsIncomeController(this, this.handlePartialUpdate);
+  }
+
+  updated(_changedProperties: PropertyValues) {
+    super.updated(_changedProperties);
+
+    this.handlePartialUpdate();
   }
 
   render() {

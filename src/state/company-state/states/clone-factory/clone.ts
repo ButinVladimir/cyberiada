@@ -1,5 +1,6 @@
+import { msg, str } from '@lit/localize';
 import cloneTemplates from '@configs/clone-templates.json';
-import { Attribute, Skill } from '@shared/types';
+import { Attribute, ClonesEvent, Skill } from '@shared/types';
 import { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import { EventBatcher } from '@shared/event-batcher';
 import { ATTRIBUTES, COMMON_UI_EVENTS, SKILLS } from '@shared/constants';
@@ -9,6 +10,9 @@ import {
   reverseGeometricProgressionSum,
 } from '@shared/helpers';
 import { ICompanyState } from '@state/company-state/interfaces/company-state';
+import { IGlobalState } from '@state/global-state/interfaces/global-state';
+import { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
+import { IFormatter } from '@shared/interfaces/formatter';
 import { IClone, IBaseCloneParameters, IMakeCloneParameters, ICloneParameterValues } from './interfaces';
 import { CloneTemplateName } from './types';
 import { ICloneTemplate } from './interfaces/clone-template';
@@ -18,7 +22,10 @@ export class Clone implements IClone {
   readonly uiEventBatcher: EventBatcher;
 
   private _companyState: ICompanyState;
+  private _globalState: IGlobalState;
+  private _messageLogState: IMessageLogState;
   private _stateUiConnector: IStateUIConnector;
+  private _formatter: IFormatter;
 
   private _id: string;
   private _name: string;
@@ -38,7 +45,10 @@ export class Clone implements IClone {
 
   constructor(parameters: IBaseCloneParameters) {
     this._companyState = parameters.companyState;
+    this._globalState = parameters.globalState;
+    this._messageLogState = parameters.messageLogState;
     this._stateUiConnector = parameters.stateUiConnector;
+    this._formatter = parameters.formatter;
 
     this._id = parameters.id;
     this._name = parameters.name;
@@ -76,7 +86,13 @@ export class Clone implements IClone {
   }
 
   set name(value: string) {
+    const oldName = this._name;
     this._name = value;
+
+    this._messageLogState.postMessage(
+      ClonesEvent.cloneRenamed,
+      msg(str`Clone "${oldName}" has been renamed to "${value}"`),
+    );
 
     this.uiEventBatcher.enqueueEvent(CLONES_UI_EVENTS.CLONE_CHANGED);
   }
@@ -241,10 +257,19 @@ export class Clone implements IClone {
 
     this._levelRecalculationRequested = false;
 
-    const newLevel = reverseGeometricProgressionSum(this._experience, this._template.levelRequirements);
+    const newLevel = Math.min(
+      reverseGeometricProgressionSum(this._experience, this._template.levelRequirements),
+      this._globalState.development.level,
+    );
 
     if (newLevel > this._level) {
       this._level = newLevel;
+      const formattedLevel = this._formatter.formatNumberDecimal(this._level);
+      this._messageLogState.postMessage(
+        ClonesEvent.cloneLevelReached,
+        msg(str`Clone "${this._name}" has reached level ${formattedLevel}`),
+      );
+
       this.requestParametersRecalculation();
       this.uiEventBatcher.enqueueEvent(CLONES_UI_EVENTS.CLONE_CHANGED);
     }

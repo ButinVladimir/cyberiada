@@ -1,4 +1,4 @@
-import { ICloneNameGeneratorResult } from '@/workers/clone-name-generator/interfaces';
+import { ICloneNameGeneratorResult } from '@workers/clone-name-generator/interfaces';
 import { BaseController } from '@shared/base-controller';
 import { CloneTemplateName } from '@state/company-state/states/clone-factory/types';
 

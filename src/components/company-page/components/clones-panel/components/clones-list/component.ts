@@ -1,6 +1,6 @@
 import { css, html } from 'lit';
 import { localized, msg } from '@lit/localize';
-import { customElement } from 'lit/decorators.js';
+import { customElement, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { BaseComponent } from '@shared/base-component';
 import { SortableElementMovedEvent } from '@components/shared/sortable-list/events/sortable-element-moved';
@@ -10,8 +10,10 @@ import {
   ConfirmationAlertOpenEvent,
   ConfirmationAlertSubmitEvent,
 } from '@components/game-screen/components/confirmation-alert/events';
+import { AUTOUPGRADE_VALUES, DELETE_VALUES, TOGGLE_DETAILS_VALUES } from '@shared/styles';
+import { IClone } from '@state/company-state/states/clone-factory/interfaces/clone';
 import { ClonesListController } from './controller';
-import { IClone } from '@/state/company-state';
+import { CLONE_LIST_ITEMS_GAP } from './constants';
 
 @localized()
 @customElement('ca-clones-list')
@@ -51,13 +53,12 @@ export class ClonesList extends BaseComponent<ClonesListController> {
       justify-content: center;
       gap: var(--sl-spacing-medium);
     }
-
-    ca-sortable-list ca-owned-programs-list-item.dragged {
-      background-color: var(--ca-dragged-color);
-    }
   `;
 
   protected controller: ClonesListController;
+
+  @state()
+  private _detailsVisible = false;
 
   constructor() {
     super();
@@ -78,29 +79,50 @@ export class ClonesList extends BaseComponent<ClonesListController> {
   }
 
   render() {
+    const toggleDetailsLabel = this._detailsVisible ? COMMON_TEXTS.hideDetails() : COMMON_TEXTS.showDetails();
+    const toggleDetailsIcon = this._detailsVisible
+      ? TOGGLE_DETAILS_VALUES.icon.enabled
+      : TOGGLE_DETAILS_VALUES.icon.disabled;
+    const toggleDetailsVariant = this._detailsVisible
+      ? TOGGLE_DETAILS_VALUES.buttonVariant.enabled
+      : TOGGLE_DETAILS_VALUES.buttonVariant.disabled;
+
     const isAutoupgradeActive = this.checkSomeClonesAutoupgradeActive();
 
     const autoupgradeLabel = isAutoupgradeActive
       ? COMMON_TEXTS.disableAutoupgradeAll()
       : COMMON_TEXTS.enableAutoupgradeAll();
-    const autoupgradeVariant = isAutoupgradeActive ? 'neutral' : 'default';
+    const autoupgradeIcon = isAutoupgradeActive ? AUTOUPGRADE_VALUES.icon.enabled : AUTOUPGRADE_VALUES.icon.disabled;
+    const autoupgradeVariant = isAutoupgradeActive
+      ? AUTOUPGRADE_VALUES.buttonVariant.enabled
+      : AUTOUPGRADE_VALUES.buttonVariant.disabled;
 
     const clones = this.controller.listClones();
 
     return html`
       <div class="header">
+        <sl-button variant=${toggleDetailsVariant} size="medium" @click=${this.handleToggleDetails}>
+          <sl-icon slot="prefix" name=${toggleDetailsIcon}></sl-icon>
+
+          ${toggleDetailsLabel}
+        </sl-button>
+
         <sl-button variant=${autoupgradeVariant} size="medium" @click=${this.handleToggleAutoupgrade}>
+          <sl-icon slot="prefix" name=${autoupgradeIcon}></sl-icon>
+
           ${autoupgradeLabel}
         </sl-button>
 
-        <sl-button variant="danger" size="medium" @click=${this.handleOpenDeleteAllClonesDialog}>
+        <sl-button variant=${DELETE_VALUES.buttonVariant} size="medium" @click=${this.handleOpenDeleteAllClonesDialog}>
+          <sl-icon slot="prefix" name=${DELETE_VALUES.icon}></sl-icon>
+
           ${msg('Delete all clones')}
         </sl-button>
       </div>
 
       ${clones.length > 0
         ? html`
-            <ca-sortable-list @sortable-element-moved=${this.handleMoveClone}>
+            <ca-sortable-list gap=${CLONE_LIST_ITEMS_GAP} @sortable-element-moved=${this.handleMoveClone}>
               ${repeat(clones, (program) => program.name, this.renderClone)}
             </ca-sortable-list>
           `
@@ -113,12 +135,18 @@ export class ClonesList extends BaseComponent<ClonesListController> {
   };
 
   private renderClone = (clone: IClone) => {
-    return html`
-      <sl-card>
-        <span slot="header">${clone.name}</span>
-        ${clone.id}
-      </sl-card>
-    `;
+    return html`<ca-clones-list-item
+      clone-id=${clone.id}
+      data-drag-id=${clone.id}
+      ?details-visible=${this._detailsVisible}
+    ></ca-clones-list-item>`;
+  };
+
+  private handleToggleDetails = (event: Event) => {
+    event.stopPropagation();
+    event.preventDefault();
+
+    this._detailsVisible = !this._detailsVisible;
   };
 
   private checkSomeClonesAutoupgradeActive(): boolean {
@@ -140,6 +168,8 @@ export class ClonesList extends BaseComponent<ClonesListController> {
     event.stopPropagation();
     event.preventDefault();
 
+    console.log(`Move ${event.keyName} to ${event.position}`);
+
     this.controller.moveClone(event.keyName, event.position);
   };
 
@@ -150,7 +180,7 @@ export class ClonesList extends BaseComponent<ClonesListController> {
     this.dispatchEvent(
       new ConfirmationAlertOpenEvent(
         CloneAlert.deleteAllClones,
-        msg('Are you sure want to delete all clones? Their progress will be lost.'),
+        msg('Are you sure want to delete all clones? Their progress will be lost and their actions will be cancelled.'),
       ),
     );
   };

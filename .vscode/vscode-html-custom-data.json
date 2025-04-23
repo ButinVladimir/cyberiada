@@ -107,7 +107,7 @@
     },
     {
       "name": "ca-company-clones-panel",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_isPurchaseCloneDialogOpen` {`boolean`} - \n\n  * `handlePurchaseCloneDialogOpen` - \n\n  * `handlePurchaseCloneDialogClose` - \n\n  * `controller` {`ClonesPanelController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_isPurchaseCloneDialogOpen` {`boolean`} - \n\n  * `_cloneListItemDialogOpen` {`boolean`} - \n\n  * `_cloneListItemDialog` {`\"rename-clone\" | undefined`} - \n\n  * `_cloneListItemDialogCloneId` {`string | undefined`} - \n\n  * `handlePurchaseCloneDialogOpen` - \n\n  * `handlePurchaseCloneDialogClose` - \n\n  * `handleCloneListItemDialogOpen` - \n\n  * `handleCloneListItemDialogClose` - \n\n  * `controller` {`ClonesPanelController`} - ",
       "attributes": []
     },
     {
@@ -129,8 +129,58 @@
       ]
     },
     {
+      "name": "ca-clones-list-item-attributes",
+      "description": "Attributes:\n\n  * `clone-id` {`string`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `cloneId` {`string`} - \n\n  * `renderAttribute` - \n\n  * `controller` {`ClonesListItemAttributesController`} - ",
+      "attributes": [
+        {
+          "name": "clone-id",
+          "description": "`clone-id` {`string`} - \n\nProperty: cloneId"
+        }
+      ]
+    },
+    {
+      "name": "ca-clones-list-item-experience",
+      "description": "Attributes:\n\n  * `clone-id` {`string`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `cloneId` {`string`} - \n\n  * `_progressBarRef` {`Ref<SlProgressBar>`} - \n\n  * `_hintRef` {`Ref<HTMLParagraphElement>`} - \n\n  * `handlePartialUpdate` - \n\n  * `controller` {`ClonesListItemExperienceController`} - ",
+      "attributes": [
+        {
+          "name": "clone-id",
+          "description": "`clone-id` {`string`} - \n\nProperty: cloneId"
+        }
+      ]
+    },
+    {
+      "name": "ca-clones-list-item-skills",
+      "description": "Attributes:\n\n  * `clone-id` {`string`} - \n\n  * `details-visible` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `cloneId` {`string`} - \n\n  * `detailsVisible` {`boolean`} - \n\n  * `renderSkill` - \n\n  * `controller` {`ClonesListItemSkillsController`} - ",
+      "attributes": [
+        {
+          "name": "clone-id",
+          "description": "`clone-id` {`string`} - \n\nProperty: cloneId"
+        },
+        {
+          "name": "details-visible",
+          "description": "`details-visible` {`boolean`} - \n\nProperty: detailsVisible\n\nDefault: false",
+          "valueSet": "v"
+        }
+      ]
+    },
+    {
+      "name": "ca-clones-list-item",
+      "description": "Attributes:\n\n  * `clone-id` {`string`} - \n\n  * `details-visible` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `cloneId` {`string`} - \n\n  * `detailsVisible` {`boolean`} - \n\n  * `_menuVisible` {`boolean`} - \n\n  * `handleToggleAutoUpgrade` - \n\n  * `handleDragStart` - \n\n  * `handleToggleMenu` - \n\n  * `handleHideMenu` - \n\n  * `handleOpenDeleteCloneDialog` - \n\n  * `handleConfirmDeleteCloneDialog` - \n\n  * `handleOpenRenameCloneDialog` - \n\n  * `controller` {`ClonesListItemController`} - ",
+      "attributes": [
+        {
+          "name": "clone-id",
+          "description": "`clone-id` {`string`} - \n\nProperty: cloneId"
+        },
+        {
+          "name": "details-visible",
+          "description": "`details-visible` {`boolean`} - \n\nProperty: detailsVisible\n\nDefault: false",
+          "valueSet": "v"
+        }
+      ]
+    },
+    {
       "name": "ca-clones-list",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderEmptyListNotification` - \n\n  * `renderClone` - \n\n  * `handleToggleAutoupgrade` - \n\n  * `handleMoveClone` - \n\n  * `handleOpenDeleteAllClonesDialog` - \n\n  * `handleConfirmDeleteAllClonesDialog` - \n\n  * `controller` {`ClonesListController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_detailsVisible` {`boolean`} - \n\n  * `renderEmptyListNotification` - \n\n  * `renderClone` - \n\n  * `handleToggleDetails` - \n\n  * `handleToggleAutoupgrade` - \n\n  * `handleMoveClone` - \n\n  * `handleOpenDeleteAllClonesDialog` - \n\n  * `handleConfirmDeleteAllClonesDialog` - \n\n  * `controller` {`ClonesListController`} - ",
       "attributes": []
     },
     {
@@ -163,6 +213,22 @@
           "name": "is-open",
           "description": "`is-open` {`boolean`} - \n\nProperty: isOpen\n\nDefault: false",
           "valueSet": "v"
+        }
+      ]
+    },
+    {
+      "name": "ca-rename-clone-dialog",
+      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\n  * `clone-id` {`string | undefined`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `cloneId` {`string | undefined`} - \n\n  * `_newName` {`string`} - \n\n  * `_newNameInputRef` {`Ref<SlInput>`} - \n\n  * `handleClose` - \n\n  * `handleNewNameChange` - \n\n  * `handleGenerateName` - \n\n  * `handleSubmit` - \n\n  * `controller` {`RenameCloneDialogController`} - ",
+      "attributes": [
+        {
+          "name": "is-open",
+          "description": "`is-open` {`boolean`} - \n\nProperty: isOpen\n\nDefault: false",
+          "valueSet": "v"
+        },
+        {
+          "name": "clone-id",
+          "description": "`clone-id` {`string | undefined`} - \n\nProperty: cloneId",
+          "values": []
         }
       ]
     },

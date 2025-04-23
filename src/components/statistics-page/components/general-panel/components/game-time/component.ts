@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html, PropertyValues } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { msg, localized } from '@lit/localize';
 import { customElement } from 'lit/decorators.js';
@@ -20,6 +20,12 @@ export class StatisticsGameTime extends BaseComponent<StatisticsGameTimeControll
     super();
 
     this.controller = new StatisticsGameTimeController(this, this.handlePartialUpdate);
+  }
+
+  updated(_changedProperties: PropertyValues) {
+    super.updated(_changedProperties);
+
+    this.handlePartialUpdate();
   }
 
   render() {

@@ -4,7 +4,14 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { BaseComponent } from '@shared/base-component';
 import { OtherProgramName, type ProgramName } from '@state/mainframe-state/states/progam-factory/types';
-import { AUTOUPGRADE_VALUES, DESCRIPTION_ICONS, SCREEN_WIDTH_POINTS, hintIconStyle } from '@shared/styles';
+import {
+  AUTOUPGRADE_VALUES,
+  DESCRIPTION_ICONS,
+  SCREEN_WIDTH_POINTS,
+  UPGRADE_MAX_VALUES,
+  dragIconStyle,
+  hintIconStyle,
+} from '@shared/styles';
 import { COMMON_TEXTS } from '@texts/common';
 import { PROGRAM_TEXTS } from '@texts/programs';
 import { OwnedProgramsListItemController } from './controller';
@@ -14,6 +21,7 @@ import { OwnedProgramsListItemController } from './controller';
 export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemController> {
   static styles = [
     hintIconStyle,
+    dragIconStyle,
     css`
       :host {
         display: grid;
@@ -45,20 +53,13 @@ export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemCo
         justify-content: flex-start;
       }
 
-      sl-icon[name='grip-vertical'] {
-        position: relative;
-        top: 0.2em;
-        color: var(--ca-hint-color);
-        font-size: var(--sl-font-size-large);
-      }
-
       .program-title {
         cursor: grab;
       }
 
-      .program-title sl-icon-button#description-button {
+      .program-title sl-icon-button.description-button {
         position: relative;
-        top: 3px;
+        top: 0.25rem;
       }
 
       .program-description {
@@ -162,7 +163,7 @@ export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemCo
 
             <sl-icon-button
               name=${descriptionButtonName}
-              id="description-button"
+              class="description-button"
               @click=${this.handleToggleDescription}
             >
             </sl-icon-button>
@@ -174,20 +175,24 @@ export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemCo
         </div>
       </div>
 
-      <div class="mobile">${COMMON_TEXTS.level()}</div>
+      <div class="mobile">${COMMON_TEXTS.levelValue(formattedLevel)}</div>
 
       <div class="desktop">${formattedLevel}</div>
 
-      <div class="mobile">${COMMON_TEXTS.quality()}</div>
+      <div class="mobile">${COMMON_TEXTS.qualityValue(formattedQuality)}</div>
 
       <div class="desktop">${formattedQuality}</div>
 
       <div class="buttons mobile">
-        <sl-button variant="default" size="medium" @click=${this.handleUpgradeMax}>
+        <sl-button variant=${UPGRADE_MAX_VALUES.buttonVariant} size="medium" @click=${this.handleUpgradeMax}>
+          <sl-icon slot="prefix" name=${UPGRADE_MAX_VALUES.icon}> </sl-icon>
+
           ${COMMON_TEXTS.upgrade()}
         </sl-button>
 
         <sl-button variant=${autoupgradeVariant} size="medium" @click=${this.handleToggleAutoUpgrade}>
+          <sl-icon slot="prefix" name=${autoupgradeIcon}> </sl-icon>
+
           ${autoupgradeLabel}
         </sl-button>
       </div>
@@ -196,7 +201,11 @@ export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemCo
         <sl-tooltip>
           <span slot="content"> ${COMMON_TEXTS.upgrade()} </span>
 
-          <sl-icon-button name="chevron-double-up" label=${COMMON_TEXTS.upgrade()} @click=${this.handleUpgradeMax}>
+          <sl-icon-button
+            name=${UPGRADE_MAX_VALUES.icon}
+            label=${COMMON_TEXTS.upgrade()}
+            @click=${this.handleUpgradeMax}
+          >
           </sl-icon-button>
         </sl-tooltip>
 

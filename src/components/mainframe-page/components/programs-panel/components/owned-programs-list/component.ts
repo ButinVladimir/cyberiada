@@ -6,7 +6,7 @@ import { BaseComponent } from '@shared/base-component';
 import { IProgram } from '@state/mainframe-state/states/progam-factory/interfaces/program';
 import { ProgramName } from '@state/mainframe-state/states/progam-factory/types';
 import { SortableElementMovedEvent } from '@components/shared/sortable-list/events/sortable-element-moved';
-import { AUTOUPGRADE_VALUES, SCREEN_WIDTH_POINTS } from '@shared/styles';
+import { AUTOUPGRADE_VALUES, SCREEN_WIDTH_POINTS, UPGRADE_MAX_VALUES } from '@shared/styles';
 import { COMMON_TEXTS } from '@texts/common';
 import { OwnedProgramsListController } from './controller';
 
@@ -138,7 +138,7 @@ export class OwnedProgramsList extends BaseComponent<OwnedProgramsListController
             <span slot="content"> ${upgradeAllProgramsLabel} </span>
 
             <sl-icon-button
-              name="chevron-double-up"
+              name=${UPGRADE_MAX_VALUES.icon}
               label=${upgradeAllProgramsLabel}
               @click=${this.handleUpgradeMaxAllPrograms}
             >
@@ -154,11 +154,19 @@ export class OwnedProgramsList extends BaseComponent<OwnedProgramsListController
         </div>
 
         <div class="buttons mobile">
-          <sl-button variant="default" size="medium" @click=${this.handleUpgradeMaxAllPrograms}>
+          <sl-button
+            variant=${UPGRADE_MAX_VALUES.buttonVariant}
+            size="medium"
+            @click=${this.handleUpgradeMaxAllPrograms}
+          >
+            <sl-icon slot="prefix" name=${UPGRADE_MAX_VALUES.icon}> </sl-icon>
+
             ${upgradeAllProgramsLabel}
           </sl-button>
 
           <sl-button variant=${autoupgradeVariant} size="medium" @click=${this.handleToggleAutoupgrade}>
+            <sl-icon slot="prefix" name=${autoupgradeIcon}> </sl-icon>
+
             ${autoupgradeLabel}
           </sl-button>
         </div>

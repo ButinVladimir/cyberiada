@@ -1,4 +1,4 @@
-import { css, html, nothing } from 'lit';
+import { css, html, nothing, PropertyValues } from 'lit';
 import { msg, localized } from '@lit/localize';
 import { customElement, property, queryAll } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
@@ -55,6 +55,12 @@ export class ProcessDescriptionText extends BaseComponent<ProcessDescriptionText
     super();
 
     this.controller = new ProcessDescriptionTextController(this, this.handlePartialUpdate);
+  }
+
+  updated(_changedProperties: PropertyValues) {
+    super.updated(_changedProperties);
+
+    this.handlePartialUpdate();
   }
 
   render() {

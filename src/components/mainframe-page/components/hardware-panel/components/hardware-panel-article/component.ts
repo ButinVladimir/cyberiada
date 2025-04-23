@@ -3,7 +3,7 @@ import { localized } from '@lit/localize';
 import { customElement, property } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import type { MainframeHardwareParameterType } from '@state/mainframe-state/states/mainframe-hardware-state/types';
-import { hintStyle, sectionTitleStyle, SCREEN_WIDTH_POINTS, AUTOUPGRADE_VALUES } from '@shared/styles';
+import { hintStyle, sectionTitleStyle, SCREEN_WIDTH_POINTS, AUTOUPGRADE_VALUES, dragIconStyle } from '@shared/styles';
 import { COMMON_TEXTS } from '@texts/common';
 import { MainframeHardwarePanelArticleController } from './controller';
 import { MAINFRAME_HARDWARE_TEXTS } from './constants';
@@ -14,6 +14,7 @@ export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwa
   static styles = [
     hintStyle,
     sectionTitleStyle,
+    dragIconStyle,
     css`
       :host {
         width: 100%;
@@ -56,14 +57,11 @@ export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwa
       #toggle-autoupgrade-btn {
         position: relative;
         top: 0.15em;
-        font-size: var(--sl-font-size-large);
       }
 
-      #drag-icon {
-        position: relative;
+      sl-icon[name='grip-vertical'] {
         top: 0.15em;
         left: -0.2em;
-        color: var(--ca-hint-color);
       }
 
       @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {

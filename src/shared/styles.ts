@@ -133,3 +133,48 @@ export const AUTOUPGRADE_VALUES: {
     disabled: 'default',
   },
 };
+
+export const DELETE_VALUES: {
+  icon: string;
+  buttonVariant: 'danger';
+} = {
+  icon: 'x-lg',
+  buttonVariant: 'danger',
+};
+
+export const UPGRADE_MAX_VALUES: {
+  icon: string;
+  buttonVariant: 'default';
+} = {
+  icon: 'chevron-double-up',
+  buttonVariant: 'default',
+};
+
+export const dragIconStyle = css`
+  sl-icon[name='grip-vertical'] {
+    position: relative;
+    top: 0.2em;
+    color: var(--ca-hint-color);
+    font-size: var(--sl-font-size-large);
+  }
+`;
+
+export const TOGGLE_DETAILS_VALUES: {
+  icon: {
+    enabled: string;
+    disabled: string;
+  };
+  buttonVariant: {
+    enabled: 'neutral';
+    disabled: 'default';
+  };
+} = {
+  icon: {
+    enabled: 'eye',
+    disabled: 'eye-slash',
+  },
+  buttonVariant: {
+    enabled: 'neutral',
+    disabled: 'default',
+  },
+};

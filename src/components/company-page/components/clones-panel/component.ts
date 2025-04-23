@@ -4,6 +4,9 @@ import { customElement, state } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { hintStyle, SCREEN_WIDTH_POINTS } from '@shared/styles';
 import { ClonesPanelController } from './controller';
+import { type CloneListItemDialog } from './type';
+import { choose } from 'lit/directives/choose.js';
+import { CloseCloneListItemDialogEvent, OpenCloneListItemDialogEvent } from './events';
 
 @localized()
 @customElement('ca-company-clones-panel')
@@ -57,6 +60,15 @@ export class CompanyClonesPanel extends BaseComponent<ClonesPanelController> {
 
   protected controller: ClonesPanelController;
 
+  @state()
+  private _cloneListItemDialogOpen = false;
+
+  @state()
+  private _cloneListItemDialog?: CloneListItemDialog;
+
+  @state()
+  private _cloneListItemDialogCloneId?: string;
+
   constructor() {
     super();
 
@@ -72,7 +84,8 @@ export class CompanyClonesPanel extends BaseComponent<ClonesPanelController> {
     return html`
       <p class="hint">
         ${msg(`Clone autoupgrade priority can be changed by dragging it by the name.
-Clones on top have higher priority.`)}
+Clones on top have higher priority.
+Clones cannot have level above current development level but they can store excessive experience.`)}
       </p>
 
       <div class="top-container">
@@ -87,12 +100,26 @@ Clones on top have higher priority.`)}
         </div>
       </div>
 
-      <ca-clones-list></ca-clones-list>
+      <ca-clones-list @open-clone-list-item-dialog=${this.handleCloneListItemDialogOpen}></ca-clones-list>
 
       <ca-purchase-clone-dialog
         ?is-open=${this._isPurchaseCloneDialogOpen}
         @purchase-clone-dialog-close=${this.handlePurchaseCloneDialogClose}
       ></ca-purchase-clone-dialog>
+
+      ${this._cloneListItemDialogCloneId &&
+      choose(this._cloneListItemDialog, [
+        [
+          'rename-clone',
+          () => html`
+            <ca-rename-clone-dialog
+              clone-id=${this._cloneListItemDialogCloneId!}
+              ?is-open=${this._cloneListItemDialogOpen}
+              @close-clone-list-item-dialog=${this.handleCloneListItemDialogClose}
+            ></ca-rename-clone-dialog>
+          `,
+        ],
+      ])}
     `;
   }
 
@@ -108,5 +135,21 @@ Clones on top have higher priority.`)}
     event.stopPropagation();
 
     this._isPurchaseCloneDialogOpen = false;
+  };
+
+  private handleCloneListItemDialogOpen = (event: OpenCloneListItemDialogEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    this._cloneListItemDialogOpen = true;
+    this._cloneListItemDialogCloneId = event.cloneId;
+    this._cloneListItemDialog = event.dialog;
+  };
+
+  private handleCloneListItemDialogClose = (event: CloseCloneListItemDialogEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    this._cloneListItemDialogOpen = false;
   };
 }

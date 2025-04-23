@@ -14,14 +14,20 @@ export const COMMON_TEXTS = {
   disableAutoupgradeAll: () => msg('Disable autoupgrade for all'),
   showDescription: () => msg('Show description'),
   hideDescription: () => msg('Hide description'),
+  showDetails: () => msg('Show details'),
+  hideDetails: () => msg('Hide details'),
   upgrade: () => msg('Upgrade'),
   upgradeAll: () => msg('Upgrade all'),
   level: () => msg('Level'),
+  levelValue: (level: string) => msg(str`Level: ${level}`),
   quality: () => msg('Quality'),
+  qualityValue: (quality: string) => msg(str`Quality: ${quality}`),
   cancel: () => msg('Cancel'),
   continue: () => msg('Continue'),
   close: () => msg('Close'),
   purchase: (cost: string) => msg(str`Purchase for ${cost}`),
+  percentage: (value: string) => msg(str`${value}%`),
+  menu: () => msg('Menu'),
 };
 
 export const CATEGORY_TEXTS: Record<ItemCategory, () => string> = {

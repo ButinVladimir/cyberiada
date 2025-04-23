@@ -7,7 +7,7 @@ import {
   ConfirmationAlertSubmitEvent,
 } from '@components/game-screen/components/confirmation-alert/events';
 import { GameStateAlert } from '@shared/types';
-import { pageTitleStyle } from '@shared/styles';
+import { DELETE_VALUES, pageTitleStyle } from '@shared/styles';
 import { MessageLogBarController } from './controller';
 
 @localized()
@@ -58,7 +58,14 @@ export class MessageLogPage extends BaseComponent<MessageLogBarController> {
       <h3 class="title">${msg('Message log')}</h3>
 
       <div>
-        <sl-button id="clear-button" variant="danger" size="medium" @click=${this.handleOpenClearMessagesDialog}>
+        <sl-button
+          id="clear-button"
+          variant=${DELETE_VALUES.buttonVariant}
+          size="medium"
+          @click=${this.handleOpenClearMessagesDialog}
+        >
+          <sl-icon slot="prefix" name=${DELETE_VALUES.icon}></sl-icon>
+
           ${msg('Clear messages')}
         </sl-button>
       </div>

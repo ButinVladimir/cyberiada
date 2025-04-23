@@ -62,6 +62,8 @@ export enum ProgramsEvent {
 export enum ClonesEvent {
   cloneDeleted = 'cloneDeleted',
   allClonesDeleted = 'allClonesDeleted',
+  cloneLevelReached = 'cloneLevelReached',
+  cloneRenamed = 'cloneRenamed',
 }
 
 export type MessageEvent = GameStateEvent | PurchaseEvent | ProgramsEvent | ClonesEvent;

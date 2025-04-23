@@ -98,3 +98,24 @@ export function removeElementsFromArray<T>(array: T[], fromIndex: number, count:
 export function capitalizeFirstLetter(text: string) {
   return text.charAt(0).toUpperCase() + text.slice(1);
 }
+
+export function calculateLevelProgressPercentage(
+  basePoints: number,
+  currentPoints: number,
+  nextLevelPoints: number,
+): number {
+  const currentDistance = currentPoints - basePoints;
+  const nextLevelDistance = nextLevelPoints - basePoints;
+
+  const percentage = (currentDistance / nextLevelDistance) * 100;
+
+  if (percentage < 0) {
+    return 0;
+  }
+
+  if (percentage > 100) {
+    return 100;
+  }
+
+  return percentage;
+}

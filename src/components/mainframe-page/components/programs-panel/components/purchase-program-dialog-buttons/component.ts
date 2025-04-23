@@ -1,4 +1,4 @@
-import { css, html } from 'lit';
+import { css, html, PropertyValues } from 'lit';
 import { localized, msg, str } from '@lit/localize';
 import { customElement, property } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
@@ -55,6 +55,12 @@ export class PurchaseProgramDialogButtons extends BaseComponent<PurchaseProgramD
     super();
 
     this.controller = new PurchaseProgramDialogButtonsController(this, this.handlePartialUpdate);
+  }
+
+  updated(_changedProperties: PropertyValues) {
+    super.updated(_changedProperties);
+
+    this.handlePartialUpdate();
   }
 
   render() {

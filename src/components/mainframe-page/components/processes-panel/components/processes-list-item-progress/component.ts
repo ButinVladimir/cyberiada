@@ -1,10 +1,12 @@
-import { css, html, nothing } from 'lit';
+import { css, html, nothing, PropertyValues } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import SlProgressBar from '@shoelace-style/shoelace/dist/components/progress-bar/progress-bar.component.js';
 import { BaseComponent } from '@shared/base-component';
 import { hintStyle } from '@shared/styles';
 import { ProgramName, OtherProgramName } from '@state/mainframe-state/states/progam-factory/types';
+import { calculateLevelProgressPercentage } from '@shared/helpers';
+import { COMMON_TEXTS } from '@texts/common';
 import { ProcessesListItemProgressController } from './controller';
 import { localized, msg, str } from '@lit/localize';
 
@@ -42,6 +44,12 @@ export class ProcessesListItemProgressColumn extends BaseComponent<ProcessesList
     this.controller = new ProcessesListItemProgressController(this, this.handlePartialUpdate);
   }
 
+  updated(_changedProperties: PropertyValues) {
+    super.updated(_changedProperties);
+
+    this.handlePartialUpdate();
+  }
+
   render() {
     const process = this.controller.getProcess(this.programName as ProgramName);
 
@@ -71,8 +79,12 @@ export class ProcessesListItemProgressColumn extends BaseComponent<ProcessesList
     const processCompletionDelta = process.calculateCompletionDelta(1);
 
     if (this._progressBarRef.value) {
-      const progressBarValue = (process.currentCompletionPoints / process.maxCompletionPoints) * 100;
-      const progressBarPercentage = `${formatter.formatNumberFloat(progressBarValue)}%`;
+      const progressBarValue = calculateLevelProgressPercentage(
+        0,
+        process.currentCompletionPoints,
+        process.maxCompletionPoints,
+      );
+      const progressBarPercentage = COMMON_TEXTS.percentage(formatter.formatNumberFloat(progressBarValue));
 
       this._progressBarRef.value.value = progressBarValue;
       this._progressBarRef.value.textContent = progressBarPercentage;

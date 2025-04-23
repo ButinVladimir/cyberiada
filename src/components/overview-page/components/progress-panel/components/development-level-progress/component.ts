@@ -5,6 +5,8 @@ import { customElement } from 'lit/decorators.js';
 import SlProgressBar from '@shoelace-style/shoelace/dist/components/progress-bar/progress-bar.component.js';
 import { BaseComponent } from '@shared/base-component';
 import { hintStyle } from '@shared/styles';
+import { calculateLevelProgressPercentage } from '@shared/helpers';
+import { COMMON_TEXTS } from '@texts/common';
 import { OverviewDevelopmentLevelProgressController } from './controller';
 import { progressBlockStyle } from '../../styles';
 
@@ -55,12 +57,14 @@ export class OverviewDevelopmentLevelProgress extends BaseComponent<OverviewDeve
     const formatter = this.controller.formatter;
 
     if (this._progressBarRef.value) {
-      const currentDevelopmentLevelPoints = this.controller.getCurrentDevelopmentLevelPoints();
-      const nextDevelopmentLevelPoints = this.controller.getNextDevelopmentLevelPoints();
-
-      const nextDevelopmentLevelProgressBarValue =
-        Math.max(currentDevelopmentLevelPoints / nextDevelopmentLevelPoints, 0) * 100;
-      const nextDevelopmentLevelProgressBarPercentage = `${formatter.formatNumberFloat(nextDevelopmentLevelProgressBarValue)}%`;
+      const nextDevelopmentLevelProgressBarValue = calculateLevelProgressPercentage(
+        this.controller.getPrevDevelopmentLevelPoints(),
+        this.controller.getCurrentDevelopmentPoints(),
+        this.controller.getNextDevelopmentLevelPoints(),
+      );
+      const nextDevelopmentLevelProgressBarPercentage = COMMON_TEXTS.percentage(
+        formatter.formatNumberFloat(nextDevelopmentLevelProgressBarValue),
+      );
 
       this._progressBarRef.value.value = nextDevelopmentLevelProgressBarValue;
       this._progressBarRef.value.textContent = nextDevelopmentLevelProgressBarPercentage;

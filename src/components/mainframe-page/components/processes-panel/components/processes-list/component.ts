@@ -10,7 +10,7 @@ import {
 } from '@components/game-screen/components/confirmation-alert/events';
 import { IProcess } from '@state/mainframe-state/states/mainframe-processes-state/interfaces/process';
 import { ProgramName } from '@state/mainframe-state/states/progam-factory/types';
-import { ENTITY_ACTIVE_VALUES, SCREEN_WIDTH_POINTS } from '@shared/styles';
+import { DELETE_VALUES, ENTITY_ACTIVE_VALUES, SCREEN_WIDTH_POINTS } from '@shared/styles';
 import { SortableElementMovedEvent } from '@components/shared/sortable-list/events/sortable-element-moved';
 import { ProcessesListController } from './controller';
 
@@ -168,7 +168,7 @@ export class ProcessesList extends BaseComponent<ProcessesListController> {
 
             <sl-icon-button
               id="delete-btn"
-              name="x-lg"
+              name=${DELETE_VALUES.icon}
               label=${deleteAllProcessLabel}
               @click=${this.handleOpenDeleteAllProcessesDialog}
             >
@@ -178,10 +178,17 @@ export class ProcessesList extends BaseComponent<ProcessesListController> {
 
         <div class="buttons mobile">
           <sl-button variant=${toggleProcessesVariant} size="medium" @click=${this.handleToggleAllProcesses}>
+            <sl-icon slot="prefix" name=${toggleProcessesIcon}></sl-icon>
+
             ${toggleProcessesLabel}
           </sl-button>
 
-          <sl-button variant="danger" size="medium" @click=${this.handleOpenDeleteAllProcessesDialog}>
+          <sl-button
+            variant=${DELETE_VALUES.buttonVariant}
+            size="medium"
+            @click=${this.handleOpenDeleteAllProcessesDialog}
+          >
+            <sl-icon slot="prefix" name=${DELETE_VALUES.icon}> </sl-icon>
             ${deleteAllProcessLabel}
           </sl-button>
         </div>

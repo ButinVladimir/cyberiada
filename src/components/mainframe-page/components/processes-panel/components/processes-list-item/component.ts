@@ -9,7 +9,14 @@ import {
 } from '@components/game-screen/components/confirmation-alert/events';
 import { ProgramAlert } from '@shared/types';
 import * as types from '@state/mainframe-state/states/progam-factory/types';
-import { DESCRIPTION_ICONS, ENTITY_ACTIVE_VALUES, SCREEN_WIDTH_POINTS, hintIconStyle } from '@shared/styles';
+import {
+  DELETE_VALUES,
+  DESCRIPTION_ICONS,
+  ENTITY_ACTIVE_VALUES,
+  SCREEN_WIDTH_POINTS,
+  dragIconStyle,
+  hintIconStyle,
+} from '@shared/styles';
 import { type ProgramName } from '@state/mainframe-state/states/progam-factory/types';
 import { COMMON_TEXTS, PROGRAM_TEXTS } from '@texts/index';
 import { ProcessesListItemController } from './controller';
@@ -19,6 +26,7 @@ import { ProcessesListItemController } from './controller';
 export class ProcessesListItem extends BaseComponent<ProcessesListItemController> {
   static styles = [
     hintIconStyle,
+    dragIconStyle,
     css`
       :host {
         display: grid;
@@ -68,13 +76,6 @@ export class ProcessesListItem extends BaseComponent<ProcessesListItemController
         justify-content: flex-start;
       }
 
-      sl-icon[name='grip-vertical'] {
-        position: relative;
-        top: 0.2em;
-        color: var(--ca-hint-color);
-        font-size: var(--sl-font-size-large);
-      }
-
       #delete-btn::part(base):hover {
         color: var(--sl-color-danger-600);
       }
@@ -83,9 +84,9 @@ export class ProcessesListItem extends BaseComponent<ProcessesListItemController
         cursor: grab;
       }
 
-      .program-title sl-icon-button#description-button {
+      .program-title sl-icon-button.description-button {
         position: relative;
-        top: 3px;
+        top: 0.25rem;
       }
 
       .program-description {
@@ -204,7 +205,7 @@ export class ProcessesListItem extends BaseComponent<ProcessesListItemController
 
             <sl-icon-button
               name=${descriptionButtonName}
-              id="description-button"
+              class="description-button"
               @click=${this.handleToggleDescription}
             >
             </sl-icon-button>
@@ -226,10 +227,14 @@ export class ProcessesListItem extends BaseComponent<ProcessesListItemController
 
       <div class="buttons mobile">
         <sl-button variant=${toggleVariant} size="medium" @click=${this.handleToggleProcess}>
+          <sl-icon slot="prefix" name=${toggleIcon}></sl-icon>
+
           ${toggleLabel}
         </sl-button>
 
-        <sl-button variant="danger" size="medium" @click=${this.handleOpenDeleteProcessDialog}>
+        <sl-button variant=${DELETE_VALUES.buttonVariant} size="medium" @click=${this.handleOpenDeleteProcessDialog}>
+          <sl-icon slot="prefix" name=${DELETE_VALUES.icon}> </sl-icon>
+
           ${deleteProcessLabel}
         </sl-button>
       </div>
@@ -246,7 +251,7 @@ export class ProcessesListItem extends BaseComponent<ProcessesListItemController
 
           <sl-icon-button
             id="delete-btn"
-            name="x-lg"
+            name=${DELETE_VALUES.icon}
             label=${deleteProcessLabel}
             @click=${this.handleOpenDeleteProcessDialog}
           >
@@ -292,7 +297,7 @@ export class ProcessesListItem extends BaseComponent<ProcessesListItemController
       return;
     }
 
-    this.controller.deleteProcess();
+    this.controller.deleteProcessByName(this.programName);
   };
 
   private handleDragStart = (event: DragEvent) => {

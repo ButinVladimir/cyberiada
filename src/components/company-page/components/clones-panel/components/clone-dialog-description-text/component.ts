@@ -26,7 +26,7 @@ export class CloneDescriptionText extends BaseComponent<CloneDialogDescriptionTe
         grid-template-columns: auto;
         grid-template-rows: auto;
         grid-row-gap: var(--sl-spacing-medium);
-        grid-column-gap: var(--sl-spacing-medium);
+        grid-column-gap: var(--sl-spacing-3x-large);
       }
 
       p.description {

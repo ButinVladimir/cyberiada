@@ -16,4 +16,6 @@ export const MESSAGE_EVENT_NAMES: Record<MessageEvent, () => string> = {
   [ProgramsEvent.allProcessesDeleted]: () => msg('All processes deleted'),
   [ClonesEvent.cloneDeleted]: () => msg('Clone deleted'),
   [ClonesEvent.allClonesDeleted]: () => msg('All clones deleted'),
+  [ClonesEvent.cloneLevelReached]: () => msg('Clone reached next level'),
+  [ClonesEvent.cloneRenamed]: () => msg('Clone renamed'),
 };

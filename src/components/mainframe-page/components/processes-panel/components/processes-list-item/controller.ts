@@ -25,9 +25,7 @@ export class ProcessesListItemController extends BaseController {
     this._process?.toggleActive(!this._process.isActive);
   }
 
-  deleteProcess(): void {
-    if (this._process) {
-      this.mainframeState.processes.deleteProcess(this._process.program.name);
-    }
+  deleteProcessByName(programName: ProgramName): void {
+    this.mainframeState.processes.deleteProcess(programName);
   }
 }
