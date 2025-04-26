@@ -64,10 +64,7 @@ export class FastForwardingScreen extends BaseComponent<FastForwardingScreenCont
     `;
   }
 
-  private handleStopFastForwarding = (event: Event) => {
-    event.stopPropagation();
-    event.preventDefault();
-
+  private handleStopFastForwarding = () => {
     this.controller.stopFastForwarding();
   };
 

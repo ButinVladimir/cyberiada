@@ -1,38 +1,68 @@
 {
   "tutorial": {
-    "districtsNum": 5,
-    "baseSynchronization": 30,
+    "map": {
+      "width": 100,
+      "height": 100,
+      "districts": [
+        {
+          "type": "suburbs"
+        },
+        {
+          "type": "suburbs"
+        },
+        {
+          "type": "suburbs"
+        },
+        {
+          "type": "suburbs"
+        },
+        {
+          "type": "suburbs"
+        }
+      ],
+      "factions": [
+        {
+          "name": "wsa",
+          "startingDistrict": 4,
+          "controlledArea": 5000
+        }
+      ],
+      "startingDistrict": 0
+    },
     "mainframeHardware": {
-      "performanceLevel": 1,
-      "coresLevel": 1,
-      "ramLevel": 1,
-      "performancePrice": { "baseMultiplier": 10000, "base": 1.3 },
-      "coresPrice": { "baseMultiplier": 60000, "base": 1.3 },
-      "ramPrice": { "baseMultiplier": 120000, "base": 1.3 }
+      "performancePrice": { "multiplier": 10000, "base": 1.3 },
+      "coresPrice": { "multiplier": 60000, "base": 1.3 },
+      "ramPrice": { "multiplier": 120000, "base": 1.3 }
     },
     "mainframeSoftware": {
       "performanceBoost": 0.1
     },
-    "developmentLevelRequirements": { "baseMultiplier": 30000, "base": 1.5 },
+    "developmentLevelRequirements": { "multiplier": 30000, "base": 1.5 },
     "programMultipliers": {
+      "money": {
+        "pointsMultiplier": 10
+      },
+      "developmentPoints": {
+        "pointsMultiplier": 10
+      },
       "codeBase": {
-        "pointsPerCompletion": 2,
-        "pointsToMax": 3600,
+        "pointsMultiplier": 2,
+        "pointsToSoftCap": 3600,
         "logBase": 2
       },
       "computationalBase": {
-        "pointsPerCompletion": 2,
-        "pointsToMax": 3600,
+        "pointsMultiplier": 2,
+        "pointsToSoftCap": 3600,
         "logBase": 2
       },
       "connectivity": {
-        "pointsPerCompletion": 2,
-        "pointsToMax": 3600,
+        "pointsMultiplier": 2,
+        "pointsToSoftCap": 3600,
         "logBase": 2
       },
       "rewards": {
-        "pointsPerCompletion": 2,
-        "pointsToMax": 3600,
+        "pointsMultiplier": 2,
+        "pointsToSoftCap": 3600,
         "logBase": 2
       }
     },

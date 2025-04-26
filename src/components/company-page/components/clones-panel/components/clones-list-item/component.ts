@@ -151,12 +151,14 @@ export class ClonesListItem extends BaseComponent<ClonesListItemController> {
     super.connectedCallback();
 
     document.addEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmDeleteCloneDialog);
+    document.addEventListener('click', this.handleHideMenu);
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
 
     document.removeEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmDeleteCloneDialog);
+    document.removeEventListener('click', this.handleHideMenu);
   }
 
   render() {
@@ -221,8 +223,6 @@ export class ClonesListItem extends BaseComponent<ClonesListItemController> {
             arrow-placement="start"
             arrow-padding=${10}
             distance=${6}
-            hover-bridge
-            @mouseleave=${this.handleHideMenu}
           >
             <sl-icon-button
               class="menu-button"
@@ -255,10 +255,7 @@ export class ClonesListItem extends BaseComponent<ClonesListItemController> {
     `;
   }
 
-  private handleToggleAutoUpgrade = (event: Event) => {
-    event.stopPropagation();
-    event.preventDefault();
-
+  private handleToggleAutoUpgrade = () => {
     const clone = this.controller.getCloneById(this.cloneId);
 
     if (clone) {
@@ -274,22 +271,15 @@ export class ClonesListItem extends BaseComponent<ClonesListItemController> {
 
   private handleToggleMenu = (event: Event) => {
     event.stopPropagation();
-    event.preventDefault();
 
     this._menuVisible = !this._menuVisible;
   };
 
-  private handleHideMenu = (event: Event) => {
-    event.stopPropagation();
-    event.preventDefault();
-
+  private handleHideMenu = () => {
     this._menuVisible = false;
   };
 
-  private handleOpenDeleteCloneDialog = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  private handleOpenDeleteCloneDialog = () => {
     this._menuVisible = false;
 
     const clone = this.controller.getCloneById(this.cloneId);
@@ -319,10 +309,7 @@ export class ClonesListItem extends BaseComponent<ClonesListItemController> {
     this.controller.deleteCloneById(this.cloneId);
   };
 
-  private handleOpenRenameCloneDialog = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  private handleOpenRenameCloneDialog = () => {
     this._menuVisible = false;
 
     this.dispatchEvent(new OpenCloneListItemDialogEvent('rename-clone', this.cloneId));

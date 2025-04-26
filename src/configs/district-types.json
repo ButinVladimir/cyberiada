@@ -1,0 +1,35 @@
+{
+  "suburbs": {
+    "difficultyMultiplier": 1,
+    "synchronization": { "base": 10, "qualityMultiplier": 1.1 },
+    "qualityRequirements": { "baseMultiplier": 60000, "base": 1.5 },
+    "multipliers": {
+      "money": {
+        "pointsMultiplier": 1
+      },
+      "developmentPoints": {
+        "pointsMultiplier": 1
+      },
+      "codeBase": {
+        "pointsMultiplier": { "base": 1, "qualityMultiplier": 1.5 },
+        "pointsToMax": { "base": 86400, "qualityMultiplier": 0.9 },
+        "logBase": 20
+      },
+      "computationalBase": {
+        "pointsMultiplier": { "base": 1, "qualityMultiplier": 1.5 },
+        "pointsToMax": { "base": 86400, "qualityMultiplier": 0.9 },
+        "logBase": 20
+      },
+      "connectivity": {
+        "pointsMultiplier": { "base": 1, "qualityMultiplier": 1.5 },
+        "pointsToMax": { "base": 86400, "qualityMultiplier": 0.9 },
+        "logBase": 20
+      },
+      "rewards": {
+        "pointsMultiplier": { "base": 1, "qualityMultiplier": 1.5 },
+        "pointsToMax": { "base": 86400, "qualityMultiplier": 0.9 },
+        "logBase": 20
+      }
+    }
+  }
+}

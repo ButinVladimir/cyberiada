@@ -1,25 +1,38 @@
 import { IMapGeneratorDistrictResult } from '@workers/map-generator/interfaces';
 import { IPoint } from '@shared/interfaces';
+import { Faction } from '@shared/types';
 import { IDistrictInfo, IDistrictSerializedInfo } from './interfaces';
+import { DistrictState } from './types';
 
 export class DistrictInfo implements IDistrictInfo {
-  private _name = '';
-  private _startingPoint: IPoint = { x: 0, y: 0 };
+  private _name;
+  private _startingPoint: IPoint;
+  private _faction;
+  private _state: DistrictState;
 
-  private constructor() {}
+  private constructor() {
+    this._name = '';
+    this._startingPoint = { x: 0, y: 0 };
+    this._faction = Faction.neutral;
+    this._state = DistrictState.locked;
+  }
 
   static deserialize(districtSerializedInfo: IDistrictSerializedInfo): IDistrictInfo {
     const districtInfo = new DistrictInfo();
     districtInfo._name = districtSerializedInfo.name;
     districtInfo._startingPoint = districtSerializedInfo.startingPoint;
+    districtInfo._faction = districtSerializedInfo.faction;
+    districtInfo._state = districtSerializedInfo.state;
 
     return districtInfo;
   }
 
-  static deserializeMapGeneratorResult(mapGeneratorDistrictResult: IMapGeneratorDistrictResult): IDistrictInfo {
+  static createByMapGenerator(mapGeneratorDistrictResult: IMapGeneratorDistrictResult): IDistrictInfo {
     const districtInfo = new DistrictInfo();
     districtInfo._name = mapGeneratorDistrictResult.name;
     districtInfo._startingPoint = mapGeneratorDistrictResult.startingPoint;
+    districtInfo._faction = mapGeneratorDistrictResult.faction;
+    districtInfo._state = DistrictState.locked;
 
     return districtInfo;
   }
@@ -29,16 +42,27 @@ export class DistrictInfo implements IDistrictInfo {
   }
 
   get startingPoint(): IPoint {
-    return {
-      x: this._startingPoint.x,
-      y: this._startingPoint.y,
-    };
+    return this._startingPoint;
+  }
+
+  get faction(): Faction {
+    return this._faction;
+  }
+
+  get state(): DistrictState {
+    return this._state;
+  }
+
+  set state(value: DistrictState) {
+    this._state = value;
   }
 
   serialize(): IDistrictSerializedInfo {
     return {
       name: this._name,
       startingPoint: this._startingPoint,
+      faction: this._faction,
+      state: this._state,
     };
   }
 }

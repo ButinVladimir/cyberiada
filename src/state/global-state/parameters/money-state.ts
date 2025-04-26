@@ -71,7 +71,7 @@ export class MoneyState implements IMoneyState {
   }
 
   async startNewState(): Promise<void> {
-    this._money = this._globalState.scenario.currentValues.money;
+    this._money = this._globalState.scenario.currentValues.startingMoney;
     this._income.clear();
     this._expenses.clear();
   }

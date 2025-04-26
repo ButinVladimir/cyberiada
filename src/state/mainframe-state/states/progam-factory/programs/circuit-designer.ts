@@ -1,6 +1,7 @@
 import programs from '@configs/programs.json';
 import { MultiplierProgramName } from '../types';
 import { BaseProgram } from './base-program';
+import { calculateQualityPower } from '@/shared';
 
 export class CircuitDesignerProgram extends BaseProgram {
   public readonly name = MultiplierProgramName.circuitDesigner;
@@ -18,12 +19,10 @@ export class CircuitDesignerProgram extends BaseProgram {
     const programData = programs[this.name];
 
     return (
-      this.globalState.scenario.currentValues.programMultipliers.computationalBase.pointsPerCompletion *
+      this.globalState.scenario.currentValues.programMultipliers.computationalBase.pointsMultiplier *
       this.globalState.multipliers.rewards.totalMultiplier *
       threads *
-      programData.computationalBaseLevelMultiplier *
-      this.level *
-      Math.pow(programData.computationalBaseQualityMultiplier, this.quality)
+      calculateQualityPower(this.level - 1, this.quality, programData.computationalBase)
     );
   }
 }

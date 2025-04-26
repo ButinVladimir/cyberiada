@@ -6,7 +6,8 @@ import { EventBatcher } from '@shared/event-batcher';
 import { ATTRIBUTES, COMMON_UI_EVENTS, SKILLS } from '@shared/constants';
 import {
   calculateGeometricProgressionSum,
-  calculatePowWithQuality,
+  calculateQualityLinear,
+  calculateQualityMultiplier,
   reverseGeometricProgressionSum,
 } from '@shared/helpers';
 import { ICompanyState } from '@state/company-state/interfaces/company-state';
@@ -137,10 +138,6 @@ export class Clone implements IClone {
     this.uiEventBatcher.enqueueEvent(CLONES_UI_EVENTS.CLONE_CHANGED);
   }
 
-  get cost() {
-    return calculatePowWithQuality(this.level - 1, this.quality, this._template.cost);
-  }
-
   increaseExperience(delta: number) {
     this.uiEventBatcher.enqueueEvent(CLONES_UI_EVENTS.CLONE_EXPERIENCE_CHANGED);
 
@@ -157,7 +154,11 @@ export class Clone implements IClone {
       return 0;
     }
 
-    return calculateGeometricProgressionSum(level, this._template.levelRequirements);
+    return calculateGeometricProgressionSum(
+      level,
+      this._template.levelRequirements.multiplier,
+      this._template.levelRequirements.base,
+    );
   }
 
   getBaseAttributeValue(attribute: Attribute): number {
@@ -209,8 +210,8 @@ export class Clone implements IClone {
 
   private initSynchronization() {
     this._synchronization = Math.ceil(
-      this._template.synchronization.baseMultiplier *
-        Math.pow(this._template.synchronization.qualityMultiplier, this._quality),
+      this._template.synchronization.multiplier *
+        calculateQualityMultiplier(this._quality, this._template.synchronization.baseQuality),
     );
   }
 
@@ -256,9 +257,10 @@ export class Clone implements IClone {
     }
 
     this._levelRecalculationRequested = false;
+    const { base, multiplier } = this._template.levelRequirements;
 
     const newLevel = Math.min(
-      reverseGeometricProgressionSum(this._experience, this._template.levelRequirements),
+      reverseGeometricProgressionSum(this._experience, multiplier, base),
       this._globalState.development.level,
     );
 
@@ -293,9 +295,7 @@ export class Clone implements IClone {
       const currentValues = this._attributes.get(attribute)!;
       const templateValues = this._template.attributes[attribute];
 
-      currentValues.baseValue =
-        (templateValues.base + (this._level - 1) * templateValues.perLevel) *
-        Math.pow(templateValues.qualityMultiplier, this._quality);
+      currentValues.baseValue = calculateQualityLinear(this._level, this._quality, templateValues);
 
       currentValues.totalValue = currentValues.baseValue;
     });
@@ -306,9 +306,7 @@ export class Clone implements IClone {
       const currentValues = this._skills.get(skill)!;
       const templateValues = this._template.skills[skill];
 
-      currentValues.baseValue =
-        (templateValues.base + (this._level - 1) * templateValues.perLevel) *
-        Math.pow(templateValues.qualityMultiplier, this._quality);
+      currentValues.baseValue = calculateQualityLinear(this._level, this._quality, templateValues);
 
       currentValues.totalValue = currentValues.baseValue;
     });

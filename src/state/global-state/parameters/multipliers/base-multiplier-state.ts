@@ -30,7 +30,7 @@ export abstract class BaseMultiplierState implements IMultiplierState {
   private _multiplierUpdateRequested: boolean;
 
   constructor() {
-    this._pointsByProgram = 0;
+    this._pointsByProgram = 1;
     this._totalMultiplier = 1;
     this._multiplierByProgram = 1;
     this._multiplierUpdateRequested = false;
@@ -98,7 +98,7 @@ export abstract class BaseMultiplierState implements IMultiplierState {
     const parameters = this.getMultiplierParameters();
 
     this._multiplierByProgram =
-      1 + Math.log(1 + this._pointsByProgram / parameters.pointsToMax) / Math.log(parameters.logBase);
+      1 + Math.log(1 + this._pointsByProgram / parameters.pointsToSoftCap) / Math.log(parameters.logBase);
   }
 
   private updateTotalMultiplier() {

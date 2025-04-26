@@ -94,16 +94,11 @@ export class GameSpeedButtons extends BaseComponent<GameSpeedButtonsController> 
     `;
   };
 
-  private handleChangeGameSpeed = (gameSpeed: GameSpeed) => (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  private handleChangeGameSpeed = (gameSpeed: GameSpeed) => () => {
     this.controller.changeGameSpeed(gameSpeed);
   };
 
-  private handleOpenFastForwardDialog = (event: Event) => {
-    event.stopPropagation();
-
+  private handleOpenFastForwardDialog = () => {
     this.dispatchEvent(
       new ConfirmationAlertOpenEvent(GameStateAlert.fastForward, msg('Are you sure want to spend accumulated time?')),
     );

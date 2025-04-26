@@ -2,9 +2,7 @@ import programs from '@configs/programs.json';
 import { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import { IFormatter } from '@shared/interfaces/formatter';
 import { EventBatcher } from '@shared/event-batcher';
-import { IExponent } from '@shared/interfaces/exponent';
-import { IExponentWithQuality } from '@shared/interfaces/exponent-with-quality';
-import { calculatePow, calculatePowWithQuality } from '@shared/helpers';
+import { calculatePower } from '@shared/helpers';
 import { IGlobalState } from '@state/global-state/interfaces/global-state';
 import { IGrowthState } from '@state/growth-state/interfaces/growth-state';
 import { IMainframeState } from '@state/mainframe-state/interfaces/mainframe-state';
@@ -62,7 +60,7 @@ export abstract class BaseProgram implements IProgram {
   get completionPoints() {
     const programData = programs[this.name];
 
-    return calculatePow(this.globalState.development.level - this.level, programData.completionPoints as IExponent);
+    return calculatePower(this.globalState.development.level - this.level, programData.completionPoints);
   }
 
   get autoUpgradeEnabled() {
@@ -80,15 +78,6 @@ export abstract class BaseProgram implements IProgram {
 
   abstract get isAutoscalable(): boolean;
 
-  get cost(): number {
-    const programData = programs[this.name];
-
-    return (
-      calculatePowWithQuality(this.level - 1, this.quality, programData.cost as IExponentWithQuality) /
-      this.globalState.multipliers.codeBase.totalMultiplier
-    );
-  }
-
   get ram(): number {
     return programs[this.name].ram;
   }
@@ -98,7 +87,7 @@ export abstract class BaseProgram implements IProgram {
   }
 
   get unlockFeatures() {
-    return programs[this.name].unlockFeatures as Feature[];
+    return programs[this.name].requiredFeatures as Feature[];
   }
 
   abstract handlePerformanceUpdate(): void;
@@ -118,7 +107,8 @@ export abstract class BaseProgram implements IProgram {
   calculateCompletionDelta(threads: number, usedCores: number, passedTime: number): number {
     const currentSpeed = usedCores * this.growthState.programCompletionSpeed.totalMultiplier;
     const allowedSpeed =
-      (threads * this.completionPoints) / this.globalState.scenario.currentValues.mainframeSoftware.minCompletionTime;
+      (threads * this.completionPoints) /
+      this.globalState.scenario.currentValues.mainframeSoftware.minProgramCompletionTime;
 
     return passedTime * Math.min(currentSpeed, allowedSpeed);
   }

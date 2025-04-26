@@ -23,6 +23,6 @@ export class MainframeHardwareCores extends MainframeHardwareParameter {
   async startNewState(): Promise<void> {
     await super.startNewState();
 
-    this._level = this.globalState.scenario.currentValues.mainframeHardware.coresLevel;
+    this._level = this.globalState.scenario.currentValues.mainframeHardware.startingCoresLevel;
   }
 }

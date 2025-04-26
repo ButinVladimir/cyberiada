@@ -97,7 +97,6 @@ export class ConfirmationAlert extends BaseComponent<ConfirmationAlertController
   }
 
   private handleOpen = (event: Event) => {
-    event.stopPropagation();
     const convertedEvent = event as ConfirmationAlertOpenEvent;
 
     this._gameAlert = convertedEvent.gameAlert;
@@ -114,10 +113,7 @@ export class ConfirmationAlert extends BaseComponent<ConfirmationAlertController
     }
   };
 
-  private handleClose = (event: Event) => {
-    event.stopPropagation();
-    event.preventDefault();
-
+  private handleClose = () => {
     this._isOpen = false;
 
     if (this._gameAlert) {
@@ -125,9 +121,7 @@ export class ConfirmationAlert extends BaseComponent<ConfirmationAlertController
     }
   };
 
-  private handleSubmit = (event: Event) => {
-    event.stopPropagation();
-
+  private handleSubmit = () => {
     if (this._gameAlert) {
       this._isOpen = false;
 
@@ -139,9 +133,7 @@ export class ConfirmationAlert extends BaseComponent<ConfirmationAlertController
     }
   };
 
-  private handleToggleAlert = (event: Event) => {
-    event.stopPropagation();
-
+  private handleToggleAlert = () => {
     if (this._gameAlert && this._gameAlertToggleRef.value) {
       this._alertToggled = this._gameAlertToggleRef.value.checked;
     }

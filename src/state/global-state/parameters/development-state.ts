@@ -73,10 +73,9 @@ export class DevelopmentState implements IDevelopmentState {
       return 0;
     }
 
-    return calculateGeometricProgressionSum(
-      level,
-      this._globalState.scenario.currentValues.developmentLevelRequirements,
-    );
+    const { base, multiplier } = this._globalState.scenario.currentValues.developmentLevelRequirements;
+
+    return calculateGeometricProgressionSum(level, multiplier, base);
   }
 
   requestLevelRecalculation() {
@@ -90,11 +89,10 @@ export class DevelopmentState implements IDevelopmentState {
 
     this._levelUpdateRequested = false;
 
+    const { base, multiplier } = this._globalState.scenario.currentValues.developmentLevelRequirements;
+
     const prevLevel = this._level;
-    const newLevel = reverseGeometricProgressionSum(
-      this._points,
-      this._globalState.scenario.currentValues.developmentLevelRequirements,
-    );
+    const newLevel = reverseGeometricProgressionSum(this._points, multiplier, base);
 
     if (newLevel > prevLevel) {
       this._level = newLevel;
@@ -111,7 +109,7 @@ export class DevelopmentState implements IDevelopmentState {
 
   async startNewState(): Promise<void> {
     this._points = 0;
-    this._level = this._globalState.scenario.currentValues.developmentLevel;
+    this._level = this._globalState.scenario.currentValues.startingDevelopmentLevel;
     this._income.clear();
 
     this.requestLevelRecalculation();

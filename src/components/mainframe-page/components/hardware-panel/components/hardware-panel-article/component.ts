@@ -143,18 +143,12 @@ export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwa
     `;
   }
 
-  private handleBuy = (event: Event) => {
-    event.stopPropagation();
-    event.preventDefault();
-
+  private handleBuy = () => {
     const increase = this.calculateIncrease();
     this.controller.purchase(increase, this.type);
   };
 
-  private handleBuyMax = (event: Event) => {
-    event.stopPropagation();
-    event.preventDefault();
-
+  private handleBuyMax = () => {
     this.controller.purchaseMax(this.type);
   };
 
@@ -165,10 +159,7 @@ export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwa
     );
   }
 
-  private handleToggleAutoUpgrade = (event: Event) => {
-    event.stopPropagation();
-    event.preventDefault();
-
+  private handleToggleAutoUpgrade = () => {
     const active = this.controller.isAutoUpgradeEnabled(this.type);
     this.controller.toggleAutoUpdateEnabled(this.type, !active);
   };

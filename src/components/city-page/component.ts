@@ -7,6 +7,6 @@ export class CityPage extends BaseComponent {
   static styles = css``;
 
   render() {
-    return html`<ca-city></ca-city>`;
+    return html`<ca-city-map-page></ca-city-map-page>`;
   }
 }

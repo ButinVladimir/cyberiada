@@ -1,1 +1,1 @@
-import './city';
+import './city-map-page';

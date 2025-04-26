@@ -4,6 +4,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.component.js';
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.component.js';
+import clamp from 'lodash/clamp';
 import { BaseComponent } from '@shared/base-component';
 import { CloneTemplateName } from '@state/company-state/states/clone-factory/types';
 import {
@@ -246,10 +247,7 @@ Synchronization is earned by capturing districts and gaining certain favors.`)}
     return result;
   };
 
-  private handleClose = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  private handleClose = () => {
     this.dispatchEvent(new PurchaseCloneDialogCloseEvent());
   };
 
@@ -284,24 +282,13 @@ Synchronization is earned by capturing districts and gaining certain favors.`)}
       return;
     }
 
-    let level = this._levelInputRef.value.valueAsNumber;
-
-    if (level < 1) {
-      level = 1;
-    }
-
-    if (level > this.controller.developmentLevel) {
-      level = this.controller.developmentLevel;
-    }
+    const level = clamp(this._levelInputRef.value.valueAsNumber, 1, this.controller.developmentLevel);
 
     this._level = level;
     this._levelInputRef.value.valueAsNumber = level;
   };
 
-  private handlePurchaseClone = (event: Event) => {
-    event.stopPropagation();
-    event.preventDefault();
-
+  private handlePurchaseClone = () => {
     if (!this._cloneTemplateName) {
       return;
     }
@@ -317,10 +304,7 @@ Synchronization is earned by capturing districts and gaining certain favors.`)}
     }
   };
 
-  private handleGenerateName = (event: Event) => {
-    event.stopPropagation();
-    event.preventDefault();
-
+  private handleGenerateName = () => {
     this.generateName();
   };
 

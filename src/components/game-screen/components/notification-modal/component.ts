@@ -97,24 +97,17 @@ export class NotificationModal extends BaseComponent<NotificationModalController
     `;
   };
 
-  private handleCloseCurrentNotification = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  private handleCloseCurrentNotification = () => {
     this.closeCurrentNotification();
   };
 
-  private handleCloseAllNotifications = (event: Event) => {
-    event.stopPropagation();
-
+  private handleCloseAllNotifications = () => {
     this.closeCurrentNotification();
 
     this.controller.clearNotifications();
   };
 
-  private handleToggleNotificationType = (event: Event) => {
-    event.stopPropagation();
-
+  private handleToggleNotificationType = () => {
     if (this._notificationTypeToggleRef.value) {
       this._notificationTypeToggled = this._notificationTypeToggleRef.value.checked;
     }

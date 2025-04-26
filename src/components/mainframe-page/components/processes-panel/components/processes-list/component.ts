@@ -223,19 +223,13 @@ export class ProcessesList extends BaseComponent<ProcessesListController> {
     return this.controller.listProcesses().some((process) => process.isActive);
   }
 
-  private handleToggleAllProcesses = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  private handleToggleAllProcesses = () => {
     const processesActive = this.checkSomeProcessesActive();
 
     this.controller.toggleAllProcesses(!processesActive);
   };
 
-  private handleOpenDeleteAllProcessesDialog = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  private handleOpenDeleteAllProcessesDialog = () => {
     this.dispatchEvent(
       new ConfirmationAlertOpenEvent(
         ProgramAlert.deleteAllProcesses,
@@ -255,9 +249,6 @@ export class ProcessesList extends BaseComponent<ProcessesListController> {
   };
 
   private handleMoveProcess = (event: SortableElementMovedEvent) => {
-    event.stopPropagation();
-    event.preventDefault();
-
     this.controller.moveProcess(event.keyName as ProgramName, event.position);
   };
 }

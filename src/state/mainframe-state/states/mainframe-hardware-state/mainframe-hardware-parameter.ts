@@ -2,8 +2,8 @@ import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/sta
 import type { IGlobalState } from '@state/global-state/interfaces/global-state';
 import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
 import type { IFormatter } from '@shared/interfaces/formatter';
-import { calculatePow } from '@shared/helpers';
-import { IExponent } from '@shared/interfaces/exponent';
+import { calculatePower } from '@shared/helpers';
+import { IExponent } from '@shared/interfaces/formulas/exponent';
 import { Feature, PurchaseType } from '@shared/types';
 import { binarySearchDecimal } from '@shared/helpers';
 import {
@@ -63,7 +63,7 @@ export abstract class MainframeHardwareParameter implements IMainframeHardwarePa
 
   getIncreaseCost(increase: number): number {
     const exp = this.priceExp;
-    const baseCost = calculatePow(this.level - 1, exp);
+    const baseCost = calculatePower(this.level - 1, exp);
 
     return (
       (baseCost * (Math.pow(exp.base, increase) - 1)) /

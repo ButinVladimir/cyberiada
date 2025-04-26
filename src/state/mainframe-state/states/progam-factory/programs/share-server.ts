@@ -1,6 +1,7 @@
 import { ISettingsState } from '@state/settings-state/interfaces/settings-state';
 import { IncomeSource } from '@shared/types';
 import programs from '@configs/programs.json';
+import { calculateQualityLinear } from '@shared/helpers';
 import { OtherProgramName } from '../types';
 import { IShareServerParameters } from '../interfaces/program-parameters/share-server-parameters';
 import { BaseProgram } from './base-program';
@@ -38,10 +39,9 @@ export class ShareServerProgram extends BaseProgram {
     const programData = programs[this.name];
 
     return (
-      this.globalState.multipliers.rewards.totalMultiplier *
+      this.globalState.scenario.currentValues.programMultipliers.money.pointsMultiplier *
       this.calculateModifier(threads, usedRam, passedTime) *
-      programData.money *
-      Math.pow(programData.moneyQualityMultiplier, this.quality)
+      calculateQualityLinear(this.level, this.quality, programData.money)
     );
   }
 
@@ -49,10 +49,9 @@ export class ShareServerProgram extends BaseProgram {
     const programData = programs[this.name];
 
     return (
-      this.globalState.multipliers.rewards.totalMultiplier *
+      this.globalState.scenario.currentValues.programMultipliers.developmentPoints.pointsMultiplier *
       this.calculateModifier(threads, usedRam, passedTime) *
-      programData.developmentPoints *
-      Math.pow(programData.developmentPointsQualityMultiplier, this.quality)
+      calculateQualityLinear(this.level, this.quality, programData.developmentPoints)
     );
   }
 
@@ -60,9 +59,9 @@ export class ShareServerProgram extends BaseProgram {
     const programData = programs[this.name];
 
     return (
+      this.globalState.multipliers.rewards.totalMultiplier *
       passedTime *
-      Math.pow(threads * usedRam, programData.scalableResourcesModifier) *
-      this.level *
+      Math.pow(threads * usedRam, programData.autoscalableResourcesPower) *
       (1 +
         (this.mainframeState.hardware.performance.level - 1) *
           this.globalState.scenario.currentValues.mainframeSoftware.performanceBoost)

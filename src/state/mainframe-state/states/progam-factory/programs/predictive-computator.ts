@@ -1,4 +1,5 @@
 import programs from '@configs/programs.json';
+import { calculateQualityLinear } from '@shared/helpers';
 import { OtherProgramName } from '../types';
 import { BaseProgram } from './base-program';
 
@@ -26,10 +27,8 @@ export class PredictiveComputatorProgram extends BaseProgram {
     return Math.max(
       1,
       1 +
-        Math.pow(threads * usedRam, programData.scalableResourcesModifier) *
-          programData.speedModifierLevelMultiplier *
-          this.level *
-          Math.pow(programData.speedModifierQualityMultiplier, this.quality) *
+        Math.pow(threads * usedRam, programData.autoscalableResourcesPower) *
+          calculateQualityLinear(this.level, this.quality, programData.speedModifier) *
           (1 +
             (this.mainframeState.hardware.performance.level - 1) *
               this.globalState.scenario.currentValues.mainframeSoftware.performanceBoost),

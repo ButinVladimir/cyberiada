@@ -1,6 +1,6 @@
 import { IDistrictSerializedInfo } from './district-serialized-info';
 
 export interface ICitySerializedState {
-  map: number[][];
+  layout: number[][];
   districts: Record<number, IDistrictSerializedInfo>;
 }

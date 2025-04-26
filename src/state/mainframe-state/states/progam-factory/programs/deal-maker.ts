@@ -1,4 +1,5 @@
 import programs from '@configs/programs.json';
+import { calculateQualityPower } from '@shared/helpers';
 import { MultiplierProgramName } from '../types';
 import { BaseProgram } from './base-program';
 
@@ -18,12 +19,10 @@ export class DealMakerProgram extends BaseProgram {
     const programData = programs[this.name];
 
     return (
-      this.globalState.scenario.currentValues.programMultipliers.rewards.pointsPerCompletion *
+      this.globalState.scenario.currentValues.programMultipliers.rewards.pointsMultiplier *
       this.globalState.multipliers.rewards.totalMultiplier *
       threads *
-      programData.rewardsLevelMultiplier *
-      this.level *
-      Math.pow(programData.rewardsQualityMultiplier, this.quality)
+      calculateQualityPower(this.level - 1, this.quality, programData.rewards)
     );
   }
 }

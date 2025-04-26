@@ -123,10 +123,7 @@ export class AlertFilterDialog extends BaseComponent<AlertFilterDialogController
     `;
   };
 
-  private handleClose = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  private handleClose = () => {
     this.dispatchEvent(new AlertFilterDialogCloseEvent());
   };
 

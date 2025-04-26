@@ -23,6 +23,6 @@ export class MainframeHardwareRam extends MainframeHardwareParameter {
   async startNewState(): Promise<void> {
     await super.startNewState();
 
-    this._level = this.globalState.scenario.currentValues.mainframeHardware.ramLevel;
+    this._level = this.globalState.scenario.currentValues.mainframeHardware.startingRamLevel;
   }
 }

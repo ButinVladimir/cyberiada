@@ -125,15 +125,11 @@ export class MessageFilterDialog extends BaseComponent<MessageFilterDialogContro
     `;
   };
 
-  private handleClose = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  private handleClose = () => {
     this.dispatchEvent(new MessageFilterDialogCloseEvent());
   };
 
   private handleToggleEvent = (event: Event) => {
-    event.stopPropagation();
     const target = event.target as SlCheckbox;
 
     this.controller.toggleMessageEvent(target.value as MessageEvent, target.checked);

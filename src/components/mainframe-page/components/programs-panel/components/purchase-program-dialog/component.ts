@@ -5,6 +5,7 @@ import { createRef, ref } from 'lit/directives/ref.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.component.js';
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.component.js';
+import clamp from 'lodash/clamp';
 import { BaseComponent } from '@shared/base-component';
 import type { ProgramName } from '@state/mainframe-state/states/progam-factory/types';
 import {
@@ -225,10 +226,7 @@ If you already have program with same name, old one will be replaced with new on
     return result;
   };
 
-  private handleClose = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  private handleClose = () => {
     this.dispatchEvent(new PurchaseProgramDialogCloseEvent());
   };
 
@@ -255,24 +253,13 @@ If you already have program with same name, old one will be replaced with new on
       return;
     }
 
-    let level = this._levelInputRef.value.valueAsNumber;
-
-    if (level < 1) {
-      level = 1;
-    }
-
-    if (level > this.controller.developmentLevel) {
-      level = this.controller.developmentLevel;
-    }
+    const level = clamp(this._levelInputRef.value.valueAsNumber, 1, this.controller.developmentLevel);
 
     this._level = level;
     this._levelInputRef.value.valueAsNumber = level;
   };
 
-  private handleOpenConfirmationAlert = (event: Event) => {
-    event.stopPropagation();
-    event.preventDefault();
-
+  private handleOpenConfirmationAlert = () => {
     if (!this._programName) {
       return;
     }

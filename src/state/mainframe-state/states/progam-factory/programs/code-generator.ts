@@ -1,4 +1,5 @@
 import programs from '@configs/programs.json';
+import { calculateQualityPower } from '@shared/helpers';
 import { MultiplierProgramName } from '../types';
 import { BaseProgram } from './base-program';
 
@@ -18,12 +19,10 @@ export class CodeGeneratorProgram extends BaseProgram {
     const programData = programs[this.name];
 
     return (
-      this.globalState.scenario.currentValues.programMultipliers.codeBase.pointsPerCompletion *
+      this.globalState.scenario.currentValues.programMultipliers.codeBase.pointsMultiplier *
       this.globalState.multipliers.rewards.totalMultiplier *
       threads *
-      programData.codeBaseLevelMultiplier *
-      this.level *
-      Math.pow(programData.codeBaseQualityMultiplier, this.quality)
+      calculateQualityPower(this.level - 1, this.quality, programData.codeBase)
     );
   }
 }

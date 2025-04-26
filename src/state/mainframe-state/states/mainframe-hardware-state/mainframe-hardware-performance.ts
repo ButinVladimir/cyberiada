@@ -23,6 +23,6 @@ export class MainframeHardwarePerformance extends MainframeHardwareParameter {
   async startNewState(): Promise<void> {
     await super.startNewState();
 
-    this._level = this.globalState.scenario.currentValues.mainframeHardware.performanceLevel;
+    this._level = this.globalState.scenario.currentValues.mainframeHardware.startingPerformanceLevel;
   }
 }

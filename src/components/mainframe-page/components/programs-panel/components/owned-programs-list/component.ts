@@ -199,26 +199,17 @@ export class OwnedProgramsList extends BaseComponent<OwnedProgramsListController
     return programs.some((program) => program.autoUpgradeEnabled);
   }
 
-  private handleToggleAutoupgrade = (event: Event) => {
-    event.stopPropagation();
-    event.preventDefault();
-
+  private handleToggleAutoupgrade = () => {
     const active = this.checkSomeProgramsAutoupgradeActive();
 
     this.controller.toggleAutoupgrade(!active);
   };
 
   private handleMoveProgram = (event: SortableElementMovedEvent) => {
-    event.stopPropagation();
-    event.preventDefault();
-
     this.controller.moveProgram(event.keyName as ProgramName, event.position);
   };
 
-  private handleUpgradeMaxAllPrograms = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  private handleUpgradeMaxAllPrograms = () => {
     this.controller.upgradeMaxAllPrograms();
   };
 }

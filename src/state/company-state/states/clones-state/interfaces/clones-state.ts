@@ -16,4 +16,5 @@ export interface ICompanyClonesState extends IUIEventEmitter, ISerializeable<ICo
   deleteAllClones(): void;
   processTick(): void;
   moveClone(id: string, newPosition: number): void;
+  generateCloneName(): Promise<string>;
 }

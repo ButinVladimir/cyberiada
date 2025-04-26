@@ -107,17 +107,11 @@ Processes can be rearranged by dragging them by their title.`)}
     `;
   }
 
-  private handleStartProcessDialogOpen = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  private handleStartProcessDialogOpen = () => {
     this._isStartProcessDialogOpen = true;
   };
 
-  private handleStartProcessDialogClose = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  private handleStartProcessDialogClose = () => {
     this._isStartProcessDialogOpen = false;
   };
 }
