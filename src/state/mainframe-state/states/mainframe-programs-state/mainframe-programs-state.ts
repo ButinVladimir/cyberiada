@@ -57,8 +57,7 @@ export class MainframeProgramsState implements IMainframeProgramsState {
     const programData = programs[name];
 
     return (
-      calculateQualityPower(level - 1, quality, programData.cost) /
-      this._globalState.multipliers.codeBase.totalMultiplier
+      calculateQualityPower(level, quality, programData.cost) / this._globalState.multipliers.codeBase.totalMultiplier
     );
   }
 
@@ -145,7 +144,7 @@ export class MainframeProgramsState implements IMainframeProgramsState {
     this.clearState();
 
     for (const programName of this._globalState.scenario.currentValues.mainframeSoftware.startingPrograms) {
-      this.addProgram(programName, 0, 1);
+      this.addProgram(programName, 0, 0);
     }
 
     this.requestUiUpdate();
@@ -197,7 +196,7 @@ export class MainframeProgramsState implements IMainframeProgramsState {
     this.addProgram(name, quality, level);
 
     const programTitle = PROGRAM_TEXTS[name].title();
-    const formattedLevel = this._formatter.formatNumberDecimal(level);
+    const formattedLevel = this._formatter.formatLevel(level);
     const formattedQuality = this._formatter.formatQuality(quality);
     this._messageLogState.postMessage(
       PurchaseEvent.programPurchased,

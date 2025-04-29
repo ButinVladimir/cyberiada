@@ -19,6 +19,7 @@ import {
   Skill,
   ClonesEvent,
   CloneAlert,
+  DistrictType,
 } from './types';
 
 export const CURRENT_VERSION = GameVersion['0.1.3'];
@@ -65,8 +66,6 @@ export const PURCHASE_TYPES: PurchaseType[] = Object.values(PurchaseType);
 
 export const INCOME_SOURCES: IncomeSource[] = Object.values(IncomeSource);
 
-export const EMPTY_IMAGE = new Image();
-
 export const FEATURES: Feature[] = Object.values(Feature);
 
 export const ATTRIBUTES: Attribute[] = Object.values(Attribute);
@@ -76,3 +75,7 @@ export const SKILLS: Skill[] = Object.values(Skill);
 export const COMMON_UI_EVENTS = {
   REMOVE_EVENT_LISTENERS_BY_EMITTER: Symbol('REMOVE_EVENT_LISTENERS_BY_EMITTER'),
 };
+
+export const DISTRICT_TYPES = Object.values(DistrictType);
+
+export const RANDOM_TYPE = 'random';

@@ -7,9 +7,7 @@ export class DealMakerProgram extends BaseProgram {
   public readonly name = MultiplierProgramName.dealMaker;
   public readonly isAutoscalable = false;
 
-  handlePerformanceUpdate(): void {
-    this.growthState.multipliers.rewards.requestGrowthRecalculation();
-  }
+  handlePerformanceUpdate(): void {}
 
   perform(threads: number): void {
     this.globalState.multipliers.rewards.increasePointsByProgram(this.calculateDelta(threads));
@@ -22,7 +20,7 @@ export class DealMakerProgram extends BaseProgram {
       this.globalState.scenario.currentValues.programMultipliers.rewards.pointsMultiplier *
       this.globalState.multipliers.rewards.totalMultiplier *
       threads *
-      calculateQualityPower(this.level - 1, this.quality, programData.rewards)
+      calculateQualityPower(this.level, this.quality, programData.rewards)
     );
   }
 }

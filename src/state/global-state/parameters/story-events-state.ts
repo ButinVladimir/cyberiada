@@ -60,7 +60,7 @@ export class StoryEventsState implements IStoryEventsState {
   }
 
   startNewState(): void {
-    this.visitEvents(0);
+    this.visitEvents(-1);
   }
 
   private visitEvents(prevLevel: number) {

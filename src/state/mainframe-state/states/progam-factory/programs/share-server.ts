@@ -18,10 +18,7 @@ export class ShareServerProgram extends BaseProgram {
     this._settingsState = parameters.settingsState;
   }
 
-  handlePerformanceUpdate(): void {
-    this.growthState.money.requestGrowthRecalculation();
-    this.growthState.development.requestGrowthRecalculation();
-  }
+  handlePerformanceUpdate(): void {}
 
   perform(threads: number, usedRam: number): void {
     const moneyDelta = this.calculateMoneyDelta(threads, usedRam, this._settingsState.updateInterval);
@@ -62,9 +59,10 @@ export class ShareServerProgram extends BaseProgram {
       this.globalState.multipliers.rewards.totalMultiplier *
       passedTime *
       Math.pow(threads * usedRam, programData.autoscalableResourcesPower) *
-      (1 +
-        (this.mainframeState.hardware.performance.level - 1) *
-          this.globalState.scenario.currentValues.mainframeSoftware.performanceBoost)
+      Math.pow(
+        this.globalState.scenario.currentValues.mainframeSoftware.performanceBoost,
+        this.mainframeState.hardware.performance.totalLevel,
+      )
     );
   }
 }

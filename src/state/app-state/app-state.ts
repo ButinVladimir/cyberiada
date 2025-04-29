@@ -131,6 +131,7 @@ export class AppState implements IAppState {
     await this._automationState.deserialize(migratedSaveData.automation);
     await this._companyState.deserialize(migratedSaveData.company);
 
+    this._globalState.recalculate();
     this._growthState.recalculateGrowth();
   }
 
@@ -146,8 +147,9 @@ export class AppState implements IAppState {
 
   private processSingleTick = () => {
     this._mainframeState.processes.processTick();
-    this._companyState.clones.processTick();
+    this._companyState.clones.recalculate();
     this._globalState.makeNextTick();
+    this._globalState.recalculate();
     this._growthState.recalculateGrowth();
   };
 }

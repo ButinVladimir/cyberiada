@@ -7,9 +7,7 @@ export class InformationCollectorProgram extends BaseProgram {
   public readonly name = MultiplierProgramName.informationCollector;
   public readonly isAutoscalable = false;
 
-  handlePerformanceUpdate(): void {
-    this.growthState.multipliers.connectivity.requestGrowthRecalculation();
-  }
+  handlePerformanceUpdate(): void {}
 
   perform(threads: number): void {
     this.globalState.multipliers.connectivity.increasePointsByProgram(this.calculateDelta(threads));
@@ -22,7 +20,7 @@ export class InformationCollectorProgram extends BaseProgram {
       this.globalState.scenario.currentValues.programMultipliers.connectivity.pointsMultiplier *
       this.globalState.multipliers.rewards.totalMultiplier *
       threads *
-      calculateQualityPower(this.level - 1, this.quality, programData.connectivity)
+      calculateQualityPower(this.level, this.quality, programData.connectivity)
     );
   }
 }

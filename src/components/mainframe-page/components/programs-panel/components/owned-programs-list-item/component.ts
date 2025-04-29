@@ -148,7 +148,7 @@ export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemCo
       : AUTOUPGRADE_VALUES.buttonVariant.disabled;
 
     const programTitle = PROGRAM_TEXTS[this.programName].title();
-    const formattedLevel = formatter.formatNumberDecimal(program.level);
+    const formattedLevel = formatter.formatLevel(program.level);
     const formattedQuality = formatter.formatQuality(program.quality);
 
     return html`

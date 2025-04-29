@@ -4,42 +4,42 @@ import { DistrictState } from '@state/city-state/types';
 
 export const MAP_STYLES: Record<Theme, IMapStyles> = {
   [Theme.light]: {
-    borderColor: '#EEEEEE',
+    borderColor: '#e4e4e7',
     stateStyles: {
       [DistrictState.locked]: {
-        backgroundColor: '#552222',
-        selectedColor: '#AA7777',
-        selectedBorderColor: '#774444',
+        backgroundColor: '#7f1d1d',
+        selectedColor: '#ef4444',
+        selectedBorderColor: '#dc2626',
       },
       [DistrictState.contested]: {
-        backgroundColor: '#555522',
-        selectedColor: '#AAAA77',
-        selectedBorderColor: '#777744',
+        backgroundColor: '#78350f',
+        selectedColor: '#f59e0b',
+        selectedBorderColor: '#d97706',
       },
       [DistrictState.controlled]: {
-        backgroundColor: '#222255',
-        selectedColor: '#7777AA',
-        selectedBorderColor: '#444477',
+        backgroundColor: '#0c4a6e',
+        selectedColor: '#0ea5e9',
+        selectedBorderColor: '#0284c7',
       },
     },
   },
   [Theme.dark]: {
-    borderColor: '#EEEEEE',
+    borderColor: '#36363b',
     stateStyles: {
       [DistrictState.locked]: {
-        backgroundColor: '#552222',
-        selectedColor: '#AA7777',
-        selectedBorderColor: '#774444',
+        backgroundColor: '#7f1d1d',
+        selectedColor: '#dc2626',
+        selectedBorderColor: '#ef4444',
       },
       [DistrictState.contested]: {
-        backgroundColor: '#555522',
-        selectedColor: '#AAAA77',
-        selectedBorderColor: '#777744',
+        backgroundColor: '#78350f',
+        selectedColor: '#d97706',
+        selectedBorderColor: '#f59e0b',
       },
       [DistrictState.controlled]: {
-        backgroundColor: '#222255',
-        selectedColor: '#7777AA',
-        selectedBorderColor: '#444477',
+        backgroundColor: '#0c4a6e',
+        selectedColor: '#0284c7',
+        selectedBorderColor: '#0ea5e9',
       },
     },
   },

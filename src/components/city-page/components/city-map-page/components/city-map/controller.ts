@@ -1,4 +1,5 @@
-import { BaseController } from '@/shared';
+import { BaseController } from '@shared/base-controller';
+import { IPoint } from '@shared/interfaces/point';
 
 export class CityMapController extends BaseController {
   get layout() {
@@ -15,5 +16,9 @@ export class CityMapController extends BaseController {
 
   get districtsCount() {
     return this.globalState.scenario.currentValues.map.districts.length;
+  }
+
+  getDistrictStartingPoint(districtIndex: number): IPoint {
+    return this.cityState.getDistrictInfo(districtIndex).startingPoint;
   }
 }

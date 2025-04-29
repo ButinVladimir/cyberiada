@@ -25,12 +25,12 @@ export class CityState implements ICityState {
     return this._layout;
   }
 
-  getDistrictInfo(num: number): IDistrictInfo {
-    if (!this._districts.has(num)) {
-      throw new Error(`Missing district ${num}`);
+  getDistrictInfo(districtIndex: number): IDistrictInfo {
+    if (!this._districts.has(districtIndex)) {
+      throw new Error(`Missing district ${districtIndex}`);
     }
 
-    return this._districts.get(num)!;
+    return this._districts.get(districtIndex)!;
   }
 
   async startNewState(): Promise<void> {
@@ -87,9 +87,10 @@ export class CityState implements ICityState {
           const parsedDistrictNum = parseInt(districtNum);
           const districtInfo = DistrictInfo.createByMapGenerator(district);
 
-          if (parsedDistrictNum === scenarios[this._globalState.scenario.scenario].map.startingDistrict) {
-            districtInfo.state = DistrictState.contested;
-          }
+          districtInfo.state =
+            parsedDistrictNum === scenarios[this._globalState.scenario.scenario].map.startingDistrict
+              ? DistrictState.contested
+              : DistrictState.locked;
 
           this._districts.set(parsedDistrictNum, districtInfo);
         }

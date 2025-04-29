@@ -7,9 +7,7 @@ export class CodeGeneratorProgram extends BaseProgram {
   public readonly name = MultiplierProgramName.codeGenerator;
   public readonly isAutoscalable = false;
 
-  handlePerformanceUpdate(): void {
-    this.growthState.multipliers.codeBase.requestGrowthRecalculation();
-  }
+  handlePerformanceUpdate(): void {}
 
   perform(threads: number): void {
     this.globalState.multipliers.codeBase.increasePointsByProgram(this.calculateDelta(threads));
@@ -22,7 +20,7 @@ export class CodeGeneratorProgram extends BaseProgram {
       this.globalState.scenario.currentValues.programMultipliers.codeBase.pointsMultiplier *
       this.globalState.multipliers.rewards.totalMultiplier *
       threads *
-      calculateQualityPower(this.level - 1, this.quality, programData.codeBase)
+      calculateQualityPower(this.level, this.quality, programData.codeBase)
     );
   }
 }

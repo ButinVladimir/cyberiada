@@ -2,7 +2,7 @@ import { css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { BaseComponent } from '@shared/base-component';
-import { EMPTY_IMAGE } from '@shared/constants';
+import { EMPTY_IMAGE } from './constants';
 import { SortableElementMovedEvent } from './events';
 
 @customElement('ca-sortable-list')

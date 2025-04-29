@@ -5,8 +5,8 @@
     "cost": { "multiplier": 30000, "base": 1.15, "baseQuality": 10 },
     "requiredFeatures": [],
     "autoscalableResourcesPower": 0.5,
-    "money": { "multiplier": 1, "baseQuality": 2 },
-    "developmentPoints": { "multiplier": 1, "baseQuality": 2 }
+    "money": { "base": 1, "multiplier": 1, "baseQuality": 2 },
+    "developmentPoints": { "base": 1, "multiplier": 1, "baseQuality": 2 }
   },
   "predictiveComputator": {
     "ram": 0,
@@ -15,6 +15,7 @@
     "requiredFeatures": [],
     "autoscalableResourcesPower": 0.5,
     "speedModifier": {
+      "base": 0.001,
       "multiplier": 0.001,
       "baseQuality": 1.3
     }

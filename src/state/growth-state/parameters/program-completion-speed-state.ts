@@ -104,8 +104,10 @@ export class ProgramCompletionSpeedState implements IProgramCompletionSpeedState
 
     const multiplierByHardware =
       1 +
-      (mainframeHardwareState.performance.level - 1) *
-        this._globalState.scenario.currentValues.mainframeSoftware.performanceBoost;
+      Math.pow(
+        this._globalState.scenario.currentValues.mainframeSoftware.performanceBoost,
+        mainframeHardwareState.performance.totalLevel,
+      );
 
     if (multiplierByHardware !== this._multiplierByHardware) {
       this._multiplierByHardware = multiplierByHardware;

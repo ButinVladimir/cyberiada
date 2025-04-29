@@ -117,7 +117,7 @@ export class PurchaseProgramDialogButtons extends BaseComponent<PurchaseProgramD
 
     const ownedProgram = this.controller.getOwnedProgram(this.programName!);
     if (ownedProgram) {
-      const formattedLevel = formatter.formatNumberDecimal(ownedProgram.level);
+      const formattedLevel = formatter.formatLevel(ownedProgram.level);
       const formattedQuality = formatter.formatQuality(ownedProgram.quality);
 
       return msg(str`Program is already bought with quality ${formattedQuality} and level ${formattedLevel}`);

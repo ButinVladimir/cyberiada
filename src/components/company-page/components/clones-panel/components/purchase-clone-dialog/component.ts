@@ -198,11 +198,11 @@ Synchronization is earned by capturing districts and gaining certain favors.`)}
             <sl-input
               ${ref(this._levelInputRef)}
               name="level"
-              value=${this._level}
+              value=${this._level + 1}
               type="number"
               inputmode="decimal"
               min="1"
-              max=${developmentLevel}
+              max=${developmentLevel + 1}
               step="1"
               @sl-change=${this.handleLevelChange}
             >
@@ -282,10 +282,9 @@ Synchronization is earned by capturing districts and gaining certain favors.`)}
       return;
     }
 
-    const level = clamp(this._levelInputRef.value.valueAsNumber, 1, this.controller.developmentLevel);
-
+    const level = clamp(this._levelInputRef.value.valueAsNumber - 1, 0, this.controller.developmentLevel);
     this._level = level;
-    this._levelInputRef.value.valueAsNumber = level;
+    this._levelInputRef.value.valueAsNumber = level + 1;
   };
 
   private handlePurchaseClone = () => {

@@ -1,18 +1,20 @@
 import { IMapGeneratorDistrictResult } from '@workers/map-generator/interfaces';
 import { IPoint } from '@shared/interfaces';
-import { Faction } from '@shared/types';
+import { DistrictType, Faction } from '@shared/types';
 import { IDistrictInfo, IDistrictSerializedInfo } from './interfaces';
 import { DistrictState } from './types';
 
 export class DistrictInfo implements IDistrictInfo {
   private _name;
   private _startingPoint: IPoint;
+  private _districtType: DistrictType;
   private _faction;
   private _state: DistrictState;
 
   private constructor() {
     this._name = '';
     this._startingPoint = { x: 0, y: 0 };
+    this._districtType = DistrictType.suburb;
     this._faction = Faction.neutral;
     this._state = DistrictState.locked;
   }
@@ -21,6 +23,7 @@ export class DistrictInfo implements IDistrictInfo {
     const districtInfo = new DistrictInfo();
     districtInfo._name = districtSerializedInfo.name;
     districtInfo._startingPoint = districtSerializedInfo.startingPoint;
+    districtInfo._districtType = districtSerializedInfo.districtType;
     districtInfo._faction = districtSerializedInfo.faction;
     districtInfo._state = districtSerializedInfo.state;
 
@@ -31,6 +34,7 @@ export class DistrictInfo implements IDistrictInfo {
     const districtInfo = new DistrictInfo();
     districtInfo._name = mapGeneratorDistrictResult.name;
     districtInfo._startingPoint = mapGeneratorDistrictResult.startingPoint;
+    districtInfo._districtType = mapGeneratorDistrictResult.districtType;
     districtInfo._faction = mapGeneratorDistrictResult.faction;
     districtInfo._state = DistrictState.locked;
 
@@ -43,6 +47,10 @@ export class DistrictInfo implements IDistrictInfo {
 
   get startingPoint(): IPoint {
     return this._startingPoint;
+  }
+
+  get districtType(): DistrictType {
+    return this._districtType;
   }
 
   get faction(): Faction {
@@ -61,6 +69,7 @@ export class DistrictInfo implements IDistrictInfo {
     return {
       name: this._name,
       startingPoint: this._startingPoint,
+      districtType: this._districtType,
       faction: this._faction,
       state: this._state,
     };

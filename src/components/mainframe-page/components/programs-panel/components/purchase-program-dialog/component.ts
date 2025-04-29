@@ -177,11 +177,11 @@ If you already have program with same name, old one will be replaced with new on
             <sl-input
               ${ref(this._levelInputRef)}
               name="level"
-              value=${this._level}
+              value=${this._level + 1}
               type="number"
               inputmode="decimal"
               min="1"
-              max=${developmentLevel}
+              max=${developmentLevel + 1}
               step="1"
               @sl-change=${this.handleLevelChange}
             >
@@ -253,10 +253,9 @@ If you already have program with same name, old one will be replaced with new on
       return;
     }
 
-    const level = clamp(this._levelInputRef.value.valueAsNumber, 1, this.controller.developmentLevel);
-
+    const level = clamp(this._levelInputRef.value.valueAsNumber - 1, 0, this.controller.developmentLevel);
     this._level = level;
-    this._levelInputRef.value.valueAsNumber = level;
+    this._levelInputRef.value.valueAsNumber = level + 1;
   };
 
   private handleOpenConfirmationAlert = () => {
@@ -270,7 +269,7 @@ If you already have program with same name, old one will be replaced with new on
       const formatter = this.controller.formatter;
 
       const programTitle = PROGRAM_TEXTS[this._programName].title();
-      const formattedLevel = formatter.formatNumberDecimal(ownedProgram.level);
+      const formattedLevel = formatter.formatLevel(ownedProgram.level);
       const formattedQuality = formatter.formatQuality(ownedProgram.quality);
 
       this.dispatchEvent(

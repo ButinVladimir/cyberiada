@@ -287,7 +287,7 @@ Threads allow to run multiple instances of same program at same time, but additi
   private formatProgramSelectItem = (program: IProgram) => {
     const formatter = this.controller.formatter;
     const programTitle = PROGRAM_TEXTS[program.name].title();
-    const formattedLevel = formatter.formatNumberDecimal(program.level);
+    const formattedLevel = formatter.formatLevel(program.level);
     const formattedQuality = formatter.formatQuality(program.quality);
 
     return html`<sl-option value=${program.name}>

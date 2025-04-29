@@ -50,7 +50,7 @@ export class MenuBarValues extends BaseComponent<MenuBarValuesController> {
 
   render() {
     const formatter = this.controller.formatter;
-    const developmentLevelFormatted = formatter.formatNumberDecimal(this.controller.developmentLevel);
+    const developmentLevelFormatted = formatter.formatLevel(this.controller.developmentLevel);
 
     return html`
       <div class="block">

@@ -1,15 +1,13 @@
 import programs from '@configs/programs.json';
+import { calculateQualityPower } from '@shared/helpers';
 import { MultiplierProgramName } from '../types';
 import { BaseProgram } from './base-program';
-import { calculateQualityPower } from '@/shared';
 
 export class CircuitDesignerProgram extends BaseProgram {
   public readonly name = MultiplierProgramName.circuitDesigner;
   public readonly isAutoscalable = false;
 
-  handlePerformanceUpdate(): void {
-    this.growthState.multipliers.computationalBase.requestGrowthRecalculation();
-  }
+  handlePerformanceUpdate(): void {}
 
   perform(threads: number): void {
     this.globalState.multipliers.computationalBase.increasePointsByProgram(this.calculateDelta(threads));
@@ -22,7 +20,7 @@ export class CircuitDesignerProgram extends BaseProgram {
       this.globalState.scenario.currentValues.programMultipliers.computationalBase.pointsMultiplier *
       this.globalState.multipliers.rewards.totalMultiplier *
       threads *
-      calculateQualityPower(this.level - 1, this.quality, programData.computationalBase)
+      calculateQualityPower(this.level, this.quality, programData.computationalBase)
     );
   }
 }

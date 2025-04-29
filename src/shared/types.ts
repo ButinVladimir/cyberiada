@@ -148,3 +148,8 @@ export enum Skill {
   stealth = 'stealth',
   diplomacy = 'diplomacy',
 }
+
+export enum DistrictType {
+  suburb = 'suburb',
+  corpoDistrict = 'corpoDistrict',
+}

@@ -178,7 +178,7 @@ export class ClonesListItem extends BaseComponent<ClonesListItemController> {
     const formatter = this.controller.formatter;
 
     const formattedQuality = formatter.formatQuality(clone.quality);
-    const formattedLevel = formatter.formatNumberDecimal(clone.level);
+    const formattedLevel = formatter.formatLevel(clone.level);
 
     const synchronization = this.controller.getCloneSynchronization(clone);
     const formattedSynchronization = formatter.formatNumberDecimal(synchronization);

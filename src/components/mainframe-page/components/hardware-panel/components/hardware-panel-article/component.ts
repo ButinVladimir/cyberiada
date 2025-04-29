@@ -113,7 +113,7 @@ export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwa
         <h4 class="title" draggable="true" @dragstart=${this.handleDragStart}>
           <sl-icon id="drag-icon" name="grip-vertical"> </sl-icon>
 
-          ${MAINFRAME_HARDWARE_TEXTS[this.type].title(formatter.formatNumberDecimal(level))}
+          ${MAINFRAME_HARDWARE_TEXTS[this.type].title(formatter.formatLevel(level))}
 
           <sl-tooltip>
             <span slot="content"> ${autoupgradeLabel} </span>

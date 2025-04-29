@@ -12,8 +12,7 @@ export class CloneNameGenerator implements ICloneNameGenerator {
   }
 
   generate(): ICloneNameGeneratorResult {
-    const nameIndex = this._random.randRange(0, names.clones.length - 1);
-    const namePart = CLONE_NAMES[names.clones[nameIndex]]();
+    const namePart = CLONE_NAMES[this._random.choice(names.clones)]();
 
     const serialNumber = this._random.randRange(0, 9999);
     const serialNumberPart = padStart(serialNumber.toString(), 4, '0');

@@ -14,9 +14,9 @@ export interface IScenarioValues {
   startingAccumulatedTime: number;
   startingSynchronization: number;
   mainframeHardware: {
-    startingPerformanceLevel: number;
-    startingCoresLevel: number;
-    startingRamLevel: number;
+    basePerformanceLevel: number;
+    baseCoresLevel: number;
+    baseRamLevel: number;
     performancePrice: IExponent;
     coresPrice: IExponent;
     ramPrice: IExponent;

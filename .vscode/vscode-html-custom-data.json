@@ -95,8 +95,19 @@
       ]
     },
     {
+      "name": "ca-city-map-tooltip-content",
+      "description": "Attributes:\n\n  * `district` {`number | null | undefined`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `district` {`number | null | undefined`} - \n\n  * `controller` {`CityMapTooltipContentController`} - ",
+      "attributes": [
+        {
+          "name": "district",
+          "description": "`district` {`number | null | undefined`} - \n\nProperty: district",
+          "values": []
+        }
+      ]
+    },
+    {
       "name": "ca-city-map",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_size` {`number`} - \n\n  * `_selectedDistrict` {`number | undefined`} - \n\n  * `renderDistrict` - \n\n  * `handleMouseMove` - \n\n  * `handleMouseLeave` - \n\n  * `handleResize` - \n\n  * `controller` {`CityMapController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_size` {`number`} - \n\n  * `_selectedDistrict` {`number | undefined`} - \n\n  * `_contentAnchorRef` {`Ref<HTMLDivElement>`} - \n\n  * `_popupRef` {`Ref<SlPopup>`} - \n\n  * `_positionX` {`number`} - \n\n  * `_positionY` {`number`} - \n\n  * `renderDistrict` - \n\n  * `handleMouseMove` - \n\n  * `handleMouseLeave` - \n\n  * `handleResize` - \n\n  * `controller` {`CityMapController`} - ",
       "attributes": []
     },
     {

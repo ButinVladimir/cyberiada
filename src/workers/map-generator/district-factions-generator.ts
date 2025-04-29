@@ -1,11 +1,13 @@
 import { XORShift128Plus } from 'random-seedable';
 import scenarios from '@configs/scenarios.json';
+import districtTypes from '@configs/district-types.json';
 import { Faction, Scenario } from '@shared/types';
 import { RandomQueue } from '@shared/random-queue';
 import {
   IDistrictFactionsGenerator,
   IDistrictFactionsGeneratorDistrictResult,
   IDistrictFactionsGeneratorResult,
+  IDistrictInfoGeneratorResult,
 } from './interfaces';
 import { IDistrictConnectionGraphBuilderResult } from '../district-connection-graph-builder/interfaces/district-connection-graph-builder-result';
 
@@ -17,10 +19,17 @@ export class DistrictFactionsGenerator implements IDistrictFactionsGenerator {
   private _districtFactions: Map<number, Faction>;
   private _controlledAreaMap: Map<Faction, number>;
   private _districtQueues: Map<Faction, RandomQueue<number>>;
+  private _districtInfos: IDistrictInfoGeneratorResult;
 
-  constructor(scenario: Scenario, layout: number[][], random: XORShift128Plus) {
+  constructor(
+    scenario: Scenario,
+    layout: number[][],
+    districtInfos: IDistrictInfoGeneratorResult,
+    random: XORShift128Plus,
+  ) {
     this._scenario = scenario;
     this._layout = layout;
+    this._districtInfos = districtInfos;
     this._random = random;
 
     this._districtFactions = new Map<number, Faction>();
@@ -55,15 +64,18 @@ export class DistrictFactionsGenerator implements IDistrictFactionsGenerator {
     for (const factionData of mapData.factions) {
       const faction = factionData.name as Faction;
       const startingDistrict = factionData.startingDistrict;
+      const startingDistrictType = this._districtInfos.districts[startingDistrict].districtType;
+
+      const startingDistrictDifficulty =
+        this._connectionsGraph.districtSizes.get(startingDistrict)! *
+        districtTypes[startingDistrictType].captureDifficulty;
+
       const districtQueue = new RandomQueue<number>(this._random);
 
       this.pushConnectedNeigbours(startingDistrict, districtQueue);
 
       this._districtFactions.set(startingDistrict, faction);
-      this._controlledAreaMap.set(
-        faction,
-        factionData.controlledArea - this._connectionsGraph.districtSizes.get(startingDistrict)!,
-      );
+      this._controlledAreaMap.set(faction, factionData.controlledArea - startingDistrictDifficulty);
       this._districtQueues.set(faction, districtQueue);
     }
 
@@ -90,11 +102,13 @@ export class DistrictFactionsGenerator implements IDistrictFactionsGenerator {
 
         while (!districtQueue.isEmpty()) {
           const nextDistrict = districtQueue.pop();
+          const districtType = this._districtInfos.districts[nextDistrict].districtType;
           const factionControlledArea = this._controlledAreaMap.get(faction)!;
-          const districtSize = this._connectionsGraph.districtSizes.get(nextDistrict)!;
+          const districtDifficulty =
+            this._connectionsGraph.districtSizes.get(nextDistrict)! * districtTypes[districtType].captureDifficulty;
 
-          if (!this._districtFactions.has(nextDistrict) && factionControlledArea >= districtSize) {
-            this._controlledAreaMap.set(faction, factionControlledArea - districtSize);
+          if (!this._districtFactions.has(nextDistrict) && factionControlledArea >= districtDifficulty) {
+            this._controlledAreaMap.set(faction, factionControlledArea - districtDifficulty);
             this._districtFactions.set(nextDistrict, faction);
             this.pushConnectedNeigbours(nextDistrict, districtQueue);
 

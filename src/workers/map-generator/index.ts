@@ -3,8 +3,8 @@ import scenarios from '@configs/scenarios.json';
 import {
   IMapGeneratorArgs,
   ILayoutGeneratorResult,
-  IDistrictNamesGeneratorResult,
-  IDistrictNamesGenerator,
+  IDistrictInfoGeneratorResult,
+  IDistrictInfoGenerator,
   ILayoutGenerator,
   IMapGeneratorDistrictResult,
   IMapGeneratorResult,
@@ -12,7 +12,7 @@ import {
   IDistrictFactionsGeneratorResult,
 } from './interfaces';
 import { LayoutGenerator } from './layout-generator';
-import { DistrictNamesGenerator } from './district-names-generator';
+import { DistrictInfoGenerator } from './district-info-generator';
 import { DistrictFactionsGenerator } from './district-factions-generator';
 
 onmessage = async (e: MessageEvent<IMapGeneratorArgs>) => {
@@ -21,12 +21,13 @@ onmessage = async (e: MessageEvent<IMapGeneratorArgs>) => {
   const mapGenerator: ILayoutGenerator = new LayoutGenerator(e.data.scenario, random);
   const layoutResult: ILayoutGeneratorResult = mapGenerator.generate();
 
-  const districtNamesGenerator: IDistrictNamesGenerator = new DistrictNamesGenerator(e.data.scenario, random);
-  const districtNamesResult: IDistrictNamesGeneratorResult = districtNamesGenerator.generate();
+  const districtInfoGenerator: IDistrictInfoGenerator = new DistrictInfoGenerator(e.data.scenario, random);
+  const districtInfoResult: IDistrictInfoGeneratorResult = districtInfoGenerator.generate();
 
   const districtFactionsGenerator: IDistrictFactionsGenerator = new DistrictFactionsGenerator(
     e.data.scenario,
     layoutResult.layout,
+    districtInfoResult,
     random,
   );
   const districtFactionResult: IDistrictFactionsGeneratorResult = await districtFactionsGenerator.generate();
@@ -36,9 +37,9 @@ onmessage = async (e: MessageEvent<IMapGeneratorArgs>) => {
 
   for (let districtIndex = 0; districtIndex < districtsNum; districtIndex++) {
     districts[districtIndex] = {
-      startingPoint: layoutResult.districts[districtIndex].startingPoint,
-      name: districtNamesResult.districts[districtIndex].name,
-      faction: districtFactionResult.districts[districtIndex].faction,
+      ...layoutResult.districts[districtIndex],
+      ...districtFactionResult.districts[districtIndex],
+      ...districtInfoResult.districts[districtIndex],
     };
   }
 

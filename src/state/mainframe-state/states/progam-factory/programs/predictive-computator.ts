@@ -8,14 +8,6 @@ export class PredictiveComputatorProgram extends BaseProgram {
   public readonly isAutoscalable = true;
 
   handlePerformanceUpdate(): void {
-    for (const process of this.mainframeState.processes.listProcesses()) {
-      if (process.program.name === OtherProgramName.predictiveComputator) {
-        continue;
-      }
-
-      process.program.handlePerformanceUpdate();
-    }
-
     this.growthState.programCompletionSpeed.requestMultipliersRecalculation();
   }
 
@@ -24,14 +16,14 @@ export class PredictiveComputatorProgram extends BaseProgram {
   calculateProgramCompletionSpeedMultiplier(threads: number, usedRam: number): number {
     const programData = programs[this.name];
 
-    return Math.max(
-      1,
+    return (
       1 +
-        Math.pow(threads * usedRam, programData.autoscalableResourcesPower) *
-          calculateQualityLinear(this.level, this.quality, programData.speedModifier) *
-          (1 +
-            (this.mainframeState.hardware.performance.level - 1) *
-              this.globalState.scenario.currentValues.mainframeSoftware.performanceBoost),
+      Math.pow(threads * usedRam, programData.autoscalableResourcesPower) *
+        calculateQualityLinear(this.level, this.quality, programData.speedModifier) *
+        Math.pow(
+          this.globalState.scenario.currentValues.mainframeSoftware.performanceBoost,
+          this.mainframeState.hardware.performance.totalLevel,
+        )
     );
   }
 }

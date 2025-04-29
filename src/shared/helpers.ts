@@ -10,7 +10,7 @@ export const calculateQualityPower = (exponent: number, quality: number, params:
 };
 
 export const calculateLinear = (level: number, params: ILinear): number => {
-  return level * params.multiplier;
+  return params.base + level * params.multiplier;
 };
 
 export const calculateQualityLinear = (level: number, quality: number, params: IQualityLinear): number => {
@@ -78,10 +78,10 @@ export function moveElementInArray<T>(array: T[], fromIndex: number, toIndex: nu
 }
 
 export const calculateGeometricProgressionSum = (level: number, multiplier: number, base: number): number =>
-  (multiplier * (Math.pow(base, level) - 1)) / (base - 1);
+  (multiplier * (Math.pow(base, level + 1) - 1)) / (base - 1);
 
 export const reverseGeometricProgressionSum = (points: number, multiplier: number, base: number): number =>
-  Math.floor(Math.log(1 + (points * (base - 1)) / multiplier) / Math.log(base)) + 1;
+  Math.floor(Math.log(1 + (points * (base - 1)) / multiplier) / Math.log(base));
 
 export function removeElementsFromArray<T>(array: T[], fromIndex: number, count: number): void {
   if (fromIndex + count >= array.length) {

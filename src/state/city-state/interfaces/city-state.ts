@@ -4,5 +4,5 @@ import { IDistrictInfo } from './district-info';
 
 export interface ICityState extends ISerializeable<ICitySerializedState> {
   getLayout(): number[][];
-  getDistrictInfo(num: number): IDistrictInfo;
+  getDistrictInfo(districtIndex: number): IDistrictInfo;
 }

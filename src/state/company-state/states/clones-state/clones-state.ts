@@ -81,7 +81,7 @@ export class CompanyClonesState implements ICompanyClonesState {
   }
 
   getCloneCost(templateName: CloneTemplateName, quality: number, level: number): number {
-    return calculateQualityPower(level - 1, quality, cloneTemplates[templateName].cost);
+    return calculateQualityPower(level, quality, cloneTemplates[templateName].cost);
   }
 
   getCloneSynchronization(templateName: CloneTemplateName, quality: number): number {
@@ -151,7 +151,7 @@ export class CompanyClonesState implements ICompanyClonesState {
     this.uiEventBatcher.enqueueEvent(COMPANY_CLONES_STATE_UI_EVENTS.CLONES_UPDATED);
   }
 
-  processTick(): void {
+  recalculate(): void {
     for (const clone of this._clonesList) {
       clone.increaseExperience(clone.level);
       clone.recalculate();
@@ -266,7 +266,7 @@ export class CompanyClonesState implements ICompanyClonesState {
 
       this.addClone(clone);
 
-      const formattedLevel = this._formatter.formatNumberDecimal(clone.level);
+      const formattedLevel = this._formatter.formatLevel(clone.level);
       const formattedQuality = this._formatter.formatQuality(clone.quality);
 
       this._messageLogState.postMessage(
