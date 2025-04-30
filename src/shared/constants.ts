@@ -20,6 +20,7 @@ import {
   ClonesEvent,
   CloneAlert,
   DistrictType,
+  CityEvent,
 } from './types';
 
 export const CURRENT_VERSION = GameVersion['0.1.3'];
@@ -41,6 +42,8 @@ export const PURCHASE_EVENTS: PurchaseEvent[] = Object.values(PurchaseEvent);
 export const PROGRAM_EVENTS: ProgramsEvent[] = Object.values(ProgramsEvent);
 
 export const CLONE_EVENTS: ClonesEvent[] = Object.values(ClonesEvent);
+
+export const CITY_EVENTS: CityEvent[] = Object.values(CityEvent);
 
 export const GAME_STATE_ALERTS: GameStateAlert[] = Object.values(GameStateAlert);
 

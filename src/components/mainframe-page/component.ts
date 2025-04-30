@@ -5,7 +5,7 @@ import { BaseComponent } from '@shared/base-component';
 import { pageTitleStyle } from '@shared/styles';
 import { MainframePageController } from './controller';
 import { MainframePageTabs } from './types';
-import { MAINFRAME_PAGE_TABS_LIST, MAINFRAMGE_PAGE_TAB_TITLES } from './constants';
+import { MAINFRAME_PAGE_TABS_LIST, MAINFRAMGE_PAGE_TAB_TITLES as MAINFRAME_PAGE_TAB_TITLES } from './constants';
 
 @localized()
 @customElement('ca-mainframe-page')
@@ -54,7 +54,7 @@ export class MainframePage extends BaseComponent<MainframePageController> {
       return nothing;
     }
 
-    return html` <sl-tab slot="nav" panel=${tab}> ${MAINFRAMGE_PAGE_TAB_TITLES[tab]()} </sl-tab> `;
+    return html` <sl-tab slot="nav" panel=${tab}> ${MAINFRAME_PAGE_TAB_TITLES[tab]()} </sl-tab> `;
   };
 
   private renderTabPanel = (tab: MainframePageTabs) => {

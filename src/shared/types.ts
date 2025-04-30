@@ -66,7 +66,11 @@ export enum ClonesEvent {
   cloneRenamed = 'cloneRenamed',
 }
 
-export type MessageEvent = GameStateEvent | PurchaseEvent | ProgramsEvent | ClonesEvent;
+export enum CityEvent {
+  districtTierIncreased = 'districtTierIncreased',
+}
+
+export type MessageEvent = GameStateEvent | PurchaseEvent | ProgramsEvent | ClonesEvent | CityEvent;
 
 export enum GameStateAlert {
   saveImport = 'saveImport',

@@ -3,7 +3,7 @@ import { customElement, property } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { localized } from '@lit/localize';
 import { BaseComponent } from '@shared/base-component';
-import { DistrictState } from '@state/city-state/types';
+import { DistrictUnlockState } from '@state/city-state/types';
 import { CityMapDistrictController } from './controller';
 
 @localized()
@@ -99,7 +99,7 @@ export class CityMapDistrict extends BaseComponent<CityMapDistrictController> {
     const context = this._offscreenCanvasContext;
 
     let districtNum: number;
-    let districtState: DistrictState;
+    let districtState: DistrictUnlockState;
 
     const styles = this.controller.getStyles();
 
@@ -127,7 +127,7 @@ export class CityMapDistrict extends BaseComponent<CityMapDistrictController> {
     const context = this._offscreenCanvasContext;
 
     const styles = this.controller.getStyles();
-    const districtState: DistrictState = this.controller.getDistrict(this.district).state;
+    const districtState: DistrictUnlockState = this.controller.getDistrict(this.district).state;
 
     context.lineWidth = 2;
     context.strokeStyle = styles.stateStyles[districtState].selectedBorderColor;
@@ -204,7 +204,7 @@ export class CityMapDistrict extends BaseComponent<CityMapDistrictController> {
     const context = this._offscreenCanvasContext;
 
     const styles = this.controller.getStyles();
-    const districtState: DistrictState = this.controller.getDistrict(this.district).state;
+    const districtState: DistrictUnlockState = this.controller.getDistrict(this.district).state;
 
     context.lineWidth = 2;
 
@@ -247,7 +247,7 @@ export class CityMapDistrict extends BaseComponent<CityMapDistrictController> {
     const context = this._offscreenCanvasContext;
 
     const styles = this.controller.getStyles();
-    const districtState: DistrictState = this.controller.getDistrict(this.district).state;
+    const districtState: DistrictUnlockState = this.controller.getDistrict(this.district).state;
 
     context.lineWidth = 2;
 
@@ -290,7 +290,7 @@ export class CityMapDistrict extends BaseComponent<CityMapDistrictController> {
     const context = this._offscreenCanvasContext;
 
     const styles = this.controller.getStyles();
-    const districtState: DistrictState = this.controller.getDistrict(this.district).state;
+    const districtState: DistrictUnlockState = this.controller.getDistrict(this.district).state;
 
     let dotX: number;
     let dotY: number;

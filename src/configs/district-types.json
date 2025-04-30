@@ -1,9 +1,8 @@
 {
   "suburb": {
     "captureDifficulty": 1,
-    "factionPower": { "base": 1, "qualityMultiplier": 1.1 },
     "synchronization": { "base": 10, "qualityMultiplier": 1.1 },
-    "qualityRequirements": { "baseMultiplier": 60000, "base": 1.5 },
+    "nextTierRequirements": { "multiplier": 60000, "base": 1.5 },
     "multipliers": {
       "money": {
         "pointsMultiplier": 1
@@ -11,6 +10,7 @@
       "developmentPoints": {
         "pointsMultiplier": 1
       },
+      "factionPower": { "base": 1, "qualityMultiplier": 1.1 },
       "codeBase": {
         "pointsMultiplier": { "base": 1, "qualityMultiplier": 1.5 },
         "pointsToMax": { "base": 86400, "qualityMultiplier": 0.9 },
@@ -35,9 +35,8 @@
   },
   "corpoDistrict": {
     "captureDifficulty": 2,
-    "factionPower": { "base": 2, "qualityMultiplier": 1.1 },
     "synchronization": { "base": 30, "qualityMultiplier": 1.1 },
-    "qualityRequirements": { "baseMultiplier": 60000, "base": 1.5 },
+    "nextTierRequirements": { "multiplier": 60000, "base": 1.5 },
     "multipliers": {
       "money": {
         "pointsMultiplier": 10
@@ -45,6 +44,7 @@
       "developmentPoints": {
         "pointsMultiplier": 5
       },
+      "factionPower": { "base": 2, "qualityMultiplier": 1.1 },
       "codeBase": {
         "pointsMultiplier": { "base": 5, "qualityMultiplier": 1.5 },
         "pointsToMax": { "base": 86400, "qualityMultiplier": 0.9 },

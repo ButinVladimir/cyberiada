@@ -1,4 +1,4 @@
-export enum DistrictState {
+export enum DistrictUnlockState {
   locked,
   contested,
   controlled,

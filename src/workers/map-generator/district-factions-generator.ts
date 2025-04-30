@@ -5,6 +5,7 @@ import { Faction, Scenario } from '@shared/types';
 import { RandomQueue } from '@shared/random-queue';
 import {
   IDistrictFactionsGenerator,
+  IDistrictFactionsGeneratorArgs,
   IDistrictFactionsGeneratorDistrictResult,
   IDistrictFactionsGeneratorResult,
   IDistrictInfoGeneratorResult,
@@ -21,16 +22,11 @@ export class DistrictFactionsGenerator implements IDistrictFactionsGenerator {
   private _districtQueues: Map<Faction, RandomQueue<number>>;
   private _districtInfos: IDistrictInfoGeneratorResult;
 
-  constructor(
-    scenario: Scenario,
-    layout: number[][],
-    districtInfos: IDistrictInfoGeneratorResult,
-    random: XORShift128Plus,
-  ) {
-    this._scenario = scenario;
-    this._layout = layout;
-    this._districtInfos = districtInfos;
-    this._random = random;
+  constructor(args: IDistrictFactionsGeneratorArgs) {
+    this._scenario = args.scenario;
+    this._layout = args.layout.layout;
+    this._districtInfos = args.districtInfos;
+    this._random = args.random;
 
     this._districtFactions = new Map<number, Faction>();
     this._controlledAreaMap = new Map<Faction, number>();

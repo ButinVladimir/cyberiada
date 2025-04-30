@@ -1,8 +1,10 @@
 import { ISerializeable } from '@shared/interfaces/serializable';
+import { IUIEventEmitter } from '@shared/interfaces/ui-event-emitter';
 import { ICitySerializedState } from './city-serialized-state';
-import { IDistrictInfo } from './district-info';
+import { IDistrictState } from './district-state';
 
-export interface ICityState extends ISerializeable<ICitySerializedState> {
+export interface ICityState extends ISerializeable<ICitySerializedState>, IUIEventEmitter {
   getLayout(): number[][];
-  getDistrictInfo(districtIndex: number): IDistrictInfo;
+  getDistrictState(districtIndex: number): IDistrictState;
+  recalculate(): void;
 }

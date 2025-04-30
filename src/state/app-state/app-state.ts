@@ -149,6 +149,7 @@ export class AppState implements IAppState {
     this._mainframeState.processes.processTick();
     this._companyState.clones.recalculate();
     this._globalState.makeNextTick();
+    this._cityState.recalculate();
     this._globalState.recalculate();
     this._growthState.recalculateGrowth();
   };

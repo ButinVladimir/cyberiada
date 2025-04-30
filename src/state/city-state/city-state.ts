@@ -1,31 +1,43 @@
 import { injectable, inject } from 'inversify';
 import scenarios from '@configs/scenarios.json';
 import type { IGlobalState } from '@state/global-state/interfaces/global-state';
+import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import { IMapGeneratorResult } from '@workers/map-generator/interfaces';
+import { IEventBatcher } from '@shared/interfaces/event-batcher';
+import { EventBatcher } from '@shared/event-batcher';
 import { TYPES } from '@state/types';
-import { ICityState, ICitySerializedState, IDistrictInfo, IDistrictSerializedInfo } from './interfaces';
-import { DistrictInfo } from './district-info';
-import { DistrictState } from './types';
+import { ICityState, ICitySerializedState, IDistrictState, IDistrictSerializedState } from './interfaces';
+import { DistrictState } from './district-state';
+import { DistrictUnlockState } from './types';
 
 @injectable()
 export class CityState implements ICityState {
+  readonly uiEventBatcher: IEventBatcher;
+
   private _globalState: IGlobalState;
+  private _stateUiConnector: IStateUIConnector;
 
   private _layout: number[][];
-  private _districts: Map<number, IDistrictInfo>;
+  private _districts: Map<number, IDistrictState>;
 
-  constructor(@inject(TYPES.GlobalState) _globalState: IGlobalState) {
+  constructor(
+    @inject(TYPES.GlobalState) _globalState: IGlobalState,
+    @inject(TYPES.StateUIConnector) _stateUiConnector: IStateUIConnector,
+  ) {
     this._globalState = _globalState;
+    this._stateUiConnector = _stateUiConnector;
 
     this._layout = [];
     this._districts = new Map();
+
+    this.uiEventBatcher = new EventBatcher();
   }
 
   getLayout(): number[][] {
     return this._layout;
   }
 
-  getDistrictInfo(districtIndex: number): IDistrictInfo {
+  getDistrictState(districtIndex: number): IDistrictState {
     if (!this._districts.has(districtIndex)) {
       throw new Error(`Missing district ${districtIndex}`);
     }
@@ -33,8 +45,15 @@ export class CityState implements ICityState {
     return this._districts.get(districtIndex)!;
   }
 
+  recalculate() {
+    for (const district of this._districts.values()) {
+      district.recalculate();
+    }
+  }
+
   async startNewState(): Promise<void> {
     await this.generateMap();
+    this.recalculate();
   }
 
   async deserialize(serializedState: ICitySerializedState): Promise<void> {
@@ -53,18 +72,18 @@ export class CityState implements ICityState {
 
     Object.entries(serializedState.districts).forEach(([districtNum, districtSerializedInfo]) => {
       const districtNumParsed = parseInt(districtNum);
-      const districtInfo = DistrictInfo.deserialize(districtSerializedInfo);
+      const districtState = DistrictState.deserialize(districtSerializedInfo);
 
-      this._districts.set(districtNumParsed, districtInfo);
+      this._districts.set(districtNumParsed, districtState);
     });
   }
 
   serialize(): ICitySerializedState {
     const layout: number[][] = this.getLayout();
 
-    const districts: Record<number, IDistrictSerializedInfo> = {};
-    this._districts.forEach((districtInfo, districtNum) => {
-      districts[districtNum] = districtInfo.serialize();
+    const districts: Record<number, IDistrictSerializedState> = {};
+    this._districts.forEach((districtState, districtNum) => {
+      districts[districtNum] = districtState.serialize();
     });
 
     return {
@@ -83,16 +102,17 @@ export class CityState implements ICityState {
         this._layout = event.data.layout;
 
         this._districts.clear();
+
         for (const [districtNum, district] of Object.entries(event.data.districts)) {
           const parsedDistrictNum = parseInt(districtNum);
-          const districtInfo = DistrictInfo.createByMapGenerator(district);
+          const districtState = DistrictState.createByMapGenerator(district);
 
-          districtInfo.state =
+          districtState.state =
             parsedDistrictNum === scenarios[this._globalState.scenario.scenario].map.startingDistrict
-              ? DistrictState.contested
-              : DistrictState.locked;
+              ? DistrictUnlockState.contested
+              : DistrictUnlockState.locked;
 
-          this._districts.set(parsedDistrictNum, districtInfo);
+          this._districts.set(parsedDistrictNum, districtState);
         }
 
         resolve();

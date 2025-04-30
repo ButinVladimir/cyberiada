@@ -1,5 +1,5 @@
 import { msg } from '@lit/localize';
-import { type MessageEvent, GameStateEvent, PurchaseEvent, ProgramsEvent, ClonesEvent } from '@shared/types';
+import { type MessageEvent, GameStateEvent, PurchaseEvent, ProgramsEvent, ClonesEvent, CityEvent } from '@shared/types';
 
 export const MESSAGE_EVENT_NAMES: Record<MessageEvent, () => string> = {
   [GameStateEvent.gameStarted]: () => msg('Game started'),
@@ -18,4 +18,5 @@ export const MESSAGE_EVENT_NAMES: Record<MessageEvent, () => string> = {
   [ClonesEvent.allClonesDeleted]: () => msg('All clones deleted'),
   [ClonesEvent.cloneLevelReached]: () => msg('Clone reached next level'),
   [ClonesEvent.cloneRenamed]: () => msg('Clone renamed'),
+  [CityEvent.districtTierIncreased]: () => msg('City district tier increased'),
 };

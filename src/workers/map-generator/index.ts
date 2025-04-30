@@ -24,12 +24,12 @@ onmessage = async (e: MessageEvent<IMapGeneratorArgs>) => {
   const districtInfoGenerator: IDistrictInfoGenerator = new DistrictInfoGenerator(e.data.scenario, random);
   const districtInfoResult: IDistrictInfoGeneratorResult = districtInfoGenerator.generate();
 
-  const districtFactionsGenerator: IDistrictFactionsGenerator = new DistrictFactionsGenerator(
-    e.data.scenario,
-    layoutResult.layout,
-    districtInfoResult,
-    random,
-  );
+  const districtFactionsGenerator: IDistrictFactionsGenerator = new DistrictFactionsGenerator({
+    scenario: e.data.scenario,
+    layout: layoutResult,
+    districtInfos: districtInfoResult,
+    random: random,
+  });
   const districtFactionResult: IDistrictFactionsGeneratorResult = await districtFactionsGenerator.generate();
 
   const districts: Record<number, IMapGeneratorDistrictResult> = {};

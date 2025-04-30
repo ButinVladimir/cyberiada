@@ -49,13 +49,18 @@ export class CityMapTooltipContent extends BaseComponent<CityMapTooltipContentCo
       return nothing;
     }
 
-    const districtInfo = this.controller.getDistrictInfo(this.district);
+    const formatter = this.controller.formatter;
+
+    const districtState = this.controller.getDistrictState(this.district);
+
+    const formattedTier = formatter.formatQuality(districtState.parameters.tier.tier);
 
     return html`
-      <p>${msg(districtInfo.name)}</p>
-      <p>${msg(str`District type: ${DISTRICT_TYPE_TEXTS[districtInfo.districtType].title()}`)}</p>
-      <p>${msg(str`Faction: ${FACTION_TEXTS[districtInfo.faction].title()}`)}</p>
-      <p>${msg(str`State: ${DISTRICT_STATE_TEXTS[districtInfo.state]()}`)}</p>
+      <p>${msg(districtState.name)}</p>
+      <p>${msg(str`District type: ${DISTRICT_TYPE_TEXTS[districtState.districtType].title()}`)}</p>
+      <p>${msg(str`Tier: ${formattedTier}`)}</p>
+      <p>${msg(str`Faction: ${FACTION_TEXTS[districtState.faction].title()}`)}</p>
+      <p>${msg(str`State: ${DISTRICT_STATE_TEXTS[districtState.state]()}`)}</p>
     `;
   }
 }

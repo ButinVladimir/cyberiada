@@ -1,9 +1,9 @@
-import { DistrictState } from '@state/city-state/types';
+import { DistrictUnlockState } from '@state/city-state/types';
 
 export interface IMapStyles {
   borderColor: string;
   stateStyles: Record<
-    DistrictState,
+    DistrictUnlockState,
     {
       selectedBorderColor: string;
       selectedColor: string;

@@ -3,7 +3,7 @@ import { customElement, property } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { localized } from '@lit/localize';
 import { BaseComponent } from '@shared/base-component';
-import { DistrictState } from '@state/city-state/types';
+import { DistrictUnlockState } from '@state/city-state/types';
 import { CityMapBackgroundController } from './controller';
 
 @localized()
@@ -93,7 +93,7 @@ export class CityMapBackground extends BaseComponent<CityMapBackgroundController
     const context = this._offscreenCanvasContext;
 
     let districtNum: number;
-    let districtState: DistrictState;
+    let districtState: DistrictUnlockState;
 
     const styles = this.controller.getStyles();
 
@@ -143,7 +143,7 @@ export class CityMapBackground extends BaseComponent<CityMapBackgroundController
 
     context.lineWidth = 2;
 
-    let districtState: DistrictState;
+    let districtState: DistrictUnlockState;
     let lineX: number;
     let lineY: number;
 
@@ -178,7 +178,7 @@ export class CityMapBackground extends BaseComponent<CityMapBackgroundController
 
     context.lineWidth = 2;
 
-    let districtState: DistrictState;
+    let districtState: DistrictUnlockState;
     let lineX: number;
     let lineY: number;
 
@@ -211,7 +211,7 @@ export class CityMapBackground extends BaseComponent<CityMapBackgroundController
 
     const styles = this.controller.getStyles();
 
-    let districtState: DistrictState;
+    let districtState: DistrictUnlockState;
     let dotX: number;
     let dotY: number;
 

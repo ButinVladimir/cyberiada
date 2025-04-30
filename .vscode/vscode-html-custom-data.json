@@ -62,7 +62,7 @@
     },
     {
       "name": "ca-city-page",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - ",
+      "description": "Properties:\n\n  * `_selectedDistrictIndex` {`number | undefined`} - \n\n  * `handleCityMapClick` - \n\n  * `handleReturnCityMapPage` - ",
       "attributes": []
     },
     {
@@ -107,8 +107,28 @@
     },
     {
       "name": "ca-city-map",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_size` {`number`} - \n\n  * `_selectedDistrict` {`number | undefined`} - \n\n  * `_contentAnchorRef` {`Ref<HTMLDivElement>`} - \n\n  * `_popupRef` {`Ref<SlPopup>`} - \n\n  * `_positionX` {`number`} - \n\n  * `_positionY` {`number`} - \n\n  * `renderDistrict` - \n\n  * `handleMouseMove` - \n\n  * `handleMouseLeave` - \n\n  * `handleResize` - \n\n  * `controller` {`CityMapController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_size` {`number`} - \n\n  * `_selectedDistrictIndex` {`number | undefined`} - \n\n  * `_contentRef` {`Ref<HTMLDivElement>`} - \n\n  * `_popupRef` {`Ref<SlPopup>`} - \n\n  * `_positionX` {`number`} - \n\n  * `_positionY` {`number`} - \n\n  * `renderDistrict` - \n\n  * `handleMouseMove` - \n\n  * `handleMouseLeave` - \n\n  * `handleResize` - \n\n  * `handleMapClick` - \n\n  * `controller` {`CityMapController`} - ",
       "attributes": []
+    },
+    {
+      "name": "ca-city-district-page",
+      "description": "Attributes:\n\n  * `district-index` {`number`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `districtIndex` {`number`} - \n\n  * `renderTabs` - \n\n  * `renderTab` - \n\n  * `renderTabPanels` - \n\n  * `renderTabPanel` - \n\n  * `renderTabPanelContent` - \n\n  * `handleGoBack` - \n\n  * `controller` {`CityDistrictPageController`} - ",
+      "attributes": [
+        {
+          "name": "district-index",
+          "description": "`district-index` {`number`} - \n\nProperty: districtIndex"
+        }
+      ]
+    },
+    {
+      "name": "ca-city-district-overiew-panel",
+      "description": "Attributes:\n\n  * `district-index` {`number`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `districtIndex` {`number`} - \n\n  * `controller` {`CityDistrictOverviewPanelController`} - ",
+      "attributes": [
+        {
+          "name": "district-index",
+          "description": "`district-index` {`number`} - \n\nProperty: districtIndex"
+        }
+      ]
     },
     {
       "name": "ca-company-page",

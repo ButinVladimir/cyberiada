@@ -11,6 +11,8 @@ import SlPopup from '@shoelace-style/shoelace/dist/components/popup/popup.js';
 import { BaseComponent } from '@shared/base-component';
 import { CityMapController } from './controller';
 import { TEXT_HEIGHT, TOP_BAR_HEIGHT, VERTICAL_PADDING } from './constants';
+import { DistrictUnlockState } from '@/state/city-state';
+import { CityMapClickEvent } from './events';
 
 @localized()
 @customElement('ca-city-map')
@@ -23,6 +25,11 @@ export class CityMap extends BaseComponent<CityMapController> {
     div.content {
       width: 100%;
       position: relative;
+      cursor: not-allowed;
+    }
+
+    div.content.unlocked {
+      cursor: pointer;
     }
 
     div.tooltip-anchor {
@@ -49,9 +56,9 @@ export class CityMap extends BaseComponent<CityMapController> {
   private _size = 5;
 
   @state()
-  private _selectedDistrict?: number;
+  private _selectedDistrictIndex?: number;
 
-  private _contentAnchorRef = createRef<HTMLDivElement>();
+  private _contentRef = createRef<HTMLDivElement>();
 
   private _popupRef = createRef<SlPopup>();
 
@@ -87,13 +94,27 @@ export class CityMap extends BaseComponent<CityMapController> {
   }
 
   render() {
+    let unlocked = false;
+
+    if (this._selectedDistrictIndex !== undefined) {
+      const district = this.controller.getDistrict(this._selectedDistrictIndex);
+
+      unlocked = district.state !== DistrictUnlockState.locked;
+    }
+
+    const contentClasses = classMap({
+      content: true,
+      unlocked,
+    });
+
     return html`
       <sl-resize-observer @sl-resize=${this.handleResize}>
         <div
-          ${ref(this._contentAnchorRef)}
-          class="content"
+          ${ref(this._contentRef)}
+          class=${contentClasses}
           @mousemove=${this.handleMouseMove}
           @mouseleave=${this.handleMouseLeave}
+          @click=${this.handleMapClick}
         >
           <ca-city-map-background size=${this._size}></ca-city-map-background>
 
@@ -101,12 +122,13 @@ export class CityMap extends BaseComponent<CityMapController> {
 
           <sl-popup
             ${ref(this._popupRef)}
-            ?active=${this._selectedDistrict !== undefined}
+            ?active=${this._selectedDistrictIndex !== undefined}
             distance=${8}
             skidding=${8}
             placement="top-start"
           >
-            <ca-city-map-tooltip-content district=${ifDefined(this._selectedDistrict)}> </ca-city-map-tooltip-content>
+            <ca-city-map-tooltip-content district=${ifDefined(this._selectedDistrictIndex)}>
+            </ca-city-map-tooltip-content>
           </sl-popup>
         </div>
       </sl-resize-observer>
@@ -115,7 +137,7 @@ export class CityMap extends BaseComponent<CityMapController> {
 
   private renderDistrict = (districtNum: number) => {
     const classes = classMap({
-      visible: this._selectedDistrict === districtNum,
+      visible: this._selectedDistrictIndex === districtNum,
     });
 
     return html`<ca-city-map-district
@@ -126,8 +148,8 @@ export class CityMap extends BaseComponent<CityMapController> {
   };
 
   private handleMouseMove = (event: MouseEvent) => {
-    if (this._contentAnchorRef.value) {
-      const contentBoundingRect = this._contentAnchorRef.value.getBoundingClientRect();
+    if (this._contentRef.value) {
+      const contentBoundingRect = this._contentRef.value.getBoundingClientRect();
 
       this._positionX = event.clientX;
       this._positionY = event.clientY;
@@ -138,7 +160,7 @@ export class CityMap extends BaseComponent<CityMapController> {
       const offsetY = event.clientY - contentBoundingRect.y - 1;
       const y = clamp(Math.floor(offsetY / (this._size + 1)), 0, this.controller.mapHeight - 1);
 
-      this._selectedDistrict = this.controller.layout[x][y];
+      this._selectedDistrictIndex = this.controller.layout[x][y];
     }
 
     if (this._popupRef.value) {
@@ -147,7 +169,7 @@ export class CityMap extends BaseComponent<CityMapController> {
   };
 
   private handleMouseLeave = () => {
-    this._selectedDistrict = undefined;
+    this._selectedDistrictIndex = undefined;
   };
 
   private handleResize = (event: { detail: { entries: ResizeObserverEntry[] } }) => {
@@ -159,5 +181,15 @@ export class CityMap extends BaseComponent<CityMapController> {
     const minSize = Math.min(heightSize, widthSize);
 
     this._size = Math.max(1, Math.floor(minSize) - 1);
+  };
+
+  private handleMapClick = () => {
+    if (this._selectedDistrictIndex !== undefined) {
+      const district = this.controller.getDistrict(this._selectedDistrictIndex);
+
+      if (district.state !== DistrictUnlockState.locked) {
+        this.dispatchEvent(new CityMapClickEvent(this._selectedDistrictIndex));
+      }
+    }
   };
 }

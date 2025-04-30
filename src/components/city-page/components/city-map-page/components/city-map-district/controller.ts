@@ -16,7 +16,7 @@ export class CityMapDistrictController extends BaseController {
   }
 
   getDistrict(districtNum: number) {
-    return this.cityState.getDistrictInfo(districtNum);
+    return this.cityState.getDistrictState(districtNum);
   }
 
   getStyles(): IMapStyles {

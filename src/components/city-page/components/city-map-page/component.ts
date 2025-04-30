@@ -36,7 +36,10 @@ export class CityMapPage extends BaseComponent {
     return html`
       <h3 class="title">${msg('City')}</h3>
 
-      <p class="hint">${msg("Click on a highlighted district to see it's info and available actions.")}</p>
+      <p class="hint">
+        ${msg(`Click on a highlighted district to see it's info and available actions.
+Districts in locked state cannot be interacted with.`)}
+      </p>
 
       <div class="content">
         <ca-city-map> </ca-city-map>

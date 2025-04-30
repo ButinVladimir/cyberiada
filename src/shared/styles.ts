@@ -89,6 +89,8 @@ export const hintIconStyle = css`
   }
 `;
 
+export const HINT_ICON = 'question-circle';
+
 export const DESCRIPTION_ICONS = {
   hidden: 'chevron-right',
   expanded: 'chevron-down',
