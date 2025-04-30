@@ -1,1 +1,2 @@
-import './city';
+import './city-map-page';
+import './district-page';

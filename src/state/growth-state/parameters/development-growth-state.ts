@@ -24,12 +24,10 @@ export class DevelopmentGrowthState implements IDevelopmentGrowthState {
 
   private _totalGrowth: number;
   private _growth: Map<IncomeSource, number>;
-  private _updateRequested: boolean;
 
   constructor() {
     this._totalGrowth = 0;
     this._growth = new Map<IncomeSource, number>();
-    this._updateRequested = true;
 
     this.uiEventBatcher = new EventBatcher();
     this._stateUiConnector.registerEventEmitter(this);
@@ -43,17 +41,7 @@ export class DevelopmentGrowthState implements IDevelopmentGrowthState {
     return this._growth.get(incomeSource) ?? 0;
   }
 
-  requestGrowthRecalculation() {
-    this._updateRequested = true;
-  }
-
   recalculateGrowth() {
-    if (!this._updateRequested) {
-      return;
-    }
-
-    this._updateRequested = false;
-
     this.updateGrowthByProgram();
     this.updateTotalGrowth();
   }

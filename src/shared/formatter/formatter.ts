@@ -85,6 +85,10 @@ export class Formatter implements IFormatter {
     return this.formatLongNumber(value, parameters);
   }
 
+  formatLevel(value: number, parameters: IFormatterParameters = DEFAULT_NUMBER_DECIMAL_FORMAT_PARAMETERS): string {
+    return this.formatNumberDecimal(value + 1, parameters);
+  }
+
   formatQuality(value: number, parameters: IFormatterParameters = DEFAULT_NUMBER_QUALITY_FORMAT_PARAMETERS): string {
     let formattedValue = '';
 

@@ -129,17 +129,11 @@ Upgrades on top have higher priority.`)}
     return maxIncrease;
   }
 
-  private handleBuyMax = (event: Event) => {
-    event.stopPropagation();
-    event.preventDefault();
-
+  private handleBuyMax = () => {
     this.controller.purchaseMax();
   };
 
   private handleMoveElement = (event: SortableElementMovedEvent) => {
-    event.stopPropagation();
-    event.preventDefault();
-
     this.controller.moveParameter(event.keyName as MainframeHardwareParameterType, event.position);
   };
 }

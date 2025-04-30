@@ -47,17 +47,11 @@ Programs on top have higher priority. Autoupgrade for programs won"t change thei
     `;
   }
 
-  private handlePurchaseProgramDialogOpen = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  private handlePurchaseProgramDialogOpen = () => {
     this._isPurchaseProgramDialogOpen = true;
   };
 
-  private handlePurchaseProgramDialogClose = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  private handlePurchaseProgramDialogClose = () => {
     this._isPurchaseProgramDialogOpen = false;
   };
 }

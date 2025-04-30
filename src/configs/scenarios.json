@@ -1,56 +1,106 @@
 {
   "tutorial": {
-    "districtsNum": 5,
-    "baseSynchronization": 30,
+    "map": {
+      "width": 100,
+      "height": 100,
+      "districts": [
+        {
+          "type": "suburb",
+          "tier": {
+            "min": 0,
+            "max": 0
+          }
+        },
+        {
+          "type": "random",
+          "tier": {
+            "min": 0,
+            "max": 6
+          }
+        },
+        {
+          "type": "random",
+          "tier": {
+            "min": 0,
+            "max": 6
+          }
+        },
+        {
+          "type": "random",
+          "tier": {
+            "min": 0,
+            "max": 3
+          }
+        },
+        {
+          "type": "suburb",
+          "tier": {
+            "min": 0,
+            "max": 3
+          }
+        }
+      ],
+      "factions": [
+        {
+          "name": "wsa",
+          "startingDistrict": 4,
+          "controlledArea": 5000
+        }
+      ],
+      "startingDistrict": 0
+    },
     "mainframeHardware": {
-      "performanceLevel": 1,
-      "coresLevel": 1,
-      "ramLevel": 1,
-      "performancePrice": { "baseMultiplier": 10000, "base": 1.3 },
-      "coresPrice": { "baseMultiplier": 60000, "base": 1.3 },
-      "ramPrice": { "baseMultiplier": 120000, "base": 1.3 }
+      "performancePrice": { "multiplier": 10000, "base": 1.3 },
+      "coresPrice": { "multiplier": 60000, "base": 1.3 },
+      "ramPrice": { "multiplier": 120000, "base": 1.3 }
     },
     "mainframeSoftware": {
-      "performanceBoost": 0.1
+      "performanceBoost": 1.01
     },
-    "developmentLevelRequirements": { "baseMultiplier": 30000, "base": 1.5 },
+    "developmentLevelRequirements": { "multiplier": 30000, "base": 1.5 },
     "programMultipliers": {
+      "money": {
+        "pointsMultiplier": 10
+      },
+      "developmentPoints": {
+        "pointsMultiplier": 10
+      },
       "codeBase": {
-        "pointsPerCompletion": 2,
-        "pointsToMax": 3600,
+        "pointsMultiplier": 2,
+        "pointsToSoftCap": 3600,
         "logBase": 2
       },
       "computationalBase": {
-        "pointsPerCompletion": 2,
-        "pointsToMax": 3600,
+        "pointsMultiplier": 2,
+        "pointsToSoftCap": 3600,
         "logBase": 2
       },
       "connectivity": {
-        "pointsPerCompletion": 2,
-        "pointsToMax": 3600,
+        "pointsMultiplier": 2,
+        "pointsToSoftCap": 3600,
         "logBase": 2
       },
       "rewards": {
-        "pointsPerCompletion": 2,
-        "pointsToMax": 3600,
+        "pointsMultiplier": 2,
+        "pointsToSoftCap": 3600,
         "logBase": 2
       }
     },
     "storyEvents": [
       {
         "key": "tutorial_level_1",
-        "level": 1,
+        "level": 0,
         "messages": ["tutorial_level_1"]
       },
       {
         "key": "tutorial_level_2",
-        "level": 2,
+        "level": 1,
         "unlockFeatures": ["mainframeUpgrades"],
         "messages": ["tutorial_level_2"]
       },
       {
         "key": "tutorial_level_15",
-        "level": 3,
+        "level": 2,
         "unlockFeatures": ["companyManagement"],
         "messages": ["tutorial_level_15"]
       }

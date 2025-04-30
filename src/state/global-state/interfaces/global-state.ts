@@ -26,6 +26,7 @@ export interface IGlobalState extends ISerializeable<IGlobalSerializedState> {
   availableItems: IAvailableItemsState;
   unlockedFeatures: IUnlockedFeaturesState;
   storyEvents: IStoryEventsState;
+  recalculate(): void;
   makeNextTick(): void;
   setRandomShift(value: number | bigint | string | boolean): void;
 }

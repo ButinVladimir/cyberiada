@@ -4,7 +4,7 @@ import { customElement } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { BaseComponent } from '@shared/base-component';
 import { Feature } from '@shared/types';
-import { hintIconStyle } from '@shared/styles';
+import { HINT_ICON, hintIconStyle } from '@shared/styles';
 import { UNLOCKED_FEATURE_TEXTS } from '@texts/unlocked-features';
 import { OverviewUnlockedFeaturesPanelController } from './controller';
 
@@ -55,7 +55,7 @@ export class OverviewUnlockedFeaturesPanel extends BaseComponent<OverviewUnlocke
       <sl-tooltip>
         <span slot="content"> ${UNLOCKED_FEATURE_TEXTS[feature].hint()} </span>
 
-        <sl-icon name="question-circle"></sl-icon>
+        <sl-icon name=${HINT_ICON}></sl-icon>
       </sl-tooltip>
     </li>
   `;

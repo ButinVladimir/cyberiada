@@ -117,7 +117,7 @@ export class PurchaseProgramDialogButtons extends BaseComponent<PurchaseProgramD
 
     const ownedProgram = this.controller.getOwnedProgram(this.programName!);
     if (ownedProgram) {
-      const formattedLevel = formatter.formatNumberDecimal(ownedProgram.level);
+      const formattedLevel = formatter.formatLevel(ownedProgram.level);
       const formattedQuality = formatter.formatQuality(ownedProgram.quality);
 
       return msg(str`Program is already bought with quality ${formattedQuality} and level ${formattedLevel}`);
@@ -143,17 +143,11 @@ export class PurchaseProgramDialogButtons extends BaseComponent<PurchaseProgramD
     this._purchaseButtonRef.value!.textContent = COMMON_TEXTS.purchase(formattedCost);
   }
 
-  private handleCancel = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  private handleCancel = () => {
     this.dispatchEvent(new CancelEvent());
   };
 
-  private handlePurchase = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  private handlePurchase = () => {
     this.dispatchEvent(new BuyProgramEvent());
   };
 }

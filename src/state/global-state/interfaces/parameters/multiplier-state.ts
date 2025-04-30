@@ -7,6 +7,5 @@ export interface IMultiplierState extends ISerializeable<IMultiplierSerializedSt
   programMultiplier: number;
   totalMultiplier: number;
   increasePointsByProgram(pointsDelta: number): void;
-  requestMultipliersRecalculation(): void;
   recalculateMultipliers(): void;
 }

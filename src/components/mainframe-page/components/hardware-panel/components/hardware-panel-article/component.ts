@@ -113,7 +113,7 @@ export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwa
         <h4 class="title" draggable="true" @dragstart=${this.handleDragStart}>
           <sl-icon id="drag-icon" name="grip-vertical"> </sl-icon>
 
-          ${MAINFRAME_HARDWARE_TEXTS[this.type].title(formatter.formatNumberDecimal(level))}
+          ${MAINFRAME_HARDWARE_TEXTS[this.type].title(formatter.formatLevel(level))}
 
           <sl-tooltip>
             <span slot="content"> ${autoupgradeLabel} </span>
@@ -143,18 +143,12 @@ export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwa
     `;
   }
 
-  private handleBuy = (event: Event) => {
-    event.stopPropagation();
-    event.preventDefault();
-
+  private handleBuy = () => {
     const increase = this.calculateIncrease();
     this.controller.purchase(increase, this.type);
   };
 
-  private handleBuyMax = (event: Event) => {
-    event.stopPropagation();
-    event.preventDefault();
-
+  private handleBuyMax = () => {
     this.controller.purchaseMax(this.type);
   };
 
@@ -165,10 +159,7 @@ export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwa
     );
   }
 
-  private handleToggleAutoUpgrade = (event: Event) => {
-    event.stopPropagation();
-    event.preventDefault();
-
+  private handleToggleAutoUpgrade = () => {
     const active = this.controller.isAutoUpgradeEnabled(this.type);
     this.controller.toggleAutoUpdateEnabled(this.type, !active);
   };

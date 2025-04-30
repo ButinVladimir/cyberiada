@@ -142,10 +142,7 @@ export class ClonesList extends BaseComponent<ClonesListController> {
     ></ca-clones-list-item>`;
   };
 
-  private handleToggleDetails = (event: Event) => {
-    event.stopPropagation();
-    event.preventDefault();
-
+  private handleToggleDetails = () => {
     this._detailsVisible = !this._detailsVisible;
   };
 
@@ -155,28 +152,17 @@ export class ClonesList extends BaseComponent<ClonesListController> {
     return clones.some((clone) => clone.autoUpgradeEnabled);
   }
 
-  private handleToggleAutoupgrade = (event: Event) => {
-    event.stopPropagation();
-    event.preventDefault();
-
+  private handleToggleAutoupgrade = () => {
     const active = this.checkSomeClonesAutoupgradeActive();
 
     this.controller.toggleAutoupgrade(!active);
   };
 
   private handleMoveClone = (event: SortableElementMovedEvent) => {
-    event.stopPropagation();
-    event.preventDefault();
-
-    console.log(`Move ${event.keyName} to ${event.position}`);
-
     this.controller.moveClone(event.keyName, event.position);
   };
 
-  private handleOpenDeleteAllClonesDialog = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  private handleOpenDeleteAllClonesDialog = () => {
     this.dispatchEvent(
       new ConfirmationAlertOpenEvent(
         CloneAlert.deleteAllClones,

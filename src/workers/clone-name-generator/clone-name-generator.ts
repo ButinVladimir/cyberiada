@@ -1,6 +1,7 @@
 import { XORShift128Plus } from 'random-seedable';
 import padStart from 'lodash/padStart';
 import names from '@configs/names.json';
+import { CLONE_NAMES } from '@texts/names';
 import { ICloneNameGenerator, ICloneNameGeneratorArgs, ICloneNameGeneratorResult } from './interfaces';
 
 export class CloneNameGenerator implements ICloneNameGenerator {
@@ -11,8 +12,7 @@ export class CloneNameGenerator implements ICloneNameGenerator {
   }
 
   generate(): ICloneNameGeneratorResult {
-    const nameIndex = this._random.randRange(0, names.clones.length - 1);
-    const namePart = names.clones[nameIndex];
+    const namePart = CLONE_NAMES[this._random.choice(names.clones)]();
 
     const serialNumber = this._random.randRange(0, 9999);
     const serialNumberPart = padStart(serialNumber.toString(), 4, '0');

@@ -5,6 +5,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.component.js';
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.component.js';
+import clamp from 'lodash/clamp';
 import { BaseComponent } from '@shared/base-component';
 import type { ProgramName } from '@state/mainframe-state/states/progam-factory/types';
 import { IProgram } from '@state/mainframe-state/states/progam-factory/interfaces/program';
@@ -190,10 +191,7 @@ Threads allow to run multiple instances of same program at same time, but additi
     `;
   }
 
-  private handleClose = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  private handleClose = () => {
     this.dispatchEvent(new StartProcessDialogCloseEvent());
   };
 
@@ -211,25 +209,13 @@ Threads allow to run multiple instances of same program at same time, but additi
       return;
     }
 
-    let threads = this._threadsInputRef.value.valueAsNumber;
-    const maxThreads = this.calculateMaxThreads();
-
-    if (threads > maxThreads) {
-      threads = maxThreads;
-    }
-
-    if (threads < 1) {
-      threads = 1;
-    }
+    const threads = clamp(this._threadsInputRef.value.valueAsNumber, 1, this.calculateMaxThreads());
 
     this._threads = threads;
     this._threadsInputRef.value.valueAsNumber = threads;
   };
 
-  private handleOpenConfirmationAlert = (event: Event) => {
-    event.stopPropagation();
-    event.preventDefault();
-
+  private handleOpenConfirmationAlert = () => {
     if (!this._programName) {
       return;
     }
@@ -301,7 +287,7 @@ Threads allow to run multiple instances of same program at same time, but additi
   private formatProgramSelectItem = (program: IProgram) => {
     const formatter = this.controller.formatter;
     const programTitle = PROGRAM_TEXTS[program.name].title();
-    const formattedLevel = formatter.formatNumberDecimal(program.level);
+    const formattedLevel = formatter.formatLevel(program.level);
     const formattedQuality = formatter.formatQuality(program.quality);
 
     return html`<sl-option value=${program.name}>

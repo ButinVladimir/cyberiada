@@ -9,6 +9,5 @@ export interface IDevelopmentState extends ISerializeable<IDevelopmentSerialized
   increase(pointsDelta: number, incomeSource: IncomeSource): void;
   getIncome(incomeSource: IncomeSource): number;
   getLevelRequirements(level: number): number;
-  requestLevelRecalculation(): void;
   recalculateLevel(): void;
 }

@@ -33,14 +33,12 @@ export class DevelopmentState implements IDevelopmentState {
 
   private _points: number;
   private _level: number;
-  private _levelUpdateRequested: boolean;
   private _income: Map<IncomeSource, number>;
 
   constructor() {
     this._points = 0;
-    this._level = 1;
+    this._level = 0;
     this._income = new Map<IncomeSource, number>();
-    this._levelUpdateRequested = false;
 
     this.uiEventBatcher = new EventBatcher();
     this._stateUiConnector.registerEventEmitter(this);
@@ -60,8 +58,6 @@ export class DevelopmentState implements IDevelopmentState {
     this._points += pointsDelta;
     const prevIncome = this.getIncome(incomeSource);
     this._income.set(incomeSource, prevIncome + pointsDelta);
-
-    this.requestLevelRecalculation();
   }
 
   getIncome(incomeSource: IncomeSource): number {
@@ -69,36 +65,24 @@ export class DevelopmentState implements IDevelopmentState {
   }
 
   getLevelRequirements(level: number): number {
-    if (level <= 0) {
+    if (level < 0) {
       return 0;
     }
 
-    return calculateGeometricProgressionSum(
-      level,
-      this._globalState.scenario.currentValues.developmentLevelRequirements,
-    );
-  }
+    const { base, multiplier } = this._globalState.scenario.currentValues.developmentLevelRequirements;
 
-  requestLevelRecalculation() {
-    this._levelUpdateRequested = true;
+    return calculateGeometricProgressionSum(level, multiplier, base);
   }
 
   recalculateLevel() {
-    if (!this._levelUpdateRequested) {
-      return;
-    }
-
-    this._levelUpdateRequested = false;
+    const { base, multiplier } = this._globalState.scenario.currentValues.developmentLevelRequirements;
 
     const prevLevel = this._level;
-    const newLevel = reverseGeometricProgressionSum(
-      this._points,
-      this._globalState.scenario.currentValues.developmentLevelRequirements,
-    );
+    const newLevel = reverseGeometricProgressionSum(this._points, multiplier, base);
 
     if (newLevel > prevLevel) {
       this._level = newLevel;
-      const formattedLevel = this._formatter.formatNumberDecimal(this._level);
+      const formattedLevel = this._formatter.formatLevel(this._level);
 
       this._messageLogState.postMessage(
         GameStateEvent.levelReached,
@@ -110,11 +94,9 @@ export class DevelopmentState implements IDevelopmentState {
   }
 
   async startNewState(): Promise<void> {
-    this._points = 0;
-    this._level = this._globalState.scenario.currentValues.developmentLevel;
+    this._level = this._globalState.scenario.currentValues.startingDevelopmentLevel;
+    this._points = this.getLevelRequirements(this._level - 1);
     this._income.clear();
-
-    this.requestLevelRecalculation();
   }
 
   async deserialize(serializedState: IDevelopmentSerializedState): Promise<void> {
@@ -125,8 +107,6 @@ export class DevelopmentState implements IDevelopmentState {
     Object.entries(serializedState.income).forEach(([incomeSource, value]) => {
       this._income.set(incomeSource as IncomeSource, value);
     });
-
-    this.requestLevelRecalculation();
   }
 
   serialize(): IDevelopmentSerializedState {

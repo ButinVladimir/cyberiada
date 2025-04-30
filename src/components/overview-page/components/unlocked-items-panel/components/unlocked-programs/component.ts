@@ -3,8 +3,9 @@ import { localized } from '@lit/localize';
 import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { CATEGORY_TEXTS, PROGRAM_TEXTS } from '@texts/index';
-import { OverviewUnlockedProgramsController } from './controller';
 import { ProgramName } from '@state/mainframe-state/states/progam-factory/types';
+import { HINT_ICON } from '@shared/styles';
+import { OverviewUnlockedProgramsController } from './controller';
 import { unlockedItemsCategoryStyles } from '../../constants';
 
 @localized()
@@ -50,7 +51,7 @@ export class OverviewUnlockedPrograms extends BaseComponent<OverviewUnlockedProg
         <sl-tooltip>
           <span slot="content"> ${programOverview} </span>
 
-          <sl-icon name="question-circle"></sl-icon>
+          <sl-icon name=${HINT_ICON}></sl-icon>
         </sl-tooltip>
       </span>
       <span> ${this.controller.formatter.formatQuality(quality)} </span>

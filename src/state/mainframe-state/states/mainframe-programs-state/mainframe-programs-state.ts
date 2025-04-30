@@ -6,11 +6,10 @@ import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/sta
 import type { IGlobalState } from '@state/global-state/interfaces/global-state';
 import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
 import type { IFormatter } from '@shared/interfaces/formatter';
-import { IExponentWithQuality } from '@shared/interfaces/exponent-with-quality';
 import type { IMainframeState } from '@state/mainframe-state/interfaces/mainframe-state';
 import { TYPES } from '@state/types';
 import { Feature, PurchaseEvent, PurchaseType } from '@shared/types';
-import { calculatePowWithQuality } from '@shared/helpers';
+import { calculateQualityPower } from '@shared/helpers';
 import { EventBatcher } from '@shared/event-batcher';
 import { binarySearchDecimal, moveElementInArray } from '@shared/helpers';
 import { PROGRAM_TEXTS } from '@texts/programs';
@@ -58,8 +57,7 @@ export class MainframeProgramsState implements IMainframeProgramsState {
     const programData = programs[name];
 
     return (
-      calculatePowWithQuality(level - 1, quality, programData.cost as IExponentWithQuality) /
-      this._globalState.multipliers.codeBase.totalMultiplier
+      calculateQualityPower(level, quality, programData.cost) / this._globalState.multipliers.codeBase.totalMultiplier
     );
   }
 
@@ -145,8 +143,8 @@ export class MainframeProgramsState implements IMainframeProgramsState {
   async startNewState(): Promise<void> {
     this.clearState();
 
-    for (const programName of this._globalState.scenario.currentValues.mainframeSoftware.programs) {
-      this.addProgram(programName, 0, 1);
+    for (const programName of this._globalState.scenario.currentValues.mainframeSoftware.startingPrograms) {
+      this.addProgram(programName, 0, 0);
     }
 
     this.requestUiUpdate();
@@ -198,7 +196,7 @@ export class MainframeProgramsState implements IMainframeProgramsState {
     this.addProgram(name, quality, level);
 
     const programTitle = PROGRAM_TEXTS[name].title();
-    const formattedLevel = this._formatter.formatNumberDecimal(level);
+    const formattedLevel = this._formatter.formatLevel(level);
     const formattedQuality = this._formatter.formatQuality(quality);
     this._messageLogState.postMessage(
       PurchaseEvent.programPurchased,

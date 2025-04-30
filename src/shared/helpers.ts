@@ -1,12 +1,24 @@
-import { IExponentWithQuality } from './interfaces/exponent-with-quality';
-import { IExponent } from './interfaces/exponent';
+import clamp from 'lodash/clamp';
+import { IExponent, ILinear, IQualityExponent, IQualityLinear } from './interfaces/formulas';
 
-export const calculatePow = (exponent: number, params: IExponent): number => {
-  return params.baseMultiplier * Math.pow(params.base, exponent);
+export const calculatePower = (exponent: number, params: IExponent): number => {
+  return params.multiplier * Math.pow(params.base, exponent);
 };
 
-export const calculatePowWithQuality = (exponent: number, quality: number, params: IExponentWithQuality): number => {
-  return params.baseMultiplier * Math.pow(params.base, exponent) * Math.pow(params.qualityMultiplier, quality);
+export const calculateQualityPower = (exponent: number, quality: number, params: IQualityExponent): number => {
+  return calculatePower(exponent, params) * calculateQualityMultiplier(quality, params.baseQuality);
+};
+
+export const calculateLinear = (level: number, params: ILinear): number => {
+  return params.base + level * params.multiplier;
+};
+
+export const calculateQualityLinear = (level: number, quality: number, params: IQualityLinear): number => {
+  return calculateLinear(level, params) * calculateQualityMultiplier(quality, params.baseQuality);
+};
+
+export const calculateQualityMultiplier = (quality: number, base: number): number => {
+  return Math.pow(base, quality);
 };
 
 export const binarySearchDecimal = (
@@ -32,15 +44,7 @@ export const binarySearchDecimal = (
 };
 
 export const normalizePercentage = (value: number): number => {
-  if (value < 0) {
-    return 0;
-  }
-
-  if (value > 100) {
-    return 100;
-  }
-
-  return Math.floor(value);
+  return clamp(Math.floor(value), 0, 100);
 };
 
 export const checkPercentage = (value: number): boolean => {
@@ -73,11 +77,11 @@ export function moveElementInArray<T>(array: T[], fromIndex: number, toIndex: nu
   array[fixedToIndex] = movedElement;
 }
 
-export const calculateGeometricProgressionSum = (level: number, params: IExponent): number =>
-  (params.baseMultiplier * (Math.pow(params.base, level) - 1)) / (params.base - 1);
+export const calculateGeometricProgressionSum = (level: number, multiplier: number, base: number): number =>
+  (multiplier * (Math.pow(base, level + 1) - 1)) / (base - 1);
 
-export const reverseGeometricProgressionSum = (points: number, params: IExponent): number =>
-  Math.floor(Math.log(1 + (points * (params.base - 1)) / params.baseMultiplier) / Math.log(params.base)) + 1;
+export const reverseGeometricProgressionSum = (points: number, multiplier: number, base: number): number =>
+  Math.floor(Math.log(1 + (points * (base - 1)) / multiplier) / Math.log(base));
 
 export function removeElementsFromArray<T>(array: T[], fromIndex: number, count: number): void {
   if (fromIndex + count >= array.length) {

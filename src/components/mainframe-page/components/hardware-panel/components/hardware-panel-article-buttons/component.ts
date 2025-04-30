@@ -117,17 +117,11 @@ export class MainframeHardwarePanelArticleButtons extends BaseComponent<Mainfram
     return '';
   }
 
-  private handlePurchase = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  private handlePurchase = () => {
     this.dispatchEvent(new BuyHardwareEvent());
   };
 
-  private handleBuyMax = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  private handleBuyMax = () => {
     this.dispatchEvent(new BuyMaxHardwareEvent());
   };
 

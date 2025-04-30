@@ -73,15 +73,11 @@ export class SavefilePanel extends BaseComponent<SavefilePanelController> {
     `;
   }
 
-  private handleSaveGame = (event: Event) => {
-    event.stopPropagation();
-
+  private handleSaveGame = () => {
     this.controller.saveGame();
   };
 
-  private handleOpenImportSavefileDialog = (event: Event) => {
-    event.stopPropagation();
-
+  private handleOpenImportSavefileDialog = () => {
     this.dispatchEvent(
       new ConfirmationAlertOpenEvent(
         GameStateAlert.saveImport,
@@ -102,9 +98,7 @@ export class SavefilePanel extends BaseComponent<SavefilePanelController> {
     }
   };
 
-  private handleChangeImportSavefile = (event: Event) => {
-    event.stopPropagation();
-
+  private handleChangeImportSavefile = () => {
     if (!this._importInputRef.value) {
       return;
     }
@@ -116,15 +110,11 @@ export class SavefilePanel extends BaseComponent<SavefilePanelController> {
     }
   };
 
-  private handleExportSavefile = (event: Event) => {
-    event.stopPropagation();
-
+  private handleExportSavefile = () => {
     this.controller.exportSavefile();
   };
 
-  private handleOpenDeleteSaveDataDialog = (event: Event) => {
-    event.stopPropagation();
-
+  private handleOpenDeleteSaveDataDialog = () => {
     this.dispatchEvent(
       new ConfirmationAlertOpenEvent(
         GameStateAlert.saveDelete,

@@ -5,6 +5,7 @@ import { customElement, property } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import type { PointsMultiplierType } from '@shared/types';
 import { POINT_MULTIPLIER_HINTS, STATISTIC_PAGE_TEXTS } from '@components/statistics-page/constants';
+import { HINT_ICON } from '@shared/styles';
 import { StatisticsMultiplierPointsGrowthController } from './controller';
 import { statisticsPanelContentStyle } from '../../../../styles';
 import { MULTIPLIER_POINT_GROWTH_TITLES } from './constants';
@@ -44,7 +45,7 @@ export class StatisticsMultiplierPointsGrowth extends BaseComponent<StatisticsMu
           <sl-tooltip>
             <span slot="content"> ${POINT_MULTIPLIER_HINTS[this.type]()} </span>
 
-            <sl-icon name="question-circle"></sl-icon>
+            <sl-icon name=${HINT_ICON}></sl-icon>
           </sl-tooltip>
         </h4>
 

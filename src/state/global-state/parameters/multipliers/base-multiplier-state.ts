@@ -27,13 +27,11 @@ export abstract class BaseMultiplierState implements IMultiplierState {
   private _pointsByProgram: number;
   private _multiplierByProgram: number;
   private _totalMultiplier: number;
-  private _multiplierUpdateRequested: boolean;
 
   constructor() {
-    this._pointsByProgram = 0;
+    this._pointsByProgram = 1;
     this._totalMultiplier = 1;
     this._multiplierByProgram = 1;
-    this._multiplierUpdateRequested = false;
 
     this.uiEventBatcher = new EventBatcher();
     this._stateUiConnector.registerEventEmitter(this);
@@ -53,28 +51,18 @@ export abstract class BaseMultiplierState implements IMultiplierState {
 
   increasePointsByProgram(delta: number) {
     this._pointsByProgram += delta;
-
-    this.requestMultipliersRecalculation();
-  }
-
-  requestMultipliersRecalculation() {
-    this._multiplierUpdateRequested = true;
   }
 
   async startNewState(): Promise<void> {
     this._pointsByProgram = 0;
     this._multiplierByProgram = 1;
     this._totalMultiplier = 1;
-
-    this.requestMultipliersRecalculation();
   }
 
   async deserialize(serializedState: IMultiplierSerializedState): Promise<void> {
     this._pointsByProgram = serializedState.pointsByProgram;
     this._multiplierByProgram = 1;
     this._totalMultiplier = 1;
-
-    this.requestMultipliersRecalculation();
   }
 
   serialize(): IMultiplierSerializedState {
@@ -84,12 +72,6 @@ export abstract class BaseMultiplierState implements IMultiplierState {
   }
 
   recalculateMultipliers() {
-    if (!this._multiplierUpdateRequested) {
-      return;
-    }
-
-    this._multiplierUpdateRequested = false;
-
     this.updateMultiplierByProgram();
     this.updateTotalMultiplier();
   }
@@ -98,7 +80,9 @@ export abstract class BaseMultiplierState implements IMultiplierState {
     const parameters = this.getMultiplierParameters();
 
     this._multiplierByProgram =
-      1 + Math.log(1 + this._pointsByProgram / parameters.pointsToMax) / Math.log(parameters.logBase);
+      1 +
+      Math.log(1 + (this._pointsByProgram / parameters.pointsToSoftCap) * (parameters.logBase - 1)) /
+        Math.log(parameters.logBase);
   }
 
   private updateTotalMultiplier() {

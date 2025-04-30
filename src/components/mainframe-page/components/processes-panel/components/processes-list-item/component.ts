@@ -261,24 +261,15 @@ export class ProcessesListItem extends BaseComponent<ProcessesListItemController
     `;
   }
 
-  private handleToggleDescription = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  private handleToggleDescription = () => {
     this._descriptionVisible = !this._descriptionVisible;
   };
 
-  private handleToggleProcess = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  private handleToggleProcess = () => {
     this.controller.toggleProcess();
   };
 
-  private handleOpenDeleteProcessDialog = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  private handleOpenDeleteProcessDialog = () => {
     const programTitle = PROGRAM_TEXTS[this.programName].title();
 
     this.dispatchEvent(

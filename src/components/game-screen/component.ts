@@ -194,8 +194,6 @@ export class GameScreen extends LitElement {
   };
 
   private handleMenuItemSelect = (event: Event) => {
-    event.stopPropagation();
-
     const menuItemSelectedEvent = event as MenuItemSelectedEvent;
 
     this._selectedMenuItem = menuItemSelectedEvent.menuItem as OverviewMenuItem;

@@ -5,6 +5,7 @@ import { createRef, ref } from 'lit/directives/ref.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.component.js';
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.component.js';
+import clamp from 'lodash/clamp';
 import { BaseComponent } from '@shared/base-component';
 import type { ProgramName } from '@state/mainframe-state/states/progam-factory/types';
 import {
@@ -176,11 +177,11 @@ If you already have program with same name, old one will be replaced with new on
             <sl-input
               ${ref(this._levelInputRef)}
               name="level"
-              value=${this._level}
+              value=${this._level + 1}
               type="number"
               inputmode="decimal"
               min="1"
-              max=${developmentLevel}
+              max=${developmentLevel + 1}
               step="1"
               @sl-change=${this.handleLevelChange}
             >
@@ -225,10 +226,7 @@ If you already have program with same name, old one will be replaced with new on
     return result;
   };
 
-  private handleClose = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  private handleClose = () => {
     this.dispatchEvent(new PurchaseProgramDialogCloseEvent());
   };
 
@@ -255,24 +253,12 @@ If you already have program with same name, old one will be replaced with new on
       return;
     }
 
-    let level = this._levelInputRef.value.valueAsNumber;
-
-    if (level < 1) {
-      level = 1;
-    }
-
-    if (level > this.controller.developmentLevel) {
-      level = this.controller.developmentLevel;
-    }
-
+    const level = clamp(this._levelInputRef.value.valueAsNumber - 1, 0, this.controller.developmentLevel);
     this._level = level;
-    this._levelInputRef.value.valueAsNumber = level;
+    this._levelInputRef.value.valueAsNumber = level + 1;
   };
 
-  private handleOpenConfirmationAlert = (event: Event) => {
-    event.stopPropagation();
-    event.preventDefault();
-
+  private handleOpenConfirmationAlert = () => {
     if (!this._programName) {
       return;
     }
@@ -283,7 +269,7 @@ If you already have program with same name, old one will be replaced with new on
       const formatter = this.controller.formatter;
 
       const programTitle = PROGRAM_TEXTS[this._programName].title();
-      const formattedLevel = formatter.formatNumberDecimal(ownedProgram.level);
+      const formattedLevel = formatter.formatLevel(ownedProgram.level);
       const formattedQuality = formatter.formatQuality(ownedProgram.quality);
 
       this.dispatchEvent(

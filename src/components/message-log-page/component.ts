@@ -76,9 +76,7 @@ export class MessageLogPage extends BaseComponent<MessageLogBarController> {
     `;
   }
 
-  private handleOpenClearMessagesDialog = (event: Event) => {
-    event.stopPropagation();
-
+  private handleOpenClearMessagesDialog = () => {
     this.dispatchEvent(
       new ConfirmationAlertOpenEvent(GameStateAlert.clearMessages, msg('Are you sure want to clear log messages?')),
     );

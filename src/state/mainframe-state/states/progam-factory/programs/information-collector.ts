@@ -1,4 +1,5 @@
 import programs from '@configs/programs.json';
+import { calculateQualityPower } from '@shared/helpers';
 import { MultiplierProgramName } from '../types';
 import { BaseProgram } from './base-program';
 
@@ -6,9 +7,7 @@ export class InformationCollectorProgram extends BaseProgram {
   public readonly name = MultiplierProgramName.informationCollector;
   public readonly isAutoscalable = false;
 
-  handlePerformanceUpdate(): void {
-    this.growthState.multipliers.connectivity.requestGrowthRecalculation();
-  }
+  handlePerformanceUpdate(): void {}
 
   perform(threads: number): void {
     this.globalState.multipliers.connectivity.increasePointsByProgram(this.calculateDelta(threads));
@@ -18,12 +17,10 @@ export class InformationCollectorProgram extends BaseProgram {
     const programData = programs[this.name];
 
     return (
-      this.globalState.scenario.currentValues.programMultipliers.connectivity.pointsPerCompletion *
+      this.globalState.scenario.currentValues.programMultipliers.connectivity.pointsMultiplier *
       this.globalState.multipliers.rewards.totalMultiplier *
       threads *
-      programData.connectivityLevelMultiplier *
-      this.level *
-      Math.pow(programData.connectivityQualityMultiplier, this.quality)
+      calculateQualityPower(this.level, this.quality, programData.connectivity)
     );
   }
 }

@@ -120,17 +120,11 @@ export class StartProcessDialogButtons extends BaseComponent<StartProcessDialogB
     return 1;
   };
 
-  private handleCancel = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  private handleCancel = () => {
     this.dispatchEvent(new CancelEvent());
   };
 
-  private handleStart = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  private handleStart = () => {
     this.dispatchEvent(new StartProcessEvent());
   };
 }

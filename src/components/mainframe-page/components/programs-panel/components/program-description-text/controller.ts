@@ -6,11 +6,11 @@ export class ProgramDescriptionTextController extends BaseController {
   private _ownedProgram?: IProgram;
 
   get ram(): number {
-    return this.mainframeState.hardware.ram.level;
+    return this.mainframeState.hardware.ram.totalLevel;
   }
 
   get cores(): number {
-    return this.mainframeState.hardware.cores.level;
+    return this.mainframeState.hardware.cores.totalLevel;
   }
 
   getProgram(programName: ProgramName) {

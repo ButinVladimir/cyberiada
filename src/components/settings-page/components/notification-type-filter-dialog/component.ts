@@ -115,10 +115,7 @@ export class NotificationTypeFilterDialog extends BaseComponent<NotificationType
     `;
   };
 
-  private handleClose = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  private handleClose = () => {
     this.dispatchEvent(new NotificationTypeFilterDialogCloseEvent());
   };
 

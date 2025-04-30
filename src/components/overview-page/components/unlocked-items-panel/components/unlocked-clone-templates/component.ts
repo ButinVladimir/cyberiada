@@ -3,8 +3,9 @@ import { localized } from '@lit/localize';
 import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { CATEGORY_TEXTS, CLONE_TEMPLATE_TEXTS } from '@texts/index';
-import { OverviewUnlockedCloneTemplatesController } from './controller';
 import { CloneTemplateName } from '@state/company-state/states/clone-factory/types';
+import { HINT_ICON } from '@shared/styles';
+import { OverviewUnlockedCloneTemplatesController } from './controller';
 import { unlockedItemsCategoryStyles } from '../../constants';
 
 @localized()
@@ -50,7 +51,7 @@ export class OverviewUnlockedCloneTemplates extends BaseComponent<OverviewUnlock
         <sl-tooltip>
           <span slot="content"> ${cloneTemplateOverview} </span>
 
-          <sl-icon name="question-circle"></sl-icon>
+          <sl-icon name=${HINT_ICON}></sl-icon>
         </sl-tooltip>
       </span>
       <span> ${this.controller.formatter.formatQuality(quality)} </span>

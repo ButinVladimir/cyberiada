@@ -158,10 +158,7 @@ export class RenameCloneDialog extends BaseComponent<RenameCloneDialogController
     return '';
   }
 
-  private handleClose = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  private handleClose = () => {
     this.dispatchEvent(new CloseCloneListItemDialogEvent());
   };
 
@@ -173,10 +170,7 @@ export class RenameCloneDialog extends BaseComponent<RenameCloneDialogController
     this._newName = this._newNameInputRef.value.value;
   };
 
-  private handleGenerateName = (event: Event) => {
-    event.stopPropagation();
-    event.preventDefault();
-
+  private handleGenerateName = () => {
     this.generateName();
   };
 
@@ -189,10 +183,7 @@ export class RenameCloneDialog extends BaseComponent<RenameCloneDialogController
       .catch((e) => console.error(e));
   }
 
-  private handleSubmit = (event: Event) => {
-    event.stopPropagation();
-    event.preventDefault();
-
+  private handleSubmit = () => {
     if (!this._newName) {
       return;
     }

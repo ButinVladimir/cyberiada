@@ -2,6 +2,7 @@ import { injectable } from 'inversify';
 import { decorators } from '@state/container';
 import { GameAlert, Language, LongNumberFormat, MessageEvent, Theme, NotificationType } from '@shared/types';
 import {
+  CITY_EVENTS,
   CLONE_ALERTS,
   CLONE_EVENTS,
   GAME_STATE_ALERTS,
@@ -276,7 +277,7 @@ export class SettingsState implements ISettingsState {
   }
 
   private getAllMessageEvents(): MessageEvent[] {
-    return [...GAME_STATE_EVENTS, ...PURCHASE_EVENTS, ...PROGRAM_EVENTS, ...CLONE_EVENTS];
+    return [...GAME_STATE_EVENTS, ...PURCHASE_EVENTS, ...PROGRAM_EVENTS, ...CLONE_EVENTS, ...CITY_EVENTS];
   }
 
   private getAllGameAlerts(): GameAlert[] {

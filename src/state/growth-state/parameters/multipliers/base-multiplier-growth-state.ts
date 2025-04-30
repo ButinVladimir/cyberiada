@@ -21,12 +21,9 @@ export abstract class BaseMultiplierGrowthState implements IMultiplierGrowthStat
   private _mainframeState!: IMainframeState;
 
   protected _growthByProgram: number;
-  private _updateRequested: boolean;
 
   constructor() {
     this._growthByProgram = 0;
-
-    this._updateRequested = true;
 
     this.uiEventBatcher = new EventBatcher();
     this._stateUiConnector.registerEventEmitter(this);
@@ -36,17 +33,7 @@ export abstract class BaseMultiplierGrowthState implements IMultiplierGrowthStat
     return this._growthByProgram;
   }
 
-  requestGrowthRecalculation() {
-    this._updateRequested = true;
-  }
-
   recalculateGrowth() {
-    if (!this._updateRequested) {
-      return;
-    }
-
-    this._updateRequested = false;
-
     this.updateGrowthByProgram();
   }
 

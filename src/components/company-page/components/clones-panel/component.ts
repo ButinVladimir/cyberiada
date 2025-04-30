@@ -6,7 +6,7 @@ import { hintStyle, SCREEN_WIDTH_POINTS } from '@shared/styles';
 import { ClonesPanelController } from './controller';
 import { type CloneListItemDialog } from './type';
 import { choose } from 'lit/directives/choose.js';
-import { CloseCloneListItemDialogEvent, OpenCloneListItemDialogEvent } from './events';
+import { OpenCloneListItemDialogEvent } from './events';
 
 @localized()
 @customElement('ca-company-clones-panel')
@@ -123,33 +123,21 @@ Clones cannot have level above current development level but they can store exce
     `;
   }
 
-  private handlePurchaseCloneDialogOpen = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  private handlePurchaseCloneDialogOpen = () => {
     this._isPurchaseCloneDialogOpen = true;
   };
 
-  private handlePurchaseCloneDialogClose = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  private handlePurchaseCloneDialogClose = () => {
     this._isPurchaseCloneDialogOpen = false;
   };
 
   private handleCloneListItemDialogOpen = (event: OpenCloneListItemDialogEvent) => {
-    event.preventDefault();
-    event.stopPropagation();
-
     this._cloneListItemDialogOpen = true;
     this._cloneListItemDialogCloneId = event.cloneId;
     this._cloneListItemDialog = event.dialog;
   };
 
-  private handleCloneListItemDialogClose = (event: CloseCloneListItemDialogEvent) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  private handleCloneListItemDialogClose = () => {
     this._cloneListItemDialogOpen = false;
   };
 }

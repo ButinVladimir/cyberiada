@@ -109,9 +109,13 @@ export class GlobalState implements IGlobalState {
     return this._storyEventsState;
   }
 
+  recalculate() {
+    this._developmentState.recalculateLevel();
+    this._multipliersState.recalculate();
+  }
+
   makeNextTick() {
     this.time.makeNextTick();
-    this.recalculate();
   }
 
   setRandomShift(value: number | bigint | string | boolean) {
@@ -134,8 +138,6 @@ export class GlobalState implements IGlobalState {
     await this._availableItemsState.startNewState();
     await this._unlockedFeaturesState.startNewState();
     this.storyEvents.startNewState();
-
-    this.recalculate();
   }
 
   async deserialize(serializedState: IGlobalSerializedState): Promise<void> {
@@ -150,8 +152,6 @@ export class GlobalState implements IGlobalState {
     await this._multipliersState.deserialize(serializedState.multipliers);
     await this._availableItemsState.deserialize(serializedState.availableItems);
     await this._unlockedFeaturesState.deserialize(serializedState.unlockedFeatures);
-
-    this.recalculate();
   }
 
   serialize(): IGlobalSerializedState {
@@ -168,10 +168,5 @@ export class GlobalState implements IGlobalState {
       availableItems: this._availableItemsState.serialize(),
       unlockedFeatures: this._unlockedFeaturesState.serialize(),
     };
-  }
-
-  private recalculate() {
-    this._developmentState.recalculateLevel();
-    this._multipliersState.recalculate();
   }
 }

@@ -7,7 +7,7 @@ export class ProcessDiffTextController extends BaseController {
   private _program?: IProgram;
 
   get maxRam(): number {
-    return this.mainframeState.hardware.ram.level;
+    return this.mainframeState.hardware.ram.totalLevel;
   }
 
   get availableRam(): number {
@@ -15,7 +15,7 @@ export class ProcessDiffTextController extends BaseController {
   }
 
   get maxCores(): number {
-    return this.mainframeState.hardware.cores.level;
+    return this.mainframeState.hardware.cores.totalLevel;
   }
 
   getProgram(name: ProgramName): IProgram | undefined {

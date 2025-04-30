@@ -116,7 +116,7 @@ export class TimeState implements ITimeState {
 
   async startNewState(): Promise<void> {
     this._lastUpdateTime = Date.now();
-    this._accumulatedTime = this._globalState.scenario.currentValues.accumulatedTime;
+    this._accumulatedTime = this._globalState.scenario.currentValues.startingAccumulatedTime;
     this._activeTime = 0;
     this._gameTime = 0;
     this._gameTimeTotal = 0;

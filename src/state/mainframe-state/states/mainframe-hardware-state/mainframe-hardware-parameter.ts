@@ -2,8 +2,8 @@ import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/sta
 import type { IGlobalState } from '@state/global-state/interfaces/global-state';
 import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
 import type { IFormatter } from '@shared/interfaces/formatter';
-import { calculatePow } from '@shared/helpers';
-import { IExponent } from '@shared/interfaces/exponent';
+import { calculateGeometricProgressionSum } from '@shared/helpers';
+import { IExponent } from '@shared/interfaces/formulas/exponent';
 import { Feature, PurchaseType } from '@shared/types';
 import { binarySearchDecimal } from '@shared/helpers';
 import {
@@ -40,6 +40,12 @@ export abstract class MainframeHardwareParameter implements IMainframeHardwarePa
     return this._level;
   }
 
+  protected abstract get baseLevel(): number;
+
+  get totalLevel() {
+    return this._level + this.baseLevel;
+  }
+
   get autoUpgradeEnabled() {
     this.stateUiConnector.connectEventHandler(
       this.mainframeHardwareState,
@@ -63,11 +69,10 @@ export abstract class MainframeHardwareParameter implements IMainframeHardwarePa
 
   getIncreaseCost(increase: number): number {
     const exp = this.priceExp;
-    const baseCost = calculatePow(this.level - 1, exp);
 
     return (
-      (baseCost * (Math.pow(exp.base, increase) - 1)) /
-      (exp.base - 1) /
+      (calculateGeometricProgressionSum(this.level + increase - 1, exp.multiplier, exp.base) -
+        calculateGeometricProgressionSum(this.level - 1, exp.multiplier, exp.base)) /
       this.globalState.multipliers.computationalBase.totalMultiplier
     );
   }
@@ -116,6 +121,7 @@ export abstract class MainframeHardwareParameter implements IMainframeHardwarePa
 
   async startNewState(): Promise<void> {
     this._autoUpgradeEnabled = true;
+    this._level = 0;
   }
 
   async deserialize(serializedState: IMainframeHardwareParameterSerializedState): Promise<void> {

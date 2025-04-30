@@ -160,17 +160,11 @@ export class PurchaseCloneDialogButtons extends BaseComponent<PurchaseCloneDialo
     this._purchaseButtonRef.value!.textContent = COMMON_TEXTS.purchase(formattedCost);
   }
 
-  private handleCancel = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  private handleCancel = () => {
     this.dispatchEvent(new CancelEvent());
   };
 
-  private handlePurchaseClone = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  private handlePurchaseClone = () => {
     this.dispatchEvent(new PurchaseCloneEvent());
   };
 }

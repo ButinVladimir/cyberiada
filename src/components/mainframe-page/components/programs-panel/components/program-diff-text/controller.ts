@@ -12,11 +12,11 @@ export class ProgramDiffTextController extends BaseController {
   }
 
   get ram(): number {
-    return this.mainframeState.hardware.ram.level;
+    return this.mainframeState.hardware.ram.totalLevel;
   }
 
   get cores(): number {
-    return this.mainframeState.hardware.cores.level;
+    return this.mainframeState.hardware.cores.totalLevel;
   }
 
   getSelectedProgram(name: ProgramName, level: number, quality: number): IProgram {

@@ -10,8 +10,9 @@ import type { IMessageLogState } from '@state/message-log-state/interfaces/messa
 import type { IFormatter } from '@shared/interfaces/formatter';
 import { TYPES } from '@state/types';
 import { ClonesEvent, Feature, PurchaseEvent, PurchaseType } from '@shared/types';
-import { calculatePowWithQuality, moveElementInArray, removeElementsFromArray } from '@shared/helpers';
+import { calculateQualityPower, moveElementInArray, removeElementsFromArray } from '@shared/helpers';
 import { CLONE_TEMPLATE_TEXTS } from '@texts/clone-templates';
+import { ICloneNameGeneratorResult } from '@workers/clone-name-generator/interfaces';
 import type { ICompanyState } from '../../interfaces/company-state';
 import { IClone } from '../clone-factory/interfaces/clone';
 import { ICompanyClonesSerializedState, ICompanyClonesState } from './interfaces';
@@ -80,15 +81,13 @@ export class CompanyClonesState implements ICompanyClonesState {
   }
 
   getCloneCost(templateName: CloneTemplateName, quality: number, level: number): number {
-    return calculatePowWithQuality(level - 1, quality, cloneTemplates[templateName].cost);
+    return calculateQualityPower(level, quality, cloneTemplates[templateName].cost);
   }
 
   getCloneSynchronization(templateName: CloneTemplateName, quality: number): number {
     const template = cloneTemplates[templateName];
 
-    return Math.ceil(
-      template.synchronization.baseMultiplier * Math.pow(template.synchronization.qualityMultiplier, quality),
-    );
+    return Math.ceil(template.synchronization.multiplier * Math.pow(template.synchronization.baseQuality, quality));
   }
 
   purchaseClone(name: string, templateName: CloneTemplateName, quality: number, level: number): boolean {
@@ -152,7 +151,7 @@ export class CompanyClonesState implements ICompanyClonesState {
     this.uiEventBatcher.enqueueEvent(COMPANY_CLONES_STATE_UI_EVENTS.CLONES_UPDATED);
   }
 
-  processTick(): void {
+  recalculate(): void {
     for (const clone of this._clonesList) {
       clone.increaseExperience(clone.level);
       clone.recalculate();
@@ -167,6 +166,28 @@ export class CompanyClonesState implements ICompanyClonesState {
     }
 
     this.uiEventBatcher.enqueueEvent(COMPANY_CLONES_STATE_UI_EVENTS.CLONES_UPDATED);
+  }
+
+  async generateCloneName(): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const worker = new Worker(new URL('@workers/clone-name-generator/index.js', import.meta.url), { type: 'module' });
+
+      worker.addEventListener('message', (event: MessageEvent<ICloneNameGeneratorResult>) => {
+        this._globalState.setRandomShift(event.data.randomShift);
+
+        resolve(event.data.name);
+      });
+
+      worker.addEventListener('error', (event: ErrorEvent) => {
+        reject(event.error);
+      });
+
+      worker.addEventListener('messageerror', () => {
+        reject('Unable to parse clone name generator message');
+      });
+
+      worker.postMessage(this._globalState.randomSeed);
+    });
   }
 
   async startNewState(): Promise<void> {
@@ -198,7 +219,7 @@ export class CompanyClonesState implements ICompanyClonesState {
   }
 
   private recalculateSynchronization() {
-    this._totalSynchronization = this._globalState.scenario.currentValues.baseSynchronization;
+    this._totalSynchronization = this._globalState.scenario.currentValues.startingSynchronization;
     this._availableSynchronization = this._totalSynchronization;
 
     for (const clone of this._clonesList) {
@@ -245,7 +266,7 @@ export class CompanyClonesState implements ICompanyClonesState {
 
       this.addClone(clone);
 
-      const formattedLevel = this._formatter.formatNumberDecimal(clone.level);
+      const formattedLevel = this._formatter.formatLevel(clone.level);
       const formattedQuality = this._formatter.formatQuality(clone.quality);
 
       this._messageLogState.postMessage(

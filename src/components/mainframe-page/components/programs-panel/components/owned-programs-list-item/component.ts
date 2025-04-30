@@ -148,7 +148,7 @@ export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemCo
       : AUTOUPGRADE_VALUES.buttonVariant.disabled;
 
     const programTitle = PROGRAM_TEXTS[this.programName].title();
-    const formattedLevel = formatter.formatNumberDecimal(program.level);
+    const formattedLevel = formatter.formatLevel(program.level);
     const formattedQuality = formatter.formatQuality(program.quality);
 
     return html`
@@ -219,17 +219,11 @@ export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemCo
     `;
   }
 
-  private handleToggleDescription = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  private handleToggleDescription = () => {
     this._descriptionVisible = !this._descriptionVisible;
   };
 
-  private handleToggleAutoUpgrade = (event: Event) => {
-    event.stopPropagation();
-    event.preventDefault();
-
+  private handleToggleAutoUpgrade = () => {
     const program = this.controller.getProgram(this.programName as ProgramName);
 
     if (program) {
@@ -243,10 +237,7 @@ export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemCo
     }
   };
 
-  private handleUpgradeMax = (event: Event) => {
-    event.stopPropagation();
-    event.preventDefault();
-
+  private handleUpgradeMax = () => {
     this.controller.upgradeMaxProgram(this.programName as ProgramName);
   };
 }
