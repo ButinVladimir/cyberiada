@@ -76,9 +76,7 @@
         "logBase": 2
       },
       "connectivity": {
-        "pointsMultiplier": 2,
-        "pointsToSoftCap": 3600,
-        "logBase": 2
+        "pointsMultiplier": 2
       },
       "rewards": {
         "pointsMultiplier": 2,

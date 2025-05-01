@@ -134,6 +134,9 @@ export class DistrictFactionsGenerator implements IDistrictFactionsGenerator {
 
       worker.addEventListener('message', (event: MessageEvent<IDistrictConnectionGraphBuilderResult>) => {
         this._connectionsGraph = event.data;
+
+        worker.terminate();
+
         resolve();
       });
 

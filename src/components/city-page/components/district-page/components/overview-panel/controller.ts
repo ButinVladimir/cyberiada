@@ -1,4 +1,4 @@
-import { BaseController } from '@/shared';
+import { BaseController } from '@shared/base-controller';
 
 export class CityDistrictOverviewPanelController extends BaseController {
   getDistrictState(districtIndex: number) {

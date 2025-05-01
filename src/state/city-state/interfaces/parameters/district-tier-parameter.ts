@@ -1,5 +1,5 @@
 import { IUIEventEmitter } from '@shared/interfaces/ui-event-emitter';
-import { IDistrictTierSerializedParameter } from './district-tier-serialized-parameter';
+import { IDistrictTierSerializedParameter } from '../serialized-states/district-tier-serialized-parameter';
 
 export interface IDistrictTierParameter extends IUIEventEmitter {
   tier: number;

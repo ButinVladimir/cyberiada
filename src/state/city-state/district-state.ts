@@ -1,18 +1,21 @@
 import { IMapGeneratorDistrictResult } from '@workers/map-generator/interfaces';
-import { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
+import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import { IEventBatcher, IPoint } from '@shared/interfaces';
 import { DistrictType, Faction } from '@shared/types';
-import { container } from '@state/container';
+import { decorators } from '@state/container';
 import { TYPES } from '@state/types';
 import { IDistrictState, IDistrictSerializedState, IDistrictParameters } from './interfaces';
 import { DistrictUnlockState } from './types';
 import { EventBatcher } from '@shared/event-batcher';
 import { DistrictParameters } from './district-parameters';
 
+const { lazyInject } = decorators;
+
 export class DistrictState implements IDistrictState {
   readonly uiEventBatcher: IEventBatcher;
 
-  private _stateUiConnector: IStateUIConnector;
+  @lazyInject(TYPES.StateUIConnector)
+  private _stateUiConnector!: IStateUIConnector;
 
   private _name;
   private _startingPoint: IPoint;
@@ -22,8 +25,6 @@ export class DistrictState implements IDistrictState {
   private _parameters: IDistrictParameters;
 
   private constructor() {
-    this._stateUiConnector = container.get(TYPES.StateUIConnector);
-
     this._name = '';
     this._startingPoint = { x: 0, y: 0 };
     this._districtType = DistrictType.suburb;

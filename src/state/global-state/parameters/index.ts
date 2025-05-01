@@ -9,3 +9,5 @@ export * from './story-events-state';
 export * from './unlocked-features-state';
 export * from './multipliers-state';
 export * from './available-items-state';
+export * from './connectivity-state';
+export * from './threat-state';

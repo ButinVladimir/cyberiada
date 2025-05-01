@@ -126,12 +126,11 @@ export enum Feature {
   companyManagement = 'companyManagement',
   codeBasePoints = 'codeBasePoints',
   computationalBasePoints = 'computationalBasePoints',
-  connectivityPoints = 'connectivityPoints',
+  connectivity = 'connectivity',
   rewardsPoints = 'rewardsPoints',
-  experienceShare = 'experienceShare',
 }
 
-export type PointsMultiplierType = 'codeBase' | 'computationalBase' | 'connectivity' | 'rewards';
+export type PointsMultiplierType = 'codeBase' | 'computationalBase' | 'rewards';
 
 export type ItemCategory = 'programs' | 'cloneTemplates';
 

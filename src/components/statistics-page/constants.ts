@@ -1,5 +1,6 @@
-import { msg } from '@lit/localize';
+import { msg, str } from '@lit/localize';
 import { IncomeSource, PointsMultiplierType } from '@shared/types';
+import { DISTRICT_NAMES } from '@texts/names';
 import { StatisticsPageTabs } from './types';
 
 export const STATISTICS_PAGE_TABS_LIST = Array.from(Object.values(StatisticsPageTabs));
@@ -15,14 +16,20 @@ export const INCOME_SOURCE_NAMES: Record<IncomeSource | string, () => string> = 
   [IncomeSource.program]: () => msg('By programs'),
 };
 
-export const STATISTIC_PAGE_TEXTS: Record<string, () => string> = {
+export const STATISTIC_PAGE_TEXTS = {
+  baseValue: () => msg('Base value'),
   byPrograms: () => msg('By programs'),
+  byDistrict: (districtName: string) => msg(str`By district "${DISTRICT_NAMES[districtName]()}"`),
   total: () => msg('Total'),
 };
 
 export const POINT_MULTIPLIER_HINTS: Record<PointsMultiplierType, () => string> = {
   codeBase: () => msg('Code base affects cost multiplier for mainframe programs'),
   computationalBase: () => msg('Computational base affects cost multiplier for mainframe hardware upgrades'),
-  connectivity: () => msg('Connectivity affects chances to receive new contracts and sidejobs'),
   rewards: () => msg('Rewards affect all gains'),
+};
+
+export const STATISTIC_HINTS = {
+  connectivity: () => msg('Connectivity affects chances to receive new contracts and sidejobs'),
+  synchronization: () => msg('Synchronization affects how many clones can be in company'),
 };

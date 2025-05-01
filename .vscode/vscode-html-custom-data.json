@@ -72,7 +72,7 @@
     },
     {
       "name": "ca-city-map-background",
-      "description": "Attributes:\n\n  * `size` {`number`} - \n\nProperties:\n\n  * `DX` {`number[]`} - \n\n  * `DY` {`number[]`} - \n\n  * `styles` {`CSSResult`} - \n\n  * `size` {`number`} - \n\n  * `_canvasRef` {`Ref<HTMLCanvasElement>`} - \n\n  * `_offscreenCanvasContext` {`CanvasRenderingContext2D | null`} - \n\n  * `_fullWidth` {`number`} - \n\n  * `_fullHeight` {`number`} - \n\n  * `renderCanvas` - \n\n  * `controller` {`CityMapBackgroundController`} - ",
+      "description": "Attributes:\n\n  * `size` {`number`} - \n\nProperties:\n\n  * `DX` {`number[]`} - \n\n  * `DY` {`number[]`} - \n\n  * `styles` {`CSSResult`} - \n\n  * `size` {`number`} - \n\n  * `_canvasRef` {`Ref<HTMLCanvasElement>`} - \n\n  * `_offscreenCanvasContext` {`OffscreenCanvasRenderingContext2D | null`} - \n\n  * `_fullWidth` {`number`} - \n\n  * `_fullHeight` {`number`} - \n\n  * `renderCanvas` - \n\n  * `controller` {`CityMapBackgroundController`} - ",
       "attributes": [
         {
           "name": "size",
@@ -82,7 +82,7 @@
     },
     {
       "name": "ca-city-map-district",
-      "description": "Attributes:\n\n  * `size` {`number`} - \n\n  * `district` {`number`} - \n\nProperties:\n\n  * `DX` {`number[]`} - \n\n  * `DY` {`number[]`} - \n\n  * `styles` {`CSSResult`} - \n\n  * `size` {`number`} - \n\n  * `district` {`number`} - \n\n  * `_canvasRef` {`Ref<HTMLCanvasElement>`} - \n\n  * `_offscreenCanvasContext` {`CanvasRenderingContext2D | null`} - \n\n  * `_fullWidth` {`number`} - \n\n  * `_fullHeight` {`number`} - \n\n  * `renderCanvas` - \n\n  * `controller` {`CityMapDistrictController`} - ",
+      "description": "Attributes:\n\n  * `size` {`number`} - \n\n  * `district` {`number`} - \n\nProperties:\n\n  * `DX` {`number[]`} - \n\n  * `DY` {`number[]`} - \n\n  * `styles` {`CSSResult`} - \n\n  * `size` {`number`} - \n\n  * `district` {`number`} - \n\n  * `_canvasRef` {`Ref<HTMLCanvasElement>`} - \n\n  * `_offscreenCanvasContext` {`OffscreenCanvasRenderingContext2D | null`} - \n\n  * `_fullWidth` {`number`} - \n\n  * `_fullHeight` {`number`} - \n\n  * `renderCanvas` - \n\n  * `controller` {`CityMapDistrictController`} - ",
       "attributes": [
         {
           "name": "size",
@@ -712,13 +712,18 @@
       "attributes": []
     },
     {
+      "name": "ca-statistics-connectivity",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_districtValueNodes` {`NodeListOf<HTMLSpanElement>`} - \n\n  * `renderDistrict` - \n\n  * `handlePartialUpdate` - \n\n  * `controller` {`StatisticsConnectivityController`} - ",
+      "attributes": []
+    },
+    {
       "name": "ca-statistics-game-time",
       "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_gameTimeRef` {`Ref<HTMLSpanElement>`} - \n\n  * `_gameTotalTimeRef` {`Ref<HTMLSpanElement>`} - \n\n  * `handlePartialUpdate` - \n\n  * `controller` {`StatisticsGameTimeController`} - ",
       "attributes": []
     },
     {
       "name": "ca-statistics-multipliers",
-      "description": "Attributes:\n\n  * `type` {`MultipliersType`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `type` {`MultipliersType`} - \n\n  * `_programMultiplierRef` {`Ref<HTMLSpanElement>`} - \n\n  * `_totalMultiplierRef` {`Ref<HTMLSpanElement>`} - \n\n  * `handlePartialUpdate` - \n\n  * `controller` {`StatisticsMultipliersController`} - ",
+      "description": "Attributes:\n\n  * `type` {`MultipliersType`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `type` {`MultipliersType`} - \n\n  * `_programMultiplierRef` {`Ref<HTMLSpanElement>`} - \n\n  * `_totalMultiplierRef` {`Ref<HTMLSpanElement>`} - \n\n  * `_districtValueNodes` {`NodeListOf<HTMLSpanElement>`} - \n\n  * `renderDistrict` - \n\n  * `handlePartialUpdate` - \n\n  * `controller` {`StatisticsMultipliersController`} - ",
       "attributes": [
         {
           "name": "type",
@@ -740,6 +745,11 @@
     {
       "name": "ca-statistics-program-completion-speed",
       "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `controller` {`StatisticsProgramCompletionSpeedController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-statistics-synchronization",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `renderDistrict` - \n\n  * `controller` {`StatisticsSynchronizationController`} - ",
       "attributes": []
     },
     {
@@ -773,8 +783,18 @@
       "attributes": []
     },
     {
+      "name": "ca-statistics-connectivity-points-income",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_programPointsRef` {`Ref<HTMLSpanElement>`} - \n\n  * `_districtValueNodes` {`NodeListOf<HTMLSpanElement>`} - \n\n  * `renderDistrict` - \n\n  * `handlePartialUpdate` - \n\n  * `controller` {`StatisticsConnectivityPointsIncomeController`} - ",
+      "attributes": []
+    },
+    {
       "name": "ca-statistics-development-income",
       "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_incomeSourceElements` {`NodeListOf<HTMLSpanElement>`} - \n\n  * `_totalIncomeRef` {`Ref<HTMLSpanElement>`} - \n\n  * `renderIncomeSource` - \n\n  * `handlePartialUpdate` - \n\n  * `controller` {`StatisticsDevelopmentIncomeController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-statistics-district-tier-points-income",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_districtValueNodes` {`NodeListOf<HTMLSpanElement>`} - \n\n  * `renderDistrict` - \n\n  * `handlePartialUpdate` - \n\n  * `controller` {`StatisticsDistrictTierPointsIncomeController`} - ",
       "attributes": []
     },
     {
@@ -784,7 +804,7 @@
     },
     {
       "name": "ca-statistics-multiplier-points-income",
-      "description": "Attributes:\n\n  * `type` - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `type` - \n\n  * `_programPointsRef` {`Ref<HTMLSpanElement>`} - \n\n  * `handlePartialUpdate` - \n\n  * `controller` {`StatisticsMultiplierPointsIncomeController`} - ",
+      "description": "Attributes:\n\n  * `type` - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `type` - \n\n  * `_programPointsRef` {`Ref<HTMLSpanElement>`} - \n\n  * `_districtValueNodes` {`NodeListOf<HTMLSpanElement>`} - \n\n  * `renderDistrict` - \n\n  * `handlePartialUpdate` - \n\n  * `controller` {`StatisticsMultiplierPointsIncomeController`} - ",
       "attributes": [
         {
           "name": "type",

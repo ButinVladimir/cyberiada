@@ -4,7 +4,6 @@ import { IClone } from '../../clone-factory/interfaces/clone';
 import { CloneTemplateName } from '../../clone-factory';
 
 export interface ICompanyClonesState extends IUIEventEmitter, ISerializeable<ICompanyClonesSerializedState> {
-  totalSynchronization: number;
   availableSynchronization: number;
   listClones(): IClone[];
   getCloneById(id: string): IClone | undefined;
@@ -15,6 +14,7 @@ export interface ICompanyClonesState extends IUIEventEmitter, ISerializeable<ICo
   deleteClone(id: string): void;
   deleteAllClones(): void;
   recalculate(): void;
+  recalculateSynchronization(): void;
   moveClone(id: string, newPosition: number): void;
   generateCloneName(): Promise<string>;
 }

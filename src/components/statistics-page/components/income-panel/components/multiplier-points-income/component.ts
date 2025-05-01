@@ -1,11 +1,14 @@
 import { html, PropertyValues } from 'lit';
 import { localized } from '@lit/localize';
 import { createRef, ref } from 'lit/directives/ref.js';
-import { customElement, property } from 'lit/decorators.js';
+import { map } from 'lit/directives/map.js';
+import { range } from 'lit/directives/range.js';
+import { customElement, property, queryAll } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import type { PointsMultiplierType } from '@shared/types';
 import { POINT_MULTIPLIER_HINTS, STATISTIC_PAGE_TEXTS } from '@components/statistics-page/constants';
 import { HINT_ICON } from '@shared/styles';
+import { DistrictUnlockState } from '@state/city-state/types';
 import { StatisticsMultiplierPointsIncomeController } from './controller';
 import { statisticsPanelContentStyle } from '../../../../styles';
 import { MULTIPLIER_POINT_TITLES } from './constants';
@@ -23,6 +26,9 @@ export class StatisticsMultiplierPointsIncome extends BaseComponent<StatisticsMu
   protected controller: StatisticsMultiplierPointsIncomeController;
 
   private _programPointsRef = createRef<HTMLSpanElement>();
+
+  @queryAll('span[data-district]')
+  private _districtValueNodes!: NodeListOf<HTMLSpanElement>;
 
   constructor() {
     super();
@@ -52,10 +58,25 @@ export class StatisticsMultiplierPointsIncome extends BaseComponent<StatisticsMu
         <div class="parameters-table">
           <span> ${STATISTIC_PAGE_TEXTS.byPrograms()} </span>
           <span ${ref(this._programPointsRef)}> </span>
+
+          ${map(range(this.controller.districtsCount), this.renderDistrict)}
         </div>
       </sl-details>
     `;
   }
+
+  private renderDistrict = (districtIndex: number) => {
+    const districtState = this.controller.getDistrictState(districtIndex);
+
+    if (districtState.state === DistrictUnlockState.locked) {
+      return;
+    }
+
+    return html`
+      <span> ${STATISTIC_PAGE_TEXTS.byDistrict(districtState.name)}</span>
+      <span data-district=${districtIndex}></span>
+    `;
+  };
 
   private handlePartialUpdate = () => {
     const formatter = this.controller.formatter;
@@ -65,5 +86,12 @@ export class StatisticsMultiplierPointsIncome extends BaseComponent<StatisticsMu
 
       this._programPointsRef.value.textContent = formatter.formatNumberFloat(pointsByProgram);
     }
+
+    this._districtValueNodes.forEach((element) => {
+      const districtIndex = parseInt(element.dataset.district!);
+      const value = this.controller.getPointsByDistrict(districtIndex, this.type);
+
+      element.textContent = formatter.formatNumberFloat(value);
+    });
   };
 }

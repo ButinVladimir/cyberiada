@@ -31,7 +31,7 @@ export class CityMapBackground extends BaseComponent<CityMapBackgroundController
 
   private _canvasRef = createRef<HTMLCanvasElement>();
 
-  private _offscreenCanvasContext: CanvasRenderingContext2D | null = null;
+  private _offscreenCanvasContext: OffscreenCanvasRenderingContext2D | null = null;
 
   constructor() {
     super();
@@ -67,9 +67,7 @@ export class CityMapBackground extends BaseComponent<CityMapBackgroundController
       throw new Error('Canvas context is not supported');
     }
 
-    const offscreenCanvas = document.createElement('canvas');
-    offscreenCanvas.width = this._fullWidth;
-    offscreenCanvas.height = this._fullHeight;
+    const offscreenCanvas = new OffscreenCanvas(this._fullWidth, this._fullHeight);
 
     this._offscreenCanvasContext = offscreenCanvas.getContext('2d');
     if (!this._offscreenCanvasContext) {

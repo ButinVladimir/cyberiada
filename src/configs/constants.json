@@ -48,9 +48,7 @@
         "logBase": 20
       },
       "computationalBase": {
-        "pointsMultiplier": 1,
-        "pointsToSoftCap": 86400,
-        "logBase": 20
+        "pointsMultiplier": 1
       },
       "connectivity": {
         "pointsMultiplier": 1,

@@ -10,3 +10,5 @@ export * from './unlocked-features-state';
 export * from './faction-state';
 export * from './multiplier-state';
 export * from './connectivity-state';
+export * from './threat-state';
+export * from './synchronization-parameter';

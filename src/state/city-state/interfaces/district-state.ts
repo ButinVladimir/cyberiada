@@ -1,7 +1,7 @@
 import { IPoint } from '@shared/interfaces/point';
 import { DistrictType, Faction } from '@shared/types';
 import { IUIEventEmitter } from '@shared/interfaces/ui-event-emitter';
-import { IDistrictSerializedState } from './district-serialized-state';
+import { IDistrictSerializedState } from './serialized-states/district-serialized-state';
 import { DistrictUnlockState } from '../types';
 import { IDistrictParameters } from './district-parameters';
 

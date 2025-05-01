@@ -1,12 +1,15 @@
 import { html, PropertyValues } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
+import { map } from 'lit/directives/map.js';
+import { range } from 'lit/directives/range.js';
 import { localized } from '@lit/localize';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, queryAll } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
+import { STATISTIC_PAGE_TEXTS } from '@components/statistics-page/constants';
+import { DistrictUnlockState } from '@state/city-state/types';
 import { StatisticsMultipliersController } from './controller';
 import { statisticsPanelContentStyle } from '../../../../styles';
 import type { MultipliersType } from '../../types';
-import { STATISTIC_PAGE_TEXTS } from '@components/statistics-page/constants';
 import { STATISTIC_MULTIPLIER_TITLES } from './constants';
 
 @localized()
@@ -23,6 +26,9 @@ export class StatisticsMultipliers extends BaseComponent<StatisticsMultipliersCo
 
   private _programMultiplierRef = createRef<HTMLSpanElement>();
   private _totalMultiplierRef = createRef<HTMLSpanElement>();
+
+  @queryAll('span[data-district]')
+  private _districtValueNodes!: NodeListOf<HTMLSpanElement>;
 
   constructor() {
     super();
@@ -45,12 +51,27 @@ export class StatisticsMultipliers extends BaseComponent<StatisticsMultipliersCo
           <span> ${STATISTIC_PAGE_TEXTS.byPrograms()} </span>
           <span ${ref(this._programMultiplierRef)}> </span>
 
+          ${map(range(this.controller.districtsCount), this.renderDistrict)}
+
           <span> ${STATISTIC_PAGE_TEXTS.total()} </span>
           <span ${ref(this._totalMultiplierRef)}> </span>
         </div>
       </sl-details>
     `;
   }
+
+  private renderDistrict = (districtIndex: number) => {
+    const districtState = this.controller.getDistrictState(districtIndex);
+
+    if (districtState.state === DistrictUnlockState.locked) {
+      return;
+    }
+
+    return html`
+      <span> ${STATISTIC_PAGE_TEXTS.byDistrict(districtState.name)}</span>
+      <span data-district=${districtIndex}></span>
+    `;
+  };
 
   handlePartialUpdate = () => {
     const formatter = this.controller.formatter;
@@ -64,5 +85,12 @@ export class StatisticsMultipliers extends BaseComponent<StatisticsMultipliersCo
       const totalMultiplier = this.controller.getTotalMultiplier(this.type);
       this._totalMultiplierRef.value.textContent = formatter.formatNumberFloat(totalMultiplier);
     }
+
+    this._districtValueNodes.forEach((element) => {
+      const districtIndex = parseInt(element.dataset.district!);
+      const value = this.controller.getDistrictMultiplier(districtIndex, this.type);
+
+      element.textContent = formatter.formatNumberFloat(value);
+    });
   };
 }

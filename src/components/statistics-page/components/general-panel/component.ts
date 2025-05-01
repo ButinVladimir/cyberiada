@@ -23,6 +23,12 @@ export class StatisticsGeneralPanel extends BaseComponent<StatisticsGeneralPanel
 
       <ca-statistics-program-completion-speed></ca-statistics-program-completion-speed>
 
+      ${this.controller.isFeatureUnlocked(Feature.companyManagement)
+        ? html`<ca-statistics-synchronization></ca-statistics-synchronization>`
+        : nothing}
+      ${this.controller.isFeatureUnlocked(Feature.connectivity)
+        ? html`<ca-statistics-connectivity></ca-statistics-connectivity>`
+        : nothing}
       ${this.controller.isFeatureUnlocked(Feature.mainframeUpgrades)
         ? html`
             <ca-statistics-multipliers type="mainframeHardwareCostDivisors"></ca-statistics-multipliers>

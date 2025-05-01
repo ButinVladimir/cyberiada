@@ -51,7 +51,7 @@ Multipliers for programs and districts stack.`),
 Increase them to make mainframe hardware cheaper.
 Multipliers for programs and districts stack.`),
   },
-  [Feature.connectivityPoints]: {
+  [Feature.connectivity]: {
     title: () => msg('Connectivity points'),
     hint: () => msg('Increases chances to receive new contracts and sidejobs'),
     message: () =>

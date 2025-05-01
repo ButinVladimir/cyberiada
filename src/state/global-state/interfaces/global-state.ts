@@ -11,6 +11,9 @@ import {
   IFactionState,
   IMultipliersState,
   IAvailableItemsState,
+  IConnectivityState,
+  IThreatState,
+  ISynchronizationParameter,
 } from './parameters';
 
 export interface IGlobalState extends ISerializeable<IGlobalSerializedState> {
@@ -22,6 +25,9 @@ export interface IGlobalState extends ISerializeable<IGlobalSerializedState> {
   money: IMoneyState;
   time: ITimeState;
   development: IDevelopmentState;
+  threat: IThreatState;
+  synchronization: ISynchronizationParameter;
+  connectivity: IConnectivityState;
   multipliers: IMultipliersState;
   availableItems: IAvailableItemsState;
   unlockedFeatures: IUnlockedFeaturesState;

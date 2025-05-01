@@ -16,7 +16,7 @@ export class CityMapController extends BaseController {
   }
 
   get districtsCount() {
-    return this.globalState.scenario.currentValues.map.districts.length;
+    return this.cityState.districtsCount;
   }
 
   getDistrict(districtIndex: number): IDistrictState {

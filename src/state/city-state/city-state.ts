@@ -31,6 +31,12 @@ export class CityState implements ICityState {
     this._districts = new Map();
 
     this.uiEventBatcher = new EventBatcher();
+
+    this._stateUiConnector.registerEventEmitter(this);
+  }
+
+  get districtsCount() {
+    return this._globalState.scenario.currentValues.map.districts.length;
   }
 
   getLayout(): number[][] {
@@ -114,6 +120,8 @@ export class CityState implements ICityState {
 
           this._districts.set(parsedDistrictNum, districtState);
         }
+
+        worker.terminate();
 
         resolve();
       });

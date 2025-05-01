@@ -6,6 +6,6 @@ export class ClonesPanelController extends BaseController {
   }
 
   get totalSynchronization(): number {
-    return this.companyState.clones.totalSynchronization;
+    return this.globalState.synchronization.totalValue;
   }
 }

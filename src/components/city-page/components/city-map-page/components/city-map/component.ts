@@ -9,9 +9,9 @@ import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import SlPopup from '@shoelace-style/shoelace/dist/components/popup/popup.js';
 import { BaseComponent } from '@shared/base-component';
+import { DistrictUnlockState } from '@state/city-state';
 import { CityMapController } from './controller';
 import { TEXT_HEIGHT, TOP_BAR_HEIGHT, VERTICAL_PADDING } from './constants';
-import { DistrictUnlockState } from '@/state/city-state';
 import { CityMapClickEvent } from './events';
 
 @localized()

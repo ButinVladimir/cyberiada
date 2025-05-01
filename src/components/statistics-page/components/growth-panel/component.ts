@@ -26,9 +26,6 @@ export class StatisticsGrowthPanel extends BaseComponent<StatisticsGrowthPanelCo
       ${this.controller.isFeatureUnlocked(Feature.rewardsPoints)
         ? html`<ca-statistics-multiplier-points-growth type="rewards"></ca-statistics-multiplier-points-growth>`
         : nothing}
-      ${this.controller.isFeatureUnlocked(Feature.connectivityPoints)
-        ? html`<ca-statistics-multiplier-points-growth type="connectivity"></ca-statistics-multiplier-points-growth>`
-        : nothing}
       ${this.controller.isFeatureUnlocked(Feature.codeBasePoints)
         ? html`<ca-statistics-multiplier-points-growth type="codeBase"></ca-statistics-multiplier-points-growth>`
         : nothing}

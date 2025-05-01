@@ -23,11 +23,14 @@ export class StatisticsIncomePanel extends BaseComponent<StatisticsIncomePanelCo
 
       <ca-statistics-development-income></ca-statistics-development-income>
 
+      ${this.controller.isFeatureUnlocked(Feature.companyManagement)
+        ? html`<ca-statistics-district-tier-points-income></ca-statistics-district-tier-points-income>`
+        : nothing}
+      ${this.controller.isFeatureUnlocked(Feature.connectivity)
+        ? html`<ca-statistics-connectivity-points-income></ca-statistics-connectivity-points-income>`
+        : nothing}
       ${this.controller.isFeatureUnlocked(Feature.rewardsPoints)
         ? html`<ca-statistics-multiplier-points-income type="rewards"></ca-statistics-multiplier-points-income>`
-        : nothing}
-      ${this.controller.isFeatureUnlocked(Feature.connectivityPoints)
-        ? html`<ca-statistics-multiplier-points-income type="connectivity"></ca-statistics-multiplier-points-income>`
         : nothing}
       ${this.controller.isFeatureUnlocked(Feature.codeBasePoints)
         ? html`<ca-statistics-multiplier-points-income type="codeBase"></ca-statistics-multiplier-points-income>`

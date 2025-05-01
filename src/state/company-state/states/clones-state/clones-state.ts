@@ -33,7 +33,6 @@ export class CompanyClonesState implements ICompanyClonesState {
   private _messageLogState: IMessageLogState;
   private _formatter: IFormatter;
 
-  private _totalSynchronization: number;
   private _availableSynchronization: number;
   private _clonesList: IClone[];
   private _clonesMap: Map<string, IClone>;
@@ -49,19 +48,12 @@ export class CompanyClonesState implements ICompanyClonesState {
     this._messageLogState = _messageLogState;
     this._formatter = _formatter;
 
-    this._totalSynchronization = 0;
     this._availableSynchronization = 0;
     this._clonesList = [];
     this._clonesMap = new Map<string, IClone>();
 
     this.uiEventBatcher = new EventBatcher();
     this._stateUiConnector.registerEventEmitter(this);
-  }
-
-  get totalSynchronization() {
-    this._stateUiConnector.connectEventHandler(this, COMPANY_CLONES_STATE_UI_EVENTS.SYNCHRONIZATION_UPDATED);
-
-    return this._totalSynchronization;
   }
 
   get availableSynchronization() {
@@ -101,7 +93,7 @@ export class CompanyClonesState implements ICompanyClonesState {
 
     const synchronization = this.getCloneSynchronization(templateName, quality);
 
-    if (synchronization > this.availableSynchronization) {
+    if (synchronization > this._availableSynchronization) {
       return false;
     }
 
@@ -148,6 +140,8 @@ export class CompanyClonesState implements ICompanyClonesState {
 
     this._messageLogState.postMessage(ClonesEvent.allClonesDeleted, msg('All clones have been deleted'));
 
+    this.recalculateSynchronization();
+
     this.uiEventBatcher.enqueueEvent(COMPANY_CLONES_STATE_UI_EVENTS.CLONES_UPDATED);
   }
 
@@ -175,6 +169,8 @@ export class CompanyClonesState implements ICompanyClonesState {
       worker.addEventListener('message', (event: MessageEvent<ICloneNameGeneratorResult>) => {
         this._globalState.setRandomShift(event.data.randomShift);
 
+        worker.terminate();
+
         resolve(event.data.name);
       });
 
@@ -190,10 +186,18 @@ export class CompanyClonesState implements ICompanyClonesState {
     });
   }
 
+  recalculateSynchronization() {
+    this._availableSynchronization = this._globalState.synchronization.totalValue;
+
+    for (const clone of this._clonesList) {
+      this._availableSynchronization -= this.getCloneSynchronization(clone.templateName, clone.quality);
+    }
+
+    this.uiEventBatcher.enqueueEvent(COMPANY_CLONES_STATE_UI_EVENTS.SYNCHRONIZATION_UPDATED);
+  }
+
   async startNewState(): Promise<void> {
     this.clearState();
-
-    this.recalculateSynchronization();
 
     this.uiEventBatcher.enqueueEvent(COMPANY_CLONES_STATE_UI_EVENTS.CLONES_UPDATED);
   }
@@ -207,8 +211,6 @@ export class CompanyClonesState implements ICompanyClonesState {
       this._clonesMap.set(clone.id, clone);
     });
 
-    this.recalculateSynchronization();
-
     this.uiEventBatcher.enqueueEvent(COMPANY_CLONES_STATE_UI_EVENTS.CLONES_UPDATED);
   }
 
@@ -218,17 +220,6 @@ export class CompanyClonesState implements ICompanyClonesState {
     };
   }
 
-  private recalculateSynchronization() {
-    this._totalSynchronization = this._globalState.scenario.currentValues.startingSynchronization;
-    this._availableSynchronization = this._totalSynchronization;
-
-    for (const clone of this._clonesList) {
-      this._availableSynchronization -= this.getCloneSynchronization(clone.templateName, clone.quality);
-    }
-
-    this.uiEventBatcher.enqueueEvent(COMPANY_CLONES_STATE_UI_EVENTS.SYNCHRONIZATION_UPDATED);
-  }
-
   private clearState() {
     for (const clone of this._clonesList) {
       clone.removeAllEventListeners();
@@ -236,8 +227,6 @@ export class CompanyClonesState implements ICompanyClonesState {
 
     this._clonesList.length = 0;
     this._clonesMap.clear();
-
-    this.recalculateSynchronization();
   }
 
   private addClone(clone: IClone) {
