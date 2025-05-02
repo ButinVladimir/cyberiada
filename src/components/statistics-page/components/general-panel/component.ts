@@ -35,7 +35,7 @@ export class StatisticsGeneralPanel extends BaseComponent<StatisticsGeneralPanel
             <ca-statistics-multipliers type="mainframeProgramsCostDivisors"></ca-statistics-multipliers>
           `
         : nothing}
-      ${this.controller.isFeatureUnlocked(Feature.rewardsPoints)
+      ${this.controller.isFeatureUnlocked(Feature.rewards)
         ? html`<ca-statistics-multipliers type="rewards"></ca-statistics-multipliers>`
         : nothing}
     `;

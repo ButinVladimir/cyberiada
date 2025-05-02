@@ -116,6 +116,7 @@ export enum PurchaseType {
 
 export enum IncomeSource {
   program = 'program',
+  sidejob = 'sidejob',
 }
 
 export enum Feature {
@@ -124,10 +125,10 @@ export enum Feature {
   automationMainframePrograms = 'automationMainframePrograms',
   mainframeUpgrades = 'mainframeUpgrades',
   companyManagement = 'companyManagement',
-  codeBasePoints = 'codeBasePoints',
-  computationalBasePoints = 'computationalBasePoints',
+  codeBase = 'codeBase',
+  computationalBase = 'computationalBase',
   connectivity = 'connectivity',
-  rewardsPoints = 'rewardsPoints',
+  rewards = 'rewards',
 }
 
 export type PointsMultiplierType = 'codeBase' | 'computationalBase' | 'rewards';

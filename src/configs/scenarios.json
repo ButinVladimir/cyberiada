@@ -97,10 +97,40 @@
         "messages": ["tutorial_level_2"]
       },
       {
-        "key": "tutorial_level_15",
+        "key": "tutorial_level_5",
         "level": 2,
         "unlockFeatures": ["companyManagement"],
         "messages": ["tutorial_level_15"]
+      },
+      {
+        "key": "tutorial_level_11",
+        "level": 3,
+        "unlockFeatures": ["connectivity"],
+        "messages": []
+      },
+      {
+        "key": "tutorial_level_11",
+        "level": 3,
+        "unlockFeatures": ["codeBase", "computationalBase", "rewards"],
+        "messages": []
+      },
+      {
+        "key": "tutorial_level_10",
+        "level": 5,
+        "unlockFeatures": ["automation"],
+        "messages": []
+      },
+      {
+        "key": "tutorial_level_11",
+        "level": 6,
+        "unlockFeatures": ["automationMainframeHardware"],
+        "messages": []
+      },
+      {
+        "key": "tutorial_level_12",
+        "level": 7,
+        "unlockFeatures": ["automationMainframePrograms"],
+        "messages": []
       }
     ]
   }

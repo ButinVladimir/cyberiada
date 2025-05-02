@@ -1,4 +1,3 @@
-import districtTypes from '@configs/district-types.json';
 import { calculatePower } from '@shared/helpers';
 import { IEventBatcher } from '@shared/interfaces';
 import { EventBatcher } from '@shared/event-batcher';
@@ -34,7 +33,7 @@ export class DistrictSynchronizationParameter implements IDistrictSynchronizatio
   }
 
   recalculate(): void {
-    const districtTypeData = districtTypes[this._district.districtType];
+    const districtTypeData = this._district.template;
 
     this._value = calculatePower(this._district.parameters.tier.tier, districtTypeData.parameters.synchronization);
 

@@ -1,5 +1,4 @@
 import { msg, str } from '@lit/localize';
-import districtTypes from '@configs/district-types.json';
 import { decorators } from '@state/container';
 import { TYPES } from '@state/types';
 import { IEventBatcher } from '@shared/interfaces/event-batcher';
@@ -78,9 +77,8 @@ export class DistrictTierParameter implements IDistrictTierParameter {
   }
 
   setTier(tier: number): void {
-    const districtType = this._district.districtType;
-    const districtTypeInfo = districtTypes[districtType];
-    const { base, multiplier } = districtTypeInfo.parameters.nextTierRequirements;
+    const districtTypeInfo = this._district.template;
+    const { base, multiplier } = districtTypeInfo.parameters.districtTierPoints.requirements;
 
     this._tier = tier;
     this._points = calculateGeometricProgressionSum(tier - 1, multiplier, base);
@@ -104,9 +102,8 @@ export class DistrictTierParameter implements IDistrictTierParameter {
   }
 
   private calculateNewLevel(): number {
-    const districtType = this._district.districtType;
-    const districtTypeInfo = districtTypes[districtType];
-    const { base, multiplier } = districtTypeInfo.parameters.nextTierRequirements;
+    const districtTypeInfo = this._district.template;
+    const { base, multiplier } = districtTypeInfo.parameters.districtTierPoints.requirements;
 
     return reverseGeometricProgressionSum(this._points, multiplier, base);
   }

@@ -3,9 +3,13 @@ import { decorators } from '@state/container';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import { EventBatcher } from '@shared/event-batcher';
 import { TYPES } from '@state/types';
-import type { IGlobalState } from '../../interfaces/global-state';
-import { IAvailableCategoryItemsState } from '../../interfaces/parameters/available-category-items-state';
-import { IAvailableCategoryItemsSerializedState } from '../../interfaces/serialized-states/available-category-items-serialized-state';
+import { Feature } from '@shared/types';
+import {
+  type IGlobalState,
+  IAvailableCategoryItemsState,
+  IAvailableCategoryItemsSerializedState,
+} from '../../interfaces';
+import { GLOBAL_STATE_UI_EVENTS } from '../../constants';
 
 const { lazyInject } = decorators;
 
@@ -30,8 +34,6 @@ export abstract class BaseAvailableCategoryItemsState<Key = string> implements I
     this._loanedItems = new Set();
     this._itemsList = [];
 
-    this.recalculateList();
-
     this.uiEventBatcher = new EventBatcher();
     this._stateUiConnector.registerEventEmitter(this);
   }
@@ -41,6 +43,8 @@ export abstract class BaseAvailableCategoryItemsState<Key = string> implements I
   }
 
   listAvailableItems(): Key[] {
+    this._stateUiConnector.connectEventHandler(this, GLOBAL_STATE_UI_EVENTS.AVAILABLE_ITEMS_UPDATED);
+
     return this._itemsList;
   }
 
@@ -71,12 +75,16 @@ export abstract class BaseAvailableCategoryItemsState<Key = string> implements I
     return result;
   }
 
+  recalculate() {
+    this.recalculateNeutralItemsList();
+    this.recalculateCompleteList();
+
+    this.uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.AVAILABLE_ITEMS_UPDATED);
+  }
+
   async startNewState(): Promise<void> {
     this._loanedQuality = 6;
     this._loanedItems.clear();
-
-    this.recalculateNeutralItemsList();
-    this.recalculateList();
   }
 
   async deserialize(serializedState: IAvailableCategoryItemsSerializedState<Key>): Promise<void> {
@@ -86,9 +94,6 @@ export abstract class BaseAvailableCategoryItemsState<Key = string> implements I
     serializedState.loanedItems.forEach((itemName) => {
       this._loanedItems.add(itemName);
     });
-
-    this.recalculateNeutralItemsList();
-    this.recalculateList();
   }
 
   serialize(): IAvailableCategoryItemsSerializedState<Key> {
@@ -100,13 +105,24 @@ export abstract class BaseAvailableCategoryItemsState<Key = string> implements I
 
   protected abstract recalculateNeutralItemsList(): void;
 
-  private recalculateList() {
-    this._itemsList = Array.from(this._neutralItems.values());
+  protected abstract getItemRequiredFeatures(itemName: Key): Feature[];
+
+  private recalculateCompleteList() {
+    const completeList = Array.from(this._neutralItems.values());
 
     this._loanedItems.forEach((itemName) => {
       if (!this._neutralItems.has(itemName)) {
-        this._itemsList.push(itemName);
+        completeList.push(itemName);
       }
+    });
+
+    this._itemsList = completeList.filter((itemName) => {
+      const requiredFeatures = this.getItemRequiredFeatures(itemName);
+      const allFeaturesUnlocked = requiredFeatures.every((feature) =>
+        this._globalState.unlockedFeatures.isFeatureUnlocked(feature),
+      );
+
+      return allFeaturesUnlocked;
     });
   }
 }

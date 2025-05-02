@@ -1,5 +1,6 @@
-import { ICompanyClonesSerializedState } from '../states/clones-state/interfaces/clones-serialized-state';
+import { ISidejobsSerializedState, ICompanyClonesSerializedState } from '../states';
 
 export interface ICompanySerializedState {
   clones: ICompanyClonesSerializedState;
+  sidejobs: ISidejobsSerializedState;
 }

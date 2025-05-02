@@ -14,11 +14,13 @@ import type {
   IConnectivityState,
   IThreatState,
   ISynchronizationParameter,
+  IAvailableActivities,
 } from './interfaces';
 import { IGlobalState } from './interfaces/global-state';
 import { GameSpeed } from './types';
 import { ConnectivityState, ThreatState } from './parameters';
 import { SynchronizationParameter } from './parameters/synchronization-parameter';
+import { AvailableActivities } from './parameters/available-activities-state';
 
 @injectable()
 export class GlobalState implements IGlobalState {
@@ -31,6 +33,7 @@ export class GlobalState implements IGlobalState {
   private _threat: IThreatState;
   private _synchronization: ISynchronizationParameter;
   private _multipliersState: IMultipliersState;
+  private _availableActivities: IAvailableActivities;
   private _availableItemsState: IAvailableItemsState;
   private _unlockedFeaturesState: IUnlockedFeaturesState;
   private _storyEventsState: IStoryEventsState;
@@ -61,6 +64,7 @@ export class GlobalState implements IGlobalState {
     this._multipliersState = _multipliersState;
     this._unlockedFeaturesState = _unlockedFeaturesState;
     this._storyEventsState = _storyEventsState;
+    this._availableActivities = new AvailableActivities();
     this._availableItemsState = _availableItemsState;
 
     this._randomSeed = 0;
@@ -124,6 +128,10 @@ export class GlobalState implements IGlobalState {
     return this._availableItemsState;
   }
 
+  get availableActivities(): IAvailableActivities {
+    return this._availableActivities;
+  }
+
   get unlockedFeatures(): IUnlockedFeaturesState {
     return this._unlockedFeaturesState;
   }
@@ -136,6 +144,8 @@ export class GlobalState implements IGlobalState {
     this._developmentState.recalculateLevel();
     this._multipliersState.recalculate();
     this._synchronization.recalculate();
+    this._availableItemsState.recalculate();
+    this._availableActivities.recalculate();
   }
 
   makeNextTick() {

@@ -1,9 +1,9 @@
 import { ISerializeable } from '@shared/interfaces/serializable';
 import { ICompanySerializedState } from './company-serialized-state';
-import { ICloneFactory } from '../states/clone-factory/interfaces/clone-factory';
-import { ICompanyClonesState } from '../states/clones-state/interfaces/clones-state';
+import { ICloneFactory, ICompanyClonesState, ISidejobsState } from '../states';
 
 export interface ICompanyState extends ISerializeable<ICompanySerializedState> {
   cloneFactory: ICloneFactory;
   clones: ICompanyClonesState;
+  sidejobs: ISidejobsState;
 }

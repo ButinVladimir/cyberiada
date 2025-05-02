@@ -1,5 +1,5 @@
+import { IPurchaseCloneArgs, CloneTemplateName } from '@/state/company-state';
 import { BaseController } from '@shared/base-controller';
-import { CloneTemplateName } from '@state/company-state/states/clone-factory/types';
 
 export class PurchaseCloneDialogController extends BaseController {
   get developmentLevel(): number {
@@ -14,8 +14,8 @@ export class PurchaseCloneDialogController extends BaseController {
     return this.globalState.availableItems.cloneTemplates.listAvailableItems();
   }
 
-  purchaseClone(name: string, templateName: CloneTemplateName, quality: number, level: number): boolean {
-    return this.companyState.clones.purchaseClone(name, templateName, quality, level);
+  purchaseClone(args: IPurchaseCloneArgs): boolean {
+    return this.companyState.clones.purchaseClone(args);
   }
 
   generateName(): Promise<string> {

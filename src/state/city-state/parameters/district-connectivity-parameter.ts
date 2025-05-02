@@ -1,4 +1,3 @@
-import districtTypes from '@configs/district-types.json';
 import { decorators } from '@state/container';
 import { TYPES } from '@state/types';
 import type { IGlobalState } from '@state/global-state/interfaces/global-state';
@@ -38,7 +37,7 @@ export class DistrictConnectivityParameter implements IDistrictConnectivityParam
   }
 
   recalculate(): void {
-    const districtTypeData = districtTypes[this._district.districtType];
+    const districtTypeData = this._district.template;
 
     const pointsByProgram = calculatePower(
       this._district.parameters.tier.tier,

@@ -9,4 +9,5 @@ export interface IAvailableCategoryItemsState<Key = string>
   listAvailableItems(): Key[];
   isItemAvailable(itemName: Key, quality: number, level: number): boolean;
   getItemHighestAvailableQuality(itemName: Key): number;
+  recalculate(): void;
 }

@@ -2,6 +2,7 @@ import { ISerializeable, IUIEventEmitter } from '@shared/interfaces';
 import { ICompanyClonesSerializedState } from './clones-serialized-state';
 import { IClone } from '../../clone-factory/interfaces/clone';
 import { CloneTemplateName } from '../../clone-factory';
+import { IPurchaseCloneArgs } from './purchase-clone-args';
 
 export interface ICompanyClonesState extends IUIEventEmitter, ISerializeable<ICompanyClonesSerializedState> {
   availableSynchronization: number;
@@ -9,7 +10,7 @@ export interface ICompanyClonesState extends IUIEventEmitter, ISerializeable<ICo
   getCloneById(id: string): IClone | undefined;
   getCloneCost(template: CloneTemplateName, quality: number, level: number): number;
   getCloneSynchronization(template: CloneTemplateName, quality: number): number;
-  purchaseClone(name: string, template: CloneTemplateName, quality: number, level: number): boolean;
+  purchaseClone(args: IPurchaseCloneArgs): boolean;
   toggleAllClonesAutoupgrade(active: boolean): void;
   deleteClone(id: string): void;
   deleteAllClones(): void;

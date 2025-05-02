@@ -15,7 +15,7 @@ import { CLONE_TEMPLATE_TEXTS } from '@texts/clone-templates';
 import { ICloneNameGeneratorResult } from '@workers/clone-name-generator/interfaces';
 import type { ICompanyState } from '../../interfaces/company-state';
 import { IClone } from '../clone-factory/interfaces/clone';
-import { ICompanyClonesSerializedState, ICompanyClonesState } from './interfaces';
+import { ICompanyClonesSerializedState, ICompanyClonesState, IPurchaseCloneArgs } from './interfaces';
 import { COMPANY_CLONES_STATE_UI_EVENTS } from './constants';
 import { CloneTemplateName } from '../clone-factory/types';
 
@@ -82,28 +82,24 @@ export class CompanyClonesState implements ICompanyClonesState {
     return Math.ceil(template.synchronization.multiplier * Math.pow(template.synchronization.baseQuality, quality));
   }
 
-  purchaseClone(name: string, templateName: CloneTemplateName, quality: number, level: number): boolean {
+  purchaseClone(args: IPurchaseCloneArgs): boolean {
     if (!this._globalState.unlockedFeatures.isFeatureUnlocked(Feature.companyManagement)) {
       return false;
     }
 
-    if (!name) {
+    if (!args.name) {
       return false;
     }
 
-    const synchronization = this.getCloneSynchronization(templateName, quality);
+    const synchronization = this.getCloneSynchronization(args.templateName, args.quality);
 
     if (synchronization > this._availableSynchronization) {
       return false;
     }
 
-    const cost = this.getCloneCost(templateName, quality, level);
+    const cost = this.getCloneCost(args.templateName, args.quality, args.level);
 
-    const bought = this._globalState.money.purchase(
-      cost,
-      PurchaseType.clones,
-      this.handlePurhaseClone(name, templateName, quality, level),
-    );
+    const bought = this._globalState.money.purchase(cost, PurchaseType.clones, this.handlePurhaseClone(args));
 
     return bought;
   }
@@ -241,28 +237,27 @@ export class CompanyClonesState implements ICompanyClonesState {
     this.uiEventBatcher.enqueueEvent(COMPANY_CLONES_STATE_UI_EVENTS.CLONES_UPDATED);
   }
 
-  private handlePurhaseClone =
-    (name: string, templateName: CloneTemplateName, quality: number, level: number) => () => {
-      const clone = this._companyState.cloneFactory.makeClone({
-        id: uuid(),
-        name,
-        templateName,
-        quality,
-        level,
-        experience: 0,
-        autoUpgradeEnabled: true,
-      });
+  private handlePurhaseClone = (args: IPurchaseCloneArgs) => () => {
+    const clone = this._companyState.cloneFactory.makeClone({
+      id: uuid(),
+      name: args.name,
+      templateName: args.templateName,
+      quality: args.quality,
+      level: args.level,
+      experience: 0,
+      autoUpgradeEnabled: true,
+    });
 
-      this.addClone(clone);
+    this.addClone(clone);
 
-      const formattedLevel = this._formatter.formatLevel(clone.level);
-      const formattedQuality = this._formatter.formatQuality(clone.quality);
+    const formattedLevel = this._formatter.formatLevel(clone.level);
+    const formattedQuality = this._formatter.formatQuality(clone.quality);
 
-      this._messageLogState.postMessage(
-        PurchaseEvent.clonePurchased,
-        msg(
-          str`Clone "${clone.name}" with template "${CLONE_TEMPLATE_TEXTS[clone.templateName].title()}", quality ${formattedQuality} and level ${formattedLevel} has been purchased`,
-        ),
-      );
-    };
+    this._messageLogState.postMessage(
+      PurchaseEvent.clonePurchased,
+      msg(
+        str`Clone "${clone.name}" with template "${CLONE_TEMPLATE_TEXTS[clone.templateName].title()}", quality ${formattedQuality} and level ${formattedLevel} has been purchased`,
+      ),
+    );
+  };
 }

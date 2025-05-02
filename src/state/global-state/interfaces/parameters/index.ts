@@ -12,3 +12,5 @@ export * from './multiplier-state';
 export * from './connectivity-state';
 export * from './threat-state';
 export * from './synchronization-parameter';
+export * from './available-category-activities';
+export * from './available-activities';

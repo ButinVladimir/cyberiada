@@ -3,5 +3,7 @@ export * from './parameters';
 export * from './city-state';
 export * from './district-state';
 export * from './district-parameters';
-export * from './multiplier-district-type-parameters';
+export * from './district-type-multiplier-parameters';
 export * from './district-multipliers';
+export * from './district-type-template';
+export * from './district-arguments';

@@ -14,7 +14,7 @@ export class StatisticsMultiplierPointsIncomeController extends BaseController {
   getPointsByDistrict(districtIndex: number, multiplierType: PointsMultiplierType): number {
     const districtMultipliers = this.cityState.getDistrictState(districtIndex).parameters.multipliers;
 
-    return this.getDistrictMultiplierParameter(districtMultipliers, multiplierType).multiplier;
+    return this.getDistrictMultiplierParameter(districtMultipliers, multiplierType).points;
   }
 
   getPointsByProgram(pointsMultiplierType: PointsMultiplierType) {

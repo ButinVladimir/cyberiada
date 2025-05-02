@@ -6,8 +6,7 @@ import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/sta
 import type { INotificationsState } from '@state/notifications-state/interfaces/notifications-state';
 import { TYPES } from '@state/types';
 import { UNLOCKED_FEATURE_TEXTS } from '@texts/unlocked-features';
-import { IUnlockedFeaturesState } from '../interfaces/parameters/unlocked-features-state';
-import { IUnlockedFeaturesSerializedState } from '../interfaces/serialized-states/unlocked-features-serialized-state';
+import { type IGlobalState, IUnlockedFeaturesSerializedState, IUnlockedFeaturesState } from '../interfaces';
 import { GLOBAL_STATE_UI_EVENTS } from '../constants';
 
 const { lazyInject } = decorators;
@@ -15,6 +14,9 @@ const { lazyInject } = decorators;
 @injectable()
 export class UnlockedFeaturesState implements IUnlockedFeaturesState {
   readonly uiEventBatcher: EventBatcher;
+
+  @lazyInject(TYPES.GlobalState)
+  private _globalState!: IGlobalState;
 
   @lazyInject(TYPES.StateUIConnector)
   private _stateUiConnector!: IStateUIConnector;
@@ -42,6 +44,9 @@ export class UnlockedFeaturesState implements IUnlockedFeaturesState {
       this.uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.FEATURE_UNLOCKED);
 
       this._unlockedFeatures.add(feature);
+
+      this._globalState.availableItems.requestRecalculation();
+      this._globalState.availableActivities.requestRecalculation();
 
       this._notificationsState.pushNotification(
         NotificationType.featureUnlocked,

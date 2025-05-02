@@ -1,16 +1,13 @@
 {
   "suburb": {
-    "captureDifficulty": 1,
+    "captureDifficulty": { "multiplier": 1, "base": 1.01 },
     "parameters": {
-      "money": {
-        "pointsMultiplier": 1
-      },
-      "developmentPoints": {
-        "pointsMultiplier": 1
-      },
-      "nextTierRequirements": {
-        "multiplier": 60000,
-        "base": 1.5
+      "experience": { "multiplier": 1, "base": 1.1 },
+      "money": { "multiplier": 1, "base": 1.1 },
+      "developmentPoints": { "multiplier": 1, "base": 1.1 },
+      "districtTierPoints": {
+        "pointsMultiplier": { "multiplier": 1, "base": 1.5 },
+        "requirements": { "multiplier": 60000, "base": 1.5 }
       },
       "synchronization": { "multiplier": 10, "base": 1.1 },
       "connectivity": {
@@ -35,17 +32,14 @@
     }
   },
   "corpoDistrict": {
-    "captureDifficulty": 2,
+    "captureDifficulty": { "multiplier": 2, "base": 1.01 },
     "parameters": {
-      "money": {
-        "pointsMultiplier": 10
-      },
-      "developmentPoints": {
-        "pointsMultiplier": 5
-      },
-      "nextTierRequirements": {
-        "multiplier": 60000,
-        "base": 1.5
+      "experience": { "multiplier": 1, "base": 1.1 },
+      "money": { "multiplier": 10, "base": 1.1 },
+      "developmentPoints": { "multiplier": 5, "base": 1.1 },
+      "districtTierPoints": {
+        "pointsMultiplier": { "multiplier": 1, "base": 1.5 },
+        "requirements": { "multiplier": 60000, "base": 1.5 }
       },
       "synchronization": {
         "multiplier": 30,

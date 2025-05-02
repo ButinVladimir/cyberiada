@@ -29,13 +29,13 @@ export class StatisticsIncomePanel extends BaseComponent<StatisticsIncomePanelCo
       ${this.controller.isFeatureUnlocked(Feature.connectivity)
         ? html`<ca-statistics-connectivity-points-income></ca-statistics-connectivity-points-income>`
         : nothing}
-      ${this.controller.isFeatureUnlocked(Feature.rewardsPoints)
+      ${this.controller.isFeatureUnlocked(Feature.rewards)
         ? html`<ca-statistics-multiplier-points-income type="rewards"></ca-statistics-multiplier-points-income>`
         : nothing}
-      ${this.controller.isFeatureUnlocked(Feature.codeBasePoints)
+      ${this.controller.isFeatureUnlocked(Feature.codeBase)
         ? html`<ca-statistics-multiplier-points-income type="codeBase"></ca-statistics-multiplier-points-income>`
         : nothing}
-      ${this.controller.isFeatureUnlocked(Feature.computationalBasePoints)
+      ${this.controller.isFeatureUnlocked(Feature.computationalBase)
         ? html`<ca-statistics-multiplier-points-income
             type="computationalBase"
           ></ca-statistics-multiplier-points-income>`

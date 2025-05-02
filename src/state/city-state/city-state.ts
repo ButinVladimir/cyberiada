@@ -76,11 +76,11 @@ export class CityState implements ICityState {
 
     this._districts.clear();
 
-    Object.entries(serializedState.districts).forEach(([districtNum, districtSerializedInfo]) => {
-      const districtNumParsed = parseInt(districtNum);
-      const districtState = DistrictState.deserialize(districtSerializedInfo);
+    Object.entries(serializedState.districts).forEach(([districtIndex, districtSerializedInfo]) => {
+      const parsedDistrictIndex = parseInt(districtIndex);
+      const districtState = DistrictState.deserialize(parsedDistrictIndex, districtSerializedInfo);
 
-      this._districts.set(districtNumParsed, districtState);
+      this._districts.set(parsedDistrictIndex, districtState);
     });
   }
 
@@ -109,16 +109,16 @@ export class CityState implements ICityState {
 
         this._districts.clear();
 
-        for (const [districtNum, district] of Object.entries(event.data.districts)) {
-          const parsedDistrictNum = parseInt(districtNum);
-          const districtState = DistrictState.createByMapGenerator(district);
+        for (const [districtIndex, district] of Object.entries(event.data.districts)) {
+          const parsedDistrictIndex = parseInt(districtIndex);
+          const districtState = DistrictState.createByMapGenerator(parsedDistrictIndex, district);
 
           districtState.state =
-            parsedDistrictNum === scenarios[this._globalState.scenario.scenario].map.startingDistrict
+            parsedDistrictIndex === scenarios[this._globalState.scenario.scenario].map.startingDistrict
               ? DistrictUnlockState.contested
               : DistrictUnlockState.locked;
 
-          this._districts.set(parsedDistrictNum, districtState);
+          this._districts.set(parsedDistrictIndex, districtState);
         }
 
         worker.terminate();

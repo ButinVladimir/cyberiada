@@ -1,6 +1,8 @@
 import { injectable } from 'inversify';
-import { BaseAvailableCategoryItemsState } from './base-available-category-items-state';
+import programs from '@configs/programs.json';
 import { ProgramName } from '@state/mainframe-state/states/progam-factory/types';
+import { Feature } from '@shared/types';
+import { BaseAvailableCategoryItemsState } from './base-available-category-items-state';
 
 @injectable()
 export class AvailableProgramsState extends BaseAvailableCategoryItemsState<ProgramName> {
@@ -10,5 +12,9 @@ export class AvailableProgramsState extends BaseAvailableCategoryItemsState<Prog
     this._globalState.faction.neutralFactionValues.programs.forEach((programName) => {
       this._neutralItems.add(programName);
     });
+  }
+
+  protected getItemRequiredFeatures(itemName: ProgramName): Feature[] {
+    return programs[itemName].requiredFeatures as Feature[];
   }
 }

@@ -24,14 +24,14 @@
     "ram": 1,
     "completionPoints": { "multiplier": 120000, "base": 1 },
     "cost": { "multiplier": 60000, "base": 1.15, "baseQuality": 10 },
-    "requiredFeatures": ["codeBasePoints"],
+    "requiredFeatures": ["codeBase"],
     "codeBase": { "multiplier": 1, "base": 1.1, "baseQuality": 900 }
   },
   "circuitDesigner": {
     "ram": 1,
     "completionPoints": { "multiplier": 120000, "base": 1 },
     "cost": { "multiplier": 60000, "base": 1.15, "baseQuality": 10 },
-    "requiredFeatures": ["computationalBasePoints"],
+    "requiredFeatures": ["computationalBase"],
     "computationalBase": { "multiplier": 1, "base": 1.1, "baseQuality": 900 }
   },
   "informationCollector": {
@@ -45,7 +45,7 @@
     "ram": 1,
     "completionPoints": { "multiplier": 120000, "base": 1 },
     "cost": { "multiplier": 60000, "base": 1.15, "baseQuality": 10 },
-    "requiredFeatures": ["rewardsPoints"],
+    "requiredFeatures": ["rewards"],
     "rewards": { "multiplier": 1, "base": 1.1, "baseQuality": 900 }
   },
   "mainframeHardwareAutobuyer": {

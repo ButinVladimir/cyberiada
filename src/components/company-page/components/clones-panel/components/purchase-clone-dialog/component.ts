@@ -296,7 +296,12 @@ Synchronization is earned by capturing districts and gaining certain favors.`)}
       return;
     }
 
-    const isBought = this.controller.purchaseClone(this._name, this._cloneTemplateName, this._quality, this._level);
+    const isBought = this.controller.purchaseClone({
+      name: this._name,
+      templateName: this._cloneTemplateName,
+      quality: this._quality,
+      level: this._level,
+    });
 
     if (isBought) {
       this.dispatchEvent(new PurchaseCloneDialogCloseEvent());

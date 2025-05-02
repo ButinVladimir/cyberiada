@@ -14,6 +14,7 @@ import {
   IConnectivityState,
   IThreatState,
   ISynchronizationParameter,
+  IAvailableActivities,
 } from './parameters';
 
 export interface IGlobalState extends ISerializeable<IGlobalSerializedState> {
@@ -30,6 +31,7 @@ export interface IGlobalState extends ISerializeable<IGlobalSerializedState> {
   connectivity: IConnectivityState;
   multipliers: IMultipliersState;
   availableItems: IAvailableItemsState;
+  availableActivities: IAvailableActivities;
   unlockedFeatures: IUnlockedFeaturesState;
   storyEvents: IStoryEventsState;
   recalculate(): void;
