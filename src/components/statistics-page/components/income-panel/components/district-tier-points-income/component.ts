@@ -1,11 +1,10 @@
 import { html, PropertyValues } from 'lit';
 import { localized, msg } from '@lit/localize';
 import { map } from 'lit/directives/map.js';
-import { range } from 'lit/directives/range.js';
 import { customElement, queryAll } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { STATISTIC_PAGE_TEXTS } from '@components/statistics-page/constants';
-import { DistrictUnlockState } from '@state/city-state/types';
+import { IDistrictState } from '@state/city-state';
 import { StatisticsDistrictTierPointsIncomeController } from './controller';
 import { statisticsPanelContentStyle } from '../../../../styles';
 
@@ -36,21 +35,15 @@ export class StatisticsDistrictTierPointsIncome extends BaseComponent<Statistics
       <sl-details>
         <h4 class="title" slot="summary">${msg('District tier points')}</h4>
 
-        <div class="parameters-table">${map(range(this.controller.districtsCount), this.renderDistrict)}</div>
+        <div class="parameters-table">${map(this.controller.listAvailableDistricts(), this.renderDistrict)}</div>
       </sl-details>
     `;
   }
 
-  private renderDistrict = (districtIndex: number) => {
-    const districtState = this.controller.getDistrictState(districtIndex);
-
-    if (districtState.state === DistrictUnlockState.locked) {
-      return;
-    }
-
+  private renderDistrict = (districtState: IDistrictState) => {
     return html`
       <span> ${STATISTIC_PAGE_TEXTS.byDistrict(districtState.name)}</span>
-      <span data-district=${districtIndex}></span>
+      <span data-district=${districtState.index}></span>
     `;
   };
 

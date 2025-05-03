@@ -19,6 +19,7 @@ export class CityState implements ICityState {
 
   private _layout: number[][];
   private _districts: Map<number, IDistrictState>;
+  private _availableDistricts: IDistrictState[];
 
   constructor(
     @inject(TYPES.GlobalState) _globalState: IGlobalState,
@@ -29,6 +30,7 @@ export class CityState implements ICityState {
 
     this._layout = [];
     this._districts = new Map();
+    this._availableDistricts = [];
 
     this.uiEventBatcher = new EventBatcher();
 
@@ -49,6 +51,10 @@ export class CityState implements ICityState {
     }
 
     return this._districts.get(districtIndex)!;
+  }
+
+  listAvailableDistricts(): IDistrictState[] {
+    return this._availableDistricts;
   }
 
   recalculate() {
@@ -81,7 +87,13 @@ export class CityState implements ICityState {
       const districtState = DistrictState.deserialize(parsedDistrictIndex, districtSerializedInfo);
 
       this._districts.set(parsedDistrictIndex, districtState);
+
+      if (districtState.state !== DistrictUnlockState.locked) {
+        this._availableDistricts.push(districtState);
+      }
     });
+
+    this.updateAvailableDistricts();
   }
 
   serialize(): ICitySerializedState {
@@ -121,6 +133,8 @@ export class CityState implements ICityState {
           this._districts.set(parsedDistrictIndex, districtState);
         }
 
+        this.updateAvailableDistricts();
+
         worker.terminate();
 
         resolve();
@@ -139,5 +153,15 @@ export class CityState implements ICityState {
         randomSeed: this._globalState.randomSeed,
       });
     });
+  }
+
+  private updateAvailableDistricts() {
+    this._availableDistricts.length = 0;
+
+    this._districts.forEach((district) => {
+      if (district.state !== DistrictUnlockState.locked) {
+        this._availableDistricts.push(district);
+      }
+    })
   }
 }

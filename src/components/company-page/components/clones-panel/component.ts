@@ -31,6 +31,7 @@ export class CompanyClonesPanel extends BaseComponent<ClonesPanelController> {
           'synchronization'
           'purchase-clone';
         gap: var(--sl-spacing-medium);
+        margin-bottom: var(--sl-spacing-large);
       }
 
       .purchase-clone {
@@ -39,10 +40,6 @@ export class CompanyClonesPanel extends BaseComponent<ClonesPanelController> {
 
       .synchronization {
         grid-area: synchronization;
-      }
-
-      ca-clones-list {
-        margin-top: var(--sl-spacing-large);
       }
 
       @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {

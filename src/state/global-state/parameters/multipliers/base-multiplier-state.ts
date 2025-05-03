@@ -2,7 +2,7 @@ import { injectable } from 'inversify';
 import { decorators } from '@state/container';
 import type { IGrowthState } from '@state/growth-state/interfaces/growth-state';
 import { TYPES } from '@state/types';
-import { DistrictUnlockState, type ICityState, IDistrictMultipliers } from '@state/city-state';
+import { type ICityState, IDistrictMultipliers } from '@state/city-state';
 import { IDistrictMultiplierParameter } from '@state/city-state/interfaces/parameters/district-multiplier-parameter';
 import type { IGlobalState } from '../../interfaces/global-state';
 import { IMultiplierState } from '../../interfaces/parameters/multiplier-state';
@@ -81,19 +81,15 @@ export abstract class BaseMultiplierState implements IMultiplierState {
   private updateTotalMultiplier() {
     this._totalMultiplier = this._multiplierByProgram;
 
-    for (let index = 0; index < this.cityState.districtsCount; index++) {
-      const districtState = this.cityState.getDistrictState(index);
+    const availableDistricts = this.cityState.listAvailableDistricts();
 
-      if (districtState.state === DistrictUnlockState.locked) {
-        continue;
-      }
-
+    availableDistricts.forEach((districtState) => {
       const districtMultiplierParameter = this.getDistrictMultiplierParameter(districtState.parameters.multipliers);
 
       districtMultiplierParameter.recalculate();
 
       this._totalMultiplier *= districtMultiplierParameter.multiplier;
-    }
+    });
   }
 
   protected abstract getMultiplierParameters(): IMultiplierScenarioParameters;

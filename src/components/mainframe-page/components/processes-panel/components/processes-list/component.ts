@@ -94,7 +94,7 @@ export class ProcessesList extends BaseComponent<ProcessesListController> {
 
     @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
       .header {
-        grid-template-columns: 3fr 1fr 2fr 6rem;
+        grid-template-columns: 3fr 1fr 2fr auto;
         grid-template-rows: auto;
         padding: var(--sl-spacing-small);
       }
@@ -150,7 +150,7 @@ export class ProcessesList extends BaseComponent<ProcessesListController> {
       <div class="header">
         <div class="header-column">${msg('Program')}</div>
         <div class="header-column">${msg('Cores')}</div>
-        <div class="header-column"></div>
+        <div class="header-column">${msg('Progress')}</div>
         <div class="buttons desktop">
           <sl-tooltip>
             <span slot="content"> ${toggleProcessesLabel} </span>

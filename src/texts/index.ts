@@ -5,3 +5,5 @@ export * from './clone-templates';
 export * from './common';
 export * from './factions';
 export * from './district-types';
+export * from './names';
+export * from './sidejobs';

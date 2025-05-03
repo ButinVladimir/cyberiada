@@ -99,11 +99,13 @@ export class CityDistrictPage extends BaseComponent<CityDistrictPageController> 
     switch (tab) {
       case CityDistrictPageTabs.overview:
         return html`
-          <ca-city-district-overiew-panel district-index=${this.districtIndex}></ca-city-district-overiew-panel>
+          <ca-city-district-overiew-panel district-index=${this.districtIndex}> </ca-city-district-overiew-panel>
         `;
 
       case CityDistrictPageTabs.sidejobs:
-        return html`Sidejobs`;
+        return html`
+          <ca-city-district-sidejobs-panel district-index=${this.districtIndex}> </ca-city-district-sidejobs-panel>
+        `;
     }
   };
 

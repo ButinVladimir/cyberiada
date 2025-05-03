@@ -1,8 +1,5 @@
-import { SidejobName } from '../types';
+import { IAssignSidejobArguments } from './assign-sidejob-arguments';
 
-export interface IMakeSidejobParameters {
+export interface IMakeSidejobParameters extends IAssignSidejobArguments {
   id: string;
-  templateName: SidejobName;
-  district: number;
-  assignedClone: string;
 }

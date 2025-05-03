@@ -1,4 +1,4 @@
-import { IPurchaseCloneArgs, CloneTemplateName } from '@/state/company-state';
+import { IPurchaseCloneArgs, CloneTemplateName } from '@state/company-state';
 import { BaseController } from '@shared/base-controller';
 
 export class PurchaseCloneDialogController extends BaseController {

@@ -52,7 +52,7 @@ export class CompanyPage extends BaseComponent<CompanyPageController> {
         return html`<ca-company-clones-panel></ca-company-clones-panel>`;
 
       case CompanyPageTabs.sidejobs:
-        return html`Side jobs`;
+        return html`<ca-company-sidejobs-panel></ca-company-sidejobs-panel>`;
     }
   };
 }

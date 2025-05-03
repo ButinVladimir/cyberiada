@@ -86,7 +86,7 @@ export class OwnedProgramsList extends BaseComponent<OwnedProgramsListController
 
     @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
       .header {
-        grid-template-columns: 2fr 1fr 1fr 0;
+        grid-template-columns: 2fr 1fr 1fr auto;
         grid-template-rows: auto;
         padding: var(--sl-spacing-small);
       }

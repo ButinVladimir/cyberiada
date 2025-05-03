@@ -55,6 +55,7 @@ export class CityDistrictOverviewPanel extends BaseComponent<CityDistrictOvervie
 
         <sl-tooltip>
           <span slot="content">${DISTRICT_TYPE_TEXTS[districtState.districtType].overview()}</span>
+
           <sl-icon name=${HINT_ICON}></sl-icon>
         </sl-tooltip>
       </p>

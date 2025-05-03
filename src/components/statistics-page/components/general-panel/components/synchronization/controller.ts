@@ -2,10 +2,6 @@ import { BaseController } from '@shared/base-controller';
 import { IDistrictState } from '@state/city-state';
 
 export class StatisticsSynchronizationController extends BaseController {
-  get districtsCount(): number {
-    return this.cityState.districtsCount;
-  }
-
   get baseValue(): number {
     return this.globalState.synchronization.baseValue;
   }
@@ -14,8 +10,8 @@ export class StatisticsSynchronizationController extends BaseController {
     return this.globalState.synchronization.totalValue;
   }
 
-  getDistrictState(districtIndex: number): IDistrictState {
-    return this.cityState.getDistrictState(districtIndex);
+  listAvailableDistricts(): IDistrictState[] {
+    return this.cityState.listAvailableDistricts();
   }
 
   getDistrictSynchronization(districtIndex: number): number {

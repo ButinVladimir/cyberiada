@@ -4,7 +4,7 @@ import { SidejobName } from '../types';
 
 export interface ISidejobArguments {
   id: string;
-  templateName: SidejobName;
+  sidejobName: SidejobName;
   district: IDistrictState;
-  assignedClone: IClone;
+  assignedClone?: IClone;
 }

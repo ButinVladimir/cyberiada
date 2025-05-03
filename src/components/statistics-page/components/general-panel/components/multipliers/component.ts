@@ -1,12 +1,11 @@
 import { html, PropertyValues } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { map } from 'lit/directives/map.js';
-import { range } from 'lit/directives/range.js';
 import { localized } from '@lit/localize';
 import { customElement, property, queryAll } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { STATISTIC_PAGE_TEXTS } from '@components/statistics-page/constants';
-import { DistrictUnlockState } from '@state/city-state/types';
+import { IDistrictState } from '@state/city-state';
 import { StatisticsMultipliersController } from './controller';
 import { statisticsPanelContentStyle } from '../../../../styles';
 import type { MultipliersType } from '../../types';
@@ -51,7 +50,7 @@ export class StatisticsMultipliers extends BaseComponent<StatisticsMultipliersCo
           <span> ${STATISTIC_PAGE_TEXTS.byPrograms()} </span>
           <span ${ref(this._programMultiplierRef)}> </span>
 
-          ${map(range(this.controller.districtsCount), this.renderDistrict)}
+          ${map(this.controller.listAvailableDistricts(), this.renderDistrict)}
 
           <span> ${STATISTIC_PAGE_TEXTS.total()} </span>
           <span ${ref(this._totalMultiplierRef)}> </span>
@@ -60,16 +59,10 @@ export class StatisticsMultipliers extends BaseComponent<StatisticsMultipliersCo
     `;
   }
 
-  private renderDistrict = (districtIndex: number) => {
-    const districtState = this.controller.getDistrictState(districtIndex);
-
-    if (districtState.state === DistrictUnlockState.locked) {
-      return;
-    }
-
+  private renderDistrict = (districtState: IDistrictState) => {
     return html`
       <span> ${STATISTIC_PAGE_TEXTS.byDistrict(districtState.name)}</span>
-      <span data-district=${districtIndex}></span>
+      <span data-district=${districtState.index}></span>
     `;
   };
 

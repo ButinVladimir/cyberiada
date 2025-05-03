@@ -4,7 +4,7 @@ import { createRef, ref } from 'lit/directives/ref.js';
 import SlProgressBar from '@shoelace-style/shoelace/dist/components/progress-bar/progress-bar.component.js';
 import { BaseComponent } from '@shared/base-component';
 import { hintStyle } from '@shared/styles';
-import { ProgramName, OtherProgramName } from '@state/mainframe-state/states/progam-factory/types';
+import { type ProgramName } from '@state/mainframe-state/states/progam-factory/types';
 import { calculateLevelProgressPercentage } from '@shared/helpers';
 import { COMMON_TEXTS } from '@texts/common';
 import { ProcessesListItemProgressController } from './controller';
@@ -31,7 +31,7 @@ export class ProcessesListItemProgressColumn extends BaseComponent<ProcessesList
     attribute: 'program-name',
     type: String,
   })
-  programName: string = OtherProgramName.shareServer;
+  programName!: ProgramName;
 
   protected controller: ProcessesListItemProgressController;
 

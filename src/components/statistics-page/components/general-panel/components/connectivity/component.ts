@@ -1,11 +1,10 @@
 import { html, PropertyValues } from 'lit';
 import { map } from 'lit/directives/map.js';
-import { range } from 'lit/directives/range.js';
 import { localized, msg } from '@lit/localize';
 import { customElement, queryAll } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { STATISTIC_HINTS, STATISTIC_PAGE_TEXTS } from '@components/statistics-page/constants';
-import { DistrictUnlockState } from '@state/city-state/types';
+import { IDistrictState } from '@state/city-state';
 import { HINT_ICON } from '@shared/styles';
 import { StatisticsConnectivityController } from './controller';
 import { statisticsPanelContentStyle } from '../../../../styles';
@@ -45,21 +44,15 @@ export class StatisticsConnectivity extends BaseComponent<StatisticsConnectivity
           </sl-tooltip>
         </h4>
 
-        <div class="parameters-table">${map(range(this.controller.districtsCount), this.renderDistrict)}</div>
+        <div class="parameters-table">${map(this.controller.listAvailableDistricts(), this.renderDistrict)}</div>
       </sl-details>
     `;
   }
 
-  private renderDistrict = (districtIndex: number) => {
-    const districtState = this.controller.getDistrictState(districtIndex);
-
-    if (districtState.state === DistrictUnlockState.locked) {
-      return;
-    }
-
+  private renderDistrict = (districtState: IDistrictState) => {
     return html`
       <span> ${STATISTIC_PAGE_TEXTS.byDistrict(districtState.name)}</span>
-      <span data-district=${districtIndex}></span>
+      <span data-district=${districtState.index}></span>
     `;
   };
 

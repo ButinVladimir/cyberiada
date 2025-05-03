@@ -7,5 +7,6 @@ export interface ICityState extends ISerializeable<ICitySerializedState>, IUIEve
   districtsCount: number;
   getLayout(): number[][];
   getDistrictState(districtIndex: number): IDistrictState;
+  listAvailableDistricts(): IDistrictState[];
   recalculate(): void;
 }

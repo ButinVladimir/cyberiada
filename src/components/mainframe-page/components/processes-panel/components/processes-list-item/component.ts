@@ -15,7 +15,6 @@ import {
   ENTITY_ACTIVE_VALUES,
   SCREEN_WIDTH_POINTS,
   dragIconStyle,
-  hintIconStyle,
 } from '@shared/styles';
 import { type ProgramName } from '@state/mainframe-state/states/progam-factory/types';
 import { COMMON_TEXTS, PROGRAM_TEXTS } from '@texts/index';
@@ -25,7 +24,6 @@ import { ProcessesListItemController } from './controller';
 @customElement('ca-processes-list-item')
 export class ProcessesListItem extends BaseComponent<ProcessesListItemController> {
   static styles = [
-    hintIconStyle,
     dragIconStyle,
     css`
       :host {
@@ -106,7 +104,7 @@ export class ProcessesListItem extends BaseComponent<ProcessesListItemController
       @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
         :host {
           grid-template-areas: 'program cores progress-bar buttons';
-          grid-template-columns: 3fr 1fr 2fr 6rem;
+          grid-template-columns: 3fr 1fr 2fr auto;
           grid-template-rows: auto;
           align-items: center;
         }
@@ -134,7 +132,7 @@ export class ProcessesListItem extends BaseComponent<ProcessesListItemController
     attribute: 'program-name',
     type: String,
   })
-  programName: ProgramName = types.OtherProgramName.shareServer;
+  programName!: ProgramName;
 
   @state()
   _descriptionVisible = false;

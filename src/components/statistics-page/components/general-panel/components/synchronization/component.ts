@@ -1,11 +1,10 @@
 import { html, PropertyValues } from 'lit';
 import { map } from 'lit/directives/map.js';
-import { range } from 'lit/directives/range.js';
 import { localized, msg } from '@lit/localize';
 import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { STATISTIC_HINTS, STATISTIC_PAGE_TEXTS } from '@components/statistics-page/constants';
-import { DistrictUnlockState } from '@state/city-state/types';
+import { IDistrictState } from '@state/city-state';
 import { HINT_ICON } from '@shared/styles';
 import { StatisticsSynchronizationController } from './controller';
 import { statisticsPanelContentStyle } from '../../../../styles';
@@ -49,7 +48,7 @@ export class StatisticsSynchronization extends BaseComponent<StatisticsSynchroni
           <span>${STATISTIC_PAGE_TEXTS.baseValue()}</span>
           <span>${formattedBaseValue}</span>
 
-          ${map(range(this.controller.districtsCount), this.renderDistrict)}
+          ${map(this.controller.listAvailableDistricts(), this.renderDistrict)}
 
           <span>${STATISTIC_PAGE_TEXTS.total()}</span>
           <span>${formattedTotalValue}</span>
@@ -58,15 +57,9 @@ export class StatisticsSynchronization extends BaseComponent<StatisticsSynchroni
     `;
   }
 
-  private renderDistrict = (districtIndex: number) => {
-    const districtState = this.controller.getDistrictState(districtIndex);
-
-    if (districtState.state === DistrictUnlockState.locked) {
-      return;
-    }
-
+  private renderDistrict = (districtState: IDistrictState) => {
     const formattedValue = this.controller.formatter.formatNumberDecimal(
-      this.controller.getDistrictSynchronization(districtIndex),
+      this.controller.getDistrictSynchronization(districtState.index),
     );
 
     return html`

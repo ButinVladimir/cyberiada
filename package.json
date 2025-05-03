@@ -17,6 +17,7 @@
     "localize:build": "lit-localize build"
   },
   "dependencies": {
+    "@lit/context": "^1.1.5",
     "@lit/localize": "^0.12.2",
     "@shoelace-style/shoelace": "^2.15.0",
     "@types/node": "^20.7.0",

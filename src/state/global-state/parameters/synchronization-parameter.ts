@@ -6,7 +6,6 @@ import { type IStateUIConnector } from '@state/state-ui-connector';
 import { type ICityState } from '@state/city-state/interfaces';
 import { type IGlobalState, ISynchronizationParameter } from '../interfaces';
 import { type ICompanyState } from '@state/company-state/interfaces';
-import { DistrictUnlockState } from '@state/city-state/types';
 import { GLOBAL_STATE_UI_EVENTS } from '../constants';
 
 const { lazyInject } = decorators;
@@ -75,16 +74,12 @@ export class SynchronizationParameter implements ISynchronizationParameter {
   }
 
   private calculateDistrictValues() {
-    for (let index = 0; index < this._cityState.districtsCount; index++) {
-      const districtState = this._cityState.getDistrictState(index);
+    const availableDistricts = this._cityState.listAvailableDistricts();
 
-      if (districtState.state === DistrictUnlockState.locked) {
-        continue;
-      }
-
+    availableDistricts.forEach((districtState) => {
       districtState.parameters.synchronization.recalculate();
 
       this._totalValue += districtState.parameters.synchronization.value;
-    }
+    });
   }
 }

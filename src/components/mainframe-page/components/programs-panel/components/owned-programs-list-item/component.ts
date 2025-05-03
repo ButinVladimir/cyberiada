@@ -3,7 +3,7 @@ import { localized } from '@lit/localize';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { BaseComponent } from '@shared/base-component';
-import { OtherProgramName, type ProgramName } from '@state/mainframe-state/states/progam-factory/types';
+import { type ProgramName } from '@state/mainframe-state/states/progam-factory/types';
 import {
   AUTOUPGRADE_VALUES,
   DESCRIPTION_ICONS,
@@ -78,7 +78,7 @@ export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemCo
 
       @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
         :host {
-          grid-template-columns: 2fr 1fr 1fr 0;
+          grid-template-columns: 2fr 1fr 1fr auto;
           grid-template-rows: auto;
           align-items: center;
         }
@@ -106,7 +106,7 @@ export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemCo
     attribute: 'program-name',
     type: String,
   })
-  programName: ProgramName = OtherProgramName.shareServer;
+  programName!: ProgramName;
 
   @state()
   _descriptionVisible = false;

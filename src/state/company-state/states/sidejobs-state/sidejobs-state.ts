@@ -1,8 +1,9 @@
 import { v4 as uuid } from 'uuid';
-import { EventBatcher, IEventBatcher, removeElementsFromArray } from '@shared/index';
+import sidejobs from '@configs/sidejobs.json';
+import { calculatePower, EventBatcher, IEventBatcher, removeElementsFromArray } from '@shared/index';
 import { decorators } from '@state/container';
 import { type IGlobalState } from '@state/global-state';
-import { type ICityState } from '@state/city-state';
+import { DistrictUnlockState, type ICityState } from '@state/city-state';
 import { type ICompanyState } from '../../interfaces';
 import { type IStateUIConnector } from '@state/state-ui-connector';
 import { TYPES } from '@state/types';
@@ -12,6 +13,7 @@ import {
   ISidejobsSerializedState,
   ISidejobsState,
   IAssignSidejobArguments,
+  ISidejobTemplate,
 } from './interfaces';
 import { SidejobName } from './types';
 import { Sidejob } from './sidejob';
@@ -47,9 +49,15 @@ export class SidejobsState implements ISidejobsState {
     this._stateUIConnector.registerEventEmitter(this);
   }
 
+  getConnectivityRequirement(sidejobName: SidejobName): number {
+    const template = sidejobs[sidejobName] as ISidejobTemplate;
+
+    return calculatePower(this._globalState.threat.level, template.requirements.connectivity);
+  }
+
   getSidejobByNameAndDistrict(sidejobName: SidejobName, districtIndex: number): ISidejob | undefined {
     return this._sidejobsList.find(
-      (sidejob) => sidejob.templateName === sidejobName && sidejob.district.index == districtIndex,
+      (sidejob) => sidejob.sidejobName === sidejobName && sidejob.district.index == districtIndex,
     );
   }
 
@@ -70,23 +78,31 @@ export class SidejobsState implements ISidejobsState {
   makeSidejob(sidejobParameters: IMakeSidejobParameters): ISidejob {
     return new Sidejob({
       id: sidejobParameters.id,
-      assignedClone: this._companyState.clones.getCloneById(sidejobParameters.assignedClone)!,
-      templateName: sidejobParameters.templateName,
-      district: this._cityState.getDistrictState(sidejobParameters.district),
+      assignedClone: sidejobParameters.assignedCloneId ? this._companyState.clones.getCloneById(sidejobParameters.assignedCloneId) : undefined,
+      sidejobName: sidejobParameters.sidejobName,
+      district: this._cityState.getDistrictState(sidejobParameters.districtIndex),
     });
   }
 
   assignSidejob(sidejobParameters: IAssignSidejobArguments): boolean {
-    if (!this._globalState.availableActivities.sidejobs.isActivityAvailable(sidejobParameters.templateName)) {
+    if (!sidejobParameters.assignedCloneId) {
       return false;
     }
 
-    const existingSidejob = this.getSidejobByNameAndDistrict(
-      sidejobParameters.templateName,
-      sidejobParameters.district,
-    );
+    if (!this._globalState.availableActivities.sidejobs.isActivityAvailable(sidejobParameters.sidejobName)) {
+      return false;
+    }
 
-    if (existingSidejob) {
+    const district = this._cityState.getDistrictState(sidejobParameters.districtIndex);
+
+    if (district.state === DistrictUnlockState.locked) {
+      return false;
+    }
+
+    const connectivity = district.parameters.connectivity.totalValue;
+    const requiredConnectivity = this.getConnectivityRequirement(sidejobParameters.sidejobName);
+
+    if (connectivity < requiredConnectivity) {
       return false;
     }
 
@@ -118,7 +134,7 @@ export class SidejobsState implements ISidejobsState {
     if (sidejob) {
       sidejob.removeAllEventListeners();
       this._sidejobMap.delete(sidejobId);
-      this._sidejobCloneIdMap.delete(sidejob.assignedClone.id);
+      this._sidejobCloneIdMap.delete(sidejob.assignedClone!.id);
     }
 
     this.uiEventBatcher.enqueueEvent(SIDEJOBS_UI_EVENTS.SIDEJOBS_UPDATED);
@@ -157,8 +173,23 @@ export class SidejobsState implements ISidejobsState {
   }
 
   private addSidejob(sidejob: ISidejob) {
+    const existingSidejobInDistrict = this.getSidejobByNameAndDistrict(
+      sidejob.sidejobName,
+      sidejob.district.index,
+    );
+
+    if (existingSidejobInDistrict) {
+      this.removeSidejob(existingSidejobInDistrict.id);
+    }
+
+    const existingSidejobByClone = this.getSidejobByCloneId(sidejob.assignedClone!.id);
+
+    if (existingSidejobByClone) {
+      this.removeSidejob(existingSidejobByClone.id);
+    }
+
     this._sidejobsList.push(sidejob);
     this._sidejobMap.set(sidejob.id, sidejob);
-    this._sidejobCloneIdMap.set(sidejob.assignedClone.id, sidejob);
+    this._sidejobCloneIdMap.set(sidejob.assignedClone!.id, sidejob);
   }
 }

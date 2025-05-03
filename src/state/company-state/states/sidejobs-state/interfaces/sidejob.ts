@@ -6,12 +6,11 @@ import { IMakeSidejobParameters } from './make-sidejob-parameters';
 
 export interface ISidejob extends IUIEventEmitter {
   id: string;
-  templateName: SidejobName;
+  sidejobName: SidejobName;
   district: IDistrictState;
   isActive: boolean;
-  assignedClone: IClone;
+  assignedClone?: IClone;
   checkRequirements(): boolean;
-  getConnectivityRequirement(): number;
   getAttributeRequirement(attribute: Attribute): number;
   getSkillRequirement(skill: Skill): number;
   getAttributeModifier(attribute: Attribute): number;

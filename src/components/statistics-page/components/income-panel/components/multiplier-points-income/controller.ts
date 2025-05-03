@@ -3,12 +3,8 @@ import { IDistrictMultipliers, IDistrictState } from '@state/city-state';
 import { PointsMultiplierType } from '@shared/types';
 
 export class StatisticsMultiplierPointsIncomeController extends BaseController {
-  get districtsCount(): number {
-    return this.cityState.districtsCount;
-  }
-
-  getDistrictState(districtIndex: number): IDistrictState {
-    return this.cityState.getDistrictState(districtIndex);
+  listAvailableDistricts(): IDistrictState[] {
+    return this.cityState.listAvailableDistricts();
   }
 
   getPointsByDistrict(districtIndex: number, multiplierType: PointsMultiplierType): number {

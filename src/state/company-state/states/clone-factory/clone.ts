@@ -180,7 +180,6 @@ export class Clone implements IClone {
 
   recalculate(): void {
     this.recalculateLevel();
-    this.recalculateParameters();
   }
 
   serialize(): IMakeCloneParameters {
@@ -253,7 +252,6 @@ export class Clone implements IClone {
       );
 
       this.recalculateParameters();
-      this.uiEventBatcher.enqueueEvent(CLONES_UI_EVENTS.CLONE_CHANGED);
     }
   }
 
