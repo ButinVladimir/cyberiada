@@ -1,7 +1,15 @@
-import { IPurchaseCloneArgs, CloneTemplateName } from '@state/company-state';
+import { IPurchaseCloneArgs, CloneTemplateName, IClone } from '@state/company-state';
 import { BaseController } from '@shared/base-controller';
 
 export class PurchaseCloneDialogController extends BaseController {
+  private _clone?: IClone;
+
+  hostDisconnected() {
+    super.hostDisconnected();
+
+    this.deleteTemporaryClone();
+  }
+
   get developmentLevel(): number {
     return this.globalState.development.level;
   }
@@ -20,5 +28,34 @@ export class PurchaseCloneDialogController extends BaseController {
 
   generateName(): Promise<string> {
     return this.companyState.clones.generateCloneName();
+  }
+
+  getClone(name: string, cloneTemplateName: CloneTemplateName, quality: number, level: number): IClone {
+    if (
+      this._clone?.name !== name ||
+      this._clone.templateName !== cloneTemplateName ||
+      this._clone.quality !== quality ||
+      this._clone.level !== level
+    ) {
+      this.deleteTemporaryClone();
+
+      this._clone = this.companyState.cloneFactory.makeClone({
+        id: 'temporary',
+        name,
+        templateName: cloneTemplateName,
+        quality,
+        level,
+        experience: 0,
+        autoUpgradeEnabled: true,
+      });
+    }
+
+    return this._clone;
+  }
+
+  private deleteTemporaryClone() {
+    if (this._clone) {
+      this._clone.removeAllEventListeners();
+    }
   }
 }

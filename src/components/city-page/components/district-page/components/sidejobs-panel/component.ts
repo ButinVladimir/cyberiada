@@ -85,9 +85,10 @@ export class CityDistrictSidejobsPanel extends BaseComponent<CityDistrictSidejob
     const sidejobs = this.controller.getAvailableSidejobs();
 
     return html`
-      <p class="hint">${msg(`Increase district connectivity and unlock more feature make more sidejobs available.
-Clones could be assigned to sidejobs on company page under sidejobs tab.
-Only one clone can be assigned to sidejob in same district.`)}</p>
+      <p class="hint">
+        ${msg(`Increase district connectivity and unlock more feature make more sidejobs available.
+Clones could be assigned to sidejobs on company page under sidejobs tab.`)}
+      </p>
 
       <div class="list">
         <div class="header">

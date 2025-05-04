@@ -131,82 +131,52 @@
       ]
     },
     {
+      "name": "ca-city-district-sidejobs-panel",
+      "description": "Attributes:\n\n  * `district-index` {`number`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `districtIndex` {`number`} - \n\n  * `renderEmptyListNotification` - \n\n  * `renderList` - \n\n  * `renderSidejob` - \n\n  * `controller` {`CityDistrictSidejobsPanelController`} - ",
+      "attributes": [
+        {
+          "name": "district-index",
+          "description": "`district-index` {`number`} - \n\nProperty: districtIndex"
+        }
+      ]
+    },
+    {
+      "name": "ca-city-district-sidejobs-list-item-unlock-progress",
+      "description": "Attributes:\n\n  * `district-index` {`number`} - \n\n  * `sidejob-name` - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `districtIndex` {`number`} - \n\n  * `sidejobName` - \n\n  * `_progressBarRef` {`Ref<SlProgressBar>`} - \n\n  * `_hintRef` {`Ref<HTMLParagraphElement>`} - \n\n  * `handlePartialUpdate` - \n\n  * `controller` {`CityDistrictSidejobsListItemUnlockProgressController`} - ",
+      "attributes": [
+        {
+          "name": "district-index",
+          "description": "`district-index` {`number`} - \n\nProperty: districtIndex"
+        },
+        {
+          "name": "sidejob-name",
+          "description": "`sidejob-name` - \n\nProperty: sidejobName"
+        }
+      ]
+    },
+    {
+      "name": "ca-city-district-sidejobs-list-item",
+      "description": "Attributes:\n\n  * `district-index` {`number`} - \n\n  * `sidejob-name` - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `districtIndex` {`number`} - \n\n  * `sidejobName` - ",
+      "attributes": [
+        {
+          "name": "district-index",
+          "description": "`district-index` {`number`} - \n\nProperty: districtIndex"
+        },
+        {
+          "name": "sidejob-name",
+          "description": "`sidejob-name` - \n\nProperty: sidejobName"
+        }
+      ]
+    },
+    {
       "name": "ca-company-page",
       "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `renderTab` - \n\n  * `renderTabPanel` - \n\n  * `renderTabPanelContent` - \n\n  * `controller` {`CompanyPageController`} - ",
       "attributes": []
     },
     {
       "name": "ca-company-clones-panel",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_isPurchaseCloneDialogOpen` {`boolean`} - \n\n  * `_cloneListItemDialogOpen` {`boolean`} - \n\n  * `_cloneListItemDialog` {`\"rename-clone\" | undefined`} - \n\n  * `_cloneListItemDialogCloneId` {`string | undefined`} - \n\n  * `handlePurchaseCloneDialogOpen` - \n\n  * `handlePurchaseCloneDialogClose` - \n\n  * `handleCloneListItemDialogOpen` - \n\n  * `handleCloneListItemDialogClose` - \n\n  * `controller` {`ClonesPanelController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_isPurchaseCloneDialogOpen` {`boolean`} - \n\n  * `_cloneListItemDialogOpen` {`boolean`} - \n\n  * `_cloneListItemDialog` {`\"rename-clone\" | undefined`} - \n\n  * `_modalClone` - \n\n  * `handlePurchaseCloneDialogOpen` - \n\n  * `handlePurchaseCloneDialogClose` - \n\n  * `handleCloneListItemDialogOpen` - \n\n  * `handleCloneListItemDialogClose` - \n\n  * `controller` {`ClonesPanelController`} - ",
       "attributes": []
-    },
-    {
-      "name": "ca-clone-dialog-description-text",
-      "description": "Attributes:\n\n  * `clone-template-name` - \n\n  * `quality` {`number`} - \n\n  * `level` {`number`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `cloneTemplateName` - \n\n  * `quality` {`number`} - \n\n  * `level` {`number`} - \n\n  * `renderSynchronization` - \n\n  * `renderAttributes` - \n\n  * `renderAttribute` - \n\n  * `renderSkills` - \n\n  * `renderSkill` - \n\n  * `controller` {`CloneDialogDescriptionTextController`} - ",
-      "attributes": [
-        {
-          "name": "clone-template-name",
-          "description": "`clone-template-name` - \n\nProperty: cloneTemplateName"
-        },
-        {
-          "name": "quality",
-          "description": "`quality` {`number`} - \n\nProperty: quality"
-        },
-        {
-          "name": "level",
-          "description": "`level` {`number`} - \n\nProperty: level"
-        }
-      ]
-    },
-    {
-      "name": "ca-clones-list-item-attributes",
-      "description": "Attributes:\n\n  * `clone-id` {`string`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `cloneId` {`string`} - \n\n  * `renderAttribute` - \n\n  * `controller` {`ClonesListItemAttributesController`} - ",
-      "attributes": [
-        {
-          "name": "clone-id",
-          "description": "`clone-id` {`string`} - \n\nProperty: cloneId"
-        }
-      ]
-    },
-    {
-      "name": "ca-clones-list-item-experience",
-      "description": "Attributes:\n\n  * `clone-id` {`string`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `cloneId` {`string`} - \n\n  * `_progressBarRef` {`Ref<SlProgressBar>`} - \n\n  * `_hintRef` {`Ref<HTMLParagraphElement>`} - \n\n  * `handlePartialUpdate` - \n\n  * `controller` {`ClonesListItemExperienceController`} - ",
-      "attributes": [
-        {
-          "name": "clone-id",
-          "description": "`clone-id` {`string`} - \n\nProperty: cloneId"
-        }
-      ]
-    },
-    {
-      "name": "ca-clones-list-item-skills",
-      "description": "Attributes:\n\n  * `clone-id` {`string`} - \n\n  * `details-visible` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `cloneId` {`string`} - \n\n  * `detailsVisible` {`boolean`} - \n\n  * `renderSkill` - \n\n  * `controller` {`ClonesListItemSkillsController`} - ",
-      "attributes": [
-        {
-          "name": "clone-id",
-          "description": "`clone-id` {`string`} - \n\nProperty: cloneId"
-        },
-        {
-          "name": "details-visible",
-          "description": "`details-visible` {`boolean`} - \n\nProperty: detailsVisible\n\nDefault: false",
-          "valueSet": "v"
-        }
-      ]
-    },
-    {
-      "name": "ca-clones-list-item",
-      "description": "Attributes:\n\n  * `clone-id` {`string`} - \n\n  * `details-visible` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `cloneId` {`string`} - \n\n  * `detailsVisible` {`boolean`} - \n\n  * `_menuVisible` {`boolean`} - \n\n  * `handleToggleAutoUpgrade` - \n\n  * `handleDragStart` - \n\n  * `handleToggleMenu` - \n\n  * `handleHideMenu` - \n\n  * `handleOpenDeleteCloneDialog` - \n\n  * `handleConfirmDeleteCloneDialog` - \n\n  * `handleOpenRenameCloneDialog` - \n\n  * `controller` {`ClonesListItemController`} - ",
-      "attributes": [
-        {
-          "name": "clone-id",
-          "description": "`clone-id` {`string`} - \n\nProperty: cloneId"
-        },
-        {
-          "name": "details-visible",
-          "description": "`details-visible` {`boolean`} - \n\nProperty: detailsVisible\n\nDefault: false",
-          "valueSet": "v"
-        }
-      ]
     },
     {
       "name": "ca-clones-list",
@@ -214,30 +184,33 @@
       "attributes": []
     },
     {
-      "name": "ca-purchase-clone-dialog-buttons",
-      "description": "Attributes:\n\n  * `clone-template-name` - \n\n  * `quality` {`number`} - \n\n  * `level` {`number`} - \n\n  * `name` {`string`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `cloneTemplateName` - \n\n  * `quality` {`number`} - \n\n  * `level` {`number`} - \n\n  * `name` {`string`} - \n\n  * `_warningRef` {`Ref<HTMLParagraphElement>`} - \n\n  * `_purchaseButtonRef` {`Ref<SlButton>`} - \n\n  * `handlePartialUpdate` - \n\n  * `handleCancel` - \n\n  * `handlePurchaseClone` - \n\n  * `controller` {`PurchaseCloneDialogController`} - ",
+      "name": "ca-clones-list-item-description",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_clone` - \n\n  * `renderAttribute` - \n\n  * `renderSkill` - \n\n  * `controller` {`ClonesListItemDescriptionController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-clones-list-item-experience",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_clone` - \n\n  * `_progressBarRef` {`Ref<SlProgressBar>`} - \n\n  * `_hintRef` {`Ref<HTMLParagraphElement>`} - \n\n  * `handlePartialUpdate` - \n\n  * `controller` - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-clones-list-item",
+      "description": "Attributes:\n\n  * `clone-id` {`string`} - \n\n  * `details-visible` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `cloneId` {`string`} - \n\n  * `detailsVisible` {`boolean`} - \n\n  * `_menuVisible` {`boolean`} - \n\n  * `_clone` - \n\n  * `handleToggleAutoUpgrade` - \n\n  * `handleDragStart` - \n\n  * `handleToggleMenu` - \n\n  * `handleHideMenu` - \n\n  * `handleOpenDeleteCloneDialog` - \n\n  * `handleConfirmDeleteCloneDialog` - \n\n  * `handleOpenRenameCloneDialog` - \n\n  * `controller` {`ClonesListItemController`} - ",
       "attributes": [
         {
-          "name": "clone-template-name",
-          "description": "`clone-template-name` - \n\nProperty: cloneTemplateName"
+          "name": "clone-id",
+          "description": "`clone-id` {`string`} - \n\nProperty: cloneId"
         },
         {
-          "name": "quality",
-          "description": "`quality` {`number`} - \n\nProperty: quality"
-        },
-        {
-          "name": "level",
-          "description": "`level` {`number`} - \n\nProperty: level"
-        },
-        {
-          "name": "name",
-          "description": "`name` {`string`} - \n\nProperty: name"
+          "name": "details-visible",
+          "description": "`details-visible` {`boolean`} - \n\nProperty: detailsVisible\n\nDefault: false",
+          "valueSet": "v"
         }
       ]
     },
     {
       "name": "ca-purchase-clone-dialog",
-      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `_nameInputRef` {`Ref<SlInput>`} - \n\n  * `_cloneTemplateInputRef` {`Ref<SlSelect>`} - \n\n  * `_qualityInputRef` {`Ref<SlSelect>`} - \n\n  * `_levelInputRef` {`Ref<SlInput>`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `_name` {`string`} - \n\n  * `_cloneTemplateName` - \n\n  * `_quality` {`number`} - \n\n  * `_level` {`number`} - \n\n  * `renderQualityOptions` - \n\n  * `handleClose` - \n\n  * `handleNameChange` - \n\n  * `handleCloneTemplateChange` - \n\n  * `handleQualityChange` - \n\n  * `handleLevelChange` - \n\n  * `handlePurchaseClone` - \n\n  * `handleGenerateName` - \n\n  * `controller` {`PurchaseCloneDialogController`} - ",
+      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `_nameInputRef` {`Ref<SlInput>`} - \n\n  * `_cloneTemplateInputRef` {`Ref<SlSelect>`} - \n\n  * `_qualityInputRef` {`Ref<SlSelect>`} - \n\n  * `_levelInputRef` {`Ref<SlInput>`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `_name` {`string`} - \n\n  * `_cloneTemplateName` - \n\n  * `_quality` {`number`} - \n\n  * `_level` {`number`} - \n\n  * `_clone` - \n\n  * `renderQualityOptions` - \n\n  * `handleClose` - \n\n  * `handleNameChange` - \n\n  * `handleCloneTemplateChange` - \n\n  * `handleQualityChange` - \n\n  * `handleLevelChange` - \n\n  * `handlePurchaseClone` - \n\n  * `handleGenerateName` - \n\n  * `controller` {`PurchaseCloneDialogController`} - ",
       "attributes": [
         {
           "name": "is-open",
@@ -247,20 +220,66 @@
       ]
     },
     {
+      "name": "ca-purchase-clone-dialog-buttons",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_clone` - \n\n  * `_warningRef` {`Ref<HTMLParagraphElement>`} - \n\n  * `_purchaseButtonRef` {`Ref<SlButton>`} - \n\n  * `handlePartialUpdate` - \n\n  * `handleCancel` - \n\n  * `handlePurchaseClone` - \n\n  * `controller` {`PurchaseCloneDialogButtonsController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-purchase-clone-dialog-description",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_clone` - \n\n  * `renderSynchronization` - \n\n  * `renderParameters` - \n\n  * `renderAttribute` - \n\n  * `renderSkill` - \n\n  * `controller` {`PurchaseCloneDialogDescriptionTextController`} - ",
+      "attributes": []
+    },
+    {
       "name": "ca-rename-clone-dialog",
-      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\n  * `clone-id` {`string | undefined`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `cloneId` {`string | undefined`} - \n\n  * `_newName` {`string`} - \n\n  * `_newNameInputRef` {`Ref<SlInput>`} - \n\n  * `handleClose` - \n\n  * `handleNewNameChange` - \n\n  * `handleGenerateName` - \n\n  * `handleSubmit` - \n\n  * `controller` {`RenameCloneDialogController`} - ",
+      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `_newName` {`string`} - \n\n  * `_clone` - \n\n  * `_newNameInputRef` {`Ref<SlInput>`} - \n\n  * `handleClose` - \n\n  * `handleNewNameChange` - \n\n  * `handleGenerateName` - \n\n  * `handleSubmit` - \n\n  * `controller` {`RenameCloneDialogController`} - ",
       "attributes": [
         {
           "name": "is-open",
           "description": "`is-open` {`boolean`} - \n\nProperty: isOpen\n\nDefault: false",
           "valueSet": "v"
-        },
-        {
-          "name": "clone-id",
-          "description": "`clone-id` {`string | undefined`} - \n\nProperty: cloneId",
-          "values": []
         }
       ]
+    },
+    {
+      "name": "ca-company-sidejobs-panel",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_assignCloneDialogOpened` {`boolean`} - \n\n  * `handleAssignCloneSidejobDialogOpen` - \n\n  * `handleAssignCloneSidejobDialogClose` - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-assign-clone-sidejob-dialog",
+      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `_cloneIdInputRef` {`Ref<SlSelect>`} - \n\n  * `_districtIndexInputRef` {`Ref<SlSelect>`} - \n\n  * `_sidejobNameInputRef` {`Ref<SlSelect>`} - \n\n  * `_sidejobNameOptions` {`NodeListOf<SlOption>`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `_cloneId` {`string | undefined`} - \n\n  * `_districtIndex` {`number | undefined`} - \n\n  * `_sidejobName` - \n\n  * `_sidejob` - \n\n  * `_existingSidejob` - \n\n  * `handleClose` - \n\n  * `handleCloneIdChange` - \n\n  * `handleSidejobNameChange` - \n\n  * `handleDistrictIndexChange` - \n\n  * `handleOpenConfirmationAlert` - \n\n  * `handleConfirmConfirmationAlert` - \n\n  * `controller` {`AssignCloneSidejobDialogController`} - ",
+      "attributes": [
+        {
+          "name": "is-open",
+          "description": "`is-open` {`boolean`} - \n\nProperty: isOpen\n\nDefault: false",
+          "valueSet": "v"
+        }
+      ]
+    },
+    {
+      "name": "ca-assign-clone-sidejob-dialog-buttons",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_sidejob` - \n\n  * `_existingSidejob` - \n\n  * `_warningRef` {`Ref<HTMLParagraphElement>`} - \n\n  * `_assignButtonRef` {`Ref<SlButton>`} - \n\n  * `handlePartialUpdate` - \n\n  * `handleCancel` - \n\n  * `handleAssignClone` - \n\n  * `controller` {`AssignCloneSidejobDialogButtonsController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-assign-clone-sidejob-dialog-description",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_descriptionModelInputRef` {`Ref<SlRadioGroup>`} - \n\n  * `_sidejob` - \n\n  * `_desciptionMode` {`AssignCloneSidejobDialogDescriptionMode`} - \n\n  * `renderConnectivity` - \n\n  * `handleDescriptionModeChange` - \n\n  * `renderDescriptionModes` - \n\n  * `renderRequirements` - \n\n  * `renderRewardMultipliers` - \n\n  * `renderRewards` - \n\n  * `controller` {`AssignCloneSidejobDialogDescriptionController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-assign-clone-sidejob-dialog-requirements",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_sidejob` - \n\n  * `renderRequirementAttribute` - \n\n  * `renderRequirementSkill` - \n\n  * `controller` - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-assign-clone-sidejob-dialog-rewards-multipliers",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_sidejob` - \n\n  * `_existingSidejob` - \n\n  * `renderRewardsMultplierAttribute` - \n\n  * `renderRewardsMultplierSkill` - \n\n  * `controller` - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-assign-clone-sidejob-dialog-rewards",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_paragraphs` {`NodeListOf<HTMLParagraphElement>`} - \n\n  * `_sidejob` - \n\n  * `_existingSidejob` - \n\n  * `renderParameter` - \n\n  * `handlePartialUpdate` - \n\n  * `controller` {`AssignCloneSidejobDialogRewardsController`} - ",
+      "attributes": []
     },
     {
       "name": "ca-credits-page",
@@ -423,11 +442,11 @@
     },
     {
       "name": "ca-processes-list-item-progress",
-      "description": "Attributes:\n\n  * `program-name` {`string`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `programName` {`string`} - \n\n  * `_progressBarRef` {`Ref<SlProgressBar>`} - \n\n  * `_hintRef` {`Ref<HTMLParagraphElement>`} - \n\n  * `handlePartialUpdate` - \n\n  * `controller` {`ProcessesListItemProgressController`} - ",
+      "description": "Attributes:\n\n  * `program-name` - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `programName` - \n\n  * `_progressBarRef` {`Ref<SlProgressBar>`} - \n\n  * `_hintRef` {`Ref<HTMLParagraphElement>`} - \n\n  * `handlePartialUpdate` - \n\n  * `controller` {`ProcessesListItemProgressController`} - ",
       "attributes": [
         {
           "name": "program-name",
-          "description": "`program-name` {`string`} - \n\nProperty: programName\n\nDefault: shareServer"
+          "description": "`program-name` - \n\nProperty: programName"
         }
       ]
     },
@@ -437,7 +456,7 @@
       "attributes": [
         {
           "name": "program-name",
-          "description": "`program-name` - \n\nProperty: programName\n\nDefault: shareServer"
+          "description": "`program-name` - \n\nProperty: programName"
         }
       ]
     },
@@ -482,7 +501,7 @@
       "attributes": [
         {
           "name": "program-name",
-          "description": "`program-name` - \n\nProperty: programName\n\nDefault: shareServer"
+          "description": "`program-name` - \n\nProperty: programName"
         }
       ]
     },
@@ -730,13 +749,13 @@
           "description": "`type` {`MultipliersType`} - \n\nProperty: type",
           "values": [
             {
+              "name": "rewards"
+            },
+            {
               "name": "mainframeHardwareCostDivisors"
             },
             {
               "name": "mainframeProgramsCostDivisors"
-            },
-            {
-              "name": "rewards"
             }
           ]
         }

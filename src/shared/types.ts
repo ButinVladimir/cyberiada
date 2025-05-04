@@ -90,6 +90,7 @@ export enum ProgramAlert {
 export enum CloneAlert {
   cloneDelete = 'cloneDelete',
   deleteAllClones = 'deleteAllClones',
+  assignedSidejobReplace = 'assignedSidejobReplace',
 }
 
 export type GameAlert = GameStateAlert | ProgramAlert | CloneAlert;

@@ -162,6 +162,6 @@ export class CityState implements ICityState {
       if (district.state !== DistrictUnlockState.locked) {
         this._availableDistricts.push(district);
       }
-    })
+    });
   }
 }

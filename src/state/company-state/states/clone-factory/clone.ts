@@ -65,7 +65,7 @@ export class Clone implements IClone {
     this.initAttributes();
     this.initSkills();
 
-    this.recalculate();
+    this.recalculateParameters();
   }
 
   get id() {

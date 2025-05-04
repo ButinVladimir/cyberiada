@@ -37,7 +37,12 @@ export class CompanySidejobsPanel extends BaseComponent {
       </p>
 
       <div class="top-container">
-        <sl-button class="assign-clone" variant="primary" size="medium" @click=${this.handleAssignCloneSidejobDialogOpen}>
+        <sl-button
+          class="assign-clone"
+          variant="primary"
+          size="medium"
+          @click=${this.handleAssignCloneSidejobDialogOpen}
+        >
           ${msg('Assign clone to sidejob')}
         </sl-button>
       </div>

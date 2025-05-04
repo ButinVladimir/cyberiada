@@ -27,7 +27,13 @@ export const COMMON_TEXTS = {
   close: () => msg('Close'),
   purchase: (cost: string) => msg(str`Purchase for ${cost}`),
   percentage: (value: string) => msg(str`${value}%`),
+  modifierDiff: (value: string, diff: string) => msg(str`\u00D7 ${value} (${diff})`),
   menu: () => msg('Menu'),
+  requirements: () => msg('Requirements'),
+  rewards: () => msg('Rewards'),
+  rewardsMultipliers: () => msg('Rewards multipliers'),
+  attributes: () => msg('Attributes'),
+  skills: () => msg('Skills'),
 };
 
 export const CATEGORY_TEXTS: Record<ItemCategory, () => string> = {

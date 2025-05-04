@@ -32,7 +32,8 @@ export class AssignCloneSidejobDialogController extends BaseController {
   }
 
   getSidejob(args: IAssignSidejobArguments): ISidejob {
-    if (this._sidejob?.assignedClone?.id !== args.assignedCloneId ||
+    if (
+      this._sidejob?.assignedClone?.id !== args.assignedCloneId ||
       this._sidejob?.sidejobName !== args.sidejobName ||
       this._sidejob?.district.index !== args.districtIndex
     ) {
@@ -40,11 +41,23 @@ export class AssignCloneSidejobDialogController extends BaseController {
 
       this._sidejob = this.companyState.sidejobs.makeSidejob({
         id: 'temporary',
-        ...args
+        ...args,
       });
     }
 
     return this._sidejob;
+  }
+
+  getExistingSidejobByClone(cloneId?: string): ISidejob | undefined {
+    if (!cloneId) {
+      return undefined;
+    }
+
+    return this.companyState.sidejobs.getSidejobByCloneId(cloneId);
+  }
+
+  assignClone(args: IAssignSidejobArguments) {
+    this.companyState.sidejobs.assignSidejob(args);
   }
 
   private deleteSidejob() {

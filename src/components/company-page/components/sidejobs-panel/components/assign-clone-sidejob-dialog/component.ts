@@ -1,7 +1,8 @@
 import { css, html, PropertyValues } from 'lit';
-import { localized, msg } from '@lit/localize';
+import { localized, msg, str } from '@lit/localize';
 import { customElement, property, queryAll, state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
+import { provide } from '@lit/context';
 import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.component.js';
 import SlOption from '@shoelace-style/shoelace/dist/components/option/option.component.js';
 import { BaseComponent } from '@shared/base-component';
@@ -15,10 +16,14 @@ import {
 } from '@shared/styles';
 import { SIDEJOB_TEXTS, DISTRICT_NAMES } from '@texts/index';
 import { type ISidejob, SidejobName } from '@state/company-state';
+import {
+  ConfirmationAlertOpenEvent,
+  ConfirmationAlertSubmitEvent,
+} from '@components/game-screen/components/confirmation-alert/events';
 import { AssignCloneSidejobDialogCloseEvent } from './events';
 import { AssignCloneSidejobDialogController } from './controller';
-import { provide } from '@lit/context';
-import { temporarySidejobContext } from './contexts';
+import { existingSidejobContext, temporarySidejobContext } from './contexts';
+import { CloneAlert } from '@/shared';
 
 @localized()
 @customElement('ca-assign-clone-sidejob-dialog')
@@ -109,34 +114,52 @@ export class AssignCloneSidejobDialog extends BaseComponent<AssignCloneSidejobDi
   @provide({ context: temporarySidejobContext })
   private _sidejob?: ISidejob;
 
+  @provide({ context: existingSidejobContext })
+  private _existingSidejob?: ISidejob;
+
   constructor() {
     super();
 
-    this.controller = new AssignCloneSidejobDialogController(this, this.handlePartialUpdate);
+    this.controller = new AssignCloneSidejobDialogController(this);
   }
 
-  updated(_changedProperties: PropertyValues) {
-    super.updated(_changedProperties);
-    console.log(_changedProperties);
+  connectedCallback() {
+    super.connectedCallback();
 
-    if (_changedProperties.has('isOpen')) {
-      this._cloneId = undefined;
-      this._districtIndex = undefined;
-      this._sidejobName = undefined;
-    }
+    document.addEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmConfirmationAlert);
+  }
 
-    this.handlePartialUpdate();
+  disconnectedCallback() {
+    super.disconnectedCallback();
 
-    if (this._cloneId !== undefined && this._sidejobName !== undefined && this._districtIndex !== undefined) {
+    document.removeEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmConfirmationAlert);
+  }
+
+  performUpdate() {
+    if (this._sidejobName !== undefined && this._districtIndex !== undefined) {
       const sidejob = this.controller.getSidejob({
         assignedCloneId: this._cloneId,
         districtIndex: this._districtIndex,
         sidejobName: this._sidejobName,
       });
 
-      if (this._sidejob !== sidejob) {
-        this._sidejob = sidejob;
-      }
+      this._sidejob = sidejob;
+    } else {
+      this._sidejob = undefined;
+    }
+
+    this._existingSidejob = this.controller.getExistingSidejobByClone(this._cloneId);
+
+    super.performUpdate();
+  }
+
+  updated(_changedProperties: PropertyValues) {
+    super.updated(_changedProperties);
+
+    if (_changedProperties.has('isOpen')) {
+      this._cloneId = undefined;
+      this._districtIndex = undefined;
+      this._sidejobName = undefined;
     }
   }
 
@@ -147,9 +170,9 @@ export class AssignCloneSidejobDialog extends BaseComponent<AssignCloneSidejobDi
 
         <div class="body">
           <p class="hint">
-            ${msg(`Select clone, sidejob name and district to assign clone.
-Only one clone can be assigned to the same sidejob in same district.
-Clone can be assigned only to one sidejob.`)}
+            ${msg(`Select clone, district and sidejob name to assign clone.
+Clone can be assigned only to one sidejob.
+Sidejobs availability depends on unlocked features and district connectivity.`)}
           </p>
 
           <div class="inputs-container">
@@ -197,13 +220,19 @@ Clone can be assigned only to one sidejob.`)}
                 .listAvailableSidejobs()
                 .map(
                   (sidejobName) =>
-                    html` <sl-option value=${sidejobName} disabled> ${SIDEJOB_TEXTS[sidejobName].title()} </sl-option>`,
+                    html` <sl-option value=${sidejobName}> ${SIDEJOB_TEXTS[sidejobName].title()} </sl-option>`,
                 )}
             </sl-select>
           </div>
         </div>
 
         <ca-assign-clone-sidejob-dialog-description></ca-assign-clone-sidejob-dialog-description>
+
+        <ca-assign-clone-sidejob-dialog-buttons
+          slot="footer"
+          @assign-clone=${this.handleOpenConfirmationAlert}
+          @cancel=${this.handleClose}
+        ></ca-assign-clone-sidejob-dialog-buttons>
       </sl-dialog>
     `;
   }
@@ -239,14 +268,46 @@ Clone can be assigned only to one sidejob.`)}
     this._districtIndex = districtIndex;
   };
 
-  private handlePartialUpdate = () => {
-    const totalConnectivity =
-      this._districtIndex !== undefined ? this.controller.getTotalConnectivity(this._districtIndex) : 0;
+  private handleOpenConfirmationAlert = () => {
+    if (!this._sidejob) {
+      return;
+    }
 
-    this._sidejobNameOptions.forEach((element) => {
-      const requiredConnectivity = this.controller.getRequiredConnectivity(element.value as SidejobName);
+    if (this._existingSidejob) {
+      const cloneName = this._existingSidejob.assignedClone!.name;
+      const existingSidejobName = SIDEJOB_TEXTS[this._existingSidejob.sidejobName].title();
+      const districtName = DISTRICT_NAMES[this._existingSidejob.district.name]();
 
-      element.disabled = totalConnectivity < requiredConnectivity;
-    });
+      this.dispatchEvent(
+        new ConfirmationAlertOpenEvent(
+          CloneAlert.assignedSidejobReplace,
+          msg(
+            str`Are you sure want to replace sidejob for clone "${cloneName}"? This will stop their current sidejob "${existingSidejobName}" in district "${districtName}".`,
+          ),
+        ),
+      );
+    } else {
+      this.assignClone();
+    }
   };
+
+  private handleConfirmConfirmationAlert = (event: Event) => {
+    const convertedEvent = event as ConfirmationAlertSubmitEvent;
+
+    if (convertedEvent.gameAlert !== CloneAlert.assignedSidejobReplace) {
+      return;
+    }
+
+    this.assignClone();
+  };
+
+  private assignClone() {
+    this.controller.assignClone({
+      districtIndex: this._districtIndex!,
+      sidejobName: this._sidejobName!,
+      assignedCloneId: this._cloneId!,
+    });
+
+    this.dispatchEvent(new AssignCloneSidejobDialogCloseEvent());
+  }
 }

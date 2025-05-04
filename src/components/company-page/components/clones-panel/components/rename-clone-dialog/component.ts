@@ -1,4 +1,5 @@
 import { css, html, nothing } from 'lit';
+import { consume } from '@lit/context';
 import { localized, msg, str } from '@lit/localize';
 import { customElement, property, state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
@@ -12,9 +13,11 @@ import {
   smallModalStyle,
   warningStyle,
 } from '@shared/styles';
+import { type IClone } from '@state/company-state';
 import { COMMON_TEXTS } from '@texts/index';
 import { RenameCloneDialogController } from './controller';
 import { CloseCloneListItemDialogEvent } from '../../events/close-clone-list-item-dialog';
+import { modalCloneContext } from '../../contexts';
 
 @localized()
 @customElement('ca-rename-clone-dialog')
@@ -74,14 +77,11 @@ export class RenameCloneDialog extends BaseComponent<RenameCloneDialogController
   })
   isOpen = false;
 
-  @property({
-    attribute: 'clone-id',
-    type: String,
-  })
-  cloneId?: string;
-
   @state()
   private _newName = '';
+
+  @consume({ context: modalCloneContext, subscribe: true })
+  private _clone?: IClone;
 
   private _newNameInputRef = createRef<SlInput>();
 
@@ -94,19 +94,13 @@ export class RenameCloneDialog extends BaseComponent<RenameCloneDialogController
   updated(_changedProperties: Map<string, any>) {
     super.updated(_changedProperties);
 
-    if (_changedProperties.has('isOpen') && this.cloneId) {
-      this._newName = this.controller.getCloneById(this.cloneId)?.name ?? '';
+    if (_changedProperties.has('isOpen') && this._clone) {
+      this._newName = this._clone.name ?? '';
     }
   }
 
   render() {
-    if (!this.cloneId) {
-      return nothing;
-    }
-
-    const clone = this.controller.getCloneById(this.cloneId);
-
-    if (!clone) {
+    if (!this._clone) {
       return nothing;
     }
 
@@ -114,7 +108,7 @@ export class RenameCloneDialog extends BaseComponent<RenameCloneDialogController
 
     return html`
       <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
-        <h4 slot="label" class="title">${msg(str`Rename clone "${clone.name}"`)}</h4>
+        <h4 slot="label" class="title">${msg(str`Rename clone "${this._clone.name}"`)}</h4>
 
         <div class="body">
           <p class="hint">${msg(str`Enter new name for clone.`)}</p>
@@ -188,7 +182,7 @@ export class RenameCloneDialog extends BaseComponent<RenameCloneDialogController
       return;
     }
 
-    this.controller.renameCloneById(this.cloneId!, this._newName);
+    this.controller.renameCloneById(this._clone!.id, this._newName);
     this.dispatchEvent(new CloseCloneListItemDialogEvent());
   };
 }

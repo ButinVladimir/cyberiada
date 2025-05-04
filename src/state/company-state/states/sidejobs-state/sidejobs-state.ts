@@ -55,12 +55,6 @@ export class SidejobsState implements ISidejobsState {
     return calculatePower(this._globalState.threat.level, template.requirements.connectivity);
   }
 
-  getSidejobByNameAndDistrict(sidejobName: SidejobName, districtIndex: number): ISidejob | undefined {
-    return this._sidejobsList.find(
-      (sidejob) => sidejob.sidejobName === sidejobName && sidejob.district.index == districtIndex,
-    );
-  }
-
   listSidejobs(): ISidejob[] {
     this._stateUIConnector.connectEventHandler(this, SIDEJOBS_UI_EVENTS.SIDEJOBS_UPDATED);
 
@@ -78,7 +72,9 @@ export class SidejobsState implements ISidejobsState {
   makeSidejob(sidejobParameters: IMakeSidejobParameters): ISidejob {
     return new Sidejob({
       id: sidejobParameters.id,
-      assignedClone: sidejobParameters.assignedCloneId ? this._companyState.clones.getCloneById(sidejobParameters.assignedCloneId) : undefined,
+      assignedClone: sidejobParameters.assignedCloneId
+        ? this._companyState.clones.getCloneById(sidejobParameters.assignedCloneId)
+        : undefined,
       sidejobName: sidejobParameters.sidejobName,
       district: this._cityState.getDistrictState(sidejobParameters.districtIndex),
     });
@@ -173,15 +169,6 @@ export class SidejobsState implements ISidejobsState {
   }
 
   private addSidejob(sidejob: ISidejob) {
-    const existingSidejobInDistrict = this.getSidejobByNameAndDistrict(
-      sidejob.sidejobName,
-      sidejob.district.index,
-    );
-
-    if (existingSidejobInDistrict) {
-      this.removeSidejob(existingSidejobInDistrict.id);
-    }
-
     const existingSidejobByClone = this.getSidejobByCloneId(sidejob.assignedClone!.id);
 
     if (existingSidejobByClone) {

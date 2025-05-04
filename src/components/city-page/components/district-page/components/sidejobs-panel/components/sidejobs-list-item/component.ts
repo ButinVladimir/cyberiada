@@ -1,25 +1,17 @@
 import { css, html } from 'lit';
-import { localized, msg, str } from '@lit/localize';
+import { localized } from '@lit/localize';
 import { customElement, property } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
-import {
-  HINT_ICON,
-  SCREEN_WIDTH_POINTS,
-  dragIconStyle,
-  hintIconStyle,
-  hintStyle,
-} from '@shared/styles';
+import { HINT_ICON, SCREEN_WIDTH_POINTS, dragIconStyle, hintIconStyle } from '@shared/styles';
 import { SIDEJOB_TEXTS } from '@texts/index';
 import { SidejobName } from '@state/company-state';
-import { CityDistrictSidejobsListItemController } from './controller';
 
 @localized()
 @customElement('ca-city-district-sidejobs-list-item')
-export class CityDistrictSidejobsListItem extends BaseComponent<CityDistrictSidejobsListItemController> {
+export class CityDistrictSidejobsListItem extends BaseComponent {
   static styles = [
     hintIconStyle,
     dragIconStyle,
-    hintStyle,
     css`
       :host {
         display: grid;
@@ -41,15 +33,11 @@ export class CityDistrictSidejobsListItem extends BaseComponent<CityDistrictSide
         margin: 0;
       }
 
-      p.hint {
-        margin: 0;
-      }
-
       .progress-bar {
         grid-area: progress-bar;
       }
 
-       @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
+      @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
         :host {
           grid-template-areas: 'title progress-bar';
           grid-template-columns: 1fr 2fr;
@@ -72,25 +60,7 @@ export class CityDistrictSidejobsListItem extends BaseComponent<CityDistrictSide
   })
   sidejobName!: SidejobName;
 
-  protected controller: CityDistrictSidejobsListItemController;
-
-  constructor() {
-    super();
-
-    this.controller = new CityDistrictSidejobsListItemController(this);
-  }
-
   render() {
-    const sidejob = this.controller.getSidejob(this.sidejobName, this.districtIndex);
-
-    let assignedSidejobHint: string;
-
-    if (sidejob) {
-      assignedSidejobHint = msg(str`Assigned to "${sidejob.assignedClone!.name}"`);
-    } else {
-      assignedSidejobHint = msg('Assigned to nobody');
-    }
-
     return html`
       <div class="sidejob">
         <div class="description">
@@ -102,10 +72,6 @@ export class CityDistrictSidejobsListItem extends BaseComponent<CityDistrictSide
 
               <sl-icon name=${HINT_ICON}></sl-icon>
             </sl-tooltip>
-          </p>
-
-          <p class="hint">
-            ${assignedSidejobHint}
           </p>
         </div>
       </div>

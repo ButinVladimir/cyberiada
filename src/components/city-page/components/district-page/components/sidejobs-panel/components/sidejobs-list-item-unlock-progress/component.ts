@@ -57,9 +57,7 @@ export class CityDistrictSidejobsListItemUnlockProgress extends BaseComponent<Ci
   }
 
   render() {
-    return html`
-      <sl-progress-bar ${ref(this._progressBarRef)}></sl-progress-bar>
-    `;
+    return html` <sl-progress-bar ${ref(this._progressBarRef)}></sl-progress-bar> `;
   }
 
   private handlePartialUpdate = () => {
@@ -68,11 +66,7 @@ export class CityDistrictSidejobsListItemUnlockProgress extends BaseComponent<Ci
     const currentConnectivity = this.controller.getCurrentConnectivity(this.districtIndex);
 
     if (this._progressBarRef.value) {
-      const progressBarValue = calculateLevelProgressPercentage(
-        0,
-        currentConnectivity,
-        requiredConnectivity,
-      );
+      const progressBarValue = calculateLevelProgressPercentage(0, currentConnectivity, requiredConnectivity);
       const progressBarPercentage = COMMON_TEXTS.percentage(formatter.formatNumberFloat(progressBarValue));
 
       this._progressBarRef.value.value = progressBarValue;

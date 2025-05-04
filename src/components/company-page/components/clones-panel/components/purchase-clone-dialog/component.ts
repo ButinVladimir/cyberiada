@@ -1,10 +1,12 @@
-import { css, html, nothing } from 'lit';
+import { css, html } from 'lit';
 import { localized, msg } from '@lit/localize';
 import { customElement, property, state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.component.js';
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.component.js';
 import clamp from 'lodash/clamp';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { provide } from '@lit/context';
 import { BaseComponent } from '@shared/base-component';
 import { CloneTemplateName } from '@state/company-state/states/clone-factory/types';
 import {
@@ -16,9 +18,10 @@ import {
   SCREEN_WIDTH_POINTS,
 } from '@shared/styles';
 import { COMMON_TEXTS, CLONE_TEMPLATE_TEXTS } from '@texts/index';
+import { type IClone } from '@state/company-state';
 import { PurchaseCloneDialogCloseEvent } from './events';
 import { PurchaseCloneDialogController } from './controller';
-import { ifDefined } from 'lit/directives/if-defined.js';
+import { temporaryCloneContext } from './contexts';
 
 @localized()
 @customElement('ca-purchase-clone-dialog')
@@ -109,10 +112,23 @@ export class PurchaseCloneDialog extends BaseComponent<PurchaseCloneDialogContro
   @state()
   private _level = 1;
 
+  @provide({ context: temporaryCloneContext })
+  private _clone?: IClone;
+
   constructor() {
     super();
 
     this.controller = new PurchaseCloneDialogController(this);
+  }
+
+  performUpdate() {
+    if (this._cloneTemplateName !== undefined) {
+      this._clone = this.controller.getClone(this._name, this._cloneTemplateName, this._quality, this._level);
+    } else {
+      this._clone = undefined;
+    }
+
+    super.performUpdate();
   }
 
   updated(_changedProperties: Map<string, any>) {
@@ -210,13 +226,7 @@ Synchronization is earned by capturing districts and gaining certain favors.`)}
             </sl-input>
           </div>
 
-          ${this._cloneTemplateName
-            ? html`<ca-clone-dialog-description-text
-                clone-template-name=${this._cloneTemplateName}
-                quality=${this._quality}
-                level=${this._level}
-              ></ca-clone-dialog-description-text>`
-            : nothing}
+          <ca-purchase-clone-dialog-description></ca-purchase-clone-dialog-description>
         </div>
 
         <ca-purchase-clone-dialog-buttons
@@ -240,6 +250,7 @@ Synchronization is earned by capturing districts and gaining certain favors.`)}
     const formatter = this.controller.formatter;
 
     const result: unknown[] = [];
+
     for (let quality = 0; quality <= highestAvailableQuality; quality++) {
       result.push(html`<sl-option value=${quality}> ${formatter.formatQuality(quality)} </sl-option>`);
     }

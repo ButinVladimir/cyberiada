@@ -1,6 +1,6 @@
 import { injectable } from 'inversify';
 import { decorators } from '@state/container';
-import { merge } from 'lodash';
+import merge from 'lodash/merge';
 import factions from '@configs/factions.json';
 import { Faction } from '@shared/types';
 import { EventBatcher } from '@shared/event-batcher';

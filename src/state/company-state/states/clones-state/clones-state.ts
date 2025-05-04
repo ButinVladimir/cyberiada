@@ -143,7 +143,6 @@ export class CompanyClonesState implements ICompanyClonesState {
 
   recalculate(): void {
     for (const clone of this._clonesList) {
-      clone.increaseExperience(clone.level);
       clone.recalculate();
     }
   }
