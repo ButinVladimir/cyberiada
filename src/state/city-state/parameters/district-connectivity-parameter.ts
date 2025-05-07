@@ -21,7 +21,7 @@ export class DistrictConnectivityParameter implements IDistrictConnectivityParam
   constructor(district: IDistrictState) {
     this._district = district;
     this._points = 0;
-    this._totalValue = 0;
+    this._totalValue = 1;
   }
 
   get points(): number {
@@ -39,11 +39,11 @@ export class DistrictConnectivityParameter implements IDistrictConnectivityParam
   recalculate(): void {
     const districtTypeData = this._district.template;
 
-    const pointsByProgram = calculatePower(
+    const programPointsMultiplier = calculatePower(
       this._district.parameters.tier.tier,
       districtTypeData.parameters.connectivity.programPointsMultiplier,
     );
-    this._totalValue = this._points + this._globalState.connectivity.pointsByProgram * pointsByProgram;
+    this._totalValue = 1 + this._points + this._globalState.connectivity.pointsByProgram * programPointsMultiplier;
   }
 
   async deserialize(serializedState: IDistrictConnectivitySerializedParameter): Promise<void> {

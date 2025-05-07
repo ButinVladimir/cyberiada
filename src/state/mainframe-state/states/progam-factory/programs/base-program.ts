@@ -1,21 +1,20 @@
 import programs from '@configs/programs.json';
 import { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import { IFormatter } from '@shared/interfaces/formatter';
-import { EventBatcher } from '@shared/event-batcher';
 import { calculatePower } from '@shared/helpers';
 import { IGlobalState } from '@state/global-state/interfaces/global-state';
 import { IGrowthState } from '@state/growth-state/interfaces/growth-state';
 import { IMainframeState } from '@state/mainframe-state/interfaces/mainframe-state';
 import { Feature } from '@shared/types';
-import { COMMON_UI_EVENTS } from '@shared/constants';
 import { ProgramName } from '../types';
 import { IMakeProgramParameters } from '../interfaces/make-program-parameters';
 import { IBaseProgramParameters } from '../interfaces/program-parameters/base-program-parameters';
-import { PROGRAMS_UI_EVENTS } from '../constants';
 import { IProgram } from '../interfaces';
 
 export abstract class BaseProgram implements IProgram {
-  readonly uiEventBatcher: EventBatcher;
+  private UI_EVENTS = {
+    PROGRAM_UPGRADED: Symbol('PROGRAM_UPGRADED'),
+  };
 
   protected stateUiConnector: IStateUIConnector;
   protected globalState: IGlobalState;
@@ -41,18 +40,17 @@ export abstract class BaseProgram implements IProgram {
 
     this._autoUpgradeEnabled = parameters.autoUpgradeEnabled;
 
-    this.uiEventBatcher = new EventBatcher();
-    this.stateUiConnector.registerEventEmitter(this);
+    this.stateUiConnector.registerEvents(this.UI_EVENTS);
   }
 
   get level() {
-    this.stateUiConnector.connectEventHandler(this, PROGRAMS_UI_EVENTS.PROGRAM_UPGRADED);
+    this.stateUiConnector.connectEventHandler(this.UI_EVENTS.PROGRAM_UPGRADED);
 
     return this._level;
   }
 
   get quality() {
-    this.stateUiConnector.connectEventHandler(this, PROGRAMS_UI_EVENTS.PROGRAM_UPGRADED);
+    this.stateUiConnector.connectEventHandler(this.UI_EVENTS.PROGRAM_UPGRADED);
 
     return this._quality;
   }
@@ -64,7 +62,7 @@ export abstract class BaseProgram implements IProgram {
   }
 
   get autoUpgradeEnabled() {
-    this.stateUiConnector.connectEventHandler(this, PROGRAMS_UI_EVENTS.PROGRAM_UPGRADED);
+    this.stateUiConnector.connectEventHandler(this.UI_EVENTS.PROGRAM_UPGRADED);
 
     return this._autoUpgradeEnabled;
   }
@@ -72,7 +70,7 @@ export abstract class BaseProgram implements IProgram {
   set autoUpgradeEnabled(value: boolean) {
     this._autoUpgradeEnabled = value;
 
-    this.uiEventBatcher.enqueueEvent(PROGRAMS_UI_EVENTS.PROGRAM_UPGRADED);
+    this.stateUiConnector.enqueueEvent(this.UI_EVENTS.PROGRAM_UPGRADED);
     this.mainframeState.programs.requestUiUpdate();
   }
 
@@ -101,7 +99,7 @@ export abstract class BaseProgram implements IProgram {
     this.handlePerformanceUpdate();
     this.mainframeState.processes.requestUpdateProcesses();
 
-    this.uiEventBatcher.enqueueEvent(PROGRAMS_UI_EVENTS.PROGRAM_UPGRADED);
+    this.stateUiConnector.enqueueEvent(this.UI_EVENTS.PROGRAM_UPGRADED);
   }
 
   calculateCompletionDelta(threads: number, usedCores: number, passedTime: number): number {
@@ -138,8 +136,6 @@ export abstract class BaseProgram implements IProgram {
   }
 
   removeAllEventListeners() {
-    this.uiEventBatcher.fireImmediateEvent(COMMON_UI_EVENTS.REMOVE_EVENT_LISTENERS_BY_EMITTER);
-    this.uiEventBatcher.removeAllListeners();
-    this.stateUiConnector.unregisterEventEmitter(this);
+    this.stateUiConnector.unregisterEvents(this.UI_EVENTS);
   }
 }

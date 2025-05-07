@@ -9,7 +9,7 @@ import { COMPANY_PAGE_TABS_LIST, COMPANY_PAGE_TAB_TITLES } from './constants';
 
 @localized()
 @customElement('ca-company-page')
-export class CompanyPage extends BaseComponent<CompanyPageController> {
+export class CompanyPage extends BaseComponent {
   static styles = [
     pageTitleStyle,
     css`
@@ -19,12 +19,12 @@ export class CompanyPage extends BaseComponent<CompanyPageController> {
     `,
   ];
 
-  protected controller: CompanyPageController;
+  private _controller: CompanyPageController;
 
   constructor() {
     super();
 
-    this.controller = new CompanyPageController(this);
+    this._controller = new CompanyPageController(this);
   }
 
   render() {

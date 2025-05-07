@@ -10,21 +10,21 @@ import { autobuyerStyles } from '../../styles';
 
 @localized()
 @customElement('ca-automation-mainframe-hardware-autobuyer')
-export class AutomationMainframeHardwareAutobuyer extends BaseComponent<AutomationMainframeHardwareAutobuyerController> {
+export class AutomationMainframeHardwareAutobuyer extends BaseComponent {
   static styles = autobuyerStyles;
 
-  protected controller: AutomationMainframeHardwareAutobuyerController;
+  private _controller: AutomationMainframeHardwareAutobuyerController;
 
   private _moneyShareRef = createRef<SlInput>();
 
   constructor() {
     super();
 
-    this.controller = new AutomationMainframeHardwareAutobuyerController(this);
+    this._controller = new AutomationMainframeHardwareAutobuyerController(this);
   }
 
   render() {
-    const { moneyShare } = this.controller;
+    const { moneyShare } = this._controller;
 
     return html`
       <h4 class="title">${msg('Mainframe hardware autobuyer')}</h4>
@@ -55,7 +55,7 @@ export class AutomationMainframeHardwareAutobuyer extends BaseComponent<Automati
 
     const value = normalizePercentage(this._moneyShareRef.value.valueAsNumber);
 
-    this.controller.moneyShare = value;
+    this._controller.moneyShare = value;
     this._moneyShareRef.value.valueAsNumber = value;
   };
 }

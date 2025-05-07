@@ -16,7 +16,7 @@ import { AssignCloneSidejobDialogDescriptionController } from './controller';
 
 @localized()
 @customElement('ca-assign-clone-sidejob-dialog-description')
-export class AssignCloneSidejobDialogDescription extends BaseComponent<AssignCloneSidejobDialogDescriptionController> {
+export class AssignCloneSidejobDialogDescription extends BaseComponent {
   static styles = [
     highlightedValuesStyle,
     css`
@@ -33,7 +33,7 @@ export class AssignCloneSidejobDialogDescription extends BaseComponent<AssignClo
     `,
   ];
 
-  protected controller: AssignCloneSidejobDialogDescriptionController;
+  private _controller: AssignCloneSidejobDialogDescriptionController;
 
   private _descriptionModelInputRef = createRef<SlRadioGroup>();
 
@@ -47,7 +47,7 @@ export class AssignCloneSidejobDialogDescription extends BaseComponent<AssignClo
   constructor() {
     super();
 
-    this.controller = new AssignCloneSidejobDialogDescriptionController(this);
+    this._controller = new AssignCloneSidejobDialogDescriptionController(this);
   }
 
   render() {
@@ -79,10 +79,10 @@ export class AssignCloneSidejobDialogDescription extends BaseComponent<AssignClo
   }
 
   private renderConnectivity = () => {
-    const formatter = this.controller.formatter;
+    const formatter = this._controller.formatter;
 
-    const totalConnectivity = this.controller.getTotalConnectivity(this._sidejob!.district.index);
-    const requiredConnectivity = this.controller.getRequiredConnectivity(this._sidejob!.sidejobName);
+    const totalConnectivity = this._controller.getTotalConnectivity(this._sidejob!.district.index);
+    const requiredConnectivity = this._controller.getRequiredConnectivity(this._sidejob!.sidejobName);
 
     const formattedTotalConnectivity = formatter.formatNumberFloat(totalConnectivity);
     const formattedRequiredConnectivity = formatter.formatNumberFloat(requiredConnectivity);

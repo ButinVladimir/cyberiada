@@ -18,7 +18,7 @@ import { cloneContext } from './contexts';
 
 @localized()
 @customElement('ca-clones-list-item')
-export class ClonesListItem extends BaseComponent<ClonesListItemController> {
+export class ClonesListItem extends BaseComponent {
   static styles = [
     sectionTitleStyle,
     hintStyle,
@@ -95,7 +95,7 @@ export class ClonesListItem extends BaseComponent<ClonesListItemController> {
   })
   public detailsVisible = false;
 
-  protected controller: ClonesListItemController;
+  private _controller: ClonesListItemController;
 
   @state()
   private _menuVisible = false;
@@ -106,7 +106,7 @@ export class ClonesListItem extends BaseComponent<ClonesListItemController> {
   constructor() {
     super();
 
-    this.controller = new ClonesListItemController(this);
+    this._controller = new ClonesListItemController(this);
   }
 
   connectedCallback() {
@@ -141,7 +141,7 @@ export class ClonesListItem extends BaseComponent<ClonesListItemController> {
       ? COMMON_TEXTS.disableAutoupgrade()
       : COMMON_TEXTS.enableAutoupgrade();
 
-    const formatter = this.controller.formatter;
+    const formatter = this._controller.formatter;
 
     const formattedQuality = formatter.formatQuality(this._clone.quality);
     const formattedLevel = formatter.formatLevel(this._clone.level);
@@ -209,14 +209,14 @@ export class ClonesListItem extends BaseComponent<ClonesListItemController> {
 
   private updateContext() {
     if (this.cloneId) {
-      this._clone = this.controller.getCloneById(this.cloneId);
+      this._clone = this._controller.getCloneById(this.cloneId);
     } else {
       this._clone = undefined;
     }
   }
 
   private handleToggleAutoUpgrade = () => {
-    const clone = this.controller.getCloneById(this.cloneId);
+    const clone = this._controller.getCloneById(this.cloneId);
 
     if (clone) {
       clone.autoUpgradeEnabled = !clone.autoUpgradeEnabled;
@@ -242,7 +242,7 @@ export class ClonesListItem extends BaseComponent<ClonesListItemController> {
   private handleOpenDeleteCloneDialog = () => {
     this._menuVisible = false;
 
-    const clone = this.controller.getCloneById(this.cloneId);
+    const clone = this._controller.getCloneById(this.cloneId);
 
     if (!clone) {
       return;
@@ -266,7 +266,7 @@ export class ClonesListItem extends BaseComponent<ClonesListItemController> {
       return;
     }
 
-    this.controller.deleteCloneById(this.cloneId);
+    this._controller.deleteCloneById(this.cloneId);
   };
 
   private handleOpenRenameCloneDialog = () => {

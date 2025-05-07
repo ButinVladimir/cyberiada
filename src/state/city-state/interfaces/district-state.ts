@@ -1,12 +1,11 @@
 import { IPoint } from '@shared/interfaces/point';
 import { DistrictType, Faction } from '@shared/types';
-import { IUIEventEmitter } from '@shared/interfaces/ui-event-emitter';
 import { IDistrictSerializedState } from './serialized-states/district-serialized-state';
 import { DistrictUnlockState } from '../types';
 import { IDistrictParameters } from './district-parameters';
 import { IDistrictTypeTemplate } from './district-type-template';
 
-export interface IDistrictState extends IUIEventEmitter {
+export interface IDistrictState {
   index: number;
   template: IDistrictTypeTemplate;
   name: string;

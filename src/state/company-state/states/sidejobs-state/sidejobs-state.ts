@@ -1,6 +1,6 @@
 import { v4 as uuid } from 'uuid';
 import sidejobs from '@configs/sidejobs.json';
-import { calculatePower, EventBatcher, IEventBatcher, removeElementsFromArray } from '@shared/index';
+import { calculatePower, removeElementsFromArray } from '@shared/index';
 import { decorators } from '@state/container';
 import { type IGlobalState } from '@state/global-state';
 import { DistrictUnlockState, type ICityState } from '@state/city-state';
@@ -17,12 +17,13 @@ import {
 } from './interfaces';
 import { SidejobName } from './types';
 import { Sidejob } from './sidejob';
-import { SIDEJOBS_UI_EVENTS } from './constants';
 
 const { lazyInject } = decorators;
 
 export class SidejobsState implements ISidejobsState {
-  readonly uiEventBatcher: IEventBatcher;
+  private UI_EVENTS = {
+    SIDEJOBS_UPDATED: Symbol('SIDEJOBS_UPDATED'),
+  };
 
   @lazyInject(TYPES.GlobalState)
   private _globalState!: IGlobalState;
@@ -45,8 +46,7 @@ export class SidejobsState implements ISidejobsState {
     this._sidejobCloneIdMap = new Map<string, ISidejob>();
     this._sidejobMap = new Map<string, ISidejob>();
 
-    this.uiEventBatcher = new EventBatcher();
-    this._stateUIConnector.registerEventEmitter(this);
+    this._stateUIConnector.registerEvents(this.UI_EVENTS);
   }
 
   getConnectivityRequirement(sidejobName: SidejobName): number {
@@ -56,7 +56,7 @@ export class SidejobsState implements ISidejobsState {
   }
 
   listSidejobs(): ISidejob[] {
-    this._stateUIConnector.connectEventHandler(this, SIDEJOBS_UI_EVENTS.SIDEJOBS_UPDATED);
+    this._stateUIConnector.connectEventHandler(this.UI_EVENTS.SIDEJOBS_UPDATED);
 
     return this._sidejobsList;
   }
@@ -114,7 +114,7 @@ export class SidejobsState implements ISidejobsState {
 
     this.addSidejob(sidejob);
 
-    this.uiEventBatcher.enqueueEvent(SIDEJOBS_UI_EVENTS.SIDEJOBS_UPDATED);
+    this._stateUIConnector.enqueueEvent(this.UI_EVENTS.SIDEJOBS_UPDATED);
 
     return true;
   }
@@ -133,7 +133,7 @@ export class SidejobsState implements ISidejobsState {
       this._sidejobCloneIdMap.delete(sidejob.assignedClone!.id);
     }
 
-    this.uiEventBatcher.enqueueEvent(SIDEJOBS_UI_EVENTS.SIDEJOBS_UPDATED);
+    this._stateUIConnector.enqueueEvent(this.UI_EVENTS.SIDEJOBS_UPDATED);
   }
 
   removeAllSidejobs(): void {
@@ -145,7 +145,7 @@ export class SidejobsState implements ISidejobsState {
     this._sidejobCloneIdMap.clear();
     this._sidejobMap.clear();
 
-    this.uiEventBatcher.enqueueEvent(SIDEJOBS_UI_EVENTS.SIDEJOBS_UPDATED);
+    this._stateUIConnector.enqueueEvent(this.UI_EVENTS.SIDEJOBS_UPDATED);
   }
 
   async startNewState(): Promise<void> {

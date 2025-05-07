@@ -1,9 +1,8 @@
-import { IUIEventEmitter } from '@shared/interfaces/ui-event-emitter';
 import { ISerializeable } from '@shared/interfaces/serializable';
 import { IncomeSource, PurchaseType } from '@shared/types';
 import { IMoneySerializedState } from '../serialized-states/money-serialized-state';
 
-export interface IMoneyState extends ISerializeable<IMoneySerializedState>, IUIEventEmitter {
+export interface IMoneyState extends ISerializeable<IMoneySerializedState> {
   money: number;
   getIncome(incomeSource: IncomeSource): number;
   getExpenses(purchaseType: PurchaseType): number;

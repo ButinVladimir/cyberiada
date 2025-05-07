@@ -1,4 +1,4 @@
-import { css, html, nothing, PropertyValues } from 'lit';
+import { css, html, nothing } from 'lit';
 import { msg, localized } from '@lit/localize';
 import { customElement, property, queryAll } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
@@ -24,7 +24,7 @@ import { ProgramDiffTextController } from './controller';
 
 @localized()
 @customElement('ca-program-diff-text')
-export class ProgramDiffText extends BaseComponent<ProgramDiffTextController> {
+export class ProgramDiffText extends BaseComponent {
   static styles = css`
     :host {
       margin-top: var(--sl-spacing-medium);
@@ -39,6 +39,8 @@ export class ProgramDiffText extends BaseComponent<ProgramDiffTextController> {
       height: var(--sl-spacing-medium);
     }
   `;
+
+  hasPartialUpdate = true;
 
   @property({
     attribute: 'program-name',
@@ -58,7 +60,7 @@ export class ProgramDiffText extends BaseComponent<ProgramDiffTextController> {
   })
   quality = 0;
 
-  protected controller: ProgramDiffTextController;
+  private _controller: ProgramDiffTextController;
 
   private _renderer?: IDescriptionEffectRenderer;
 
@@ -68,17 +70,11 @@ export class ProgramDiffText extends BaseComponent<ProgramDiffTextController> {
   constructor() {
     super();
 
-    this.controller = new ProgramDiffTextController(this, this.handlePartialUpdate);
-  }
-
-  updated(_changedProperties: PropertyValues) {
-    super.updated(_changedProperties);
-
-    this.handlePartialUpdate();
+    this._controller = new ProgramDiffTextController(this);
   }
 
   render() {
-    const program = this.controller.getSelectedProgram(this.programName as ProgramName, this.level, this.quality);
+    const program = this._controller.getSelectedProgram(this.programName as ProgramName, this.level, this.quality);
 
     const requirements = program.isAutoscalable
       ? this.renderAutoscalableRequirements()
@@ -115,9 +111,9 @@ export class ProgramDiffText extends BaseComponent<ProgramDiffTextController> {
   };
 
   private renderNormalRequirements = () => {
-    const program = this.controller.getSelectedProgram(this.programName as ProgramName, this.level, this.quality);
-    const ownedProgram = this.controller.getOwnedProgram(this.programName as ProgramName);
-    const formatter = this.controller.formatter;
+    const program = this._controller.getSelectedProgram(this.programName as ProgramName, this.level, this.quality);
+    const ownedProgram = this._controller.getOwnedProgram(this.programName as ProgramName);
+    const formatter = this._controller.formatter;
 
     const coresDiff = ownedProgram ? program.cores - ownedProgram.cores : program.cores;
 
@@ -161,7 +157,7 @@ export class ProgramDiffText extends BaseComponent<ProgramDiffTextController> {
     return this._renderer.renderEffect();
   };
 
-  private handlePartialUpdate = () => {
+  handlePartialUpdate = () => {
     if (!this._renderer) {
       return;
     }
@@ -170,15 +166,15 @@ export class ProgramDiffText extends BaseComponent<ProgramDiffTextController> {
   };
 
   private updateRenderer(): void {
-    const program = this.controller.getSelectedProgram(this.programName as ProgramName, this.level, this.quality);
-    const ownedProgram = this.controller.getOwnedProgram(this.programName as ProgramName);
+    const program = this._controller.getSelectedProgram(this.programName as ProgramName, this.level, this.quality);
+    const ownedProgram = this._controller.getOwnedProgram(this.programName as ProgramName);
 
     const parameters: IDescriptionParameters = {
-      formatter: this.controller.formatter,
+      formatter: this._controller.formatter,
       program,
       ownedProgram,
-      cores: this.controller.cores,
-      ram: this.controller.ram,
+      cores: this._controller.cores,
+      ram: this._controller.ram,
     };
 
     switch (this.programName) {

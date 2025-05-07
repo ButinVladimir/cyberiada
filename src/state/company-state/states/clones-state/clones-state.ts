@@ -3,7 +3,6 @@ import { v4 as uuid } from 'uuid';
 import { msg, str } from '@lit/localize';
 import cloneTemplates from '@configs/clone-templates.json';
 import { decorators } from '@state/container';
-import { EventBatcher } from '@shared/event-batcher';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import type { IGlobalState } from '@state/global-state/interfaces/global-state';
 import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
@@ -16,14 +15,16 @@ import { ICloneNameGeneratorResult } from '@workers/clone-name-generator/interfa
 import type { ICompanyState } from '../../interfaces/company-state';
 import { IClone } from '../clone-factory/interfaces/clone';
 import { ICompanyClonesSerializedState, ICompanyClonesState, IPurchaseCloneArgs } from './interfaces';
-import { COMPANY_CLONES_STATE_UI_EVENTS } from './constants';
 import { CloneTemplateName } from '../clone-factory/types';
 
 const { lazyInject } = decorators;
 
 @injectable()
 export class CompanyClonesState implements ICompanyClonesState {
-  readonly uiEventBatcher: EventBatcher;
+  private UI_EVENTS = {
+    SYNCHRONIZATION_UPDATED: Symbol('SYNCHRONIZATION_UPDATED'),
+    CLONES_UPDATED: Symbol('CLONES_UPDATED'),
+  };
 
   @lazyInject(TYPES.CompanyState)
   private _companyState!: ICompanyState;
@@ -52,18 +53,17 @@ export class CompanyClonesState implements ICompanyClonesState {
     this._clonesList = [];
     this._clonesMap = new Map<string, IClone>();
 
-    this.uiEventBatcher = new EventBatcher();
-    this._stateUiConnector.registerEventEmitter(this);
+    this._stateUiConnector.registerEvents(this.UI_EVENTS);
   }
 
   get availableSynchronization() {
-    this._stateUiConnector.connectEventHandler(this, COMPANY_CLONES_STATE_UI_EVENTS.SYNCHRONIZATION_UPDATED);
+    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.SYNCHRONIZATION_UPDATED);
 
     return this._availableSynchronization;
   }
 
   listClones(): IClone[] {
-    this._stateUiConnector.connectEventHandler(this, COMPANY_CLONES_STATE_UI_EVENTS.CLONES_UPDATED);
+    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.CLONES_UPDATED);
 
     return this._clonesList;
   }
@@ -128,7 +128,7 @@ export class CompanyClonesState implements ICompanyClonesState {
 
     this.recalculateSynchronization();
 
-    this.uiEventBatcher.enqueueEvent(COMPANY_CLONES_STATE_UI_EVENTS.CLONES_UPDATED);
+    this._stateUiConnector.enqueueEvent(this.UI_EVENTS.CLONES_UPDATED);
   }
 
   deleteAllClones(): void {
@@ -138,7 +138,7 @@ export class CompanyClonesState implements ICompanyClonesState {
 
     this.recalculateSynchronization();
 
-    this.uiEventBatcher.enqueueEvent(COMPANY_CLONES_STATE_UI_EVENTS.CLONES_UPDATED);
+    this._stateUiConnector.enqueueEvent(this.UI_EVENTS.CLONES_UPDATED);
   }
 
   recalculate(): void {
@@ -154,7 +154,7 @@ export class CompanyClonesState implements ICompanyClonesState {
       moveElementInArray(this._clonesList, oldPosition, newPosition);
     }
 
-    this.uiEventBatcher.enqueueEvent(COMPANY_CLONES_STATE_UI_EVENTS.CLONES_UPDATED);
+    this._stateUiConnector.enqueueEvent(this.UI_EVENTS.CLONES_UPDATED);
   }
 
   async generateCloneName(): Promise<string> {
@@ -188,13 +188,14 @@ export class CompanyClonesState implements ICompanyClonesState {
       this._availableSynchronization -= this.getCloneSynchronization(clone.templateName, clone.quality);
     }
 
-    this.uiEventBatcher.enqueueEvent(COMPANY_CLONES_STATE_UI_EVENTS.SYNCHRONIZATION_UPDATED);
+    this._stateUiConnector.enqueueEvent(this.UI_EVENTS.SYNCHRONIZATION_UPDATED);
   }
 
   async startNewState(): Promise<void> {
     this.clearState();
+    this.recalculateSynchronization();
 
-    this.uiEventBatcher.enqueueEvent(COMPANY_CLONES_STATE_UI_EVENTS.CLONES_UPDATED);
+    this._stateUiConnector.enqueueEvent(this.UI_EVENTS.CLONES_UPDATED);
   }
 
   async deserialize(serializedState: ICompanyClonesSerializedState): Promise<void> {
@@ -206,7 +207,9 @@ export class CompanyClonesState implements ICompanyClonesState {
       this._clonesMap.set(clone.id, clone);
     });
 
-    this.uiEventBatcher.enqueueEvent(COMPANY_CLONES_STATE_UI_EVENTS.CLONES_UPDATED);
+    this.recalculateSynchronization();
+
+    this._stateUiConnector.enqueueEvent(this.UI_EVENTS.CLONES_UPDATED);
   }
 
   serialize(): ICompanyClonesSerializedState {
@@ -233,7 +236,7 @@ export class CompanyClonesState implements ICompanyClonesState {
 
     this.recalculateSynchronization();
 
-    this.uiEventBatcher.enqueueEvent(COMPANY_CLONES_STATE_UI_EVENTS.CLONES_UPDATED);
+    this._stateUiConnector.enqueueEvent(this.UI_EVENTS.CLONES_UPDATED);
   }
 
   private handlePurhaseClone = (args: IPurchaseCloneArgs) => () => {

@@ -10,7 +10,7 @@ import { MAINFRAME_HARDWARE_TEXTS } from './constants';
 
 @localized()
 @customElement('ca-mainframe-hardware-panel-article')
-export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwarePanelArticleController> {
+export class MainframeHardwarePanelArticle extends BaseComponent {
   static styles = [
     hintStyle,
     sectionTitleStyle,
@@ -88,20 +88,20 @@ export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwa
   })
   maxIncrease!: number;
 
-  protected controller: MainframeHardwarePanelArticleController;
+  private _controller: MainframeHardwarePanelArticleController;
 
   constructor() {
     super();
 
-    this.controller = new MainframeHardwarePanelArticleController(this);
+    this._controller = new MainframeHardwarePanelArticleController(this);
   }
 
   render() {
-    const formatter = this.controller.formatter;
+    const formatter = this._controller.formatter;
 
-    const level = this.controller.getLevel(this.type);
+    const level = this._controller.getLevel(this.type);
 
-    const isAutoupgradeEnabled = this.controller.isAutoUpgradeEnabled(this.type);
+    const isAutoupgradeEnabled = this._controller.isAutoUpgradeEnabled(this.type);
 
     const autoupgradeIcon = isAutoupgradeEnabled ? AUTOUPGRADE_VALUES.icon.enabled : AUTOUPGRADE_VALUES.icon.disabled;
     const autoupgradeLabel = isAutoupgradeEnabled
@@ -145,23 +145,23 @@ export class MainframeHardwarePanelArticle extends BaseComponent<MainframeHardwa
 
   private handleBuy = () => {
     const increase = this.calculateIncrease();
-    this.controller.purchase(increase, this.type);
+    this._controller.purchase(increase, this.type);
   };
 
   private handleBuyMax = () => {
-    this.controller.purchaseMax(this.type);
+    this._controller.purchaseMax(this.type);
   };
 
   private calculateIncrease(): number {
     return Math.max(
-      Math.min(this.maxIncrease, this.controller.developmentLevel - this.controller.getLevel(this.type)),
+      Math.min(this.maxIncrease, this._controller.developmentLevel - this._controller.getLevel(this.type)),
       1,
     );
   }
 
   private handleToggleAutoUpgrade = () => {
-    const active = this.controller.isAutoUpgradeEnabled(this.type);
-    this.controller.toggleAutoUpdateEnabled(this.type, !active);
+    const active = this._controller.isAutoUpgradeEnabled(this.type);
+    this._controller.toggleAutoUpdateEnabled(this.type, !active);
   };
 
   private handleDragStart = (event: DragEvent) => {

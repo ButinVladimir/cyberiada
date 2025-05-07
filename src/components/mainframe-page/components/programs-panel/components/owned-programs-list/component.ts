@@ -12,7 +12,7 @@ import { OwnedProgramsListController } from './controller';
 
 @localized()
 @customElement('ca-owned-programs-list')
-export class OwnedProgramsList extends BaseComponent<OwnedProgramsListController> {
+export class OwnedProgramsList extends BaseComponent {
   static styles = css`
     :host {
       width: 100%;
@@ -105,12 +105,12 @@ export class OwnedProgramsList extends BaseComponent<OwnedProgramsListController
     }
   `;
 
-  protected controller: OwnedProgramsListController;
+  private _controller: OwnedProgramsListController;
 
   constructor() {
     super();
 
-    this.controller = new OwnedProgramsListController(this);
+    this._controller = new OwnedProgramsListController(this);
   }
 
   render() {
@@ -124,7 +124,7 @@ export class OwnedProgramsList extends BaseComponent<OwnedProgramsListController
       ? AUTOUPGRADE_VALUES.buttonVariant.enabled
       : AUTOUPGRADE_VALUES.buttonVariant.disabled;
 
-    const ownedPrograms = this.controller.listOwnedPrograms();
+    const ownedPrograms = this._controller.listOwnedPrograms();
 
     const upgradeAllProgramsLabel = COMMON_TEXTS.upgradeAll();
 
@@ -194,7 +194,7 @@ export class OwnedProgramsList extends BaseComponent<OwnedProgramsListController
   };
 
   private checkSomeProgramsAutoupgradeActive(): boolean {
-    const programs = this.controller.listOwnedPrograms();
+    const programs = this._controller.listOwnedPrograms();
 
     return programs.some((program) => program.autoUpgradeEnabled);
   }
@@ -202,14 +202,14 @@ export class OwnedProgramsList extends BaseComponent<OwnedProgramsListController
   private handleToggleAutoupgrade = () => {
     const active = this.checkSomeProgramsAutoupgradeActive();
 
-    this.controller.toggleAutoupgrade(!active);
+    this._controller.toggleAutoupgrade(!active);
   };
 
   private handleMoveProgram = (event: SortableElementMovedEvent) => {
-    this.controller.moveProgram(event.keyName as ProgramName, event.position);
+    this._controller.moveProgram(event.keyName as ProgramName, event.position);
   };
 
   private handleUpgradeMaxAllPrograms = () => {
-    this.controller.upgradeMaxAllPrograms();
+    this._controller.upgradeMaxAllPrograms();
   };
 }

@@ -10,7 +10,7 @@ import { NotificationModalController } from './controller';
 
 @localized()
 @customElement('ca-notification-modal')
-export class NotificationModal extends BaseComponent<NotificationModalController> {
+export class NotificationModal extends BaseComponent {
   static styles = [
     smallModalStyle,
     modalBodyScrollStyle,
@@ -31,7 +31,7 @@ export class NotificationModal extends BaseComponent<NotificationModalController
     `,
   ];
 
-  protected controller: NotificationModalController;
+  private _controller: NotificationModalController;
 
   private _notificationTypeToggleRef = createRef<SlCheckbox>();
 
@@ -41,12 +41,12 @@ export class NotificationModal extends BaseComponent<NotificationModalController
   constructor() {
     super();
 
-    this.controller = new NotificationModalController(this);
+    this._controller = new NotificationModalController(this);
   }
 
   render() {
-    const hasNotifications = this.controller.hasUnreadNotifications();
-    const hasNextNotification = this.controller.hasNextNotification();
+    const hasNotifications = this._controller.hasUnreadNotifications();
+    const hasNextNotification = this._controller.hasNextNotification();
 
     return html`
       <sl-dialog no-header ?open=${hasNotifications} @sl-request-close=${this.handleCloseCurrentNotification}>
@@ -70,7 +70,7 @@ export class NotificationModal extends BaseComponent<NotificationModalController
   }
 
   private renderModalContent = () => {
-    const notification = this.controller.getUnreadNotification();
+    const notification = this._controller.getUnreadNotification();
 
     if (!notification) {
       return nothing;
@@ -104,7 +104,7 @@ export class NotificationModal extends BaseComponent<NotificationModalController
   private handleCloseAllNotifications = () => {
     this.closeCurrentNotification();
 
-    this.controller.clearNotifications();
+    this._controller.clearNotifications();
   };
 
   private handleToggleNotificationType = () => {
@@ -114,8 +114,8 @@ export class NotificationModal extends BaseComponent<NotificationModalController
   };
 
   private closeCurrentNotification = () => {
-    if (this.controller.hasUnreadNotifications()) {
-      this.controller.popNotification(this._notificationTypeToggled);
+    if (this._controller.hasUnreadNotifications()) {
+      this._controller.popNotification(this._notificationTypeToggled);
       this._notificationTypeToggled = true;
     }
   };

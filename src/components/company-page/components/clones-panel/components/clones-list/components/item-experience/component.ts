@@ -1,4 +1,4 @@
-import { css, html, nothing, PropertyValues } from 'lit';
+import { css, html, nothing } from 'lit';
 import { localized, msg } from '@lit/localize';
 import { consume } from '@lit/context';
 import { createRef, ref } from 'lit/directives/ref.js';
@@ -14,7 +14,7 @@ import { BaseController } from '@/shared';
 
 @localized()
 @customElement('ca-clones-list-item-experience')
-export class ClonesListItemExperience extends BaseComponent<BaseController> {
+export class ClonesListItemExperience extends BaseComponent {
   static styles = [
     hintStyle,
     css`
@@ -39,7 +39,9 @@ export class ClonesListItemExperience extends BaseComponent<BaseController> {
     `,
   ];
 
-  protected controller: BaseController;
+  hasPartialUpdate = true;
+
+  private _controller: BaseController;
 
   @consume({ context: cloneContext, subscribe: true })
   private _clone?: IClone;
@@ -50,13 +52,7 @@ export class ClonesListItemExperience extends BaseComponent<BaseController> {
   constructor() {
     super();
 
-    this.controller = new BaseController(this, this.handlePartialUpdate);
-  }
-
-  updated(_changedProperties: PropertyValues) {
-    super.updated(_changedProperties);
-
-    this.handlePartialUpdate();
+    this._controller = new BaseController(this);
   }
 
   render() {
@@ -71,12 +67,12 @@ export class ClonesListItemExperience extends BaseComponent<BaseController> {
     `;
   }
 
-  private handlePartialUpdate = () => {
+  handlePartialUpdate = () => {
     if (!this._clone) {
       return;
     }
 
-    const formatter = this.controller.formatter;
+    const formatter = this._controller.formatter;
 
     if (this._progressBarRef.value) {
       const progressBarValue = calculateLevelProgressPercentage(

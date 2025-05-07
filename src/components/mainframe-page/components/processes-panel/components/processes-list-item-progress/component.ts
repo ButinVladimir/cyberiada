@@ -1,4 +1,4 @@
-import { css, html, nothing, PropertyValues } from 'lit';
+import { css, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import SlProgressBar from '@shoelace-style/shoelace/dist/components/progress-bar/progress-bar.component.js';
@@ -12,7 +12,7 @@ import { localized, msg, str } from '@lit/localize';
 
 @localized()
 @customElement('ca-processes-list-item-progress')
-export class ProcessesListItemProgressColumn extends BaseComponent<ProcessesListItemProgressController> {
+export class ProcessesListItemProgressColumn extends BaseComponent {
   static styles = [
     hintStyle,
     css`
@@ -27,13 +27,15 @@ export class ProcessesListItemProgressColumn extends BaseComponent<ProcessesList
     `,
   ];
 
+  hasPartialUpdate = true;
+
   @property({
     attribute: 'program-name',
     type: String,
   })
   programName!: ProgramName;
 
-  protected controller: ProcessesListItemProgressController;
+  private _controller: ProcessesListItemProgressController;
 
   private _progressBarRef = createRef<SlProgressBar>();
   private _hintRef = createRef<HTMLParagraphElement>();
@@ -41,17 +43,11 @@ export class ProcessesListItemProgressColumn extends BaseComponent<ProcessesList
   constructor() {
     super();
 
-    this.controller = new ProcessesListItemProgressController(this, this.handlePartialUpdate);
-  }
-
-  updated(_changedProperties: PropertyValues) {
-    super.updated(_changedProperties);
-
-    this.handlePartialUpdate();
+    this._controller = new ProcessesListItemProgressController(this);
   }
 
   render() {
-    const process = this.controller.getProcess(this.programName as ProgramName);
+    const process = this._controller.getProcess(this.programName as ProgramName);
 
     if (!process) {
       return nothing;
@@ -67,14 +63,14 @@ export class ProcessesListItemProgressColumn extends BaseComponent<ProcessesList
     `;
   }
 
-  private handlePartialUpdate = () => {
-    const process = this.controller.getProcess(this.programName as ProgramName);
+  handlePartialUpdate = () => {
+    const process = this._controller.getProcess(this.programName as ProgramName);
 
     if (!process || process.program.isAutoscalable) {
       return;
     }
 
-    const formatter = this.controller.formatter;
+    const formatter = this._controller.formatter;
 
     const processCompletionDelta = process.calculateCompletionDelta(1);
 

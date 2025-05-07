@@ -10,7 +10,7 @@ import { OverviewUnlockedFeaturesPanelController } from './controller';
 
 @localized()
 @customElement('ca-overview-unlocked-features-panel')
-export class OverviewUnlockedFeaturesPanel extends BaseComponent<OverviewUnlockedFeaturesPanelController> {
+export class OverviewUnlockedFeaturesPanel extends BaseComponent {
   static styles = [
     hintIconStyle,
     css`
@@ -26,16 +26,16 @@ export class OverviewUnlockedFeaturesPanel extends BaseComponent<OverviewUnlocke
     `,
   ];
 
-  protected controller: OverviewUnlockedFeaturesPanelController;
+  private _controller: OverviewUnlockedFeaturesPanelController;
 
   constructor() {
     super();
 
-    this.controller = new OverviewUnlockedFeaturesPanelController(this);
+    this._controller = new OverviewUnlockedFeaturesPanelController(this);
   }
 
   render() {
-    const features = this.controller.listUnlockedFeatures();
+    const features = this._controller.listUnlockedFeatures();
 
     if (features.length === 0) {
       return html`${msg('No features has been unlocked yet')}`;

@@ -1,18 +1,19 @@
 import { inject, injectable } from 'inversify';
 import { v4 as uuid } from 'uuid';
 import { msg, str } from '@lit/localize';
-import { EventBatcher } from '@shared/event-batcher';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import type { ISettingsState } from '@state/settings-state/interfaces/settings-state';
 import type { IFormatter } from '@shared/interfaces/formatter';
 import { TYPES } from '@state/types';
 import { MessageEvent } from '@shared/types';
 import { IMessageLogState, IMessage } from './interfaces';
-import { MESSAGE_LOG_UI_EVENTS } from './constants';
 
 @injectable()
 export class MessageLogState implements IMessageLogState {
-  readonly uiEventBatcher: EventBatcher;
+  private UI_EVENTS = {
+    UPDATED_MESSAGES: Symbol('UPDATED_MESSAGES'),
+    UPDATED_TOASTS: Symbol('UPDATED_TOASTS'),
+  };
 
   private _stateUiConnector: IStateUIConnector;
   private _settingsState: ISettingsState;
@@ -32,8 +33,7 @@ export class MessageLogState implements IMessageLogState {
     this._messages = [];
     this._toasts = [];
 
-    this.uiEventBatcher = new EventBatcher();
-    this._stateUiConnector.registerEventEmitter(this);
+    this._stateUiConnector.registerEvents(this.UI_EVENTS);
   }
 
   postMessage(event: MessageEvent, messageText: string, postToast = true) {
@@ -53,7 +53,7 @@ export class MessageLogState implements IMessageLogState {
       this._messages.shift();
     }
 
-    this.uiEventBatcher.enqueueEvent(MESSAGE_LOG_UI_EVENTS.UPDATED_MESSAGES);
+    this._stateUiConnector.enqueueEvent(this.UI_EVENTS.UPDATED_MESSAGES);
 
     if (postToast && this._settingsState.toastDuration > 0) {
       this._toasts.push({
@@ -66,12 +66,12 @@ export class MessageLogState implements IMessageLogState {
         this._toasts.shift();
       }
 
-      this.uiEventBatcher.enqueueEvent(MESSAGE_LOG_UI_EVENTS.UPDATED_TOASTS);
+      this._stateUiConnector.enqueueEvent(this.UI_EVENTS.UPDATED_TOASTS);
     }
   }
 
   getMessages(): IMessage[] {
-    this._stateUiConnector.connectEventHandler(this, MESSAGE_LOG_UI_EVENTS.UPDATED_MESSAGES);
+    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.UPDATED_MESSAGES);
 
     return this._messages;
   }
@@ -79,11 +79,11 @@ export class MessageLogState implements IMessageLogState {
   clearMessages() {
     this._messages.length = 0;
 
-    this.uiEventBatcher.enqueueEvent(MESSAGE_LOG_UI_EVENTS.UPDATED_MESSAGES);
+    this._stateUiConnector.enqueueEvent(this.UI_EVENTS.UPDATED_MESSAGES);
   }
 
   getToasts(): IMessage[] {
-    this._stateUiConnector.connectEventHandler(this, MESSAGE_LOG_UI_EVENTS.UPDATED_TOASTS);
+    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.UPDATED_TOASTS);
 
     const toastsBatch = this._toasts.splice(0);
 

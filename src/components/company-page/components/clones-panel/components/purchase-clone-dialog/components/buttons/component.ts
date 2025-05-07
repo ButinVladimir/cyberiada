@@ -1,4 +1,4 @@
-import { css, html, PropertyValues } from 'lit';
+import { css, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { msg, localized } from '@lit/localize';
@@ -14,7 +14,7 @@ import { temporaryCloneContext } from '../../contexts';
 
 @localized()
 @customElement('ca-purchase-clone-dialog-buttons')
-export class PurchaseCloneDialogButtons extends BaseComponent<PurchaseCloneDialogButtonsController> {
+export class PurchaseCloneDialogButtons extends BaseComponent {
   static styles = [
     warningStyle,
     css`
@@ -30,7 +30,9 @@ export class PurchaseCloneDialogButtons extends BaseComponent<PurchaseCloneDialo
     `,
   ];
 
-  protected controller: PurchaseCloneDialogButtonsController;
+  hasPartialUpdate = true;
+
+  private _controller: PurchaseCloneDialogButtonsController;
 
   @consume({ context: temporaryCloneContext, subscribe: true })
   private _clone?: IClone;
@@ -41,13 +43,7 @@ export class PurchaseCloneDialogButtons extends BaseComponent<PurchaseCloneDialo
   constructor() {
     super();
 
-    this.controller = new PurchaseCloneDialogButtonsController(this, this.handlePartialUpdate);
-  }
-
-  updated(_changedProperties: PropertyValues) {
-    super.updated(_changedProperties);
-
-    this.handlePartialUpdate();
+    this._controller = new PurchaseCloneDialogButtonsController(this);
   }
 
   render() {
@@ -71,7 +67,7 @@ export class PurchaseCloneDialogButtons extends BaseComponent<PurchaseCloneDialo
     `;
   }
 
-  private handlePartialUpdate = () => {
+  handlePartialUpdate = () => {
     if (this._warningRef.value) {
       this._warningRef.value.textContent = this.getWarning();
     }
@@ -90,16 +86,16 @@ export class PurchaseCloneDialogButtons extends BaseComponent<PurchaseCloneDialo
       return msg('Enter clone name');
     }
 
-    const synchronization = this.controller.getCloneSynchronization(this._clone.templateName, this._clone.quality);
-    if (synchronization > this.controller.availableSynchronization) {
+    const synchronization = this._controller.getCloneSynchronization(this._clone.templateName, this._clone.quality);
+    if (synchronization > this._controller.availableSynchronization) {
       return msg('Not enough synchronization');
     }
 
-    const formatter = this.controller.formatter;
+    const formatter = this._controller.formatter;
 
-    const cost = this.controller.getCloneCost(this._clone.templateName, this._clone.quality, this._clone.level);
-    const moneyGrowth = this.controller.moneyGrowth;
-    const moneyDiff = cost - this.controller.money;
+    const cost = this._controller.getCloneCost(this._clone.templateName, this._clone.quality, this._clone.level);
+    const moneyGrowth = this._controller.moneyGrowth;
+    const moneyDiff = cost - this._controller.money;
 
     if (moneyDiff > 0) {
       if (moneyGrowth <= 0) {
@@ -115,23 +111,23 @@ export class PurchaseCloneDialogButtons extends BaseComponent<PurchaseCloneDialo
   }
 
   private updatePurchaseButton(): void {
-    const { formatter, money } = this.controller;
+    const { formatter, money } = this._controller;
 
     const cost = this._clone
-      ? this.controller.getCloneCost(this._clone.templateName, this._clone.quality, this._clone.level)
+      ? this._controller.getCloneCost(this._clone.templateName, this._clone.quality, this._clone.level)
       : 0;
     const synchronization = this._clone
-      ? this.controller.getCloneSynchronization(this._clone.templateName, this._clone.quality)
+      ? this._controller.getCloneSynchronization(this._clone.templateName, this._clone.quality)
       : 0;
     const cloneAvailable = this._clone
-      ? this.controller.isCloneAvailable(this._clone.templateName, this._clone.quality, this._clone.level)
+      ? this._controller.isCloneAvailable(this._clone.templateName, this._clone.quality, this._clone.level)
       : false;
 
     const purchaseButtonDisabled = !(
       this._clone &&
       this._clone.name &&
       cloneAvailable &&
-      synchronization <= this.controller.availableSynchronization &&
+      synchronization <= this._controller.availableSynchronization &&
       cost <= money
     );
 

@@ -1,4 +1,4 @@
-import { html, PropertyValues } from 'lit';
+import { html } from 'lit';
 import { map } from 'lit/directives/map.js';
 import { localized, msg } from '@lit/localize';
 import { customElement, queryAll } from 'lit/decorators.js';
@@ -11,10 +11,12 @@ import { statisticsPanelContentStyle } from '../../../../styles';
 
 @localized()
 @customElement('ca-statistics-connectivity')
-export class StatisticsConnectivity extends BaseComponent<StatisticsConnectivityController> {
+export class StatisticsConnectivity extends BaseComponent {
   static styles = statisticsPanelContentStyle;
 
-  protected controller: StatisticsConnectivityController;
+  hasPartialUpdate = true;
+
+  private _controller: StatisticsConnectivityController;
 
   @queryAll('span[data-district]')
   private _districtValueNodes!: NodeListOf<HTMLSpanElement>;
@@ -22,13 +24,7 @@ export class StatisticsConnectivity extends BaseComponent<StatisticsConnectivity
   constructor() {
     super();
 
-    this.controller = new StatisticsConnectivityController(this, this.handlePartialUpdate);
-  }
-
-  updated(_changedProperties: PropertyValues) {
-    super.updated(_changedProperties);
-
-    this.handlePartialUpdate();
+    this._controller = new StatisticsConnectivityController(this);
   }
 
   render() {
@@ -44,7 +40,7 @@ export class StatisticsConnectivity extends BaseComponent<StatisticsConnectivity
           </sl-tooltip>
         </h4>
 
-        <div class="parameters-table">${map(this.controller.listAvailableDistricts(), this.renderDistrict)}</div>
+        <div class="parameters-table">${map(this._controller.listAvailableDistricts(), this.renderDistrict)}</div>
       </sl-details>
     `;
   }
@@ -57,11 +53,11 @@ export class StatisticsConnectivity extends BaseComponent<StatisticsConnectivity
   };
 
   handlePartialUpdate = () => {
-    const formatter = this.controller.formatter;
+    const formatter = this._controller.formatter;
 
     this._districtValueNodes.forEach((element) => {
       const districtIndex = parseInt(element.dataset.district!);
-      const value = this.controller.getDistrictConnectivity(districtIndex);
+      const value = this._controller.getDistrictConnectivity(districtIndex);
 
       element.textContent = formatter.formatNumberFloat(value);
     });

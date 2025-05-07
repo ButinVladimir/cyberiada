@@ -22,7 +22,7 @@ import { ProcessesListItemController } from './controller';
 
 @localized()
 @customElement('ca-processes-list-item')
-export class ProcessesListItem extends BaseComponent<ProcessesListItemController> {
+export class ProcessesListItem extends BaseComponent {
   static styles = [
     dragIconStyle,
     css`
@@ -137,12 +137,12 @@ export class ProcessesListItem extends BaseComponent<ProcessesListItemController
   @state()
   _descriptionVisible = false;
 
-  protected controller: ProcessesListItemController;
+  private _controller: ProcessesListItemController;
 
   constructor() {
     super();
 
-    this.controller = new ProcessesListItemController(this);
+    this._controller = new ProcessesListItemController(this);
   }
 
   connectedCallback() {
@@ -158,8 +158,8 @@ export class ProcessesListItem extends BaseComponent<ProcessesListItemController
   }
 
   render() {
-    const formatter = this.controller.formatter;
-    const process = this.controller.getProcess(this.programName as types.ProgramName);
+    const formatter = this._controller.formatter;
+    const process = this._controller.getProcess(this.programName as types.ProgramName);
 
     if (!process) {
       return nothing;
@@ -264,7 +264,7 @@ export class ProcessesListItem extends BaseComponent<ProcessesListItemController
   };
 
   private handleToggleProcess = () => {
-    this.controller.toggleProcess();
+    this._controller.toggleProcess();
   };
 
   private handleOpenDeleteProcessDialog = () => {
@@ -286,7 +286,7 @@ export class ProcessesListItem extends BaseComponent<ProcessesListItemController
       return;
     }
 
-    this.controller.deleteProcessByName(this.programName);
+    this._controller.deleteProcessByName(this.programName);
   };
 
   private handleDragStart = (event: DragEvent) => {

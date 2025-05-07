@@ -20,7 +20,7 @@ import { NOTIFICATION_TYPE_NAMES } from './constants';
 
 @localized()
 @customElement('ca-notification-type-filter-dialog')
-export class NotificationTypeFilterDialog extends BaseComponent<NotificationTypeFilterDialogController> {
+export class NotificationTypeFilterDialog extends BaseComponent {
   static styles = [
     hintStyle,
     sectionTitleStyle,
@@ -67,7 +67,7 @@ export class NotificationTypeFilterDialog extends BaseComponent<NotificationType
     `,
   ];
 
-  protected controller: NotificationTypeFilterDialogController;
+  private _controller: NotificationTypeFilterDialogController;
 
   @property({
     attribute: 'is-open',
@@ -78,7 +78,7 @@ export class NotificationTypeFilterDialog extends BaseComponent<NotificationType
   constructor() {
     super();
 
-    this.controller = new NotificationTypeFilterDialogController(this);
+    this._controller = new NotificationTypeFilterDialogController(this);
   }
 
   render() {
@@ -107,7 +107,7 @@ export class NotificationTypeFilterDialog extends BaseComponent<NotificationType
         size="small"
         name="event"
         value=${notificationType}
-        ?checked=${this.controller.isNotificationTypeEnabled(notificationType)}
+        ?checked=${this._controller.isNotificationTypeEnabled(notificationType)}
         @sl-change=${this.handleToggleAlert}
       >
         ${NOTIFICATION_TYPE_NAMES[notificationType]()}
@@ -122,6 +122,6 @@ export class NotificationTypeFilterDialog extends BaseComponent<NotificationType
   private handleToggleAlert = (event: Event) => {
     const target = event.target as SlCheckbox;
 
-    this.controller.toggleNotificationTypeFilter(target.value as NotificationType, target.checked);
+    this._controller.toggleNotificationTypeFilter(target.value as NotificationType, target.checked);
   };
 }

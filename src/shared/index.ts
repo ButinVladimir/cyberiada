@@ -8,6 +8,5 @@ export * from './helpers';
 export * from './base-component';
 export * from './base-controller';
 export * from './formatter-parameters';
-export * from './event-batcher';
 export * from './web-helpers';
 export * from './styles';

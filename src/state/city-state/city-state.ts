@@ -3,8 +3,6 @@ import scenarios from '@configs/scenarios.json';
 import type { IGlobalState } from '@state/global-state/interfaces/global-state';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import { IMapGeneratorResult } from '@workers/map-generator/interfaces';
-import { IEventBatcher } from '@shared/interfaces/event-batcher';
-import { EventBatcher } from '@shared/event-batcher';
 import { TYPES } from '@state/types';
 import { ICityState, ICitySerializedState, IDistrictState, IDistrictSerializedState } from './interfaces';
 import { DistrictState } from './district-state';
@@ -12,7 +10,7 @@ import { DistrictUnlockState } from './types';
 
 @injectable()
 export class CityState implements ICityState {
-  readonly uiEventBatcher: IEventBatcher;
+  private UI_EVENTS = {};
 
   private _globalState: IGlobalState;
   private _stateUiConnector: IStateUIConnector;
@@ -32,9 +30,7 @@ export class CityState implements ICityState {
     this._districts = new Map();
     this._availableDistricts = [];
 
-    this.uiEventBatcher = new EventBatcher();
-
-    this._stateUiConnector.registerEventEmitter(this);
+    this._stateUiConnector.registerEvents(this.UI_EVENTS);
   }
 
   get districtsCount() {

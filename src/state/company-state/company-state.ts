@@ -32,6 +32,7 @@ export class CompanyState implements ICompanyState {
 
   async startNewState(): Promise<void> {
     await this._clones.startNewState();
+    await this._sidejobs.startNewState();
   }
 
   async deserialize(serializedState: ICompanySerializedState): Promise<void> {

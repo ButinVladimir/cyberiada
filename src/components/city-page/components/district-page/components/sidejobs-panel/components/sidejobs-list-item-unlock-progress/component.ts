@@ -1,4 +1,4 @@
-import { css, html, PropertyValues } from 'lit';
+import { css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import SlProgressBar from '@shoelace-style/shoelace/dist/components/progress-bar/progress-bar.component.js';
@@ -12,7 +12,7 @@ import { type SidejobName } from '@/state/company-state';
 
 @localized()
 @customElement('ca-city-district-sidejobs-list-item-unlock-progress')
-export class CityDistrictSidejobsListItemUnlockProgress extends BaseComponent<CityDistrictSidejobsListItemUnlockProgressController> {
+export class CityDistrictSidejobsListItemUnlockProgress extends BaseComponent {
   static styles = [
     hintStyle,
     css`
@@ -27,6 +27,8 @@ export class CityDistrictSidejobsListItemUnlockProgress extends BaseComponent<Ci
     `,
   ];
 
+  readonly hasPartialUpdate = true;
+
   @property({
     attribute: 'district-index',
     type: Number,
@@ -39,7 +41,7 @@ export class CityDistrictSidejobsListItemUnlockProgress extends BaseComponent<Ci
   })
   sidejobName!: SidejobName;
 
-  protected controller: CityDistrictSidejobsListItemUnlockProgressController;
+  private _controller: CityDistrictSidejobsListItemUnlockProgressController;
 
   private _progressBarRef = createRef<SlProgressBar>();
   private _hintRef = createRef<HTMLParagraphElement>();
@@ -47,23 +49,17 @@ export class CityDistrictSidejobsListItemUnlockProgress extends BaseComponent<Ci
   constructor() {
     super();
 
-    this.controller = new CityDistrictSidejobsListItemUnlockProgressController(this, this.handlePartialUpdate);
-  }
-
-  updated(_changedProperties: PropertyValues) {
-    super.updated(_changedProperties);
-
-    this.handlePartialUpdate();
+    this._controller = new CityDistrictSidejobsListItemUnlockProgressController(this);
   }
 
   render() {
     return html` <sl-progress-bar ${ref(this._progressBarRef)}></sl-progress-bar> `;
   }
 
-  private handlePartialUpdate = () => {
-    const formatter = this.controller.formatter;
-    const requiredConnectivity = this.controller.getRequiredConnectivity(this.sidejobName);
-    const currentConnectivity = this.controller.getCurrentConnectivity(this.districtIndex);
+  handlePartialUpdate = () => {
+    const formatter = this._controller.formatter;
+    const requiredConnectivity = this._controller.getRequiredConnectivity(this.sidejobName);
+    const currentConnectivity = this._controller.getCurrentConnectivity(this.districtIndex);
 
     if (this._progressBarRef.value) {
       const progressBarValue = calculateLevelProgressPercentage(0, currentConnectivity, requiredConnectivity);

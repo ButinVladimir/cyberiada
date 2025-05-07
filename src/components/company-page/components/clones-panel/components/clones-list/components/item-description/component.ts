@@ -13,7 +13,7 @@ import { cloneContext } from '../item/contexts';
 
 @localized()
 @customElement('ca-clones-list-item-description')
-export class ClonesListItemAttributes extends BaseComponent<ClonesListItemDescriptionController> {
+export class ClonesListItemAttributes extends BaseComponent {
   static styles = [
     subSectionTitleStyle,
     attributesSkillsTablesStyle,
@@ -31,7 +31,7 @@ export class ClonesListItemAttributes extends BaseComponent<ClonesListItemDescri
     `,
   ];
 
-  protected controller: ClonesListItemDescriptionController;
+  private _controller: ClonesListItemDescriptionController;
 
   @consume({ context: cloneContext, subscribe: true })
   private _clone?: IClone;
@@ -39,7 +39,7 @@ export class ClonesListItemAttributes extends BaseComponent<ClonesListItemDescri
   constructor() {
     super();
 
-    this.controller = new ClonesListItemDescriptionController(this);
+    this._controller = new ClonesListItemDescriptionController(this);
   }
 
   render() {
@@ -47,9 +47,9 @@ export class ClonesListItemAttributes extends BaseComponent<ClonesListItemDescri
       return nothing;
     }
 
-    const formatter = this.controller.formatter;
+    const formatter = this._controller.formatter;
 
-    const synchronization = this.controller.getCloneSynchronization(this._clone);
+    const synchronization = this._controller.getCloneSynchronization(this._clone);
     const formattedSynchronization = formatter.formatNumberDecimal(synchronization);
 
     return html`
@@ -71,7 +71,7 @@ export class ClonesListItemAttributes extends BaseComponent<ClonesListItemDescri
 
   private renderAttribute = (attribute: Attribute) => {
     const value = this._clone!.getTotalAttributeValue(attribute);
-    const formattedValue = this.controller.formatter.formatNumberDecimal(value);
+    const formattedValue = this._controller.formatter.formatNumberDecimal(value);
 
     return html`
       <div>${ATTRIBUTE_TEXTS[attribute]()}</div>
@@ -81,7 +81,7 @@ export class ClonesListItemAttributes extends BaseComponent<ClonesListItemDescri
 
   private renderSkill = (skill: Skill) => {
     const value = this._clone!.getTotalSkillValue(skill);
-    const formattedValue = this.controller.formatter.formatNumberDecimal(value);
+    const formattedValue = this._controller.formatter.formatNumberDecimal(value);
 
     return html`
       <div>${SKILL_TEXTS[skill]()}</div>

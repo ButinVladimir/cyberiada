@@ -1,7 +1,7 @@
 import districtTypes from '@configs/district-types.json';
 import { IMapGeneratorDistrictResult } from '@workers/map-generator/interfaces';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
-import { IEventBatcher, IPoint } from '@shared/interfaces';
+import { IPoint } from '@shared/interfaces';
 import { DistrictType, Faction } from '@shared/types';
 import { decorators } from '@state/container';
 import { TYPES } from '@state/types';
@@ -13,13 +13,12 @@ import {
   IDistrictArguments,
 } from './interfaces';
 import { DistrictUnlockState } from './types';
-import { EventBatcher } from '@shared/event-batcher';
 import { DistrictParameters } from './district-parameters';
 
 const { lazyInject } = decorators;
 
 export class DistrictState implements IDistrictState {
-  readonly uiEventBatcher: IEventBatcher;
+  private UI_EVENTS = {};
 
   @lazyInject(TYPES.StateUIConnector)
   private _stateUiConnector!: IStateUIConnector;
@@ -45,9 +44,7 @@ export class DistrictState implements IDistrictState {
 
     this._template = districtTypes[this._districtType] as IDistrictTypeTemplate;
 
-    this.uiEventBatcher = new EventBatcher();
-
-    this._stateUiConnector.registerEventEmitter(this);
+    this._stateUiConnector.registerEvents(this.UI_EVENTS);
   }
 
   static createByMapGenerator(index: number, mapGeneratorDistrictResult: IMapGeneratorDistrictResult): IDistrictState {

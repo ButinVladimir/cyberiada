@@ -1,15 +1,5 @@
 import sidejobs from '@configs/sidejobs.json';
-import {
-  Attribute,
-  Skill,
-  IEventBatcher,
-  EventBatcher,
-  COMMON_UI_EVENTS,
-  calculatePower,
-  ATTRIBUTES,
-  SKILLS,
-  IncomeSource,
-} from '@shared/index';
+import { Attribute, Skill, calculatePower, ATTRIBUTES, SKILLS, IncomeSource } from '@shared/index';
 import { decorators } from '@state/container';
 import { TYPES } from '@state/types';
 import { type IGlobalState } from '@state/global-state';
@@ -22,7 +12,7 @@ import { SidejobName } from './types';
 const { lazyInject } = decorators;
 
 export class Sidejob implements ISidejob {
-  readonly uiEventBatcher: IEventBatcher;
+  private UI_EVENTS = {};
 
   @lazyInject(TYPES.GlobalState)
   private _globalState!: IGlobalState;
@@ -47,8 +37,7 @@ export class Sidejob implements ISidejob {
 
     this._sidejobTemplate = sidejobs[this._templateName] as ISidejobTemplate;
 
-    this.uiEventBatcher = new EventBatcher();
-    this._stateUIConnector.registerEventEmitter(this);
+    this._stateUIConnector.registerEvents(this.UI_EVENTS);
   }
 
   get id() {
@@ -198,9 +187,7 @@ export class Sidejob implements ISidejob {
   }
 
   removeAllEventListeners(): void {
-    this.uiEventBatcher.fireImmediateEvent(COMMON_UI_EVENTS.REMOVE_EVENT_LISTENERS_BY_EMITTER);
-    this.uiEventBatcher.removeAllListeners();
-    this._stateUIConnector.unregisterEventEmitter(this);
+    this._stateUIConnector.unregisterEvents(this.UI_EVENTS);
   }
 
   private getCloneModifier(): number {

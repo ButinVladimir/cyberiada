@@ -1,16 +1,15 @@
 import { calculatePower } from '@shared/helpers';
-import { IEventBatcher } from '@shared/interfaces';
-import { EventBatcher } from '@shared/event-batcher';
 import { decorators } from '@state/container';
 import { type IStateUIConnector } from '@state/state-ui-connector/interfaces';
 import { TYPES } from '@state/types';
 import { IDistrictState, IDistrictSynchronizationParameter } from '../interfaces';
-import { CITY_STATE_UI_EVENTS } from '../constants';
 
 const { lazyInject } = decorators;
 
 export class DistrictSynchronizationParameter implements IDistrictSynchronizationParameter {
-  readonly uiEventBatcher: IEventBatcher;
+  private UI_EVENTS = {
+    SYNCHRONIZATION_UPDATED: Symbol('SYNCHRONIZATION_UPDATED'),
+  };
 
   @lazyInject(TYPES.StateUIConnector)
   private _stateUIConnector!: IStateUIConnector;
@@ -22,12 +21,11 @@ export class DistrictSynchronizationParameter implements IDistrictSynchronizatio
     this._district = district;
     this._value = 0;
 
-    this.uiEventBatcher = new EventBatcher();
-    this._stateUIConnector.registerEventEmitter(this);
+    this._stateUIConnector.registerEvents(this.UI_EVENTS);
   }
 
   get value(): number {
-    this._stateUIConnector.connectEventHandler(this, CITY_STATE_UI_EVENTS.SYNCHRONIZATION_UPDATED);
+    this._stateUIConnector.connectEventHandler(this.UI_EVENTS.SYNCHRONIZATION_UPDATED);
 
     return this._value;
   }
@@ -37,6 +35,6 @@ export class DistrictSynchronizationParameter implements IDistrictSynchronizatio
 
     this._value = calculatePower(this._district.parameters.tier.tier, districtTypeData.parameters.synchronization);
 
-    this.uiEventBatcher.enqueueEvent(CITY_STATE_UI_EVENTS.SYNCHRONIZATION_UPDATED);
+    this._stateUIConnector.enqueueEvent(this.UI_EVENTS.SYNCHRONIZATION_UPDATED);
   }
 }

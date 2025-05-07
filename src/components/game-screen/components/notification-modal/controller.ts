@@ -16,8 +16,7 @@ export class NotificationModalController extends BaseController {
 
   clearNotifications() {
     this.notificationsState.clearNotifications();
-
-    this.handleRefreshUI();
+    this.host.requestUpdate();
   }
 
   popNotification(enabled: boolean): void {
@@ -26,7 +25,7 @@ export class NotificationModalController extends BaseController {
     if (notification) {
       this.settingsState.toggleNotificationType(notification.notificationType, enabled);
       this.notificationsState.popUnreadNotification();
-      this.handleRefreshUI();
+      this.host.requestUpdate();
     }
   }
 }

@@ -1,4 +1,4 @@
-import { html, PropertyValues } from 'lit';
+import { html } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { msg, localized } from '@lit/localize';
 import { customElement, queryAll } from 'lit/decorators.js';
@@ -11,10 +11,12 @@ import { statisticsPanelContentStyle } from '../../../../styles';
 
 @localized()
 @customElement('ca-statistics-money-growth')
-export class StatisticsMoneyGrowth extends BaseComponent<StatisticsMoneyGrowthController> {
+export class StatisticsMoneyGrowth extends BaseComponent {
   static styles = statisticsPanelContentStyle;
 
-  protected controller: StatisticsMoneyGrowthController;
+  hasPartialUpdate = true;
+
+  private _controller: StatisticsMoneyGrowthController;
 
   @queryAll('span[data-name]')
   private _incomeSourceElements!: NodeListOf<HTMLSpanElement>;
@@ -24,13 +26,7 @@ export class StatisticsMoneyGrowth extends BaseComponent<StatisticsMoneyGrowthCo
   constructor() {
     super();
 
-    this.controller = new StatisticsMoneyGrowthController(this, this.handlePartialUpdate);
-  }
-
-  updated(_changedProperties: PropertyValues) {
-    super.updated(_changedProperties);
-
-    this.handlePartialUpdate();
+    this._controller = new StatisticsMoneyGrowthController(this);
   }
 
   render() {
@@ -55,18 +51,18 @@ export class StatisticsMoneyGrowth extends BaseComponent<StatisticsMoneyGrowthCo
     `;
   };
 
-  private handlePartialUpdate = () => {
-    const formatter = this.controller.formatter;
+  handlePartialUpdate = () => {
+    const formatter = this._controller.formatter;
 
     this._incomeSourceElements.forEach((element) => {
       const incomeSource = element.dataset.name as IncomeSource;
-      const value = this.controller.getMoneyGrowthByIncomeSource(incomeSource);
+      const value = this._controller.getMoneyGrowthByIncomeSource(incomeSource);
 
       element.textContent = formatter.formatNumberFloat(value);
     });
 
     if (this._totalGrowthRef.value) {
-      const totalValue = this.controller.moneyTotalGrowth;
+      const totalValue = this._controller.moneyTotalGrowth;
 
       this._totalGrowthRef.value.textContent = formatter.formatNumberFloat(totalValue);
     }

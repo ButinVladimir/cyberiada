@@ -19,7 +19,7 @@ import { existingSidejobContext, temporarySidejobContext } from '../../contexts'
 
 @localized()
 @customElement('ca-assign-clone-sidejob-dialog-rewards-multipliers')
-export class AssignCloneSidejobDialogRewardsMultipliers extends BaseComponent<BaseController> {
+export class AssignCloneSidejobDialogRewardsMultipliers extends BaseComponent {
   static styles = [
     subSectionTitleStyle,
     attributesSkillsTablesStyle,
@@ -31,7 +31,7 @@ export class AssignCloneSidejobDialogRewardsMultipliers extends BaseComponent<Ba
     `,
   ];
 
-  protected controller: BaseController;
+  private _controller: BaseController;
 
   @consume({ context: temporarySidejobContext, subscribe: true })
   private _sidejob?: ISidejob;
@@ -42,7 +42,7 @@ export class AssignCloneSidejobDialogRewardsMultipliers extends BaseComponent<Ba
   constructor() {
     super();
 
-    this.controller = new BaseController(this);
+    this._controller = new BaseController(this);
   }
 
   render() {
@@ -70,7 +70,7 @@ export class AssignCloneSidejobDialogRewardsMultipliers extends BaseComponent<Ba
     const existingValue = this._existingSidejob?.getAttributeModifier(attribute) ?? 1;
     const diff = value - existingValue;
 
-    const formatter = this.controller.formatter;
+    const formatter = this._controller.formatter;
 
     const formattedValue = formatter.formatNumberFloat(value);
     const formattedDiff = formatter.formatNumberFloat(diff, diffFormatterParameters);
@@ -89,7 +89,7 @@ export class AssignCloneSidejobDialogRewardsMultipliers extends BaseComponent<Ba
     const existingValue = this._existingSidejob?.getSkillModifier(skill) ?? 1;
     const diff = value - existingValue;
 
-    const formatter = this.controller.formatter;
+    const formatter = this._controller.formatter;
 
     const formattedValue = formatter.formatNumberFloat(value);
     const formattedDiff = formatter.formatNumberFloat(diff, diffFormatterParameters);

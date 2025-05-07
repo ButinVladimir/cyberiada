@@ -20,7 +20,7 @@ import { ALERT_NAMES } from './constants';
 
 @localized()
 @customElement('ca-alert-filter-dialog')
-export class AlertFilterDialog extends BaseComponent<AlertFilterDialogController> {
+export class AlertFilterDialog extends BaseComponent {
   static styles = [
     hintStyle,
     sectionTitleStyle,
@@ -67,7 +67,7 @@ export class AlertFilterDialog extends BaseComponent<AlertFilterDialogController
     `,
   ];
 
-  protected controller: AlertFilterDialogController;
+  private _controller: AlertFilterDialogController;
 
   @property({
     attribute: 'is-open',
@@ -78,7 +78,7 @@ export class AlertFilterDialog extends BaseComponent<AlertFilterDialogController
   constructor() {
     super();
 
-    this.controller = new AlertFilterDialogController(this);
+    this._controller = new AlertFilterDialogController(this);
   }
 
   render() {
@@ -115,7 +115,7 @@ export class AlertFilterDialog extends BaseComponent<AlertFilterDialogController
         size="small"
         name="event"
         value=${gameAlert}
-        ?checked=${this.controller.isAlertEnabled(gameAlert)}
+        ?checked=${this._controller.isAlertEnabled(gameAlert)}
         @sl-change=${this.handleToggleAlert}
       >
         ${ALERT_NAMES[gameAlert]()}
@@ -130,6 +130,6 @@ export class AlertFilterDialog extends BaseComponent<AlertFilterDialogController
   private handleToggleAlert = (event: Event) => {
     const target = event.target as SlCheckbox;
 
-    this.controller.toggleAlertFilterEvent(target.value as GameAlert, target.checked);
+    this._controller.toggleAlertFilterEvent(target.value as GameAlert, target.checked);
   };
 }

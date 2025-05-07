@@ -6,10 +6,6 @@ export class ClonesListItemController extends BaseController {
 
   getCloneById(id: string): IClone | undefined {
     if (this._clone?.id !== id) {
-      if (this._clone) {
-        this.removeEventListenersByEmitter(this._clone);
-      }
-
       this._clone = this.companyState.clones.getCloneById(id);
     }
 

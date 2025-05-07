@@ -12,7 +12,7 @@ import { SavefilePanelController } from './controller';
 
 @localized()
 @customElement('ca-savefile-panel')
-export class SavefilePanel extends BaseComponent<SavefilePanelController> {
+export class SavefilePanel extends BaseComponent {
   static styles = css`
     :host {
       display: flex;
@@ -27,14 +27,14 @@ export class SavefilePanel extends BaseComponent<SavefilePanelController> {
     }
   `;
 
-  protected controller: SavefilePanelController;
+  private _controller: SavefilePanelController;
 
   private _importInputRef = createRef<HTMLInputElement>();
 
   constructor() {
     super();
 
-    this.controller = new SavefilePanelController(this);
+    this._controller = new SavefilePanelController(this);
   }
 
   connectedCallback() {
@@ -74,7 +74,7 @@ export class SavefilePanel extends BaseComponent<SavefilePanelController> {
   }
 
   private handleSaveGame = () => {
-    this.controller.saveGame();
+    this._controller.saveGame();
   };
 
   private handleOpenImportSavefileDialog = () => {
@@ -106,12 +106,12 @@ export class SavefilePanel extends BaseComponent<SavefilePanelController> {
     const importedSavefile = this._importInputRef.value.files?.item(0);
 
     if (importedSavefile) {
-      this.controller.importSavefile(importedSavefile);
+      this._controller.importSavefile(importedSavefile);
     }
   };
 
   private handleExportSavefile = () => {
-    this.controller.exportSavefile();
+    this._controller.exportSavefile();
   };
 
   private handleOpenDeleteSaveDataDialog = () => {
@@ -130,7 +130,7 @@ export class SavefilePanel extends BaseComponent<SavefilePanelController> {
       return;
     }
 
-    this.controller.deleteSaveData().catch((e) => {
+    this._controller.deleteSaveData().catch((e) => {
       console.error(e);
     });
   };

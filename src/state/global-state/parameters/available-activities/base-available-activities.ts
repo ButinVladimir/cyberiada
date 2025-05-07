@@ -1,17 +1,17 @@
 import { injectable } from 'inversify';
 import { decorators } from '@state/container';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
-import { EventBatcher } from '@shared/event-batcher';
 import { TYPES } from '@state/types';
 import { Feature } from '@shared/types';
 import { type IGlobalState, IAvailableCategoryActivities } from '../../interfaces';
-import { GLOBAL_STATE_UI_EVENTS } from '../../constants';
 
 const { lazyInject } = decorators;
 
 @injectable()
 export abstract class BaseAvailableActivities<Key = string> implements IAvailableCategoryActivities<Key> {
-  readonly uiEventBatcher: EventBatcher;
+  protected UI_EVENTS = {
+    AVAILABLE_ACTIVITIES_UPDATED: Symbol('AVAILABLE_ACTIVITIES_UPDATED'),
+  };
 
   @lazyInject(TYPES.StateUIConnector)
   protected _stateUiConnector!: IStateUIConnector;
@@ -26,12 +26,11 @@ export abstract class BaseAvailableActivities<Key = string> implements IAvailabl
     this._neutralActivities = new Set();
     this._activitiesList = [];
 
-    this.uiEventBatcher = new EventBatcher();
-    this._stateUiConnector.registerEventEmitter(this);
+    this._stateUiConnector.registerEvents(this.UI_EVENTS);
   }
 
   listAvailableActivities(): Key[] {
-    this._stateUiConnector.connectEventHandler(this, GLOBAL_STATE_UI_EVENTS.AVAILABLE_ACTIVITIES_UPDATED);
+    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.AVAILABLE_ACTIVITIES_UPDATED);
 
     return this._activitiesList;
   }
@@ -48,7 +47,7 @@ export abstract class BaseAvailableActivities<Key = string> implements IAvailabl
     this.recalculateNeutralActivitiesList();
     this.recalculateCompleteList();
 
-    this.uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.AVAILABLE_ITEMS_UPDATED);
+    this._stateUiConnector.enqueueEvent(this.UI_EVENTS.AVAILABLE_ACTIVITIES_UPDATED);
   }
 
   protected abstract recalculateNeutralActivitiesList(): void;

@@ -12,7 +12,7 @@ import { ConfirmationAlertController } from './controller';
 
 @localized()
 @customElement('ca-confirmation-alert')
-export class ConfirmationAlert extends BaseComponent<ConfirmationAlertController> {
+export class ConfirmationAlert extends BaseComponent {
   static styles = [
     smallModalStyle,
     modalBodyScrollStyle,
@@ -33,7 +33,7 @@ export class ConfirmationAlert extends BaseComponent<ConfirmationAlertController
     `,
   ];
 
-  protected controller: ConfirmationAlertController;
+  private _controller: ConfirmationAlertController;
 
   private _gameAlertToggleRef = createRef<SlCheckbox>();
 
@@ -55,7 +55,7 @@ export class ConfirmationAlert extends BaseComponent<ConfirmationAlertController
   constructor() {
     super();
 
-    this.controller = new ConfirmationAlertController(this);
+    this._controller = new ConfirmationAlertController(this);
   }
 
   connectedCallback() {
@@ -103,7 +103,7 @@ export class ConfirmationAlert extends BaseComponent<ConfirmationAlertController
     this._message = convertedEvent.message;
     this._gameAlertKey = convertedEvent.gameAlertKey;
 
-    if (this.controller.isGameAlertEnabled(this._gameAlert)) {
+    if (this._controller.isGameAlertEnabled(this._gameAlert)) {
       this._isOpen = true;
       this._alertToggled = true;
     } else {
@@ -126,7 +126,7 @@ export class ConfirmationAlert extends BaseComponent<ConfirmationAlertController
       this._isOpen = false;
 
       if (this._gameAlertToggleRef.value) {
-        this.controller.toggleGameAlert(this._gameAlert, this._alertToggled);
+        this._controller.toggleGameAlert(this._gameAlert, this._alertToggled);
       }
 
       this.dispatchEvent(new ConfirmationAlertSubmitEvent(this._gameAlert, this._gameAlertKey));

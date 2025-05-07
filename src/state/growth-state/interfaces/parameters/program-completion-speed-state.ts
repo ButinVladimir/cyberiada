@@ -1,6 +1,4 @@
-import { IUIEventEmitter } from '@shared/interfaces/ui-event-emitter';
-
-export interface IProgramCompletionSpeedState extends IUIEventEmitter {
+export interface IProgramCompletionSpeedState {
   multiplierByHardware: number;
   multiplierByProgram: number;
   totalMultiplier: number;

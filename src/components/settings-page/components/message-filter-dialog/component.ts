@@ -20,7 +20,7 @@ import { MESSAGE_EVENT_NAMES } from './constants';
 
 @localized()
 @customElement('ca-message-filter-dialog')
-export class MessageFilterDialog extends BaseComponent<MessageFilterDialogController> {
+export class MessageFilterDialog extends BaseComponent {
   static styles = [
     hintStyle,
     sectionTitleStyle,
@@ -67,7 +67,7 @@ export class MessageFilterDialog extends BaseComponent<MessageFilterDialogContro
     `,
   ];
 
-  protected controller: MessageFilterDialogController;
+  private _controller: MessageFilterDialogController;
 
   @property({
     attribute: 'is-open',
@@ -78,7 +78,7 @@ export class MessageFilterDialog extends BaseComponent<MessageFilterDialogContro
   constructor() {
     super();
 
-    this.controller = new MessageFilterDialogController(this);
+    this._controller = new MessageFilterDialogController(this);
   }
 
   render() {
@@ -121,7 +121,7 @@ export class MessageFilterDialog extends BaseComponent<MessageFilterDialogContro
         size="small"
         name="event"
         value=${event}
-        ?checked=${this.controller.isMessageEventEnabled(event)}
+        ?checked=${this._controller.isMessageEventEnabled(event)}
         @sl-change=${this.handleToggleEvent}
       >
         ${MESSAGE_EVENT_NAMES[event]()}
@@ -136,6 +136,6 @@ export class MessageFilterDialog extends BaseComponent<MessageFilterDialogContro
   private handleToggleEvent = (event: Event) => {
     const target = event.target as SlCheckbox;
 
-    this.controller.toggleMessageEvent(target.value as MessageEvent, target.checked);
+    this._controller.toggleMessageEvent(target.value as MessageEvent, target.checked);
   };
 }

@@ -1,4 +1,4 @@
-import { html, PropertyValues } from 'lit';
+import { html } from 'lit';
 import { localized, msg } from '@lit/localize';
 import { map } from 'lit/directives/map.js';
 import { customElement, queryAll } from 'lit/decorators.js';
@@ -10,10 +10,12 @@ import { statisticsPanelContentStyle } from '../../../../styles';
 
 @localized()
 @customElement('ca-statistics-district-tier-points-income')
-export class StatisticsDistrictTierPointsIncome extends BaseComponent<StatisticsDistrictTierPointsIncomeController> {
+export class StatisticsDistrictTierPointsIncome extends BaseComponent {
   static styles = statisticsPanelContentStyle;
 
-  protected controller: StatisticsDistrictTierPointsIncomeController;
+  hasPartialUpdate = true;
+
+  private _controller: StatisticsDistrictTierPointsIncomeController;
 
   @queryAll('span[data-district]')
   private _districtValueNodes!: NodeListOf<HTMLSpanElement>;
@@ -21,13 +23,7 @@ export class StatisticsDistrictTierPointsIncome extends BaseComponent<Statistics
   constructor() {
     super();
 
-    this.controller = new StatisticsDistrictTierPointsIncomeController(this, this.handlePartialUpdate);
-  }
-
-  updated(_changedProperties: PropertyValues) {
-    super.updated(_changedProperties);
-
-    this.handlePartialUpdate();
+    this._controller = new StatisticsDistrictTierPointsIncomeController(this);
   }
 
   render() {
@@ -35,7 +31,7 @@ export class StatisticsDistrictTierPointsIncome extends BaseComponent<Statistics
       <sl-details>
         <h4 class="title" slot="summary">${msg('District tier points')}</h4>
 
-        <div class="parameters-table">${map(this.controller.listAvailableDistricts(), this.renderDistrict)}</div>
+        <div class="parameters-table">${map(this._controller.listAvailableDistricts(), this.renderDistrict)}</div>
       </sl-details>
     `;
   }
@@ -47,12 +43,12 @@ export class StatisticsDistrictTierPointsIncome extends BaseComponent<Statistics
     `;
   };
 
-  private handlePartialUpdate = () => {
-    const formatter = this.controller.formatter;
+  handlePartialUpdate = () => {
+    const formatter = this._controller.formatter;
 
     this._districtValueNodes.forEach((element) => {
       const districtIndex = parseInt(element.dataset.district!);
-      const value = this.controller.getPointsByDistrict(districtIndex);
+      const value = this._controller.getPointsByDistrict(districtIndex);
 
       element.textContent = formatter.formatNumberFloat(value);
     });

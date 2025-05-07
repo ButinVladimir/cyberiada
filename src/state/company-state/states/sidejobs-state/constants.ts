@@ -1,3 +1,0 @@
-export const SIDEJOBS_UI_EVENTS = {
-  SIDEJOBS_UPDATED: Symbol('SIDEJOBS_UPDATED'),
-};

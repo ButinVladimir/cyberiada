@@ -9,21 +9,21 @@ import { statisticsPanelContentStyle } from '../../../../styles';
 
 @localized()
 @customElement('ca-statistics-program-completion-speed')
-export class StatisticsProgramCompletionSpeed extends BaseComponent<StatisticsProgramCompletionSpeedController> {
+export class StatisticsProgramCompletionSpeed extends BaseComponent {
   static styles = statisticsPanelContentStyle;
 
-  protected controller: StatisticsProgramCompletionSpeedController;
+  private _controller: StatisticsProgramCompletionSpeedController;
 
   constructor() {
     super();
 
-    this.controller = new StatisticsProgramCompletionSpeedController(this);
+    this._controller = new StatisticsProgramCompletionSpeedController(this);
   }
 
   render() {
-    const formatter = this.controller.formatter;
+    const formatter = this._controller.formatter;
 
-    const { totalMultiplier, multiplierByHardware, multiplierByProgram } = this.controller;
+    const { totalMultiplier, multiplierByHardware, multiplierByProgram } = this._controller;
 
     return html`
       <sl-details>

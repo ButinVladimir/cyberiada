@@ -13,7 +13,7 @@ import { modalCloneContext } from './contexts';
 
 @localized()
 @customElement('ca-company-clones-panel')
-export class CompanyClonesPanel extends BaseComponent<ClonesPanelController> {
+export class CompanyClonesPanel extends BaseComponent {
   static styles = [
     hintStyle,
     css`
@@ -58,7 +58,7 @@ export class CompanyClonesPanel extends BaseComponent<ClonesPanelController> {
   @state()
   private _isPurchaseCloneDialogOpen = false;
 
-  protected controller: ClonesPanelController;
+  private _controller: ClonesPanelController;
 
   @state()
   private _cloneListItemDialogOpen = false;
@@ -72,14 +72,14 @@ export class CompanyClonesPanel extends BaseComponent<ClonesPanelController> {
   constructor() {
     super();
 
-    this.controller = new ClonesPanelController(this);
+    this._controller = new ClonesPanelController(this);
   }
 
   render() {
-    const formatter = this.controller.formatter;
+    const formatter = this._controller.formatter;
 
-    const formattedAvailableSynchronization = formatter.formatNumberDecimal(this.controller.availableSynchronization);
-    const formattedTotalSynchronization = formatter.formatNumberDecimal(this.controller.totalSynchronization);
+    const formattedAvailableSynchronization = formatter.formatNumberDecimal(this._controller.availableSynchronization);
+    const formattedTotalSynchronization = formatter.formatNumberDecimal(this._controller.totalSynchronization);
 
     return html`
       <p class="hint">

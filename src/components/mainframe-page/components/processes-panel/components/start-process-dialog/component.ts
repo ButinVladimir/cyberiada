@@ -28,7 +28,7 @@ import { StartProcessDialogController } from './controller';
 
 @localized()
 @customElement('ca-start-process-dialog')
-export class StartProcessDialog extends BaseComponent<StartProcessDialogController> {
+export class StartProcessDialog extends BaseComponent {
   static styles = [
     inputLabelStyle,
     hintStyle,
@@ -82,7 +82,7 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
     `,
   ];
 
-  protected controller: StartProcessDialogController;
+  private _controller: StartProcessDialogController;
 
   private _programInputRef = createRef<SlSelect>();
 
@@ -103,7 +103,7 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
   constructor() {
     super();
 
-    this.controller = new StartProcessDialogController(this);
+    this._controller = new StartProcessDialogController(this);
   }
 
   connectedCallback() {
@@ -128,7 +128,7 @@ export class StartProcessDialog extends BaseComponent<StartProcessDialogControll
   }
 
   render() {
-    const program = this._programName ? this.controller.getProgram(this._programName) : undefined;
+    const program = this._programName ? this._controller.getProgram(this._programName) : undefined;
     const maxThreads = this.calculateMaxThreads();
 
     const threadsInputDisabled = !(program && !program.isAutoscalable);
@@ -154,7 +154,7 @@ Threads allow to run multiple instances of same program at same time, but additi
             >
               <span class="input-label" slot="label"> ${msg('Program')} </span>
 
-              ${this.controller.listPrograms().map(this.formatProgramSelectItem)}
+              ${this._controller.listPrograms().map(this.formatProgramSelectItem)}
             </sl-select>
 
             <sl-input
@@ -220,12 +220,12 @@ Threads allow to run multiple instances of same program at same time, but additi
       return;
     }
 
-    const program = this.controller.getProgram(this._programName);
+    const program = this._controller.getProgram(this._programName);
     const programIsAutoscalable = program!.isAutoscalable;
-    const runningScalableProgram = this.controller.getRunningScalableProgram();
+    const runningScalableProgram = this._controller.getRunningScalableProgram();
 
-    const existingProcess = this.controller.getProcessByName(this._programName);
-    const formatter = this.controller.formatter;
+    const existingProcess = this._controller.getProcessByName(this._programName);
+    const formatter = this._controller.formatter;
 
     const programTitle = PROGRAM_TEXTS[this._programName].title();
 
@@ -276,7 +276,7 @@ Threads allow to run multiple instances of same program at same time, but additi
 
   private startProcess = () => {
     if (this._programName) {
-      const isStarted = this.controller.startProcess(this._programName, this._threads);
+      const isStarted = this._controller.startProcess(this._programName, this._threads);
 
       if (isStarted) {
         this.dispatchEvent(new StartProcessDialogCloseEvent());
@@ -285,7 +285,7 @@ Threads allow to run multiple instances of same program at same time, but additi
   };
 
   private formatProgramSelectItem = (program: IProgram) => {
-    const formatter = this.controller.formatter;
+    const formatter = this._controller.formatter;
     const programTitle = PROGRAM_TEXTS[program.name].title();
     const formattedLevel = formatter.formatLevel(program.level);
     const formattedQuality = formatter.formatQuality(program.quality);
@@ -300,8 +300,8 @@ Threads allow to run multiple instances of same program at same time, but additi
       return 1;
     }
 
-    const program = this.controller.getProgram(this._programName);
-    const availableRam = this.controller.getAvailableRamForProgram(this._programName);
+    const program = this._controller.getProgram(this._programName);
+    const availableRam = this._controller.getAvailableRamForProgram(this._programName);
 
     if (program && !program.isAutoscalable) {
       return Math.max(Math.floor(availableRam / program.ram), 0);

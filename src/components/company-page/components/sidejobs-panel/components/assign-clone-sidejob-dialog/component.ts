@@ -1,10 +1,9 @@
 import { css, html, PropertyValues } from 'lit';
 import { localized, msg, str } from '@lit/localize';
-import { customElement, property, queryAll, state } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { provide } from '@lit/context';
 import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.component.js';
-import SlOption from '@shoelace-style/shoelace/dist/components/option/option.component.js';
 import { BaseComponent } from '@shared/base-component';
 import {
   inputLabelStyle,
@@ -27,7 +26,7 @@ import { CloneAlert } from '@/shared';
 
 @localized()
 @customElement('ca-assign-clone-sidejob-dialog')
-export class AssignCloneSidejobDialog extends BaseComponent<AssignCloneSidejobDialogController> {
+export class AssignCloneSidejobDialog extends BaseComponent {
   static styles = [
     inputLabelStyle,
     hintStyle,
@@ -85,16 +84,13 @@ export class AssignCloneSidejobDialog extends BaseComponent<AssignCloneSidejobDi
     `,
   ];
 
-  protected controller: AssignCloneSidejobDialogController;
+  private _controller: AssignCloneSidejobDialogController;
 
   private _cloneIdInputRef = createRef<SlSelect>();
 
   private _districtIndexInputRef = createRef<SlSelect>();
 
   private _sidejobNameInputRef = createRef<SlSelect>();
-
-  @queryAll('sl-select[name="sidejobName"] sl-option')
-  private _sidejobNameOptions!: NodeListOf<SlOption>;
 
   @property({
     attribute: 'is-open',
@@ -120,7 +116,7 @@ export class AssignCloneSidejobDialog extends BaseComponent<AssignCloneSidejobDi
   constructor() {
     super();
 
-    this.controller = new AssignCloneSidejobDialogController(this);
+    this._controller = new AssignCloneSidejobDialogController(this);
   }
 
   connectedCallback() {
@@ -137,7 +133,7 @@ export class AssignCloneSidejobDialog extends BaseComponent<AssignCloneSidejobDi
 
   performUpdate() {
     if (this._sidejobName !== undefined && this._districtIndex !== undefined) {
-      const sidejob = this.controller.getSidejob({
+      const sidejob = this._controller.getSidejob({
         assignedCloneId: this._cloneId,
         districtIndex: this._districtIndex,
         sidejobName: this._sidejobName,
@@ -148,7 +144,7 @@ export class AssignCloneSidejobDialog extends BaseComponent<AssignCloneSidejobDi
       this._sidejob = undefined;
     }
 
-    this._existingSidejob = this.controller.getExistingSidejobByClone(this._cloneId);
+    this._existingSidejob = this._controller.getExistingSidejobByClone(this._cloneId);
 
     super.performUpdate();
   }
@@ -185,7 +181,7 @@ Sidejobs availability depends on unlocked features and district connectivity.`)}
             >
               <span class="input-label" slot="label"> ${msg('Clone')} </span>
 
-              ${this.controller
+              ${this._controller
                 .listClones()
                 .map((clone) => html`<sl-option value=${clone.id}> ${clone.name} </sl-option>`)}
             </sl-select>
@@ -199,7 +195,7 @@ Sidejobs availability depends on unlocked features and district connectivity.`)}
             >
               <span class="input-label" slot="label"> ${msg('District')} </span>
 
-              ${this.controller
+              ${this._controller
                 .listAvailableDistricts()
                 .map(
                   (districtState) =>
@@ -216,7 +212,7 @@ Sidejobs availability depends on unlocked features and district connectivity.`)}
             >
               <span class="input-label" slot="label"> ${msg('Sidejob')} </span>
 
-              ${this.controller
+              ${this._controller
                 .listAvailableSidejobs()
                 .map(
                   (sidejobName) =>
@@ -302,7 +298,7 @@ Sidejobs availability depends on unlocked features and district connectivity.`)}
   };
 
   private assignClone() {
-    this.controller.assignClone({
+    this._controller.assignClone({
       districtIndex: this._districtIndex!,
       sidejobName: this._sidejobName!,
       assignedCloneId: this._cloneId!,

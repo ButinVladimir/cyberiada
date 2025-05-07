@@ -18,7 +18,7 @@ import { OwnedProgramsListItemController } from './controller';
 
 @localized()
 @customElement('ca-owned-programs-list-item')
-export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemController> {
+export class OwnedProgramsListItem extends BaseComponent {
   static styles = [
     hintIconStyle,
     dragIconStyle,
@@ -111,18 +111,18 @@ export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemCo
   @state()
   _descriptionVisible = false;
 
-  protected controller: OwnedProgramsListItemController;
+  private _controller: OwnedProgramsListItemController;
 
   constructor() {
     super();
 
-    this.controller = new OwnedProgramsListItemController(this);
+    this._controller = new OwnedProgramsListItemController(this);
   }
 
   render() {
-    const formatter = this.controller.formatter;
+    const formatter = this._controller.formatter;
 
-    const program = this.controller.getProgram(this.programName);
+    const program = this._controller.getProgram(this.programName);
 
     if (!program) {
       return nothing;
@@ -224,7 +224,7 @@ export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemCo
   };
 
   private handleToggleAutoUpgrade = () => {
-    const program = this.controller.getProgram(this.programName as ProgramName);
+    const program = this._controller.getProgram(this.programName as ProgramName);
 
     if (program) {
       program.autoUpgradeEnabled = !program.autoUpgradeEnabled;
@@ -238,6 +238,6 @@ export class OwnedProgramsListItem extends BaseComponent<OwnedProgramsListItemCo
   };
 
   private handleUpgradeMax = () => {
-    this.controller.upgradeMaxProgram(this.programName as ProgramName);
+    this._controller.upgradeMaxProgram(this.programName as ProgramName);
   };
 }

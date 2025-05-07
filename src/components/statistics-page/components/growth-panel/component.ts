@@ -6,15 +6,15 @@ import { statisticsPanelStyle } from '../../styles';
 import { StatisticsGrowthPanelController } from './controller';
 
 @customElement('ca-statistics-growth-panel')
-export class StatisticsGrowthPanel extends BaseComponent<StatisticsGrowthPanelController> {
+export class StatisticsGrowthPanel extends BaseComponent {
   static styles = statisticsPanelStyle;
 
-  protected controller: StatisticsGrowthPanelController;
+  private _controller: StatisticsGrowthPanelController;
 
   constructor() {
     super();
 
-    this.controller = new StatisticsGrowthPanelController(this);
+    this._controller = new StatisticsGrowthPanelController(this);
   }
 
   render() {
@@ -23,13 +23,13 @@ export class StatisticsGrowthPanel extends BaseComponent<StatisticsGrowthPanelCo
 
       <ca-statistics-development-growth></ca-statistics-development-growth>
 
-      ${this.controller.isFeatureUnlocked(Feature.rewards)
+      ${this._controller.isFeatureUnlocked(Feature.rewards)
         ? html`<ca-statistics-multiplier-points-growth type="rewards"></ca-statistics-multiplier-points-growth>`
         : nothing}
-      ${this.controller.isFeatureUnlocked(Feature.codeBase)
+      ${this._controller.isFeatureUnlocked(Feature.codeBase)
         ? html`<ca-statistics-multiplier-points-growth type="codeBase"></ca-statistics-multiplier-points-growth>`
         : nothing}
-      ${this.controller.isFeatureUnlocked(Feature.computationalBase)
+      ${this._controller.isFeatureUnlocked(Feature.computationalBase)
         ? html`<ca-statistics-multiplier-points-growth
             type="computationalBase"
           ></ca-statistics-multiplier-points-growth>`

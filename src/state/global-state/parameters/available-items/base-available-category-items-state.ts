@@ -1,7 +1,6 @@
 import { injectable } from 'inversify';
 import { decorators } from '@state/container';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
-import { EventBatcher } from '@shared/event-batcher';
 import { TYPES } from '@state/types';
 import { Feature } from '@shared/types';
 import {
@@ -9,13 +8,14 @@ import {
   IAvailableCategoryItemsState,
   IAvailableCategoryItemsSerializedState,
 } from '../../interfaces';
-import { GLOBAL_STATE_UI_EVENTS } from '../../constants';
 
 const { lazyInject } = decorators;
 
 @injectable()
 export abstract class BaseAvailableCategoryItemsState<Key = string> implements IAvailableCategoryItemsState<Key> {
-  readonly uiEventBatcher: EventBatcher;
+  protected UI_EVENTS = {
+    AVAILABLE_ITEMS_UPDATED: Symbol('AVAILABLE_ITEMS_UPDATED'),
+  };
 
   @lazyInject(TYPES.StateUIConnector)
   protected _stateUiConnector!: IStateUIConnector;
@@ -34,8 +34,7 @@ export abstract class BaseAvailableCategoryItemsState<Key = string> implements I
     this._loanedItems = new Set();
     this._itemsList = [];
 
-    this.uiEventBatcher = new EventBatcher();
-    this._stateUiConnector.registerEventEmitter(this);
+    this._stateUiConnector.registerEvents(this.UI_EVENTS);
   }
 
   get loanedQuality() {
@@ -43,7 +42,7 @@ export abstract class BaseAvailableCategoryItemsState<Key = string> implements I
   }
 
   listAvailableItems(): Key[] {
-    this._stateUiConnector.connectEventHandler(this, GLOBAL_STATE_UI_EVENTS.AVAILABLE_ITEMS_UPDATED);
+    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.AVAILABLE_ITEMS_UPDATED);
 
     return this._itemsList;
   }
@@ -79,7 +78,7 @@ export abstract class BaseAvailableCategoryItemsState<Key = string> implements I
     this.recalculateNeutralItemsList();
     this.recalculateCompleteList();
 
-    this.uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.AVAILABLE_ITEMS_UPDATED);
+    this._stateUiConnector.enqueueEvent(this.UI_EVENTS.AVAILABLE_ITEMS_UPDATED);
   }
 
   async startNewState(): Promise<void> {

@@ -1,10 +1,10 @@
-import { ISerializeable, IUIEventEmitter } from '@shared/interfaces';
+import { ISerializeable } from '@shared/interfaces';
 import { ICompanyClonesSerializedState } from './clones-serialized-state';
 import { IClone } from '../../clone-factory/interfaces/clone';
 import { CloneTemplateName } from '../../clone-factory';
 import { IPurchaseCloneArgs } from './purchase-clone-args';
 
-export interface ICompanyClonesState extends IUIEventEmitter, ISerializeable<ICompanyClonesSerializedState> {
+export interface ICompanyClonesState extends ISerializeable<ICompanyClonesSerializedState> {
   availableSynchronization: number;
   listClones(): IClone[];
   getCloneById(id: string): IClone | undefined;

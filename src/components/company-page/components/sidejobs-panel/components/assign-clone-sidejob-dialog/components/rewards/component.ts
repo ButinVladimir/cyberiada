@@ -1,4 +1,4 @@
-import { css, html, nothing, PropertyValues } from 'lit';
+import { css, html, nothing } from 'lit';
 import { localized, msg } from '@lit/localize';
 import { consume } from '@lit/context';
 import { customElement, queryAll } from 'lit/decorators.js';
@@ -12,7 +12,7 @@ import { AssignCloneSidejobDialogRewardsController } from './controller';
 
 @localized()
 @customElement('ca-assign-clone-sidejob-dialog-rewards')
-export class AssignCloneSidejobDialogRewards extends BaseComponent<AssignCloneSidejobDialogRewardsController> {
+export class AssignCloneSidejobDialogRewards extends BaseComponent {
   static styles = [
     highlightedValuesStyle,
     css`
@@ -26,7 +26,9 @@ export class AssignCloneSidejobDialogRewards extends BaseComponent<AssignCloneSi
     `,
   ];
 
-  protected controller: AssignCloneSidejobDialogRewardsController;
+  hasPartialUpdate = true;
+
+  private _controller: AssignCloneSidejobDialogRewardsController;
 
   @queryAll('p[data-name]')
   private _paragraphs!: NodeListOf<HTMLParagraphElement>;
@@ -40,13 +42,7 @@ export class AssignCloneSidejobDialogRewards extends BaseComponent<AssignCloneSi
   constructor() {
     super();
 
-    this.controller = new AssignCloneSidejobDialogRewardsController(this, this.handlePartialUpdate);
-  }
-
-  updated(_changedProperties: PropertyValues) {
-    super.updated(_changedProperties);
-
-    this.handlePartialUpdate();
+    this._controller = new AssignCloneSidejobDialogRewardsController(this);
   }
 
   render() {
@@ -57,14 +53,16 @@ export class AssignCloneSidejobDialogRewards extends BaseComponent<AssignCloneSi
     return html`
       ${this.renderParameter(RewardParameters.money)} ${this.renderParameter(RewardParameters.developmentPoints)}
       ${this.renderParameter(RewardParameters.experience)} ${this.renderParameter(RewardParameters.districtTierPoints)}
-      ${this.controller.isFeatureUnlocked(Feature.connectivity)
+      ${this._controller.isFeatureUnlocked(Feature.connectivity)
         ? this.renderParameter(RewardParameters.connectivity)
         : nothing}
-      ${this.controller.isFeatureUnlocked(Feature.codeBase) ? this.renderParameter(RewardParameters.codeBase) : nothing}
-      ${this.controller.isFeatureUnlocked(Feature.computationalBase)
+      ${this._controller.isFeatureUnlocked(Feature.codeBase)
+        ? this.renderParameter(RewardParameters.codeBase)
+        : nothing}
+      ${this._controller.isFeatureUnlocked(Feature.computationalBase)
         ? this.renderParameter(RewardParameters.computationalBase)
         : nothing}
-      ${this.controller.isFeatureUnlocked(Feature.rewards) ? this.renderParameter(RewardParameters.rewards) : nothing}
+      ${this._controller.isFeatureUnlocked(Feature.rewards) ? this.renderParameter(RewardParameters.rewards) : nothing}
     `;
   }
 
@@ -78,7 +76,7 @@ export class AssignCloneSidejobDialogRewards extends BaseComponent<AssignCloneSi
     </p>`;
   };
 
-  private handlePartialUpdate = () => {
+  handlePartialUpdate = () => {
     this._paragraphs.forEach((paragraph) => {
       const parameter = paragraph.dataset.name;
 
@@ -173,7 +171,7 @@ export class AssignCloneSidejobDialogRewards extends BaseComponent<AssignCloneSi
 
     const diff = newValue - oldValue;
 
-    const formatter = this.controller.formatter;
+    const formatter = this._controller.formatter;
 
     const formattedValue = formatter.formatNumberFloat(newValue);
     const formattedDiff = formatter.formatNumberFloat(diff, diffFormatterParameters);

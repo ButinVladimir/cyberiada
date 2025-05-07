@@ -1,4 +1,4 @@
-import { html, PropertyValues } from 'lit';
+import { html } from 'lit';
 import { localized, msg } from '@lit/localize';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { map } from 'lit/directives/map.js';
@@ -12,10 +12,12 @@ import { statisticsPanelContentStyle } from '../../../../styles';
 
 @localized()
 @customElement('ca-statistics-connectivity-points-income')
-export class StatisticsConnectivityPointsIncome extends BaseComponent<StatisticsConnectivityPointsIncomeController> {
+export class StatisticsConnectivityPointsIncome extends BaseComponent {
   static styles = statisticsPanelContentStyle;
 
-  protected controller: StatisticsConnectivityPointsIncomeController;
+  hasPartialUpdate = true;
+
+  private _controller: StatisticsConnectivityPointsIncomeController;
 
   private _programPointsRef = createRef<HTMLSpanElement>();
 
@@ -25,13 +27,7 @@ export class StatisticsConnectivityPointsIncome extends BaseComponent<Statistics
   constructor() {
     super();
 
-    this.controller = new StatisticsConnectivityPointsIncomeController(this, this.handlePartialUpdate);
-  }
-
-  updated(_changedProperties: PropertyValues) {
-    super.updated(_changedProperties);
-
-    this.handlePartialUpdate();
+    this._controller = new StatisticsConnectivityPointsIncomeController(this);
   }
 
   render() {
@@ -51,7 +47,7 @@ export class StatisticsConnectivityPointsIncome extends BaseComponent<Statistics
           <span> ${STATISTIC_PAGE_TEXTS.byPrograms()} </span>
           <span ${ref(this._programPointsRef)}> </span>
 
-          ${map(this.controller.listAvailableDistricts(), this.renderDistrict)}
+          ${map(this._controller.listAvailableDistricts(), this.renderDistrict)}
         </div>
       </sl-details>
     `;
@@ -64,18 +60,18 @@ export class StatisticsConnectivityPointsIncome extends BaseComponent<Statistics
     `;
   };
 
-  private handlePartialUpdate = () => {
-    const formatter = this.controller.formatter;
+  handlePartialUpdate = () => {
+    const formatter = this._controller.formatter;
 
     if (this._programPointsRef.value) {
-      const pointsByProgram = this.controller.getPointsByProgram();
+      const pointsByProgram = this._controller.getPointsByProgram();
 
       this._programPointsRef.value.textContent = formatter.formatNumberFloat(pointsByProgram);
     }
 
     this._districtValueNodes.forEach((element) => {
       const districtIndex = parseInt(element.dataset.district!);
-      const value = this.controller.getPointsByDistrict(districtIndex);
+      const value = this._controller.getPointsByDistrict(districtIndex);
 
       element.textContent = formatter.formatNumberFloat(value);
     });

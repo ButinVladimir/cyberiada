@@ -1,6 +1,4 @@
-import { IUIEventEmitter } from '@shared/interfaces/ui-event-emitter';
-
-export interface IAvailableCategoryActivities<Key = string> extends IUIEventEmitter {
+export interface IAvailableCategoryActivities<Key = string> {
   listAvailableActivities(): Key[];
   isActivityAvailable(activityName: Key): boolean;
   recalculate(): void;

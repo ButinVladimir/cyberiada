@@ -9,7 +9,7 @@ import { CityDistrictSidejobsPanelController } from './controller';
 
 @localized()
 @customElement('ca-city-district-sidejobs-panel')
-export class CityDistrictSidejobsPanel extends BaseComponent<CityDistrictSidejobsPanelController> {
+export class CityDistrictSidejobsPanel extends BaseComponent {
   static styles = [
     hintStyle,
     css`
@@ -73,16 +73,16 @@ export class CityDistrictSidejobsPanel extends BaseComponent<CityDistrictSidejob
   })
   districtIndex!: number;
 
-  protected controller: CityDistrictSidejobsPanelController;
+  private _controller: CityDistrictSidejobsPanelController;
 
   constructor() {
     super();
 
-    this.controller = new CityDistrictSidejobsPanelController(this);
+    this._controller = new CityDistrictSidejobsPanelController(this);
   }
 
   render() {
-    const sidejobs = this.controller.getAvailableSidejobs();
+    const sidejobs = this._controller.getAvailableSidejobs();
 
     return html`
       <p class="hint">

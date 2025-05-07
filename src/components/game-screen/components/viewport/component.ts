@@ -7,7 +7,7 @@ import { Feature } from '@shared/types';
 import { ViewportController } from './controller';
 
 @customElement('ca-viewport')
-export class Viewport extends BaseComponent<ViewportController> {
+export class Viewport extends BaseComponent {
   static styles = css`
     div.content-wrapper {
       width: 100%;
@@ -23,12 +23,12 @@ export class Viewport extends BaseComponent<ViewportController> {
   })
   selectedMenuItem = '';
 
-  protected controller: ViewportController;
+  private _controller: ViewportController;
 
   constructor() {
     super();
 
-    this.controller = new ViewportController(this);
+    this._controller = new ViewportController(this);
   }
 
   render() {
@@ -39,7 +39,7 @@ export class Viewport extends BaseComponent<ViewportController> {
     const requirements = constants.menuUnlockRequirements as Record<string, Feature>;
     const feature = requirements[this.selectedMenuItem] as Feature | undefined;
 
-    if (feature && !this.controller.isFeatureUnlocked(feature)) {
+    if (feature && !this._controller.isFeatureUnlocked(feature)) {
       return nothing;
     }
 

@@ -1,6 +1,4 @@
-import { IUIEventEmitter } from '@shared/interfaces';
-
-export interface IDistrictSynchronizationParameter extends IUIEventEmitter {
+export interface IDistrictSynchronizationParameter {
   value: number;
   recalculate(): void;
 }

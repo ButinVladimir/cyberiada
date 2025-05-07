@@ -1,4 +1,4 @@
-import { css, html, nothing, PropertyValues } from 'lit';
+import { css, html, nothing } from 'lit';
 import { msg, localized } from '@lit/localize';
 import { customElement, property, queryAll } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
@@ -23,7 +23,7 @@ import { PROGRAM_DESCRIPTION_TEXTS, PROGRAM_TEXTS } from '@texts/programs';
 
 @localized()
 @customElement('ca-process-description-text')
-export class ProcessDescriptionText extends BaseComponent<ProcessDescriptionTextController> {
+export class ProcessDescriptionText extends BaseComponent {
   static styles = css`
     :host {
       white-space: normal;
@@ -38,13 +38,15 @@ export class ProcessDescriptionText extends BaseComponent<ProcessDescriptionText
     }
   `;
 
+  hasPartialUpdate = true;
+
   @property({
     attribute: 'program-name',
     type: String,
   })
   programName!: ProgramName;
 
-  protected controller: ProcessDescriptionTextController;
+  private _controller: ProcessDescriptionTextController;
 
   private _renderer?: IDescriptionEffectRenderer;
 
@@ -54,17 +56,11 @@ export class ProcessDescriptionText extends BaseComponent<ProcessDescriptionText
   constructor() {
     super();
 
-    this.controller = new ProcessDescriptionTextController(this, this.handlePartialUpdate);
-  }
-
-  updated(_changedProperties: PropertyValues) {
-    super.updated(_changedProperties);
-
-    this.handlePartialUpdate();
+    this._controller = new ProcessDescriptionTextController(this);
   }
 
   render() {
-    const process = this.controller.getProcess(this.programName as ProgramName);
+    const process = this._controller.getProcess(this.programName as ProgramName);
 
     if (!process) {
       this._renderer = undefined;
@@ -107,8 +103,8 @@ export class ProcessDescriptionText extends BaseComponent<ProcessDescriptionText
   };
 
   private renderNormalRequirements = () => {
-    const formatter = this.controller.formatter;
-    const process = this.controller.getProcess(this.programName)!;
+    const formatter = this._controller.formatter;
+    const process = this._controller.getProcess(this.programName)!;
 
     const completionDelta = process.program.calculateCompletionDelta(process.threads, process.usedCores, 1);
 
@@ -146,7 +142,7 @@ export class ProcessDescriptionText extends BaseComponent<ProcessDescriptionText
     return this._renderer.renderEffect();
   };
 
-  private handlePartialUpdate = () => {
+  handlePartialUpdate = () => {
     if (!this._renderer) {
       return;
     }
@@ -155,11 +151,11 @@ export class ProcessDescriptionText extends BaseComponent<ProcessDescriptionText
   };
 
   private updateRenderer(): void {
-    const process = this.controller.getProcess(this.programName as ProgramName)!;
+    const process = this._controller.getProcess(this.programName as ProgramName)!;
 
     const parameters: IDescriptionParameters = {
-      formatter: this.controller.formatter,
-      autoscalableProcessRam: this.controller.autoscalableProcessRam,
+      formatter: this._controller.formatter,
+      autoscalableProcessRam: this._controller.autoscalableProcessRam,
       process,
     };
 

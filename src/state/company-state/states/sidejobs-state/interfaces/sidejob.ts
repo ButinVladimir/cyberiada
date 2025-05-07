@@ -1,10 +1,10 @@
-import { Attribute, IUIEventEmitter, Skill } from '@shared/index';
+import { Attribute, Skill } from '@shared/index';
 import { IDistrictState } from '@state/city-state';
 import { IClone } from '../../clone-factory';
 import { SidejobName } from '../types';
 import { IMakeSidejobParameters } from './make-sidejob-parameters';
 
-export interface ISidejob extends IUIEventEmitter {
+export interface ISidejob {
   id: string;
   sidejobName: SidejobName;
   district: IDistrictState;

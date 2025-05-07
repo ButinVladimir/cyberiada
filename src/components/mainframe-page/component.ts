@@ -9,7 +9,7 @@ import { MAINFRAME_PAGE_TABS_LIST, MAINFRAMGE_PAGE_TAB_TITLES as MAINFRAME_PAGE_
 
 @localized()
 @customElement('ca-mainframe-page')
-export class MainframePage extends BaseComponent<MainframePageController> {
+export class MainframePage extends BaseComponent {
   static styles = [
     pageTitleStyle,
     css`
@@ -19,12 +19,12 @@ export class MainframePage extends BaseComponent<MainframePageController> {
     `,
   ];
 
-  protected controller: MainframePageController;
+  private _controller: MainframePageController;
 
   constructor() {
     super();
 
-    this.controller = new MainframePageController(this);
+    this._controller = new MainframePageController(this);
   }
 
   render() {
@@ -41,9 +41,9 @@ export class MainframePage extends BaseComponent<MainframePageController> {
   private isTabUnlocked = (tab: MainframePageTabs): boolean => {
     switch (tab) {
       case MainframePageTabs.hardware:
-        return this.controller.isMainframeHardwareUnlocked();
+        return this._controller.isMainframeHardwareUnlocked();
       case MainframePageTabs.programs:
-        return this.controller.isMainframeProgramsUnlocked();
+        return this._controller.isMainframeProgramsUnlocked();
       default:
         return true;
     }

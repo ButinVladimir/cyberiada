@@ -14,7 +14,7 @@ import { highlightValue } from '@/shared';
 
 @localized()
 @customElement('ca-purchase-clone-dialog-description')
-export class PurchaseCloneDialogDescription extends BaseComponent<PurchaseCloneDialogDescriptionTextController> {
+export class PurchaseCloneDialogDescription extends BaseComponent {
   static styles = [
     subSectionTitleStyle,
     attributesSkillsTablesStyle,
@@ -36,12 +36,12 @@ export class PurchaseCloneDialogDescription extends BaseComponent<PurchaseCloneD
   @consume({ context: temporaryCloneContext, subscribe: true })
   private _clone?: IClone;
 
-  protected controller: PurchaseCloneDialogDescriptionTextController;
+  private _controller: PurchaseCloneDialogDescriptionTextController;
 
   constructor() {
     super();
 
-    this.controller = new PurchaseCloneDialogDescriptionTextController(this);
+    this._controller = new PurchaseCloneDialogDescriptionTextController(this);
   }
 
   render() {
@@ -57,10 +57,10 @@ export class PurchaseCloneDialogDescription extends BaseComponent<PurchaseCloneD
   }
 
   private renderSynchronization = () => {
-    const formatter = this.controller.formatter;
+    const formatter = this._controller.formatter;
 
-    const synchronization = this.controller.getCloneSynchronization(this._clone!.templateName, this._clone!.quality);
-    const availableSynchronization = this.controller.availableSynchronization;
+    const synchronization = this._controller.getCloneSynchronization(this._clone!.templateName, this._clone!.quality);
+    const availableSynchronization = this._controller.availableSynchronization;
 
     const formattedCloneSynchronization = formatter.formatNumberDecimal(synchronization);
     const formattedAvailableSynchronization = formatter.formatNumberDecimal(availableSynchronization);
@@ -93,7 +93,7 @@ export class PurchaseCloneDialogDescription extends BaseComponent<PurchaseCloneD
 
   private renderAttribute = (attribute: Attribute) => {
     const value = this._clone!.getTotalAttributeValue(attribute);
-    const formattedValue = this.controller.formatter.formatNumberDecimal(value);
+    const formattedValue = this._controller.formatter.formatNumberDecimal(value);
 
     return html`
       <div>${ATTRIBUTE_TEXTS[attribute]()}</div>
@@ -103,7 +103,7 @@ export class PurchaseCloneDialogDescription extends BaseComponent<PurchaseCloneD
 
   private renderSkill = (skill: Skill) => {
     const value = this._clone!.getTotalSkillValue(skill);
-    const formattedValue = this.controller.formatter.formatNumberDecimal(value);
+    const formattedValue = this._controller.formatter.formatNumberDecimal(value);
 
     return html`
       <div>${SKILL_TEXTS[skill]()}</div>

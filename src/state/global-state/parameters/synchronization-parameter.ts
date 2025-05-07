@@ -1,17 +1,16 @@
 import { decorators } from '@state/container';
 import { TYPES } from '@state/types';
-import { IEventBatcher } from '@shared/interfaces';
-import { EventBatcher } from '@shared/event-batcher';
 import { type IStateUIConnector } from '@state/state-ui-connector';
 import { type ICityState } from '@state/city-state/interfaces';
 import { type IGlobalState, ISynchronizationParameter } from '../interfaces';
 import { type ICompanyState } from '@state/company-state/interfaces';
-import { GLOBAL_STATE_UI_EVENTS } from '../constants';
 
 const { lazyInject } = decorators;
 
 export class SynchronizationParameter implements ISynchronizationParameter {
-  readonly uiEventBatcher: IEventBatcher;
+  private UI_EVENTS = {
+    SYNCHRONIZATION_UPDATED: Symbol('SYNCHRONIZATION_UPDATED'),
+  };
 
   @lazyInject(TYPES.GlobalState)
   private _globalState!: IGlobalState;
@@ -34,18 +33,17 @@ export class SynchronizationParameter implements ISynchronizationParameter {
     this._totalValue = 0;
     this._recalculationRequested = true;
 
-    this.uiEventBatcher = new EventBatcher();
-    this._stateUIConnector.registerEventEmitter(this);
+    this._stateUIConnector.registerEvents(this.UI_EVENTS);
   }
 
   get baseValue() {
-    this._stateUIConnector.connectEventHandler(this, GLOBAL_STATE_UI_EVENTS.SYNCHRONIZATION_UPDATED);
+    this._stateUIConnector.connectEventHandler(this.UI_EVENTS.SYNCHRONIZATION_UPDATED);
 
     return this._baseValue;
   }
 
   get totalValue() {
-    this._stateUIConnector.connectEventHandler(this, GLOBAL_STATE_UI_EVENTS.SYNCHRONIZATION_UPDATED);
+    this._stateUIConnector.connectEventHandler(this.UI_EVENTS.SYNCHRONIZATION_UPDATED);
 
     return this._totalValue;
   }
@@ -65,7 +63,7 @@ export class SynchronizationParameter implements ISynchronizationParameter {
     this.calculateDistrictValues();
     this._companyState.clones.recalculateSynchronization();
 
-    this.uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.SYNCHRONIZATION_UPDATED);
+    this._stateUIConnector.enqueueEvent(this.UI_EVENTS.SYNCHRONIZATION_UPDATED);
   }
 
   private calculateBaseValue() {

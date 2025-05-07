@@ -21,7 +21,7 @@ import { modalCloneContext } from '../../contexts';
 
 @localized()
 @customElement('ca-rename-clone-dialog')
-export class RenameCloneDialog extends BaseComponent<RenameCloneDialogController> {
+export class RenameCloneDialog extends BaseComponent {
   static styles = [
     inputLabelStyle,
     hintStyle,
@@ -69,7 +69,7 @@ export class RenameCloneDialog extends BaseComponent<RenameCloneDialogController
     `,
   ];
 
-  protected controller: RenameCloneDialogController;
+  private _controller: RenameCloneDialogController;
 
   @property({
     attribute: 'is-open',
@@ -88,7 +88,7 @@ export class RenameCloneDialog extends BaseComponent<RenameCloneDialogController
   constructor() {
     super();
 
-    this.controller = new RenameCloneDialogController(this);
+    this._controller = new RenameCloneDialogController(this);
   }
 
   updated(_changedProperties: Map<string, any>) {
@@ -169,7 +169,7 @@ export class RenameCloneDialog extends BaseComponent<RenameCloneDialogController
   };
 
   private generateName(): void {
-    this.controller
+    this._controller
       .generateName()
       .then((name) => {
         this._newName = name;
@@ -182,7 +182,7 @@ export class RenameCloneDialog extends BaseComponent<RenameCloneDialogController
       return;
     }
 
-    this.controller.renameCloneById(this._clone!.id, this._newName);
+    this._controller.renameCloneById(this._clone!.id, this._newName);
     this.dispatchEvent(new CloseCloneListItemDialogEvent());
   };
 }

@@ -8,7 +8,7 @@ import { CityMapBackgroundController } from './controller';
 
 @localized()
 @customElement('ca-city-map-background')
-export class CityMapBackground extends BaseComponent<CityMapBackgroundController> {
+export class CityMapBackground extends BaseComponent {
   private static DX: number[] = [1, 0, 1];
   private static DY: number[] = [0, 1, 1];
 
@@ -27,7 +27,7 @@ export class CityMapBackground extends BaseComponent<CityMapBackgroundController
   })
   public size = 1;
 
-  protected controller: CityMapBackgroundController;
+  private _controller: CityMapBackgroundController;
 
   private _canvasRef = createRef<HTMLCanvasElement>();
 
@@ -36,15 +36,15 @@ export class CityMapBackground extends BaseComponent<CityMapBackgroundController
   constructor() {
     super();
 
-    this.controller = new CityMapBackgroundController(this);
+    this._controller = new CityMapBackgroundController(this);
   }
 
   private get _fullWidth() {
-    return this.controller.mapWidth * (this.size + 1) + 1;
+    return this._controller.mapWidth * (this.size + 1) + 1;
   }
 
   private get _fullHeight() {
-    return this.controller.mapHeight * (this.size + 1) + 1;
+    return this._controller.mapHeight * (this.size + 1) + 1;
   }
 
   render() {
@@ -93,12 +93,12 @@ export class CityMapBackground extends BaseComponent<CityMapBackgroundController
     let districtNum: number;
     let districtState: DistrictUnlockState;
 
-    const styles = this.controller.getStyles();
+    const styles = this._controller.getStyles();
 
-    for (let x = 0; x < this.controller.mapWidth; x++) {
-      for (let y = 0; y < this.controller.mapHeight; y++) {
-        districtNum = this.controller.layout[x][y];
-        districtState = this.controller.getDistrict(districtNum).state;
+    for (let x = 0; x < this._controller.mapWidth; x++) {
+      for (let y = 0; y < this._controller.mapHeight; y++) {
+        districtNum = this._controller.layout[x][y];
+        districtState = this._controller.getDistrict(districtNum).state;
 
         context.fillStyle = styles.stateStyles[districtState].backgroundColor;
         context.fillRect(1 + x * (this.size + 1), 1 + y * (this.size + 1), this.size, this.size);
@@ -113,13 +113,13 @@ export class CityMapBackground extends BaseComponent<CityMapBackgroundController
 
     const context = this._offscreenCanvasContext;
 
-    const styles = this.controller.getStyles();
+    const styles = this._controller.getStyles();
 
     context.lineWidth = 2;
     context.strokeStyle = styles.borderColor;
 
-    const rightMostX = 1 + this.controller.mapWidth * (this.size + 1);
-    const bottomMostY = 1 + this.controller.mapHeight * (this.size + 1);
+    const rightMostX = 1 + this._controller.mapWidth * (this.size + 1);
+    const bottomMostY = 1 + this._controller.mapHeight * (this.size + 1);
 
     context.beginPath();
     context.moveTo(0, 0);
@@ -137,7 +137,7 @@ export class CityMapBackground extends BaseComponent<CityMapBackgroundController
 
     const context = this._offscreenCanvasContext;
 
-    const styles = this.controller.getStyles();
+    const styles = this._controller.getStyles();
 
     context.lineWidth = 2;
 
@@ -145,12 +145,12 @@ export class CityMapBackground extends BaseComponent<CityMapBackgroundController
     let lineX: number;
     let lineY: number;
 
-    for (let x = 0; x < this.controller.mapWidth - 1; x++) {
-      for (let y = 0; y < this.controller.mapHeight; y++) {
-        if (this.controller.layout[x][y] !== this.controller.layout[x + 1][y]) {
+    for (let x = 0; x < this._controller.mapWidth - 1; x++) {
+      for (let y = 0; y < this._controller.mapHeight; y++) {
+        if (this._controller.layout[x][y] !== this._controller.layout[x + 1][y]) {
           context.strokeStyle = styles.borderColor;
         } else {
-          districtState = this.controller.getDistrict(this.controller.layout[x][y]).state;
+          districtState = this._controller.getDistrict(this._controller.layout[x][y]).state;
           context.strokeStyle = styles.stateStyles[districtState].backgroundColor;
         }
 
@@ -172,7 +172,7 @@ export class CityMapBackground extends BaseComponent<CityMapBackgroundController
 
     const context = this._offscreenCanvasContext;
 
-    const styles = this.controller.getStyles();
+    const styles = this._controller.getStyles();
 
     context.lineWidth = 2;
 
@@ -180,12 +180,12 @@ export class CityMapBackground extends BaseComponent<CityMapBackgroundController
     let lineX: number;
     let lineY: number;
 
-    for (let x = 0; x < this.controller.mapWidth; x++) {
-      for (let y = 0; y < this.controller.mapHeight - 1; y++) {
-        if (this.controller.layout[x][y] !== this.controller.layout[x][y + 1]) {
+    for (let x = 0; x < this._controller.mapWidth; x++) {
+      for (let y = 0; y < this._controller.mapHeight - 1; y++) {
+        if (this._controller.layout[x][y] !== this._controller.layout[x][y + 1]) {
           context.strokeStyle = styles.borderColor;
         } else {
-          districtState = this.controller.getDistrict(this.controller.layout[x][y]).state;
+          districtState = this._controller.getDistrict(this._controller.layout[x][y]).state;
           context.strokeStyle = styles.stateStyles[districtState].backgroundColor;
         }
 
@@ -207,7 +207,7 @@ export class CityMapBackground extends BaseComponent<CityMapBackgroundController
 
     const context = this._offscreenCanvasContext;
 
-    const styles = this.controller.getStyles();
+    const styles = this._controller.getStyles();
 
     let districtState: DistrictUnlockState;
     let dotX: number;
@@ -215,10 +215,10 @@ export class CityMapBackground extends BaseComponent<CityMapBackgroundController
 
     const Pi2 = 2 * Math.PI;
 
-    for (let x = 0; x < this.controller.mapWidth - 1; x++) {
-      for (let y = 0; y < this.controller.mapHeight - 1; y++) {
+    for (let x = 0; x < this._controller.mapWidth - 1; x++) {
+      for (let y = 0; y < this._controller.mapHeight - 1; y++) {
         if (this.checkDotInSameDistrict(x, y)) {
-          districtState = this.controller.getDistrict(this.controller.layout[x][y]).state;
+          districtState = this._controller.getDistrict(this._controller.layout[x][y]).state;
           context.fillStyle = styles.stateStyles[districtState].backgroundColor;
         } else {
           context.fillStyle = styles.borderColor;
@@ -242,7 +242,7 @@ export class CityMapBackground extends BaseComponent<CityMapBackgroundController
       nx = x + CityMapBackground.DX[i];
       ny = y + CityMapBackground.DY[i];
 
-      if (this.controller.layout[x][y] !== this.controller.layout[nx][ny]) {
+      if (this._controller.layout[x][y] !== this._controller.layout[nx][ny]) {
         return false;
       }
     }

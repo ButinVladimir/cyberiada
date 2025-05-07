@@ -17,7 +17,7 @@ import { CLONE_LIST_ITEMS_GAP } from './constants';
 
 @localized()
 @customElement('ca-clones-list')
-export class ClonesList extends BaseComponent<ClonesListController> {
+export class ClonesList extends BaseComponent {
   static styles = css`
     :host {
       width: 100%;
@@ -55,7 +55,7 @@ export class ClonesList extends BaseComponent<ClonesListController> {
     }
   `;
 
-  protected controller: ClonesListController;
+  private _controller: ClonesListController;
 
   @state()
   private _detailsVisible = false;
@@ -63,7 +63,7 @@ export class ClonesList extends BaseComponent<ClonesListController> {
   constructor() {
     super();
 
-    this.controller = new ClonesListController(this);
+    this._controller = new ClonesListController(this);
   }
 
   connectedCallback() {
@@ -97,7 +97,7 @@ export class ClonesList extends BaseComponent<ClonesListController> {
       ? AUTOUPGRADE_VALUES.buttonVariant.enabled
       : AUTOUPGRADE_VALUES.buttonVariant.disabled;
 
-    const clones = this.controller.listClones();
+    const clones = this._controller.listClones();
 
     return html`
       <div class="header">
@@ -147,7 +147,7 @@ export class ClonesList extends BaseComponent<ClonesListController> {
   };
 
   private checkSomeClonesAutoupgradeActive(): boolean {
-    const clones = this.controller.listClones();
+    const clones = this._controller.listClones();
 
     return clones.some((clone) => clone.autoUpgradeEnabled);
   }
@@ -155,11 +155,11 @@ export class ClonesList extends BaseComponent<ClonesListController> {
   private handleToggleAutoupgrade = () => {
     const active = this.checkSomeClonesAutoupgradeActive();
 
-    this.controller.toggleAutoupgrade(!active);
+    this._controller.toggleAutoupgrade(!active);
   };
 
   private handleMoveClone = (event: SortableElementMovedEvent) => {
-    this.controller.moveClone(event.keyName, event.position);
+    this._controller.moveClone(event.keyName, event.position);
   };
 
   private handleOpenDeleteAllClonesDialog = () => {
@@ -178,6 +178,6 @@ export class ClonesList extends BaseComponent<ClonesListController> {
       return;
     }
 
-    this.controller.deleteAllClones();
+    this._controller.deleteAllClones();
   };
 }

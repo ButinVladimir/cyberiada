@@ -75,10 +75,6 @@ export const ATTRIBUTES: Attribute[] = Object.values(Attribute);
 
 export const SKILLS: Skill[] = Object.values(Skill);
 
-export const COMMON_UI_EVENTS = {
-  REMOVE_EVENT_LISTENERS_BY_EMITTER: Symbol('REMOVE_EVENT_LISTENERS_BY_EMITTER'),
-};
-
 export const DISTRICT_TYPES = Object.values(DistrictType);
 
 export const RANDOM_TYPE = 'random';

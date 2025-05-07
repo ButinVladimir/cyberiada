@@ -9,21 +9,21 @@ import { autobuyerStyles } from '../../styles';
 
 @localized()
 @customElement('ca-automation-mainframe-programs-autobuyer')
-export class AutomationMainframeProgramsAutobuyer extends BaseComponent<AutomationMainframeProgramsAutobuyerController> {
+export class AutomationMainframeProgramsAutobuyer extends BaseComponent {
   static styles = autobuyerStyles;
 
-  protected controller: AutomationMainframeProgramsAutobuyerController;
+  private _controller: AutomationMainframeProgramsAutobuyerController;
 
   private _moneyShareRef = createRef<SlInput>();
 
   constructor() {
     super();
 
-    this.controller = new AutomationMainframeProgramsAutobuyerController(this);
+    this._controller = new AutomationMainframeProgramsAutobuyerController(this);
   }
 
   render() {
-    const { moneyShare } = this.controller;
+    const { moneyShare } = this._controller;
 
     return html`
       <h4 class="title">${msg('Mainframe programs autobuyer')}</h4>
@@ -54,7 +54,7 @@ export class AutomationMainframeProgramsAutobuyer extends BaseComponent<Automati
 
     const value = this.normalizeValue(this._moneyShareRef.value.valueAsNumber);
 
-    this.controller.moneyShare = value;
+    this._controller.moneyShare = value;
     this._moneyShareRef.value.valueAsNumber = value;
   };
 

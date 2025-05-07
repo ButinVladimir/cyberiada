@@ -8,7 +8,7 @@ import { MessageLogContentController } from './controller';
 
 @localized()
 @customElement('ca-message-log-content')
-export class MessageLogContent extends BaseComponent<MessageLogContentController> {
+export class MessageLogContent extends BaseComponent {
   static styles = css`
     :host {
       display: block;
@@ -29,16 +29,16 @@ export class MessageLogContent extends BaseComponent<MessageLogContentController
     }
   `;
 
-  protected controller: MessageLogContentController;
+  private _controller: MessageLogContentController;
 
   constructor() {
     super();
 
-    this.controller = new MessageLogContentController(this);
+    this._controller = new MessageLogContentController(this);
   }
 
   render() {
-    const messages = this.controller.getMessages();
+    const messages = this._controller.getMessages();
 
     return html` <div class="log-content">${repeat(messages, (message) => message.id, this.renderMessage)}</div> `;
   }

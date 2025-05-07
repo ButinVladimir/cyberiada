@@ -1,4 +1,4 @@
-import { css, html, PropertyValues } from 'lit';
+import { css, html } from 'lit';
 import { localized, msg, str } from '@lit/localize';
 import { customElement, property } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
@@ -12,7 +12,7 @@ import { BuyProgramEvent, CancelEvent } from './events';
 
 @localized()
 @customElement('ca-purchase-program-dialog-buttons')
-export class PurchaseProgramDialogButtons extends BaseComponent<PurchaseProgramDialogButtonsController> {
+export class PurchaseProgramDialogButtons extends BaseComponent {
   static styles = [
     warningStyle,
     css`
@@ -27,6 +27,8 @@ export class PurchaseProgramDialogButtons extends BaseComponent<PurchaseProgramD
       }
     `,
   ];
+
+  hasPartialUpdate = true;
 
   @property({
     attribute: 'program-name',
@@ -46,7 +48,7 @@ export class PurchaseProgramDialogButtons extends BaseComponent<PurchaseProgramD
   })
   quality!: number;
 
-  protected controller: PurchaseProgramDialogButtonsController;
+  private _controller: PurchaseProgramDialogButtonsController;
 
   private _warningRef = createRef<HTMLParagraphElement>();
   private _purchaseButtonRef = createRef<SlButton>();
@@ -54,13 +56,7 @@ export class PurchaseProgramDialogButtons extends BaseComponent<PurchaseProgramD
   constructor() {
     super();
 
-    this.controller = new PurchaseProgramDialogButtonsController(this, this.handlePartialUpdate);
-  }
-
-  updated(_changedProperties: PropertyValues) {
-    super.updated(_changedProperties);
-
-    this.handlePartialUpdate();
+    this._controller = new PurchaseProgramDialogButtonsController(this);
   }
 
   render() {
@@ -84,7 +80,7 @@ export class PurchaseProgramDialogButtons extends BaseComponent<PurchaseProgramD
     `;
   }
 
-  private handlePartialUpdate = () => {
+  handlePartialUpdate = () => {
     if (this._warningRef.value) {
       this._warningRef.value.textContent = this.getWarning();
     }
@@ -99,11 +95,11 @@ export class PurchaseProgramDialogButtons extends BaseComponent<PurchaseProgramD
       return msg('Select program');
     }
 
-    const formatter = this.controller.formatter;
+    const formatter = this._controller.formatter;
 
-    const cost = this.controller.getProgramCost(this.programName, this.quality, this.level);
-    const moneyGrowth = this.controller.moneyGrowth;
-    const moneyDiff = cost - this.controller.money;
+    const cost = this._controller.getProgramCost(this.programName, this.quality, this.level);
+    const moneyGrowth = this._controller.moneyGrowth;
+    const moneyDiff = cost - this._controller.money;
 
     if (moneyDiff > 0) {
       if (moneyGrowth <= 0) {
@@ -115,7 +111,7 @@ export class PurchaseProgramDialogButtons extends BaseComponent<PurchaseProgramD
       return COMMON_TEXTS.willBeAvailableIn(time);
     }
 
-    const ownedProgram = this.controller.getOwnedProgram(this.programName!);
+    const ownedProgram = this._controller.getOwnedProgram(this.programName!);
     if (ownedProgram) {
       const formattedLevel = formatter.formatLevel(ownedProgram.level);
       const formattedQuality = formatter.formatQuality(ownedProgram.quality);
@@ -127,14 +123,14 @@ export class PurchaseProgramDialogButtons extends BaseComponent<PurchaseProgramD
   }
 
   private updatePurchaseButton(): void {
-    const { formatter, money } = this.controller;
+    const { formatter, money } = this._controller;
 
-    const cost = this.programName ? this.controller.getProgramCost(this.programName, this.quality, this.level) : 0;
+    const cost = this.programName ? this._controller.getProgramCost(this.programName, this.quality, this.level) : 0;
 
     const purchaseButtonDisabled = !(
       this.programName &&
       cost <= money &&
-      this.controller.isProgramAvailable(this.programName, this.quality, this.level)
+      this._controller.isProgramAvailable(this.programName, this.quality, this.level)
     );
 
     const formattedCost = formatter.formatNumberFloat(cost);

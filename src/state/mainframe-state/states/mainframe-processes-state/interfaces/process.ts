@@ -1,8 +1,7 @@
 import { IProgram } from '@state/mainframe-state/states/progam-factory/interfaces/program';
-import { IUIEventEmitter } from '@shared/interfaces/ui-event-emitter';
 import { ISerializedProcess } from './serialized-process';
 
-export interface IProcess extends IUIEventEmitter {
+export interface IProcess {
   program: IProgram;
   isActive: boolean;
   threads: number;

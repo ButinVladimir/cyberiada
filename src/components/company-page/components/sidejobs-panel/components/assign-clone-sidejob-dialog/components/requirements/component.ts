@@ -11,7 +11,7 @@ import { temporarySidejobContext } from '../../contexts';
 
 @localized()
 @customElement('ca-assign-clone-sidejob-dialog-requirements')
-export class AssignCloneSidejobDialogRequirements extends BaseComponent<BaseController> {
+export class AssignCloneSidejobDialogRequirements extends BaseComponent {
   static styles = [
     subSectionTitleStyle,
     attributesSkillsTablesStyle,
@@ -23,7 +23,7 @@ export class AssignCloneSidejobDialogRequirements extends BaseComponent<BaseCont
     `,
   ];
 
-  protected controller: BaseController;
+  private _controller: BaseController;
 
   @consume({ context: temporarySidejobContext, subscribe: true })
   private _sidejob?: ISidejob;
@@ -31,7 +31,7 @@ export class AssignCloneSidejobDialogRequirements extends BaseComponent<BaseCont
   constructor() {
     super();
 
-    this.controller = new BaseController(this);
+    this._controller = new BaseController(this);
   }
 
   render() {
@@ -58,7 +58,7 @@ export class AssignCloneSidejobDialogRequirements extends BaseComponent<BaseCont
     const availableValue = this._sidejob?.assignedClone?.getTotalAttributeValue(attribute) ?? 0;
     const requiredValue = this._sidejob!.getAttributeRequirement(attribute);
 
-    const formatter = this.controller.formatter;
+    const formatter = this._controller.formatter;
 
     const formattedAvailableValue = formatter.formatNumberDecimal(availableValue);
     const formattedRequiredValue = formatter.formatNumberDecimal(requiredValue);
@@ -77,7 +77,7 @@ export class AssignCloneSidejobDialogRequirements extends BaseComponent<BaseCont
     const availableValue = this._sidejob?.assignedClone?.getTotalSkillValue(skill) ?? 0;
     const requiredValue = this._sidejob!.getSkillRequirement(skill);
 
-    const formatter = this.controller.formatter;
+    const formatter = this._controller.formatter;
 
     const formattedAvailableValue = formatter.formatNumberDecimal(availableValue);
     const formattedRequiredValue = formatter.formatNumberDecimal(requiredValue);

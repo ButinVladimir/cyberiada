@@ -1,4 +1,4 @@
-import { html, PropertyValues } from 'lit';
+import { html } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { msg, localized } from '@lit/localize';
 import { customElement } from 'lit/decorators.js';
@@ -8,10 +8,12 @@ import { statisticsPanelContentStyle } from '../../../../styles';
 
 @localized()
 @customElement('ca-statistics-game-time')
-export class StatisticsGameTime extends BaseComponent<StatisticsGameTimeController> {
+export class StatisticsGameTime extends BaseComponent {
   static styles = statisticsPanelContentStyle;
 
-  protected controller: StatisticsGameTimeController;
+  hasPartialUpdate = true;
+
+  private _controller: StatisticsGameTimeController;
 
   private _gameTimeRef = createRef<HTMLSpanElement>();
   private _gameTotalTimeRef = createRef<HTMLSpanElement>();
@@ -19,13 +21,7 @@ export class StatisticsGameTime extends BaseComponent<StatisticsGameTimeControll
   constructor() {
     super();
 
-    this.controller = new StatisticsGameTimeController(this, this.handlePartialUpdate);
-  }
-
-  updated(_changedProperties: PropertyValues) {
-    super.updated(_changedProperties);
-
-    this.handlePartialUpdate();
+    this._controller = new StatisticsGameTimeController(this);
   }
 
   render() {
@@ -45,14 +41,14 @@ export class StatisticsGameTime extends BaseComponent<StatisticsGameTimeControll
   }
 
   handlePartialUpdate = () => {
-    const formatter = this.controller.formatter;
+    const formatter = this._controller.formatter;
 
     if (this._gameTimeRef.value) {
-      this._gameTimeRef.value.textContent = formatter.formatTimeShort(this.controller.gameTime);
+      this._gameTimeRef.value.textContent = formatter.formatTimeShort(this._controller.gameTime);
     }
 
     if (this._gameTotalTimeRef.value) {
-      this._gameTotalTimeRef.value.textContent = formatter.formatTimeShort(this.controller.gameTimeTotal);
+      this._gameTotalTimeRef.value.textContent = formatter.formatTimeShort(this._controller.gameTimeTotal);
     }
   };
 }

@@ -1,4 +1,4 @@
-import { html, PropertyValues } from 'lit';
+import { html } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { msg, localized } from '@lit/localize';
 import { customElement, queryAll } from 'lit/decorators.js';
@@ -11,10 +11,12 @@ import { statisticsPanelContentStyle } from '../../../../styles';
 
 @localized()
 @customElement('ca-statistics-development-income')
-export class StatisticsDevelopmentIncome extends BaseComponent<StatisticsDevelopmentIncomeController> {
+export class StatisticsDevelopmentIncome extends BaseComponent {
   static styles = statisticsPanelContentStyle;
 
-  protected controller: StatisticsDevelopmentIncomeController;
+  hasPartialUpdate = true;
+
+  private _controller: StatisticsDevelopmentIncomeController;
 
   @queryAll('span[data-name]')
   private _incomeSourceElements!: NodeListOf<HTMLSpanElement>;
@@ -24,13 +26,7 @@ export class StatisticsDevelopmentIncome extends BaseComponent<StatisticsDevelop
   constructor() {
     super();
 
-    this.controller = new StatisticsDevelopmentIncomeController(this, this.handlePartialUpdate);
-  }
-
-  updated(_changedProperties: PropertyValues) {
-    super.updated(_changedProperties);
-
-    this.handlePartialUpdate();
+    this._controller = new StatisticsDevelopmentIncomeController(this);
   }
 
   render() {
@@ -55,13 +51,13 @@ export class StatisticsDevelopmentIncome extends BaseComponent<StatisticsDevelop
     `;
   };
 
-  private handlePartialUpdate = () => {
-    const formatter = this.controller.formatter;
+  handlePartialUpdate = () => {
+    const formatter = this._controller.formatter;
     let totalValue = 0;
 
     this._incomeSourceElements.forEach((element) => {
       const incomeSource = element.dataset.name as IncomeSource;
-      const value = this.controller.getDevelopmentIncome(incomeSource);
+      const value = this._controller.getDevelopmentIncome(incomeSource);
       totalValue += value;
 
       element.textContent = formatter.formatNumberFloat(value);

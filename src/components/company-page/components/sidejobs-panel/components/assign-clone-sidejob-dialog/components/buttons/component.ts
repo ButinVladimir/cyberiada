@@ -1,4 +1,4 @@
-import { css, html, PropertyValues } from 'lit';
+import { css, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { msg, localized, str } from '@lit/localize';
@@ -14,7 +14,7 @@ import { existingSidejobContext, temporarySidejobContext } from '../../contexts'
 
 @localized()
 @customElement('ca-assign-clone-sidejob-dialog-buttons')
-export class AssignCloneSidejobDialogButtons extends BaseComponent<AssignCloneSidejobDialogButtonsController> {
+export class AssignCloneSidejobDialogButtons extends BaseComponent {
   static styles = [
     warningStyle,
     css`
@@ -31,7 +31,9 @@ export class AssignCloneSidejobDialogButtons extends BaseComponent<AssignCloneSi
     `,
   ];
 
-  protected controller: AssignCloneSidejobDialogButtonsController;
+  hasPartialUpdate = true;
+
+  private _controller: AssignCloneSidejobDialogButtonsController;
 
   @consume({ context: temporarySidejobContext, subscribe: true })
   private _sidejob?: ISidejob;
@@ -45,13 +47,7 @@ export class AssignCloneSidejobDialogButtons extends BaseComponent<AssignCloneSi
   constructor() {
     super();
 
-    this.controller = new AssignCloneSidejobDialogButtonsController(this, this.handlePartialUpdate);
-  }
-
-  updated(_changedProperties: PropertyValues) {
-    super.updated(_changedProperties);
-
-    this.handlePartialUpdate();
+    this._controller = new AssignCloneSidejobDialogButtonsController(this);
   }
 
   render() {
@@ -76,7 +72,7 @@ export class AssignCloneSidejobDialogButtons extends BaseComponent<AssignCloneSi
     `;
   }
 
-  private handlePartialUpdate = () => {
+  handlePartialUpdate = () => {
     if (this._warningRef.value) {
       this._warningRef.value.textContent = this.getWarning();
     }
@@ -91,8 +87,8 @@ export class AssignCloneSidejobDialogButtons extends BaseComponent<AssignCloneSi
       return msg('Select sidejob name and district');
     }
 
-    const totalConnectivity = this.controller.getTotalConnectivity(this._sidejob.district.index);
-    const requiredConnectivity = this.controller.getRequiredConnectivity(this._sidejob.sidejobName);
+    const totalConnectivity = this._controller.getTotalConnectivity(this._sidejob.district.index);
+    const requiredConnectivity = this._controller.getRequiredConnectivity(this._sidejob.sidejobName);
     if (totalConnectivity < requiredConnectivity) {
       return msg('Not enough connectivity');
     }
@@ -116,8 +112,10 @@ export class AssignCloneSidejobDialogButtons extends BaseComponent<AssignCloneSi
   }
 
   private updateAssignButton(): void {
-    const totalConnectivity = this._sidejob ? this.controller.getTotalConnectivity(this._sidejob.district.index) : 0;
-    const requiredConnectivity = this._sidejob ? this.controller.getRequiredConnectivity(this._sidejob.sidejobName) : 0;
+    const totalConnectivity = this._sidejob ? this._controller.getTotalConnectivity(this._sidejob.district.index) : 0;
+    const requiredConnectivity = this._sidejob
+      ? this._controller.getRequiredConnectivity(this._sidejob.sidejobName)
+      : 0;
 
     const purchaseButtonDisabled = !(
       this._sidejob &&

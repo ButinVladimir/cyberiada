@@ -16,7 +16,7 @@ import { CityMapClickEvent } from './events';
 
 @localized()
 @customElement('ca-city-map')
-export class CityMap extends BaseComponent<CityMapController> {
+export class CityMap extends BaseComponent {
   static styles = css`
     :host {
       display: block;
@@ -50,7 +50,7 @@ export class CityMap extends BaseComponent<CityMapController> {
     }
   `;
 
-  protected controller: CityMapController;
+  private _controller: CityMapController;
 
   @state()
   private _size = 5;
@@ -68,7 +68,7 @@ export class CityMap extends BaseComponent<CityMapController> {
   constructor() {
     super();
 
-    this.controller = new CityMapController(this);
+    this._controller = new CityMapController(this);
   }
 
   firstUpdated(_changedProperties: PropertyValues) {
@@ -97,7 +97,7 @@ export class CityMap extends BaseComponent<CityMapController> {
     let unlocked = false;
 
     if (this._selectedDistrictIndex !== undefined) {
-      const district = this.controller.getDistrict(this._selectedDistrictIndex);
+      const district = this._controller.getDistrict(this._selectedDistrictIndex);
 
       unlocked = district.state !== DistrictUnlockState.locked;
     }
@@ -118,7 +118,7 @@ export class CityMap extends BaseComponent<CityMapController> {
         >
           <ca-city-map-background size=${this._size}></ca-city-map-background>
 
-          ${map(range(this.controller.districtsCount), this.renderDistrict)}
+          ${map(range(this._controller.districtsCount), this.renderDistrict)}
 
           <sl-popup
             ${ref(this._popupRef)}
@@ -155,12 +155,12 @@ export class CityMap extends BaseComponent<CityMapController> {
       this._positionY = event.clientY;
 
       const offsetX = event.clientX - contentBoundingRect.x - 1;
-      const x = clamp(Math.floor(offsetX / (this._size + 1)), 0, this.controller.mapWidth - 1);
+      const x = clamp(Math.floor(offsetX / (this._size + 1)), 0, this._controller.mapWidth - 1);
 
       const offsetY = event.clientY - contentBoundingRect.y - 1;
-      const y = clamp(Math.floor(offsetY / (this._size + 1)), 0, this.controller.mapHeight - 1);
+      const y = clamp(Math.floor(offsetY / (this._size + 1)), 0, this._controller.mapHeight - 1);
 
-      this._selectedDistrictIndex = this.controller.layout[x][y];
+      this._selectedDistrictIndex = this._controller.layout[x][y];
     }
 
     if (this._popupRef.value) {
@@ -176,8 +176,8 @@ export class CityMap extends BaseComponent<CityMapController> {
     const maxWidth = event.detail.entries[0].contentRect.width;
     const maxHeight = window.innerHeight - TOP_BAR_HEIGHT - VERTICAL_PADDING - TEXT_HEIGHT;
 
-    const widthSize = maxWidth / this.controller.mapWidth;
-    const heightSize = maxHeight / this.controller.mapHeight;
+    const widthSize = maxWidth / this._controller.mapWidth;
+    const heightSize = maxHeight / this._controller.mapHeight;
     const minSize = Math.min(heightSize, widthSize);
 
     this._size = Math.max(1, Math.floor(minSize) - 1);
@@ -185,7 +185,7 @@ export class CityMap extends BaseComponent<CityMapController> {
 
   private handleMapClick = () => {
     if (this._selectedDistrictIndex !== undefined) {
-      const district = this.controller.getDistrict(this._selectedDistrictIndex);
+      const district = this._controller.getDistrict(this._selectedDistrictIndex);
 
       if (district.state !== DistrictUnlockState.locked) {
         this.dispatchEvent(new CityMapClickEvent(this._selectedDistrictIndex));

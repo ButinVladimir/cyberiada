@@ -1,4 +1,4 @@
-import { html, PropertyValues } from 'lit';
+import { html } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { localized } from '@lit/localize';
 import { customElement, property } from 'lit/decorators.js';
@@ -12,28 +12,24 @@ import { MULTIPLIER_POINT_GROWTH_TITLES } from './constants';
 
 @localized()
 @customElement('ca-statistics-multiplier-points-growth')
-export class StatisticsMultiplierPointsGrowth extends BaseComponent<StatisticsMultiplierPointsGrowthController> {
+export class StatisticsMultiplierPointsGrowth extends BaseComponent {
   static styles = statisticsPanelContentStyle;
+
+  hasPartialUpdate = true;
 
   @property({
     attribute: true,
   })
   type!: PointsMultiplierType;
 
-  protected controller: StatisticsMultiplierPointsGrowthController;
+  private _controller: StatisticsMultiplierPointsGrowthController;
 
   private _programGrowthRef = createRef<HTMLSpanElement>();
 
   constructor() {
     super();
 
-    this.controller = new StatisticsMultiplierPointsGrowthController(this, this.handlePartialUpdate);
-  }
-
-  updated(_changedProperties: PropertyValues) {
-    super.updated(_changedProperties);
-
-    this.handlePartialUpdate();
+    this._controller = new StatisticsMultiplierPointsGrowthController(this);
   }
 
   render() {
@@ -57,11 +53,11 @@ export class StatisticsMultiplierPointsGrowth extends BaseComponent<StatisticsMu
     `;
   }
 
-  private handlePartialUpdate = () => {
-    const formatter = this.controller.formatter;
+  handlePartialUpdate = () => {
+    const formatter = this._controller.formatter;
 
     if (this._programGrowthRef.value) {
-      const growthByProgram = this.controller.getGrowthByProgram(this.type);
+      const growthByProgram = this._controller.getGrowthByProgram(this.type);
 
       this._programGrowthRef.value.textContent = formatter.formatNumberFloat(growthByProgram);
     }

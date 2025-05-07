@@ -16,7 +16,7 @@ import { ProcessesListController } from './controller';
 
 @localized()
 @customElement('ca-processes-list')
-export class ProcessesList extends BaseComponent<ProcessesListController> {
+export class ProcessesList extends BaseComponent {
   static styles = css`
     :host {
       width: 100%;
@@ -113,12 +113,12 @@ export class ProcessesList extends BaseComponent<ProcessesListController> {
     }
   `;
 
-  protected controller: ProcessesListController;
+  private _controller: ProcessesListController;
 
   constructor() {
     super();
 
-    this.controller = new ProcessesListController(this);
+    this._controller = new ProcessesListController(this);
   }
 
   connectedCallback() {
@@ -144,7 +144,7 @@ export class ProcessesList extends BaseComponent<ProcessesListController> {
 
     const deleteAllProcessLabel = msg('Delete all processes');
 
-    const processes = this.controller.listProcesses();
+    const processes = this._controller.listProcesses();
 
     return html`
       <div class="header">
@@ -220,13 +220,13 @@ export class ProcessesList extends BaseComponent<ProcessesListController> {
   };
 
   private checkSomeProcessesActive(): boolean {
-    return this.controller.listProcesses().some((process) => process.isActive);
+    return this._controller.listProcesses().some((process) => process.isActive);
   }
 
   private handleToggleAllProcesses = () => {
     const processesActive = this.checkSomeProcessesActive();
 
-    this.controller.toggleAllProcesses(!processesActive);
+    this._controller.toggleAllProcesses(!processesActive);
   };
 
   private handleOpenDeleteAllProcessesDialog = () => {
@@ -245,10 +245,10 @@ export class ProcessesList extends BaseComponent<ProcessesListController> {
       return;
     }
 
-    this.controller.deleteAllProcesses();
+    this._controller.deleteAllProcesses();
   };
 
   private handleMoveProcess = (event: SortableElementMovedEvent) => {
-    this.controller.moveProcess(event.keyName as ProgramName, event.position);
+    this._controller.moveProcess(event.keyName as ProgramName, event.position);
   };
 }

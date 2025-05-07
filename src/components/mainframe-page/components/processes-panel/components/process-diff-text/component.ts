@@ -1,4 +1,4 @@
-import { css, html, nothing, PropertyValues } from 'lit';
+import { css, html, nothing } from 'lit';
 import { msg, localized } from '@lit/localize';
 import { customElement, property, queryAll } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
@@ -24,7 +24,7 @@ import { ProcessDiffTextController } from './controller';
 
 @localized()
 @customElement('ca-process-diff-text')
-export class ProgramDiffText extends BaseComponent<ProcessDiffTextController> {
+export class ProgramDiffText extends BaseComponent {
   static styles = css`
     :host {
       margin-top: var(--sl-spacing-medium);
@@ -40,6 +40,8 @@ export class ProgramDiffText extends BaseComponent<ProcessDiffTextController> {
     }
   `;
 
+  hasPartialUpdate = true;
+
   @property({
     attribute: 'program-name',
     type: String,
@@ -52,7 +54,7 @@ export class ProgramDiffText extends BaseComponent<ProcessDiffTextController> {
   })
   threads = 0;
 
-  protected controller: ProcessDiffTextController;
+  private _controller: ProcessDiffTextController;
 
   private _renderer?: IDescriptionEffectRenderer;
 
@@ -62,17 +64,11 @@ export class ProgramDiffText extends BaseComponent<ProcessDiffTextController> {
   constructor() {
     super();
 
-    this.controller = new ProcessDiffTextController(this, this.handlePartialUpdate);
-  }
-
-  updated(_changedProperties: PropertyValues) {
-    super.updated(_changedProperties);
-
-    this.handlePartialUpdate();
+    this._controller = new ProcessDiffTextController(this);
   }
 
   render() {
-    const program = this.controller.getProgram(this.programName as ProgramName);
+    const program = this._controller.getProgram(this.programName as ProgramName);
 
     if (!program) {
       return nothing;
@@ -113,10 +109,10 @@ export class ProgramDiffText extends BaseComponent<ProcessDiffTextController> {
   };
 
   private renderNormalRequirements = () => {
-    const program = this.controller.getProgram(this.programName as ProgramName)!;
-    const currentProcess = this.controller.getProcessByName(this.programName as ProgramName);
+    const program = this._controller.getProgram(this.programName as ProgramName)!;
+    const currentProcess = this._controller.getProcessByName(this.programName as ProgramName);
     const currentThreads = currentProcess ? currentProcess.threads : 0;
-    const formatter = this.controller.formatter;
+    const formatter = this._controller.formatter;
 
     const threadsDiff = this.threads - currentThreads;
 
@@ -126,7 +122,7 @@ export class ProgramDiffText extends BaseComponent<ProcessDiffTextController> {
     const formattedThreadsDiff = formatter.formatNumberDecimal(threadsDiff, diffFormatterParameters);
 
     const ramDiff = programRam - program.ram * currentThreads;
-    const availableRam = this.controller.availableRam + program.ram * currentThreads;
+    const availableRam = this._controller.availableRam + program.ram * currentThreads;
 
     const formattedRam = formatter.formatNumberDecimal(programRam);
     const formattedAvailableRam = formatter.formatNumberDecimal(availableRam);
@@ -180,7 +176,7 @@ export class ProgramDiffText extends BaseComponent<ProcessDiffTextController> {
     return this._renderer.renderEffect();
   };
 
-  private handlePartialUpdate = () => {
+  handlePartialUpdate = () => {
     if (!this._renderer) {
       return;
     }
@@ -189,15 +185,15 @@ export class ProgramDiffText extends BaseComponent<ProcessDiffTextController> {
   };
 
   private updateRenderer(): void {
-    const program = this.controller.getProgram(this.programName as ProgramName)!;
-    const currentProcess = this.controller.getProcessByName(this.programName as ProgramName);
+    const program = this._controller.getProgram(this.programName as ProgramName)!;
+    const currentProcess = this._controller.getProcessByName(this.programName as ProgramName);
     const currentThreads = currentProcess ? currentProcess.threads : 0;
 
     const parameters: IDescriptionParameters = {
-      formatter: this.controller.formatter,
+      formatter: this._controller.formatter,
       program,
-      maxCores: this.controller.maxCores,
-      maxRam: this.controller.maxRam,
+      maxCores: this._controller.maxCores,
+      maxRam: this._controller.maxRam,
       threads: this.threads,
       currentThreads,
     };

@@ -1,4 +1,4 @@
-import { html, PropertyValues } from 'lit';
+import { html } from 'lit';
 import { map } from 'lit/directives/map.js';
 import { localized, msg } from '@lit/localize';
 import { customElement } from 'lit/decorators.js';
@@ -11,26 +11,22 @@ import { statisticsPanelContentStyle } from '../../../../styles';
 
 @localized()
 @customElement('ca-statistics-synchronization')
-export class StatisticsSynchronization extends BaseComponent<StatisticsSynchronizationController> {
+export class StatisticsSynchronization extends BaseComponent {
   static styles = statisticsPanelContentStyle;
 
-  protected controller: StatisticsSynchronizationController;
+  private _controller: StatisticsSynchronizationController;
 
   constructor() {
     super();
 
-    this.controller = new StatisticsSynchronizationController(this);
-  }
-
-  updated(_changedProperties: PropertyValues) {
-    super.updated(_changedProperties);
+    this._controller = new StatisticsSynchronizationController(this);
   }
 
   render() {
-    const formatter = this.controller.formatter;
+    const formatter = this._controller.formatter;
 
-    const formattedBaseValue = formatter.formatNumberDecimal(this.controller.baseValue);
-    const formattedTotalValue = formatter.formatNumberDecimal(this.controller.totalValue);
+    const formattedBaseValue = formatter.formatNumberDecimal(this._controller.baseValue);
+    const formattedTotalValue = formatter.formatNumberDecimal(this._controller.totalValue);
 
     return html`
       <sl-details>
@@ -48,7 +44,7 @@ export class StatisticsSynchronization extends BaseComponent<StatisticsSynchroni
           <span>${STATISTIC_PAGE_TEXTS.baseValue()}</span>
           <span>${formattedBaseValue}</span>
 
-          ${map(this.controller.listAvailableDistricts(), this.renderDistrict)}
+          ${map(this._controller.listAvailableDistricts(), this.renderDistrict)}
 
           <span>${STATISTIC_PAGE_TEXTS.total()}</span>
           <span>${formattedTotalValue}</span>
@@ -58,8 +54,8 @@ export class StatisticsSynchronization extends BaseComponent<StatisticsSynchroni
   }
 
   private renderDistrict = (districtState: IDistrictState) => {
-    const formattedValue = this.controller.formatter.formatNumberDecimal(
-      this.controller.getDistrictSynchronization(districtState.index),
+    const formattedValue = this._controller.formatter.formatNumberDecimal(
+      this._controller.getDistrictSynchronization(districtState.index),
     );
 
     return html`

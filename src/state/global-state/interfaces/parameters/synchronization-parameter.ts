@@ -1,6 +1,4 @@
-import { IUIEventEmitter } from '@shared/interfaces';
-
-export interface ISynchronizationParameter extends IUIEventEmitter {
+export interface ISynchronizationParameter {
   baseValue: number;
   totalValue: number;
   requestRecalculation(): void;

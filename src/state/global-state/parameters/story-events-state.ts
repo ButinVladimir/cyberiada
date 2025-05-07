@@ -1,6 +1,5 @@
 import { injectable } from 'inversify';
 import { decorators } from '@state/container';
-import { EventBatcher } from '@shared/event-batcher';
 import { NotificationType } from '@shared/types';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import type { INotificationsState } from '@state/notifications-state/interfaces/notifications-state';
@@ -10,13 +9,14 @@ import type { IGlobalState } from '../interfaces/global-state';
 import { IStoryEventsState } from '../interfaces/parameters/story-events-state';
 import { IStoryGoal } from '../interfaces/story-goal';
 import { StoryGoalState } from '../types';
-import { GLOBAL_STATE_UI_EVENTS } from '../constants';
 
 const { lazyInject } = decorators;
 
 @injectable()
 export class StoryEventsState implements IStoryEventsState {
-  readonly uiEventBatcher: EventBatcher;
+  private UI_EVENTS = {
+    STORY_EVENT_REACHED: Symbol('STORY_EVENT_REACHED'),
+  };
 
   @lazyInject(TYPES.StateUIConnector)
   private _stateUiConnector!: IStateUIConnector;
@@ -28,8 +28,7 @@ export class StoryEventsState implements IStoryEventsState {
   private _globalState!: IGlobalState;
 
   constructor() {
-    this.uiEventBatcher = new EventBatcher();
-    this._stateUiConnector.registerEventEmitter(this);
+    this._stateUiConnector.registerEvents(this.UI_EVENTS);
   }
 
   visitEventsByLevel(prevLevel: number) {
@@ -37,7 +36,7 @@ export class StoryEventsState implements IStoryEventsState {
   }
 
   listGoals(): IStoryGoal[] {
-    this._stateUiConnector.connectEventHandler(this, GLOBAL_STATE_UI_EVENTS.STORY_EVENT_REACHED);
+    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.STORY_EVENT_REACHED);
 
     const availableGoals: IStoryGoal[] = [];
     const storyEvents = this._globalState.scenario.currentValues.storyEvents;
@@ -88,6 +87,6 @@ export class StoryEventsState implements IStoryEventsState {
       }
     }
 
-    this.uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.STORY_EVENT_REACHED);
+    this._stateUiConnector.enqueueEvent(this.UI_EVENTS.STORY_EVENT_REACHED);
   }
 }

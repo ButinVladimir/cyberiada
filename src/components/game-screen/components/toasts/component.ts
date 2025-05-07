@@ -7,22 +7,22 @@ import { ToastsController } from './controller';
 
 @localized()
 @customElement('ca-toasts')
-export class Toasts extends BaseComponent<ToastsController> {
+export class Toasts extends BaseComponent {
   @property({ attribute: 'selected-menu-item', type: String })
   selectedMenuItem?: string;
 
-  protected controller: ToastsController;
+  private _controller: ToastsController;
 
   constructor() {
     super();
 
-    this.controller = new ToastsController(this);
+    this._controller = new ToastsController(this);
   }
 
   render() {
-    const toastDuration = this.controller.getToastDuration();
+    const toastDuration = this._controller.getToastDuration();
 
-    const toasts = this.controller.getToasts();
+    const toasts = this._controller.getToasts();
 
     for (const toast of toasts) {
       const alert = Object.assign(document.createElement('sl-alert'), {

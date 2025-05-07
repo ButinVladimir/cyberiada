@@ -1,8 +1,6 @@
 import { msg, str } from '@lit/localize';
 import { decorators } from '@state/container';
 import { TYPES } from '@state/types';
-import { IEventBatcher } from '@shared/interfaces/event-batcher';
-import { EventBatcher } from '@shared/event-batcher';
 import { type IGlobalState } from '@state/global-state/interfaces';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
@@ -10,13 +8,14 @@ import type { IFormatter } from '@shared/interfaces/formatter';
 import { calculateGeometricProgressionSum, reverseGeometricProgressionSum } from '@shared/helpers';
 import { CityEvent } from '@shared/types';
 import { DISTRICT_NAMES } from '@texts/names';
-import { CITY_STATE_UI_EVENTS } from '../constants';
 import { IDistrictState, IDistrictTierParameter, IDistrictTierSerializedParameter } from '../interfaces';
 
 const { lazyInject } = decorators;
 
 export class DistrictTierParameter implements IDistrictTierParameter {
-  readonly uiEventBatcher: IEventBatcher;
+  private UI_EVENTS = {
+    DISTRICT_TIER_CHANGED: Symbol('DISTRICT_TIER_CHANGED'),
+  };
 
   @lazyInject(TYPES.GlobalState)
   private _globalState!: IGlobalState;
@@ -39,13 +38,11 @@ export class DistrictTierParameter implements IDistrictTierParameter {
     this._tier = 0;
     this._points = 0;
 
-    this.uiEventBatcher = new EventBatcher();
-
-    this._stateUIConnector.registerEventEmitter(this);
+    this._stateUIConnector.registerEvents(this.UI_EVENTS);
   }
 
   get tier(): number {
-    this._stateUIConnector.connectEventHandler(this, CITY_STATE_UI_EVENTS.DISTRICT_TIER_CHANGED);
+    this._stateUIConnector.connectEventHandler(this.UI_EVENTS.DISTRICT_TIER_CHANGED);
 
     return this._tier;
   }
@@ -72,7 +69,7 @@ export class DistrictTierParameter implements IDistrictTierParameter {
 
       this._globalState.synchronization.requestRecalculation();
 
-      this.uiEventBatcher.enqueueEvent(CITY_STATE_UI_EVENTS.DISTRICT_TIER_CHANGED);
+      this._stateUIConnector.enqueueEvent(this.UI_EVENTS.DISTRICT_TIER_CHANGED);
     }
   }
 
@@ -85,14 +82,14 @@ export class DistrictTierParameter implements IDistrictTierParameter {
 
     this._globalState.synchronization.requestRecalculation();
 
-    this.uiEventBatcher.enqueueEvent(CITY_STATE_UI_EVENTS.DISTRICT_TIER_CHANGED);
+    this._stateUIConnector.enqueueEvent(this.UI_EVENTS.DISTRICT_TIER_CHANGED);
   }
 
   async deserialize(serializedState: IDistrictTierSerializedParameter): Promise<void> {
     this._points = serializedState.points;
     this._tier = this.calculateNewLevel();
 
-    this.uiEventBatcher.enqueueEvent(CITY_STATE_UI_EVENTS.DISTRICT_TIER_CHANGED);
+    this._stateUIConnector.enqueueEvent(this.UI_EVENTS.DISTRICT_TIER_CHANGED);
   }
 
   serialize(): IDistrictTierSerializedParameter {
