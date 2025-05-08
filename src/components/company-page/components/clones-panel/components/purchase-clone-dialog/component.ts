@@ -189,14 +189,7 @@ Synchronization is earned by capturing districts and gaining certain favors.`)}
             >
               <span class="input-label" slot="label"> ${msg('Clone template')} </span>
 
-              ${this._controller
-                .listAvailableCloneTemplates()
-                .map(
-                  (cloneTemplate) =>
-                    html`<sl-option value=${cloneTemplate}>
-                      ${CLONE_TEMPLATE_TEXTS[cloneTemplate].title()}
-                    </sl-option>`,
-                )}
+              ${this._controller.listAvailableCloneTemplates().map(this.renderCloneTemplateOption)}
             </sl-select>
 
             <sl-select
@@ -242,6 +235,10 @@ Synchronization is earned by capturing districts and gaining certain favors.`)}
       </sl-dialog>
     `;
   }
+
+  private renderCloneTemplateOption = (cloneTemplate: CloneTemplateName) => {
+    return html`<sl-option value=${cloneTemplate}> ${CLONE_TEMPLATE_TEXTS[cloneTemplate].title()} </sl-option>`;
+  };
 
   private renderQualityOptions = () => {
     const highestAvailableQuality = this._cloneTemplateName

@@ -62,6 +62,7 @@ export class PurchaseCloneDialogButtons extends BaseComponent {
           disabled
           @click=${this.handlePurchaseClone}
         >
+          ${COMMON_TEXTS.purchase()}
         </sl-button>
       </div>
     `;
@@ -111,7 +112,7 @@ export class PurchaseCloneDialogButtons extends BaseComponent {
   }
 
   private updatePurchaseButton(): void {
-    const { formatter, money } = this._controller;
+    const { money } = this._controller;
 
     const cost = this._clone
       ? this._controller.getCloneCost(this._clone.templateName, this._clone.quality, this._clone.level)
@@ -131,10 +132,7 @@ export class PurchaseCloneDialogButtons extends BaseComponent {
       cost <= money
     );
 
-    const formattedCost = formatter.formatNumberFloat(cost);
-
     this._purchaseButtonRef.value!.disabled = purchaseButtonDisabled;
-    this._purchaseButtonRef.value!.textContent = COMMON_TEXTS.purchase(formattedCost);
   }
 
   private handleCancel = () => {

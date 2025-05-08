@@ -1,10 +1,19 @@
 import { css, html } from 'lit';
 import { localized } from '@lit/localize';
+import { createRef, ref } from 'lit/directives/ref.js';
 import { customElement, property } from 'lit/decorators.js';
-import { BaseComponent } from '@shared/base-component';
 import type { MainframeHardwareParameterType } from '@state/mainframe-state/states/mainframe-hardware-state/types';
-import { hintStyle, sectionTitleStyle, SCREEN_WIDTH_POINTS, AUTOUPGRADE_VALUES, dragIconStyle } from '@shared/styles';
 import { COMMON_TEXTS } from '@texts/common';
+import {
+  BaseComponent,
+  hintStyle,
+  sectionTitleStyle,
+  SCREEN_WIDTH_POINTS,
+  AUTOUPGRADE_VALUES,
+  dragIconStyle,
+  highlightedValuesStyle,
+  getHighlightValueClass,
+} from '@/shared';
 import { MainframeHardwarePanelArticleController } from './controller';
 import { MAINFRAME_HARDWARE_TEXTS } from './constants';
 
@@ -15,6 +24,7 @@ export class MainframeHardwarePanelArticle extends BaseComponent {
     hintStyle,
     sectionTitleStyle,
     dragIconStyle,
+    highlightedValuesStyle,
     css`
       :host {
         width: 100%;
@@ -26,6 +36,7 @@ export class MainframeHardwarePanelArticle extends BaseComponent {
         display: grid;
         grid-template-areas:
           'title'
+          'cost'
           'buttons'
           'hint';
         row-gap: var(--sl-spacing-small);
@@ -54,6 +65,11 @@ export class MainframeHardwarePanelArticle extends BaseComponent {
         margin: 0;
       }
 
+      p.cost {
+        grid-area: cost;
+        margin: 0;
+      }
+
       #toggle-autoupgrade-btn {
         position: relative;
         top: 0.15em;
@@ -68,13 +84,16 @@ export class MainframeHardwarePanelArticle extends BaseComponent {
         :host {
           grid-template-areas:
             'title buttons'
+            'cost buttons'
             'hint buttons';
-          grid-template-rows: auto auto;
+          grid-template-rows: repeat(auto);
           grid-template-columns: 1fr auto;
         }
       }
     `,
   ];
+
+  hasPartialUpdate = true;
 
   @property({
     attribute: 'type',
@@ -89,6 +108,8 @@ export class MainframeHardwarePanelArticle extends BaseComponent {
   maxIncrease!: number;
 
   private _controller: MainframeHardwarePanelArticleController;
+
+  private _costElRef = createRef<HTMLSpanElement>();
 
   constructor() {
     super();
@@ -107,6 +128,8 @@ export class MainframeHardwarePanelArticle extends BaseComponent {
     const autoupgradeLabel = isAutoupgradeEnabled
       ? COMMON_TEXTS.disableAutoupgrade()
       : COMMON_TEXTS.enableAutoupgrade();
+
+    const increase = this.calculateIncrease();
 
     return html`
       <div class="title-row">
@@ -129,12 +152,14 @@ export class MainframeHardwarePanelArticle extends BaseComponent {
         </h4>
       </div>
 
+      <p class="cost">${COMMON_TEXTS.cost(html`<span ${ref(this._costElRef)}></span>`)}</p>
+
       <p class="hint">${MAINFRAME_HARDWARE_TEXTS[this.type].hint()}</p>
 
       <div class="button-container">
         <ca-mainframe-hardware-panel-article-buttons
-          max-increase=${this.maxIncrease}
           type=${this.type}
+          increase=${increase}
           @buy-hardware=${this.handleBuy}
           @buy-max-hardware=${this.handleBuyMax}
         >
@@ -168,5 +193,20 @@ export class MainframeHardwarePanelArticle extends BaseComponent {
     if (event.dataTransfer) {
       event.dataTransfer.setData('text/plain', this.type);
     }
+  };
+
+  handlePartialUpdate = () => {
+    if (!this._costElRef.value) {
+      return;
+    }
+
+    const cost = this._controller.getPurchaseCost(this.calculateIncrease(), this.type);
+    const money = this._controller.money;
+
+    const formattedCost = this._controller.formatter.formatNumberFloat(cost);
+    const className = getHighlightValueClass(money >= cost);
+
+    this._costElRef.value.textContent = formattedCost;
+    this._costElRef.value.className = className;
   };
 }

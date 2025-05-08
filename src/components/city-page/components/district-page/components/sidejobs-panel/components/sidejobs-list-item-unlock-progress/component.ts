@@ -5,7 +5,6 @@ import SlProgressBar from '@shoelace-style/shoelace/dist/components/progress-bar
 import { BaseComponent } from '@shared/base-component';
 import { hintStyle } from '@shared/styles';
 import { calculateLevelProgressPercentage } from '@shared/helpers';
-import { COMMON_TEXTS } from '@texts/common';
 import { CityDistrictSidejobsListItemUnlockProgressController } from './controller';
 import { localized } from '@lit/localize';
 import { type SidejobName } from '@/state/company-state';
@@ -57,16 +56,13 @@ export class CityDistrictSidejobsListItemUnlockProgress extends BaseComponent {
   }
 
   handlePartialUpdate = () => {
-    const formatter = this._controller.formatter;
     const requiredConnectivity = this._controller.getRequiredConnectivity(this.sidejobName);
     const currentConnectivity = this._controller.getCurrentConnectivity(this.districtIndex);
 
     if (this._progressBarRef.value) {
       const progressBarValue = calculateLevelProgressPercentage(0, currentConnectivity, requiredConnectivity);
-      const progressBarPercentage = COMMON_TEXTS.percentage(formatter.formatNumberFloat(progressBarValue));
 
       this._progressBarRef.value.value = progressBarValue;
-      this._progressBarRef.value.textContent = progressBarPercentage;
     }
   };
 }

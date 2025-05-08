@@ -141,13 +141,17 @@ export class MainframeHardwareState implements IMainframeHardwareState {
       performance: this._performance.serialize(),
       cores: this._cores.serialize(),
       ram: this._ram.serialize(),
-      parametersList: this._parametersList.map((parameter) => parameter.type),
+      parametersList: this._parametersList.map(this.serializeParameterType),
     };
   }
 
   private buildParametersList(parameterTypes: MainframeHardwareParameterType[]) {
     this._parametersList = parameterTypes.map(this.getParameterByType);
   }
+
+  private serializeParameterType = (parameter: IMainframeHardwareParameter): MainframeHardwareParameterType => {
+    return parameter.type;
+  };
 
   private getParameterByType = (type: MainframeHardwareParameterType): IMainframeHardwareParameter => {
     switch (type) {

@@ -9,4 +9,12 @@ export class PurchaseCloneDialogDescriptionTextController extends BaseController
   getCloneSynchronization(cloneTemplateName: CloneTemplateName, quality: number): number {
     return this.companyState.clones.getCloneSynchronization(cloneTemplateName, quality);
   }
+
+  get money(): number {
+    return this.globalState.money.money;
+  }
+
+  getCloneCost(cloneTemplateName: CloneTemplateName, quality: number, level: number): number {
+    return this.companyState.clones.getCloneCost(cloneTemplateName, quality, level);
+  }
 }

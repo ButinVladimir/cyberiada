@@ -6,7 +6,6 @@ import { container } from '@state/container';
 import { TYPES } from '@state/types';
 import { GameStateEvent } from '@shared/types';
 import { IMessageLogState } from '../interfaces/message-log-state';
-import { MESSAGE_LOG_UI_EVENTS } from '../constants';
 
 describe('Message log state', () => {
   const maxMessageLogSize = 3;
@@ -23,15 +22,12 @@ describe('Message log state', () => {
     messageLogState.clearMessages();
 
     listener = vi.fn();
-    messageLogState.uiEventBatcher.addListener(MESSAGE_LOG_UI_EVENTS.UPDATED_MESSAGES, listener);
 
     settingsState.toggleMessageEvent(GameStateEvent.gameStarted, true);
     settingsState.setMessageLogSize(maxMessageLogSize);
   });
 
-  afterEach(() => {
-    messageLogState.uiEventBatcher.removeListener(MESSAGE_LOG_UI_EVENTS.UPDATED_MESSAGES, listener);
-  });
+  afterEach(() => {});
 
   it('posts message when event is enabled', () => {
     const messageTextInput = 'text';
@@ -90,7 +86,6 @@ describe('Message log state', () => {
   // });
 
   it('does not trigger ui update after removing handler', () => {
-    messageLogState.uiEventBatcher.removeListener(MESSAGE_LOG_UI_EVENTS.UPDATED_MESSAGES, listener);
     messageLogState.clearMessages();
 
     expect(listener!).not.toHaveBeenCalled();

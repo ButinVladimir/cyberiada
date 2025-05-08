@@ -14,6 +14,7 @@ import {
   ISidejobsState,
   IAssignSidejobArguments,
   ISidejobTemplate,
+  ISerializedSidejob,
 } from './interfaces';
 import { SidejobName } from './types';
 import { Sidejob } from './sidejob';
@@ -164,9 +165,13 @@ export class SidejobsState implements ISidejobsState {
 
   serialize(): ISidejobsSerializedState {
     return {
-      sidejobs: this._sidejobsList.map((sidejob) => sidejob.serialize()),
+      sidejobs: this._sidejobsList.map(this.serializeSidejob),
     };
   }
+
+  serializeSidejob = (sidejob: ISidejob): ISerializedSidejob => {
+    return sidejob.serialize();
+  };
 
   private addSidejob(sidejob: ISidejob) {
     const existingSidejobByClone = this.getSidejobByCloneId(sidejob.assignedClone!.id);

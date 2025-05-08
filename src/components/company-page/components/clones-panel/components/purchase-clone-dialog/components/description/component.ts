@@ -2,15 +2,23 @@ import { css, html, nothing } from 'lit';
 import { msg, localized } from '@lit/localize';
 import { customElement } from 'lit/decorators.js';
 import { consume } from '@lit/context';
+import { createRef, ref } from 'lit/directives/ref.js';
 import { BaseComponent } from '@shared/base-component';
 import { type IClone } from '@state/company-state/states/clone-factory/interfaces/clone';
 import { ATTRIBUTE_TEXTS, CLONE_TEMPLATE_TEXTS, COMMON_TEXTS, SKILL_TEXTS } from '@texts/index';
-import { ATTRIBUTES, SKILLS } from '@shared/constants';
-import { Attribute, Skill } from '@shared/types';
-import { attributesSkillsTablesStyle, highlightedValuesStyle, subSectionTitleStyle } from '@shared/styles';
+import {
+  ATTRIBUTES,
+  SKILLS,
+  Attribute,
+  Skill,
+  attributesSkillsTablesStyle,
+  highlightedValuesStyle,
+  subSectionTitleStyle,
+  getHighlightValueClass,
+  getHighlightValueClassMap,
+} from '@shared/index';
 import { PurchaseCloneDialogDescriptionTextController } from './controller';
 import { temporaryCloneContext } from '../../contexts';
-import { highlightValue } from '@/shared';
 
 @localized()
 @customElement('ca-purchase-clone-dialog-description')
@@ -24,17 +32,24 @@ export class PurchaseCloneDialogDescription extends BaseComponent {
         display: flex;
         flex-direction: column;
         align-items: stretch;
-        gap: var(--sl-spacing-medium);
       }
 
       p.text {
         margin: 0;
       }
+
+      p.with-blank-space {
+        margin-bottom: var(--sl-spacing-medium);
+      }
     `,
   ];
 
+  hasPartialUpdate = true;
+
   @consume({ context: temporaryCloneContext, subscribe: true })
   private _clone?: IClone;
+
+  private _costElRef = createRef<HTMLSpanElement>();
 
   private _controller: PurchaseCloneDialogDescriptionTextController;
 
@@ -50,8 +65,9 @@ export class PurchaseCloneDialogDescription extends BaseComponent {
     }
 
     return html`
-      <p class="text">${CLONE_TEMPLATE_TEXTS[this._clone.templateName].overview()}</p>
+      <p class="text with-blank-space">${CLONE_TEMPLATE_TEXTS[this._clone.templateName].overview()}</p>
 
+      <p class="text">${COMMON_TEXTS.cost(html`<span ${ref(this._costElRef)}></span>`)}</p>
       ${this.renderSynchronization()} ${this.renderParameters()}
     `;
   }
@@ -67,12 +83,12 @@ export class PurchaseCloneDialogDescription extends BaseComponent {
 
     const valid = synchronization <= availableSynchronization;
 
-    const synchronizationClasses = highlightValue(valid);
+    const synchronizationClasses = getHighlightValueClassMap(valid);
     const synchronizationValue = html`<span class=${synchronizationClasses}
       >${formattedCloneSynchronization} / ${formattedAvailableSynchronization}</span
     >`;
 
-    return html`<p class="text">${msg(html`Synchronization: ${synchronizationValue}`)}</p>`;
+    return html`<p class="text with-blank-space">${msg(html`Synchronization: ${synchronizationValue}`)}</p>`;
   };
 
   private renderParameters = () => {
@@ -109,5 +125,20 @@ export class PurchaseCloneDialogDescription extends BaseComponent {
       <div>${SKILL_TEXTS[skill]()}</div>
       <div>${formattedValue}</div>
     `;
+  };
+
+  handlePartialUpdate = () => {
+    if (!this._costElRef.value) {
+      return;
+    }
+
+    const cost = this._controller.getCloneCost(this._clone!.templateName, this._clone!.quality, this._clone!.level);
+    const money = this._controller.money;
+
+    const formattedCost = this._controller.formatter.formatNumberFloat(cost);
+    const className = getHighlightValueClass(money >= cost);
+
+    this._costElRef.value.textContent = formattedCost;
+    this._costElRef.value.className = className;
   };
 }

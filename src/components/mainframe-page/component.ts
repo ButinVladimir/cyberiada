@@ -32,8 +32,7 @@ export class MainframePage extends BaseComponent {
       <h3 class="title">${msg('Mainframe')}</h3>
 
       <sl-tab-group>
-        ${MAINFRAME_PAGE_TABS_LIST.map((tab) => this.renderTab(tab))}
-        ${MAINFRAME_PAGE_TABS_LIST.map((tab) => this.renderTabPanel(tab))}
+        ${MAINFRAME_PAGE_TABS_LIST.map(this.renderTab)} ${MAINFRAME_PAGE_TABS_LIST.map(this.renderTabPanel)}
       </sl-tab-group>
     `;
   }

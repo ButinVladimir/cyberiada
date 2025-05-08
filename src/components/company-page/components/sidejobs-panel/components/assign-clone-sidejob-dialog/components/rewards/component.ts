@@ -2,7 +2,13 @@ import { css, html, nothing } from 'lit';
 import { localized, msg } from '@lit/localize';
 import { consume } from '@lit/context';
 import { customElement, queryAll } from 'lit/decorators.js';
-import { BaseComponent, diffFormatterParameters, Feature, MS_IN_SECOND } from '@shared/index';
+import {
+  BaseComponent,
+  diffFormatterParameters,
+  Feature,
+  getHighlightDifferenceClass,
+  MS_IN_SECOND,
+} from '@shared/index';
 import { type ISidejob } from '@state/company-state';
 import { highlightedValuesStyle } from '@shared/index';
 import { existingSidejobContext, temporarySidejobContext } from '../../contexts';
@@ -176,22 +182,10 @@ export class AssignCloneSidejobDialogRewards extends BaseComponent {
     const formattedValue = formatter.formatNumberFloat(newValue);
     const formattedDiff = formatter.formatNumberFloat(diff, diffFormatterParameters);
 
-    const classes = AssignCloneSidejobDialogRewards.highlightDifference(diff);
+    const classes = getHighlightDifferenceClass(diff);
 
     valueElement.textContent = formattedValue;
     diffElement.className = classes;
     diffElement.textContent = formattedDiff;
-  }
-
-  private static highlightDifference(difference: number) {
-    if (difference > 0) {
-      return 'success';
-    }
-
-    if (difference < 0) {
-      return 'danger';
-    }
-
-    return '';
   }
 }

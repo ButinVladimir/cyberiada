@@ -4,17 +4,19 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { provide } from '@lit/context';
 import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.component.js';
-import { BaseComponent } from '@shared/base-component';
 import {
+  CloneAlert,
   inputLabelStyle,
   hintStyle,
   sectionTitleStyle,
   mediumModalStyle,
   modalBodyScrollStyle,
   SCREEN_WIDTH_POINTS,
-} from '@shared/styles';
+  BaseComponent,
+} from '@shared/index';
+import { IDistrictState } from '@state/city-state';
 import { SIDEJOB_TEXTS, DISTRICT_NAMES } from '@texts/index';
-import { type ISidejob, SidejobName } from '@state/company-state';
+import { IClone, type ISidejob, SidejobName } from '@state/company-state';
 import {
   ConfirmationAlertOpenEvent,
   ConfirmationAlertSubmitEvent,
@@ -22,7 +24,6 @@ import {
 import { AssignCloneSidejobDialogCloseEvent } from './events';
 import { AssignCloneSidejobDialogController } from './controller';
 import { existingSidejobContext, temporarySidejobContext } from './contexts';
-import { CloneAlert } from '@/shared';
 
 @localized()
 @customElement('ca-assign-clone-sidejob-dialog')
@@ -181,9 +182,7 @@ Sidejobs availability depends on unlocked features and district connectivity.`)}
             >
               <span class="input-label" slot="label"> ${msg('Clone')} </span>
 
-              ${this._controller
-                .listClones()
-                .map((clone) => html`<sl-option value=${clone.id}> ${clone.name} </sl-option>`)}
+              ${this._controller.listClones().map(this.renderCloneOption)}
             </sl-select>
 
             <sl-select
@@ -195,12 +194,7 @@ Sidejobs availability depends on unlocked features and district connectivity.`)}
             >
               <span class="input-label" slot="label"> ${msg('District')} </span>
 
-              ${this._controller
-                .listAvailableDistricts()
-                .map(
-                  (districtState) =>
-                    html`<sl-option value=${districtState.index}> ${DISTRICT_NAMES[districtState.name]()} </sl-option>`,
-                )}
+              ${this._controller.listAvailableDistricts().map(this.renderDistrictOption)}
             </sl-select>
 
             <sl-select
@@ -212,12 +206,7 @@ Sidejobs availability depends on unlocked features and district connectivity.`)}
             >
               <span class="input-label" slot="label"> ${msg('Sidejob')} </span>
 
-              ${this._controller
-                .listAvailableSidejobs()
-                .map(
-                  (sidejobName) =>
-                    html` <sl-option value=${sidejobName}> ${SIDEJOB_TEXTS[sidejobName].title()} </sl-option>`,
-                )}
+              ${this._controller.listAvailableSidejobs().map(this.renderSidejobName)}
             </sl-select>
           </div>
         </div>
@@ -232,6 +221,18 @@ Sidejobs availability depends on unlocked features and district connectivity.`)}
       </sl-dialog>
     `;
   }
+
+  private renderCloneOption = (clone: IClone) => {
+    return html`<sl-option value=${clone.id}> ${clone.name} </sl-option>`;
+  };
+
+  private renderDistrictOption = (districtState: IDistrictState) => {
+    return html`<sl-option value=${districtState.index}> ${DISTRICT_NAMES[districtState.name]()} </sl-option>`;
+  };
+
+  private renderSidejobName = (sidejobName: SidejobName) => {
+    return html` <sl-option value=${sidejobName}> ${SIDEJOB_TEXTS[sidejobName].title()} </sl-option>`;
+  };
 
   private handleClose = () => {
     this.dispatchEvent(new AssignCloneSidejobDialogCloseEvent());

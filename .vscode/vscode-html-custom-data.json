@@ -2,40 +2,6 @@
   "version": 1,
   "tags": [
     {
-      "name": "intl-datetime",
-      "attributes": []
-    },
-    {
-      "name": "intl-message",
-      "attributes": []
-    },
-    {
-      "name": "intl-number",
-      "attributes": []
-    },
-    {
-      "name": "intl-relative-time",
-      "attributes": []
-    },
-    {
-      "name": "scrollable-component",
-      "description": "Attributes:\n\n  * `scrollbar-visibility` {} - \n\n  * `vertical-scrollbar-position` {} - \n\n  * `horizontal-scrollbar-position` {} - ",
-      "attributes": [
-        {
-          "name": "scrollbar-visibility",
-          "description": "`scrollbar-visibility` {} - \n\n"
-        },
-        {
-          "name": "vertical-scrollbar-position",
-          "description": "`vertical-scrollbar-position` {} - \n\n"
-        },
-        {
-          "name": "horizontal-scrollbar-position",
-          "description": "`horizontal-scrollbar-position` {} - \n\n"
-        }
-      ]
-    },
-    {
       "name": "ca-app-root",
       "description": "Properties:\n\n  * `_controller` {`AppRootController`} - ",
       "attributes": []
@@ -210,7 +176,7 @@
     },
     {
       "name": "ca-purchase-clone-dialog",
-      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `_nameInputRef` {`Ref<SlInput>`} - \n\n  * `_cloneTemplateInputRef` {`Ref<SlSelect>`} - \n\n  * `_qualityInputRef` {`Ref<SlSelect>`} - \n\n  * `_levelInputRef` {`Ref<SlInput>`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `_name` {`string`} - \n\n  * `_cloneTemplateName` - \n\n  * `_quality` {`number`} - \n\n  * `_level` {`number`} - \n\n  * `_clone` - \n\n  * `renderQualityOptions` - \n\n  * `handleClose` - \n\n  * `handleNameChange` - \n\n  * `handleCloneTemplateChange` - \n\n  * `handleQualityChange` - \n\n  * `handleLevelChange` - \n\n  * `handlePurchaseClone` - \n\n  * `handleGenerateName` - \n\n  * `_controller` {`PurchaseCloneDialogController`} - ",
+      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `_nameInputRef` {`Ref<SlInput>`} - \n\n  * `_cloneTemplateInputRef` {`Ref<SlSelect>`} - \n\n  * `_qualityInputRef` {`Ref<SlSelect>`} - \n\n  * `_levelInputRef` {`Ref<SlInput>`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `_name` {`string`} - \n\n  * `_cloneTemplateName` - \n\n  * `_quality` {`number`} - \n\n  * `_level` {`number`} - \n\n  * `_clone` - \n\n  * `renderCloneTemplateOption` - \n\n  * `renderQualityOptions` - \n\n  * `handleClose` - \n\n  * `handleNameChange` - \n\n  * `handleCloneTemplateChange` - \n\n  * `handleQualityChange` - \n\n  * `handleLevelChange` - \n\n  * `handlePurchaseClone` - \n\n  * `handleGenerateName` - \n\n  * `_controller` {`PurchaseCloneDialogController`} - ",
       "attributes": [
         {
           "name": "is-open",
@@ -226,7 +192,7 @@
     },
     {
       "name": "ca-purchase-clone-dialog-description",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_clone` - \n\n  * `renderSynchronization` - \n\n  * `renderParameters` - \n\n  * `renderAttribute` - \n\n  * `renderSkill` - \n\n  * `_controller` {`PurchaseCloneDialogDescriptionTextController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_clone` - \n\n  * `_costElRef` {`Ref<HTMLSpanElement>`} - \n\n  * `renderSynchronization` - \n\n  * `renderParameters` - \n\n  * `renderAttribute` - \n\n  * `renderSkill` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`PurchaseCloneDialogDescriptionTextController`} - ",
       "attributes": []
     },
     {
@@ -247,7 +213,7 @@
     },
     {
       "name": "ca-assign-clone-sidejob-dialog",
-      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `_cloneIdInputRef` {`Ref<SlSelect>`} - \n\n  * `_districtIndexInputRef` {`Ref<SlSelect>`} - \n\n  * `_sidejobNameInputRef` {`Ref<SlSelect>`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `_cloneId` {`string | undefined`} - \n\n  * `_districtIndex` {`number | undefined`} - \n\n  * `_sidejobName` - \n\n  * `_sidejob` - \n\n  * `_existingSidejob` - \n\n  * `handleClose` - \n\n  * `handleCloneIdChange` - \n\n  * `handleSidejobNameChange` - \n\n  * `handleDistrictIndexChange` - \n\n  * `handleOpenConfirmationAlert` - \n\n  * `handleConfirmConfirmationAlert` - \n\n  * `_controller` {`AssignCloneSidejobDialogController`} - ",
+      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `_cloneIdInputRef` {`Ref<SlSelect>`} - \n\n  * `_districtIndexInputRef` {`Ref<SlSelect>`} - \n\n  * `_sidejobNameInputRef` {`Ref<SlSelect>`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `_cloneId` {`string | undefined`} - \n\n  * `_districtIndex` {`number | undefined`} - \n\n  * `_sidejobName` - \n\n  * `_sidejob` - \n\n  * `_existingSidejob` - \n\n  * `renderCloneOption` - \n\n  * `renderDistrictOption` - \n\n  * `renderSidejobName` - \n\n  * `handleClose` - \n\n  * `handleCloneIdChange` - \n\n  * `handleSidejobNameChange` - \n\n  * `handleDistrictIndexChange` - \n\n  * `handleOpenConfirmationAlert` - \n\n  * `handleConfirmConfirmationAlert` - \n\n  * `_controller` {`AssignCloneSidejobDialogController`} - ",
       "attributes": [
         {
           "name": "is-open",
@@ -263,7 +229,7 @@
     },
     {
       "name": "ca-assign-clone-sidejob-dialog-description",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_descriptionModelInputRef` {`Ref<SlRadioGroup>`} - \n\n  * `_sidejob` - \n\n  * `_desciptionMode` {`AssignCloneSidejobDialogDescriptionMode`} - \n\n  * `renderConnectivity` - \n\n  * `handleDescriptionModeChange` - \n\n  * `renderDescriptionModes` - \n\n  * `renderRequirements` - \n\n  * `renderRewardMultipliers` - \n\n  * `renderRewards` - \n\n  * `_controller` {`AssignCloneSidejobDialogDescriptionController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_descriptionModelInputRef` {`Ref<SlRadioGroup>`} - \n\n  * `_sidejob` - \n\n  * `_desciptionMode` {`AssignCloneSidejobDialogDescriptionMode`} - \n\n  * `renderConnectivity` - \n\n  * `handleDescriptionModeChange` - \n\n  * `renderDescriptionModes` - \n\n  * `renderDescriptionMode` - \n\n  * `renderRequirements` - \n\n  * `renderRewardMultipliers` - \n\n  * `renderRewards` - \n\n  * `_controller` {`AssignCloneSidejobDialogDescriptionController`} - ",
       "attributes": []
     },
     {
@@ -385,21 +351,21 @@
     },
     {
       "name": "ca-mainframe-hardware-panel-article-buttons",
-      "description": "Attributes:\n\n  * `type` - \n\n  * `max-increase` {`number`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `type` - \n\n  * `maxIncrease` {`number`} - \n\n  * `_buyButtonRef` {`Ref<SlButton>`} - \n\n  * `_warningRef` {`Ref<HTMLParagraphElement>`} - \n\n  * `handlePurchase` - \n\n  * `handleBuyMax` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`MainframeHardwarePanelArticleButtonsController`} - ",
+      "description": "Attributes:\n\n  * `type` - \n\n  * `increase` {`number`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `type` - \n\n  * `increase` {`number`} - \n\n  * `_buyButtonRef` {`Ref<SlButton>`} - \n\n  * `_warningRef` {`Ref<HTMLParagraphElement>`} - \n\n  * `handlePurchase` - \n\n  * `handleBuyMax` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`MainframeHardwarePanelArticleButtonsController`} - ",
       "attributes": [
         {
           "name": "type",
           "description": "`type` - \n\nProperty: type"
         },
         {
-          "name": "max-increase",
-          "description": "`max-increase` {`number`} - \n\nProperty: maxIncrease"
+          "name": "increase",
+          "description": "`increase` {`number`} - \n\nProperty: increase"
         }
       ]
     },
     {
       "name": "ca-mainframe-hardware-panel-article",
-      "description": "Attributes:\n\n  * `type` - \n\n  * `max-increase` {`number`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `type` - \n\n  * `maxIncrease` {`number`} - \n\n  * `handleBuy` - \n\n  * `handleBuyMax` - \n\n  * `handleToggleAutoUpgrade` - \n\n  * `handleDragStart` - \n\n  * `_controller` {`MainframeHardwarePanelArticleController`} - ",
+      "description": "Attributes:\n\n  * `type` - \n\n  * `max-increase` {`number`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `type` - \n\n  * `maxIncrease` {`number`} - \n\n  * `_costElRef` {`Ref<HTMLSpanElement>`} - \n\n  * `handleBuy` - \n\n  * `handleBuyMax` - \n\n  * `handleToggleAutoUpgrade` - \n\n  * `handleDragStart` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`MainframeHardwarePanelArticleController`} - ",
       "attributes": [
         {
           "name": "type",
@@ -522,7 +488,7 @@
     },
     {
       "name": "ca-program-diff-text",
-      "description": "Attributes:\n\n  * `program-name` - \n\n  * `level` {`number`} - \n\n  * `quality` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `programName` - \n\n  * `level` {`number`} - \n\n  * `quality` {`number`} - \n\n  * `_renderer` {`IDescriptionEffectRenderer | undefined`} - \n\n  * `_paragraphs` {`NodeListOf<HTMLParagraphElement>`} - \n\n  * `renderAutoscalableRequirements` - \n\n  * `renderNormalRequirements` - \n\n  * `renderEffects` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`ProgramDiffTextController`} - ",
+      "description": "Attributes:\n\n  * `program-name` - \n\n  * `level` {`number`} - \n\n  * `quality` {`number`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `programName` - \n\n  * `level` {`number`} - \n\n  * `quality` {`number`} - \n\n  * `_renderer` {`IDescriptionEffectRenderer | undefined`} - \n\n  * `_paragraphs` {`NodeListOf<HTMLParagraphElement>`} - \n\n  * `_costElRef` {`Ref<HTMLSpanElement>`} - \n\n  * `renderAutoscalableRequirements` - \n\n  * `renderNormalRequirements` - \n\n  * `renderEffects` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`ProgramDiffTextController`} - ",
       "attributes": [
         {
           "name": "program-name",
@@ -558,7 +524,7 @@
     },
     {
       "name": "ca-purchase-program-dialog",
-      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `_programInputRef` {`Ref<SlSelect>`} - \n\n  * `_qualityInputRef` {`Ref<SlSelect>`} - \n\n  * `_levelInputRef` {`Ref<SlInput>`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `_programName` - \n\n  * `_quality` {`number`} - \n\n  * `_level` {`number`} - \n\n  * `renderQualityOptions` - \n\n  * `handleClose` - \n\n  * `handleProgramChange` - \n\n  * `handleQualityChange` - \n\n  * `handleLevelChange` - \n\n  * `handleOpenConfirmationAlert` - \n\n  * `handleConfirmConfirmationAlert` - \n\n  * `purchase` - \n\n  * `_controller` {`PurchaseProgramDialogController`} - ",
+      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `_programInputRef` {`Ref<SlSelect>`} - \n\n  * `_qualityInputRef` {`Ref<SlSelect>`} - \n\n  * `_levelInputRef` {`Ref<SlInput>`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `_programName` - \n\n  * `_quality` {`number`} - \n\n  * `_level` {`number`} - \n\n  * `renderProgramOption` - \n\n  * `renderQualityOptions` - \n\n  * `handleClose` - \n\n  * `handleProgramChange` - \n\n  * `handleQualityChange` - \n\n  * `handleLevelChange` - \n\n  * `handleOpenConfirmationAlert` - \n\n  * `handleConfirmConfirmationAlert` - \n\n  * `purchase` - \n\n  * `_controller` {`PurchaseProgramDialogController`} - ",
       "attributes": [
         {
           "name": "is-open",
@@ -604,7 +570,7 @@
     },
     {
       "name": "ca-overview-story-goal",
-      "description": "Attributes:\n\n  * `level` {`number | undefined`} - \n\n  * `messages` {`string | undefined`} - \n\n  * `unlock-features` {`string | undefined`} - \n\n  * `state` - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `level` {`number | undefined`} - \n\n  * `messages` {`string | undefined`} - \n\n  * `unlockFeatures` {`string | undefined`} - \n\n  * `state` - \n\n  * `renderSummary` - \n\n  * `renderDetails` - ",
+      "description": "Attributes:\n\n  * `level` {`number | undefined`} - \n\n  * `messages` {`string | undefined`} - \n\n  * `unlock-features` {`string | undefined`} - \n\n  * `state` - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `level` {`number | undefined`} - \n\n  * `messages` {`string | undefined`} - \n\n  * `unlockFeatures` {`string | undefined`} - \n\n  * `state` - \n\n  * `renderSummary` - \n\n  * `renderDetails` - \n\n  * `_controller` - ",
       "attributes": [
         {
           "name": "level",
@@ -697,7 +663,7 @@
     },
     {
       "name": "ca-settings-form",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_languageInputRef` {`Ref<SlSelect>`} - \n\n  * `_themeInputRef` {`Ref<SlSelect>`} - \n\n  * `_messageLogSizeInputRef` {`Ref<SlInput>`} - \n\n  * `_toastDurationInputRef` {`Ref<SlRange>`} - \n\n  * `_updateFPSInputRef` {`Ref<SlRange>`} - \n\n  * `_autosaveEnabledOnHideSwitchRef` {`Ref<SlSwitch>`} - \n\n  * `_autosaveIntervalInputRef` {`Ref<SlRange>`} - \n\n  * `_fastSpeedMultiplierInputRef` {`Ref<SlRange>`} - \n\n  * `_maxUpdatesPerTickInputRef` {`Ref<SlInput>`} - \n\n  * `_longNumberFormatInputRef` {`Ref<SlSelect>`} - \n\n  * `handleChangeLanguage` - \n\n  * `handleChangeTheme` - \n\n  * `handleChangeMessageLogSize` - \n\n  * `handleChangeToastDuration` - \n\n  * `handleChangeUpdateFPS` - \n\n  * `handleChangeAutosaveEnabledOnHide` - \n\n  * `handleChangeAutosaveInterval` - \n\n  * `handleChangeFastSpeedMultiplier` - \n\n  * `handleChangeMaxUpdatesPerTick` - \n\n  * `handleChangeLongNumberFormat` - \n\n  * `timeSecondsFormatter` - \n\n  * `decimalNumberFormatter` - \n\n  * `_controller` {`SettingsFormController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_languageInputRef` {`Ref<SlSelect>`} - \n\n  * `_themeInputRef` {`Ref<SlSelect>`} - \n\n  * `_messageLogSizeInputRef` {`Ref<SlInput>`} - \n\n  * `_toastDurationInputRef` {`Ref<SlRange>`} - \n\n  * `_updateFPSInputRef` {`Ref<SlRange>`} - \n\n  * `_autosaveEnabledOnHideSwitchRef` {`Ref<SlSwitch>`} - \n\n  * `_autosaveIntervalInputRef` {`Ref<SlRange>`} - \n\n  * `_fastSpeedMultiplierInputRef` {`Ref<SlRange>`} - \n\n  * `_maxUpdatesPerTickInputRef` {`Ref<SlInput>`} - \n\n  * `_longNumberFormatInputRef` {`Ref<SlSelect>`} - \n\n  * `renderLanguageOption` - \n\n  * `renderThemeOption` - \n\n  * `renderLongNumberFormatOption` - \n\n  * `handleChangeLanguage` - \n\n  * `handleChangeTheme` - \n\n  * `handleChangeMessageLogSize` - \n\n  * `handleChangeToastDuration` - \n\n  * `handleChangeUpdateFPS` - \n\n  * `handleChangeAutosaveEnabledOnHide` - \n\n  * `handleChangeAutosaveInterval` - \n\n  * `handleChangeFastSpeedMultiplier` - \n\n  * `handleChangeMaxUpdatesPerTick` - \n\n  * `handleChangeLongNumberFormat` - \n\n  * `timeSecondsFormatter` - \n\n  * `decimalNumberFormatter` - \n\n  * `_controller` {`SettingsFormController`} - ",
       "attributes": []
     },
     {

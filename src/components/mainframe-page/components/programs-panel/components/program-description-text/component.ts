@@ -140,7 +140,7 @@ export class ProgramDescriptionText extends BaseComponent {
   };
 
   private updateRenderer(): void {
-    const program = this._controller.getProgram(this.programName as ProgramName)!;
+    const program = this._controller.getProgram(this.programName)!;
 
     const parameters: IDescriptionParameters = {
       formatter: this._controller.formatter,

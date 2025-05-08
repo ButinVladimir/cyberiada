@@ -14,7 +14,7 @@ import { binarySearchDecimal, moveElementInArray } from '@shared/helpers';
 import { PROGRAM_TEXTS } from '@texts/programs';
 import { IMainframeProgramsState, IMainframeProgramsSerializedState } from './interfaces';
 import { ProgramName } from '../progam-factory/types';
-import { IProgram } from '../progam-factory/interfaces';
+import { IMakeProgramParameters, IProgram } from '../progam-factory/interfaces';
 
 const { lazyInject } = decorators;
 
@@ -163,9 +163,13 @@ export class MainframeProgramsState implements IMainframeProgramsState {
 
   serialize(): IMainframeProgramsSerializedState {
     return {
-      ownedPrograms: this._programsList.map((program) => program.serialize()),
+      ownedPrograms: this._programsList.map(this.serializeProgram),
     };
   }
+
+  private serializeProgram = (program: IProgram): IMakeProgramParameters => {
+    return program.serialize();
+  };
 
   private addProgram(name: ProgramName, quality: number, level: number): void {
     const existingProgram = this._ownedPrograms.get(name);

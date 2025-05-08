@@ -5,7 +5,7 @@ import { customElement, state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { choose } from 'lit/directives/choose.js';
 import SlRadioGroup from '@shoelace-style/shoelace/dist/components/radio-group/radio-group.component.js';
-import { BaseComponent, highlightValue } from '@shared/index';
+import { BaseComponent, getHighlightValueClassMap } from '@shared/index';
 import { SIDEJOB_TEXTS } from '@texts/index';
 import { type ISidejob } from '@state/company-state';
 import { highlightedValuesStyle } from '@shared/index';
@@ -88,7 +88,7 @@ export class AssignCloneSidejobDialogDescription extends BaseComponent {
     const formattedRequiredConnectivity = formatter.formatNumberFloat(requiredConnectivity);
 
     const valid = totalConnectivity >= requiredConnectivity;
-    const connectivityClasses = highlightValue(valid);
+    const connectivityClasses = getHighlightValueClassMap(valid);
 
     const connectivityValue = html`<span class=${connectivityClasses}
       >${formattedTotalConnectivity} / ${formattedRequiredConnectivity}</span
@@ -106,10 +106,13 @@ export class AssignCloneSidejobDialogDescription extends BaseComponent {
   };
 
   private renderDescriptionModes = () => {
-    return DESCRIPTION_MODES.map(
-      (descriptionMode) =>
-        html`<sl-radio-button value=${descriptionMode}>${DESCRIPTION_MODE_TEXTS[descriptionMode]()}</sl-radio-button>`,
-    );
+    return DESCRIPTION_MODES.map(this.renderDescriptionMode);
+  };
+
+  private renderDescriptionMode = (descriptionMode: AssignCloneSidejobDialogDescriptionMode) => {
+    return html`<sl-radio-button value=${descriptionMode}
+      >${DESCRIPTION_MODE_TEXTS[descriptionMode]()}</sl-radio-button
+    >`;
   };
 
   private renderRequirements = () => {

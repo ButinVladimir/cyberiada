@@ -5,6 +5,7 @@ import { OverviewMenuItem, MiscMenuItem } from '@shared/types';
 import constants from '@configs/constants.json';
 import { Feature } from '@shared/types';
 import { ViewportController } from './controller';
+import { cache } from 'lit/directives/cache.js';
 
 @customElement('ca-viewport')
 export class Viewport extends BaseComponent {
@@ -32,7 +33,7 @@ export class Viewport extends BaseComponent {
   }
 
   render() {
-    return html` <div class="content-wrapper">${this.renderPage()}</div> `;
+    return html` <div class="content-wrapper">${cache(this.renderPage())}</div> `;
   }
 
   private renderPage = () => {

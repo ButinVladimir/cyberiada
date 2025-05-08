@@ -77,9 +77,7 @@ export class SettingsForm extends BaseComponent {
       >
         <span class="input-label" slot="label"> ${msg('Language')} </span>
 
-        ${constants.LANGUAGE_OPTIONS.map(
-          ([language, optionText]) => html`<sl-option value=${language}> ${optionText} </sl-option>`,
-        )}
+        ${constants.LANGUAGE_OPTIONS.map(this.renderLanguageOption)}
       </sl-select>
 
       <sl-select
@@ -90,7 +88,7 @@ export class SettingsForm extends BaseComponent {
       >
         <span class="input-label" slot="label"> ${msg('Theme')} </span>
 
-        ${THEMES.map((theme) => html`<sl-option value=${theme}> ${constants.THEME_NAMES[theme]()} </sl-option>`)}
+        ${THEMES.map(this.renderThemeOption)}
       </sl-select>
 
       <sl-input
@@ -177,12 +175,7 @@ export class SettingsForm extends BaseComponent {
       >
         <span class="input-label" slot="label"> ${msg('Long number format')} </span>
 
-        ${LONG_NUMBER_FORMATS.map(
-          (longNumberFormat) =>
-            html` <sl-option value=${longNumberFormat}>
-              ${constants.LONG_NUMBER_FORMAT_NAMES[longNumberFormat]()}
-            </sl-option>`,
-        )}
+        ${LONG_NUMBER_FORMATS.map(this.renderLongNumberFormatOption)}
       </sl-select>
 
       <sl-switch
@@ -232,6 +225,20 @@ export class SettingsForm extends BaseComponent {
       this._fastSpeedMultiplierInputRef.value.tooltipFormatter = this.decimalNumberFormatter;
     }
   }
+
+  private renderLanguageOption = ([language, optionText]: string[]) => {
+    return html`<sl-option value=${language}> ${optionText} </sl-option>`;
+  };
+
+  private renderThemeOption = (theme: Theme) => {
+    return html`<sl-option value=${theme}> ${constants.THEME_NAMES[theme]()} </sl-option>`;
+  };
+
+  private renderLongNumberFormatOption = (longNumberFormat: LongNumberFormat) => {
+    return html`<sl-option value=${longNumberFormat}>
+      ${constants.LONG_NUMBER_FORMAT_NAMES[longNumberFormat]()}
+    </sl-option>`;
+  };
 
   private handleChangeLanguage = async () => {
     if (!this._languageInputRef.value) {

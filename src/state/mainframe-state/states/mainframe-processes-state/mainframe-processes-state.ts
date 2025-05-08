@@ -295,9 +295,13 @@ export class MainframeProcessesState implements IMainframeProcessesState {
 
   serialize(): IMainframeProcessesSerializedState {
     return {
-      processes: this._processesList.map((process) => process.serialize()),
+      processes: this._processesList.map(this.serializeProcess),
     };
   }
+
+  private serializeProcess = (process: IProcess): ISerializedProcess => {
+    return process.serialize();
+  };
 
   private updateRunningProcesses = () => {
     this._processUpdateRequested = false;

@@ -34,9 +34,7 @@ export class StatisticsMoneyExpenses extends BaseComponent {
         <h4 class="title" slot="summary">${msg('Money expenses')}</h4>
 
         <div class="parameters-table">
-          ${PURCHASE_TYPES.map((purchaseType) =>
-            this.renderExpenseArticle(purchaseType, this._controller.getMoneyExpenses(purchaseType)),
-          )}
+          ${PURCHASE_TYPES.map(this.renderExpenseArticle)}
 
           <span> ${STATISTIC_PAGE_TEXTS.total()} </span>
           <span> ${formatter.formatNumberFloat(moneyTotal)} </span>
@@ -45,7 +43,9 @@ export class StatisticsMoneyExpenses extends BaseComponent {
     `;
   }
 
-  private renderExpenseArticle = (purchaseType: PurchaseType, value: number) => {
+  private renderExpenseArticle = (purchaseType: PurchaseType) => {
+    const value = this._controller.getMoneyExpenses(purchaseType);
+
     if (value <= 0) {
       return '';
     }

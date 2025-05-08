@@ -15,7 +15,7 @@ import { ICloneNameGeneratorResult } from '@workers/clone-name-generator/interfa
 import type { ICompanyState } from '../../interfaces/company-state';
 import { IClone } from '../clone-factory/interfaces/clone';
 import { ICompanyClonesSerializedState, ICompanyClonesState, IPurchaseCloneArgs } from './interfaces';
-import { CloneTemplateName } from '../clone-factory/types';
+import { CloneTemplateName, IMakeCloneParameters } from '../clone-factory';
 
 const { lazyInject } = decorators;
 
@@ -214,9 +214,13 @@ export class CompanyClonesState implements ICompanyClonesState {
 
   serialize(): ICompanyClonesSerializedState {
     return {
-      clones: this._clonesList.map((clone) => clone.serialize()),
+      clones: this._clonesList.map(this.serializeClone),
     };
   }
+
+  private serializeClone = (clone: IClone): IMakeCloneParameters => {
+    return clone.serialize();
+  };
 
   private clearState() {
     for (const clone of this._clonesList) {

@@ -6,7 +6,7 @@ import { BaseComponent } from '@shared/base-component';
 import { ATTRIBUTE_TEXTS, COMMON_TEXTS, SKILL_TEXTS } from '@texts/index';
 import { attributesSkillsTablesStyle, highlightedValuesStyle, subSectionTitleStyle } from '@shared/styles';
 import { type ISidejob } from '@state/company-state';
-import { Attribute, ATTRIBUTES, BaseController, highlightValue, Skill, SKILLS } from '@shared/index';
+import { Attribute, ATTRIBUTES, BaseController, getHighlightValueClassMap, Skill, SKILLS } from '@shared/index';
 import { temporarySidejobContext } from '../../contexts';
 
 @localized()
@@ -65,7 +65,7 @@ export class AssignCloneSidejobDialogRequirements extends BaseComponent {
 
     const valid = availableValue >= requiredValue;
 
-    const classes = highlightValue(valid);
+    const classes = getHighlightValueClassMap(valid);
 
     return html`
       <span>${ATTRIBUTE_TEXTS[attribute]()}</span>
@@ -84,7 +84,7 @@ export class AssignCloneSidejobDialogRequirements extends BaseComponent {
 
     const valid = availableValue >= requiredValue;
 
-    const classes = highlightValue(valid);
+    const classes = getHighlightValueClassMap(valid);
 
     return html`
       <span>${SKILL_TEXTS[skill]()}</span>

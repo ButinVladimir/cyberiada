@@ -157,9 +157,7 @@ If you already have program with same name, old one will be replaced with new on
             >
               <span class="input-label" slot="label"> ${msg('Program')} </span>
 
-              ${this._controller
-                .listAvailablePrograms()
-                .map((program) => html`<sl-option value=${program}> ${PROGRAM_TEXTS[program].title()} </sl-option>`)}
+              ${this._controller.listAvailablePrograms().map(this.renderProgramOption)}
             </sl-select>
 
             <sl-select
@@ -211,6 +209,10 @@ If you already have program with same name, old one will be replaced with new on
       </sl-dialog>
     `;
   }
+
+  private renderProgramOption = (program: ProgramName) => {
+    return html`<sl-option value=${program}> ${PROGRAM_TEXTS[program].title()} </sl-option>`;
+  };
 
   private renderQualityOptions = () => {
     const highestAvailableQuality = this._programName

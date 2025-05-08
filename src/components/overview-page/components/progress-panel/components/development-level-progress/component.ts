@@ -6,7 +6,6 @@ import SlProgressBar from '@shoelace-style/shoelace/dist/components/progress-bar
 import { BaseComponent } from '@shared/base-component';
 import { hintStyle } from '@shared/styles';
 import { calculateLevelProgressPercentage } from '@shared/helpers';
-import { COMMON_TEXTS } from '@texts/common';
 import { OverviewDevelopmentLevelProgressController } from './controller';
 import { progressBlockStyle } from '../../styles';
 
@@ -58,12 +57,8 @@ export class OverviewDevelopmentLevelProgress extends BaseComponent {
         this._controller.getCurrentDevelopmentPoints(),
         this._controller.getNextDevelopmentLevelPoints(),
       );
-      const nextDevelopmentLevelProgressBarPercentage = COMMON_TEXTS.percentage(
-        formatter.formatNumberFloat(nextDevelopmentLevelProgressBarValue),
-      );
 
       this._progressBarRef.value.value = nextDevelopmentLevelProgressBarValue;
-      this._progressBarRef.value.textContent = nextDevelopmentLevelProgressBarPercentage;
     }
 
     const developmentGrowth = this._controller.getDevelopmentGrowth();

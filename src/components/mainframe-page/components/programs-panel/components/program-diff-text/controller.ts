@@ -11,6 +11,10 @@ export class ProgramDiffTextController extends BaseController {
     this.deleteSelectedProgram();
   }
 
+  get money(): number {
+    return this.globalState.money.money;
+  }
+
   get ram(): number {
     return this.mainframeState.hardware.ram.totalLevel;
   }
@@ -40,6 +44,10 @@ export class ProgramDiffTextController extends BaseController {
 
   getOwnedProgram(name: ProgramName): IProgram | undefined {
     return this.mainframeState.programs.getOwnedProgramByName(name);
+  }
+
+  getProgramCost(programName: ProgramName, quality: number, level: number): number {
+    return this.mainframeState.programs.getProgramCost(programName, quality, level);
   }
 
   private deleteSelectedProgram() {

@@ -11,7 +11,7 @@ import {
   ATTRIBUTES,
   BaseController,
   diffFormatterParameters,
-  highlightDifference,
+  getHighlightDifferenceClassMap,
   Skill,
   SKILLS,
 } from '@shared/index';
@@ -75,7 +75,7 @@ export class AssignCloneSidejobDialogRewardsMultipliers extends BaseComponent {
     const formattedValue = formatter.formatNumberFloat(value);
     const formattedDiff = formatter.formatNumberFloat(diff, diffFormatterParameters);
 
-    const classes = highlightDifference(diff);
+    const classes = getHighlightDifferenceClassMap(diff);
     const diffElement = html`<span class=${classes}>${formattedDiff}</span>`;
 
     return html`
@@ -94,7 +94,7 @@ export class AssignCloneSidejobDialogRewardsMultipliers extends BaseComponent {
     const formattedValue = formatter.formatNumberFloat(value);
     const formattedDiff = formatter.formatNumberFloat(diff, diffFormatterParameters);
 
-    const classes = highlightDifference(diff);
+    const classes = getHighlightDifferenceClassMap(diff);
     const diffElement = html`<span class=${classes}>${formattedDiff}</span>`;
 
     return html`

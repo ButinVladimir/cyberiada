@@ -68,8 +68,6 @@ export class Clone implements IClone {
   }
 
   get id() {
-    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.CLONE_CHANGED);
-
     return this._id;
   }
 

@@ -75,6 +75,7 @@ export class PurchaseProgramDialogButtons extends BaseComponent {
           disabled
           @click=${this.handlePurchase}
         >
+          ${COMMON_TEXTS.purchase()}
         </sl-button>
       </div>
     `;
@@ -123,7 +124,7 @@ export class PurchaseProgramDialogButtons extends BaseComponent {
   }
 
   private updatePurchaseButton(): void {
-    const { formatter, money } = this._controller;
+    const { money } = this._controller;
 
     const cost = this.programName ? this._controller.getProgramCost(this.programName, this.quality, this.level) : 0;
 
@@ -133,10 +134,7 @@ export class PurchaseProgramDialogButtons extends BaseComponent {
       this._controller.isProgramAvailable(this.programName, this.quality, this.level)
     );
 
-    const formattedCost = formatter.formatNumberFloat(cost);
-
     this._purchaseButtonRef.value!.disabled = purchaseButtonDisabled;
-    this._purchaseButtonRef.value!.textContent = COMMON_TEXTS.purchase(formattedCost);
   }
 
   private handleCancel = () => {

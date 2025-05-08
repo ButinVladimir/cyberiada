@@ -7,7 +7,6 @@ import SlProgressBar from '@shoelace-style/shoelace/dist/components/progress-bar
 import { BaseComponent } from '@shared/base-component';
 import { hintStyle } from '@shared/styles';
 import { type IClone } from '@state/company-state';
-import { COMMON_TEXTS } from '@texts/common';
 import { calculateLevelProgressPercentage } from '@shared/helpers';
 import { cloneContext } from '../item/contexts';
 import { BaseController } from '@/shared';
@@ -72,18 +71,14 @@ export class ClonesListItemExperience extends BaseComponent {
       return;
     }
 
-    const formatter = this._controller.formatter;
-
     if (this._progressBarRef.value) {
       const progressBarValue = calculateLevelProgressPercentage(
         this._clone.getLevelRequirements(this._clone.level - 1),
         this._clone.experience,
         this._clone.getLevelRequirements(this._clone.level),
       );
-      const progressBarPercentage = COMMON_TEXTS.percentage(formatter.formatNumberFloat(progressBarValue));
 
       this._progressBarRef.value.value = progressBarValue;
-      this._progressBarRef.value.textContent = progressBarPercentage;
     }
   };
 }

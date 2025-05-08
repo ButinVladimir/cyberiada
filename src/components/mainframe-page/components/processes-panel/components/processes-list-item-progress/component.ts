@@ -6,7 +6,6 @@ import { BaseComponent } from '@shared/base-component';
 import { hintStyle } from '@shared/styles';
 import { type ProgramName } from '@state/mainframe-state/states/progam-factory/types';
 import { calculateLevelProgressPercentage } from '@shared/helpers';
-import { COMMON_TEXTS } from '@texts/common';
 import { ProcessesListItemProgressController } from './controller';
 import { localized, msg, str } from '@lit/localize';
 
@@ -80,10 +79,8 @@ export class ProcessesListItemProgressColumn extends BaseComponent {
         process.currentCompletionPoints,
         process.maxCompletionPoints,
       );
-      const progressBarPercentage = COMMON_TEXTS.percentage(formatter.formatNumberFloat(progressBarValue));
 
       this._progressBarRef.value.value = progressBarValue;
-      this._progressBarRef.value.textContent = progressBarPercentage;
     }
 
     if (this._hintRef.value) {

@@ -32,8 +32,7 @@ export class CompanyPage extends BaseComponent {
       <h3 class="title">${msg('Company')}</h3>
 
       <sl-tab-group>
-        ${COMPANY_PAGE_TABS_LIST.map((tab) => this.renderTab(tab))}
-        ${COMPANY_PAGE_TABS_LIST.map((tab) => this.renderTabPanel(tab))}
+        ${COMPANY_PAGE_TABS_LIST.map(this.renderTab)} ${COMPANY_PAGE_TABS_LIST.map(this.renderTabPanel)}
       </sl-tab-group>
     `;
   }

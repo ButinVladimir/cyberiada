@@ -45,10 +45,10 @@ export class MainframeHardwarePanelArticleButtons extends BaseComponent {
   type!: MainframeHardwareParameterType;
 
   @property({
-    attribute: 'max-increase',
+    attribute: 'increase',
     type: Number,
   })
-  maxIncrease!: number;
+  increase!: number;
 
   private _controller: MainframeHardwarePanelArticleButtonsController;
 
@@ -62,6 +62,8 @@ export class MainframeHardwarePanelArticleButtons extends BaseComponent {
   }
 
   render() {
+    const formattedIncrease = this._controller.formatter.formatNumberDecimal(this.increase);
+
     return html`
       <div class="buttons">
         <sl-button variant="default" type="button" size="medium" @click=${this.handleBuyMax}>
@@ -76,6 +78,7 @@ export class MainframeHardwarePanelArticleButtons extends BaseComponent {
           size="medium"
           @click=${this.handlePurchase}
         >
+          ${COMMON_TEXTS.buyIncrease(formattedIncrease)}
         </sl-button>
       </div>
 
@@ -83,20 +86,12 @@ export class MainframeHardwarePanelArticleButtons extends BaseComponent {
     `;
   }
 
-  private calculateIncrease(): number {
-    return Math.max(
-      Math.min(this.maxIncrease, this._controller.developmentLevel - this._controller.getLevel(this.type)),
-      1,
-    );
-  }
-
   private getWarning(): string {
     if (this._controller.developmentLevel === this._controller.getLevel(this.type)) {
       return COMMON_TEXTS.higherDevelopmentLevelRequired();
     }
 
-    const increase = this.calculateIncrease();
-    const cost = this._controller.getPurchaseCost(increase, this.type);
+    const cost = this._controller.getPurchaseCost(this.increase, this.type);
     const moneyGrowth = this._controller.moneyGrowth;
     const moneyDiff = cost - this._controller.money;
 
@@ -129,16 +124,8 @@ export class MainframeHardwarePanelArticleButtons extends BaseComponent {
     }
 
     if (this._buyButtonRef.value) {
-      const formatter = this._controller.formatter;
-      const increase = this.calculateIncrease();
+      const buttonDisabled = !this._controller.checkCanPurchase(this.increase, this.type);
 
-      const buttonDisabled = !this._controller.checkCanPurchase(increase, this.type);
-      const cost = this._controller.getPurchaseCost(increase, this.type);
-
-      const formattedIncrease = formatter.formatNumberDecimal(increase);
-      const formattedCost = formatter.formatNumberFloat(cost);
-
-      this._buyButtonRef.value.textContent = COMMON_TEXTS.buyIncrease(formattedIncrease, formattedCost);
       this._buyButtonRef.value.disabled = buttonDisabled;
     }
   };

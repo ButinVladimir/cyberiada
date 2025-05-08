@@ -1,11 +1,12 @@
 import { msg, str } from '@lit/localize';
 import { Attribute, ItemCategory, Skill } from '@shared/types';
+import { html } from 'lit';
 
 export const COMMON_TEXTS = {
   notEnoughMoney: () => msg('Not enough money'),
   willBeAvailableIn: (time: string) => msg(str`Will be available in ${time}`),
   higherDevelopmentLevelRequired: () => msg('Higher development level required'),
-  buyIncrease: (increase: string, cost: string) => msg(str`Buy x${increase} for ${cost}`),
+  buyIncrease: (increase: string) => msg(str`Buy x${increase}`),
   buyMax: () => msg('Buy max'),
   buyMaxAllUpgrades: () => msg('Buy all upgrades'),
   enableAutoupgrade: () => msg('Enable autoupgrade'),
@@ -25,7 +26,7 @@ export const COMMON_TEXTS = {
   cancel: () => msg('Cancel'),
   continue: () => msg('Continue'),
   close: () => msg('Close'),
-  purchase: (cost: string) => msg(str`Purchase for ${cost}`),
+  purchase: () => msg('Purchase'),
   percentage: (value: string) => msg(str`${value}%`),
   modifierDiff: (value: string, diff: string) => msg(str`\u00D7 ${value} (${diff})`),
   menu: () => msg('Menu'),
@@ -34,6 +35,7 @@ export const COMMON_TEXTS = {
   rewardsMultipliers: () => msg('Rewards multipliers'),
   attributes: () => msg('Attributes'),
   skills: () => msg('Skills'),
+  cost: (costEl: any) => msg(html`Cost: ${costEl}`),
 };
 
 export const CATEGORY_TEXTS: Record<ItemCategory, () => string> = {

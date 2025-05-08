@@ -123,7 +123,7 @@ export class ClonesList extends BaseComponent {
       ${clones.length > 0
         ? html`
             <ca-sortable-list gap=${CLONE_LIST_ITEMS_GAP} @sortable-element-moved=${this.handleMoveClone}>
-              ${repeat(clones, (program) => program.name, this.renderClone)}
+              ${repeat(clones, (clone) => clone.name, this.renderClone)}
             </ca-sortable-list>
           `
         : this.renderEmptyListNotification()}

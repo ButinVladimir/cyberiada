@@ -35,7 +35,7 @@ export class StatisticsDevelopmentGrowth extends BaseComponent {
         <h4 class="title" slot="summary">${msg('Development points per second')}</h4>
 
         <div class="parameters-table">
-          ${INCOME_SOURCES.map((incomeSource) => this.renderIncomeSource(incomeSource))}
+          ${INCOME_SOURCES.map(this.renderIncomeSource)}
 
           <span> ${STATISTIC_PAGE_TEXTS.total()} </span>
           <span ${ref(this._totalGrowthRef)}> </span>
