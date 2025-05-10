@@ -60,4 +60,9 @@ export class DistrictParameters implements IDistrictParameters {
     this._connectivity.deserialize(serializedParameters.connectivtiy);
     this._multipliers.deserialize(serializedParameters.multipliers);
   }
+
+  removeAllEventListeners(): void {
+    this._tier.removeAllEventListeners();
+    this._synchronization.removeAllEventListeners();
+  }
 }

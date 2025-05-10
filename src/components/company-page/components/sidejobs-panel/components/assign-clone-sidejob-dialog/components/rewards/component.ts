@@ -1,5 +1,5 @@
 import { css, html, nothing } from 'lit';
-import { localized, msg } from '@lit/localize';
+import { localized } from '@lit/localize';
 import { consume } from '@lit/context';
 import { customElement, queryAll } from 'lit/decorators.js';
 import {
@@ -8,12 +8,13 @@ import {
   Feature,
   getHighlightDifferenceClass,
   MS_IN_SECOND,
+  RewardParameter,
+  highlightedValuesStyle,
 } from '@shared/index';
 import { type ISidejob } from '@state/company-state';
-import { highlightedValuesStyle } from '@shared/index';
+import { COMMON_TEXTS, REWARD_PARAMETER_NAMES } from '@texts/index';
 import { existingSidejobContext, temporarySidejobContext } from '../../contexts';
-import { PARAGRAPH_VALUES, PARAMETER_NAMES } from './constants';
-import { RewardParameters } from './types';
+import { DISPLAY_TYPES } from './constants';
 import { AssignCloneSidejobDialogRewardsController } from './controller';
 
 @localized()
@@ -24,6 +25,9 @@ export class AssignCloneSidejobDialogRewards extends BaseComponent {
     css`
       :host {
         display: block;
+        color: var(--ca-hint-color);
+        font-size: var(--ca-hint-font-size);
+        line-height: var(--ca-hint-line-height);
       }
 
       p.text {
@@ -36,14 +40,52 @@ export class AssignCloneSidejobDialogRewards extends BaseComponent {
 
   private _controller: AssignCloneSidejobDialogRewardsController;
 
-  @queryAll('p[data-name]')
-  private _paragraphs!: NodeListOf<HTMLParagraphElement>;
+  @queryAll(`span[data-value][data-type=${DISPLAY_TYPES.VALUE}]`)
+  private _rewardValueElements!: NodeListOf<HTMLSpanElement>;
+
+  @queryAll(`span[data-value][data-type=${DISPLAY_TYPES.DIFF}]`)
+  private _rewardDiffElements!: NodeListOf<HTMLSpanElement>;
 
   @consume({ context: temporarySidejobContext, subscribe: true })
   private _sidejob?: ISidejob;
 
   @consume({ context: existingSidejobContext, subscribe: true })
   private _existingSidejob?: ISidejob;
+
+  private _rewardValues: Record<RewardParameter, { value: number; diff: number }> = {
+    [RewardParameter.money]: {
+      value: 0,
+      diff: 0,
+    },
+    [RewardParameter.developmentPoints]: {
+      value: 0,
+      diff: 0,
+    },
+    [RewardParameter.experience]: {
+      value: 0,
+      diff: 0,
+    },
+    [RewardParameter.districtTierPoints]: {
+      value: 0,
+      diff: 0,
+    },
+    [RewardParameter.connectivity]: {
+      value: 0,
+      diff: 0,
+    },
+    [RewardParameter.codeBase]: {
+      value: 0,
+      diff: 0,
+    },
+    [RewardParameter.computationalBase]: {
+      value: 0,
+      diff: 0,
+    },
+    [RewardParameter.rewards]: {
+      value: 0,
+      diff: 0,
+    },
+  };
 
   constructor() {
     super();
@@ -57,135 +99,129 @@ export class AssignCloneSidejobDialogRewards extends BaseComponent {
     }
 
     return html`
-      ${this.renderParameter(RewardParameters.money)} ${this.renderParameter(RewardParameters.developmentPoints)}
-      ${this.renderParameter(RewardParameters.experience)} ${this.renderParameter(RewardParameters.districtTierPoints)}
-      ${this._controller.isFeatureUnlocked(Feature.connectivity)
-        ? this.renderParameter(RewardParameters.connectivity)
-        : nothing}
-      ${this._controller.isFeatureUnlocked(Feature.codeBase)
-        ? this.renderParameter(RewardParameters.codeBase)
-        : nothing}
-      ${this._controller.isFeatureUnlocked(Feature.computationalBase)
-        ? this.renderParameter(RewardParameters.computationalBase)
-        : nothing}
-      ${this._controller.isFeatureUnlocked(Feature.rewards) ? this.renderParameter(RewardParameters.rewards) : nothing}
+      ${this.renderParameter(RewardParameter.money, true)}
+      ${this.renderParameter(RewardParameter.developmentPoints, true)}
+      ${this.renderParameter(RewardParameter.experience, true)}
+      ${this.renderParameter(RewardParameter.districtTierPoints, true)}
+      ${this.renderParameter(RewardParameter.connectivity, this._controller.isFeatureUnlocked(Feature.connectivity))}
+      ${this.renderParameter(RewardParameter.codeBase, this._controller.isFeatureUnlocked(Feature.codeBase))}
+      ${this.renderParameter(
+        RewardParameter.computationalBase,
+        this._controller.isFeatureUnlocked(Feature.computationalBase),
+      )}
+      ${this.renderParameter(RewardParameter.rewards, this._controller.isFeatureUnlocked(Feature.rewards))}
     `;
   }
 
-  private renderParameter = (parameter: RewardParameters) => {
-    const parameterName = PARAMETER_NAMES[parameter]();
-    const valueElement = html`<span data-value=${PARAGRAPH_VALUES.VALUE}></span>`;
-    const diffElement = html`<span data-value=${PARAGRAPH_VALUES.DIFF}></span>`;
+  private renderParameter = (parameter: RewardParameter, isUnlocked: boolean) => {
+    if (!isUnlocked) {
+      return nothing;
+    }
 
-    return html`<p class="text" data-name=${parameter}>
-      ${msg(html`${parameterName}: ${valueElement} (${diffElement}) per second`)}
-    </p>`;
+    const parameterName = REWARD_PARAMETER_NAMES[parameter]();
+    const valueElement = html`<span data-value=${parameter} data-type=${DISPLAY_TYPES.VALUE}></span>`;
+    const diffElement = html`<span data-value=${parameter} data-type=${DISPLAY_TYPES.DIFF}></span>`;
+
+    return html`<p class="text">${COMMON_TEXTS.parameterValueWithDiff(parameterName, valueElement, diffElement)}</p>`;
   };
 
   handlePartialUpdate = () => {
-    this._paragraphs.forEach((paragraph) => {
-      const parameter = paragraph.dataset.name;
+    if (!this._sidejob) {
+      return;
+    }
 
-      switch (parameter) {
-        case RewardParameters.money:
-          this.updateMoney(paragraph);
-          break;
-        case RewardParameters.developmentPoints:
-          this.updateDevelopmentPoints(paragraph);
-          break;
-        case RewardParameters.experience:
-          this.updateExperience(paragraph);
-          break;
-        case RewardParameters.districtTierPoints:
-          this.updateDistrictTierPoints(paragraph);
-          break;
-        case RewardParameters.connectivity:
-          this.updateConnectivity(paragraph);
-          break;
-        case RewardParameters.codeBase:
-          this.updateCodeBase(paragraph);
-          break;
-        case RewardParameters.computationalBase:
-          this.updateComputationalBase(paragraph);
-          break;
-        case RewardParameters.rewards:
-          this.updateRewards(paragraph);
-          break;
-      }
-    });
+    this.updateMoney();
+    this.updateDevelopmentPoints();
+    this.updateExperience();
+    this.updateDistrictTierPoints();
+    this.updateConnectivity();
+    this.updateCodeBase();
+    this.updateComputationalBase();
+    this.updateRewards();
+
+    this._rewardValueElements.forEach(this.updateValueElement);
+    this._rewardDiffElements.forEach(this.updateDiffElement);
   };
 
-  private updateMoney(paragraph: HTMLParagraphElement) {
+  private updateMoney() {
     const newValue = this._sidejob!.calculateMoneyDelta(MS_IN_SECOND);
     const oldValue = this._existingSidejob?.calculateMoneyDelta(MS_IN_SECOND) ?? 0;
 
-    this.updateValue(newValue, oldValue, paragraph);
+    this._rewardValues[RewardParameter.money].value = newValue;
+    this._rewardValues[RewardParameter.money].diff = newValue - oldValue;
   }
 
-  private updateDevelopmentPoints(paragraph: HTMLParagraphElement) {
+  private updateDevelopmentPoints() {
     const newValue = this._sidejob!.calculateDevelopmentPointsDelta(MS_IN_SECOND);
     const oldValue = this._existingSidejob?.calculateDevelopmentPointsDelta(MS_IN_SECOND) ?? 0;
 
-    this.updateValue(newValue, oldValue, paragraph);
+    this._rewardValues[RewardParameter.developmentPoints].value = newValue;
+    this._rewardValues[RewardParameter.developmentPoints].diff = newValue - oldValue;
   }
 
-  private updateExperience(paragraph: HTMLParagraphElement) {
+  private updateExperience() {
     const newValue = this._sidejob!.calculateExperienceDelta(MS_IN_SECOND);
     const oldValue = this._existingSidejob?.calculateExperienceDelta(MS_IN_SECOND) ?? 0;
 
-    this.updateValue(newValue, oldValue, paragraph);
+    this._rewardValues[RewardParameter.experience].value = newValue;
+    this._rewardValues[RewardParameter.experience].diff = newValue - oldValue;
   }
 
-  private updateDistrictTierPoints(paragraph: HTMLParagraphElement) {
+  private updateDistrictTierPoints() {
     const newValue = this._sidejob!.calculateDistrictTierPointsDelta(MS_IN_SECOND);
     const oldValue = this._existingSidejob?.calculateDistrictTierPointsDelta(MS_IN_SECOND) ?? 0;
 
-    this.updateValue(newValue, oldValue, paragraph);
+    this._rewardValues[RewardParameter.districtTierPoints].value = newValue;
+    this._rewardValues[RewardParameter.districtTierPoints].diff = newValue - oldValue;
   }
 
-  private updateConnectivity(paragraph: HTMLParagraphElement) {
+  private updateConnectivity() {
     const newValue = this._sidejob!.calculateConnectivityDelta(MS_IN_SECOND);
     const oldValue = this._existingSidejob?.calculateConnectivityDelta(MS_IN_SECOND) ?? 0;
 
-    this.updateValue(newValue, oldValue, paragraph);
+    this._rewardValues[RewardParameter.connectivity].value = newValue;
+    this._rewardValues[RewardParameter.connectivity].diff = newValue - oldValue;
   }
 
-  private updateCodeBase(paragraph: HTMLParagraphElement) {
+  private updateCodeBase() {
     const newValue = this._sidejob!.calculateCodeBaseDelta(MS_IN_SECOND);
     const oldValue = this._existingSidejob?.calculateCodeBaseDelta(MS_IN_SECOND) ?? 0;
 
-    this.updateValue(newValue, oldValue, paragraph);
+    this._rewardValues[RewardParameter.codeBase].value = newValue;
+    this._rewardValues[RewardParameter.codeBase].diff = newValue - oldValue;
   }
 
-  private updateComputationalBase(paragraph: HTMLParagraphElement) {
+  private updateComputationalBase() {
     const newValue = this._sidejob!.calculateComputationalBaseDelta(MS_IN_SECOND);
     const oldValue = this._existingSidejob?.calculateComputationalBaseDelta(MS_IN_SECOND) ?? 0;
 
-    this.updateValue(newValue, oldValue, paragraph);
+    this._rewardValues[RewardParameter.computationalBase].value = newValue;
+    this._rewardValues[RewardParameter.computationalBase].diff = newValue - oldValue;
   }
 
-  private updateRewards(paragraph: HTMLParagraphElement) {
+  private updateRewards() {
     const newValue = this._sidejob!.calculateRewardsDelta(MS_IN_SECOND);
     const oldValue = this._existingSidejob?.calculateRewardsDelta(MS_IN_SECOND) ?? 0;
 
-    this.updateValue(newValue, oldValue, paragraph);
+    this._rewardValues[RewardParameter.rewards].value = newValue;
+    this._rewardValues[RewardParameter.rewards].diff = newValue - oldValue;
   }
 
-  private updateValue(newValue: number, oldValue: number, paragraph: HTMLParagraphElement) {
-    const valueElement = paragraph.querySelector(`span[data-value=${PARAGRAPH_VALUES.VALUE}]`)!;
-    const diffElement = paragraph.querySelector(`span[data-value=${PARAGRAPH_VALUES.DIFF}]`)!;
+  private updateValueElement = (element: HTMLSpanElement) => {
+    const parameter = element.dataset.value as RewardParameter;
+    const value = this._rewardValues[parameter].value;
+    const className = getHighlightDifferenceClass(value);
 
-    const diff = newValue - oldValue;
+    element.textContent = this._controller.formatter.formatNumberFloat(value);
+    element.className = className;
+  };
 
-    const formatter = this._controller.formatter;
+  private updateDiffElement = (element: HTMLSpanElement) => {
+    const parameter = element.dataset.value as RewardParameter;
+    const diff = this._rewardValues[parameter].diff;
+    const className = getHighlightDifferenceClass(diff);
 
-    const formattedValue = formatter.formatNumberFloat(newValue);
-    const formattedDiff = formatter.formatNumberFloat(diff, diffFormatterParameters);
-
-    const classes = getHighlightDifferenceClass(diff);
-
-    valueElement.textContent = formattedValue;
-    diffElement.className = classes;
-    diffElement.textContent = formattedDiff;
-  }
+    element.textContent = this._controller.formatter.formatNumberFloat(diff, diffFormatterParameters);
+    element.className = className;
+  };
 }

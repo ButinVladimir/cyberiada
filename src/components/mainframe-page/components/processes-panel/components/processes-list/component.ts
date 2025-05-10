@@ -28,7 +28,7 @@ export class ProcessesList extends BaseComponent {
     .header {
       display: grid;
       grid-template-columns: auto;
-      grid-template-rows: auto;
+      grid-template-rows: repeat(auto);
       gap: var(--sl-spacing-small);
       align-items: center;
       border-bottom: var(--ca-border);

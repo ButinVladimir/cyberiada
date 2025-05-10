@@ -5,6 +5,7 @@ import { IMainframeProcessesState, IProcess, IProcessParameters, ISerializedProc
 export class Process implements IProcess {
   private UI_EVENTS = {
     PROCESS_UPDATED: Symbol('PROCESS_UPDATED'),
+    PROCESS_ACTIVITY_TOGGLED: Symbol('PROCESS_ACTIVITY_TOGGLED'),
   };
 
   private _stateUiConnector: IStateUIConnector;
@@ -32,7 +33,7 @@ export class Process implements IProcess {
   }
 
   get isActive() {
-    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.PROCESS_UPDATED);
+    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.PROCESS_ACTIVITY_TOGGLED);
 
     return this._isActive;
   }
@@ -87,7 +88,7 @@ export class Process implements IProcess {
     this._isActive = active;
     this._mainframeProcessesState.requestUpdateProcesses();
 
-    this._stateUiConnector.enqueueEvent(this.UI_EVENTS.PROCESS_UPDATED);
+    this._stateUiConnector.enqueueEvent(this.UI_EVENTS.PROCESS_ACTIVITY_TOGGLED);
   }
 
   increaseCompletion(delta: number): void {

@@ -22,20 +22,20 @@
     },
     "rewardModifiers": {
       "attributes": {
-        "strength": { "multiplier": 1.01, "base": 2 },
-        "endurance": { "multiplier": 1.01, "base": 2 },
-        "agility": { "multiplier": 1.01, "base": 2 },
-        "perception": { "multiplier": 1.01, "base": 2 },
-        "intellect": { "multiplier": 1.01, "base": 2 },
-        "charisma": { "multiplier": 1.01, "base": 2 }
+        "strength": { "multiplier": 1.001, "base": 2 },
+        "endurance": { "multiplier": 1.001, "base": 2 },
+        "agility": { "multiplier": 1.001, "base": 2 },
+        "perception": { "multiplier": 1.001, "base": 2 },
+        "intellect": { "multiplier": 1.001, "base": 2 },
+        "charisma": { "multiplier": 1.001, "base": 2 }
       },
       "skills": {
-        "closeCombat": { "multiplier": 1.01, "base": 2 },
-        "rangedCombat": { "multiplier": 1.01, "base": 2 },
-        "engineering": { "multiplier": 1.01, "base": 2 },
-        "hacking": { "multiplier": 1.01, "base": 2 },
-        "stealth": { "multiplier": 1.01, "base": 2 },
-        "diplomacy": { "multiplier": 1.01, "base": 2 }
+        "closeCombat": { "multiplier": 1.001, "base": 2 },
+        "rangedCombat": { "multiplier": 1.001, "base": 2 },
+        "engineering": { "multiplier": 1.001, "base": 2 },
+        "hacking": { "multiplier": 1.001, "base": 2 },
+        "stealth": { "multiplier": 1.001, "base": 2 },
+        "diplomacy": { "multiplier": 1.001, "base": 2 }
       }
     },
     "rewards": {
@@ -76,8 +76,8 @@
         "endurance": { "multiplier": 1, "base": 1 },
         "agility": { "multiplier": 1, "base": 1 },
         "perception": { "multiplier": 1, "base": 1 },
-        "intellect": { "multiplier": 1.01, "base": 2 },
-        "charisma": { "multiplier": 1.1, "base": 2 }
+        "intellect": { "multiplier": 1.001, "base": 2 },
+        "charisma": { "multiplier": 1.01, "base": 2 }
       },
       "skills": {
         "closeCombat": { "multiplier": 1, "base": 1 },
@@ -85,7 +85,7 @@
         "engineering": { "multiplier": 1, "base": 1 },
         "hacking": { "multiplier": 1, "base": 1 },
         "stealth": { "multiplier": 1, "base": 1 },
-        "diplomacy": { "multiplier": 1.1, "base": 2 }
+        "diplomacy": { "multiplier": 1.01, "base": 2 }
       }
     },
     "rewards": {

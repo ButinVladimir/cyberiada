@@ -8,4 +8,5 @@ export interface IDistrictTierParameter {
   setTier(tier: number): void;
   serialize(): IDistrictTierSerializedParameter;
   deserialize(serializedParameter: IDistrictTierSerializedParameter): void;
+  removeAllEventListeners(): void;
 }

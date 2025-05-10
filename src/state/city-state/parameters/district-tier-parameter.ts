@@ -2,9 +2,10 @@ import { msg, str } from '@lit/localize';
 import { decorators } from '@state/container';
 import { TYPES } from '@state/types';
 import { type IGlobalState } from '@state/global-state/interfaces';
-import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
-import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
-import type { IFormatter } from '@shared/interfaces/formatter';
+import { type IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
+import { type ICompanyState } from '@/state/company-state';
+import { type IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
+import { type IFormatter } from '@shared/interfaces/formatter';
 import { calculateGeometricProgressionSum, reverseGeometricProgressionSum } from '@shared/helpers';
 import { CityEvent } from '@shared/types';
 import { DISTRICT_NAMES } from '@texts/names';
@@ -16,6 +17,9 @@ export class DistrictTierParameter implements IDistrictTierParameter {
   private UI_EVENTS = {
     DISTRICT_TIER_CHANGED: Symbol('DISTRICT_TIER_CHANGED'),
   };
+
+  @lazyInject(TYPES.CompanyState)
+  private _companyState!: ICompanyState;
 
   @lazyInject(TYPES.GlobalState)
   private _globalState!: IGlobalState;
@@ -68,6 +72,7 @@ export class DistrictTierParameter implements IDistrictTierParameter {
       );
 
       this._globalState.synchronization.requestRecalculation();
+      this._companyState.requestReassignment();
 
       this._stateUIConnector.enqueueEvent(this.UI_EVENTS.DISTRICT_TIER_CHANGED);
     }
@@ -81,6 +86,7 @@ export class DistrictTierParameter implements IDistrictTierParameter {
     this._points = calculateGeometricProgressionSum(tier - 1, multiplier, base);
 
     this._globalState.synchronization.requestRecalculation();
+    this._companyState.requestReassignment();
 
     this._stateUIConnector.enqueueEvent(this.UI_EVENTS.DISTRICT_TIER_CHANGED);
   }
@@ -96,6 +102,10 @@ export class DistrictTierParameter implements IDistrictTierParameter {
     return {
       points: this._points,
     };
+  }
+
+  removeAllEventListeners(): void {
+    this._stateUIConnector.unregisterEvents(this.UI_EVENTS);
   }
 
   private calculateNewLevel(): number {

@@ -16,4 +16,5 @@ export interface IDistrictState {
   parameters: IDistrictParameters;
   recalculate(): void;
   serialize(): IDistrictSerializedState;
+  removeAllEventListeners(): void;
 }

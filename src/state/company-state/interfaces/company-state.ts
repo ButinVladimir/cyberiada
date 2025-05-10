@@ -6,4 +6,6 @@ export interface ICompanyState extends ISerializeable<ICompanySerializedState> {
   cloneFactory: ICloneFactory;
   clones: ICompanyClonesState;
   sidejobs: ISidejobsState;
+  requestReassignment(): void;
+  processTick(): void;
 }

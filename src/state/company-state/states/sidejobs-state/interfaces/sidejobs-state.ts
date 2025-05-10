@@ -12,6 +12,8 @@ export interface ISidejobsState extends ISerializeable<ISidejobsSerializedState>
   getSidejobById(sidejobId: string): ISidejob | undefined;
   makeSidejob(sidejobParameters: IMakeSidejobParameters): ISidejob;
   assignSidejob(sidejobParameters: IAssignSidejobArguments): boolean;
-  removeSidejob(sidejobId: string): void;
-  removeAllSidejobs(): void;
+  cancelSidejob(sidejobId: string): void;
+  cancelAllSidejobs(): void;
+  filterSidejobs(): void;
+  perform(): void;
 }

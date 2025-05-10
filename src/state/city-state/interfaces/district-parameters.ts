@@ -14,4 +14,5 @@ export interface IDistrictParameters {
   recalculate(): void;
   serialize(): IDistrictSerializedParameters;
   deserialize(serializedParameters: IDistrictSerializedParameters): void;
+  removeAllEventListeners(): void;
 }

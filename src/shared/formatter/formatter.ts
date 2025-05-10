@@ -2,9 +2,8 @@ import { injectable, inject } from 'inversify';
 import type { ISettingsState } from '@state/settings-state/interfaces/settings-state';
 import { TYPES } from '@state/types';
 import { LongNumberFormat } from '../types';
-import { IFormatterParameters, IFormatter } from '../interfaces';
+import { IFormatterParameters, IFormatter, IQualityFormatter } from '../interfaces';
 import {
-  QUALITY_MAP,
   TIME_PARTS,
   DATE_TIME_FORMATTER_OPTIONS,
   DEFAULT_NUMBER_DECIMAL_FORMAT_PARAMETERS,
@@ -19,6 +18,7 @@ import {
   LONG_NUMBER_FORMATTER_MAX_THRESHOLD,
   LONG_NUMBER_FORMATTER_MIN_THRESHOLD,
 } from './constants';
+import { QualityFormatter } from './quality-formatter';
 
 @injectable()
 export class Formatter implements IFormatter {
@@ -30,9 +30,12 @@ export class Formatter implements IFormatter {
   private _floatScientificFormatter!: Intl.NumberFormat;
   private _floatEngineeringFormatter!: Intl.NumberFormat;
   private _dateTimeFormatter!: Intl.DateTimeFormat;
+  private _qualityFormatter: IQualityFormatter;
 
   constructor(@inject(TYPES.SettingsState) _settingsState: ISettingsState) {
     this._settingsState = _settingsState;
+
+    this._qualityFormatter = new QualityFormatter();
 
     this.updateBuiltInFormatters();
   }
@@ -94,10 +97,9 @@ export class Formatter implements IFormatter {
 
     if (value < 0) {
       formattedValue = '0';
-    } else if (value > 6) {
-      formattedValue = 'VII+';
-    } else {
-      formattedValue = QUALITY_MAP[value];
+    }
+    {
+      formattedValue = this._qualityFormatter.format(value);
     }
 
     return this.applyNumberFormatterParameters(value, formattedValue, parameters);

@@ -92,8 +92,6 @@ export class StateUIConnector implements IStateUIConnector {
   }
 
   fireEvents(): void {
-    this.enqueueEvent(PARTIAL_UPDATE_UI_EVENT);
-
     this._enqueuedEvents.forEach((event) => {
       this._eventComponentsMap.get(event)?.forEach((component) => {
         component.requestUpdate();
@@ -101,5 +99,9 @@ export class StateUIConnector implements IStateUIConnector {
     });
 
     this._enqueuedEvents.clear();
+
+    this._eventComponentsMap.get(PARTIAL_UPDATE_UI_EVENT)?.forEach((component) => {
+      component.handlePartialUpdate();
+    });
   }
 }

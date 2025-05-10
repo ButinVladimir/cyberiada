@@ -15,7 +15,7 @@ export interface ISidejob {
   getSkillRequirement(skill: Skill): number;
   getAttributeModifier(attribute: Attribute): number;
   getSkillModifier(skill: Skill): number;
-  perform(passedTime: number): void;
+  perform(): void;
   calculateExperienceDelta(passedTime: number): number;
   calculateMoneyDelta(passedTime: number): number;
   calculateDevelopmentPointsDelta(passedTime: number): number;

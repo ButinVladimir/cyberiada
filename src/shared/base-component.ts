@@ -20,6 +20,7 @@ export abstract class BaseComponent extends LitElement {
     super.connectedCallback();
 
     this._stateUIConnector.connectComponent(this);
+    this.requestUpdate();
   }
 
   disconnectedCallback() {

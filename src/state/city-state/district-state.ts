@@ -120,4 +120,8 @@ export class DistrictState implements IDistrictState {
       parameters: this._parameters.serialize(),
     };
   }
+
+  removeAllEventListeners(): void {
+    this._parameters.removeAllEventListeners();
+  }
 }

@@ -65,6 +65,8 @@ export class CityState implements ICityState {
   }
 
   async deserialize(serializedState: ICitySerializedState): Promise<void> {
+    this.clearDistricts();
+
     this._layout = [];
     for (let x = 0; x < this._globalState.scenario.currentValues.map.width; x++) {
       const row: number[] = [];
@@ -76,17 +78,11 @@ export class CityState implements ICityState {
       this._layout.push(row);
     }
 
-    this._districts.clear();
-
     Object.entries(serializedState.districts).forEach(([districtIndex, districtSerializedInfo]) => {
       const parsedDistrictIndex = parseInt(districtIndex);
       const districtState = DistrictState.deserialize(parsedDistrictIndex, districtSerializedInfo);
 
       this._districts.set(parsedDistrictIndex, districtState);
-
-      if (districtState.state !== DistrictUnlockState.locked) {
-        this._availableDistricts.push(districtState);
-      }
     });
 
     this.updateAvailableDistricts();
@@ -115,7 +111,7 @@ export class CityState implements ICityState {
 
         this._layout = event.data.layout;
 
-        this._districts.clear();
+        this.clearDistricts();
 
         for (const [districtIndex, district] of Object.entries(event.data.districts)) {
           const parsedDistrictIndex = parseInt(districtIndex);
@@ -159,5 +155,14 @@ export class CityState implements ICityState {
         this._availableDistricts.push(district);
       }
     });
+  }
+
+  private clearDistricts() {
+    for (const district of this._districts.values()) {
+      district.removeAllEventListeners();
+    }
+
+    this._availableDistricts.length = 0;
+    this._districts.clear();
   }
 }

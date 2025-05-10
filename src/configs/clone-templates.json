@@ -1,7 +1,7 @@
 {
   "anthrodrone": {
     "cost": { "multiplier": 10000, "base": 1.15, "baseQuality": 10 },
-    "levelRequirements": { "multiplier": 1000, "base": 1.5 },
+    "levelRequirements": { "multiplier": 100000, "base": 1.5 },
     "synchronization": { "base": 10, "multiplier": 10, "baseQuality": 1.5 },
     "attributes": {
       "strength": {

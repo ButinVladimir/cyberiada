@@ -8,7 +8,7 @@ import type { IGlobalState } from '@state/global-state/interfaces/global-state';
 import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
 import type { IFormatter } from '@shared/interfaces/formatter';
 import { TYPES } from '@state/types';
-import { ClonesEvent, Feature, PurchaseEvent, PurchaseType } from '@shared/types';
+import { ClonesEvent, Feature, PurchaseType } from '@shared/types';
 import { calculateQualityPower, moveElementInArray, removeElementsFromArray } from '@shared/helpers';
 import { CLONE_TEMPLATE_TEXTS } from '@texts/clone-templates';
 import { ICloneNameGeneratorResult } from '@workers/clone-name-generator/interfaces';
@@ -122,11 +122,14 @@ export class CompanyClonesState implements ICompanyClonesState {
       clone.removeAllEventListeners();
 
       this._clonesMap.delete(id);
+      this.deleteCloneRelatedObjects(clone);
 
       this._messageLogState.postMessage(ClonesEvent.cloneDeleted, msg(str`Clone "${clone.name}" has been deleted`));
     }
 
     this.recalculateSynchronization();
+
+    this._companyState.requestReassignment();
 
     this._stateUiConnector.enqueueEvent(this.UI_EVENTS.CLONES_UPDATED);
   }
@@ -137,6 +140,9 @@ export class CompanyClonesState implements ICompanyClonesState {
     this._messageLogState.postMessage(ClonesEvent.allClonesDeleted, msg('All clones have been deleted'));
 
     this.recalculateSynchronization();
+
+    this._companyState.sidejobs.cancelAllSidejobs();
+    this._companyState.requestReassignment();
 
     this._stateUiConnector.enqueueEvent(this.UI_EVENTS.CLONES_UPDATED);
   }
@@ -260,10 +266,18 @@ export class CompanyClonesState implements ICompanyClonesState {
     const formattedQuality = this._formatter.formatQuality(clone.quality);
 
     this._messageLogState.postMessage(
-      PurchaseEvent.clonePurchased,
+      ClonesEvent.clonePurchased,
       msg(
         str`Clone "${clone.name}" with template "${CLONE_TEMPLATE_TEXTS[clone.templateName].title()}", quality ${formattedQuality} and level ${formattedLevel} has been purchased`,
       ),
     );
   };
+
+  private deleteCloneRelatedObjects(clone: IClone) {
+    const sidejob = this._companyState.sidejobs.getSidejobByCloneId(clone.id);
+
+    if (sidejob) {
+      this._companyState.sidejobs.cancelSidejob(sidejob.id);
+    }
+  }
 }

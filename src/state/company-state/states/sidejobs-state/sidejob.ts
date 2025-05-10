@@ -3,6 +3,7 @@ import { Attribute, Skill, calculatePower, ATTRIBUTES, SKILLS, IncomeSource } fr
 import { decorators } from '@state/container';
 import { TYPES } from '@state/types';
 import { type IGlobalState } from '@state/global-state';
+import { type ISettingsState } from '@state/settings-state';
 import { IDistrictState } from '@state/city-state';
 import { type IStateUIConnector } from '@state/state-ui-connector';
 import { IClone } from '../clone-factory';
@@ -12,10 +13,15 @@ import { SidejobName } from './types';
 const { lazyInject } = decorators;
 
 export class Sidejob implements ISidejob {
-  private UI_EVENTS = {};
+  private UI_EVENTS = {
+    SIDEJOB_ACTIVE_TOGGLED: Symbol('SIDEJOB_ACTIVE_TOGGLED'),
+  };
 
   @lazyInject(TYPES.GlobalState)
   private _globalState!: IGlobalState;
+
+  @lazyInject(TYPES.SettingsState)
+  private _settingsState!: ISettingsState;
 
   @lazyInject(TYPES.StateUIConnector)
   private _stateUIConnector!: IStateUIConnector;
@@ -53,10 +59,14 @@ export class Sidejob implements ISidejob {
   }
 
   get isActive() {
+    this._stateUIConnector.connectEventHandler(this.UI_EVENTS.SIDEJOB_ACTIVE_TOGGLED);
+
     return this._isActive;
   }
 
   set isActive(value: boolean) {
+    this._stateUIConnector.enqueueEvent(this.UI_EVENTS.SIDEJOB_ACTIVE_TOGGLED);
+
     this._isActive = value;
   }
 
@@ -85,11 +95,13 @@ export class Sidejob implements ISidejob {
   }
 
   getAttributeRequirement(attribute: Attribute): number {
-    return calculatePower(this._globalState.threat.level, this._sidejobTemplate.requirements.attributes[attribute]);
+    return Math.floor(
+      calculatePower(this._globalState.threat.level, this._sidejobTemplate.requirements.attributes[attribute]),
+    );
   }
 
   getSkillRequirement(skill: Skill): number {
-    return calculatePower(this._globalState.threat.level, this._sidejobTemplate.requirements.skills[skill]);
+    return Math.floor(calculatePower(this._globalState.threat.level, this._sidejobTemplate.requirements.skills[skill]));
   }
 
   getAttributeModifier(attribute: Attribute): number {
@@ -115,11 +127,12 @@ export class Sidejob implements ISidejob {
     return Math.pow(base, this._assignedClone.getTotalSkillValue(skill));
   }
 
-  perform(passedTime: number): void {
-    if (!this._assignedClone) {
+  perform(): void {
+    if (!this._assignedClone || !this._isActive) {
       return;
     }
 
+    const passedTime = this._settingsState.updateInterval;
     const cloneModifier = this.getCloneModifier();
 
     this._assignedClone.earnExperience(passedTime * cloneModifier * this.calculateExperienceModifier());
@@ -226,13 +239,7 @@ export class Sidejob implements ISidejob {
   }
 
   private calculateDistrictTierPointsModifier() {
-    return (
-      calculatePower(this._globalState.threat.level, this._sidejobTemplate.rewards.distictTierPoints) *
-      calculatePower(
-        this._district.parameters.tier.tier,
-        this._district.template.parameters.districtTierPoints.pointsMultiplier,
-      )
-    );
+    return calculatePower(this._globalState.threat.level, this._sidejobTemplate.rewards.distictTierPoints);
   }
 
   private calculateConnectivityModifier() {

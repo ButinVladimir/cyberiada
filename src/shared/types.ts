@@ -45,32 +45,35 @@ export enum GameStateEvent {
   levelReached = 'levelReached',
 }
 
-export enum PurchaseEvent {
+export enum ProgramsEvent {
   performanceUpgraded = 'performanceUpgraded',
   coresUpgraded = 'coresUpgraded',
   ramUpgraded = 'ramUpgraded',
   programPurchased = 'programPurchased',
-  clonePurchased = 'clonePurchased',
-}
-
-export enum ProgramsEvent {
   processStarted = 'processStarted',
   processDeleted = 'processDeleted',
   allProcessesDeleted = 'allProcessesDeleted',
 }
 
 export enum ClonesEvent {
+  clonePurchased = 'clonePurchased',
   cloneDeleted = 'cloneDeleted',
   allClonesDeleted = 'allClonesDeleted',
   cloneLevelReached = 'cloneLevelReached',
   cloneRenamed = 'cloneRenamed',
 }
 
+export enum SidejobsEvent {
+  sidejobAssigned = 'sidejobAssigned',
+  sidejobCancelled = 'sidejobCancelled',
+  allSidejobsCancelled = 'allSidejobsCancelled',
+}
+
 export enum CityEvent {
   districtTierIncreased = 'districtTierIncreased',
 }
 
-export type MessageEvent = GameStateEvent | PurchaseEvent | ProgramsEvent | ClonesEvent | CityEvent;
+export type MessageEvent = GameStateEvent | ProgramsEvent | ClonesEvent | SidejobsEvent | CityEvent;
 
 export enum GameStateAlert {
   saveImport = 'saveImport',
@@ -90,10 +93,15 @@ export enum ProgramAlert {
 export enum CloneAlert {
   cloneDelete = 'cloneDelete',
   deleteAllClones = 'deleteAllClones',
-  assignedSidejobReplace = 'assignedSidejobReplace',
 }
 
-export type GameAlert = GameStateAlert | ProgramAlert | CloneAlert;
+export enum SidejobAlert {
+  sidejobCancel = 'sidejobCancel',
+  cancelAllSidejobs = 'cancelAllSidejobs',
+  replaceSidejob = 'replaceSidejob',
+}
+
+export type GameAlert = GameStateAlert | ProgramAlert | CloneAlert | SidejobAlert;
 
 export enum NotificationType {
   storyEvent = 'storyEvent',
@@ -157,4 +165,15 @@ export enum Skill {
 export enum DistrictType {
   suburb = 'suburb',
   corpoDistrict = 'corpoDistrict',
+}
+
+export enum RewardParameter {
+  money = 'money',
+  developmentPoints = 'development-points',
+  experience = 'experience',
+  districtTierPoints = 'district-tier-points',
+  connectivity = 'connectivity',
+  codeBase = 'code-base',
+  computationalBase = 'computational-base',
+  rewards = 'rewards',
 }

@@ -4,7 +4,7 @@ import { customElement, property } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import SlCheckbox from '@shoelace-style/shoelace/dist/components/checkbox/checkbox.component.js';
 import { BaseComponent } from '@shared/base-component';
-import { CLONE_ALERTS, GAME_STATE_ALERTS, PROGRAM_ALERTS } from '@shared/constants';
+import { CLONE_ALERTS, GAME_STATE_ALERTS, PROGRAM_ALERTS, SIDEJOB_ALERTS } from '@shared/constants';
 import { GameAlert } from '@shared/types';
 import { COMMON_TEXTS } from '@texts/common';
 import {
@@ -100,6 +100,10 @@ export class AlertFilterDialog extends BaseComponent {
           <sl-divider></sl-divider>
 
           <div class="events-container">${repeat(CLONE_ALERTS, (event) => event, this.renderGameAlertCheckbox)}</div>
+
+          <sl-divider></sl-divider>
+
+          <div class="events-container">${repeat(SIDEJOB_ALERTS, (event) => event, this.renderGameAlertCheckbox)}</div>
         </div>
 
         <sl-button slot="footer" size="medium" variant="default" outline @click=${this.handleClose}>

@@ -19,6 +19,8 @@ import { ICloneTemplate } from './interfaces/clone-template';
 
 export class Clone implements IClone {
   private UI_EVENTS = {
+    CLONE_NAME_CHANGED: Symbol('CLONE_NAME_CHANGED'),
+    CLONE_AUTOUPGRADE_TOGGLED: Symbol('CLONE_AUTOUPGRADE_TOGGLED'),
     CLONE_CHANGED: Symbol('CLONE_CHANGED'),
   };
 
@@ -72,7 +74,7 @@ export class Clone implements IClone {
   }
 
   get name() {
-    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.CLONE_CHANGED);
+    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.CLONE_NAME_CHANGED);
 
     return this._name;
   }
@@ -86,12 +88,10 @@ export class Clone implements IClone {
       msg(str`Clone "${oldName}" has been renamed to "${value}"`),
     );
 
-    this._stateUiConnector.enqueueEvent(this.UI_EVENTS.CLONE_CHANGED);
+    this._stateUiConnector.enqueueEvent(this.UI_EVENTS.CLONE_NAME_CHANGED);
   }
 
   get templateName() {
-    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.CLONE_CHANGED);
-
     return this._templateName;
   }
 
@@ -106,19 +106,15 @@ export class Clone implements IClone {
   }
 
   get quality() {
-    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.CLONE_CHANGED);
-
     return this._quality;
   }
 
   get synchonization() {
-    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.CLONE_CHANGED);
-
     return this._synchronization;
   }
 
   get autoUpgradeEnabled() {
-    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.CLONE_CHANGED);
+    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.CLONE_AUTOUPGRADE_TOGGLED);
 
     return this._autoUpgradeEnabled;
   }
@@ -126,7 +122,7 @@ export class Clone implements IClone {
   set autoUpgradeEnabled(value: boolean) {
     this._autoUpgradeEnabled = value;
 
-    this._stateUiConnector.enqueueEvent(this.UI_EVENTS.CLONE_CHANGED);
+    this._stateUiConnector.enqueueEvent(this.UI_EVENTS.CLONE_AUTOUPGRADE_TOGGLED);
   }
 
   increaseExperience(delta: number) {
@@ -262,7 +258,7 @@ export class Clone implements IClone {
 
       currentValues.baseValue = calculateQualityLinear(this._level, this._quality, templateValues);
 
-      currentValues.totalValue = currentValues.baseValue;
+      currentValues.totalValue = Math.floor(currentValues.baseValue);
     });
   }
 
@@ -273,7 +269,7 @@ export class Clone implements IClone {
 
       currentValues.baseValue = calculateQualityLinear(this._level, this._quality, templateValues);
 
-      currentValues.totalValue = currentValues.baseValue;
+      currentValues.totalValue = Math.floor(currentValues.baseValue);
     });
   }
 }

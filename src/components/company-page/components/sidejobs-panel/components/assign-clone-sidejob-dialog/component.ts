@@ -5,7 +5,6 @@ import { createRef, ref } from 'lit/directives/ref.js';
 import { provide } from '@lit/context';
 import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.component.js';
 import {
-  CloneAlert,
   inputLabelStyle,
   hintStyle,
   sectionTitleStyle,
@@ -13,6 +12,7 @@ import {
   modalBodyScrollStyle,
   SCREEN_WIDTH_POINTS,
   BaseComponent,
+  SidejobAlert,
 } from '@shared/index';
 import { IDistrictState } from '@state/city-state';
 import { SIDEJOB_TEXTS, DISTRICT_NAMES } from '@texts/index';
@@ -277,7 +277,7 @@ Sidejobs availability depends on unlocked features and district connectivity.`)}
 
       this.dispatchEvent(
         new ConfirmationAlertOpenEvent(
-          CloneAlert.assignedSidejobReplace,
+          SidejobAlert.replaceSidejob,
           msg(
             str`Are you sure want to replace sidejob for clone "${cloneName}"? This will stop their current sidejob "${existingSidejobName}" in district "${districtName}".`,
           ),
@@ -291,7 +291,7 @@ Sidejobs availability depends on unlocked features and district connectivity.`)}
   private handleConfirmConfirmationAlert = (event: Event) => {
     const convertedEvent = event as ConfirmationAlertSubmitEvent;
 
-    if (convertedEvent.gameAlert !== CloneAlert.assignedSidejobReplace) {
+    if (convertedEvent.gameAlert !== SidejobAlert.replaceSidejob) {
       return;
     }
 

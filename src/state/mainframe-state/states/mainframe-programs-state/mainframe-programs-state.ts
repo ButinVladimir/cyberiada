@@ -8,7 +8,7 @@ import type { IMessageLogState } from '@state/message-log-state/interfaces/messa
 import type { IFormatter } from '@shared/interfaces/formatter';
 import type { IMainframeState } from '@state/mainframe-state/interfaces/mainframe-state';
 import { TYPES } from '@state/types';
-import { Feature, PurchaseEvent, PurchaseType } from '@shared/types';
+import { Feature, ProgramsEvent, PurchaseType } from '@shared/types';
 import { calculateQualityPower } from '@shared/helpers';
 import { binarySearchDecimal, moveElementInArray } from '@shared/helpers';
 import { PROGRAM_TEXTS } from '@texts/programs';
@@ -202,7 +202,7 @@ export class MainframeProgramsState implements IMainframeProgramsState {
     const formattedLevel = this._formatter.formatLevel(level);
     const formattedQuality = this._formatter.formatQuality(quality);
     this._messageLogState.postMessage(
-      PurchaseEvent.programPurchased,
+      ProgramsEvent.programPurchased,
       msg(
         str`Program "${programTitle}" with quality ${formattedQuality} and level ${formattedLevel} has been purchased`,
       ),

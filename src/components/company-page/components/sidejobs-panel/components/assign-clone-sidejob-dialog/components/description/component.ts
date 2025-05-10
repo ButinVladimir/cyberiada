@@ -5,10 +5,9 @@ import { customElement, state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { choose } from 'lit/directives/choose.js';
 import SlRadioGroup from '@shoelace-style/shoelace/dist/components/radio-group/radio-group.component.js';
-import { BaseComponent, getHighlightValueClassMap } from '@shared/index';
+import { BaseComponent, getHighlightValueClass, highlightedValuesStyle, hintStyle } from '@shared/index';
 import { SIDEJOB_TEXTS } from '@texts/index';
 import { type ISidejob } from '@state/company-state';
-import { highlightedValuesStyle } from '@shared/index';
 import { temporarySidejobContext } from '../../contexts';
 import { AssignCloneSidejobDialogDescriptionMode } from './types';
 import { DESCRIPTION_MODE_TEXTS, DESCRIPTION_MODES } from './constants';
@@ -19,6 +18,7 @@ import { AssignCloneSidejobDialogDescriptionController } from './controller';
 export class AssignCloneSidejobDialogDescription extends BaseComponent {
   static styles = [
     highlightedValuesStyle,
+    hintStyle,
     css`
       :host {
         display: flex;
@@ -27,15 +27,24 @@ export class AssignCloneSidejobDialogDescription extends BaseComponent {
         flex-direction: column;
       }
 
+      p.hint {
+        margin: 0;
+      }
+
       p.text {
         margin: 0;
       }
     `,
   ];
 
+  hasPartialUpdate = true;
+
   private _controller: AssignCloneSidejobDialogDescriptionController;
 
   private _descriptionModelInputRef = createRef<SlRadioGroup>();
+
+  private _connectivityValuesSpanRef = createRef<HTMLSpanElement>();
+  private _connectivityTotalValueSpanRef = createRef<HTMLSpanElement>();
 
   @consume({ context: temporarySidejobContext, subscribe: true })
   private _sidejob?: ISidejob;
@@ -56,9 +65,9 @@ export class AssignCloneSidejobDialogDescription extends BaseComponent {
     }
 
     return html`
-      <p class="text">${SIDEJOB_TEXTS[this._sidejob.sidejobName].overview()}</p>
+      <p class="hint">${SIDEJOB_TEXTS[this._sidejob.sidejobName].overview()}</p>
 
-      ${this.renderConnectivity()}
+      ${this.renderConnectivityString()}
 
       <sl-radio-group
         ${ref(this._descriptionModelInputRef)}
@@ -78,21 +87,17 @@ export class AssignCloneSidejobDialogDescription extends BaseComponent {
     `;
   }
 
-  private renderConnectivity = () => {
+  private renderConnectivityString = () => {
     const formatter = this._controller.formatter;
 
-    const totalConnectivity = this._controller.getTotalConnectivity(this._sidejob!.district.index);
     const requiredConnectivity = this._controller.getRequiredConnectivity(this._sidejob!.sidejobName);
-
-    const formattedTotalConnectivity = formatter.formatNumberFloat(totalConnectivity);
     const formattedRequiredConnectivity = formatter.formatNumberFloat(requiredConnectivity);
 
-    const valid = totalConnectivity >= requiredConnectivity;
-    const connectivityClasses = getHighlightValueClassMap(valid);
-
-    const connectivityValue = html`<span class=${connectivityClasses}
-      >${formattedTotalConnectivity} / ${formattedRequiredConnectivity}</span
-    >`;
+    const connectivityValue = html`
+      <span ${ref(this._connectivityValuesSpanRef)}
+        ><span ${ref(this._connectivityTotalValueSpanRef)}></span> / ${formattedRequiredConnectivity}</span
+      >
+    `;
 
     return html` <p class="text">${msg(html`Connectivity: ${connectivityValue}`)}</p> `;
   };
@@ -127,5 +132,27 @@ export class AssignCloneSidejobDialogDescription extends BaseComponent {
 
   private renderRewards = () => {
     return html` <ca-assign-clone-sidejob-dialog-rewards> </ca-assign-clone-sidejob-dialog-rewards> `;
+  };
+
+  handlePartialUpdate = () => {
+    if (!this._sidejob) {
+      return;
+    }
+
+    const totalConnectivity = this._controller.getTotalConnectivity(this._sidejob.district.index);
+
+    if (this._connectivityTotalValueSpanRef.value) {
+      const formatter = this._controller.formatter;
+      const formattedTotalConnectivity = formatter.formatNumberFloat(totalConnectivity);
+      this._connectivityTotalValueSpanRef.value.textContent = formattedTotalConnectivity;
+    }
+
+    if (this._connectivityValuesSpanRef.value) {
+      const requiredConnectivity = this._controller.getRequiredConnectivity(this._sidejob.sidejobName);
+      const valid = totalConnectivity >= requiredConnectivity;
+      const connectivityClasses = getHighlightValueClass(valid);
+
+      this._connectivityValuesSpanRef.value.className = connectivityClasses;
+    }
   };
 }

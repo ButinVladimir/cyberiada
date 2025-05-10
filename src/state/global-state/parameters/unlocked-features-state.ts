@@ -40,8 +40,6 @@ export class UnlockedFeaturesState implements IUnlockedFeaturesState {
 
   unlockFeature(feature: Feature) {
     if (!this._unlockedFeatures.has(feature)) {
-      this._stateUiConnector.enqueueEvent(this.UI_EVENTS.FEATURE_UNLOCKED);
-
       this._unlockedFeatures.add(feature);
 
       this._globalState.availableItems.requestRecalculation();
@@ -51,6 +49,8 @@ export class UnlockedFeaturesState implements IUnlockedFeaturesState {
         NotificationType.featureUnlocked,
         UNLOCKED_FEATURE_TEXTS[feature].message(),
       );
+
+      this._stateUiConnector.enqueueEvent(this.UI_EVENTS.FEATURE_UNLOCKED);
     }
   }
 

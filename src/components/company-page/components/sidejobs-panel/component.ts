@@ -47,6 +47,8 @@ export class CompanySidejobsPanel extends BaseComponent {
         </sl-button>
       </div>
 
+      <ca-sidejobs-list></ca-sidejobs-list>
+
       <ca-assign-clone-sidejob-dialog
         ?is-open=${this._assignCloneDialogOpened}
         @assign-clone-sidejob-dialog-close=${this.handleAssignCloneSidejobDialogClose}

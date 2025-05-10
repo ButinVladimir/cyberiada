@@ -37,4 +37,8 @@ export class DistrictSynchronizationParameter implements IDistrictSynchronizatio
 
     this._stateUIConnector.enqueueEvent(this.UI_EVENTS.SYNCHRONIZATION_UPDATED);
   }
+
+  removeAllEventListeners(): void {
+    this._stateUIConnector.unregisterEvents(this.UI_EVENTS);
+  }
 }

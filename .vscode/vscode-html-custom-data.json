@@ -187,7 +187,7 @@
     },
     {
       "name": "ca-purchase-clone-dialog-buttons",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_clone` - \n\n  * `_warningRef` {`Ref<HTMLParagraphElement>`} - \n\n  * `_purchaseButtonRef` {`Ref<SlButton>`} - \n\n  * `handlePartialUpdate` - \n\n  * `handleCancel` - \n\n  * `handlePurchaseClone` - \n\n  * `_controller` {`PurchaseCloneDialogButtonsController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_clone` - \n\n  * `_warningElements` {`NodeListOf<HTMLParagraphElement>`} - \n\n  * `_purchaseButtonRef` {`Ref<SlButton>`} - \n\n  * `_availableTimeRef` {`Ref<HTMLSpanElement>`} - \n\n  * `_warning` {`PurchaseCloneDialogWarning | undefined`} - \n\n  * `handlePartialUpdate` - \n\n  * `renderWarnings` - \n\n  * `handleCancel` - \n\n  * `handlePurchaseClone` - \n\n  * `_controller` {`PurchaseCloneDialogButtonsController`} - ",
       "attributes": []
     },
     {
@@ -224,12 +224,12 @@
     },
     {
       "name": "ca-assign-clone-sidejob-dialog-buttons",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_sidejob` - \n\n  * `_existingSidejob` - \n\n  * `_warningRef` {`Ref<HTMLParagraphElement>`} - \n\n  * `_assignButtonRef` {`Ref<SlButton>`} - \n\n  * `handlePartialUpdate` - \n\n  * `handleCancel` - \n\n  * `handleAssignClone` - \n\n  * `_controller` {`AssignCloneSidejobDialogButtonsController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_sidejob` - \n\n  * `_existingSidejob` - \n\n  * `_warningElements` {`NodeListOf<HTMLParagraphElement>`} - \n\n  * `_assignButtonRef` {`Ref<SlButton>`} - \n\n  * `_warning` {`AssignCloneSidejobDialogWarning | undefined`} - \n\n  * `handlePartialUpdate` - \n\n  * `renderWarnings` - \n\n  * `renderExistingSidejobWarning` - \n\n  * `handleCancel` - \n\n  * `handleAssignClone` - \n\n  * `_controller` {`AssignCloneSidejobDialogButtonsController`} - ",
       "attributes": []
     },
     {
       "name": "ca-assign-clone-sidejob-dialog-description",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_descriptionModelInputRef` {`Ref<SlRadioGroup>`} - \n\n  * `_sidejob` - \n\n  * `_desciptionMode` {`AssignCloneSidejobDialogDescriptionMode`} - \n\n  * `renderConnectivity` - \n\n  * `handleDescriptionModeChange` - \n\n  * `renderDescriptionModes` - \n\n  * `renderDescriptionMode` - \n\n  * `renderRequirements` - \n\n  * `renderRewardMultipliers` - \n\n  * `renderRewards` - \n\n  * `_controller` {`AssignCloneSidejobDialogDescriptionController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_descriptionModelInputRef` {`Ref<SlRadioGroup>`} - \n\n  * `_connectivityValuesSpanRef` {`Ref<HTMLSpanElement>`} - \n\n  * `_connectivityTotalValueSpanRef` {`Ref<HTMLSpanElement>`} - \n\n  * `_sidejob` - \n\n  * `_desciptionMode` {`AssignCloneSidejobDialogDescriptionMode`} - \n\n  * `renderConnectivityString` - \n\n  * `handleDescriptionModeChange` - \n\n  * `renderDescriptionModes` - \n\n  * `renderDescriptionMode` - \n\n  * `renderRequirements` - \n\n  * `renderRewardMultipliers` - \n\n  * `renderRewards` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`AssignCloneSidejobDialogDescriptionController`} - ",
       "attributes": []
     },
     {
@@ -244,8 +244,28 @@
     },
     {
       "name": "ca-assign-clone-sidejob-dialog-rewards",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_paragraphs` {`NodeListOf<HTMLParagraphElement>`} - \n\n  * `_sidejob` - \n\n  * `_existingSidejob` - \n\n  * `renderParameter` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`AssignCloneSidejobDialogRewardsController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_rewardValueElements` {`NodeListOf<HTMLSpanElement>`} - \n\n  * `_rewardDiffElements` {`NodeListOf<HTMLSpanElement>`} - \n\n  * `_sidejob` - \n\n  * `_existingSidejob` - \n\n  * `_rewardValues` - \n\n  * `renderParameter` - \n\n  * `handlePartialUpdate` - \n\n  * `updateValueElement` - \n\n  * `updateDiffElement` - \n\n  * `_controller` {`AssignCloneSidejobDialogRewardsController`} - ",
       "attributes": []
+    },
+    {
+      "name": "ca-sidejobs-list",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderEmptyListNotification` - \n\n  * `renderSidejob` - \n\n  * `handleOpenDeleteAllProcessesDialog` - \n\n  * `handleConfirmDeleteAllProcessesDialog` - \n\n  * `_controller` {`SidejobsListController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-sidejobs-list-item-description",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_rewardValueElements` {`NodeListOf<HTMLSpanElement>`} - \n\n  * `_sidejob` - \n\n  * `_rewardValues` - \n\n  * `renderParameter` - \n\n  * `handlePartialUpdate` - \n\n  * `updateValueElement` - \n\n  * `_controller` {`SidejobsListItemDescriptionController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-sidejobs-list-item",
+      "description": "Attributes:\n\n  * `sidejob-id` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult[]`} - \n\n  * `sidejobId` {`string`} - \n\n  * `_descriptionVisible` {`boolean`} - \n\n  * `_sidejob` - \n\n  * `handleToggleDescription` - \n\n  * `handleOpenCancelSidejobDialog` - \n\n  * `handleConfirmCancelSidejobDialog` - \n\n  * `_controller` {`SidejobsListItemController`} - ",
+      "attributes": [
+        {
+          "name": "sidejob-id",
+          "description": "`sidejob-id` {`string`} - \n\nProperty: sidejobId"
+        }
+      ]
     },
     {
       "name": "ca-credits-page",

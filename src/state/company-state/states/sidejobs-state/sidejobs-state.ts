@@ -1,12 +1,14 @@
 import { v4 as uuid } from 'uuid';
+import { msg, str } from '@lit/localize';
 import sidejobs from '@configs/sidejobs.json';
-import { calculatePower, removeElementsFromArray } from '@shared/index';
+import { calculatePower, removeElementsFromArray, SidejobsEvent } from '@shared/index';
 import { decorators } from '@state/container';
 import { type IGlobalState } from '@state/global-state';
 import { DistrictUnlockState, type ICityState } from '@state/city-state';
-import { type ICompanyState } from '../../interfaces';
 import { type IStateUIConnector } from '@state/state-ui-connector';
+import { type IMessageLogState } from '@state/message-log-state';
 import { TYPES } from '@state/types';
+import { type ICompanyState } from '../../interfaces';
 import {
   ISidejob,
   IMakeSidejobParameters,
@@ -18,6 +20,7 @@ import {
 } from './interfaces';
 import { SidejobName } from './types';
 import { Sidejob } from './sidejob';
+import { DISTRICT_NAMES, SIDEJOB_TEXTS } from '@/texts';
 
 const { lazyInject } = decorators;
 
@@ -34,6 +37,9 @@ export class SidejobsState implements ISidejobsState {
 
   @lazyInject(TYPES.CompanyState)
   private _companyState!: ICompanyState;
+
+  @lazyInject(TYPES.MessageLogState)
+  private _messageLogState!: IMessageLogState;
 
   @lazyInject(TYPES.StateUIConnector)
   private _stateUIConnector!: IStateUIConnector;
@@ -114,13 +120,21 @@ export class SidejobsState implements ISidejobsState {
     }
 
     this.addSidejob(sidejob);
+    this._companyState.requestReassignment();
+
+    this._messageLogState.postMessage(
+      SidejobsEvent.sidejobAssigned,
+      msg(
+        str`Sidejob "${SIDEJOB_TEXTS[sidejob.sidejobName].title()}" in district "${DISTRICT_NAMES[sidejob.district.name]()}" has been assigned to clone "${sidejob.assignedClone!.name}"`,
+      ),
+    );
 
     this._stateUIConnector.enqueueEvent(this.UI_EVENTS.SIDEJOBS_UPDATED);
 
     return true;
   }
 
-  removeSidejob(sidejobId: string): void {
+  cancelSidejob(sidejobId: string): void {
     const sidejob = this.getSidejobById(sidejobId);
     const index = this._sidejobsList.findIndex((sidejob) => sidejob.id === sidejobId);
 
@@ -132,12 +146,21 @@ export class SidejobsState implements ISidejobsState {
       sidejob.removeAllEventListeners();
       this._sidejobMap.delete(sidejobId);
       this._sidejobCloneIdMap.delete(sidejob.assignedClone!.id);
+
+      this._messageLogState.postMessage(
+        SidejobsEvent.sidejobCancelled,
+        msg(
+          str`Sidejob "${SIDEJOB_TEXTS[sidejob.sidejobName].title()}" in district "${DISTRICT_NAMES[sidejob.district.name]()}" assigned to clone "${sidejob.assignedClone!.name}" has been cancelled`,
+        ),
+      );
     }
+
+    this._companyState.requestReassignment();
 
     this._stateUIConnector.enqueueEvent(this.UI_EVENTS.SIDEJOBS_UPDATED);
   }
 
-  removeAllSidejobs(): void {
+  cancelAllSidejobs(): void {
     for (const sidejob of this._sidejobsList) {
       sidejob.removeAllEventListeners();
     }
@@ -146,15 +169,41 @@ export class SidejobsState implements ISidejobsState {
     this._sidejobCloneIdMap.clear();
     this._sidejobMap.clear();
 
+    this._companyState.requestReassignment();
+
+    this._messageLogState.postMessage(SidejobsEvent.allSidejobsCancelled, msg('All sidejobs have been cancelled'));
+
     this._stateUIConnector.enqueueEvent(this.UI_EVENTS.SIDEJOBS_UPDATED);
   }
 
+  perform(): void {
+    for (const sidejob of this._sidejobsList) {
+      if (sidejob.isActive) {
+        sidejob.perform();
+      }
+    }
+  }
+
+  filterSidejobs(): void {
+    const sidejobsToDelete: Set<ISidejob> = new Set<ISidejob>();
+
+    for (const sidejob of this._sidejobsList) {
+      if (!sidejob.checkRequirements()) {
+        sidejobsToDelete.add(sidejob);
+      }
+    }
+
+    for (const sidejob of sidejobsToDelete) {
+      this.cancelSidejob(sidejob.id);
+    }
+  }
+
   async startNewState(): Promise<void> {
-    this.removeAllSidejobs();
+    this.cancelAllSidejobs();
   }
 
   async deserialize(serializedState: ISidejobsSerializedState): Promise<void> {
-    this.removeAllSidejobs();
+    this.cancelAllSidejobs();
 
     serializedState.sidejobs.forEach((serializedSidejob) => {
       const sidejob = this.makeSidejob(serializedSidejob);
@@ -177,7 +226,7 @@ export class SidejobsState implements ISidejobsState {
     const existingSidejobByClone = this.getSidejobByCloneId(sidejob.assignedClone!.id);
 
     if (existingSidejobByClone) {
-      this.removeSidejob(existingSidejobByClone.id);
+      this.cancelSidejob(existingSidejobByClone.id);
     }
 
     this._sidejobsList.push(sidejob);
