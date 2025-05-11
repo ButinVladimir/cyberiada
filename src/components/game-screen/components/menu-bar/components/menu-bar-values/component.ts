@@ -1,4 +1,4 @@
-import { html, css, PropertyValues } from 'lit';
+import { html, css } from 'lit';
 import { localized, msg } from '@lit/localize';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { customElement } from 'lit/decorators.js';
@@ -7,7 +7,7 @@ import { MenuBarValuesController } from './controller';
 
 @localized()
 @customElement('ca-menu-bar-values')
-export class MenuBarValues extends BaseComponent<MenuBarValuesController> {
+export class MenuBarValues extends BaseComponent {
   static styles = css`
     :host {
       display: flex;
@@ -31,7 +31,9 @@ export class MenuBarValues extends BaseComponent<MenuBarValuesController> {
     }
   `;
 
-  protected controller: MenuBarValuesController;
+  hasPartialUpdate = true;
+
+  private _controller: MenuBarValuesController;
 
   private _accumulatedTimeRef = createRef<HTMLSpanElement>();
   private _moneyRef = createRef<HTMLSpanElement>();
@@ -39,18 +41,12 @@ export class MenuBarValues extends BaseComponent<MenuBarValuesController> {
   constructor() {
     super();
 
-    this.controller = new MenuBarValuesController(this, this.handlePartialUpdate);
-  }
-
-  updated(_changedProperties: PropertyValues) {
-    super.updated(_changedProperties);
-
-    this.handlePartialUpdate();
+    this._controller = new MenuBarValuesController(this);
   }
 
   render() {
-    const formatter = this.controller.formatter;
-    const developmentLevelFormatted = formatter.formatLevel(this.controller.developmentLevel);
+    const formatter = this._controller.formatter;
+    const developmentLevelFormatted = formatter.formatLevel(this._controller.developmentLevel);
 
     return html`
       <div class="block">
@@ -79,17 +75,17 @@ export class MenuBarValues extends BaseComponent<MenuBarValuesController> {
     `;
   }
 
-  private handlePartialUpdate = () => {
-    const formatter = this.controller.formatter;
+  handlePartialUpdate = () => {
+    const formatter = this._controller.formatter;
 
     if (this._accumulatedTimeRef.value) {
-      const formattedAccumulatedTime = formatter.formatTimeShort(this.controller.accumulatedTime);
+      const formattedAccumulatedTime = formatter.formatTimeShort(this._controller.accumulatedTime);
 
       this._accumulatedTimeRef.value.textContent = formattedAccumulatedTime;
     }
 
     if (this._moneyRef.value) {
-      const formattedMoney = formatter.formatNumberFloat(this.controller.money);
+      const formattedMoney = formatter.formatNumberFloat(this._controller.money);
 
       this._moneyRef.value.textContent = formattedMoney;
     }

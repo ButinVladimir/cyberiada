@@ -1,8 +1,6 @@
 import { injectable } from 'inversify';
 import { decorators } from '@state/container';
 import { IncomeSource } from '@shared/types';
-import { EventBatcher } from '@shared/event-batcher';
-import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import type { IMainframeState } from '@state/mainframe-state/interfaces/mainframe-state';
 import { TYPES } from '@state/types';
 import { OtherProgramName } from '@state/mainframe-state/states/progam-factory/types';
@@ -14,11 +12,6 @@ const { lazyInject } = decorators;
 
 @injectable()
 export class MoneyGrowthState implements IMoneyGrowthState {
-  readonly uiEventBatcher: EventBatcher;
-
-  @lazyInject(TYPES.StateUIConnector)
-  private _stateUiConnector!: IStateUIConnector;
-
   @lazyInject(TYPES.MainframeState)
   private _mainframeState!: IMainframeState;
 
@@ -28,9 +21,6 @@ export class MoneyGrowthState implements IMoneyGrowthState {
   constructor() {
     this._totalGrowth = 0;
     this._growth = new Map<IncomeSource, number>();
-
-    this.uiEventBatcher = new EventBatcher();
-    this._stateUiConnector.registerEventEmitter(this);
   }
 
   get totalGrowth() {

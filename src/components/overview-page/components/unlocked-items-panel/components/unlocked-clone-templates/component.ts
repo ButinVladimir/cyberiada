@@ -10,15 +10,15 @@ import { unlockedItemsCategoryStyles } from '../../constants';
 
 @localized()
 @customElement('ca-overview-unlocked-clone-templates')
-export class OverviewUnlockedCloneTemplates extends BaseComponent<OverviewUnlockedCloneTemplatesController> {
+export class OverviewUnlockedCloneTemplates extends BaseComponent {
   static styles = unlockedItemsCategoryStyles;
 
-  protected controller: OverviewUnlockedCloneTemplatesController;
+  private _controller: OverviewUnlockedCloneTemplatesController;
 
   constructor() {
     super();
 
-    this.controller = new OverviewUnlockedCloneTemplatesController(this);
+    this._controller = new OverviewUnlockedCloneTemplatesController(this);
   }
 
   render() {
@@ -34,7 +34,7 @@ export class OverviewUnlockedCloneTemplates extends BaseComponent<OverviewUnlock
   }
 
   private renderList = () => {
-    const itemNames = this.controller.listItems();
+    const itemNames = this._controller.listItems();
 
     return itemNames.map(this.renderListItem);
   };
@@ -42,7 +42,7 @@ export class OverviewUnlockedCloneTemplates extends BaseComponent<OverviewUnlock
   private renderListItem = (itemName: CloneTemplateName) => {
     const cloneTemplateTitle = CLONE_TEMPLATE_TEXTS[itemName].title();
     const cloneTemplateOverview = CLONE_TEMPLATE_TEXTS[itemName].overview();
-    const quality = this.controller.getItemHighestAvailableQuality(itemName);
+    const quality = this._controller.getItemHighestAvailableQuality(itemName);
 
     return html`
       <span>
@@ -54,7 +54,7 @@ export class OverviewUnlockedCloneTemplates extends BaseComponent<OverviewUnlock
           <sl-icon name=${HINT_ICON}></sl-icon>
         </sl-tooltip>
       </span>
-      <span> ${this.controller.formatter.formatQuality(quality)} </span>
+      <span> ${this._controller.formatter.formatQuality(quality)} </span>
     `;
   };
 }

@@ -9,3 +9,5 @@ export * from './unlocked-features-serialized-state';
 export * from './scenario-serialized-state';
 export * from './factions-serialized-state';
 export * from './multiplier-serialized-state';
+export * from './connectivity-serialized-state';
+export * from './threat-serialized-state';

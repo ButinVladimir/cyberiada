@@ -11,7 +11,7 @@ import { COMMON_TEXTS, PROGRAM_TEXTS } from '@texts/index';
 
 @localized()
 @customElement('ca-start-process-dialog-buttons')
-export class StartProcessDialogButtons extends BaseComponent<StartProcessDialogButtonsController> {
+export class StartProcessDialogButtons extends BaseComponent {
   static styles = [
     warningStyle,
     css`
@@ -39,16 +39,16 @@ export class StartProcessDialogButtons extends BaseComponent<StartProcessDialogB
   })
   threads!: number;
 
-  protected controller: StartProcessDialogButtonsController;
+  private _controller: StartProcessDialogButtonsController;
 
   constructor() {
     super();
 
-    this.controller = new StartProcessDialogButtonsController(this);
+    this._controller = new StartProcessDialogButtonsController(this);
   }
 
   render() {
-    const program = this.programName ? this.controller.getProgram(this.programName) : undefined;
+    const program = this.programName ? this._controller.getProgram(this.programName) : undefined;
 
     const maxThreads = this.calculateMaxThreads();
     const submitButtonDisabled = !(
@@ -86,17 +86,17 @@ export class StartProcessDialogButtons extends BaseComponent<StartProcessDialogB
       }
     }
 
-    const processForSameProgramName = this.controller.getProcessByName(this.programName!);
+    const processForSameProgramName = this._controller.getProcessByName(this.programName!);
     if (program.isAutoscalable && processForSameProgramName) {
       return msg(str`Process for same program is already running`);
     }
 
     if (!program.isAutoscalable && processForSameProgramName) {
-      const formattedThreads = this.controller.formatter.formatNumberDecimal(processForSameProgramName.threads);
+      const formattedThreads = this._controller.formatter.formatNumberDecimal(processForSameProgramName.threads);
       return msg(str`Process for same program with ${formattedThreads} threads is already running`);
     }
 
-    const runningAutoscalableProgram = this.controller.getRunningScalableProgram();
+    const runningAutoscalableProgram = this._controller.getRunningScalableProgram();
     if (program.isAutoscalable && runningAutoscalableProgram) {
       const runningAutoscalableProgramTitle = PROGRAM_TEXTS[runningAutoscalableProgram.program.name].title();
       return msg(str`Autoscalable process for program "${runningAutoscalableProgramTitle}" is already running`);
@@ -110,8 +110,8 @@ export class StartProcessDialogButtons extends BaseComponent<StartProcessDialogB
       return 1;
     }
 
-    const program = this.controller.getProgram(this.programName);
-    const availableRam = this.controller.getAvailableRamForProgram(this.programName);
+    const program = this._controller.getProgram(this.programName);
+    const availableRam = this._controller.getAvailableRamForProgram(this.programName);
 
     if (program && !program.isAutoscalable) {
       return Math.max(Math.floor(availableRam / program.ram), 0);

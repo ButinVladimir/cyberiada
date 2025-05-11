@@ -4,7 +4,7 @@ import { customElement, property } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { BaseComponent } from '@shared/base-component';
 import SlCheckbox from '@shoelace-style/shoelace/dist/components/checkbox/checkbox.component.js';
-import { GAME_STATE_EVENTS, PURCHASE_EVENTS, PROGRAM_EVENTS, CLONE_EVENTS, CITY_EVENTS } from '@shared/constants';
+import { GAME_STATE_EVENTS, PROGRAM_EVENTS, CLONE_EVENTS, SIDEJOB_EVENTS, CITY_EVENTS } from '@shared/constants';
 import { MessageEvent } from '@shared/types';
 import {
   hintStyle,
@@ -20,7 +20,7 @@ import { MESSAGE_EVENT_NAMES } from './constants';
 
 @localized()
 @customElement('ca-message-filter-dialog')
-export class MessageFilterDialog extends BaseComponent<MessageFilterDialogController> {
+export class MessageFilterDialog extends BaseComponent {
   static styles = [
     hintStyle,
     sectionTitleStyle,
@@ -67,7 +67,7 @@ export class MessageFilterDialog extends BaseComponent<MessageFilterDialogContro
     `,
   ];
 
-  protected controller: MessageFilterDialogController;
+  private _controller: MessageFilterDialogController;
 
   @property({
     attribute: 'is-open',
@@ -78,7 +78,7 @@ export class MessageFilterDialog extends BaseComponent<MessageFilterDialogContro
   constructor() {
     super();
 
-    this.controller = new MessageFilterDialogController(this);
+    this._controller = new MessageFilterDialogController(this);
   }
 
   render() {
@@ -93,11 +93,11 @@ export class MessageFilterDialog extends BaseComponent<MessageFilterDialogContro
 
           <sl-divider></sl-divider>
 
-          <div class="events-container">${repeat(PURCHASE_EVENTS, (event) => event, this.renderEventCheckbox)}</div>
+          <div class="events-container">${repeat(PROGRAM_EVENTS, (event) => event, this.renderEventCheckbox)}</div>
 
           <sl-divider></sl-divider>
 
-          <div class="events-container">${repeat(PROGRAM_EVENTS, (event) => event, this.renderEventCheckbox)}</div>
+          <div class="events-container">${repeat(CITY_EVENTS, (event) => event, this.renderEventCheckbox)}</div>
 
           <sl-divider></sl-divider>
 
@@ -105,7 +105,7 @@ export class MessageFilterDialog extends BaseComponent<MessageFilterDialogContro
 
           <sl-divider></sl-divider>
 
-          <div class="events-container">${repeat(CITY_EVENTS, (event) => event, this.renderEventCheckbox)}</div>
+          <div class="events-container">${repeat(SIDEJOB_EVENTS, (event) => event, this.renderEventCheckbox)}</div>
         </div>
 
         <sl-button slot="footer" size="medium" variant="default" outline @click=${this.handleClose}>
@@ -121,7 +121,7 @@ export class MessageFilterDialog extends BaseComponent<MessageFilterDialogContro
         size="small"
         name="event"
         value=${event}
-        ?checked=${this.controller.isMessageEventEnabled(event)}
+        ?checked=${this._controller.isMessageEventEnabled(event)}
         @sl-change=${this.handleToggleEvent}
       >
         ${MESSAGE_EVENT_NAMES[event]()}
@@ -136,6 +136,6 @@ export class MessageFilterDialog extends BaseComponent<MessageFilterDialogContro
   private handleToggleEvent = (event: Event) => {
     const target = event.target as SlCheckbox;
 
-    this.controller.toggleMessageEvent(target.value as MessageEvent, target.checked);
+    this._controller.toggleMessageEvent(target.value as MessageEvent, target.checked);
   };
 }

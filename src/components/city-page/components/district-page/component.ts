@@ -11,7 +11,7 @@ import { ReturnCityMapPageEvent } from './events';
 
 @localized()
 @customElement('ca-city-district-page')
-export class CityDistrictPage extends BaseComponent<CityDistrictPageController> {
+export class CityDistrictPage extends BaseComponent {
   static styles = [
     pageTitleStyle,
     css`
@@ -46,16 +46,16 @@ export class CityDistrictPage extends BaseComponent<CityDistrictPageController> 
   })
   districtIndex!: number;
 
-  protected controller: CityDistrictPageController;
+  private _controller: CityDistrictPageController;
 
   constructor() {
     super();
 
-    this.controller = new CityDistrictPageController(this);
+    this._controller = new CityDistrictPageController(this);
   }
 
   render() {
-    const districtState = this.controller.getDistrictState(this.districtIndex);
+    const districtState = this._controller.getDistrictState(this.districtIndex);
 
     const goBackLabel = msg('Go back to the map');
 
@@ -99,11 +99,13 @@ export class CityDistrictPage extends BaseComponent<CityDistrictPageController> 
     switch (tab) {
       case CityDistrictPageTabs.overview:
         return html`
-          <ca-city-district-overiew-panel district-index=${this.districtIndex}></ca-city-district-overiew-panel>
+          <ca-city-district-overiew-panel district-index=${this.districtIndex}> </ca-city-district-overiew-panel>
         `;
 
       case CityDistrictPageTabs.sidejobs:
-        return html`Sidejobs`;
+        return html`
+          <ca-city-district-sidejobs-panel district-index=${this.districtIndex}> </ca-city-district-sidejobs-panel>
+        `;
     }
   };
 

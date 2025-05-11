@@ -147,7 +147,7 @@ export class AppState implements IAppState {
 
   private processSingleTick = () => {
     this._mainframeState.processes.processTick();
-    this._companyState.clones.recalculate();
+    this._companyState.processTick();
     this._globalState.makeNextTick();
     this._cityState.recalculate();
     this._globalState.recalculate();

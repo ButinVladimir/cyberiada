@@ -1,6 +1,6 @@
 import { msg, str } from '@lit/localize';
 import { IExponent } from '@shared/interfaces';
-import { PurchaseEvent } from '@shared/types';
+import { ProgramsEvent } from '@shared/types';
 import { MainframeHardwareParameter } from './mainframe-hardware-parameter';
 import { MainframeHardwareParameterType } from './types';
 
@@ -19,7 +19,7 @@ export class MainframeHardwarePerformance extends MainframeHardwareParameter {
     const formattedLevel = this.formatter.formatLevel(this._level);
 
     this.messageLogState.postMessage(
-      PurchaseEvent.performanceUpgraded,
+      ProgramsEvent.performanceUpgraded,
       msg(str`Mainframe performance has been upgraded to ${formattedLevel}`),
     );
   }

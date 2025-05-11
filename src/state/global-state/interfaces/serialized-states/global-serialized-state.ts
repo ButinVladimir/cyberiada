@@ -7,6 +7,7 @@ import { IScenarioSerializedState } from './scenario-serialized-state';
 import { IMultipliersSerializedState } from './multipliers-serialized-state';
 import { IFactionSerializedState } from './factions-serialized-state';
 import { IAvailableItemsSerializedState } from './available-items-serialized-state';
+import { IConnectivitySerializedState } from './connectivity-serialized-state';
 
 export interface IGlobalSerializedState {
   randomSeed: number;
@@ -17,6 +18,7 @@ export interface IGlobalSerializedState {
   money: IMoneySerializedState;
   time: ITimeSerializedState;
   development: IDevelopmentSerializedState;
+  connectivity: IConnectivitySerializedState;
   multipliers: IMultipliersSerializedState;
   availableItems: IAvailableItemsSerializedState;
   unlockedFeatures: IUnlockedFeaturesSerializedState;

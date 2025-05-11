@@ -1,63 +1,81 @@
+import districtTypes from '@configs/district-types.json';
 import { IMapGeneratorDistrictResult } from '@workers/map-generator/interfaces';
-import { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
-import { IEventBatcher, IPoint } from '@shared/interfaces';
+import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
+import { IPoint } from '@shared/interfaces';
 import { DistrictType, Faction } from '@shared/types';
-import { container } from '@state/container';
+import { decorators } from '@state/container';
 import { TYPES } from '@state/types';
-import { IDistrictState, IDistrictSerializedState, IDistrictParameters } from './interfaces';
+import {
+  IDistrictState,
+  IDistrictSerializedState,
+  IDistrictParameters,
+  IDistrictTypeTemplate,
+  IDistrictArguments,
+} from './interfaces';
 import { DistrictUnlockState } from './types';
-import { EventBatcher } from '@shared/event-batcher';
 import { DistrictParameters } from './district-parameters';
 
+const { lazyInject } = decorators;
+
 export class DistrictState implements IDistrictState {
-  readonly uiEventBatcher: IEventBatcher;
+  private UI_EVENTS = {};
 
-  private _stateUiConnector: IStateUIConnector;
+  @lazyInject(TYPES.StateUIConnector)
+  private _stateUiConnector!: IStateUIConnector;
 
-  private _name;
+  private _index: number;
+  private _name: string;
   private _startingPoint: IPoint;
   private _districtType: DistrictType;
   private _faction;
   private _state: DistrictUnlockState;
   private _parameters: IDistrictParameters;
 
-  private constructor() {
-    this._stateUiConnector = container.get(TYPES.StateUIConnector);
+  private _template: IDistrictTypeTemplate;
 
-    this._name = '';
-    this._startingPoint = { x: 0, y: 0 };
-    this._districtType = DistrictType.suburb;
-    this._faction = Faction.neutral;
-    this._state = DistrictUnlockState.locked;
+  private constructor(args: IDistrictArguments) {
+    this._index = args.index;
+    this._name = args.name;
+    this._startingPoint = args.startingPoint;
+    this._districtType = args.districtType;
+    this._faction = args.faction;
+    this._state = args.state;
     this._parameters = new DistrictParameters(this);
 
-    this.uiEventBatcher = new EventBatcher();
+    this._template = districtTypes[this._districtType] as IDistrictTypeTemplate;
 
-    this._stateUiConnector.registerEventEmitter(this);
+    this._stateUiConnector.registerEvents(this.UI_EVENTS);
   }
 
-  static createByMapGenerator(mapGeneratorDistrictResult: IMapGeneratorDistrictResult): IDistrictState {
-    const districtState = new DistrictState();
-    districtState._name = mapGeneratorDistrictResult.name;
-    districtState._startingPoint = mapGeneratorDistrictResult.startingPoint;
-    districtState._districtType = mapGeneratorDistrictResult.districtType;
-    districtState._faction = mapGeneratorDistrictResult.faction;
-    districtState._state = DistrictUnlockState.locked;
+  static createByMapGenerator(index: number, mapGeneratorDistrictResult: IMapGeneratorDistrictResult): IDistrictState {
+    const districtState = new DistrictState({
+      ...mapGeneratorDistrictResult,
+      index,
+      state: DistrictUnlockState.locked,
+    });
+
     districtState._parameters.tier.setTier(mapGeneratorDistrictResult.tier);
 
     return districtState;
   }
 
-  static deserialize(serializedState: IDistrictSerializedState): IDistrictState {
-    const districtState = new DistrictState();
-    districtState._name = serializedState.name;
-    districtState._startingPoint = serializedState.startingPoint;
-    districtState._districtType = serializedState.districtType;
-    districtState._faction = serializedState.faction;
-    districtState._state = serializedState.state;
+  static deserialize(index: number, serializedState: IDistrictSerializedState): IDistrictState {
+    const districtState = new DistrictState({
+      ...serializedState,
+      index,
+    });
+
     districtState._parameters.deserialize(serializedState.parameters);
 
     return districtState;
+  }
+
+  get index() {
+    return this._index;
+  }
+
+  get template() {
+    return this._template;
   }
 
   get name(): string {
@@ -101,5 +119,9 @@ export class DistrictState implements IDistrictState {
       state: this._state,
       parameters: this._parameters.serialize(),
     };
+  }
+
+  removeAllEventListeners(): void {
+    this._parameters.removeAllEventListeners();
   }
 }

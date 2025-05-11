@@ -27,7 +27,7 @@ import { PurchaseProgramDialogController } from './controller';
 
 @localized()
 @customElement('ca-purchase-program-dialog')
-export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogController> {
+export class PurchaseProgramDialog extends BaseComponent {
   static styles = [
     inputLabelStyle,
     hintStyle,
@@ -81,7 +81,7 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
     `,
   ];
 
-  protected controller: PurchaseProgramDialogController;
+  private _controller: PurchaseProgramDialogController;
 
   private _programInputRef = createRef<SlSelect>();
 
@@ -107,7 +107,7 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
   constructor() {
     super();
 
-    this.controller = new PurchaseProgramDialogController(this);
+    this._controller = new PurchaseProgramDialogController(this);
   }
 
   connectedCallback() {
@@ -128,12 +128,12 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
     if (_changedProperties.has('isOpen')) {
       this._programName = undefined;
       this._quality = 0;
-      this._level = this.controller.developmentLevel;
+      this._level = this._controller.developmentLevel;
     }
   }
 
   render() {
-    const { developmentLevel } = this.controller;
+    const { developmentLevel } = this._controller;
 
     return html`
       <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
@@ -157,9 +157,7 @@ If you already have program with same name, old one will be replaced with new on
             >
               <span class="input-label" slot="label"> ${msg('Program')} </span>
 
-              ${this.controller
-                .listAvailablePrograms()
-                .map((program) => html`<sl-option value=${program}> ${PROGRAM_TEXTS[program].title()} </sl-option>`)}
+              ${this._controller.listAvailablePrograms().map(this.renderProgramOption)}
             </sl-select>
 
             <sl-select
@@ -212,11 +210,15 @@ If you already have program with same name, old one will be replaced with new on
     `;
   }
 
+  private renderProgramOption = (program: ProgramName) => {
+    return html`<sl-option value=${program}> ${PROGRAM_TEXTS[program].title()} </sl-option>`;
+  };
+
   private renderQualityOptions = () => {
     const highestAvailableQuality = this._programName
-      ? this.controller.getHighestAvailableQuality(this._programName)
+      ? this._controller.getHighestAvailableQuality(this._programName)
       : 0;
-    const formatter = this.controller.formatter;
+    const formatter = this._controller.formatter;
 
     const result: unknown[] = [];
     for (let quality = 0; quality <= highestAvailableQuality; quality++) {
@@ -253,7 +255,7 @@ If you already have program with same name, old one will be replaced with new on
       return;
     }
 
-    const level = clamp(this._levelInputRef.value.valueAsNumber - 1, 0, this.controller.developmentLevel);
+    const level = clamp(this._levelInputRef.value.valueAsNumber - 1, 0, this._controller.developmentLevel);
     this._level = level;
     this._levelInputRef.value.valueAsNumber = level + 1;
   };
@@ -263,10 +265,10 @@ If you already have program with same name, old one will be replaced with new on
       return;
     }
 
-    const ownedProgram = this.controller.getOwnedProgram(this._programName);
+    const ownedProgram = this._controller.getOwnedProgram(this._programName);
 
     if (ownedProgram) {
-      const formatter = this.controller.formatter;
+      const formatter = this._controller.formatter;
 
       const programTitle = PROGRAM_TEXTS[this._programName].title();
       const formattedLevel = formatter.formatLevel(ownedProgram.level);
@@ -300,7 +302,7 @@ If you already have program with same name, old one will be replaced with new on
       return;
     }
 
-    const isBought = this.controller.purchaseProgram(this._programName, this._quality, this._level);
+    const isBought = this._controller.purchaseProgram(this._programName, this._quality, this._level);
 
     if (isBought) {
       this.dispatchEvent(new PurchaseProgramDialogCloseEvent());

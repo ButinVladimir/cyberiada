@@ -7,7 +7,7 @@ import { OverviewUnlockedItemsPanelController } from './controller';
 
 @localized()
 @customElement('ca-overview-unlocked-items-panel')
-export class OverviewUnlockedItemsPanel extends BaseComponent<OverviewUnlockedItemsPanelController> {
+export class OverviewUnlockedItemsPanel extends BaseComponent {
   static styles = [
     hintStyle,
     css`
@@ -27,16 +27,16 @@ export class OverviewUnlockedItemsPanel extends BaseComponent<OverviewUnlockedIt
     `,
   ];
 
-  protected controller: OverviewUnlockedItemsPanelController;
+  private _controller: OverviewUnlockedItemsPanelController;
 
   constructor() {
     super();
 
-    this.controller = new OverviewUnlockedItemsPanelController(this);
+    this._controller = new OverviewUnlockedItemsPanelController(this);
   }
 
   render() {
-    const programsUnlocked = this.controller.areProgramsUnlocked();
+    const programsUnlocked = this._controller.areProgramsUnlocked();
     const noItemsUnlocked = !programsUnlocked;
 
     if (noItemsUnlocked) {
@@ -47,8 +47,8 @@ export class OverviewUnlockedItemsPanel extends BaseComponent<OverviewUnlockedIt
   }
 
   private renderCategories() {
-    const programsUnlocked = this.controller.areProgramsUnlocked();
-    const cloneTemplatesUnlocked = this.controller.areCloneTemplatesUnlocked();
+    const programsUnlocked = this._controller.areProgramsUnlocked();
+    const cloneTemplatesUnlocked = this._controller.areCloneTemplatesUnlocked();
 
     return html`
       <p class="hint">

@@ -3,6 +3,8 @@ import scenarios from '@configs/scenarios.json';
 import districtTypes from '@configs/district-types.json';
 import { Faction, Scenario } from '@shared/types';
 import { RandomQueue } from '@shared/random-queue';
+import { calculatePower } from '@shared/helpers';
+import { IDistrictTypeTemplate } from '@state/city-state/interfaces';
 import {
   IDistrictFactionsGenerator,
   IDistrictFactionsGeneratorArgs,
@@ -60,11 +62,14 @@ export class DistrictFactionsGenerator implements IDistrictFactionsGenerator {
     for (const factionData of mapData.factions) {
       const faction = factionData.name as Faction;
       const startingDistrict = factionData.startingDistrict;
-      const startingDistrictType = this._districtInfos.districts[startingDistrict].districtType;
+
+      const districtInfo = this._districtInfos.districts[startingDistrict];
+      const startingDistrictType = districtInfo.districtType;
+      const districtTypeData = districtTypes[startingDistrictType] as IDistrictTypeTemplate;
 
       const startingDistrictDifficulty =
         this._connectionsGraph.districtSizes.get(startingDistrict)! *
-        districtTypes[startingDistrictType].captureDifficulty;
+        calculatePower(districtInfo.tier, districtTypeData.captureDifficulty);
 
       const districtQueue = new RandomQueue<number>(this._random);
 
@@ -98,10 +103,15 @@ export class DistrictFactionsGenerator implements IDistrictFactionsGenerator {
 
         while (!districtQueue.isEmpty()) {
           const nextDistrict = districtQueue.pop();
-          const districtType = this._districtInfos.districts[nextDistrict].districtType;
+
+          const districtInfo = this._districtInfos.districts[nextDistrict];
+          const districtType = districtInfo.districtType;
+          const districtTypeData = districtTypes[districtType] as IDistrictTypeTemplate;
+
           const factionControlledArea = this._controlledAreaMap.get(faction)!;
           const districtDifficulty =
-            this._connectionsGraph.districtSizes.get(nextDistrict)! * districtTypes[districtType].captureDifficulty;
+            this._connectionsGraph.districtSizes.get(nextDistrict)! *
+            calculatePower(districtInfo.tier, districtTypeData.captureDifficulty);
 
           if (!this._districtFactions.has(nextDistrict) && factionControlledArea >= districtDifficulty) {
             this._controlledAreaMap.set(faction, factionControlledArea - districtDifficulty);
@@ -134,6 +144,9 @@ export class DistrictFactionsGenerator implements IDistrictFactionsGenerator {
 
       worker.addEventListener('message', (event: MessageEvent<IDistrictConnectionGraphBuilderResult>) => {
         this._connectionsGraph = event.data;
+
+        worker.terminate();
+
         resolve();
       });
 

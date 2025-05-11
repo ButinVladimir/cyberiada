@@ -10,10 +10,12 @@
       "mainframeHardwareAutobuyer",
       "mainframeProgramsAutobuyer"
     ],
-    "cloneTemplates": ["anthrodrone"]
+    "cloneTemplates": ["anthrodrone"],
+    "sidejobs": ["oddjob", "infoBroker"]
   },
   "wsa": {
     "programs": [],
-    "cloneTemplates": []
+    "cloneTemplates": [],
+    "sidejobs": []
   }
 }

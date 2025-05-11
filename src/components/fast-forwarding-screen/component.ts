@@ -1,4 +1,4 @@
-import { html, css, PropertyValues } from 'lit';
+import { html, css } from 'lit';
 import { localized, msg } from '@lit/localize';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { customElement } from 'lit/decorators.js';
@@ -8,7 +8,7 @@ import { FastForwardingScreenController } from './controller';
 
 @localized()
 @customElement('ca-fast-forwarding-screen')
-export class FastForwardingScreen extends BaseComponent<FastForwardingScreenController> {
+export class FastForwardingScreen extends BaseComponent {
   static styles = css`
     :host {
       width: 100vw;
@@ -33,7 +33,9 @@ export class FastForwardingScreen extends BaseComponent<FastForwardingScreenCont
     }
   `;
 
-  protected controller: FastForwardingScreenController;
+  hasPartialUpdate = true;
+
+  private _controller: FastForwardingScreenController;
 
   private _maxTime = 1;
   private _progressBarRef = createRef<SlProgressBar>();
@@ -41,13 +43,7 @@ export class FastForwardingScreen extends BaseComponent<FastForwardingScreenCont
   constructor() {
     super();
 
-    this.controller = new FastForwardingScreenController(this, this.handlePartialUpdate);
-  }
-
-  updated(_changedProperties: PropertyValues) {
-    super.updated(_changedProperties);
-
-    this.handlePartialUpdate();
+    this._controller = new FastForwardingScreenController(this);
   }
 
   render() {
@@ -65,14 +61,14 @@ export class FastForwardingScreen extends BaseComponent<FastForwardingScreenCont
   }
 
   private handleStopFastForwarding = () => {
-    this.controller.stopFastForwarding();
+    this._controller.stopFastForwarding();
   };
 
-  private handlePartialUpdate = () => {
+  handlePartialUpdate = () => {
     if (this._progressBarRef.value) {
-      const formatter = this.controller.formatter;
+      const formatter = this._controller.formatter;
 
-      const accumulatedTime = this.controller.accumulatedTime;
+      const accumulatedTime = this._controller.accumulatedTime;
       this._maxTime = Math.max(this._maxTime, accumulatedTime);
 
       const progressBarValue = ((this._maxTime - accumulatedTime) / this._maxTime) * 100;

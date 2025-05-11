@@ -1,7 +1,5 @@
 import { injectable } from 'inversify';
 import { decorators } from '@state/container';
-import { EventBatcher } from '@shared/event-batcher';
-import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import type { IMainframeState } from '@state/mainframe-state/interfaces/mainframe-state';
 import { TYPES } from '@state/types';
 import { ProgramName } from '@state/mainframe-state/states/progam-factory/types';
@@ -12,11 +10,6 @@ const { lazyInject } = decorators;
 
 @injectable()
 export abstract class BaseMultiplierGrowthState implements IMultiplierGrowthState {
-  readonly uiEventBatcher: EventBatcher;
-
-  @lazyInject(TYPES.StateUIConnector)
-  private _stateUiConnector!: IStateUIConnector;
-
   @lazyInject(TYPES.MainframeState)
   private _mainframeState!: IMainframeState;
 
@@ -24,9 +17,6 @@ export abstract class BaseMultiplierGrowthState implements IMultiplierGrowthStat
 
   constructor() {
     this._growthByProgram = 0;
-
-    this.uiEventBatcher = new EventBatcher();
-    this._stateUiConnector.registerEventEmitter(this);
   }
 
   get growthByProgram() {

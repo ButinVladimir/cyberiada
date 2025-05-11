@@ -1,7 +1,6 @@
-import { IUIEventEmitter } from '@shared/interfaces/ui-event-emitter';
-import { IDistrictTierSerializedParameter } from './district-tier-serialized-parameter';
+import { IDistrictTierSerializedParameter } from '../serialized-states/district-tier-serialized-parameter';
 
-export interface IDistrictTierParameter extends IUIEventEmitter {
+export interface IDistrictTierParameter {
   tier: number;
   points: number;
   increasePoints(delta: number): void;
@@ -9,4 +8,5 @@ export interface IDistrictTierParameter extends IUIEventEmitter {
   setTier(tier: number): void;
   serialize(): IDistrictTierSerializedParameter;
   deserialize(serializedParameter: IDistrictTierSerializedParameter): void;
+  removeAllEventListeners(): void;
 }

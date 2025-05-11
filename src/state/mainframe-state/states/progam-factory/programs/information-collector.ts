@@ -10,7 +10,7 @@ export class InformationCollectorProgram extends BaseProgram {
   handlePerformanceUpdate(): void {}
 
   perform(threads: number): void {
-    this.globalState.multipliers.connectivity.increasePointsByProgram(this.calculateDelta(threads));
+    this.globalState.connectivity.increasePointsByProgram(this.calculateDelta(threads));
   }
 
   calculateDelta(threads: number): number {

@@ -8,21 +8,21 @@ import type { IMessageLogState } from '@state/message-log-state/interfaces/messa
 import type { IFormatter } from '@shared/interfaces/formatter';
 import type { IMainframeState } from '@state/mainframe-state/interfaces/mainframe-state';
 import { TYPES } from '@state/types';
-import { Feature, PurchaseEvent, PurchaseType } from '@shared/types';
+import { Feature, ProgramsEvent, PurchaseType } from '@shared/types';
 import { calculateQualityPower } from '@shared/helpers';
-import { EventBatcher } from '@shared/event-batcher';
 import { binarySearchDecimal, moveElementInArray } from '@shared/helpers';
 import { PROGRAM_TEXTS } from '@texts/programs';
 import { IMainframeProgramsState, IMainframeProgramsSerializedState } from './interfaces';
-import { MAINFRAME_PROGRAMS_STATE_UI_EVENTS } from './constants';
 import { ProgramName } from '../progam-factory/types';
-import { IProgram } from '../progam-factory/interfaces';
+import { IMakeProgramParameters, IProgram } from '../progam-factory/interfaces';
 
 const { lazyInject } = decorators;
 
 @injectable()
 export class MainframeProgramsState implements IMainframeProgramsState {
-  readonly uiEventBatcher: EventBatcher;
+  private UI_EVENTS = {
+    OWNED_PROGRAMS_UPDATED: Symbol('OWNED_PROGRAMS_UPDATED'),
+  };
 
   @lazyInject(TYPES.MainframeState)
   private _mainframeState!: IMainframeState;
@@ -49,8 +49,7 @@ export class MainframeProgramsState implements IMainframeProgramsState {
     this._programsList = [];
     this._ownedPrograms = new Map();
 
-    this.uiEventBatcher = new EventBatcher();
-    this._stateUiConnector.registerEventEmitter(this);
+    this._stateUiConnector.registerEvents(this.UI_EVENTS);
   }
 
   getProgramCost(name: ProgramName, quality: number, level: number): number {
@@ -107,7 +106,7 @@ export class MainframeProgramsState implements IMainframeProgramsState {
   }
 
   listOwnedPrograms(): IProgram[] {
-    this._stateUiConnector.connectEventHandler(this, MAINFRAME_PROGRAMS_STATE_UI_EVENTS.OWNED_PROGRAMS_UPDATED);
+    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.OWNED_PROGRAMS_UPDATED);
 
     return this._programsList;
   }
@@ -125,7 +124,7 @@ export class MainframeProgramsState implements IMainframeProgramsState {
   }
 
   requestUiUpdate() {
-    this.uiEventBatcher.enqueueEvent(MAINFRAME_PROGRAMS_STATE_UI_EVENTS.OWNED_PROGRAMS_UPDATED);
+    this._stateUiConnector.enqueueEvent(this.UI_EVENTS.OWNED_PROGRAMS_UPDATED);
   }
 
   moveProgram(programName: ProgramName, newPosition: number) {
@@ -164,9 +163,13 @@ export class MainframeProgramsState implements IMainframeProgramsState {
 
   serialize(): IMainframeProgramsSerializedState {
     return {
-      ownedPrograms: this._programsList.map((program) => program.serialize()),
+      ownedPrograms: this._programsList.map(this.serializeProgram),
     };
   }
+
+  private serializeProgram = (program: IProgram): IMakeProgramParameters => {
+    return program.serialize();
+  };
 
   private addProgram(name: ProgramName, quality: number, level: number): void {
     const existingProgram = this._ownedPrograms.get(name);
@@ -199,7 +202,7 @@ export class MainframeProgramsState implements IMainframeProgramsState {
     const formattedLevel = this._formatter.formatLevel(level);
     const formattedQuality = this._formatter.formatQuality(quality);
     this._messageLogState.postMessage(
-      PurchaseEvent.programPurchased,
+      ProgramsEvent.programPurchased,
       msg(
         str`Program "${programTitle}" with quality ${formattedQuality} and level ${formattedLevel} has been purchased`,
       ),

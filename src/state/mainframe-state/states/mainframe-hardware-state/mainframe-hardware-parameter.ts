@@ -13,9 +13,13 @@ import {
   IMainframeHardwareParameterSerializedState,
 } from './interfaces';
 import { MainframeHardwareParameterType } from './types';
-import { MAINFRAME_HARDWARE_STATE_UI_EVENTS } from './constants';
 
 export abstract class MainframeHardwareParameter implements IMainframeHardwareParameter {
+  private UI_EVENTS = {
+    HARDWARE_UPGRADED: Symbol('HARDWARE_UPGRADED'),
+    HARDWARE_AUTOBUYER_UPDATED: Symbol('HARDWARE_AUTOBUYER_UPDATED'),
+  };
+
   protected stateUiConnector: IStateUIConnector;
   protected mainframeHardwareState: IMainframeHardwareState;
   protected globalState: IGlobalState;
@@ -34,23 +38,26 @@ export abstract class MainframeHardwareParameter implements IMainframeHardwarePa
 
     this._level = 0;
     this._autoUpgradeEnabled = true;
+
+    this.stateUiConnector.registerEvents(this.UI_EVENTS);
   }
 
   get level() {
+    this.stateUiConnector.connectEventHandler(this.UI_EVENTS.HARDWARE_UPGRADED);
+
     return this._level;
   }
 
   protected abstract get baseLevel(): number;
 
   get totalLevel() {
+    this.stateUiConnector.connectEventHandler(this.UI_EVENTS.HARDWARE_UPGRADED);
+
     return this._level + this.baseLevel;
   }
 
   get autoUpgradeEnabled() {
-    this.stateUiConnector.connectEventHandler(
-      this.mainframeHardwareState,
-      MAINFRAME_HARDWARE_STATE_UI_EVENTS.HARDWARE_AUTOBUYER_UPDATED,
-    );
+    this.stateUiConnector.connectEventHandler(this.UI_EVENTS.HARDWARE_AUTOBUYER_UPDATED);
 
     return this._autoUpgradeEnabled;
   }
@@ -58,7 +65,7 @@ export abstract class MainframeHardwareParameter implements IMainframeHardwarePa
   set autoUpgradeEnabled(value: boolean) {
     this._autoUpgradeEnabled = value;
 
-    this.mainframeHardwareState.emitAutobuyerUpdatedEvent();
+    this.stateUiConnector.enqueueEvent(this.UI_EVENTS.HARDWARE_AUTOBUYER_UPDATED);
   }
 
   abstract get type(): MainframeHardwareParameterType;
@@ -141,5 +148,6 @@ export abstract class MainframeHardwareParameter implements IMainframeHardwarePa
     this.postPurchaseMessge();
 
     this.mainframeHardwareState.emitUpgradedEvent();
+    this.stateUiConnector.enqueueEvent(this.UI_EVENTS.HARDWARE_UPGRADED);
   };
 }

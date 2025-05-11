@@ -1,5 +1,5 @@
 import { injectable } from 'inversify';
-import { merge } from 'lodash';
+import merge from 'lodash/merge';
 import { Scenario } from '@shared/types';
 import constants from '@configs/constants.json';
 import scenarios from '@configs/scenarios.json';

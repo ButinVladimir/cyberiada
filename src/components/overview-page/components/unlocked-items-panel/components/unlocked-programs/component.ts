@@ -10,15 +10,15 @@ import { unlockedItemsCategoryStyles } from '../../constants';
 
 @localized()
 @customElement('ca-overview-unlocked-programs')
-export class OverviewUnlockedPrograms extends BaseComponent<OverviewUnlockedProgramsController> {
+export class OverviewUnlockedPrograms extends BaseComponent {
   static styles = unlockedItemsCategoryStyles;
 
-  protected controller: OverviewUnlockedProgramsController;
+  private _controller: OverviewUnlockedProgramsController;
 
   constructor() {
     super();
 
-    this.controller = new OverviewUnlockedProgramsController(this);
+    this._controller = new OverviewUnlockedProgramsController(this);
   }
 
   render() {
@@ -34,7 +34,7 @@ export class OverviewUnlockedPrograms extends BaseComponent<OverviewUnlockedProg
   }
 
   private renderList = () => {
-    const itemNames = this.controller.listItems();
+    const itemNames = this._controller.listItems();
 
     return itemNames.map(this.renderListItem);
   };
@@ -42,7 +42,7 @@ export class OverviewUnlockedPrograms extends BaseComponent<OverviewUnlockedProg
   private renderListItem = (itemName: ProgramName) => {
     const programTitle = PROGRAM_TEXTS[itemName].title();
     const programOverview = PROGRAM_TEXTS[itemName].overview();
-    const quality = this.controller.getItemHighestAvailableQuality(itemName);
+    const quality = this._controller.getItemHighestAvailableQuality(itemName);
 
     return html`
       <span>
@@ -54,7 +54,7 @@ export class OverviewUnlockedPrograms extends BaseComponent<OverviewUnlockedProg
           <sl-icon name=${HINT_ICON}></sl-icon>
         </sl-tooltip>
       </span>
-      <span> ${this.controller.formatter.formatQuality(quality)} </span>
+      <span> ${this._controller.formatter.formatQuality(quality)} </span>
     `;
   };
 }

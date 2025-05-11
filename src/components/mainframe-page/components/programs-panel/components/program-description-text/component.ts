@@ -1,4 +1,4 @@
-import { css, html, nothing, PropertyValues } from 'lit';
+import { css, html, nothing } from 'lit';
 import { msg, localized } from '@lit/localize';
 import { customElement, property, queryAll } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
@@ -23,7 +23,7 @@ import { ProgramDescriptionTextController } from './controller';
 
 @localized()
 @customElement('ca-program-description-text')
-export class ProgramDescriptionText extends BaseComponent<ProgramDescriptionTextController> {
+export class ProgramDescriptionText extends BaseComponent {
   static styles = css`
     :host {
       white-space: normal;
@@ -38,13 +38,15 @@ export class ProgramDescriptionText extends BaseComponent<ProgramDescriptionText
     }
   `;
 
+  hasPartialUpdate = true;
+
   @property({
     attribute: 'program-name',
     type: String,
   })
   programName!: ProgramName;
 
-  protected controller: ProgramDescriptionTextController;
+  private _controller: ProgramDescriptionTextController;
 
   private _renderer?: IDescriptionEffectRenderer;
 
@@ -54,17 +56,11 @@ export class ProgramDescriptionText extends BaseComponent<ProgramDescriptionText
   constructor() {
     super();
 
-    this.controller = new ProgramDescriptionTextController(this, this.handlePartialUpdate);
-  }
-
-  updated(_changedProperties: PropertyValues) {
-    super.updated(_changedProperties);
-
-    this.handlePartialUpdate();
+    this._controller = new ProgramDescriptionTextController(this);
   }
 
   render() {
-    const program = this.controller.getProgram(this.programName as ProgramName);
+    const program = this._controller.getProgram(this.programName as ProgramName);
 
     if (!program) {
       this._renderer = undefined;
@@ -107,8 +103,8 @@ export class ProgramDescriptionText extends BaseComponent<ProgramDescriptionText
   };
 
   private renderNormalRequirements = () => {
-    const program = this.controller.getProgram(this.programName as ProgramName)!;
-    const formatter = this.controller.formatter;
+    const program = this._controller.getProgram(this.programName as ProgramName)!;
+    const formatter = this._controller.formatter;
 
     const formattedRam = formatter.formatNumberDecimal(program.ram);
     const formattedCores = formatter.formatNumberDecimal(program.cores);
@@ -135,7 +131,7 @@ export class ProgramDescriptionText extends BaseComponent<ProgramDescriptionText
     return this._renderer.renderEffect();
   };
 
-  private handlePartialUpdate = () => {
+  handlePartialUpdate = () => {
     if (!this._renderer) {
       return;
     }
@@ -144,13 +140,13 @@ export class ProgramDescriptionText extends BaseComponent<ProgramDescriptionText
   };
 
   private updateRenderer(): void {
-    const program = this.controller.getProgram(this.programName as ProgramName)!;
+    const program = this._controller.getProgram(this.programName)!;
 
     const parameters: IDescriptionParameters = {
-      formatter: this.controller.formatter,
+      formatter: this._controller.formatter,
       program: program,
-      cores: this.controller.cores,
-      ram: this.controller.ram,
+      cores: this._controller.cores,
+      ram: this._controller.ram,
     };
 
     switch (this.programName) {

@@ -35,7 +35,7 @@ export const UNLOCKED_FEATURE_TEXTS: Record<Feature, IUnlockedFeatureTexts> = {
       msg(`Company management is now available.
 It's now possible to make clones from templates and send them to perform side jobs in the city.`),
   },
-  [Feature.codeBasePoints]: {
+  [Feature.codeBase]: {
     title: () => msg('Code base points'),
     hint: () => msg('Reduces cost of purchasing mainframe programs'),
     message: () =>
@@ -43,7 +43,7 @@ It's now possible to make clones from templates and send them to perform side jo
 Increase them to make mainframe programs cheaper.
 Multipliers for programs and districts stack.`),
   },
-  [Feature.computationalBasePoints]: {
+  [Feature.computationalBase]: {
     title: () => msg('Computational base points'),
     hint: () => msg('Reduces cost of upgrading mainframe hardware'),
     message: () =>
@@ -51,7 +51,7 @@ Multipliers for programs and districts stack.`),
 Increase them to make mainframe hardware cheaper.
 Multipliers for programs and districts stack.`),
   },
-  [Feature.connectivityPoints]: {
+  [Feature.connectivity]: {
     title: () => msg('Connectivity points'),
     hint: () => msg('Increases chances to receive new contracts and sidejobs'),
     message: () =>
@@ -59,19 +59,12 @@ Multipliers for programs and districts stack.`),
 Increase them to make everything cheaper and to increase chances of receiving new contracts from selected faction.
 Multipliers for programs and districts stack.`),
   },
-  [Feature.rewardsPoints]: {
+  [Feature.rewards]: {
     title: () => msg('Rewards points'),
     hint: () => msg('Increases rewards from everything'),
     message: () =>
       msg(`Rewards points are now available.
 Increase them to get more rewards from everything.
 Multipliers for programs and districts stack.`),
-  },
-  [Feature.experienceShare]: {
-    title: () => msg('Experience share'),
-    hint: () => msg('Clones can earn additional experience when there is an unused synchronization'),
-    message: () =>
-      msg(`Clones now can earn additional experience when there is an unused synchronization.
-Additional experience amount depends on how bigger total synchronization is to used.`),
   },
 };

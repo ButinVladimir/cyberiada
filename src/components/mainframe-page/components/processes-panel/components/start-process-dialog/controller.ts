@@ -25,10 +25,6 @@ export class StartProcessDialogController extends BaseController {
   }
 
   getProgram(name: ProgramName): IProgram | undefined {
-    if (this._program?.name !== name && this._program) {
-      this.removeEventListenersByEmitter(this._program);
-    }
-
     this._program = this.mainframeState.programs.getOwnedProgramByName(name)!;
 
     return this._program;

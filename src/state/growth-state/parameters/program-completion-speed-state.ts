@@ -1,6 +1,5 @@
 import { injectable } from 'inversify';
 import { decorators } from '@state/container';
-import { EventBatcher } from '@shared/event-batcher';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import type { IMainframeState } from '@state/mainframe-state/interfaces/mainframe-state';
 import { OtherProgramName } from '@state/mainframe-state/states/progam-factory/types';
@@ -8,13 +7,14 @@ import { PredictiveComputatorProgram } from '@state/mainframe-state/states/proga
 import { TYPES } from '@state/types';
 import type { IGlobalState } from '@state/global-state/interfaces/global-state';
 import { IProgramCompletionSpeedState } from '../interfaces/parameters/program-completion-speed-state';
-import { GROWTH_STATE_UI_EVENTS } from '../constants';
 
 const { lazyInject } = decorators;
 
 @injectable()
 export class ProgramCompletionSpeedState implements IProgramCompletionSpeedState {
-  readonly uiEventBatcher: EventBatcher;
+  private UI_EVENTS = {
+    PROGRAM_COMPLETION_SPEED_CHANGED: Symbol('PROGRAM_COMPLETION_SPEED_CHANGED'),
+  };
 
   @lazyInject(TYPES.StateUIConnector)
   private _stateUiConnector!: IStateUIConnector;
@@ -36,24 +36,23 @@ export class ProgramCompletionSpeedState implements IProgramCompletionSpeedState
     this._totalMultiplier = 1;
     this._multiplierUpdateRequested = true;
 
-    this.uiEventBatcher = new EventBatcher();
-    this._stateUiConnector.registerEventEmitter(this);
+    this._stateUiConnector.registerEvents(this.UI_EVENTS);
   }
 
   get multiplierByProgram() {
-    this._stateUiConnector.connectEventHandler(this, GROWTH_STATE_UI_EVENTS.PROGRAM_COMPLETION_SPEED_CHANGED);
+    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.PROGRAM_COMPLETION_SPEED_CHANGED);
 
     return this._multiplierByProgram;
   }
 
   get multiplierByHardware() {
-    this._stateUiConnector.connectEventHandler(this, GROWTH_STATE_UI_EVENTS.PROGRAM_COMPLETION_SPEED_CHANGED);
+    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.PROGRAM_COMPLETION_SPEED_CHANGED);
 
     return this._multiplierByHardware;
   }
 
   get totalMultiplier() {
-    this._stateUiConnector.connectEventHandler(this, GROWTH_STATE_UI_EVENTS.PROGRAM_COMPLETION_SPEED_CHANGED);
+    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.PROGRAM_COMPLETION_SPEED_CHANGED);
 
     return this._totalMultiplier;
   }
@@ -95,7 +94,7 @@ export class ProgramCompletionSpeedState implements IProgramCompletionSpeedState
     if (multiplierByProgram !== this._multiplierByProgram) {
       this._multiplierByProgram = multiplierByProgram;
 
-      this.uiEventBatcher.enqueueEvent(GROWTH_STATE_UI_EVENTS.PROGRAM_COMPLETION_SPEED_CHANGED);
+      this._stateUiConnector.enqueueEvent(this.UI_EVENTS.PROGRAM_COMPLETION_SPEED_CHANGED);
     }
   }
 
@@ -110,7 +109,7 @@ export class ProgramCompletionSpeedState implements IProgramCompletionSpeedState
     if (multiplierByHardware !== this._multiplierByHardware) {
       this._multiplierByHardware = multiplierByHardware;
 
-      this.uiEventBatcher.enqueueEvent(GROWTH_STATE_UI_EVENTS.PROGRAM_COMPLETION_SPEED_CHANGED);
+      this._stateUiConnector.enqueueEvent(this.UI_EVENTS.PROGRAM_COMPLETION_SPEED_CHANGED);
     }
   }
 
@@ -120,7 +119,7 @@ export class ProgramCompletionSpeedState implements IProgramCompletionSpeedState
     if (totalMultiplier !== this._totalMultiplier) {
       this._totalMultiplier = totalMultiplier;
 
-      this.uiEventBatcher.enqueueEvent(GROWTH_STATE_UI_EVENTS.PROGRAM_COMPLETION_SPEED_CHANGED);
+      this._stateUiConnector.enqueueEvent(this.UI_EVENTS.PROGRAM_COMPLETION_SPEED_CHANGED);
     }
   }
 }

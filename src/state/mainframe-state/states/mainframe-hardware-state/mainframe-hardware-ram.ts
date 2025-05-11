@@ -1,6 +1,6 @@
 import { msg, str } from '@lit/localize';
 import { IExponent } from '@shared/interfaces';
-import { PurchaseEvent } from '@shared/types';
+import { ProgramsEvent } from '@shared/types';
 import { MainframeHardwareParameter } from './mainframe-hardware-parameter';
 import { MainframeHardwareParameterType } from './types';
 
@@ -19,7 +19,7 @@ export class MainframeHardwareRam extends MainframeHardwareParameter {
     const formattedLevel = this.formatter.formatLevel(this._level);
 
     this.messageLogState.postMessage(
-      PurchaseEvent.ramUpgraded,
+      ProgramsEvent.ramUpgraded,
       msg(str`Mainframe RAM has been upgraded to ${formattedLevel}`),
     );
   }

@@ -1,4 +1,4 @@
-import { PropertyValues, html, css } from 'lit';
+import { html, css } from 'lit';
 import { localized, msg, str } from '@lit/localize';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { customElement } from 'lit/decorators.js';
@@ -6,13 +6,12 @@ import SlProgressBar from '@shoelace-style/shoelace/dist/components/progress-bar
 import { BaseComponent } from '@shared/base-component';
 import { hintStyle } from '@shared/styles';
 import { calculateLevelProgressPercentage } from '@shared/helpers';
-import { COMMON_TEXTS } from '@texts/common';
 import { OverviewDevelopmentLevelProgressController } from './controller';
 import { progressBlockStyle } from '../../styles';
 
 @localized()
 @customElement('ca-overview-development-level-progress')
-export class OverviewDevelopmentLevelProgress extends BaseComponent<OverviewDevelopmentLevelProgressController> {
+export class OverviewDevelopmentLevelProgress extends BaseComponent {
   static styles = [
     progressBlockStyle,
     hintStyle,
@@ -24,7 +23,9 @@ export class OverviewDevelopmentLevelProgress extends BaseComponent<OverviewDeve
     `,
   ];
 
-  protected controller: OverviewDevelopmentLevelProgressController;
+  hasPartialUpdate = true;
+
+  private _controller: OverviewDevelopmentLevelProgressController;
 
   private _progressBarRef = createRef<SlProgressBar>();
   private _hintRef = createRef<HTMLParagraphElement>();
@@ -32,13 +33,7 @@ export class OverviewDevelopmentLevelProgress extends BaseComponent<OverviewDeve
   constructor() {
     super();
 
-    this.controller = new OverviewDevelopmentLevelProgressController(this, this.handlePartialUpdate);
-  }
-
-  updated(_changedProperties: PropertyValues) {
-    super.updated(_changedProperties);
-
-    this.handlePartialUpdate();
+    this._controller = new OverviewDevelopmentLevelProgressController(this);
   }
 
   render() {
@@ -53,29 +48,25 @@ export class OverviewDevelopmentLevelProgress extends BaseComponent<OverviewDeve
     `;
   }
 
-  private handlePartialUpdate = () => {
-    const formatter = this.controller.formatter;
+  handlePartialUpdate = () => {
+    const formatter = this._controller.formatter;
 
     if (this._progressBarRef.value) {
       const nextDevelopmentLevelProgressBarValue = calculateLevelProgressPercentage(
-        this.controller.getPrevDevelopmentLevelPoints(),
-        this.controller.getCurrentDevelopmentPoints(),
-        this.controller.getNextDevelopmentLevelPoints(),
-      );
-      const nextDevelopmentLevelProgressBarPercentage = COMMON_TEXTS.percentage(
-        formatter.formatNumberFloat(nextDevelopmentLevelProgressBarValue),
+        this._controller.getPrevDevelopmentLevelPoints(),
+        this._controller.getCurrentDevelopmentPoints(),
+        this._controller.getNextDevelopmentLevelPoints(),
       );
 
       this._progressBarRef.value.value = nextDevelopmentLevelProgressBarValue;
-      this._progressBarRef.value.textContent = nextDevelopmentLevelProgressBarPercentage;
     }
 
-    const developmentGrowth = this.controller.getDevelopmentGrowth();
+    const developmentGrowth = this._controller.getDevelopmentGrowth();
 
     if (this._hintRef.value) {
       if (developmentGrowth > 0) {
         const formattedTime = formatter.formatTimeShort(
-          this.controller.getDevelopmentPointsUntilNextLevel() / developmentGrowth,
+          this._controller.getDevelopmentPointsUntilNextLevel() / developmentGrowth,
         );
 
         this._hintRef.value.textContent = msg(str`Next development level will be reached in ${formattedTime}`);

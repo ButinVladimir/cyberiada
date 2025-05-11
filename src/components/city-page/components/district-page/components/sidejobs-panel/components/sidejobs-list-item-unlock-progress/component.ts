@@ -1,0 +1,68 @@
+import { css, html } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
+import { createRef, ref } from 'lit/directives/ref.js';
+import SlProgressBar from '@shoelace-style/shoelace/dist/components/progress-bar/progress-bar.component.js';
+import { BaseComponent } from '@shared/base-component';
+import { hintStyle } from '@shared/styles';
+import { calculateLevelProgressPercentage } from '@shared/helpers';
+import { CityDistrictSidejobsListItemUnlockProgressController } from './controller';
+import { localized } from '@lit/localize';
+import { type SidejobName } from '@/state/company-state';
+
+@localized()
+@customElement('ca-city-district-sidejobs-list-item-unlock-progress')
+export class CityDistrictSidejobsListItemUnlockProgress extends BaseComponent {
+  static styles = [
+    hintStyle,
+    css`
+      :host {
+        flex: 1 1 auto;
+      }
+
+      p.hint {
+        margin-top: var(--sl-spacing-3x-small);
+        margin-bottom: 0;
+      }
+    `,
+  ];
+
+  readonly hasPartialUpdate = true;
+
+  @property({
+    attribute: 'district-index',
+    type: Number,
+  })
+  districtIndex!: number;
+
+  @property({
+    attribute: 'sidejob-name',
+    type: String,
+  })
+  sidejobName!: SidejobName;
+
+  private _controller: CityDistrictSidejobsListItemUnlockProgressController;
+
+  private _progressBarRef = createRef<SlProgressBar>();
+  private _hintRef = createRef<HTMLParagraphElement>();
+
+  constructor() {
+    super();
+
+    this._controller = new CityDistrictSidejobsListItemUnlockProgressController(this);
+  }
+
+  render() {
+    return html` <sl-progress-bar ${ref(this._progressBarRef)}></sl-progress-bar> `;
+  }
+
+  handlePartialUpdate = () => {
+    const requiredConnectivity = this._controller.getRequiredConnectivity(this.sidejobName);
+    const currentConnectivity = this._controller.getCurrentConnectivity(this.districtIndex);
+
+    if (this._progressBarRef.value) {
+      const progressBarValue = calculateLevelProgressPercentage(0, currentConnectivity, requiredConnectivity);
+
+      this._progressBarRef.value.value = progressBarValue;
+    }
+  };
+}

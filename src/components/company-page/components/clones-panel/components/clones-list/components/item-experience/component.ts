@@ -1,0 +1,84 @@
+import { css, html, nothing } from 'lit';
+import { localized, msg } from '@lit/localize';
+import { consume } from '@lit/context';
+import { createRef, ref } from 'lit/directives/ref.js';
+import { customElement } from 'lit/decorators.js';
+import SlProgressBar from '@shoelace-style/shoelace/dist/components/progress-bar/progress-bar.component.js';
+import { BaseComponent } from '@shared/base-component';
+import { hintStyle } from '@shared/styles';
+import { type IClone } from '@state/company-state';
+import { calculateLevelProgressPercentage } from '@shared/helpers';
+import { cloneContext } from '../item/contexts';
+import { BaseController } from '@/shared';
+
+@localized()
+@customElement('ca-clones-list-item-experience')
+export class ClonesListItemExperience extends BaseComponent {
+  static styles = [
+    hintStyle,
+    css`
+      p.hint {
+        margin-top: var(--sl-spacing-3x-small);
+        margin-bottom: 0;
+      }
+
+      div.title {
+        font-size: var(--sl-font-size-small);
+        line-height: var(--sl-line-height-dense);
+        margin-bottom: var(--sl-spacing-2x-small);
+      }
+
+      sl-progress-bar {
+        --height: var(--sl-spacing-large);
+      }
+
+      sl-progress-bar::part(label) {
+        font-size: var(--sl-font-size-small);
+      }
+    `,
+  ];
+
+  hasPartialUpdate = true;
+
+  private _controller: BaseController;
+
+  @consume({ context: cloneContext, subscribe: true })
+  private _clone?: IClone;
+
+  private _progressBarRef = createRef<SlProgressBar>();
+  private _hintRef = createRef<HTMLParagraphElement>();
+
+  constructor() {
+    super();
+
+    this._controller = new BaseController(this);
+  }
+
+  render() {
+    if (!this._clone) {
+      return nothing;
+    }
+
+    return html`
+      <div class="title">${msg('Next level progress')}</div>
+      <sl-progress-bar ${ref(this._progressBarRef)}></sl-progress-bar>
+      <p ${ref(this._hintRef)} class="hint"></p>
+    `;
+  }
+
+  handlePartialUpdate = () => {
+    if (!this._clone) {
+      return;
+    }
+
+    if (this._progressBarRef.value) {
+      const progressBarValue = calculateLevelProgressPercentage(
+        this._clone.getLevelRequirements(this._clone.level - 1),
+        this._clone.experience,
+        this._clone.getLevelRequirements(this._clone.level),
+      );
+
+      this._progressBarRef.value.value = progressBarValue;
+    }
+  };
+}

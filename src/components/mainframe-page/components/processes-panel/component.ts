@@ -7,7 +7,7 @@ import { ProcessesPanelController } from './controller';
 
 @localized()
 @customElement('ca-mainframe-processes-panel')
-export class MainframeProcessesPanel extends BaseComponent<ProcessesPanelController> {
+export class MainframeProcessesPanel extends BaseComponent {
   static styles = [
     hintStyle,
     css`
@@ -57,7 +57,7 @@ export class MainframeProcessesPanel extends BaseComponent<ProcessesPanelControl
     `,
   ];
 
-  protected controller: ProcessesPanelController;
+  private _controller: ProcessesPanelController;
 
   @state()
   private _isStartProcessDialogOpen = false;
@@ -65,17 +65,17 @@ export class MainframeProcessesPanel extends BaseComponent<ProcessesPanelControl
   constructor() {
     super();
 
-    this.controller = new ProcessesPanelController(this);
+    this._controller = new ProcessesPanelController(this);
   }
 
   render() {
-    const formatter = this.controller.formatter;
+    const formatter = this._controller.formatter;
 
-    const formattedAvailableRam = formatter.formatNumberDecimal(this.controller.availableRam);
-    const formattedMaxRam = formatter.formatNumberDecimal(this.controller.maxRam);
+    const formattedAvailableRam = formatter.formatNumberDecimal(this._controller.availableRam);
+    const formattedMaxRam = formatter.formatNumberDecimal(this._controller.maxRam);
 
-    const formattedAvailableCores = formatter.formatNumberDecimal(this.controller.availableCores);
-    const formattedMaxCores = formatter.formatNumberDecimal(this.controller.maxCores);
+    const formattedAvailableCores = formatter.formatNumberDecimal(this._controller.availableCores);
+    const formattedMaxCores = formatter.formatNumberDecimal(this._controller.maxCores);
 
     return html`
       <p class="hint">

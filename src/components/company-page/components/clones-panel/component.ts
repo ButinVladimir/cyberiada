@@ -1,16 +1,19 @@
 import { css, html } from 'lit';
+import { choose } from 'lit/directives/choose.js';
+import { provide } from '@lit/context';
 import { msg, localized, str } from '@lit/localize';
 import { customElement, state } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { hintStyle, SCREEN_WIDTH_POINTS } from '@shared/styles';
 import { ClonesPanelController } from './controller';
+import { type IClone } from '@state/company-state';
 import { type CloneListItemDialog } from './type';
-import { choose } from 'lit/directives/choose.js';
 import { OpenCloneListItemDialogEvent } from './events';
+import { modalCloneContext } from './contexts';
 
 @localized()
 @customElement('ca-company-clones-panel')
-export class CompanyClonesPanel extends BaseComponent<ClonesPanelController> {
+export class CompanyClonesPanel extends BaseComponent {
   static styles = [
     hintStyle,
     css`
@@ -31,6 +34,7 @@ export class CompanyClonesPanel extends BaseComponent<ClonesPanelController> {
           'synchronization'
           'purchase-clone';
         gap: var(--sl-spacing-medium);
+        margin-bottom: var(--sl-spacing-large);
       }
 
       .purchase-clone {
@@ -39,10 +43,6 @@ export class CompanyClonesPanel extends BaseComponent<ClonesPanelController> {
 
       .synchronization {
         grid-area: synchronization;
-      }
-
-      ca-clones-list {
-        margin-top: var(--sl-spacing-large);
       }
 
       @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
@@ -58,7 +58,7 @@ export class CompanyClonesPanel extends BaseComponent<ClonesPanelController> {
   @state()
   private _isPurchaseCloneDialogOpen = false;
 
-  protected controller: ClonesPanelController;
+  private _controller: ClonesPanelController;
 
   @state()
   private _cloneListItemDialogOpen = false;
@@ -66,20 +66,20 @@ export class CompanyClonesPanel extends BaseComponent<ClonesPanelController> {
   @state()
   private _cloneListItemDialog?: CloneListItemDialog;
 
-  @state()
-  private _cloneListItemDialogCloneId?: string;
+  @provide({ context: modalCloneContext })
+  private _modalClone?: IClone;
 
   constructor() {
     super();
 
-    this.controller = new ClonesPanelController(this);
+    this._controller = new ClonesPanelController(this);
   }
 
   render() {
-    const formatter = this.controller.formatter;
+    const formatter = this._controller.formatter;
 
-    const formattedAvailableSynchronization = formatter.formatNumberDecimal(this.controller.availableSynchronization);
-    const formattedTotalSynchronization = formatter.formatNumberDecimal(this.controller.totalSynchronization);
+    const formattedAvailableSynchronization = formatter.formatNumberDecimal(this._controller.availableSynchronization);
+    const formattedTotalSynchronization = formatter.formatNumberDecimal(this._controller.totalSynchronization);
 
     return html`
       <p class="hint">
@@ -107,13 +107,12 @@ Clones cannot have level above current development level but they can store exce
         @purchase-clone-dialog-close=${this.handlePurchaseCloneDialogClose}
       ></ca-purchase-clone-dialog>
 
-      ${this._cloneListItemDialogCloneId &&
+      ${this._modalClone &&
       choose(this._cloneListItemDialog, [
         [
           'rename-clone',
           () => html`
             <ca-rename-clone-dialog
-              clone-id=${this._cloneListItemDialogCloneId!}
               ?is-open=${this._cloneListItemDialogOpen}
               @close-clone-list-item-dialog=${this.handleCloneListItemDialogClose}
             ></ca-rename-clone-dialog>
@@ -133,7 +132,7 @@ Clones cannot have level above current development level but they can store exce
 
   private handleCloneListItemDialogOpen = (event: OpenCloneListItemDialogEvent) => {
     this._cloneListItemDialogOpen = true;
-    this._cloneListItemDialogCloneId = event.cloneId;
+    this._modalClone = event.clone;
     this._cloneListItemDialog = event.dialog;
   };
 

@@ -1,9 +1,9 @@
-import { ISerializeable, IUIEventEmitter } from '@shared/interfaces';
+import { ISerializeable } from '@shared/interfaces';
 import { IMainframeHardwareSerializedState } from './mainframe-hardware-serialized-state';
 import { IMainframeHardwareParameter } from './mainframe-hardware-parameter';
 import { MainframeHardwareParameterType } from '../types';
 
-export interface IMainframeHardwareState extends ISerializeable<IMainframeHardwareSerializedState>, IUIEventEmitter {
+export interface IMainframeHardwareState extends ISerializeable<IMainframeHardwareSerializedState> {
   performance: IMainframeHardwareParameter;
   cores: IMainframeHardwareParameter;
   ram: IMainframeHardwareParameter;
@@ -11,5 +11,4 @@ export interface IMainframeHardwareState extends ISerializeable<IMainframeHardwa
   moveParameter(parameterType: MainframeHardwareParameterType, newPosition: number): void;
   purchaseMax(): void;
   emitUpgradedEvent(): void;
-  emitAutobuyerUpdatedEvent(): void;
 }

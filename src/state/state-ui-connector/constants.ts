@@ -1,0 +1,1 @@
+export const PARTIAL_UPDATE_UI_EVENT = Symbol('PARTIAL_UPDATE_UI_EVENT');

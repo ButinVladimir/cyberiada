@@ -1,9 +1,8 @@
 import { injectable } from 'inversify';
 import { decorators } from '@state/container';
-import { merge } from 'lodash';
+import merge from 'lodash/merge';
 import factions from '@configs/factions.json';
 import { Faction } from '@shared/types';
-import { EventBatcher } from '@shared/event-batcher';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import { TYPES } from '@state/types';
 import { IFactionValues } from '../interfaces/faction-values';
@@ -14,7 +13,7 @@ const { lazyInject } = decorators;
 
 @injectable()
 export class FactionState implements IFactionState {
-  readonly uiEventBatcher: EventBatcher;
+  private UI_EVENTS = {};
 
   @lazyInject(TYPES.StateUIConnector)
   private _stateUiConnector!: IStateUIConnector;
@@ -26,8 +25,7 @@ export class FactionState implements IFactionState {
   constructor() {
     this._neutralFactionValues = this.getFactionValues(Faction.neutral);
 
-    this.uiEventBatcher = new EventBatcher();
-    this._stateUiConnector.registerEventEmitter(this);
+    this._stateUiConnector.registerEvents(this.UI_EVENTS);
   }
 
   get currentFaction(): Faction | undefined {

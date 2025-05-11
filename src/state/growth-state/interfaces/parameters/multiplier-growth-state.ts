@@ -1,6 +1,4 @@
-import { IUIEventEmitter } from '@shared/interfaces/ui-event-emitter';
-
-export interface IMultiplierGrowthState extends IUIEventEmitter {
+export interface IMultiplierGrowthState {
   growthByProgram: number;
   recalculateGrowth(): void;
 }

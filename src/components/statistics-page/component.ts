@@ -23,8 +23,7 @@ export class StatisticsPage extends BaseComponent {
       <h3 class="title">${msg('Statistics')}</h3>
 
       <sl-tab-group>
-        ${STATISTICS_PAGE_TABS_LIST.map((tab) => this.renderTab(tab))}
-        ${STATISTICS_PAGE_TABS_LIST.map((tab) => this.renderTabPanel(tab))}
+        ${STATISTICS_PAGE_TABS_LIST.map(this.renderTab)} ${STATISTICS_PAGE_TABS_LIST.map(this.renderTabPanel)}
       </sl-tab-group>
     `;
   }

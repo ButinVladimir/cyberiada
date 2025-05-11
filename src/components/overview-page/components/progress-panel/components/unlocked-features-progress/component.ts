@@ -9,21 +9,21 @@ import { progressBlockStyle } from '../../styles';
 
 @localized()
 @customElement('ca-overview-unlocked-features-progress')
-export class OverviewUnlockedFeaturesProgress extends BaseComponent<OverviewUnlockedFeaturesProgressController> {
+export class OverviewUnlockedFeaturesProgress extends BaseComponent {
   static styles = [progressBlockStyle];
 
-  protected controller: OverviewUnlockedFeaturesProgressController;
+  private _controller: OverviewUnlockedFeaturesProgressController;
 
   constructor() {
     super();
 
-    this.controller = new OverviewUnlockedFeaturesProgressController(this);
+    this._controller = new OverviewUnlockedFeaturesProgressController(this);
   }
 
   render() {
-    const formatter = this.controller.formatter;
+    const formatter = this._controller.formatter;
 
-    const unlockedFeaturesCount = this.controller.getUnlockedFeaturesCount();
+    const unlockedFeaturesCount = this._controller.getUnlockedFeaturesCount();
     const unlockedFeaturesMaxCount = FEATURES.length;
 
     const formattedCount = formatter.formatNumberDecimal(unlockedFeaturesCount);

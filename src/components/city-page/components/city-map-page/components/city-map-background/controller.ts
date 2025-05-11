@@ -1,4 +1,4 @@
-import { BaseController } from '@/shared';
+import { BaseController } from '@shared/base-controller';
 import { MAP_STYLES } from '../../constants';
 import { IMapStyles } from '../../interfaces';
 

@@ -3,7 +3,6 @@ import {
   Language,
   MiscMenuItem,
   OverviewMenuItem,
-  PurchaseEvent,
   Scenario,
   Theme,
   ProgramsEvent,
@@ -21,6 +20,8 @@ import {
   CloneAlert,
   DistrictType,
   CityEvent,
+  SidejobsEvent,
+  SidejobAlert,
 } from './types';
 
 export const CURRENT_VERSION = GameVersion['0.1.3'];
@@ -37,11 +38,11 @@ export const SCENARIOS: Scenario[] = Object.values(Scenario);
 
 export const GAME_STATE_EVENTS: GameStateEvent[] = Object.values(GameStateEvent);
 
-export const PURCHASE_EVENTS: PurchaseEvent[] = Object.values(PurchaseEvent);
-
 export const PROGRAM_EVENTS: ProgramsEvent[] = Object.values(ProgramsEvent);
 
 export const CLONE_EVENTS: ClonesEvent[] = Object.values(ClonesEvent);
+
+export const SIDEJOB_EVENTS: SidejobsEvent[] = Object.values(SidejobsEvent);
 
 export const CITY_EVENTS: CityEvent[] = Object.values(CityEvent);
 
@@ -50,6 +51,8 @@ export const GAME_STATE_ALERTS: GameStateAlert[] = Object.values(GameStateAlert)
 export const PROGRAM_ALERTS: ProgramAlert[] = Object.values(ProgramAlert);
 
 export const CLONE_ALERTS: CloneAlert[] = Object.values(CloneAlert);
+
+export const SIDEJOB_ALERTS: SidejobAlert[] = Object.values(SidejobAlert);
 
 export const FORCE_NOTIFICATION_TYPES: Set<NotificationType> = new Set<NotificationType>([
   NotificationType.gameVersionUpdated,
@@ -74,10 +77,6 @@ export const FEATURES: Feature[] = Object.values(Feature);
 export const ATTRIBUTES: Attribute[] = Object.values(Attribute);
 
 export const SKILLS: Skill[] = Object.values(Skill);
-
-export const COMMON_UI_EVENTS = {
-  REMOVE_EVENT_LISTENERS_BY_EMITTER: Symbol('REMOVE_EVENT_LISTENERS_BY_EMITTER'),
-};
 
 export const DISTRICT_TYPES = Object.values(DistrictType);
 

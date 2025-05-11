@@ -1,47 +1,107 @@
 import { injectable } from 'inversify';
-import { IUIEventListener, IUIEventEmitter } from '@shared/interfaces';
 import { IStateUIConnector } from './interfaces';
+import { BaseComponent } from '@shared/index';
+import { PARTIAL_UPDATE_UI_EVENT } from './constants';
 
 @injectable()
 export class StateUIConnector implements IStateUIConnector {
-  private _eventListenerStack: IUIEventListener[];
-
-  private _registeredEventEmitters: Set<IUIEventEmitter>;
+  private _componentEventsMap: WeakMap<BaseComponent, Set<symbol>>;
+  private _eventComponentsMap: Map<symbol, Set<BaseComponent>>;
+  private _currentlyRenderingComponent?: BaseComponent;
+  private _enqueuedEvents: Set<symbol>;
 
   constructor() {
-    this._eventListenerStack = [];
-    this._registeredEventEmitters = new Set<IUIEventEmitter>();
+    this._componentEventsMap = new WeakMap<BaseComponent, Set<symbol>>();
+    this._eventComponentsMap = new Map<symbol, Set<BaseComponent>>();
+    this._enqueuedEvents = new Set<symbol>();
+
+    this._eventComponentsMap.set(PARTIAL_UPDATE_UI_EVENT, new Set<BaseComponent>());
   }
 
-  pushEventListener(eventListener: IUIEventListener): void {
-    this._eventListenerStack.push(eventListener);
-  }
+  connectComponent(component: BaseComponent): void {
+    const currentEvents = this._componentEventsMap.get(component);
 
-  popEventListener(): void {
-    this._eventListenerStack.pop();
-  }
-
-  connectEventHandler(eventEmitter: IUIEventEmitter, event: symbol): void {
-    if (this._eventListenerStack.length > 0) {
-      const eventListener = this._eventListenerStack[this._eventListenerStack.length - 1];
-
-      eventListener.addEventListener(eventEmitter, event);
+    if (currentEvents) {
+      currentEvents.forEach((event) => {
+        this._eventComponentsMap.get(event)?.add(component);
+      });
+    } else {
+      this._componentEventsMap.set(component, new Set<symbol>());
     }
   }
 
-  registerEventEmitter(eventEmitter: IUIEventEmitter): void {
-    this._registeredEventEmitters.add(eventEmitter);
+  disconnectComponent(component: BaseComponent): void {
+    const currentEvents = this._componentEventsMap.get(component);
+
+    currentEvents?.forEach((event) => {
+      this._eventComponentsMap.get(event)?.delete(component);
+    });
   }
 
-  unregisterEventEmitter(eventEmitter: IUIEventEmitter): void {
-    this._registeredEventEmitters.delete(eventEmitter);
+  startRendering(component: BaseComponent): void {
+    this._currentlyRenderingComponent = component;
 
-    eventEmitter.uiEventBatcher.removeAllListeners();
+    const currentEvents = this._componentEventsMap.get(component);
+
+    currentEvents?.forEach((event) => {
+      this._eventComponentsMap.get(event)?.delete(component);
+    });
+
+    currentEvents?.clear();
   }
 
-  fireUIEvents(): void {
-    for (const eventEmitter of this._registeredEventEmitters.values()) {
-      eventEmitter.uiEventBatcher.fireEnqueuedEvents();
+  stopRendering() {
+    if (this._currentlyRenderingComponent?.hasPartialUpdate) {
+      this.connectEventHandler(PARTIAL_UPDATE_UI_EVENT);
     }
+
+    this._currentlyRenderingComponent = undefined;
+  }
+
+  registerEvents(events: Record<any, symbol>): void {
+    Object.values(events).forEach((event) => {
+      if (!this._eventComponentsMap.has(event)) {
+        this._eventComponentsMap.set(event, new Set<BaseComponent>());
+      }
+    });
+  }
+
+  unregisterEvents(events: Record<any, symbol>): void {
+    Object.values(events).forEach((event) => {
+      const components = this._eventComponentsMap.get(event);
+
+      components?.forEach((component) => {
+        this._componentEventsMap.get(component)?.delete(event);
+      });
+
+      components?.clear();
+
+      this._eventComponentsMap.delete(event);
+    });
+  }
+
+  connectEventHandler(event: symbol): void {
+    if (this._currentlyRenderingComponent) {
+      this._eventComponentsMap.get(event)?.add(this._currentlyRenderingComponent);
+      this._componentEventsMap.get(this._currentlyRenderingComponent)?.add(event);
+    }
+  }
+
+  enqueueEvent(event: symbol): void {
+    this._enqueuedEvents.add(event);
+  }
+
+  fireEvents(): void {
+    this._enqueuedEvents.forEach((event) => {
+      this._eventComponentsMap.get(event)?.forEach((component) => {
+        component.requestUpdate();
+      });
+    });
+
+    this._enqueuedEvents.clear();
+
+    this._eventComponentsMap.get(PARTIAL_UPDATE_UI_EVENT)?.forEach((component) => {
+      component.handlePartialUpdate();
+    });
   }
 }

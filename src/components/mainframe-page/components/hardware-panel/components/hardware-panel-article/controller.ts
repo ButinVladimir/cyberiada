@@ -3,6 +3,10 @@ import { IMainframeHardwareParameter } from '@state/mainframe-state/states/mainf
 import { MainframeHardwareParameterType } from '@state/mainframe-state/states/mainframe-hardware-state/types';
 
 export class MainframeHardwarePanelArticleController extends BaseController {
+  get money(): number {
+    return this.globalState.money.money;
+  }
+
   get developmentLevel() {
     return this.globalState.development.level;
   }
@@ -25,10 +29,6 @@ export class MainframeHardwarePanelArticleController extends BaseController {
 
   purchaseMax(type: MainframeHardwareParameterType) {
     this.getParameter(type).purchaseMax();
-  }
-
-  checkCanPurchase(increase: number, type: MainframeHardwareParameterType): boolean {
-    return this.getParameter(type).checkCanPurchase(increase);
   }
 
   getPurchaseCost(increase: number, type: MainframeHardwareParameterType): number {

@@ -8,7 +8,7 @@ import { CityMapDistrictController } from './controller';
 
 @localized()
 @customElement('ca-city-map-district')
-export class CityMapDistrict extends BaseComponent<CityMapDistrictController> {
+export class CityMapDistrict extends BaseComponent {
   private static DX: number[] = [0, 1, 0, 1];
   private static DY: number[] = [0, 0, 1, 1];
 
@@ -33,24 +33,24 @@ export class CityMapDistrict extends BaseComponent<CityMapDistrictController> {
   })
   public district!: number;
 
-  protected controller: CityMapDistrictController;
+  private _controller: CityMapDistrictController;
 
   private _canvasRef = createRef<HTMLCanvasElement>();
 
-  private _offscreenCanvasContext: CanvasRenderingContext2D | null = null;
+  private _offscreenCanvasContext: OffscreenCanvasRenderingContext2D | null = null;
 
   constructor() {
     super();
 
-    this.controller = new CityMapDistrictController(this);
+    this._controller = new CityMapDistrictController(this);
   }
 
   private get _fullWidth() {
-    return this.controller.mapWidth * (this.size + 1) + 1;
+    return this._controller.mapWidth * (this.size + 1) + 1;
   }
 
   private get _fullHeight() {
-    return this.controller.mapHeight * (this.size + 1) + 1;
+    return this._controller.mapHeight * (this.size + 1) + 1;
   }
 
   render() {
@@ -73,9 +73,7 @@ export class CityMapDistrict extends BaseComponent<CityMapDistrictController> {
       throw new Error('Canvas context is not supported');
     }
 
-    const offscreenCanvas = document.createElement('canvas');
-    offscreenCanvas.width = this._fullWidth;
-    offscreenCanvas.height = this._fullHeight;
+    const offscreenCanvas = new OffscreenCanvas(this._fullWidth, this._fullHeight);
 
     this._offscreenCanvasContext = offscreenCanvas.getContext('2d');
     if (!this._offscreenCanvasContext) {
@@ -101,17 +99,17 @@ export class CityMapDistrict extends BaseComponent<CityMapDistrictController> {
     let districtNum: number;
     let districtState: DistrictUnlockState;
 
-    const styles = this.controller.getStyles();
+    const styles = this._controller.getStyles();
 
-    for (let x = 0; x < this.controller.mapWidth; x++) {
-      for (let y = 0; y < this.controller.mapHeight; y++) {
-        districtNum = this.controller.layout[x][y];
+    for (let x = 0; x < this._controller.mapWidth; x++) {
+      for (let y = 0; y < this._controller.mapHeight; y++) {
+        districtNum = this._controller.layout[x][y];
 
         if (districtNum !== this.district) {
           continue;
         }
 
-        districtState = this.controller.getDistrict(districtNum).state;
+        districtState = this._controller.getDistrict(districtNum).state;
 
         context.fillStyle = styles.stateStyles[districtState].selectedColor;
         context.fillRect(1 + x * (this.size + 1), 1 + y * (this.size + 1), this.size, this.size);
@@ -126,8 +124,8 @@ export class CityMapDistrict extends BaseComponent<CityMapDistrictController> {
 
     const context = this._offscreenCanvasContext;
 
-    const styles = this.controller.getStyles();
-    const districtState: DistrictUnlockState = this.controller.getDistrict(this.district).state;
+    const styles = this._controller.getStyles();
+    const districtState: DistrictUnlockState = this._controller.getDistrict(this.district).state;
 
     context.lineWidth = 2;
     context.strokeStyle = styles.stateStyles[districtState].selectedBorderColor;
@@ -137,8 +135,8 @@ export class CityMapDistrict extends BaseComponent<CityMapDistrictController> {
 
     lineY = 0;
 
-    for (let x = 0; x < this.controller.mapWidth; x++) {
-      if (this.controller.layout[x][0] !== this.district) {
+    for (let x = 0; x < this._controller.mapWidth; x++) {
+      if (this._controller.layout[x][0] !== this.district) {
         continue;
       }
 
@@ -150,10 +148,10 @@ export class CityMapDistrict extends BaseComponent<CityMapDistrictController> {
       context.stroke();
     }
 
-    lineY = 1 + this.controller.mapHeight * (this.size + 1);
+    lineY = 1 + this._controller.mapHeight * (this.size + 1);
 
-    for (let x = 0; x < this.controller.mapWidth; x++) {
-      if (this.controller.layout[x][this.controller.mapHeight - 1] !== this.district) {
+    for (let x = 0; x < this._controller.mapWidth; x++) {
+      if (this._controller.layout[x][this._controller.mapHeight - 1] !== this.district) {
         continue;
       }
 
@@ -167,8 +165,8 @@ export class CityMapDistrict extends BaseComponent<CityMapDistrictController> {
 
     lineX = 0;
 
-    for (let y = 0; y < this.controller.mapHeight; y++) {
-      if (this.controller.layout[0][y] !== this.district) {
+    for (let y = 0; y < this._controller.mapHeight; y++) {
+      if (this._controller.layout[0][y] !== this.district) {
         continue;
       }
 
@@ -180,10 +178,10 @@ export class CityMapDistrict extends BaseComponent<CityMapDistrictController> {
       context.stroke();
     }
 
-    lineX = 1 + this.controller.mapWidth * (this.size + 1);
+    lineX = 1 + this._controller.mapWidth * (this.size + 1);
 
-    for (let y = 0; y < this.controller.mapHeight; y++) {
-      if (this.controller.layout[this.controller.mapWidth - 1][y] !== this.district) {
+    for (let y = 0; y < this._controller.mapHeight; y++) {
+      if (this._controller.layout[this._controller.mapWidth - 1][y] !== this.district) {
         continue;
       }
 
@@ -203,8 +201,8 @@ export class CityMapDistrict extends BaseComponent<CityMapDistrictController> {
 
     const context = this._offscreenCanvasContext;
 
-    const styles = this.controller.getStyles();
-    const districtState: DistrictUnlockState = this.controller.getDistrict(this.district).state;
+    const styles = this._controller.getStyles();
+    const districtState: DistrictUnlockState = this._controller.getDistrict(this.district).state;
 
     context.lineWidth = 2;
 
@@ -212,11 +210,11 @@ export class CityMapDistrict extends BaseComponent<CityMapDistrictController> {
     let lineY: number;
     let matchingDistricts: number;
 
-    for (let x = 0; x < this.controller.mapWidth - 1; x++) {
-      for (let y = 0; y < this.controller.mapHeight; y++) {
+    for (let x = 0; x < this._controller.mapWidth - 1; x++) {
+      for (let y = 0; y < this._controller.mapHeight; y++) {
         matchingDistricts = 0;
-        matchingDistricts += +(this.controller.layout[x][y] === this.district);
-        matchingDistricts += +(this.controller.layout[x + 1][y] === this.district);
+        matchingDistricts += +(this._controller.layout[x][y] === this.district);
+        matchingDistricts += +(this._controller.layout[x + 1][y] === this.district);
 
         if (matchingDistricts === 0) {
           continue;
@@ -246,8 +244,8 @@ export class CityMapDistrict extends BaseComponent<CityMapDistrictController> {
 
     const context = this._offscreenCanvasContext;
 
-    const styles = this.controller.getStyles();
-    const districtState: DistrictUnlockState = this.controller.getDistrict(this.district).state;
+    const styles = this._controller.getStyles();
+    const districtState: DistrictUnlockState = this._controller.getDistrict(this.district).state;
 
     context.lineWidth = 2;
 
@@ -255,11 +253,11 @@ export class CityMapDistrict extends BaseComponent<CityMapDistrictController> {
     let lineY: number;
     let matchingDistricts: number;
 
-    for (let x = 0; x < this.controller.mapWidth; x++) {
-      for (let y = 0; y < this.controller.mapHeight - 1; y++) {
+    for (let x = 0; x < this._controller.mapWidth; x++) {
+      for (let y = 0; y < this._controller.mapHeight - 1; y++) {
         matchingDistricts = 0;
-        matchingDistricts += +(this.controller.layout[x][y] === this.district);
-        matchingDistricts += +(this.controller.layout[x][y + 1] === this.district);
+        matchingDistricts += +(this._controller.layout[x][y] === this.district);
+        matchingDistricts += +(this._controller.layout[x][y + 1] === this.district);
 
         if (matchingDistricts === 0) {
           continue;
@@ -289,8 +287,8 @@ export class CityMapDistrict extends BaseComponent<CityMapDistrictController> {
 
     const context = this._offscreenCanvasContext;
 
-    const styles = this.controller.getStyles();
-    const districtState: DistrictUnlockState = this.controller.getDistrict(this.district).state;
+    const styles = this._controller.getStyles();
+    const districtState: DistrictUnlockState = this._controller.getDistrict(this.district).state;
 
     let dotX: number;
     let dotY: number;
@@ -298,8 +296,8 @@ export class CityMapDistrict extends BaseComponent<CityMapDistrictController> {
 
     const Pi2 = 2 * Math.PI;
 
-    for (let x = 0; x < this.controller.mapWidth - 1; x++) {
-      for (let y = 0; y < this.controller.mapHeight - 1; y++) {
+    for (let x = 0; x < this._controller.mapWidth - 1; x++) {
+      for (let y = 0; y < this._controller.mapHeight - 1; y++) {
         districtsCount = this.countDotDistricts(x, y);
 
         if (districtsCount === 0) {
@@ -331,7 +329,7 @@ export class CityMapDistrict extends BaseComponent<CityMapDistrictController> {
       nx = x + CityMapDistrict.DX[i];
       ny = y + CityMapDistrict.DY[i];
 
-      if (this.controller.layout[nx][ny] === this.district) {
+      if (this._controller.layout[nx][ny] === this.district) {
         count++;
       }
     }

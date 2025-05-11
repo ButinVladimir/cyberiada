@@ -11,21 +11,21 @@ import { MONEY_EXPENSE_NAMES } from './constants';
 
 @localized()
 @customElement('ca-statistics-money-expenses')
-export class StatisticsMoneyExpenses extends BaseComponent<StatisticsMoneyExpensesController> {
+export class StatisticsMoneyExpenses extends BaseComponent {
   static styles = statisticsPanelContentStyle;
 
-  protected controller: StatisticsMoneyExpensesController;
+  private _controller: StatisticsMoneyExpensesController;
 
   constructor() {
     super();
 
-    this.controller = new StatisticsMoneyExpensesController(this);
+    this._controller = new StatisticsMoneyExpensesController(this);
   }
 
   render() {
-    const formatter = this.controller.formatter;
+    const formatter = this._controller.formatter;
     const moneyTotal = PURCHASE_TYPES.reduce(
-      (sum, purchaseType) => sum + this.controller.getMoneyExpenses(purchaseType),
+      (sum, purchaseType) => sum + this._controller.getMoneyExpenses(purchaseType),
       0,
     );
 
@@ -34,9 +34,7 @@ export class StatisticsMoneyExpenses extends BaseComponent<StatisticsMoneyExpens
         <h4 class="title" slot="summary">${msg('Money expenses')}</h4>
 
         <div class="parameters-table">
-          ${PURCHASE_TYPES.map((purchaseType) =>
-            this.renderExpenseArticle(purchaseType, this.controller.getMoneyExpenses(purchaseType)),
-          )}
+          ${PURCHASE_TYPES.map(this.renderExpenseArticle)}
 
           <span> ${STATISTIC_PAGE_TEXTS.total()} </span>
           <span> ${formatter.formatNumberFloat(moneyTotal)} </span>
@@ -45,12 +43,14 @@ export class StatisticsMoneyExpenses extends BaseComponent<StatisticsMoneyExpens
     `;
   }
 
-  private renderExpenseArticle = (purchaseType: PurchaseType, value: number) => {
+  private renderExpenseArticle = (purchaseType: PurchaseType) => {
+    const value = this._controller.getMoneyExpenses(purchaseType);
+
     if (value <= 0) {
       return '';
     }
 
-    const formatter = this.controller.formatter;
+    const formatter = this._controller.formatter;
 
     return html`
       <span> ${MONEY_EXPENSE_NAMES[purchaseType]()} </span>

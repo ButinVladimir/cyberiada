@@ -1,19 +1,19 @@
 import { injectable } from 'inversify';
 import { decorators } from '@state/container';
 import { IncomeSource, PurchaseType } from '@shared/types';
-import { EventBatcher } from '@shared/event-batcher';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import { TYPES } from '@state/types';
 import { IMoneyState } from '../interfaces/parameters/money-state';
 import { IMoneySerializedState } from '../interfaces/serialized-states/money-serialized-state';
 import type { IGlobalState } from '../interfaces/global-state';
-import { GLOBAL_STATE_UI_EVENTS } from '../constants';
 
 const { lazyInject } = decorators;
 
 @injectable()
 export class MoneyState implements IMoneyState {
-  readonly uiEventBatcher: EventBatcher;
+  private UI_EVENTS = {
+    MONEY_SPENT: Symbol('MONEY_SPENT'),
+  };
 
   @lazyInject(TYPES.StateUIConnector)
   private _stateUiConnector!: IStateUIConnector;
@@ -30,8 +30,7 @@ export class MoneyState implements IMoneyState {
     this._income = new Map<IncomeSource, number>();
     this._expenses = new Map<PurchaseType, number>();
 
-    this.uiEventBatcher = new EventBatcher();
-    this._stateUiConnector.registerEventEmitter(this);
+    this._stateUiConnector.registerEvents(this.UI_EVENTS);
   }
 
   get money() {
@@ -52,7 +51,7 @@ export class MoneyState implements IMoneyState {
       const prevExpenses = this.getExpenses(purchaseType);
       this._expenses.set(purchaseType, prevExpenses + cost);
 
-      this.uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.MONEY_SPENT);
+      this._stateUiConnector.enqueueEvent(this.UI_EVENTS.MONEY_SPENT);
 
       return true;
     }
@@ -65,7 +64,7 @@ export class MoneyState implements IMoneyState {
   }
 
   getExpenses(purchaseType: PurchaseType): number {
-    this._stateUiConnector.connectEventHandler(this, GLOBAL_STATE_UI_EVENTS.MONEY_SPENT);
+    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.MONEY_SPENT);
 
     return this._expenses.get(purchaseType) ?? 0;
   }

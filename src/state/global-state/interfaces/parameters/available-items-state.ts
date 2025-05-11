@@ -7,4 +7,6 @@ import { CloneTemplateName } from '@state/company-state/states/clone-factory/typ
 export interface IAvailableItemsState extends ISerializeable<IAvailableItemsSerializedState> {
   programs: IAvailableCategoryItemsState<ProgramName>;
   cloneTemplates: IAvailableCategoryItemsState<CloneTemplateName>;
+  requestRecalculation(): void;
+  recalculate(): void;
 }

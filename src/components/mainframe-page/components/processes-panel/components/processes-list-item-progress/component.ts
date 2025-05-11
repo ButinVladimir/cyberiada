@@ -1,18 +1,17 @@
-import { css, html, nothing, PropertyValues } from 'lit';
+import { css, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import SlProgressBar from '@shoelace-style/shoelace/dist/components/progress-bar/progress-bar.component.js';
 import { BaseComponent } from '@shared/base-component';
 import { hintStyle } from '@shared/styles';
-import { ProgramName, OtherProgramName } from '@state/mainframe-state/states/progam-factory/types';
+import { type ProgramName } from '@state/mainframe-state/states/progam-factory/types';
 import { calculateLevelProgressPercentage } from '@shared/helpers';
-import { COMMON_TEXTS } from '@texts/common';
 import { ProcessesListItemProgressController } from './controller';
 import { localized, msg, str } from '@lit/localize';
 
 @localized()
 @customElement('ca-processes-list-item-progress')
-export class ProcessesListItemProgressColumn extends BaseComponent<ProcessesListItemProgressController> {
+export class ProcessesListItemProgressColumn extends BaseComponent {
   static styles = [
     hintStyle,
     css`
@@ -27,13 +26,15 @@ export class ProcessesListItemProgressColumn extends BaseComponent<ProcessesList
     `,
   ];
 
+  hasPartialUpdate = true;
+
   @property({
     attribute: 'program-name',
     type: String,
   })
-  programName: string = OtherProgramName.shareServer;
+  programName!: ProgramName;
 
-  protected controller: ProcessesListItemProgressController;
+  private _controller: ProcessesListItemProgressController;
 
   private _progressBarRef = createRef<SlProgressBar>();
   private _hintRef = createRef<HTMLParagraphElement>();
@@ -41,17 +42,11 @@ export class ProcessesListItemProgressColumn extends BaseComponent<ProcessesList
   constructor() {
     super();
 
-    this.controller = new ProcessesListItemProgressController(this, this.handlePartialUpdate);
-  }
-
-  updated(_changedProperties: PropertyValues) {
-    super.updated(_changedProperties);
-
-    this.handlePartialUpdate();
+    this._controller = new ProcessesListItemProgressController(this);
   }
 
   render() {
-    const process = this.controller.getProcess(this.programName as ProgramName);
+    const process = this._controller.getProcess(this.programName as ProgramName);
 
     if (!process) {
       return nothing;
@@ -67,14 +62,14 @@ export class ProcessesListItemProgressColumn extends BaseComponent<ProcessesList
     `;
   }
 
-  private handlePartialUpdate = () => {
-    const process = this.controller.getProcess(this.programName as ProgramName);
+  handlePartialUpdate = () => {
+    const process = this._controller.getProcess(this.programName as ProgramName);
 
     if (!process || process.program.isAutoscalable) {
       return;
     }
 
-    const formatter = this.controller.formatter;
+    const formatter = this._controller.formatter;
 
     const processCompletionDelta = process.calculateCompletionDelta(1);
 
@@ -84,10 +79,8 @@ export class ProcessesListItemProgressColumn extends BaseComponent<ProcessesList
         process.currentCompletionPoints,
         process.maxCompletionPoints,
       );
-      const progressBarPercentage = COMMON_TEXTS.percentage(formatter.formatNumberFloat(progressBarValue));
 
       this._progressBarRef.value.value = progressBarValue;
-      this._progressBarRef.value.textContent = progressBarPercentage;
     }
 
     if (this._hintRef.value) {

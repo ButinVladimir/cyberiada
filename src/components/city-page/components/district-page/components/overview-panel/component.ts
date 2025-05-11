@@ -9,7 +9,7 @@ import { CityDistrictOverviewPanelController } from './controller';
 
 @localized()
 @customElement('ca-city-district-overiew-panel')
-export class CityDistrictOverviewPanel extends BaseComponent<CityDistrictOverviewPanelController> {
+export class CityDistrictOverviewPanel extends BaseComponent {
   static styles = [
     pageTitleStyle,
     hintIconStyle,
@@ -34,18 +34,18 @@ export class CityDistrictOverviewPanel extends BaseComponent<CityDistrictOvervie
   })
   districtIndex!: number;
 
-  protected controller: CityDistrictOverviewPanelController;
+  private _controller: CityDistrictOverviewPanelController;
 
   constructor() {
     super();
 
-    this.controller = new CityDistrictOverviewPanelController(this);
+    this._controller = new CityDistrictOverviewPanelController(this);
   }
 
   render() {
-    const formatter = this.controller.formatter;
+    const formatter = this._controller.formatter;
 
-    const districtState = this.controller.getDistrictState(this.districtIndex);
+    const districtState = this._controller.getDistrictState(this.districtIndex);
 
     const formattedTier = formatter.formatQuality(districtState.parameters.tier.tier);
 
@@ -55,6 +55,7 @@ export class CityDistrictOverviewPanel extends BaseComponent<CityDistrictOvervie
 
         <sl-tooltip>
           <span slot="content">${DISTRICT_TYPE_TEXTS[districtState.districtType].overview()}</span>
+
           <sl-icon name=${HINT_ICON}></sl-icon>
         </sl-tooltip>
       </p>

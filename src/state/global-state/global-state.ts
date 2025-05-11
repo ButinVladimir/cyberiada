@@ -11,9 +11,16 @@ import type {
   IMultipliersState,
   IFactionState,
   IAvailableItemsState,
+  IConnectivityState,
+  IThreatState,
+  ISynchronizationParameter,
+  IAvailableActivities,
 } from './interfaces';
 import { IGlobalState } from './interfaces/global-state';
 import { GameSpeed } from './types';
+import { ConnectivityState, ThreatState } from './parameters';
+import { SynchronizationParameter } from './parameters/synchronization-parameter';
+import { AvailableActivities } from './parameters/available-activities-state';
 
 @injectable()
 export class GlobalState implements IGlobalState {
@@ -22,7 +29,11 @@ export class GlobalState implements IGlobalState {
   private _timeState: ITimeState;
   private _developmentState: IDevelopmentState;
   private _moneyState: IMoneyState;
+  private _connectivity: IConnectivityState;
+  private _threat: IThreatState;
+  private _synchronization: ISynchronizationParameter;
   private _multipliersState: IMultipliersState;
+  private _availableActivities: IAvailableActivities;
   private _availableItemsState: IAvailableItemsState;
   private _unlockedFeaturesState: IUnlockedFeaturesState;
   private _storyEventsState: IStoryEventsState;
@@ -47,9 +58,13 @@ export class GlobalState implements IGlobalState {
     this._timeState = _timeState;
     this._developmentState = _developmentState;
     this._moneyState = _moneyState;
+    this._connectivity = new ConnectivityState();
+    this._threat = new ThreatState();
+    this._synchronization = new SynchronizationParameter();
     this._multipliersState = _multipliersState;
     this._unlockedFeaturesState = _unlockedFeaturesState;
     this._storyEventsState = _storyEventsState;
+    this._availableActivities = new AvailableActivities();
     this._availableItemsState = _availableItemsState;
 
     this._randomSeed = 0;
@@ -93,12 +108,28 @@ export class GlobalState implements IGlobalState {
     return this._developmentState;
   }
 
+  get connectivity(): IConnectivityState {
+    return this._connectivity;
+  }
+
+  get threat(): IThreatState {
+    return this._threat;
+  }
+
+  get synchronization(): ISynchronizationParameter {
+    return this._synchronization;
+  }
+
   get multipliers(): IMultipliersState {
     return this._multipliersState;
   }
 
   get availableItems(): IAvailableItemsState {
     return this._availableItemsState;
+  }
+
+  get availableActivities(): IAvailableActivities {
+    return this._availableActivities;
   }
 
   get unlockedFeatures(): IUnlockedFeaturesState {
@@ -112,6 +143,9 @@ export class GlobalState implements IGlobalState {
   recalculate() {
     this._developmentState.recalculateLevel();
     this._multipliersState.recalculate();
+    this._synchronization.recalculate();
+    this._availableItemsState.recalculate();
+    this._availableActivities.recalculate();
   }
 
   makeNextTick() {
@@ -134,6 +168,7 @@ export class GlobalState implements IGlobalState {
     await this._moneyState.startNewState();
     await this._timeState.startNewState();
     await this._developmentState.startNewState();
+    await this._connectivity.startNewState();
     await this._multipliersState.startNewState();
     await this._availableItemsState.startNewState();
     await this._unlockedFeaturesState.startNewState();
@@ -149,6 +184,7 @@ export class GlobalState implements IGlobalState {
     await this._moneyState.deserialize(serializedState.money);
     await this._timeState.deserialize(serializedState.time);
     await this._developmentState.deserialize(serializedState.development);
+    await this._connectivity.deserialize(serializedState.connectivity);
     await this._multipliersState.deserialize(serializedState.multipliers);
     await this._availableItemsState.deserialize(serializedState.availableItems);
     await this._unlockedFeaturesState.deserialize(serializedState.unlockedFeatures);
@@ -164,6 +200,7 @@ export class GlobalState implements IGlobalState {
       money: this._moneyState.serialize(),
       time: this._timeState.serialize(),
       development: this._developmentState.serialize(),
+      connectivity: this._connectivity.serialize(),
       multipliers: this._multipliersState.serialize(),
       availableItems: this._availableItemsState.serialize(),
       unlockedFeatures: this._unlockedFeaturesState.serialize(),

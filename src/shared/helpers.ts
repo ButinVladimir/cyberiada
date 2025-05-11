@@ -111,15 +111,5 @@ export function calculateLevelProgressPercentage(
   const currentDistance = currentPoints - basePoints;
   const nextLevelDistance = nextLevelPoints - basePoints;
 
-  const percentage = (currentDistance / nextLevelDistance) * 100;
-
-  if (percentage < 0) {
-    return 0;
-  }
-
-  if (percentage > 100) {
-    return 100;
-  }
-
-  return percentage;
+  return clamp((currentDistance / nextLevelDistance) * 100, 0, 100);
 }

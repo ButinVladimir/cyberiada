@@ -8,6 +8,6 @@ export class NotificationTypeFilterDialogController extends BaseController {
 
   toggleNotificationTypeFilter(notificationType: NotificationType, enabled: boolean) {
     this.settingsState.toggleNotificationType(notificationType, enabled);
-    this.handleRefreshUI();
+    this.host.requestUpdate();
   }
 }

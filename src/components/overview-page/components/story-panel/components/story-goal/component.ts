@@ -9,6 +9,7 @@ import { UNLOCKED_FEATURE_TEXTS } from '@texts/unlocked-features';
 import { STORY_MESSAGES } from '@texts/story';
 import { Feature } from '@shared/types';
 import { KEYS_SEPARATOR } from '../../../../constants';
+import { BaseController } from '@/shared';
 
 @localized()
 @customElement('ca-overview-story-goal')
@@ -58,6 +59,14 @@ export class OverviewStoryPanel extends BaseComponent {
   })
   state!: StoryGoalState;
 
+  private _controller: BaseController;
+
+  constructor() {
+    super();
+
+    this._controller = new BaseController(this);
+  }
+
   render() {
     return html`
       <sl-details ?disabled=${this.state !== StoryGoalState.passed}>
@@ -72,7 +81,9 @@ export class OverviewStoryPanel extends BaseComponent {
     const requirements = [];
 
     if (this.level !== undefined) {
-      requirements.push(msg(str`development level ${this.level}`));
+      const formattedLevel = this._controller.formatter.formatLevel(this.level);
+
+      requirements.push(msg(str`development level ${formattedLevel}`));
     }
 
     const result = capitalizeFirstLetter(requirements.join(', '));

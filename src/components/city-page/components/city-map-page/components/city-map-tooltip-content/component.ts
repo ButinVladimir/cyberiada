@@ -8,7 +8,7 @@ import { CityMapTooltipContentController } from './controller';
 
 @localized()
 @customElement('ca-city-map-tooltip-content')
-export class CityMapTooltipContent extends BaseComponent<CityMapTooltipContentController> {
+export class CityMapTooltipContent extends BaseComponent {
   static styles = css`
     :host {
       display: block;
@@ -36,12 +36,12 @@ export class CityMapTooltipContent extends BaseComponent<CityMapTooltipContentCo
   })
   district?: number | null;
 
-  protected controller: CityMapTooltipContentController;
+  private _controller: CityMapTooltipContentController;
 
   constructor() {
     super();
 
-    this.controller = new CityMapTooltipContentController(this);
+    this._controller = new CityMapTooltipContentController(this);
   }
 
   render() {
@@ -49,9 +49,9 @@ export class CityMapTooltipContent extends BaseComponent<CityMapTooltipContentCo
       return nothing;
     }
 
-    const formatter = this.controller.formatter;
+    const formatter = this._controller.formatter;
 
-    const districtState = this.controller.getDistrictState(this.district);
+    const districtState = this._controller.getDistrictState(this.district);
 
     const formattedTier = formatter.formatQuality(districtState.parameters.tier.tier);
 

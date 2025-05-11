@@ -1,7 +1,7 @@
 import { msg } from '@lit/localize';
-import { GameStateAlert, ProgramAlert, CloneAlert, type GameAlert } from '@shared/types';
+import { GameStateAlert, ProgramAlert, CloneAlert, SidejobAlert } from '@shared/types';
 
-export const ALERT_NAMES: Record<GameAlert, () => string> = {
+export const ALERT_NAMES = {
   [GameStateAlert.saveImport]: () => msg('Import savefile'),
   [GameStateAlert.saveDelete]: () => msg('Delete save data'),
   [GameStateAlert.clearMessages]: () => msg('Clear log messages'),
@@ -13,4 +13,7 @@ export const ALERT_NAMES: Record<GameAlert, () => string> = {
   [ProgramAlert.scalableProcessReplace]: () => msg('Replace a autoscalable process'),
   [CloneAlert.cloneDelete]: () => msg('Delete a clone'),
   [CloneAlert.deleteAllClones]: () => msg('Delete all clones'),
+  [SidejobAlert.sidejobCancel]: () => msg('Cancel an assigned sidejob'),
+  [SidejobAlert.cancelAllSidejobs]: () => msg('Cancel all sidejobs'),
+  [SidejobAlert.replaceSidejob]: () => msg('Replace an assigned sidejob'),
 };

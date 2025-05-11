@@ -11,10 +11,6 @@ export class ProcessesListItemController extends BaseController {
 
   getProcess(programName: ProgramName) {
     if (this._process?.program.name !== programName) {
-      if (this._process) {
-        this.removeEventListenersByEmitter(this._process);
-      }
-
       this._process = this.mainframeState.processes.getProcessByName(programName);
     }
 

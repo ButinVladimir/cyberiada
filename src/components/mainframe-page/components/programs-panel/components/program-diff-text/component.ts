@@ -1,13 +1,13 @@
-import { css, html, nothing, PropertyValues } from 'lit';
+import { css, html, nothing } from 'lit';
 import { msg, localized } from '@lit/localize';
 import { customElement, property, queryAll } from 'lit/decorators.js';
+import { createRef, ref } from 'lit/directives/ref.js';
 import { BaseComponent } from '@shared/base-component';
 import {
   type ProgramName,
   OtherProgramName,
   MultiplierProgramName,
 } from '@state/mainframe-state/states/progam-factory/types';
-import { diffFormatterParameters } from '@shared/formatter-parameters';
 import { PROGRAM_DESCRIPTION_TEXTS, PROGRAM_TEXTS } from '@texts/programs';
 import {
   CodeGeneratorDescriptionEffectRenderer,
@@ -19,26 +19,33 @@ import {
   ShareServerDescriptionEffectRenderer,
   MainframeProgramsAutobuyerDescriptionEffectRenderer,
 } from './description-effect-renderers';
+import { getHighlightValueClass, diffFormatterParameters, highlightedValuesStyle } from '@shared/index';
+import { COMMON_TEXTS } from '@texts/index';
 import { IDescriptionEffectRenderer, IDescriptionParameters } from './interfaces';
 import { ProgramDiffTextController } from './controller';
 
 @localized()
 @customElement('ca-program-diff-text')
-export class ProgramDiffText extends BaseComponent<ProgramDiffTextController> {
-  static styles = css`
-    :host {
-      margin-top: var(--sl-spacing-medium);
-      margin-bottom: 0;
-    }
+export class ProgramDiffText extends BaseComponent {
+  static styles = [
+    highlightedValuesStyle,
+    css`
+      :host {
+        margin-top: var(--sl-spacing-medium);
+        margin-bottom: 0;
+      }
 
-    p {
-      margin: 0;
-    }
+      p {
+        margin: 0;
+      }
 
-    p.line-break {
-      height: var(--sl-spacing-medium);
-    }
-  `;
+      p.line-break {
+        height: var(--sl-spacing-medium);
+      }
+    `,
+  ];
+
+  hasPartialUpdate = true;
 
   @property({
     attribute: 'program-name',
@@ -58,27 +65,23 @@ export class ProgramDiffText extends BaseComponent<ProgramDiffTextController> {
   })
   quality = 0;
 
-  protected controller: ProgramDiffTextController;
+  private _controller: ProgramDiffTextController;
 
   private _renderer?: IDescriptionEffectRenderer;
 
   @queryAll('p[data-name]')
   private _paragraphs!: NodeListOf<HTMLParagraphElement>;
 
+  private _costElRef = createRef<HTMLSpanElement>();
+
   constructor() {
     super();
 
-    this.controller = new ProgramDiffTextController(this, this.handlePartialUpdate);
-  }
-
-  updated(_changedProperties: PropertyValues) {
-    super.updated(_changedProperties);
-
-    this.handlePartialUpdate();
+    this._controller = new ProgramDiffTextController(this);
   }
 
   render() {
-    const program = this.controller.getSelectedProgram(this.programName as ProgramName, this.level, this.quality);
+    const program = this._controller.getSelectedProgram(this.programName as ProgramName, this.level, this.quality);
 
     const requirements = program.isAutoscalable
       ? this.renderAutoscalableRequirements()
@@ -89,6 +92,10 @@ export class ProgramDiffText extends BaseComponent<ProgramDiffTextController> {
 
     return html`
       <p>${PROGRAM_TEXTS[this.programName].overview()}</p>
+
+      <p class="line-break"></p>
+
+      <p>${COMMON_TEXTS.cost(html`<span ${ref(this._costElRef)}></span>`)}</p>
 
       <p class="line-break"></p>
 
@@ -115,9 +122,9 @@ export class ProgramDiffText extends BaseComponent<ProgramDiffTextController> {
   };
 
   private renderNormalRequirements = () => {
-    const program = this.controller.getSelectedProgram(this.programName as ProgramName, this.level, this.quality);
-    const ownedProgram = this.controller.getOwnedProgram(this.programName as ProgramName);
-    const formatter = this.controller.formatter;
+    const program = this._controller.getSelectedProgram(this.programName as ProgramName, this.level, this.quality);
+    const ownedProgram = this._controller.getOwnedProgram(this.programName as ProgramName);
+    const formatter = this._controller.formatter;
 
     const coresDiff = ownedProgram ? program.cores - ownedProgram.cores : program.cores;
 
@@ -161,24 +168,41 @@ export class ProgramDiffText extends BaseComponent<ProgramDiffTextController> {
     return this._renderer.renderEffect();
   };
 
-  private handlePartialUpdate = () => {
+  handlePartialUpdate = () => {
     if (!this._renderer) {
       return;
     }
 
+    this.renderCost();
+
     return this._renderer.partialUpdate(this._paragraphs);
   };
 
+  private renderCost() {
+    if (!this._costElRef.value) {
+      return;
+    }
+
+    const cost = this._controller.getProgramCost(this.programName, this.quality, this.level);
+    const money = this._controller.money;
+
+    const formattedCost = this._controller.formatter.formatNumberFloat(cost);
+    const className = getHighlightValueClass(money >= cost);
+
+    this._costElRef.value.textContent = formattedCost;
+    this._costElRef.value.className = className;
+  }
+
   private updateRenderer(): void {
-    const program = this.controller.getSelectedProgram(this.programName as ProgramName, this.level, this.quality);
-    const ownedProgram = this.controller.getOwnedProgram(this.programName as ProgramName);
+    const program = this._controller.getSelectedProgram(this.programName as ProgramName, this.level, this.quality);
+    const ownedProgram = this._controller.getOwnedProgram(this.programName as ProgramName);
 
     const parameters: IDescriptionParameters = {
-      formatter: this.controller.formatter,
+      formatter: this._controller.formatter,
       program,
       ownedProgram,
-      cores: this.controller.cores,
-      ram: this.controller.ram,
+      cores: this._controller.cores,
+      ram: this._controller.ram,
     };
 
     switch (this.programName) {

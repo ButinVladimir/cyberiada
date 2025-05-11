@@ -3,8 +3,6 @@ import scenarios from '@configs/scenarios.json';
 import type { IGlobalState } from '@state/global-state/interfaces/global-state';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import { IMapGeneratorResult } from '@workers/map-generator/interfaces';
-import { IEventBatcher } from '@shared/interfaces/event-batcher';
-import { EventBatcher } from '@shared/event-batcher';
 import { TYPES } from '@state/types';
 import { ICityState, ICitySerializedState, IDistrictState, IDistrictSerializedState } from './interfaces';
 import { DistrictState } from './district-state';
@@ -12,13 +10,14 @@ import { DistrictUnlockState } from './types';
 
 @injectable()
 export class CityState implements ICityState {
-  readonly uiEventBatcher: IEventBatcher;
+  private UI_EVENTS = {};
 
   private _globalState: IGlobalState;
   private _stateUiConnector: IStateUIConnector;
 
   private _layout: number[][];
   private _districts: Map<number, IDistrictState>;
+  private _availableDistricts: IDistrictState[];
 
   constructor(
     @inject(TYPES.GlobalState) _globalState: IGlobalState,
@@ -29,8 +28,13 @@ export class CityState implements ICityState {
 
     this._layout = [];
     this._districts = new Map();
+    this._availableDistricts = [];
 
-    this.uiEventBatcher = new EventBatcher();
+    this._stateUiConnector.registerEvents(this.UI_EVENTS);
+  }
+
+  get districtsCount() {
+    return this._globalState.scenario.currentValues.map.districts.length;
   }
 
   getLayout(): number[][] {
@@ -45,6 +49,10 @@ export class CityState implements ICityState {
     return this._districts.get(districtIndex)!;
   }
 
+  listAvailableDistricts(): IDistrictState[] {
+    return this._availableDistricts;
+  }
+
   recalculate() {
     for (const district of this._districts.values()) {
       district.recalculate();
@@ -57,6 +65,8 @@ export class CityState implements ICityState {
   }
 
   async deserialize(serializedState: ICitySerializedState): Promise<void> {
+    this.clearDistricts();
+
     this._layout = [];
     for (let x = 0; x < this._globalState.scenario.currentValues.map.width; x++) {
       const row: number[] = [];
@@ -68,14 +78,14 @@ export class CityState implements ICityState {
       this._layout.push(row);
     }
 
-    this._districts.clear();
+    Object.entries(serializedState.districts).forEach(([districtIndex, districtSerializedInfo]) => {
+      const parsedDistrictIndex = parseInt(districtIndex);
+      const districtState = DistrictState.deserialize(parsedDistrictIndex, districtSerializedInfo);
 
-    Object.entries(serializedState.districts).forEach(([districtNum, districtSerializedInfo]) => {
-      const districtNumParsed = parseInt(districtNum);
-      const districtState = DistrictState.deserialize(districtSerializedInfo);
-
-      this._districts.set(districtNumParsed, districtState);
+      this._districts.set(parsedDistrictIndex, districtState);
     });
+
+    this.updateAvailableDistricts();
   }
 
   serialize(): ICitySerializedState {
@@ -101,19 +111,23 @@ export class CityState implements ICityState {
 
         this._layout = event.data.layout;
 
-        this._districts.clear();
+        this.clearDistricts();
 
-        for (const [districtNum, district] of Object.entries(event.data.districts)) {
-          const parsedDistrictNum = parseInt(districtNum);
-          const districtState = DistrictState.createByMapGenerator(district);
+        for (const [districtIndex, district] of Object.entries(event.data.districts)) {
+          const parsedDistrictIndex = parseInt(districtIndex);
+          const districtState = DistrictState.createByMapGenerator(parsedDistrictIndex, district);
 
           districtState.state =
-            parsedDistrictNum === scenarios[this._globalState.scenario.scenario].map.startingDistrict
+            parsedDistrictIndex === scenarios[this._globalState.scenario.scenario].map.startingDistrict
               ? DistrictUnlockState.contested
               : DistrictUnlockState.locked;
 
-          this._districts.set(parsedDistrictNum, districtState);
+          this._districts.set(parsedDistrictIndex, districtState);
         }
+
+        this.updateAvailableDistricts();
+
+        worker.terminate();
 
         resolve();
       });
@@ -131,5 +145,24 @@ export class CityState implements ICityState {
         randomSeed: this._globalState.randomSeed,
       });
     });
+  }
+
+  private updateAvailableDistricts() {
+    this._availableDistricts.length = 0;
+
+    this._districts.forEach((district) => {
+      if (district.state !== DistrictUnlockState.locked) {
+        this._availableDistricts.push(district);
+      }
+    });
+  }
+
+  private clearDistricts() {
+    for (const district of this._districts.values()) {
+      district.removeAllEventListeners();
+    }
+
+    this._availableDistricts.length = 0;
+    this._districts.clear();
   }
 }
