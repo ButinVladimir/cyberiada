@@ -1,4 +1,4 @@
-import { injectable, inject } from 'inversify';
+import { injectable } from 'inversify';
 import constants from '@configs/constants.json';
 import { decorators } from '@state/container';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
@@ -34,27 +34,24 @@ export class MainframeHardwareState implements IMainframeHardwareState {
   @lazyInject(TYPES.GrowthState)
   private _growthState!: IGrowthState;
 
-  private _stateUiConnector: IStateUIConnector;
-  private _globalState: IGlobalState;
-  private _messageLogState: IMessageLogState;
-  private _formatter: IFormatter;
+  @lazyInject(TYPES.StateUIConnector)
+  private _stateUiConnector!: IStateUIConnector;
+
+  @lazyInject(TYPES.GlobalState)
+  private _globalState!: IGlobalState;
+
+  @lazyInject(TYPES.MessageLogState)
+  private _messageLogState!: IMessageLogState;
+
+  @lazyInject(TYPES.Formatter)
+  private _formatter!: IFormatter;
 
   private _parametersList!: IMainframeHardwareParameter[];
   private _performance: MainframeHardwarePerformance;
   private _cores: MainframeHardwareCores;
   private _ram: MainframeHardwareRam;
 
-  constructor(
-    @inject(TYPES.StateUIConnector) _stateUiConnector: IStateUIConnector,
-    @inject(TYPES.GlobalState) _globalState: IGlobalState,
-    @inject(TYPES.MessageLogState) _messageLogState: IMessageLogState,
-    @inject(TYPES.Formatter) _formatter: IFormatter,
-  ) {
-    this._stateUiConnector = _stateUiConnector;
-    this._globalState = _globalState;
-    this._messageLogState = _messageLogState;
-    this._formatter = _formatter;
-
+  constructor() {
     const parameterArguments: IMainframeHardwareParameterArguments = {
       stateUiConnector: this._stateUiConnector,
       mainframeHardwareState: this,

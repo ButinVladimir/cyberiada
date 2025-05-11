@@ -1,4 +1,4 @@
-import { inject, injectable } from 'inversify';
+import { injectable } from 'inversify';
 import { msg, str } from '@lit/localize';
 import { decorators } from '@state/container';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
@@ -32,10 +32,17 @@ export class MainframeProcessesState implements IMainframeProcessesState {
   @lazyInject(TYPES.MainframeState)
   private _mainframeState!: IMainframeState;
 
-  private _stateUiConnector: IStateUIConnector;
-  private _settingsState: ISettingsState;
-  private _messageLogState: IMessageLogState;
-  private _formatter: IFormatter;
+  @lazyInject(TYPES.StateUIConnector)
+  private _stateUiConnector!: IStateUIConnector;
+
+  @lazyInject(TYPES.SettingsState)
+  private _settingsState!: ISettingsState;
+
+  @lazyInject(TYPES.MessageLogState)
+  private _messageLogState!: IMessageLogState;
+
+  @lazyInject(TYPES.Formatter)
+  private _formatter!: IFormatter;
 
   private _processesList: IProcess[];
   private _processesMap: Map<ProgramName, IProcess>;
@@ -46,17 +53,7 @@ export class MainframeProcessesState implements IMainframeProcessesState {
   private _processUpdateRequested: boolean;
   private _performanceUpdateRequested: boolean;
 
-  constructor(
-    @inject(TYPES.StateUIConnector) _stateUiConnector: IStateUIConnector,
-    @inject(TYPES.SettingsState) _settingsState: ISettingsState,
-    @inject(TYPES.MessageLogState) _messageLogState: IMessageLogState,
-    @inject(TYPES.Formatter) _formatter: IFormatter,
-  ) {
-    this._stateUiConnector = _stateUiConnector;
-    this._settingsState = _settingsState;
-    this._messageLogState = _messageLogState;
-    this._formatter = _formatter;
-
+  constructor() {
     this._processesMap = new Map<ProgramName, IProcess>();
     this._processesList = [];
     this._runningProcesses = [];
@@ -74,10 +71,26 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     return this._availableCores;
   }
 
+  private set availableCores(value: number) {
+    if (this._availableCores !== value) {
+      this._stateUiConnector.enqueueEvent(this.UI_EVENTS.AVAILABLE_CORES_UPDATED);
+    }
+
+    this._availableCores = value;
+  }
+
   get availableRam() {
     this._stateUiConnector.connectEventHandler(this.UI_EVENTS.AVAILABLE_RAM_UPDATED);
 
     return this._availableRam;
+  }
+
+  private set availableRam(value: number) {
+    if (this._availableRam !== value) {
+      this._stateUiConnector.enqueueEvent(this.UI_EVENTS.AVAILABLE_RAM_UPDATED);
+    }
+
+    this._availableRam = value;
   }
 
   get runningScalableProcess() {
@@ -109,17 +122,14 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     const threadCount = program.isAutoscalable ? 0 : threads;
 
     const existingProcess = this.getProcessByName(programName);
+    const availableRam = this.getAvailableRamForProgram(programName);
 
-    if (!program.isAutoscalable) {
-      let availableRam = this.availableRam;
+    if (!program.isAutoscalable && availableRam < program.ram * threads) {
+      return false;
+    }
 
-      if (existingProcess) {
-        availableRam += existingProcess.totalRam;
-      }
-
-      if (availableRam < program.ram * threads) {
-        return false;
-      }
+    if (program.isAutoscalable && availableRam === 0) {
+      return false;
     }
 
     if (program.isAutoscalable && !existingProcess) {
@@ -275,6 +285,29 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     this.requestUpdateProcesses();
   }
 
+  getAvailableRamForProgram(programName: ProgramName): number {
+    const program = this._mainframeState.programs.getOwnedProgramByName(programName);
+    if (!program) {
+      return 0;
+    }
+
+    let result = this.availableRam;
+
+    if (program.isAutoscalable && this._runningScalableProcess) {
+      result++;
+    }
+
+    if (!program.isAutoscalable) {
+      const existingProcess = this.getProcessByName(programName);
+
+      if (existingProcess) {
+        result += existingProcess.totalRam;
+      }
+    }
+
+    return result;
+  }
+
   async startNewState(): Promise<void> {
     this.clearState();
 
@@ -355,15 +388,8 @@ export class MainframeProcessesState implements IMainframeProcessesState {
       this._runningScalableProcess.usedCores = runningScalableProcessCores;
     }
 
-    if (this._availableRam !== availableRam) {
-      this._availableRam = availableRam;
-      this._stateUiConnector.enqueueEvent(this.UI_EVENTS.AVAILABLE_RAM_UPDATED);
-    }
-
-    if (this._availableCores !== availableCores) {
-      this._availableCores = availableCores;
-      this._stateUiConnector.enqueueEvent(this.UI_EVENTS.AVAILABLE_CORES_UPDATED);
-    }
+    this.availableRam = availableRam;
+    this.availableCores = availableCores;
 
     this._stateUiConnector.enqueueEvent(this.UI_EVENTS.PROCESSES_UPDATED);
   };

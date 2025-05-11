@@ -1,21 +1,28 @@
 import { msg, str } from '@lit/localize';
 import cloneTemplates from '@configs/clone-templates.json';
-import { Attribute, ClonesEvent, Skill } from '@shared/types';
-import { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
-import { ATTRIBUTES, SKILLS } from '@shared/constants';
+import { type IStateUIConnector } from '@state/state-ui-connector';
 import {
+  Attribute,
+  ClonesEvent,
+  Skill,
+  ATTRIBUTES,
+  SKILLS,
   calculateGeometricProgressionSum,
   calculateQualityLinear,
   calculateQualityMultiplier,
   reverseGeometricProgressionSum,
-} from '@shared/helpers';
-import { ICompanyState } from '@state/company-state/interfaces/company-state';
-import { IGlobalState } from '@state/global-state/interfaces/global-state';
-import { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
-import { IFormatter } from '@shared/interfaces/formatter';
-import { IClone, IBaseCloneParameters, IMakeCloneParameters, ICloneParameterValues } from './interfaces';
+  type IFormatter,
+} from '@shared/index';
+import { type ICompanyState } from '@state/company-state/interfaces/company-state';
+import { type IGlobalState } from '@state/global-state';
+import { type IMessageLogState } from '@state/message-log-state';
+import { decorators } from '@state/container';
+import { TYPES } from '@state/types';
+import { IClone, IMakeCloneParameters, ICloneParameterValues } from './interfaces';
 import { CloneTemplateName } from './types';
 import { ICloneTemplate } from './interfaces/clone-template';
+
+const { lazyInject } = decorators;
 
 export class Clone implements IClone {
   private UI_EVENTS = {
@@ -24,11 +31,20 @@ export class Clone implements IClone {
     CLONE_CHANGED: Symbol('CLONE_CHANGED'),
   };
 
-  private _companyState: ICompanyState;
-  private _globalState: IGlobalState;
-  private _messageLogState: IMessageLogState;
-  private _stateUiConnector: IStateUIConnector;
-  private _formatter: IFormatter;
+  @lazyInject(TYPES.CompanyState)
+  private _companyState!: ICompanyState;
+
+  @lazyInject(TYPES.GlobalState)
+  private _globalState!: IGlobalState;
+
+  @lazyInject(TYPES.MessageLogState)
+  private _messageLogState!: IMessageLogState;
+
+  @lazyInject(TYPES.StateUIConnector)
+  private _stateUiConnector!: IStateUIConnector;
+
+  @lazyInject(TYPES.Formatter)
+  private _formatter!: IFormatter;
 
   private _id: string;
   private _name: string;
@@ -43,13 +59,7 @@ export class Clone implements IClone {
   private _attributes!: Map<Attribute, ICloneParameterValues>;
   private _skills!: Map<Skill, ICloneParameterValues>;
 
-  constructor(parameters: IBaseCloneParameters) {
-    this._companyState = parameters.companyState;
-    this._globalState = parameters.globalState;
-    this._messageLogState = parameters.messageLogState;
-    this._stateUiConnector = parameters.stateUiConnector;
-    this._formatter = parameters.formatter;
-
+  constructor(parameters: IMakeCloneParameters) {
     this._id = parameters.id;
     this._name = parameters.name;
     this._templateName = parameters.templateName;

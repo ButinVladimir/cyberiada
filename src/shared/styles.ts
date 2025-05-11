@@ -220,3 +220,21 @@ export const highlightedValuesStyle = css`
     color: var(--ca-danger-color);
   }
 `;
+
+export const dialogButtonsStyle = css`
+  p.warning {
+    display: none;
+    margin-top: var(--sl-spacing-3x-small);
+    margin-bottom: 0;
+  }
+
+  p.warning.visible {
+    display: block;
+  }
+
+  div.buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--sl-spacing-medium);
+  }
+`;

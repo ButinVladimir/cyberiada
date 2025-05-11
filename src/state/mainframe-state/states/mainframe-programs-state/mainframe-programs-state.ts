@@ -1,4 +1,4 @@
-import { inject, injectable } from 'inversify';
+import { injectable } from 'inversify';
 import { msg, str } from '@lit/localize';
 import { decorators } from '@state/container';
 import programs from '@configs/programs.json';
@@ -27,25 +27,22 @@ export class MainframeProgramsState implements IMainframeProgramsState {
   @lazyInject(TYPES.MainframeState)
   private _mainframeState!: IMainframeState;
 
-  private _stateUiConnector: IStateUIConnector;
-  private _globalState: IGlobalState;
-  private _messageLogState: IMessageLogState;
-  private _formatter: IFormatter;
+  @lazyInject(TYPES.StateUIConnector)
+  private _stateUiConnector!: IStateUIConnector;
+
+  @lazyInject(TYPES.GlobalState)
+  private _globalState!: IGlobalState;
+
+  @lazyInject(TYPES.MessageLogState)
+  private _messageLogState!: IMessageLogState;
+
+  @lazyInject(TYPES.Formatter)
+  private _formatter!: IFormatter;
 
   private _programsList: IProgram[];
   private _ownedPrograms: Map<ProgramName, IProgram>;
 
-  constructor(
-    @inject(TYPES.StateUIConnector) _stateUiConnector: IStateUIConnector,
-    @inject(TYPES.GlobalState) _globalState: IGlobalState,
-    @inject(TYPES.MessageLogState) _messageLogState: IMessageLogState,
-    @inject(TYPES.Formatter) _formatter: IFormatter,
-  ) {
-    this._stateUiConnector = _stateUiConnector;
-    this._globalState = _globalState;
-    this._messageLogState = _messageLogState;
-    this._formatter = _formatter;
-
+  constructor() {
     this._programsList = [];
     this._ownedPrograms = new Map();
 

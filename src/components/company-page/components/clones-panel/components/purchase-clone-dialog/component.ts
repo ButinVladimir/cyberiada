@@ -5,7 +5,6 @@ import { createRef, ref } from 'lit/directives/ref.js';
 import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.component.js';
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.component.js';
 import clamp from 'lodash/clamp';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import { provide } from '@lit/context';
 import { BaseComponent } from '@shared/base-component';
 import { CloneTemplateName } from '@state/company-state/states/clone-factory/types';
@@ -224,7 +223,6 @@ Synchronization is earned by capturing districts and gaining certain favors.`)}
 
         <ca-purchase-clone-dialog-buttons
           slot="footer"
-          clone-template-name=${ifDefined(this._cloneTemplateName)}
           level=${this._level}
           quality=${this._quality}
           name=${this._name}

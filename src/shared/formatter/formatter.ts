@@ -1,6 +1,7 @@
-import { injectable, inject } from 'inversify';
+import { injectable } from 'inversify';
 import type { ISettingsState } from '@state/settings-state/interfaces/settings-state';
 import { TYPES } from '@state/types';
+import { decorators } from '@state/container';
 import { LongNumberFormat } from '../types';
 import { IFormatterParameters, IFormatter, IQualityFormatter } from '../interfaces';
 import {
@@ -20,9 +21,12 @@ import {
 } from './constants';
 import { QualityFormatter } from './quality-formatter';
 
+const { lazyInject } = decorators;
+
 @injectable()
 export class Formatter implements IFormatter {
-  private _settingsState: ISettingsState;
+  @lazyInject(TYPES.SettingsState)
+  private _settingsState!: ISettingsState;
 
   private _decimalLongFormatter!: Intl.NumberFormat;
   private _floatLongFormatter!: Intl.NumberFormat;
@@ -32,9 +36,7 @@ export class Formatter implements IFormatter {
   private _dateTimeFormatter!: Intl.DateTimeFormat;
   private _qualityFormatter: IQualityFormatter;
 
-  constructor(@inject(TYPES.SettingsState) _settingsState: ISettingsState) {
-    this._settingsState = _settingsState;
-
+  constructor() {
     this._qualityFormatter = new QualityFormatter();
 
     this.updateBuiltInFormatters();

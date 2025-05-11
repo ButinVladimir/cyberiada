@@ -1,7 +1,4 @@
 export enum AssignCloneSidejobDialogWarning {
-  selectSidejob = 'selectSidejob',
-  selectClone = 'selectClone',
+  other = 'other',
   needConnectivity = 'needConnectivity',
-  requirementsNotFit = 'requirementsNotFit',
-  cloneAlreadyAssigned = 'cloneAlreadyAssigned',
 }

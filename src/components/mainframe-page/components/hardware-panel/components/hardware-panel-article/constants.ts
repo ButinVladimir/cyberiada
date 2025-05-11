@@ -1,5 +1,5 @@
 import { msg, str } from '@lit/localize';
-import { MainframeHardwareParameterType } from '@state/mainframe-state/states/mainframe-hardware-state/types';
+import { MainframeHardwareParameterType } from '@state/mainframe-state';
 
 interface IMainframeHardwareTexts {
   title: (level: string) => string;

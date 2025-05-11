@@ -17,4 +17,5 @@ export interface IMainframeProcessesState extends ISerializeable<IMainframeProce
   requestUpdatePerformance(): void;
   processTick(): void;
   moveProcess(programName: ProgramName, newPosition: number): void;
+  getAvailableRamForProgram(programName: ProgramName): number;
 }

@@ -1,12 +1,15 @@
-import { inject, injectable } from 'inversify';
+import { injectable } from 'inversify';
 import { v4 as uuid } from 'uuid';
 import { msg, str } from '@lit/localize';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import type { ISettingsState } from '@state/settings-state/interfaces/settings-state';
 import type { IFormatter } from '@shared/interfaces/formatter';
 import { TYPES } from '@state/types';
+import { decorators } from '@state/container';
 import { MessageEvent } from '@shared/types';
 import { IMessageLogState, IMessage } from './interfaces';
+
+const { lazyInject } = decorators;
 
 @injectable()
 export class MessageLogState implements IMessageLogState {
@@ -15,21 +18,19 @@ export class MessageLogState implements IMessageLogState {
     UPDATED_TOASTS: Symbol('UPDATED_TOASTS'),
   };
 
-  private _stateUiConnector: IStateUIConnector;
-  private _settingsState: ISettingsState;
-  private _formatter: IFormatter;
+  @lazyInject(TYPES.StateUIConnector)
+  private _stateUiConnector!: IStateUIConnector;
+
+  @lazyInject(TYPES.SettingsState)
+  private _settingsState!: ISettingsState;
+
+  @lazyInject(TYPES.Formatter)
+  private _formatter!: IFormatter;
+
   private readonly _messages: IMessage[];
   private readonly _toasts: IMessage[];
 
-  constructor(
-    @inject(TYPES.StateUIConnector) _stateUiConnector: IStateUIConnector,
-    @inject(TYPES.SettingsState) _settingsState: ISettingsState,
-    @inject(TYPES.Formatter) _formatter: IFormatter,
-  ) {
-    this._stateUiConnector = _stateUiConnector;
-    this._settingsState = _settingsState;
-    this._formatter = _formatter;
-
+  constructor() {
     this._messages = [];
     this._toasts = [];
 

@@ -2,15 +2,12 @@ import { css, html } from 'lit';
 import { localized, msg } from '@lit/localize';
 import { customElement } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
-import { BaseComponent } from '@shared/base-component';
-import { ProgramAlert } from '@shared/types';
 import {
   ConfirmationAlertOpenEvent,
   ConfirmationAlertSubmitEvent,
 } from '@components/game-screen/components/confirmation-alert/events';
-import { IProcess } from '@state/mainframe-state/states/mainframe-processes-state/interfaces/process';
-import { ProgramName } from '@state/mainframe-state/states/progam-factory/types';
-import { DELETE_VALUES, ENTITY_ACTIVE_VALUES, SCREEN_WIDTH_POINTS } from '@shared/styles';
+import { IProcess, ProgramName } from '@state/mainframe-state';
+import { BaseComponent, ProgramAlert, DELETE_VALUES, ENTITY_ACTIVE_VALUES, SCREEN_WIDTH_POINTS } from '@shared/index';
 import { SortableElementMovedEvent } from '@components/shared/sortable-list/events/sortable-element-moved';
 import { ProcessesListController } from './controller';
 

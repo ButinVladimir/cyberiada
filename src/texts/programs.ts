@@ -68,6 +68,7 @@ export const PROGRAM_DESCRIPTION_TEXTS = {
   coresDiff: (cores: string, coresDiff: string) => msg(str`Cores: Up to ${cores} (${coresDiff})`),
   coresAllUnused: () => msg('Cores: 1 + All available'),
   completionTimeAutoscalable: () => msg('Completion time: Instant'),
+  completionTimeNever: () => msg('Completion time: Never'),
   completionTimeProcess: (time: string) => msg(str`Completion time: ${time}`),
   completionTimeDiff: (minTime: string, maxTime: string, minTimeDiff: string, maxTimeDiff: string) =>
     msg(str`Completion time: ${minTime} \u2014 ${maxTime} (${minTimeDiff} \u2014 ${maxTimeDiff})`),

@@ -1,20 +1,19 @@
-import { binarySearchDecimal } from '@shared/helpers';
-import { IAutomationState } from '@state/automation-state/interfaces/automation-state';
+import { binarySearchDecimal } from '@shared/index';
+import { type IAutomationState } from '@state/automation-state';
+import { decorators } from '@state/container';
+import { TYPES } from '@state/types';
 import { OtherProgramName } from '../types';
 import { BaseProgram } from './base-program';
-import { IMainframeProgramsAutobuyerParameters, IProgram } from '../interfaces';
+import { IProgram } from '../interfaces';
+
+const { lazyInject } = decorators;
 
 export class MainframeProgramsAutobuyerProgram extends BaseProgram {
   public readonly name = OtherProgramName.mainframeProgramsAutobuyer;
   public readonly isAutoscalable = false;
 
-  private _automationState: IAutomationState;
-
-  constructor(parameters: IMainframeProgramsAutobuyerParameters) {
-    super(parameters);
-
-    this._automationState = parameters.automationState;
-  }
+  @lazyInject(TYPES.AutomationState)
+  private _automationState!: IAutomationState;
 
   handlePerformanceUpdate(): void {}
 

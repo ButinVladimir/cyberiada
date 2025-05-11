@@ -1,22 +1,20 @@
-import { ISettingsState } from '@state/settings-state/interfaces/settings-state';
-import { IncomeSource } from '@shared/types';
 import programs from '@configs/programs.json';
+import { type ISettingsState } from '@state/settings-state';
+import { IncomeSource } from '@shared/types';
 import { calculateQualityLinear } from '@shared/helpers';
+import { decorators } from '@state/container';
+import { TYPES } from '@state/types';
 import { OtherProgramName } from '../types';
-import { IShareServerParameters } from '../interfaces/program-parameters/share-server-parameters';
 import { BaseProgram } from './base-program';
+
+const { lazyInject } = decorators;
 
 export class ShareServerProgram extends BaseProgram {
   public readonly name = OtherProgramName.shareServer;
   public readonly isAutoscalable = true;
 
-  private _settingsState: ISettingsState;
-
-  constructor(parameters: IShareServerParameters) {
-    super(parameters);
-
-    this._settingsState = parameters.settingsState;
-  }
+  @lazyInject(TYPES.SettingsState)
+  private _settingsState!: ISettingsState;
 
   handlePerformanceUpdate(): void {}
 

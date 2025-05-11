@@ -1,11 +1,10 @@
-import { css, html, nothing } from 'lit';
+import { html, nothing } from 'lit';
 import { customElement, queryAll } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { msg, localized, str } from '@lit/localize';
 import { consume } from '@lit/context';
 import SlButton from '@shoelace-style/shoelace/dist/components/button/button.component.js';
-import { BaseComponent } from '@shared/base-component';
-import { warningStyle } from '@shared/styles';
+import { BaseComponent, dialogButtonsStyle, warningStyle } from '@shared/index';
 import { COMMON_TEXTS, DISTRICT_NAMES, SIDEJOB_TEXTS } from '@texts/index';
 import { type ISidejob } from '@state/company-state';
 import { AssignCloneSidejobDialogButtonsController } from './controller';
@@ -16,26 +15,7 @@ import { AssignCloneSidejobDialogWarning } from './types';
 @localized()
 @customElement('ca-assign-clone-sidejob-dialog-buttons')
 export class AssignCloneSidejobDialogButtons extends BaseComponent {
-  static styles = [
-    warningStyle,
-    css`
-      p.warning {
-        display: none;
-        margin-top: var(--sl-spacing-3x-small);
-        margin-bottom: 0;
-      }
-
-      p.warning.visible {
-        display: block;
-      }
-
-      div.buttons {
-        display: flex;
-        justify-content: flex-end;
-        gap: var(--sl-spacing-medium);
-      }
-    `,
-  ];
+  static styles = [warningStyle, dialogButtonsStyle];
 
   hasPartialUpdate = true;
 
@@ -51,18 +31,11 @@ export class AssignCloneSidejobDialogButtons extends BaseComponent {
   private _warningElements!: NodeListOf<HTMLParagraphElement>;
 
   private _assignButtonRef = createRef<SlButton>();
-  private _warning?: AssignCloneSidejobDialogWarning;
 
   constructor() {
     super();
 
     this._controller = new AssignCloneSidejobDialogButtonsController(this);
-  }
-
-  performUpdate() {
-    this._warning = this.selectInitialWarning();
-
-    super.performUpdate();
   }
 
   render() {
@@ -104,56 +77,39 @@ export class AssignCloneSidejobDialogButtons extends BaseComponent {
 
   private renderWarnings = () => {
     return html`
-      <p class="warning" data-warning=${AssignCloneSidejobDialogWarning.selectSidejob}>
-        ${msg('Select sidejob name and district')}
-      </p>
-      <p class="warning" data-warning=${AssignCloneSidejobDialogWarning.selectClone}>${msg('Select clone')}</p>
       <p class="warning" data-warning=${AssignCloneSidejobDialogWarning.needConnectivity}>
         ${msg('Not enough connectivity')}
       </p>
-      <p class="warning" data-warning=${AssignCloneSidejobDialogWarning.requirementsNotFit}>
-        ${msg(`Clone doesn't fit requirements`)}
-      </p>
-      ${this.renderExistingSidejobWarning()}
+      <p class="warning" data-warning=${AssignCloneSidejobDialogWarning.other}>${this.renderOtherWarnings()}</p>
     `;
   };
 
-  private renderExistingSidejobWarning = () => {
-    if (!this._existingSidejob) {
-      return nothing;
-    }
-
-    const sidejobName = SIDEJOB_TEXTS[this._existingSidejob.sidejobName].title();
-    const districtName = DISTRICT_NAMES[this._existingSidejob.district.name]();
-
-    return html` <p class="warning" data-warning=${AssignCloneSidejobDialogWarning.cloneAlreadyAssigned}>
-      ${msg(str`Clone has already assigned sidejob "${sidejobName}" in district "${districtName}"`)}
-    </p>`;
-  };
-
-  private selectInitialWarning(): AssignCloneSidejobDialogWarning | undefined {
+  private renderOtherWarnings = () => {
     if (!this._sidejob) {
-      return AssignCloneSidejobDialogWarning.selectSidejob;
+      return msg('Select sidejob name and district');
     }
 
     if (!this._sidejob.assignedClone) {
-      return AssignCloneSidejobDialogWarning.selectClone;
+      return msg('Select clone');
     }
 
     if (!this._sidejob.checkRequirements()) {
-      return AssignCloneSidejobDialogWarning.requirementsNotFit;
+      return msg(`Clone doesn't fit requirements`);
     }
 
     if (this._existingSidejob) {
-      return AssignCloneSidejobDialogWarning.cloneAlreadyAssigned;
+      const sidejobName = SIDEJOB_TEXTS[this._existingSidejob.sidejobName].title();
+      const districtName = DISTRICT_NAMES[this._existingSidejob.district.name]();
+
+      return msg(str`Clone has already assigned sidejob "${sidejobName}" in district "${districtName}"`);
     }
 
-    return undefined;
-  }
+    return nothing;
+  };
 
   private selectWarning(): AssignCloneSidejobDialogWarning | undefined {
     if (!this._sidejob) {
-      return AssignCloneSidejobDialogWarning.selectSidejob;
+      return AssignCloneSidejobDialogWarning.other;
     }
 
     const totalConnectivity = this._controller.getTotalConnectivity(this._sidejob.district.index);
@@ -163,7 +119,7 @@ export class AssignCloneSidejobDialogButtons extends BaseComponent {
       return AssignCloneSidejobDialogWarning.needConnectivity;
     }
 
-    return this._warning;
+    return AssignCloneSidejobDialogWarning.other;
   }
 
   private updateAssignButton(): void {

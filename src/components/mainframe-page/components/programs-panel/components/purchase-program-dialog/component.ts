@@ -1,29 +1,30 @@
 import { css, html, nothing } from 'lit';
+import { provide } from '@lit/context';
 import { localized, msg, str } from '@lit/localize';
 import { customElement, property, state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.component.js';
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.component.js';
 import clamp from 'lodash/clamp';
-import { BaseComponent } from '@shared/base-component';
-import type { ProgramName } from '@state/mainframe-state/states/progam-factory/types';
+import { type ProgramName, type IProgram } from '@state/mainframe-state';
 import {
   ConfirmationAlertOpenEvent,
   ConfirmationAlertSubmitEvent,
 } from '@components/game-screen/components/confirmation-alert/events';
-import { ProgramAlert } from '@shared/types';
 import {
+  BaseComponent,
+  ProgramAlert,
   inputLabelStyle,
   hintStyle,
   sectionTitleStyle,
   mediumModalStyle,
   modalBodyScrollStyle,
   SCREEN_WIDTH_POINTS,
-} from '@shared/styles';
+} from '@shared/index';
 import { PROGRAM_TEXTS, COMMON_TEXTS } from '@texts/index';
 import { PurchaseProgramDialogCloseEvent } from './events';
 import { PurchaseProgramDialogController } from './controller';
+import { existingProgramContext, temporaryProgramContext } from './contexts';
 
 @localized()
 @customElement('ca-purchase-program-dialog')
@@ -104,6 +105,12 @@ export class PurchaseProgramDialog extends BaseComponent {
   @state()
   private _level = 1;
 
+  @provide({ context: temporaryProgramContext })
+  private _program?: IProgram;
+
+  @provide({ context: existingProgramContext })
+  private _existingProgram?: IProgram;
+
   constructor() {
     super();
 
@@ -120,6 +127,12 @@ export class PurchaseProgramDialog extends BaseComponent {
     super.disconnectedCallback();
 
     document.removeEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmConfirmationAlert);
+  }
+
+  performUpdate() {
+    this.updateContext();
+
+    super.performUpdate();
   }
 
   updated(_changedProperties: Map<string, any>) {
@@ -188,26 +201,28 @@ If you already have program with same name, old one will be replaced with new on
           </div>
 
           ${this._programName
-            ? html`<ca-program-diff-text
-                program-name=${this._programName}
-                level=${this._level}
-                quality=${this._quality}
-              >
-              </ca-program-diff-text>`
+            ? html`<ca-purchase-program-dialog-description> </ca-purchase-program-dialog-description>`
             : nothing}
         </div>
 
         <ca-purchase-program-dialog-buttons
           slot="footer"
-          program-name=${ifDefined(this._programName)}
-          level=${this._level}
-          quality=${this._quality}
           @buy-program=${this.handleOpenConfirmationAlert}
           @cancel=${this.handleClose}
         >
         </ca-purchase-program-dialog-buttons>
       </sl-dialog>
     `;
+  }
+
+  private updateContext() {
+    if (this._programName) {
+      this._program = this._controller.getSelectedProgram(this._programName, this._quality, this._level);
+      this._existingProgram = this._controller.getOwnedProgram(this._programName);
+    } else {
+      this._program = undefined;
+      this._existingProgram = undefined;
+    }
   }
 
   private renderProgramOption = (program: ProgramName) => {
