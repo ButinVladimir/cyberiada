@@ -64,7 +64,7 @@ export class MoneyState implements IMoneyState {
   }
 
   getExpenses(purchaseType: PurchaseType): number {
-    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.MONEY_SPENT);
+    this._stateUiConnector.connectEvent(this.UI_EVENTS.MONEY_SPENT);
 
     return this._expenses.get(purchaseType) ?? 0;
   }

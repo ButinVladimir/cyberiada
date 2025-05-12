@@ -23,12 +23,6 @@ const { lazyInject } = decorators;
 
 @injectable()
 export class MainframeProcessesState implements IMainframeProcessesState {
-  private UI_EVENTS = {
-    PROCESSES_UPDATED: Symbol('PROCESSES_UPDATED'),
-    AVAILABLE_RAM_UPDATED: Symbol('AVAILABLE_RAM_UPDATED'),
-    AVAILABLE_CORES_UPDATED: Symbol('AVAILABLE_CORES_UPDATED'),
-  };
-
   @lazyInject(TYPES.MainframeState)
   private _mainframeState!: IMainframeState;
 
@@ -62,46 +56,27 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     this._processUpdateRequested = false;
     this._performanceUpdateRequested = false;
 
-    this._stateUiConnector.registerEvents(this.UI_EVENTS);
+    this._stateUiConnector.registerEventEmitter(this, [
+      '_availableCores',
+      '_availableRam',
+      '_runningScalableProcess',
+      '_processesList',
+    ]);
   }
 
   get availableCores() {
-    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.AVAILABLE_CORES_UPDATED);
-
     return this._availableCores;
   }
 
-  private set availableCores(value: number) {
-    if (this._availableCores !== value) {
-      this._stateUiConnector.enqueueEvent(this.UI_EVENTS.AVAILABLE_CORES_UPDATED);
-    }
-
-    this._availableCores = value;
-  }
-
   get availableRam() {
-    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.AVAILABLE_RAM_UPDATED);
-
     return this._availableRam;
   }
 
-  private set availableRam(value: number) {
-    if (this._availableRam !== value) {
-      this._stateUiConnector.enqueueEvent(this.UI_EVENTS.AVAILABLE_RAM_UPDATED);
-    }
-
-    this._availableRam = value;
-  }
-
   get runningScalableProcess() {
-    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.PROCESSES_UPDATED);
-
     return this._runningScalableProcess;
   }
 
   listProcesses(): IProcess[] {
-    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.PROCESSES_UPDATED);
-
     return this._processesList;
   }
 
@@ -173,8 +148,6 @@ export class MainframeProcessesState implements IMainframeProcessesState {
       );
     }
 
-    this._stateUiConnector.enqueueEvent(this.UI_EVENTS.PROCESSES_UPDATED);
-
     return true;
   }
 
@@ -217,8 +190,6 @@ export class MainframeProcessesState implements IMainframeProcessesState {
       }
     }
 
-    this._stateUiConnector.enqueueEvent(this.UI_EVENTS.PROCESSES_UPDATED);
-
     this.requestUpdateProcesses();
   }
 
@@ -226,8 +197,6 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     this.clearState();
 
     this._messageLogState.postMessage(ProgramsEvent.allProcessesDeleted, msg('All process have been deleted'));
-
-    this._stateUiConnector.enqueueEvent(this.UI_EVENTS.PROCESSES_UPDATED);
 
     this.requestUpdateProcesses();
   }
@@ -388,10 +357,8 @@ export class MainframeProcessesState implements IMainframeProcessesState {
       this._runningScalableProcess.usedCores = runningScalableProcessCores;
     }
 
-    this.availableRam = availableRam;
-    this.availableCores = availableCores;
-
-    this._stateUiConnector.enqueueEvent(this.UI_EVENTS.PROCESSES_UPDATED);
+    this._availableRam = availableRam;
+    this._availableCores = availableCores;
   };
 
   private updateFinishedProcesses(): void {
@@ -408,14 +375,10 @@ export class MainframeProcessesState implements IMainframeProcessesState {
         index++;
       }
     }
-
-    this._stateUiConnector.enqueueEvent(this.UI_EVENTS.PROCESSES_UPDATED);
   }
 
   private createProcess = (processParameters: ISerializedProcess): IProcess => {
     const process = new Process({
-      mainframeProcessesState: this,
-      stateUiConnector: this._stateUiConnector,
       isActive: processParameters.isActive,
       threads: processParameters.threads,
       program: this._mainframeState.programs.getOwnedProgramByName(processParameters.programName)!,

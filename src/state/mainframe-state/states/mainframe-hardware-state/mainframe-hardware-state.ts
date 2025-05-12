@@ -84,7 +84,7 @@ export class MainframeHardwareState implements IMainframeHardwareState {
   }
 
   listParameters(): IMainframeHardwareParameter[] {
-    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.HARDWARE_LIST_CHANGED);
+    this._stateUiConnector.connectEvent(this.UI_EVENTS.HARDWARE_LIST_CHANGED);
 
     return this._parametersList;
   }

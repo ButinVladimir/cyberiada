@@ -37,13 +37,13 @@ export class SynchronizationParameter implements ISynchronizationParameter {
   }
 
   get baseValue() {
-    this._stateUIConnector.connectEventHandler(this.UI_EVENTS.SYNCHRONIZATION_UPDATED);
+    this._stateUIConnector.connectEvent(this.UI_EVENTS.SYNCHRONIZATION_UPDATED);
 
     return this._baseValue;
   }
 
   get totalValue() {
-    this._stateUIConnector.connectEventHandler(this.UI_EVENTS.SYNCHRONIZATION_UPDATED);
+    this._stateUIConnector.connectEvent(this.UI_EVENTS.SYNCHRONIZATION_UPDATED);
 
     return this._totalValue;
   }

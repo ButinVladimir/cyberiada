@@ -46,7 +46,7 @@ export class DistrictTierParameter implements IDistrictTierParameter {
   }
 
   get tier(): number {
-    this._stateUIConnector.connectEventHandler(this.UI_EVENTS.DISTRICT_TIER_CHANGED);
+    this._stateUIConnector.connectEvent(this.UI_EVENTS.DISTRICT_TIER_CHANGED);
 
     return this._tier;
   }

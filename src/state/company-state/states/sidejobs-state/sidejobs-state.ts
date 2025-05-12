@@ -63,7 +63,7 @@ export class SidejobsState implements ISidejobsState {
   }
 
   listSidejobs(): ISidejob[] {
-    this._stateUIConnector.connectEventHandler(this.UI_EVENTS.SIDEJOBS_UPDATED);
+    this._stateUIConnector.connectEvent(this.UI_EVENTS.SIDEJOBS_UPDATED);
 
     return this._sidejobsList;
   }

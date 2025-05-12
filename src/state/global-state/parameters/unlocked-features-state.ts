@@ -33,7 +33,7 @@ export class UnlockedFeaturesState implements IUnlockedFeaturesState {
   }
 
   isFeatureUnlocked(feature: Feature): boolean {
-    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.FEATURE_UNLOCKED);
+    this._stateUiConnector.connectEvent(this.UI_EVENTS.FEATURE_UNLOCKED);
 
     return this._unlockedFeatures.has(feature);
   }
@@ -55,7 +55,7 @@ export class UnlockedFeaturesState implements IUnlockedFeaturesState {
   }
 
   listUnlockedFeatures(): Feature[] {
-    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.FEATURE_UNLOCKED);
+    this._stateUiConnector.connectEvent(this.UI_EVENTS.FEATURE_UNLOCKED);
 
     return Array.from(this._unlockedFeatures.values());
   }

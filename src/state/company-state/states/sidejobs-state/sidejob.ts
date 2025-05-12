@@ -59,7 +59,7 @@ export class Sidejob implements ISidejob {
   }
 
   get isActive() {
-    this._stateUIConnector.connectEventHandler(this.UI_EVENTS.SIDEJOB_ACTIVE_TOGGLED);
+    this._stateUIConnector.connectEvent(this.UI_EVENTS.SIDEJOB_ACTIVE_TOGGLED);
 
     return this._isActive;
   }

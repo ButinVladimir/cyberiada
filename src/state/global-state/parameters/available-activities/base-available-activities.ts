@@ -30,7 +30,7 @@ export abstract class BaseAvailableActivities<Key = string> implements IAvailabl
   }
 
   listAvailableActivities(): Key[] {
-    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.AVAILABLE_ACTIVITIES_UPDATED);
+    this._stateUiConnector.connectEvent(this.UI_EVENTS.AVAILABLE_ACTIVITIES_UPDATED);
 
     return this._activitiesList;
   }

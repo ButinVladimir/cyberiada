@@ -72,7 +72,7 @@ export class MessageLogState implements IMessageLogState {
   }
 
   getMessages(): IMessage[] {
-    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.UPDATED_MESSAGES);
+    this._stateUiConnector.connectEvent(this.UI_EVENTS.UPDATED_MESSAGES);
 
     return this._messages;
   }
@@ -84,7 +84,7 @@ export class MessageLogState implements IMessageLogState {
   }
 
   getToasts(): IMessage[] {
-    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.UPDATED_TOASTS);
+    this._stateUiConnector.connectEvent(this.UI_EVENTS.UPDATED_TOASTS);
 
     const toastsBatch = this._toasts.splice(0);
 

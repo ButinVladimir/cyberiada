@@ -25,7 +25,7 @@ export class DistrictSynchronizationParameter implements IDistrictSynchronizatio
   }
 
   get value(): number {
-    this._stateUIConnector.connectEventHandler(this.UI_EVENTS.SYNCHRONIZATION_UPDATED);
+    this._stateUIConnector.connectEvent(this.UI_EVENTS.SYNCHRONIZATION_UPDATED);
 
     return this._value;
   }

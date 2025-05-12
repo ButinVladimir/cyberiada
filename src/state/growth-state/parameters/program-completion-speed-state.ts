@@ -40,19 +40,19 @@ export class ProgramCompletionSpeedState implements IProgramCompletionSpeedState
   }
 
   get multiplierByProgram() {
-    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.PROGRAM_COMPLETION_SPEED_CHANGED);
+    this._stateUiConnector.connectEvent(this.UI_EVENTS.PROGRAM_COMPLETION_SPEED_CHANGED);
 
     return this._multiplierByProgram;
   }
 
   get multiplierByHardware() {
-    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.PROGRAM_COMPLETION_SPEED_CHANGED);
+    this._stateUiConnector.connectEvent(this.UI_EVENTS.PROGRAM_COMPLETION_SPEED_CHANGED);
 
     return this._multiplierByHardware;
   }
 
   get totalMultiplier() {
-    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.PROGRAM_COMPLETION_SPEED_CHANGED);
+    this._stateUiConnector.connectEvent(this.UI_EVENTS.PROGRAM_COMPLETION_SPEED_CHANGED);
 
     return this._totalMultiplier;
   }

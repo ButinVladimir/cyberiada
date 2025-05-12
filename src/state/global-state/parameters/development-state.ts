@@ -48,7 +48,7 @@ export class DevelopmentState implements IDevelopmentState {
   }
 
   get level() {
-    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.DEVELOPMENT_LEVEL_CHANGED);
+    this._stateUiConnector.connectEvent(this.UI_EVENTS.DEVELOPMENT_LEVEL_CHANGED);
 
     return this._level;
   }

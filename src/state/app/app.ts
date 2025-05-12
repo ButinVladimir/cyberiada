@@ -49,7 +49,7 @@ export class App implements IApp {
   }
 
   get appStage() {
-    this._stateUIConnector.connectEventHandler(this.UI_EVENTS.CHANGED_APP_STAGE);
+    this._stateUIConnector.connectEvent(this.UI_EVENTS.CHANGED_APP_STAGE);
 
     return this._appStage;
   }

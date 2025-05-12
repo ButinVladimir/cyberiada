@@ -84,7 +84,7 @@ export class Clone implements IClone {
   }
 
   get name() {
-    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.CLONE_NAME_CHANGED);
+    this._stateUiConnector.connectEvent(this.UI_EVENTS.CLONE_NAME_CHANGED);
 
     return this._name;
   }
@@ -110,7 +110,7 @@ export class Clone implements IClone {
   }
 
   get level() {
-    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.CLONE_CHANGED);
+    this._stateUiConnector.connectEvent(this.UI_EVENTS.CLONE_CHANGED);
 
     return this._level;
   }
@@ -124,7 +124,7 @@ export class Clone implements IClone {
   }
 
   get autoUpgradeEnabled() {
-    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.CLONE_AUTOUPGRADE_TOGGLED);
+    this._stateUiConnector.connectEvent(this.UI_EVENTS.CLONE_AUTOUPGRADE_TOGGLED);
 
     return this._autoUpgradeEnabled;
   }
@@ -156,25 +156,25 @@ export class Clone implements IClone {
   }
 
   getBaseAttributeValue(attribute: Attribute): number {
-    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.CLONE_CHANGED);
+    this._stateUiConnector.connectEvent(this.UI_EVENTS.CLONE_CHANGED);
 
     return this._attributes.get(attribute)!.baseValue;
   }
 
   getTotalAttributeValue(attribute: Attribute): number {
-    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.CLONE_CHANGED);
+    this._stateUiConnector.connectEvent(this.UI_EVENTS.CLONE_CHANGED);
 
     return this._attributes.get(attribute)!.totalValue;
   }
 
   getBaseSkillValue(skill: Skill): number {
-    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.CLONE_CHANGED);
+    this._stateUiConnector.connectEvent(this.UI_EVENTS.CLONE_CHANGED);
 
     return this._skills.get(skill)!.baseValue;
   }
 
   getTotalSkillValue(skill: Skill): number {
-    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.CLONE_CHANGED);
+    this._stateUiConnector.connectEvent(this.UI_EVENTS.CLONE_CHANGED);
 
     return this._skills.get(skill)!.totalValue;
   }

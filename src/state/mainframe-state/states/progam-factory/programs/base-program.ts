@@ -49,13 +49,13 @@ export abstract class BaseProgram implements IProgram {
   }
 
   get level() {
-    this.stateUiConnector.connectEventHandler(this.UI_EVENTS.PROGRAM_UPGRADED);
+    this.stateUiConnector.connectEvent(this.UI_EVENTS.PROGRAM_UPGRADED);
 
     return this._level;
   }
 
   get quality() {
-    this.stateUiConnector.connectEventHandler(this.UI_EVENTS.PROGRAM_UPGRADED);
+    this.stateUiConnector.connectEvent(this.UI_EVENTS.PROGRAM_UPGRADED);
 
     return this._quality;
   }
@@ -67,7 +67,7 @@ export abstract class BaseProgram implements IProgram {
   }
 
   get autoUpgradeEnabled() {
-    this.stateUiConnector.connectEventHandler(this.UI_EVENTS.PROGRAM_UPGRADED);
+    this.stateUiConnector.connectEvent(this.UI_EVENTS.PROGRAM_UPGRADED);
 
     return this._autoUpgradeEnabled;
   }

@@ -43,7 +43,7 @@ export abstract class MainframeHardwareParameter implements IMainframeHardwarePa
   }
 
   get level() {
-    this.stateUiConnector.connectEventHandler(this.UI_EVENTS.HARDWARE_UPGRADED);
+    this.stateUiConnector.connectEvent(this.UI_EVENTS.HARDWARE_UPGRADED);
 
     return this._level;
   }
@@ -51,13 +51,13 @@ export abstract class MainframeHardwareParameter implements IMainframeHardwarePa
   protected abstract get baseLevel(): number;
 
   get totalLevel() {
-    this.stateUiConnector.connectEventHandler(this.UI_EVENTS.HARDWARE_UPGRADED);
+    this.stateUiConnector.connectEvent(this.UI_EVENTS.HARDWARE_UPGRADED);
 
     return this._level + this.baseLevel;
   }
 
   get autoUpgradeEnabled() {
-    this.stateUiConnector.connectEventHandler(this.UI_EVENTS.HARDWARE_AUTOBUYER_UPDATED);
+    this.stateUiConnector.connectEvent(this.UI_EVENTS.HARDWARE_AUTOBUYER_UPDATED);
 
     return this._autoUpgradeEnabled;
   }

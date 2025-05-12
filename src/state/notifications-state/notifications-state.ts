@@ -42,7 +42,7 @@ export class NotificationsState implements INotificationsState {
   }
 
   getFirstUnreadNotification(): INotification | undefined {
-    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.UPDATED_NOTIFICATIONS);
+    this._stateUiConnector.connectEvent(this.UI_EVENTS.UPDATED_NOTIFICATIONS);
 
     while (this.hasUnreadNotifications()) {
       const notification = this._notifications[0];
@@ -58,13 +58,13 @@ export class NotificationsState implements INotificationsState {
   }
 
   hasUnreadNotifications(): boolean {
-    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.UPDATED_NOTIFICATIONS);
+    this._stateUiConnector.connectEvent(this.UI_EVENTS.UPDATED_NOTIFICATIONS);
 
     return this._notifications.length > 0;
   }
 
   hasNextNotification(): boolean {
-    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.UPDATED_NOTIFICATIONS);
+    this._stateUiConnector.connectEvent(this.UI_EVENTS.UPDATED_NOTIFICATIONS);
 
     return this._notifications.length > 1;
   }

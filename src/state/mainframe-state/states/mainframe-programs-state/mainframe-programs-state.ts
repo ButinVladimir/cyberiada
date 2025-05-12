@@ -103,7 +103,7 @@ export class MainframeProgramsState implements IMainframeProgramsState {
   }
 
   listOwnedPrograms(): IProgram[] {
-    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.OWNED_PROGRAMS_UPDATED);
+    this._stateUiConnector.connectEvent(this.UI_EVENTS.OWNED_PROGRAMS_UPDATED);
 
     return this._programsList;
   }

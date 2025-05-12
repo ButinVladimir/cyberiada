@@ -1,15 +1,19 @@
 import { IProgram } from '@state/mainframe-state/states/progam-factory/interfaces/program';
-import { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
-import { IMainframeProcessesState, IProcess, IProcessParameters, ISerializedProcess } from './interfaces';
+import { decorators } from '@state/container';
+import { type IStateUIConnector } from '@state/state-ui-connector';
+import { IProcess, type IProcessParameters, ISerializedProcess } from './interfaces';
+import { TYPES } from '@/state/types';
+import { type IMainframeState } from '../../interfaces';
+
+const { lazyInject } = decorators;
 
 export class Process implements IProcess {
-  private UI_EVENTS = {
-    PROCESS_UPDATED: Symbol('PROCESS_UPDATED'),
-    PROCESS_ACTIVITY_TOGGLED: Symbol('PROCESS_ACTIVITY_TOGGLED'),
-  };
+  @lazyInject(TYPES.StateUIConnector)
+  private _stateUiConnector!: IStateUIConnector;
 
-  private _stateUiConnector: IStateUIConnector;
-  private _mainframeProcessesState: IMainframeProcessesState;
+  @lazyInject(TYPES.MainframeState)
+  private _mainframeState!: IMainframeState;
+
   private _program: IProgram;
   private _isActive: boolean;
   private _threads: number;
@@ -17,15 +21,17 @@ export class Process implements IProcess {
   private _usedCores: number;
 
   constructor(parameters: IProcessParameters) {
-    this._stateUiConnector = parameters.stateUiConnector;
-    this._mainframeProcessesState = parameters.mainframeProcessesState;
     this._program = parameters.program;
     this._isActive = parameters.isActive;
     this._threads = parameters.threads;
     this._currentCompletionPoints = parameters.currentCompletionPoints;
     this._usedCores = 0;
 
-    this._stateUiConnector.registerEvents(this.UI_EVENTS);
+    this._stateUiConnector.registerEventEmitter(this, [
+      '_isActive',
+      '_threads',
+      '_usedCores'
+    ]);
   }
 
   get program() {
@@ -33,14 +39,10 @@ export class Process implements IProcess {
   }
 
   get isActive() {
-    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.PROCESS_ACTIVITY_TOGGLED);
-
     return this._isActive;
   }
 
   get threads() {
-    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.PROCESS_UPDATED);
-
     return this._threads;
   }
 
@@ -54,13 +56,11 @@ export class Process implements IProcess {
 
   get totalRam() {
     return this.program.isAutoscalable
-      ? this._mainframeProcessesState.availableRam + 1
+      ? this._mainframeState.processes.availableRam + 1
       : this.program.ram * this.threads;
   }
 
   get usedCores() {
-    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.PROCESS_UPDATED);
-
     return this._usedCores;
   }
 
@@ -68,7 +68,6 @@ export class Process implements IProcess {
     if (this._usedCores !== value) {
       this._usedCores = value;
       this._program.handlePerformanceUpdate();
-      this._stateUiConnector.enqueueEvent(this.UI_EVENTS.PROCESS_UPDATED);
     }
   }
 
@@ -86,9 +85,7 @@ export class Process implements IProcess {
 
   toggleActive(active: boolean) {
     this._isActive = active;
-    this._mainframeProcessesState.requestUpdateProcesses();
-
-    this._stateUiConnector.enqueueEvent(this.UI_EVENTS.PROCESS_ACTIVITY_TOGGLED);
+    this._mainframeState.processes.requestUpdateProcesses();
   }
 
   increaseCompletion(delta: number): void {
@@ -108,10 +105,8 @@ export class Process implements IProcess {
   update(threads: number) {
     this._threads = threads;
     this.resetCompletion();
-    this._mainframeProcessesState.requestUpdateProcesses();
+    this._mainframeState.processes.requestUpdateProcesses();
     this.program.handlePerformanceUpdate();
-
-    this._stateUiConnector.enqueueEvent(this.UI_EVENTS.PROCESS_UPDATED);
   }
 
   serialize(): ISerializedProcess {
@@ -124,6 +119,6 @@ export class Process implements IProcess {
   }
 
   removeAllEventListeners() {
-    this._stateUiConnector.unregisterEvents(this.UI_EVENTS);
+    this._stateUiConnector.unregisterEventEmitter(this);
   }
 }

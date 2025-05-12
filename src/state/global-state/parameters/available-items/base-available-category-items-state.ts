@@ -42,7 +42,7 @@ export abstract class BaseAvailableCategoryItemsState<Key = string> implements I
   }
 
   listAvailableItems(): Key[] {
-    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.AVAILABLE_ITEMS_UPDATED);
+    this._stateUiConnector.connectEvent(this.UI_EVENTS.AVAILABLE_ITEMS_UPDATED);
 
     return this._itemsList;
   }

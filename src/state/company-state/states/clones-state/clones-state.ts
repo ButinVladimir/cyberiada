@@ -54,13 +54,13 @@ export class CompanyClonesState implements ICompanyClonesState {
   }
 
   get availableSynchronization() {
-    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.SYNCHRONIZATION_UPDATED);
+    this._stateUiConnector.connectEvent(this.UI_EVENTS.SYNCHRONIZATION_UPDATED);
 
     return this._availableSynchronization;
   }
 
   listClones(): IClone[] {
-    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.CLONES_UPDATED);
+    this._stateUiConnector.connectEvent(this.UI_EVENTS.CLONES_UPDATED);
 
     return this._clonesList;
   }

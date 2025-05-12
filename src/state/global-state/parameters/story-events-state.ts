@@ -36,7 +36,7 @@ export class StoryEventsState implements IStoryEventsState {
   }
 
   listGoals(): IStoryGoal[] {
-    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.STORY_EVENT_REACHED);
+    this._stateUiConnector.connectEvent(this.UI_EVENTS.STORY_EVENT_REACHED);
 
     const availableGoals: IStoryGoal[] = [];
     const storyEvents = this._globalState.scenario.currentValues.storyEvents;
