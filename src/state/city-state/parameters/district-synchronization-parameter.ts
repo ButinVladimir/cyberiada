@@ -7,10 +7,6 @@ import { IDistrictState, IDistrictSynchronizationParameter } from '../interfaces
 const { lazyInject } = decorators;
 
 export class DistrictSynchronizationParameter implements IDistrictSynchronizationParameter {
-  private UI_EVENTS = {
-    SYNCHRONIZATION_UPDATED: Symbol('SYNCHRONIZATION_UPDATED'),
-  };
-
   @lazyInject(TYPES.StateUIConnector)
   private _stateUIConnector!: IStateUIConnector;
 
@@ -21,12 +17,10 @@ export class DistrictSynchronizationParameter implements IDistrictSynchronizatio
     this._district = district;
     this._value = 0;
 
-    this._stateUIConnector.registerEvents(this.UI_EVENTS);
+    this._stateUIConnector.registerEventEmitter(this, ['_value']);
   }
 
   get value(): number {
-    this._stateUIConnector.connectEvent(this.UI_EVENTS.SYNCHRONIZATION_UPDATED);
-
     return this._value;
   }
 
@@ -34,11 +28,9 @@ export class DistrictSynchronizationParameter implements IDistrictSynchronizatio
     const districtTypeData = this._district.template;
 
     this._value = calculatePower(this._district.parameters.tier.tier, districtTypeData.parameters.synchronization);
-
-    this._stateUIConnector.enqueueEvent(this.UI_EVENTS.SYNCHRONIZATION_UPDATED);
   }
 
   removeAllEventListeners(): void {
-    this._stateUIConnector.unregisterEvents(this.UI_EVENTS);
+    this._stateUIConnector.unregisterEventEmitter(this);
   }
 }

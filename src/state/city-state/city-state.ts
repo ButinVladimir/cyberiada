@@ -13,8 +13,6 @@ const { lazyInject } = decorators;
 
 @injectable()
 export class CityState implements ICityState {
-  private UI_EVENTS = {};
-
   @lazyInject(TYPES.GlobalState)
   private _globalState!: IGlobalState;
 
@@ -30,7 +28,7 @@ export class CityState implements ICityState {
     this._districts = new Map();
     this._availableDistricts = [];
 
-    this._stateUiConnector.registerEvents(this.UI_EVENTS);
+    this._stateUiConnector.registerEventEmitter(this, []);
   }
 
   get districtsCount() {

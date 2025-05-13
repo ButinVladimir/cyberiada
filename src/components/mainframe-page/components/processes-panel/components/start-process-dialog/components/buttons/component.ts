@@ -8,6 +8,7 @@ import { COMMON_TEXTS, PROGRAM_TEXTS } from '@texts/index';
 import { type IProcess, type IProgram } from '@state/mainframe-state';
 import { consume } from '@lit/context';
 import { existingProcessContext, programContext } from '../../contexts';
+import { classMap } from 'lit/directives/class-map.js';
 
 @localized()
 @customElement('ca-start-process-dialog-buttons')
@@ -45,8 +46,13 @@ export class StartProcessDialogButtons extends BaseComponent {
 
     const warning = this.getWarning();
 
+    const warningClasses = classMap({
+      warning: true,
+      visible: !!warning,
+    });
+
     return html`
-      <p class="warning">${warning}</p>
+      <p class=${warningClasses}>${warning}</p>
 
       <div class="buttons">
         <sl-button size="medium" variant="default" outline @click=${this.handleCancel}>

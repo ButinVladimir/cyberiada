@@ -14,10 +14,6 @@ import { AppStage } from './types';
 
 @injectable()
 export class App implements IApp {
-  private UI_EVENTS = {
-    CHANGED_APP_STAGE: Symbol('CHANGED_APP_STAGE'),
-  };
-
   private _appState: IAppState;
   private _settingsState: ISettingsState;
   private _messageLogState: IMessageLogState;
@@ -43,14 +39,12 @@ export class App implements IApp {
     this._stateUIConnector = _stateUiConnector;
     this._uiVisible = true;
 
-    this._stateUIConnector.registerEvents(this.UI_EVENTS);
+    this._stateUIConnector.registerEventEmitter(this, ['_appStage']);
 
     document.addEventListener('visibilitychange', this.handleVisibilityChange);
   }
 
   get appStage() {
-    this._stateUIConnector.connectEvent(this.UI_EVENTS.CHANGED_APP_STAGE);
-
     return this._appStage;
   }
 
@@ -201,7 +195,6 @@ export class App implements IApp {
   };
 
   private emitChangedAppStageEvent() {
-    this._stateUIConnector.enqueueEvent(this.UI_EVENTS.CHANGED_APP_STAGE);
     this._stateUIConnector.fireEvents();
   }
 

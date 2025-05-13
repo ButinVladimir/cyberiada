@@ -1,7 +1,12 @@
 import { injectable } from 'inversify';
 import { IStateUIConnector } from './interfaces';
 import { BaseComponent } from '@shared/index';
-import { ARRAY_MODIFYING_METHODS, PARTIAL_UPDATE_UI_EVENT } from './constants';
+import {
+  ARRAY_MODIFYING_METHODS,
+  MAP_MODIFYING_METHODS,
+  PARTIAL_UPDATE_UI_EVENT,
+  SET_MODIFYING_METHODS,
+} from './constants';
 
 @injectable()
 export class StateUIConnector implements IStateUIConnector {
@@ -60,20 +65,6 @@ export class StateUIConnector implements IStateUIConnector {
     this._currentlyRenderingComponent = undefined;
   }
 
-  registerEvents(events: Record<any, symbol>): void {
-    Object.values(events).forEach((event) => {
-      if (!this._eventComponentsMap.has(event)) {
-        this._eventComponentsMap.set(event, new Set<BaseComponent>());
-      }
-    });
-  }
-
-  unregisterEvents(events: Record<any, symbol>): void {
-    Object.values(events).forEach((event) => {
-      this.unregisterEvent(event);
-    });
-  }
-
   registerEventEmitter(eventEmitter: any, properties: string[]): void {
     this._eventEmitterEventsMap.set(eventEmitter, new Set<symbol>());
 
@@ -82,6 +73,10 @@ export class StateUIConnector implements IStateUIConnector {
 
       if (property instanceof Array) {
         this.wrapArray(eventEmitter, propertyKey);
+      } else if (property instanceof Map) {
+        this.wrapMap(eventEmitter, propertyKey);
+      } else if (property instanceof Set) {
+        this.wrapSet(eventEmitter, propertyKey);
       } else {
         this.wrapPrimiveProperty(eventEmitter, propertyKey);
       }
@@ -94,17 +89,6 @@ export class StateUIConnector implements IStateUIConnector {
     });
 
     this._eventEmitterEventsMap.delete(eventEmitter);
-  }
-
-  connectEvent(event: symbol): void {
-    if (this._currentlyRenderingComponent) {
-      this._eventComponentsMap.get(event)?.add(this._currentlyRenderingComponent);
-      this._componentEventsMap.get(this._currentlyRenderingComponent)?.add(event);
-    }
-  }
-
-  enqueueEvent(event: symbol): void {
-    this._enqueuedEvents.add(event);
   }
 
   fireEvents(): void {
@@ -142,25 +126,36 @@ export class StateUIConnector implements IStateUIConnector {
     this._eventComponentsMap.delete(event);
   }
 
+  private connectEvent(event: symbol): void {
+    if (this._currentlyRenderingComponent) {
+      this._eventComponentsMap.get(event)?.add(this._currentlyRenderingComponent);
+      this._componentEventsMap.get(this._currentlyRenderingComponent)?.add(event);
+    }
+  }
+
+  private enqueueEvent(event: symbol): void {
+    this._enqueuedEvents.add(event);
+  }
+
   private wrapPrimiveProperty(eventEmitter: any, propertyKey: string) {
     const descriptor = Reflect.getOwnPropertyDescriptor(eventEmitter, propertyKey);
-    
+
     // eslint-disable-next-line @typescript-eslint/no-this-alias
-    const _stateUiConnector = this;
-    
+    const _stateUIConnector = this;
+
     const eventKey = this.registerEvent(eventEmitter, propertyKey);
     const valueKey = Symbol(`${propertyKey}:value`);
     eventEmitter[valueKey] = descriptor?.value;
 
     Reflect.defineProperty(eventEmitter, propertyKey, {
       get: function () {
-        _stateUiConnector.connectEvent(eventKey);
+        _stateUIConnector.connectEvent(eventKey);
 
         return eventEmitter[valueKey];
       },
       set: function (newValue) {
         if (this[valueKey] !== newValue) {
-          _stateUiConnector.enqueueEvent(eventKey);
+          _stateUIConnector.enqueueEvent(eventKey);
 
           this[valueKey] = newValue;
         }
@@ -168,30 +163,86 @@ export class StateUIConnector implements IStateUIConnector {
     });
   }
 
-  private wrapArray(eventEmitter: any, propertyKey: string) {   
+  private wrapArray(eventEmitter: any, propertyKey: string) {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
-    const _this = this;
+    const _stateUIConnector = this;
 
     const eventKey = this.registerEvent(eventEmitter, propertyKey);
 
     const proxy = new Proxy(eventEmitter[propertyKey], {
       get(target, p, receiver) {
         if (ARRAY_MODIFYING_METHODS.has(p)) {
-          _this.enqueueEvent(eventKey);
+          _stateUIConnector.enqueueEvent(eventKey);
         } else {
-          _this.connectEvent(eventKey);
+          _stateUIConnector.connectEvent(eventKey);
         }
 
-        return Reflect.get(target, p, receiver);
+        const propertyValue = Reflect.get(target, p, receiver);
+
+        if (propertyValue instanceof Function) {
+          return propertyValue.bind(target);
+        }
+
+        return propertyValue;
       },
       set(target, p, newValue, receiver) {
-        _this.enqueueEvent(eventKey);
-        
+        _stateUIConnector.enqueueEvent(eventKey);
+
         return Reflect.set(target, p, newValue, receiver);
       },
-      
+    });
+    eventEmitter[propertyKey] = proxy;
+  }
+
+  private wrapMap(eventEmitter: any, propertyKey: string) {
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
+    const _stateUIConnector = this;
+
+    const eventKey = this.registerEvent(eventEmitter, propertyKey);
+
+    const proxy = new Proxy(eventEmitter[propertyKey], {
+      get(target, p, receiver) {
+        if (MAP_MODIFYING_METHODS.has(p)) {
+          _stateUIConnector.enqueueEvent(eventKey);
+        } else {
+          _stateUIConnector.connectEvent(eventKey);
+        }
+
+        const propertyValue = Reflect.get(target, p, receiver);
+
+        if (propertyValue instanceof Function) {
+          return propertyValue.bind(target);
+        }
+
+        return propertyValue;
+      },
+    });
+    eventEmitter[propertyKey] = proxy;
+  }
+
+  private wrapSet(eventEmitter: any, propertyKey: string) {
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
+    const _stateUIConnector = this;
+
+    const eventKey = this.registerEvent(eventEmitter, propertyKey);
+
+    const proxy = new Proxy(eventEmitter[propertyKey], {
+      get(target, p, receiver) {
+        if (SET_MODIFYING_METHODS.has(p)) {
+          _stateUIConnector.enqueueEvent(eventKey);
+        } else {
+          _stateUIConnector.connectEvent(eventKey);
+        }
+
+        const propertyValue = Reflect.get(target, p, receiver);
+
+        if (propertyValue instanceof Function) {
+          return propertyValue.bind(target);
+        }
+
+        return propertyValue;
+      },
     });
     eventEmitter[propertyKey] = proxy;
   }
 }
- 

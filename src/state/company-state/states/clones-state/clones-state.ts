@@ -21,11 +21,6 @@ const { lazyInject } = decorators;
 
 @injectable()
 export class CompanyClonesState implements ICompanyClonesState {
-  private UI_EVENTS = {
-    SYNCHRONIZATION_UPDATED: Symbol('SYNCHRONIZATION_UPDATED'),
-    CLONES_UPDATED: Symbol('CLONES_UPDATED'),
-  };
-
   @lazyInject(TYPES.CompanyState)
   private _companyState!: ICompanyState;
 
@@ -50,18 +45,14 @@ export class CompanyClonesState implements ICompanyClonesState {
     this._clonesList = [];
     this._clonesMap = new Map<string, IClone>();
 
-    this._stateUiConnector.registerEvents(this.UI_EVENTS);
+    this._stateUiConnector.registerEventEmitter(this, ['_availableSynchronization', '_clonesList']);
   }
 
   get availableSynchronization() {
-    this._stateUiConnector.connectEvent(this.UI_EVENTS.SYNCHRONIZATION_UPDATED);
-
     return this._availableSynchronization;
   }
 
   listClones(): IClone[] {
-    this._stateUiConnector.connectEvent(this.UI_EVENTS.CLONES_UPDATED);
-
     return this._clonesList;
   }
 
@@ -127,8 +118,6 @@ export class CompanyClonesState implements ICompanyClonesState {
     this.recalculateSynchronization();
 
     this._companyState.requestReassignment();
-
-    this._stateUiConnector.enqueueEvent(this.UI_EVENTS.CLONES_UPDATED);
   }
 
   deleteAllClones(): void {
@@ -140,8 +129,6 @@ export class CompanyClonesState implements ICompanyClonesState {
 
     this._companyState.sidejobs.cancelAllSidejobs();
     this._companyState.requestReassignment();
-
-    this._stateUiConnector.enqueueEvent(this.UI_EVENTS.CLONES_UPDATED);
   }
 
   recalculate(): void {
@@ -156,8 +143,6 @@ export class CompanyClonesState implements ICompanyClonesState {
     if (oldPosition >= 0) {
       moveElementInArray(this._clonesList, oldPosition, newPosition);
     }
-
-    this._stateUiConnector.enqueueEvent(this.UI_EVENTS.CLONES_UPDATED);
   }
 
   async generateCloneName(): Promise<string> {
@@ -190,15 +175,11 @@ export class CompanyClonesState implements ICompanyClonesState {
     for (const clone of this._clonesList) {
       this._availableSynchronization -= this.getCloneSynchronization(clone.templateName, clone.quality);
     }
-
-    this._stateUiConnector.enqueueEvent(this.UI_EVENTS.SYNCHRONIZATION_UPDATED);
   }
 
   async startNewState(): Promise<void> {
     this.clearState();
     this.recalculateSynchronization();
-
-    this._stateUiConnector.enqueueEvent(this.UI_EVENTS.CLONES_UPDATED);
   }
 
   async deserialize(serializedState: ICompanyClonesSerializedState): Promise<void> {
@@ -211,8 +192,6 @@ export class CompanyClonesState implements ICompanyClonesState {
     });
 
     this.recalculateSynchronization();
-
-    this._stateUiConnector.enqueueEvent(this.UI_EVENTS.CLONES_UPDATED);
   }
 
   serialize(): ICompanyClonesSerializedState {
@@ -242,8 +221,6 @@ export class CompanyClonesState implements ICompanyClonesState {
     this._clonesMap.set(clone.id, clone);
 
     this.recalculateSynchronization();
-
-    this._stateUiConnector.enqueueEvent(this.UI_EVENTS.CLONES_UPDATED);
   }
 
   private handlePurhaseClone = (args: IPurchaseCloneArgs) => () => {

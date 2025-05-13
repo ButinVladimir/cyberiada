@@ -10,10 +10,6 @@ const { lazyInject } = decorators;
 
 @injectable()
 export class NotificationsState implements INotificationsState {
-  private UI_EVENTS = {
-    UPDATED_NOTIFICATIONS: Symbol('UPDATED_NOTIFICATIONS'),
-  };
-
   @lazyInject(TYPES.StateUIConnector)
   private _stateUiConnector!: IStateUIConnector;
 
@@ -25,7 +21,7 @@ export class NotificationsState implements INotificationsState {
   constructor() {
     this._notifications = [];
 
-    this._stateUiConnector.registerEvents(this.UI_EVENTS);
+    this._stateUiConnector.registerEventEmitter(this, ['_notifications']);
   }
 
   pushNotification(notificationType: NotificationType, message: string, force?: boolean) {
@@ -37,13 +33,9 @@ export class NotificationsState implements INotificationsState {
       notificationType,
       message,
     });
-
-    this._stateUiConnector.enqueueEvent(this.UI_EVENTS.UPDATED_NOTIFICATIONS);
   }
 
   getFirstUnreadNotification(): INotification | undefined {
-    this._stateUiConnector.connectEvent(this.UI_EVENTS.UPDATED_NOTIFICATIONS);
-
     while (this.hasUnreadNotifications()) {
       const notification = this._notifications[0];
 
@@ -58,28 +50,20 @@ export class NotificationsState implements INotificationsState {
   }
 
   hasUnreadNotifications(): boolean {
-    this._stateUiConnector.connectEvent(this.UI_EVENTS.UPDATED_NOTIFICATIONS);
-
     return this._notifications.length > 0;
   }
 
   hasNextNotification(): boolean {
-    this._stateUiConnector.connectEvent(this.UI_EVENTS.UPDATED_NOTIFICATIONS);
-
     return this._notifications.length > 1;
   }
 
   popUnreadNotification() {
     if (this.hasUnreadNotifications()) {
       this._notifications.shift();
-
-      this._stateUiConnector.enqueueEvent(this.UI_EVENTS.UPDATED_NOTIFICATIONS);
     }
   }
 
   clearNotifications() {
     this._notifications.length = 0;
-
-    this._stateUiConnector.enqueueEvent(this.UI_EVENTS.UPDATED_NOTIFICATIONS);
   }
 }

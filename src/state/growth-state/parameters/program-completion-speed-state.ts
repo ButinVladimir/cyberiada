@@ -12,10 +12,6 @@ const { lazyInject } = decorators;
 
 @injectable()
 export class ProgramCompletionSpeedState implements IProgramCompletionSpeedState {
-  private UI_EVENTS = {
-    PROGRAM_COMPLETION_SPEED_CHANGED: Symbol('PROGRAM_COMPLETION_SPEED_CHANGED'),
-  };
-
   @lazyInject(TYPES.StateUIConnector)
   private _stateUiConnector!: IStateUIConnector;
 
@@ -36,24 +32,22 @@ export class ProgramCompletionSpeedState implements IProgramCompletionSpeedState
     this._totalMultiplier = 1;
     this._multiplierUpdateRequested = true;
 
-    this._stateUiConnector.registerEvents(this.UI_EVENTS);
+    this._stateUiConnector.registerEventEmitter(this, [
+      '_multiplierByProgram',
+      '_multiplierByHardware',
+      '_totalMultiplier',
+    ]);
   }
 
   get multiplierByProgram() {
-    this._stateUiConnector.connectEvent(this.UI_EVENTS.PROGRAM_COMPLETION_SPEED_CHANGED);
-
     return this._multiplierByProgram;
   }
 
   get multiplierByHardware() {
-    this._stateUiConnector.connectEvent(this.UI_EVENTS.PROGRAM_COMPLETION_SPEED_CHANGED);
-
     return this._multiplierByHardware;
   }
 
   get totalMultiplier() {
-    this._stateUiConnector.connectEvent(this.UI_EVENTS.PROGRAM_COMPLETION_SPEED_CHANGED);
-
     return this._totalMultiplier;
   }
 
@@ -91,11 +85,7 @@ export class ProgramCompletionSpeedState implements IProgramCompletionSpeedState
       multiplierByProgram = 1;
     }
 
-    if (multiplierByProgram !== this._multiplierByProgram) {
-      this._multiplierByProgram = multiplierByProgram;
-
-      this._stateUiConnector.enqueueEvent(this.UI_EVENTS.PROGRAM_COMPLETION_SPEED_CHANGED);
-    }
+    this._multiplierByProgram = multiplierByProgram;
   }
 
   private updateMultiplierByHardware() {
@@ -106,20 +96,12 @@ export class ProgramCompletionSpeedState implements IProgramCompletionSpeedState
       mainframeHardwareState.performance.totalLevel,
     );
 
-    if (multiplierByHardware !== this._multiplierByHardware) {
-      this._multiplierByHardware = multiplierByHardware;
-
-      this._stateUiConnector.enqueueEvent(this.UI_EVENTS.PROGRAM_COMPLETION_SPEED_CHANGED);
-    }
+    this._multiplierByHardware = multiplierByHardware;
   }
 
   private updateTotalMultiplier() {
     const totalMultiplier = this._multiplierByProgram * this._multiplierByHardware;
 
-    if (totalMultiplier !== this._totalMultiplier) {
-      this._totalMultiplier = totalMultiplier;
-
-      this._stateUiConnector.enqueueEvent(this.UI_EVENTS.PROGRAM_COMPLETION_SPEED_CHANGED);
-    }
+    this._totalMultiplier = totalMultiplier;
   }
 }

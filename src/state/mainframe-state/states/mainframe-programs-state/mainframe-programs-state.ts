@@ -20,10 +20,6 @@ const { lazyInject } = decorators;
 
 @injectable()
 export class MainframeProgramsState implements IMainframeProgramsState {
-  private UI_EVENTS = {
-    OWNED_PROGRAMS_UPDATED: Symbol('OWNED_PROGRAMS_UPDATED'),
-  };
-
   @lazyInject(TYPES.MainframeState)
   private _mainframeState!: IMainframeState;
 
@@ -46,7 +42,7 @@ export class MainframeProgramsState implements IMainframeProgramsState {
     this._programsList = [];
     this._ownedPrograms = new Map();
 
-    this._stateUiConnector.registerEvents(this.UI_EVENTS);
+    this._stateUiConnector.registerEventEmitter(this, ['_programsList']);
   }
 
   getProgramCost(name: ProgramName, quality: number, level: number): number {
@@ -103,8 +99,6 @@ export class MainframeProgramsState implements IMainframeProgramsState {
   }
 
   listOwnedPrograms(): IProgram[] {
-    this._stateUiConnector.connectEvent(this.UI_EVENTS.OWNED_PROGRAMS_UPDATED);
-
     return this._programsList;
   }
 
@@ -116,12 +110,6 @@ export class MainframeProgramsState implements IMainframeProgramsState {
     for (const program of this._ownedPrograms.values()) {
       program.autoUpgradeEnabled = active;
     }
-
-    this.requestUiUpdate();
-  }
-
-  requestUiUpdate() {
-    this._stateUiConnector.enqueueEvent(this.UI_EVENTS.OWNED_PROGRAMS_UPDATED);
   }
 
   moveProgram(programName: ProgramName, newPosition: number) {
@@ -132,8 +120,6 @@ export class MainframeProgramsState implements IMainframeProgramsState {
     }
 
     moveElementInArray(this._programsList, oldPosition, newPosition);
-
-    this.requestUiUpdate();
   }
 
   async startNewState(): Promise<void> {
@@ -142,8 +128,6 @@ export class MainframeProgramsState implements IMainframeProgramsState {
     for (const programName of this._globalState.scenario.currentValues.mainframeSoftware.startingPrograms) {
       this.addProgram(programName, 0, 0);
     }
-
-    this.requestUiUpdate();
   }
 
   async deserialize(serializedState: IMainframeProgramsSerializedState): Promise<void> {
@@ -154,8 +138,6 @@ export class MainframeProgramsState implements IMainframeProgramsState {
       this._ownedPrograms.set(programParameters.name, program);
       this._programsList.push(program);
     });
-
-    this.requestUiUpdate();
   }
 
   serialize(): IMainframeProgramsSerializedState {
@@ -188,8 +170,6 @@ export class MainframeProgramsState implements IMainframeProgramsState {
         this._globalState.unlockedFeatures.unlockFeature(feature);
       }
     }
-
-    this.requestUiUpdate();
   }
 
   private handlePurchaseProgram = (name: ProgramName, quality: number, level: number) => () => {

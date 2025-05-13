@@ -24,10 +24,6 @@ const { lazyInject } = decorators;
 
 @injectable()
 export class MainframeHardwareState implements IMainframeHardwareState {
-  private UI_EVENTS = {
-    HARDWARE_LIST_CHANGED: Symbol('HARDWARE_LIST_CHANGED'),
-  };
-
   @lazyInject(TYPES.MainframeState)
   private _mainframeState!: IMainframeState;
 
@@ -68,7 +64,7 @@ export class MainframeHardwareState implements IMainframeHardwareState {
       constants.defaultAutomationSettings.mainframeHardwareAutobuyer.priority as MainframeHardwareParameterType[],
     );
 
-    this._stateUiConnector.registerEvents(this.UI_EVENTS);
+    this._stateUiConnector.registerEventEmitter(this, ['_parametersList']);
   }
 
   get performance() {
@@ -84,8 +80,6 @@ export class MainframeHardwareState implements IMainframeHardwareState {
   }
 
   listParameters(): IMainframeHardwareParameter[] {
-    this._stateUiConnector.connectEvent(this.UI_EVENTS.HARDWARE_LIST_CHANGED);
-
     return this._parametersList;
   }
 
@@ -97,8 +91,6 @@ export class MainframeHardwareState implements IMainframeHardwareState {
     }
 
     moveElementInArray(this._parametersList, oldPosition, newPosition);
-
-    this._stateUiConnector.enqueueEvent(this.UI_EVENTS.HARDWARE_LIST_CHANGED);
   }
 
   purchaseMax() {

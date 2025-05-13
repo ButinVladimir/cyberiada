@@ -25,12 +25,6 @@ import { ICloneTemplate } from './interfaces/clone-template';
 const { lazyInject } = decorators;
 
 export class Clone implements IClone {
-  private UI_EVENTS = {
-    CLONE_NAME_CHANGED: Symbol('CLONE_NAME_CHANGED'),
-    CLONE_AUTOUPGRADE_TOGGLED: Symbol('CLONE_AUTOUPGRADE_TOGGLED'),
-    CLONE_CHANGED: Symbol('CLONE_CHANGED'),
-  };
-
   @lazyInject(TYPES.CompanyState)
   private _companyState!: ICompanyState;
 
@@ -69,7 +63,7 @@ export class Clone implements IClone {
     this._quality = parameters.quality;
     this._autoUpgradeEnabled = parameters.autoUpgradeEnabled;
 
-    this._stateUiConnector.registerEvents(this.UI_EVENTS);
+    this._stateUiConnector.registerEventEmitter(this, ['_name', '_level', '_quality', '_autoUpgradeEnabled']);
 
     this.initSynchronization();
     this.initExperience();
@@ -84,8 +78,6 @@ export class Clone implements IClone {
   }
 
   get name() {
-    this._stateUiConnector.connectEvent(this.UI_EVENTS.CLONE_NAME_CHANGED);
-
     return this._name;
   }
 
@@ -97,8 +89,6 @@ export class Clone implements IClone {
       ClonesEvent.cloneRenamed,
       msg(str`Clone "${oldName}" has been renamed to "${value}"`),
     );
-
-    this._stateUiConnector.enqueueEvent(this.UI_EVENTS.CLONE_NAME_CHANGED);
   }
 
   get templateName() {
@@ -110,8 +100,6 @@ export class Clone implements IClone {
   }
 
   get level() {
-    this._stateUiConnector.connectEvent(this.UI_EVENTS.CLONE_CHANGED);
-
     return this._level;
   }
 
@@ -124,15 +112,11 @@ export class Clone implements IClone {
   }
 
   get autoUpgradeEnabled() {
-    this._stateUiConnector.connectEvent(this.UI_EVENTS.CLONE_AUTOUPGRADE_TOGGLED);
-
     return this._autoUpgradeEnabled;
   }
 
   set autoUpgradeEnabled(value: boolean) {
     this._autoUpgradeEnabled = value;
-
-    this._stateUiConnector.enqueueEvent(this.UI_EVENTS.CLONE_AUTOUPGRADE_TOGGLED);
   }
 
   increaseExperience(delta: number) {
@@ -156,26 +140,18 @@ export class Clone implements IClone {
   }
 
   getBaseAttributeValue(attribute: Attribute): number {
-    this._stateUiConnector.connectEvent(this.UI_EVENTS.CLONE_CHANGED);
-
     return this._attributes.get(attribute)!.baseValue;
   }
 
   getTotalAttributeValue(attribute: Attribute): number {
-    this._stateUiConnector.connectEvent(this.UI_EVENTS.CLONE_CHANGED);
-
     return this._attributes.get(attribute)!.totalValue;
   }
 
   getBaseSkillValue(skill: Skill): number {
-    this._stateUiConnector.connectEvent(this.UI_EVENTS.CLONE_CHANGED);
-
     return this._skills.get(skill)!.baseValue;
   }
 
   getTotalSkillValue(skill: Skill): number {
-    this._stateUiConnector.connectEvent(this.UI_EVENTS.CLONE_CHANGED);
-
     return this._skills.get(skill)!.totalValue;
   }
 
@@ -196,7 +172,7 @@ export class Clone implements IClone {
   }
 
   removeAllEventListeners() {
-    this._stateUiConnector.unregisterEvents(this.UI_EVENTS);
+    this._stateUiConnector.unregisterEventEmitter(this);
   }
 
   private initSynchronization() {
@@ -257,8 +233,6 @@ export class Clone implements IClone {
   private recalculateParameters(): void {
     this.recalculateAttributes();
     this.recalculateSkills();
-
-    this._stateUiConnector.enqueueEvent(this.UI_EVENTS.CLONE_CHANGED);
   }
 
   private recalculateAttributes(): void {

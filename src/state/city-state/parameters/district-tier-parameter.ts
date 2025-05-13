@@ -14,10 +14,6 @@ import { IDistrictState, IDistrictTierParameter, IDistrictTierSerializedParamete
 const { lazyInject } = decorators;
 
 export class DistrictTierParameter implements IDistrictTierParameter {
-  private UI_EVENTS = {
-    DISTRICT_TIER_CHANGED: Symbol('DISTRICT_TIER_CHANGED'),
-  };
-
   @lazyInject(TYPES.CompanyState)
   private _companyState!: ICompanyState;
 
@@ -42,12 +38,10 @@ export class DistrictTierParameter implements IDistrictTierParameter {
     this._tier = 0;
     this._points = 0;
 
-    this._stateUIConnector.registerEvents(this.UI_EVENTS);
+    this._stateUIConnector.registerEventEmitter(this, ['_tier']);
   }
 
   get tier(): number {
-    this._stateUIConnector.connectEvent(this.UI_EVENTS.DISTRICT_TIER_CHANGED);
-
     return this._tier;
   }
 
@@ -73,8 +67,6 @@ export class DistrictTierParameter implements IDistrictTierParameter {
 
       this._globalState.synchronization.requestRecalculation();
       this._companyState.requestReassignment();
-
-      this._stateUIConnector.enqueueEvent(this.UI_EVENTS.DISTRICT_TIER_CHANGED);
     }
   }
 
@@ -87,15 +79,11 @@ export class DistrictTierParameter implements IDistrictTierParameter {
 
     this._globalState.synchronization.requestRecalculation();
     this._companyState.requestReassignment();
-
-    this._stateUIConnector.enqueueEvent(this.UI_EVENTS.DISTRICT_TIER_CHANGED);
   }
 
   async deserialize(serializedState: IDistrictTierSerializedParameter): Promise<void> {
     this._points = serializedState.points;
     this._tier = this.calculateNewLevel();
-
-    this._stateUIConnector.enqueueEvent(this.UI_EVENTS.DISTRICT_TIER_CHANGED);
   }
 
   serialize(): IDistrictTierSerializedParameter {
@@ -105,7 +93,7 @@ export class DistrictTierParameter implements IDistrictTierParameter {
   }
 
   removeAllEventListeners(): void {
-    this._stateUIConnector.unregisterEvents(this.UI_EVENTS);
+    this._stateUIConnector.unregisterEventEmitter(this);
   }
 
   private calculateNewLevel(): number {

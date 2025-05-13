@@ -27,11 +27,7 @@ export class Process implements IProcess {
     this._currentCompletionPoints = parameters.currentCompletionPoints;
     this._usedCores = 0;
 
-    this._stateUiConnector.registerEventEmitter(this, [
-      '_isActive',
-      '_threads',
-      '_usedCores'
-    ]);
+    this._stateUiConnector.registerEventEmitter(this, ['_isActive', '_threads', '_usedCores']);
   }
 
   get program() {

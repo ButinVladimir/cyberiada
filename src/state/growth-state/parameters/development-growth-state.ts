@@ -1,11 +1,9 @@
 import { injectable } from 'inversify';
 import { decorators } from '@state/container';
-import { IncomeSource } from '@shared/types';
-import type { IMainframeState } from '@state/mainframe-state/interfaces/mainframe-state';
 import { TYPES } from '@state/types';
-import { OtherProgramName } from '@state/mainframe-state/states/progam-factory/types';
-import { ShareServerProgram } from '@state/mainframe-state/states/progam-factory/programs/share-server';
-import { INCOME_SOURCES } from '@shared/constants';
+import { type IMainframeState, OtherProgramName, ShareServerProgram } from '@state/mainframe-state';
+import { type ICompanyState } from '@state/company-state';
+import { INCOME_SOURCES, IncomeSource } from '@shared/index';
 import { IDevelopmentGrowthState } from '../interfaces/parameters/development-growth-state';
 
 const { lazyInject } = decorators;
@@ -15,24 +13,44 @@ export class DevelopmentGrowthState implements IDevelopmentGrowthState {
   @lazyInject(TYPES.MainframeState)
   private _mainframeState!: IMainframeState;
 
+  @lazyInject(TYPES.CompanyState)
+  private _companyState!: ICompanyState;
+
+  private _recalculated: boolean;
   private _totalGrowth: number;
   private _growth: Map<IncomeSource, number>;
 
   constructor() {
+    this._recalculated = false;
     this._totalGrowth = 0;
     this._growth = new Map<IncomeSource, number>();
   }
 
   get totalGrowth() {
+    this.recalculate();
+
     return this._totalGrowth;
   }
 
   getGrowth(incomeSource: IncomeSource): number {
+    this.recalculate();
+
     return this._growth.get(incomeSource) ?? 0;
   }
 
-  recalculateGrowth() {
+  resetValues() {
+    this._recalculated = false;
+  }
+
+  private recalculate() {
+    if (this._recalculated) {
+      return;
+    }
+
+    this._recalculated = true;
+
     this.updateGrowthByProgram();
+    this.updateGrowthBySidejobs();
     this.updateTotalGrowth();
   }
 
@@ -51,6 +69,20 @@ export class DevelopmentGrowthState implements IDevelopmentGrowthState {
     }
 
     this._growth.set(IncomeSource.program, incomeByProgram);
+  }
+
+  private updateGrowthBySidejobs() {
+    let incomeBySidejobs = 0;
+
+    for (const sidejob of this._companyState.sidejobs.listSidejobs()) {
+      if (!sidejob.isActive) {
+        continue;
+      }
+
+      incomeBySidejobs += sidejob.calculateDevelopmentPointsDelta(1);
+    }
+
+    this._growth.set(IncomeSource.sidejob, incomeBySidejobs);
   }
 
   private updateTotalGrowth() {

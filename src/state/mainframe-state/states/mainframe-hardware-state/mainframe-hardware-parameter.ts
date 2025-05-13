@@ -15,11 +15,6 @@ import {
 import { MainframeHardwareParameterType } from './types';
 
 export abstract class MainframeHardwareParameter implements IMainframeHardwareParameter {
-  private UI_EVENTS = {
-    HARDWARE_UPGRADED: Symbol('HARDWARE_UPGRADED'),
-    HARDWARE_AUTOBUYER_UPDATED: Symbol('HARDWARE_AUTOBUYER_UPDATED'),
-  };
-
   protected stateUiConnector: IStateUIConnector;
   protected mainframeHardwareState: IMainframeHardwareState;
   protected globalState: IGlobalState;
@@ -39,33 +34,25 @@ export abstract class MainframeHardwareParameter implements IMainframeHardwarePa
     this._level = 0;
     this._autoUpgradeEnabled = true;
 
-    this.stateUiConnector.registerEvents(this.UI_EVENTS);
+    this.stateUiConnector.registerEventEmitter(this, ['_level', '_autoUpgradeEnabled']);
   }
 
   get level() {
-    this.stateUiConnector.connectEvent(this.UI_EVENTS.HARDWARE_UPGRADED);
-
     return this._level;
   }
 
   protected abstract get baseLevel(): number;
 
   get totalLevel() {
-    this.stateUiConnector.connectEvent(this.UI_EVENTS.HARDWARE_UPGRADED);
-
     return this._level + this.baseLevel;
   }
 
   get autoUpgradeEnabled() {
-    this.stateUiConnector.connectEvent(this.UI_EVENTS.HARDWARE_AUTOBUYER_UPDATED);
-
     return this._autoUpgradeEnabled;
   }
 
   set autoUpgradeEnabled(value: boolean) {
     this._autoUpgradeEnabled = value;
-
-    this.stateUiConnector.enqueueEvent(this.UI_EVENTS.HARDWARE_AUTOBUYER_UPDATED);
   }
 
   abstract get type(): MainframeHardwareParameterType;
@@ -148,6 +135,5 @@ export abstract class MainframeHardwareParameter implements IMainframeHardwarePa
     this.postPurchaseMessge();
 
     this.mainframeHardwareState.emitUpgradedEvent();
-    this.stateUiConnector.enqueueEvent(this.UI_EVENTS.HARDWARE_UPGRADED);
   };
 }

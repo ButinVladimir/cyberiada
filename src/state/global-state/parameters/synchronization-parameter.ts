@@ -8,10 +8,6 @@ import { type ICompanyState } from '@state/company-state/interfaces';
 const { lazyInject } = decorators;
 
 export class SynchronizationParameter implements ISynchronizationParameter {
-  private UI_EVENTS = {
-    SYNCHRONIZATION_UPDATED: Symbol('SYNCHRONIZATION_UPDATED'),
-  };
-
   @lazyInject(TYPES.GlobalState)
   private _globalState!: IGlobalState;
 
@@ -33,18 +29,14 @@ export class SynchronizationParameter implements ISynchronizationParameter {
     this._totalValue = 0;
     this._recalculationRequested = true;
 
-    this._stateUIConnector.registerEvents(this.UI_EVENTS);
+    this._stateUIConnector.registerEventEmitter(this, ['_baseValue', '_totalValue']);
   }
 
   get baseValue() {
-    this._stateUIConnector.connectEvent(this.UI_EVENTS.SYNCHRONIZATION_UPDATED);
-
     return this._baseValue;
   }
 
   get totalValue() {
-    this._stateUIConnector.connectEvent(this.UI_EVENTS.SYNCHRONIZATION_UPDATED);
-
     return this._totalValue;
   }
 
@@ -62,8 +54,6 @@ export class SynchronizationParameter implements ISynchronizationParameter {
     this.calculateBaseValue();
     this.calculateDistrictValues();
     this._companyState.clones.recalculateSynchronization();
-
-    this._stateUIConnector.enqueueEvent(this.UI_EVENTS.SYNCHRONIZATION_UPDATED);
   }
 
   private calculateBaseValue() {

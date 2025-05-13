@@ -13,10 +13,6 @@ import { SidejobName } from './types';
 const { lazyInject } = decorators;
 
 export class Sidejob implements ISidejob {
-  private UI_EVENTS = {
-    SIDEJOB_ACTIVE_TOGGLED: Symbol('SIDEJOB_ACTIVE_TOGGLED'),
-  };
-
   @lazyInject(TYPES.GlobalState)
   private _globalState!: IGlobalState;
 
@@ -43,7 +39,7 @@ export class Sidejob implements ISidejob {
 
     this._sidejobTemplate = sidejobs[this._templateName] as ISidejobTemplate;
 
-    this._stateUIConnector.registerEvents(this.UI_EVENTS);
+    this._stateUIConnector.registerEventEmitter(this, ['_assignedClone', '_isActive']);
   }
 
   get id() {
@@ -59,14 +55,10 @@ export class Sidejob implements ISidejob {
   }
 
   get isActive() {
-    this._stateUIConnector.connectEvent(this.UI_EVENTS.SIDEJOB_ACTIVE_TOGGLED);
-
     return this._isActive;
   }
 
   set isActive(value: boolean) {
-    this._stateUIConnector.enqueueEvent(this.UI_EVENTS.SIDEJOB_ACTIVE_TOGGLED);
-
     this._isActive = value;
   }
 
@@ -200,7 +192,7 @@ export class Sidejob implements ISidejob {
   }
 
   removeAllEventListeners(): void {
-    this._stateUIConnector.unregisterEvents(this.UI_EVENTS);
+    this._stateUIConnector.unregisterEventEmitter(this);
   }
 
   private getCloneModifier(): number {

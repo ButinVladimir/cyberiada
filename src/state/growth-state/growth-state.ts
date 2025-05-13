@@ -45,8 +45,11 @@ export class GrowthState implements IGrowthState {
 
   recalculateGrowth() {
     this._programCompletionSpeedState.recalculateMultipliers();
-    this._moneyGrowthState.recalculateGrowth();
-    this._developmentGrowthState.recalculateGrowth();
     this._multipliersGrowthState.recalculateGrowth();
+  }
+
+  resetValues() {
+    this._moneyGrowthState.resetValues();
+    this._developmentGrowthState.resetValues();
   }
 }

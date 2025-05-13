@@ -13,8 +13,6 @@ const { lazyInject } = decorators;
 
 @injectable()
 export class FactionState implements IFactionState {
-  private UI_EVENTS = {};
-
   @lazyInject(TYPES.StateUIConnector)
   private _stateUiConnector!: IStateUIConnector;
 
@@ -25,7 +23,7 @@ export class FactionState implements IFactionState {
   constructor() {
     this._neutralFactionValues = this.getFactionValues(Faction.neutral);
 
-    this._stateUiConnector.registerEvents(this.UI_EVENTS);
+    this._stateUiConnector.registerEventEmitter(this, []);
   }
 
   get currentFaction(): Faction | undefined {

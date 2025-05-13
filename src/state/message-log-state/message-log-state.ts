@@ -13,11 +13,6 @@ const { lazyInject } = decorators;
 
 @injectable()
 export class MessageLogState implements IMessageLogState {
-  private UI_EVENTS = {
-    UPDATED_MESSAGES: Symbol('UPDATED_MESSAGES'),
-    UPDATED_TOASTS: Symbol('UPDATED_TOASTS'),
-  };
-
   @lazyInject(TYPES.StateUIConnector)
   private _stateUiConnector!: IStateUIConnector;
 
@@ -34,7 +29,7 @@ export class MessageLogState implements IMessageLogState {
     this._messages = [];
     this._toasts = [];
 
-    this._stateUiConnector.registerEvents(this.UI_EVENTS);
+    this._stateUiConnector.registerEventEmitter(this, ['_messages', '_toasts']);
   }
 
   postMessage(event: MessageEvent, messageText: string, postToast = true) {
@@ -54,8 +49,6 @@ export class MessageLogState implements IMessageLogState {
       this._messages.shift();
     }
 
-    this._stateUiConnector.enqueueEvent(this.UI_EVENTS.UPDATED_MESSAGES);
-
     if (postToast && this._settingsState.toastDuration > 0) {
       this._toasts.push({
         id: uuid(),
@@ -66,26 +59,18 @@ export class MessageLogState implements IMessageLogState {
       while (this._toasts.length > this._settingsState.messageLogSize) {
         this._toasts.shift();
       }
-
-      this._stateUiConnector.enqueueEvent(this.UI_EVENTS.UPDATED_TOASTS);
     }
   }
 
   getMessages(): IMessage[] {
-    this._stateUiConnector.connectEvent(this.UI_EVENTS.UPDATED_MESSAGES);
-
     return this._messages;
   }
 
   clearMessages() {
     this._messages.length = 0;
-
-    this._stateUiConnector.enqueueEvent(this.UI_EVENTS.UPDATED_MESSAGES);
   }
 
   getToasts(): IMessage[] {
-    this._stateUiConnector.connectEvent(this.UI_EVENTS.UPDATED_TOASTS);
-
     const toastsBatch = this._toasts.splice(0);
 
     return toastsBatch;

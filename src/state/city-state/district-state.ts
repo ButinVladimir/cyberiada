@@ -18,8 +18,6 @@ import { DistrictParameters } from './district-parameters';
 const { lazyInject } = decorators;
 
 export class DistrictState implements IDistrictState {
-  private UI_EVENTS = {};
-
   @lazyInject(TYPES.StateUIConnector)
   private _stateUiConnector!: IStateUIConnector;
 
@@ -44,7 +42,7 @@ export class DistrictState implements IDistrictState {
 
     this._template = districtTypes[this._districtType] as IDistrictTypeTemplate;
 
-    this._stateUiConnector.registerEvents(this.UI_EVENTS);
+    this._stateUiConnector.registerEventEmitter(this, []);
   }
 
   static createByMapGenerator(index: number, mapGeneratorDistrictResult: IMapGeneratorDistrictResult): IDistrictState {

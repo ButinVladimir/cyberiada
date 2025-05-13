@@ -13,10 +13,6 @@ const { lazyInject } = decorators;
 
 @injectable()
 export abstract class BaseAvailableCategoryItemsState<Key = string> implements IAvailableCategoryItemsState<Key> {
-  protected UI_EVENTS = {
-    AVAILABLE_ITEMS_UPDATED: Symbol('AVAILABLE_ITEMS_UPDATED'),
-  };
-
   @lazyInject(TYPES.StateUIConnector)
   protected _stateUiConnector!: IStateUIConnector;
 
@@ -34,7 +30,7 @@ export abstract class BaseAvailableCategoryItemsState<Key = string> implements I
     this._loanedItems = new Set();
     this._itemsList = [];
 
-    this._stateUiConnector.registerEvents(this.UI_EVENTS);
+    this._stateUiConnector.registerEventEmitter(this, ['_loanedQuality', '_itemsList']);
   }
 
   get loanedQuality() {
@@ -42,8 +38,6 @@ export abstract class BaseAvailableCategoryItemsState<Key = string> implements I
   }
 
   listAvailableItems(): Key[] {
-    this._stateUiConnector.connectEvent(this.UI_EVENTS.AVAILABLE_ITEMS_UPDATED);
-
     return this._itemsList;
   }
 
@@ -77,8 +71,6 @@ export abstract class BaseAvailableCategoryItemsState<Key = string> implements I
   recalculate() {
     this.recalculateNeutralItemsList();
     this.recalculateCompleteList();
-
-    this._stateUiConnector.enqueueEvent(this.UI_EVENTS.AVAILABLE_ITEMS_UPDATED);
   }
 
   async startNewState(): Promise<void> {
@@ -115,7 +107,7 @@ export abstract class BaseAvailableCategoryItemsState<Key = string> implements I
       }
     });
 
-    this._itemsList = completeList.filter((itemName) => {
+    const filteredList = completeList.filter((itemName) => {
       const requiredFeatures = this.getItemRequiredFeatures(itemName);
       const allFeaturesUnlocked = requiredFeatures.every((feature) =>
         this._globalState.unlockedFeatures.isFeatureUnlocked(feature),
@@ -123,5 +115,8 @@ export abstract class BaseAvailableCategoryItemsState<Key = string> implements I
 
       return allFeaturesUnlocked;
     });
+
+    this._itemsList.length = 0;
+    this._itemsList.push(...filteredList);
   }
 }

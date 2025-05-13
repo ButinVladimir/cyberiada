@@ -14,10 +14,6 @@ import { IProgram } from '../interfaces';
 const { lazyInject } = decorators;
 
 export abstract class BaseProgram implements IProgram {
-  private UI_EVENTS = {
-    PROGRAM_UPGRADED: Symbol('PROGRAM_UPGRADED'),
-  };
-
   @lazyInject(TYPES.StateUIConnector)
   protected stateUiConnector!: IStateUIConnector;
 
@@ -45,18 +41,14 @@ export abstract class BaseProgram implements IProgram {
 
     this._autoUpgradeEnabled = parameters.autoUpgradeEnabled;
 
-    this.stateUiConnector.registerEvents(this.UI_EVENTS);
+    this.stateUiConnector.registerEventEmitter(this, ['_level', '_quality', '_autoUpgradeEnabled']);
   }
 
   get level() {
-    this.stateUiConnector.connectEvent(this.UI_EVENTS.PROGRAM_UPGRADED);
-
     return this._level;
   }
 
   get quality() {
-    this.stateUiConnector.connectEvent(this.UI_EVENTS.PROGRAM_UPGRADED);
-
     return this._quality;
   }
 
@@ -67,16 +59,11 @@ export abstract class BaseProgram implements IProgram {
   }
 
   get autoUpgradeEnabled() {
-    this.stateUiConnector.connectEvent(this.UI_EVENTS.PROGRAM_UPGRADED);
-
     return this._autoUpgradeEnabled;
   }
 
   set autoUpgradeEnabled(value: boolean) {
     this._autoUpgradeEnabled = value;
-
-    this.stateUiConnector.enqueueEvent(this.UI_EVENTS.PROGRAM_UPGRADED);
-    this.mainframeState.programs.requestUiUpdate();
   }
 
   abstract get isAutoscalable(): boolean;
@@ -103,8 +90,6 @@ export abstract class BaseProgram implements IProgram {
 
     this.handlePerformanceUpdate();
     this.mainframeState.processes.requestUpdateProcesses();
-
-    this.stateUiConnector.enqueueEvent(this.UI_EVENTS.PROGRAM_UPGRADED);
   }
 
   calculateCompletionDelta(threads: number, usedCores: number, passedTime: number): number {
@@ -141,6 +126,6 @@ export abstract class BaseProgram implements IProgram {
   }
 
   removeAllEventListeners() {
-    this.stateUiConnector.unregisterEvents(this.UI_EVENTS);
+    this.stateUiConnector.unregisterEventEmitter(this);
   }
 }
