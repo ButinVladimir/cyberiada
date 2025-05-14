@@ -173,9 +173,9 @@ export class StateUIConnector implements IStateUIConnector {
       get(target, p, receiver) {
         if (ARRAY_MODIFYING_METHODS.has(p)) {
           _stateUIConnector.enqueueEvent(eventKey);
-        } else {
-          _stateUIConnector.connectEvent(eventKey);
         }
+
+        _stateUIConnector.connectEvent(eventKey);
 
         const propertyValue = Reflect.get(target, p, receiver);
 
@@ -204,9 +204,9 @@ export class StateUIConnector implements IStateUIConnector {
       get(target, p, receiver) {
         if (MAP_MODIFYING_METHODS.has(p)) {
           _stateUIConnector.enqueueEvent(eventKey);
-        } else {
-          _stateUIConnector.connectEvent(eventKey);
         }
+
+        _stateUIConnector.connectEvent(eventKey);
 
         const propertyValue = Reflect.get(target, p, receiver);
 
@@ -230,9 +230,9 @@ export class StateUIConnector implements IStateUIConnector {
       get(target, p, receiver) {
         if (SET_MODIFYING_METHODS.has(p)) {
           _stateUIConnector.enqueueEvent(eventKey);
-        } else {
-          _stateUIConnector.connectEvent(eventKey);
         }
+
+        _stateUIConnector.connectEvent(eventKey);
 
         const propertyValue = Reflect.get(target, p, receiver);
 

@@ -37,9 +37,6 @@ export class ProgramFactory implements IProgramFactory {
       case MultiplierProgramName.circuitDesigner:
         return new CircuitDesignerProgram(baseParameters);
 
-      case MultiplierProgramName.informationCollector:
-        return new InformationCollectorProgram(baseParameters);
-
       case MultiplierProgramName.dealMaker:
         return new DealMakerProgram(baseParameters);
 
@@ -51,6 +48,9 @@ export class ProgramFactory implements IProgramFactory {
 
       case OtherProgramName.mainframeProgramsAutobuyer:
         return new MainframeProgramsAutobuyerProgram(baseParameters);
+
+      case OtherProgramName.informationCollector:
+        return new InformationCollectorProgram(baseParameters);
     }
   }
 }

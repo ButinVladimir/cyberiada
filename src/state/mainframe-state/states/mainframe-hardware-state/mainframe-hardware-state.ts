@@ -59,6 +59,7 @@ export class MainframeHardwareState implements IMainframeHardwareState {
     this._performance = new MainframeHardwarePerformance(parameterArguments);
     this._cores = new MainframeHardwareCores(parameterArguments);
     this._ram = new MainframeHardwareRam(parameterArguments);
+    this._parametersList = [];
 
     this.buildParametersList(
       constants.defaultAutomationSettings.mainframeHardwareAutobuyer.priority as MainframeHardwareParameterType[],
@@ -135,7 +136,8 @@ export class MainframeHardwareState implements IMainframeHardwareState {
   }
 
   private buildParametersList(parameterTypes: MainframeHardwareParameterType[]) {
-    this._parametersList = parameterTypes.map(this.getParameterByType);
+    this._parametersList.length = 0;
+    this._parametersList.push(...parameterTypes.map(this.getParameterByType));
   }
 
   private serializeParameterType = (parameter: IMainframeHardwareParameter): MainframeHardwareParameterType => {

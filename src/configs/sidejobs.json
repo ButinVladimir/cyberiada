@@ -43,10 +43,10 @@
       "money": { "multiplier": 1, "base": 2 },
       "developmentPoints": { "multiplier": 1, "base": 2 },
       "distictTierPoints": { "multiplier": 1, "base": 2 },
-      "codeBase": { "multiplier": 0, "base": 1 },
-      "computationalBase": { "multiplier": 0, "base": 1 },
-      "connectivity": { "multiplier": 0, "base": 1 },
-      "rewards": { "multiplier": 0, "base": 1 }
+      "codeBase": { "multiplier": 1, "base": 1 },
+      "computationalBase": { "multiplier": 1, "base": 1 },
+      "connectivity": { "multiplier": 1, "base": 1 },
+      "rewards": { "multiplier": 1, "base": 1 }
     }
   },
   "infoBroker": {

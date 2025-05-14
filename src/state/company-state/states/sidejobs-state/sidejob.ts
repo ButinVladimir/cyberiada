@@ -125,7 +125,7 @@ export class Sidejob implements ISidejob {
     }
 
     const passedTime = this._settingsState.updateInterval;
-    const cloneModifier = this.getCloneModifier();
+    const cloneModifier = this.getCommonModifier();
 
     this._assignedClone.earnExperience(passedTime * cloneModifier * this.calculateExperienceModifier());
     this._globalState.money.increase(passedTime * cloneModifier * this.calculateMoneyModifier(), IncomeSource.sidejob);
@@ -151,35 +151,35 @@ export class Sidejob implements ISidejob {
   }
 
   calculateExperienceDelta(passedTime: number): number {
-    return passedTime * this.getCloneModifier() * this.calculateExperienceModifier();
+    return passedTime * this.getCommonModifier() * this.calculateExperienceModifier();
   }
 
   calculateMoneyDelta(passedTime: number): number {
-    return passedTime * this.getCloneModifier() * this.calculateMoneyModifier();
+    return passedTime * this.getCommonModifier() * this.calculateMoneyModifier();
   }
 
   calculateDevelopmentPointsDelta(passedTime: number): number {
-    return passedTime * this.getCloneModifier() * this.calculateDevelopmentPointsModifier();
+    return passedTime * this.getCommonModifier() * this.calculateDevelopmentPointsModifier();
   }
 
   calculateDistrictTierPointsDelta(passedTime: number): number {
-    return passedTime * this.getCloneModifier() * this.calculateDistrictTierPointsModifier();
+    return passedTime * this.getCommonModifier() * this.calculateDistrictTierPointsModifier();
   }
 
   calculateConnectivityDelta(passedTime: number): number {
-    return passedTime * this.getCloneModifier() * this.calculateConnectivityModifier();
+    return passedTime * this.getCommonModifier() * this.calculateConnectivityModifier();
   }
 
   calculateCodeBaseDelta(passedTime: number): number {
-    return passedTime * this.getCloneModifier() * this.calculateCodeBaseModifier();
+    return passedTime * this.getCommonModifier() * this.calculateCodeBaseModifier();
   }
 
   calculateComputationalBaseDelta(passedTime: number): number {
-    return passedTime * this.getCloneModifier() * this.calculateComputationalBaseModifier();
+    return passedTime * this.getCommonModifier() * this.calculateComputationalBaseModifier();
   }
 
   calculateRewardsDelta(passedTime: number): number {
-    return passedTime * this.getCloneModifier() * this.calculateRewardsModifier();
+    return passedTime * this.getCommonModifier() * this.calculateRewardsModifier();
   }
 
   serialize(): ISerializedSidejob {
@@ -195,7 +195,7 @@ export class Sidejob implements ISidejob {
     this._stateUIConnector.unregisterEventEmitter(this);
   }
 
-  private getCloneModifier(): number {
+  private getCommonModifier(): number {
     let modifier = 1;
 
     for (const attribute of ATTRIBUTES) {
@@ -205,6 +205,8 @@ export class Sidejob implements ISidejob {
     for (const skill of SKILLS) {
       modifier *= this.getSkillModifier(skill);
     }
+
+    modifier *= this._globalState.multipliers.rewards.totalMultiplier;
 
     return modifier;
   }

@@ -23,6 +23,9 @@ export class StatisticsGrowthPanel extends BaseComponent {
 
       <ca-statistics-development-growth></ca-statistics-development-growth>
 
+      ${this._controller.isFeatureUnlocked(Feature.connectivity)
+        ? html`<ca-statistics-connectivity-points-growth></ca-statistics-connectivity-points-growth>`
+        : nothing}
       ${this._controller.isFeatureUnlocked(Feature.rewards)
         ? html`<ca-statistics-multiplier-points-growth type="rewards"></ca-statistics-multiplier-points-growth>`
         : nothing}

@@ -1,4 +1,5 @@
 export interface IMultiplierGrowthState {
   growthByProgram: number;
-  recalculateGrowth(): void;
+  resetValues(): void;
+  getGrowthByDistrict(districtIndex: number): number;
 }

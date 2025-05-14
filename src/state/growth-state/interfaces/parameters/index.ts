@@ -3,3 +3,4 @@ export * from './development-growth-state';
 export * from './program-completion-speed-state';
 export * from './multipliers-growth-state';
 export * from './multiplier-growth-state';
+export * from './connectivity-growth-state';

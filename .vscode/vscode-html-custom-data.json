@@ -714,6 +714,11 @@
       "attributes": []
     },
     {
+      "name": "ca-statistics-connectivity-points-growth",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_programGrowthRef` {`Ref<HTMLSpanElement>`} - \n\n  * `_districtValueNodes` {`NodeListOf<HTMLSpanElement>`} - \n\n  * `renderDistrict` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`StatisticsConnectivityPointsGrowthController`} - ",
+      "attributes": []
+    },
+    {
       "name": "ca-statistics-development-growth",
       "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_incomeSourceElements` {`NodeListOf<HTMLSpanElement>`} - \n\n  * `_totalGrowthRef` {`Ref<HTMLSpanElement>`} - \n\n  * `renderIncomeSource` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`StatisticsDevelopmentGrowthController`} - ",
       "attributes": []
@@ -725,7 +730,7 @@
     },
     {
       "name": "ca-statistics-multiplier-points-growth",
-      "description": "Attributes:\n\n  * `type` - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `type` - \n\n  * `_programGrowthRef` {`Ref<HTMLSpanElement>`} - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`StatisticsMultiplierPointsGrowthController`} - ",
+      "description": "Attributes:\n\n  * `type` - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `type` - \n\n  * `_programGrowthRef` {`Ref<HTMLSpanElement>`} - \n\n  * `_districtValueNodes` {`NodeListOf<HTMLSpanElement>`} - \n\n  * `renderDistrict` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`StatisticsMultiplierPointsGrowthController`} - ",
       "attributes": [
         {
           "name": "type",

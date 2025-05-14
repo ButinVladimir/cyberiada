@@ -1,28 +1,22 @@
 import { html } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { map } from 'lit/directives/map.js';
-import { localized } from '@lit/localize';
-import { customElement, property, queryAll } from 'lit/decorators.js';
-import { BaseComponent, HINT_ICON, type PointsMultiplierType } from '@shared/index';
-import { POINT_MULTIPLIER_HINTS, STATISTIC_PAGE_TEXTS } from '@components/statistics-page/constants';
+import { localized, msg } from '@lit/localize';
+import { customElement, queryAll } from 'lit/decorators.js';
+import { BaseComponent, HINT_ICON } from '@shared/index';
+import { STATISTIC_HINTS, STATISTIC_PAGE_TEXTS } from '@components/statistics-page/constants';
 import { IDistrictState } from '@state/city-state';
-import { StatisticsMultiplierPointsGrowthController } from './controller';
+import { StatisticsConnectivityPointsGrowthController } from './controller';
 import { statisticsPanelContentStyle } from '../../../../styles';
-import { MULTIPLIER_POINT_GROWTH_TITLES } from './constants';
 
 @localized()
-@customElement('ca-statistics-multiplier-points-growth')
-export class StatisticsMultiplierPointsGrowth extends BaseComponent {
+@customElement('ca-statistics-connectivity-points-growth')
+export class StatisticsConnectivityPointsGrowth extends BaseComponent {
   static styles = statisticsPanelContentStyle;
 
   hasPartialUpdate = true;
 
-  @property({
-    attribute: true,
-  })
-  type!: PointsMultiplierType;
-
-  private _controller: StatisticsMultiplierPointsGrowthController;
+  private _controller: StatisticsConnectivityPointsGrowthController;
 
   private _programGrowthRef = createRef<HTMLSpanElement>();
 
@@ -32,17 +26,17 @@ export class StatisticsMultiplierPointsGrowth extends BaseComponent {
   constructor() {
     super();
 
-    this._controller = new StatisticsMultiplierPointsGrowthController(this);
+    this._controller = new StatisticsConnectivityPointsGrowthController(this);
   }
 
   render() {
     return html`
       <sl-details>
         <h4 class="title" slot="summary">
-          ${MULTIPLIER_POINT_GROWTH_TITLES[this.type]()}
+          ${msg('Connectivity points per second')}
 
           <sl-tooltip>
-            <span slot="content"> ${POINT_MULTIPLIER_HINTS[this.type]()} </span>
+            <span slot="content"> ${STATISTIC_HINTS.connectivity()} </span>
 
             <sl-icon name=${HINT_ICON}></sl-icon>
           </sl-tooltip>
@@ -69,14 +63,14 @@ export class StatisticsMultiplierPointsGrowth extends BaseComponent {
     const formatter = this._controller.formatter;
 
     if (this._programGrowthRef.value) {
-      const growthByProgram = this._controller.getGrowthByProgram(this.type);
+      const growthByProgram = this._controller.getGrowthByProgram();
 
       this._programGrowthRef.value.textContent = formatter.formatNumberFloat(growthByProgram);
     }
 
     this._districtValueNodes.forEach((element) => {
       const districtIndex = parseInt(element.dataset.district!);
-      const value = this._controller.getGrowthByDistrict(this.type, districtIndex);
+      const value = this._controller.getGrowthByDistrict(districtIndex);
 
       element.textContent = formatter.formatNumberFloat(value);
     });

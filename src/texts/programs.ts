@@ -29,12 +29,6 @@ Generates code base points and improves mainframe programs cost divisor.`),
       msg(`Program to develop circuit designs.
 Generates computational base points and improves mainframe hardware cost divisor.`),
   },
-  [MultiplierProgramName.informationCollector]: {
-    title: () => msg('Information collector'),
-    overview: () =>
-      msg(`Program to collect all sorts of information.
-Generates connectivity points and improves chances to receive new contracts and sidejobs.`),
-  },
   [MultiplierProgramName.dealMaker]: {
     title: () => msg('Deal maker'),
     overview: () =>
@@ -52,6 +46,12 @@ Generates rewards points and improves all rewards.`),
   [OtherProgramName.mainframeProgramsAutobuyer]: {
     title: () => msg('Mainframe programs autobuyer'),
     overview: () => msg('Program to automatically buy mainframe programs.'),
+  },
+  [OtherProgramName.informationCollector]: {
+    title: () => msg('Information collector'),
+    overview: () =>
+      msg(`Program to collect all sorts of information.
+Generates connectivity points and improves chances to receive new contracts and sidejobs.`),
   },
 };
 

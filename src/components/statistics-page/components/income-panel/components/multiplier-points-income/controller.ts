@@ -1,23 +1,22 @@
-import { BaseController } from '@shared/base-controller';
 import { IDistrictMultipliers, IDistrictState } from '@state/city-state';
-import { PointsMultiplierType } from '@shared/types';
+import { BaseController, PointsMultiplierType } from '@shared/index';
 
 export class StatisticsMultiplierPointsIncomeController extends BaseController {
   listAvailableDistricts(): IDistrictState[] {
     return this.cityState.listAvailableDistricts();
   }
 
-  getPointsByDistrict(districtIndex: number, multiplierType: PointsMultiplierType): number {
+  getPointsByDistrict(multiplierType: PointsMultiplierType, districtIndex: number): number {
     const districtMultipliers = this.cityState.getDistrictState(districtIndex).parameters.multipliers;
 
     return this.getDistrictMultiplierParameter(districtMultipliers, multiplierType).points;
   }
 
   getPointsByProgram(pointsMultiplierType: PointsMultiplierType) {
-    return this.getMultiplierState(pointsMultiplierType).pointsByProgram;
+    return this.getGlobalMultiplierState(pointsMultiplierType).pointsByProgram;
   }
 
-  private getMultiplierState(pointsMultiplierType: PointsMultiplierType) {
+  private getGlobalMultiplierState(pointsMultiplierType: PointsMultiplierType) {
     switch (pointsMultiplierType) {
       case 'computationalBase':
         return this.globalState.multipliers.computationalBase;

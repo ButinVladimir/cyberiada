@@ -152,10 +152,6 @@ export class ProgramDescriptionText extends BaseComponent {
         this._renderer = new CircuitDesignerDescriptionEffectRenderer(parameters);
         break;
 
-      case MultiplierProgramName.informationCollector:
-        this._renderer = new InformationCollectorDescriptionEffectRenderer(parameters);
-        break;
-
       case MultiplierProgramName.dealMaker:
         this._renderer = new DealMakerDescriptionEffectRenderer(parameters);
         break;
@@ -170,6 +166,10 @@ export class ProgramDescriptionText extends BaseComponent {
 
       case OtherProgramName.mainframeProgramsAutobuyer:
         this._renderer = new MainframeProgramsAutobuyerDescriptionEffectRenderer(parameters);
+        break;
+
+      case OtherProgramName.informationCollector:
+        this._renderer = new InformationCollectorDescriptionEffectRenderer(parameters);
         break;
 
       default:

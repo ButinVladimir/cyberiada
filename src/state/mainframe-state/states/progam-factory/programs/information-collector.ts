@@ -1,10 +1,10 @@
 import programs from '@configs/programs.json';
 import { calculateQualityPower } from '@shared/helpers';
-import { MultiplierProgramName } from '../types';
+import { OtherProgramName } from '../types';
 import { BaseProgram } from './base-program';
 
 export class InformationCollectorProgram extends BaseProgram {
-  public readonly name = MultiplierProgramName.informationCollector;
+  public readonly name = OtherProgramName.informationCollector;
   public readonly isAutoscalable = false;
 
   handlePerformanceUpdate(): void {}

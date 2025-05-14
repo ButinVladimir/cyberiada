@@ -1,7 +1,6 @@
 export enum MultiplierProgramName {
   codeGenerator = 'codeGenerator',
   circuitDesigner = 'circuitDesigner',
-  informationCollector = 'informationCollector',
   dealMaker = 'dealMaker',
 }
 
@@ -10,6 +9,7 @@ export enum OtherProgramName {
   predictiveComputator = 'predictiveComputator',
   mainframeHardwareAutobuyer = 'mainframeHardwareAutobuyer',
   mainframeProgramsAutobuyer = 'mainframeProgramsAutobuyer',
+  informationCollector = 'informationCollector',
 }
 
 export type ProgramName = MultiplierProgramName | OtherProgramName;
