@@ -1,36 +1,42 @@
-import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
-import type { IGlobalState } from '@state/global-state/interfaces/global-state';
-import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
-import type { IFormatter } from '@shared/interfaces/formatter';
-import { calculateGeometricProgressionSum } from '@shared/helpers';
-import { IExponent } from '@shared/interfaces/formulas/exponent';
-import { Feature, PurchaseType } from '@shared/types';
-import { binarySearchDecimal } from '@shared/helpers';
+import type { IStateUIConnector } from '@state/state-ui-connector';
+import type { IGlobalState } from '@state/global-state';
+import type { IMessageLogState } from '@state/message-log-state';
 import {
-  IMainframeHardwareParameter,
-  IMainframeHardwareParameterArguments,
-  IMainframeHardwareState,
-  IMainframeHardwareParameterSerializedState,
-} from './interfaces';
+  type IFormatter,
+  calculateGeometricProgressionSum,
+  IExponent,
+  Feature,
+  PurchaseType,
+  binarySearchDecimal,
+} from '@shared/index';
+import { decorators } from '@state/container';
+import { IMainframeHardwareParameter, IMainframeHardwareParameterSerializedState } from './interfaces';
 import { MainframeHardwareParameterType } from './types';
+import { type IMainframeState } from '../../interfaces';
+import { TYPES } from '@/state/types';
+
+const { lazyInject } = decorators;
 
 export abstract class MainframeHardwareParameter implements IMainframeHardwareParameter {
-  protected stateUiConnector: IStateUIConnector;
-  protected mainframeHardwareState: IMainframeHardwareState;
-  protected globalState: IGlobalState;
-  protected messageLogState: IMessageLogState;
-  protected formatter: IFormatter;
+  @lazyInject(TYPES.StateUIConnector)
+  protected stateUiConnector!: IStateUIConnector;
+
+  @lazyInject(TYPES.MainframeState)
+  protected mainframeState!: IMainframeState;
+
+  @lazyInject(TYPES.GlobalState)
+  protected globalState!: IGlobalState;
+
+  @lazyInject(TYPES.MessageLogState)
+  protected messageLogState!: IMessageLogState;
+
+  @lazyInject(TYPES.Formatter)
+  protected formatter!: IFormatter;
 
   protected _level: number;
   protected _autoUpgradeEnabled: boolean;
 
-  constructor(parameters: IMainframeHardwareParameterArguments) {
-    this.stateUiConnector = parameters.stateUiConnector;
-    this.mainframeHardwareState = parameters.mainframeHardwareState;
-    this.globalState = parameters.globalState;
-    this.messageLogState = parameters.messageLogState;
-    this.formatter = parameters.formatter;
-
+  constructor() {
     this._level = 0;
     this._autoUpgradeEnabled = true;
 
@@ -134,6 +140,7 @@ export abstract class MainframeHardwareParameter implements IMainframeHardwarePa
     this._level += increase;
     this.postPurchaseMessge();
 
-    this.mainframeHardwareState.emitUpgradedEvent();
+    this.mainframeState.processes.requestUpdateProcesses();
+    this.mainframeState.processes.processCompletionSpeed.requestMultipliersRecalculation();
   };
 }

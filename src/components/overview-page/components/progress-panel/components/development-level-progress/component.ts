@@ -1,10 +1,10 @@
-import { html, css } from 'lit';
-import { localized, msg, str } from '@lit/localize';
+import { html } from 'lit';
+import { localized, msg } from '@lit/localize';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { customElement } from 'lit/decorators.js';
 import SlProgressBar from '@shoelace-style/shoelace/dist/components/progress-bar/progress-bar.component.js';
 import { BaseComponent } from '@shared/base-component';
-import { hintStyle } from '@shared/styles';
+import { progressBarHintStyle } from '@shared/styles';
 import { calculateLevelProgressPercentage } from '@shared/helpers';
 import { OverviewDevelopmentLevelProgressController } from './controller';
 import { progressBlockStyle } from '../../styles';
@@ -12,16 +12,7 @@ import { progressBlockStyle } from '../../styles';
 @localized()
 @customElement('ca-overview-development-level-progress')
 export class OverviewDevelopmentLevelProgress extends BaseComponent {
-  static styles = [
-    progressBlockStyle,
-    hintStyle,
-    css`
-      p.hint {
-        margin-top: var(--sl-spacing-3x-small);
-        margin-bottom: 0;
-      }
-    `,
-  ];
+  static styles = [progressBlockStyle, progressBarHintStyle];
 
   hasPartialUpdate = true;
 
@@ -29,6 +20,7 @@ export class OverviewDevelopmentLevelProgress extends BaseComponent {
 
   private _progressBarRef = createRef<SlProgressBar>();
   private _hintRef = createRef<HTMLParagraphElement>();
+  private _timerRef = createRef<HTMLSpanElement>();
 
   constructor() {
     super();
@@ -43,7 +35,9 @@ export class OverviewDevelopmentLevelProgress extends BaseComponent {
 
         <sl-progress-bar ${ref(this._progressBarRef)}> </sl-progress-bar>
 
-        <p ${ref(this._hintRef)} class="hint"></p>
+        <p ${ref(this._hintRef)} class="progress-bar-hint">
+          ${msg(html`Next development level will be reached in ${html`<span ${ref(this._timerRef)}></span>`}`)}
+        </p>
       </div>
     `;
   }
@@ -65,14 +59,18 @@ export class OverviewDevelopmentLevelProgress extends BaseComponent {
 
     if (this._hintRef.value) {
       if (developmentGrowth > 0) {
-        const formattedTime = formatter.formatTimeShort(
-          this._controller.getDevelopmentPointsUntilNextLevel() / developmentGrowth,
-        );
-
-        this._hintRef.value.textContent = msg(str`Next development level will be reached in ${formattedTime}`);
+        this._hintRef.value.classList.add('visible');
       } else {
-        this._hintRef.value.textContent = msg('Next development level is not reachable');
+        this._hintRef.value.classList.remove('visible');
       }
+    }
+
+    if (this._timerRef.value && developmentGrowth > 0) {
+      const formattedTime = formatter.formatTimeShort(
+        this._controller.getDevelopmentPointsUntilNextLevel() / developmentGrowth,
+      );
+
+      this._timerRef.value.textContent = formattedTime;
     }
   };
 }

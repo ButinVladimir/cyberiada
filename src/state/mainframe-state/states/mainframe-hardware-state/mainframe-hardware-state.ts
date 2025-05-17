@@ -2,19 +2,9 @@ import { injectable } from 'inversify';
 import constants from '@configs/constants.json';
 import { decorators } from '@state/container';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
-import type { IGlobalState } from '@state/global-state/interfaces/global-state';
-import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
-import type { IMainframeState } from '../../interfaces/mainframe-state';
-import type { IGrowthState } from '@state/growth-state/interfaces/growth-state';
-import type { IFormatter } from '@shared/interfaces/formatter';
 import { TYPES } from '@state/types';
 import { moveElementInArray } from '@shared/helpers';
-import {
-  IMainframeHardwareState,
-  IMainframeHardwareSerializedState,
-  IMainframeHardwareParameterArguments,
-  IMainframeHardwareParameter,
-} from './interfaces';
+import { IMainframeHardwareState, IMainframeHardwareSerializedState, IMainframeHardwareParameter } from './interfaces';
 import { MainframeHardwarePerformance } from './mainframe-hardware-performance';
 import { MainframeHardwareCores } from './mainframe-hardware-cores';
 import { MainframeHardwareRam } from './mainframe-hardware-ram';
@@ -24,23 +14,8 @@ const { lazyInject } = decorators;
 
 @injectable()
 export class MainframeHardwareState implements IMainframeHardwareState {
-  @lazyInject(TYPES.MainframeState)
-  private _mainframeState!: IMainframeState;
-
-  @lazyInject(TYPES.GrowthState)
-  private _growthState!: IGrowthState;
-
   @lazyInject(TYPES.StateUIConnector)
   private _stateUiConnector!: IStateUIConnector;
-
-  @lazyInject(TYPES.GlobalState)
-  private _globalState!: IGlobalState;
-
-  @lazyInject(TYPES.MessageLogState)
-  private _messageLogState!: IMessageLogState;
-
-  @lazyInject(TYPES.Formatter)
-  private _formatter!: IFormatter;
 
   private _parametersList!: IMainframeHardwareParameter[];
   private _performance: MainframeHardwarePerformance;
@@ -48,17 +23,9 @@ export class MainframeHardwareState implements IMainframeHardwareState {
   private _ram: MainframeHardwareRam;
 
   constructor() {
-    const parameterArguments: IMainframeHardwareParameterArguments = {
-      stateUiConnector: this._stateUiConnector,
-      mainframeHardwareState: this,
-      globalState: this._globalState,
-      messageLogState: this._messageLogState,
-      formatter: this._formatter,
-    };
-
-    this._performance = new MainframeHardwarePerformance(parameterArguments);
-    this._cores = new MainframeHardwareCores(parameterArguments);
-    this._ram = new MainframeHardwareRam(parameterArguments);
+    this._performance = new MainframeHardwarePerformance();
+    this._cores = new MainframeHardwareCores();
+    this._ram = new MainframeHardwareRam();
     this._parametersList = [];
 
     this.buildParametersList(
@@ -100,12 +67,6 @@ export class MainframeHardwareState implements IMainframeHardwareState {
         parameter.purchaseMax();
       }
     }
-  }
-
-  emitUpgradedEvent() {
-    this._mainframeState.processes.requestUpdateProcesses();
-    this._mainframeState.processes.requestUpdatePerformance();
-    this._growthState.programCompletionSpeed.requestMultipliersRecalculation();
   }
 
   async startNewState(): Promise<void> {

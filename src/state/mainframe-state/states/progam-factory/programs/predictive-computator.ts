@@ -8,12 +8,12 @@ export class PredictiveComputatorProgram extends BaseProgram {
   public readonly isAutoscalable = true;
 
   handlePerformanceUpdate(): void {
-    this.growthState.programCompletionSpeed.requestMultipliersRecalculation();
+    this.mainframeState.processes.processCompletionSpeed.requestMultipliersRecalculation();
   }
 
   perform(): void {}
 
-  calculateProgramCompletionSpeedMultiplier(threads: number, usedRam: number): number {
+  calculateProcessCompletionSpeedMultiplier(threads: number, usedRam: number): number {
     const programData = programs[this.name];
 
     return (

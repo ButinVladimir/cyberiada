@@ -25,9 +25,9 @@ export class PredictiveComputatorDescriptionEffectRenderer implements IDescripti
   }
 
   public renderEffect = () => {
-    const value = this._program.calculateProgramCompletionSpeedMultiplier(this._cores, this._ram);
+    const value = this._program.calculateProcessCompletionSpeedMultiplier(this._cores, this._ram);
     const valueDiff = this._ownedProgram
-      ? value - this._ownedProgram.calculateProgramCompletionSpeedMultiplier(this._cores, this._ram)
+      ? value - this._ownedProgram.calculateProcessCompletionSpeedMultiplier(this._cores, this._ram)
       : value;
 
     const formattedValue = this._formatter.formatNumberFloat(value);

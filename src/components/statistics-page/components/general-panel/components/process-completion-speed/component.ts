@@ -4,20 +4,20 @@ import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { IncomeSource } from '@shared/types';
 import { INCOME_SOURCE_NAMES, STATISTIC_PAGE_TEXTS } from '@components/statistics-page/constants';
-import { StatisticsProgramCompletionSpeedController } from './controller';
+import { StatisticsProcessCompletionSpeedController } from './controller';
 import { statisticsPanelContentStyle } from '../../../../styles';
 
 @localized()
-@customElement('ca-statistics-program-completion-speed')
-export class StatisticsProgramCompletionSpeed extends BaseComponent {
+@customElement('ca-statistics-process-completion-speed')
+export class StatisticsProcessCompletionSpeed extends BaseComponent {
   static styles = statisticsPanelContentStyle;
 
-  private _controller: StatisticsProgramCompletionSpeedController;
+  private _controller: StatisticsProcessCompletionSpeedController;
 
   constructor() {
     super();
 
-    this._controller = new StatisticsProgramCompletionSpeedController(this);
+    this._controller = new StatisticsProcessCompletionSpeedController(this);
   }
 
   render() {

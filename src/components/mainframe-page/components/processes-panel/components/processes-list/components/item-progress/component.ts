@@ -1,10 +1,10 @@
 import { css, html, nothing } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
-import { localized, msg, str } from '@lit/localize';
+import { localized, msg } from '@lit/localize';
 import { consume } from '@lit/context';
 import SlProgressBar from '@shoelace-style/shoelace/dist/components/progress-bar/progress-bar.component.js';
-import { BaseController, BaseComponent, hintStyle, calculateLevelProgressPercentage } from '@shared/index';
+import { BaseController, BaseComponent, calculateLevelProgressPercentage, progressBarHintStyle } from '@shared/index';
 import { type IProcess } from '@state/mainframe-state';
 import { processContext } from '../item/contexts';
 
@@ -12,15 +12,10 @@ import { processContext } from '../item/contexts';
 @customElement('ca-processes-list-item-progress')
 export class ProcessesListItemProgressColumn extends BaseComponent {
   static styles = [
-    hintStyle,
+    progressBarHintStyle,
     css`
       :host {
         flex: 1 1 auto;
-      }
-
-      p.hint {
-        margin-top: var(--sl-spacing-3x-small);
-        margin-bottom: 0;
       }
     `,
   ];
@@ -31,6 +26,7 @@ export class ProcessesListItemProgressColumn extends BaseComponent {
 
   private _progressBarRef = createRef<SlProgressBar>();
   private _hintRef = createRef<HTMLParagraphElement>();
+  private _timerRef = createRef<HTMLSpanElement>();
 
   @consume({ context: processContext, subscribe: true })
   private _process?: IProcess;
@@ -52,7 +48,9 @@ export class ProcessesListItemProgressColumn extends BaseComponent {
 
     return html`
       <sl-progress-bar ${ref(this._progressBarRef)}></sl-progress-bar>
-      <p ${ref(this._hintRef)} class="hint"></p>
+      <p ${ref(this._hintRef)} class="progress-bar-hint">
+        ${msg(html`Process will be completed in ${html`<span ${ref(this._timerRef)}></span>`}`)}
+      </p>
     `;
   }
 
@@ -77,14 +75,18 @@ export class ProcessesListItemProgressColumn extends BaseComponent {
 
     if (this._hintRef.value) {
       if (processCompletionDelta > 0) {
-        const hintTime = formatter.formatTimeShort(
-          (this._process.maxCompletionPoints - this._process.currentCompletionPoints) / processCompletionDelta,
-        );
-
-        this._hintRef.value.textContent = msg(str`Process will be completed in ${hintTime}`);
+        this._hintRef.value.classList.add('visible');
       } else {
-        this._hintRef.value.textContent = '';
+        this._hintRef.value.classList.remove('visible');
       }
+    }
+
+    if (this._timerRef.value && processCompletionDelta > 0) {
+      const hintTime = formatter.formatTimeShort(
+        (this._process.maxCompletionPoints - this._process.currentCompletionPoints) / processCompletionDelta,
+      );
+
+      this._timerRef.value.textContent = hintTime;
     }
   };
 }

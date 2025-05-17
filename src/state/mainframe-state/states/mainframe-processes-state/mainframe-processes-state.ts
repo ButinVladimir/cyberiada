@@ -1,4 +1,4 @@
-import { injectable } from 'inversify';
+import { inject, injectable } from 'inversify';
 import { msg, str } from '@lit/localize';
 import { decorators } from '@state/container';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
@@ -15,6 +15,7 @@ import {
   IMainframeProcessesSerializedState,
   IMainframeProcessesState,
   IProcess,
+  type IProcessCompletionSpeedParameter,
   ISerializedProcess,
 } from './interfaces';
 import { Process } from './process';
@@ -38,6 +39,8 @@ export class MainframeProcessesState implements IMainframeProcessesState {
   @lazyInject(TYPES.Formatter)
   private _formatter!: IFormatter;
 
+  private _processCompletionSpeed: IProcessCompletionSpeedParameter;
+
   private _processesList: IProcess[];
   private _processesMap: Map<ProgramName, IProcess>;
   private _runningProcesses: IProcess[];
@@ -47,7 +50,11 @@ export class MainframeProcessesState implements IMainframeProcessesState {
   private _processUpdateRequested: boolean;
   private _performanceUpdateRequested: boolean;
 
-  constructor() {
+  constructor(
+    @inject(TYPES.ProcessCompletionSpeedParameter) _processCompletionSpeed: IProcessCompletionSpeedParameter,
+  ) {
+    this._processCompletionSpeed = _processCompletionSpeed;
+
     this._processesMap = new Map<ProgramName, IProcess>();
     this._processesList = [];
     this._runningProcesses = [];
@@ -74,6 +81,10 @@ export class MainframeProcessesState implements IMainframeProcessesState {
 
   get runningScalableProcess() {
     return this._runningScalableProcess;
+  }
+
+  get processCompletionSpeed() {
+    return this._processCompletionSpeed;
   }
 
   listProcesses(): IProcess[] {
@@ -205,18 +216,12 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     this._processUpdateRequested = true;
   }
 
-  requestUpdatePerformance() {
-    this._performanceUpdateRequested = true;
-  }
-
   processTick() {
     if (this._processUpdateRequested) {
       this.updateRunningProcesses();
     }
 
-    if (this._performanceUpdateRequested) {
-      this.updatePerformance();
-    }
+    this._processCompletionSpeed.recalculateMultipliers();
 
     if (this._runningScalableProcess?.isActive) {
       this._runningScalableProcess.program.perform(
@@ -281,6 +286,7 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     this.clearState();
 
     this.requestUpdateProcesses();
+    this._processCompletionSpeed.requestMultipliersRecalculation();
   }
 
   async deserialize(serializedState: IMainframeProcessesSerializedState): Promise<void> {
@@ -293,6 +299,7 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     });
 
     this.requestUpdateProcesses();
+    this._processCompletionSpeed.requestMultipliersRecalculation();
   }
 
   serialize(): IMainframeProcessesSerializedState {
@@ -406,13 +413,5 @@ export class MainframeProcessesState implements IMainframeProcessesState {
 
     this._processesList.length = 0;
     this._processesMap.clear();
-  }
-
-  private updatePerformance() {
-    this._performanceUpdateRequested = false;
-
-    for (const process of this._processesList) {
-      process.program.handlePerformanceUpdate();
-    }
   }
 }

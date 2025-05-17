@@ -6,12 +6,12 @@ import { OtherProgramName } from '@state/mainframe-state/states/progam-factory/t
 import { PredictiveComputatorProgram } from '@state/mainframe-state/states/progam-factory/programs/predictive-computator';
 import { TYPES } from '@state/types';
 import type { IGlobalState } from '@state/global-state/interfaces/global-state';
-import { IProgramCompletionSpeedState } from '../interfaces/parameters/program-completion-speed-state';
+import { IProcessCompletionSpeedParameter } from './interfaces';
 
 const { lazyInject } = decorators;
 
 @injectable()
-export class ProgramCompletionSpeedState implements IProgramCompletionSpeedState {
+export class ProcessCompletionSpeedParameter implements IProcessCompletionSpeedParameter {
   @lazyInject(TYPES.StateUIConnector)
   private _stateUiConnector!: IStateUIConnector;
 
@@ -77,7 +77,7 @@ export class ProgramCompletionSpeedState implements IProgramCompletionSpeedState
     if (predictiveComputatorProcess?.isActive) {
       const predictiveComputatorProgram = predictiveComputatorProcess.program as PredictiveComputatorProgram;
 
-      multiplierByProgram = predictiveComputatorProgram.calculateProgramCompletionSpeedMultiplier(
+      multiplierByProgram = predictiveComputatorProgram.calculateProcessCompletionSpeedMultiplier(
         predictiveComputatorProcess.usedCores,
         predictiveComputatorProcess.totalRam,
       );

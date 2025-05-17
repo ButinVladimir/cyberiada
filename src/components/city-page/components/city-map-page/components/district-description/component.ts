@@ -1,27 +1,17 @@
-import { css, html, nothing } from 'lit';
+import { css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { localized, msg, str } from '@lit/localize';
 import { BaseComponent } from '@shared/base-component';
 import { DISTRICT_TYPE_TEXTS, FACTION_TEXTS } from '@texts/index';
 import { DISTRICT_STATE_TEXTS } from '../../../../constants';
-import { CityMapTooltipContentController } from './controller';
+import { CityMapDistrictDescriptionController } from './controller';
 
 @localized()
-@customElement('ca-city-map-tooltip-content')
-export class CityMapTooltipContent extends BaseComponent {
+@customElement('ca-city-map-district-description')
+export class CityMapDistrictDescription extends BaseComponent {
   static styles = css`
     :host {
       display: block;
-      border-radius: var(--sl-tooltip-border-radius);
-      background-color: var(--sl-tooltip-background-color);
-      font-family: var(--sl-tooltip-font-family);
-      font-size: var(--sl-tooltip-font-size);
-      font-weight: var(--sl-tooltip-font-weight);
-      line-height: var(--sl-tooltip-line-height);
-      color: var(--sl-tooltip-color);
-      padding: var(--sl-tooltip-padding);
-      pointer-events: none;
-      user-select: none;
     }
 
     p {
@@ -36,12 +26,12 @@ export class CityMapTooltipContent extends BaseComponent {
   })
   district?: number | null;
 
-  private _controller: CityMapTooltipContentController;
+  private _controller: CityMapDistrictDescriptionController;
 
   constructor() {
     super();
 
-    this._controller = new CityMapTooltipContentController(this);
+    this._controller = new CityMapDistrictDescriptionController(this);
   }
 
   render() {

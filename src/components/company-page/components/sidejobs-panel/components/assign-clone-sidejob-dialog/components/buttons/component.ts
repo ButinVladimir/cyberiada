@@ -32,6 +32,8 @@ export class AssignCloneSidejobDialogButtons extends BaseComponent {
 
   private _assignButtonRef = createRef<SlButton>();
 
+  private _availableTimeRef = createRef<HTMLSpanElement>();
+
   constructor() {
     super();
 
@@ -70,6 +72,8 @@ export class AssignCloneSidejobDialogButtons extends BaseComponent {
       }
     });
 
+    this.updateAvailabilityTimer();
+
     if (this._assignButtonRef.value) {
       this.updateAssignButton();
     }
@@ -79,6 +83,9 @@ export class AssignCloneSidejobDialogButtons extends BaseComponent {
     return html`
       <p class="warning" data-warning=${AssignCloneSidejobDialogWarning.needConnectivity}>
         ${msg('Not enough connectivity')}
+      </p>
+      <p class="warning" data-warning=${AssignCloneSidejobDialogWarning.willBeAvailableIn}>
+        ${COMMON_TEXTS.willBeAvailableInNew(html`<span ${ref(this._availableTimeRef)}></span>`)}
       </p>
       <p class="warning" data-warning=${AssignCloneSidejobDialogWarning.other}>${this.renderOtherWarnings()}</p>
     `;
@@ -114,12 +121,40 @@ export class AssignCloneSidejobDialogButtons extends BaseComponent {
 
     const totalConnectivity = this._controller.getTotalConnectivity(this._sidejob.district.index);
     const requiredConnectivity = this._controller.getRequiredConnectivity(this._sidejob.sidejobName);
+    const connectivityDiff = requiredConnectivity - totalConnectivity;
+    const connectivityGrowth = this._controller.getConnectivityGrowth(this._sidejob.district.index);
 
-    if (totalConnectivity < requiredConnectivity) {
+    if (connectivityDiff > 0) {
+      if (connectivityGrowth > 0) {
+        return AssignCloneSidejobDialogWarning.willBeAvailableIn;
+      }
+
       return AssignCloneSidejobDialogWarning.needConnectivity;
     }
 
     return AssignCloneSidejobDialogWarning.other;
+  }
+
+  private updateAvailabilityTimer(): void {
+    if (!this._sidejob) {
+      return;
+    }
+
+    if (!this._availableTimeRef.value) {
+      return;
+    }
+
+    const currentPoints = this._controller.getTotalConnectivity(this._sidejob.district.index);
+    const requiredPoints = this._controller.getRequiredConnectivity(this._sidejob.sidejobName);
+    const connectivityGrowth = this._controller.getConnectivityGrowth(this._sidejob.district.index);
+    const pointsDiff = requiredPoints - currentPoints;
+
+    if (pointsDiff < 0 || connectivityGrowth < 0) {
+      this._availableTimeRef.value.textContent = '';
+    } else {
+      const formattedTime = this._controller.formatter.formatTimeShort(pointsDiff / connectivityGrowth);
+      this._availableTimeRef.value.textContent = formattedTime;
+    }
   }
 
   private updateAssignButton(): void {

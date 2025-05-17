@@ -10,5 +10,4 @@ export interface IMainframeHardwareState extends ISerializeable<IMainframeHardwa
   listParameters(): IMainframeHardwareParameter[];
   moveParameter(parameterType: MainframeHardwareParameterType, newPosition: number): void;
   purchaseMax(): void;
-  emitUpgradedEvent(): void;
 }

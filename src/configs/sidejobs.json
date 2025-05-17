@@ -51,7 +51,7 @@
   },
   "infoBroker": {
     "requirements": {
-      "connectivity": { "multiplier": 1000, "base": 1000 },
+      "connectivity": { "multiplier": 1000000, "base": 1000 },
       "attributes": {
         "strength": { "multiplier": 0, "base": 1 },
         "endurance": { "multiplier": 0, "base": 1 },

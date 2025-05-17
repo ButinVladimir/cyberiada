@@ -32,7 +32,7 @@
     "mainframeSoftware": {
       "performanceBoost": 1.001,
       "startingPrograms": ["shareServer"],
-      "minProgramCompletionTime": 1000
+      "minProcessCompletionTime": 1000
     },
     "developmentLevelRequirements": { "multiplier": 60000, "base": 1.5 },
     "programMultipliers": {

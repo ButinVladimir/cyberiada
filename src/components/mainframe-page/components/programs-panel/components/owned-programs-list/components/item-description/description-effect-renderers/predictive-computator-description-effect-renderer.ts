@@ -22,7 +22,7 @@ export class PredictiveComputatorDescriptionEffectRenderer implements IDescripti
 
   public renderEffect = () => {
     const formattedValue = this._formatter.formatNumberFloat(
-      this._program.calculateProgramCompletionSpeedMultiplier(this._cores, this._ram),
+      this._program.calculateProcessCompletionSpeedMultiplier(this._cores, this._ram),
     );
 
     return html` <p>${msg(str`Speed multiplier: Up to ${formattedValue}`)}</p> `;

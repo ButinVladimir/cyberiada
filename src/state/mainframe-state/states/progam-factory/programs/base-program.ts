@@ -2,7 +2,6 @@ import programs from '@configs/programs.json';
 import { type IStateUIConnector } from '@state/state-ui-connector';
 import { type IFormatter, calculatePower } from '@shared/index';
 import { type IGlobalState } from '@state/global-state';
-import { type IGrowthState } from '@state/growth-state';
 import { type IMainframeState } from '@state/mainframe-state';
 import { Feature } from '@shared/types';
 import { decorators } from '@state/container';
@@ -19,9 +18,6 @@ export abstract class BaseProgram implements IProgram {
 
   @lazyInject(TYPES.GlobalState)
   protected globalState!: IGlobalState;
-
-  @lazyInject(TYPES.GrowthState)
-  protected growthState!: IGrowthState;
 
   @lazyInject(TYPES.MainframeState)
   protected mainframeState!: IMainframeState;
@@ -93,10 +89,10 @@ export abstract class BaseProgram implements IProgram {
   }
 
   calculateCompletionDelta(threads: number, usedCores: number, passedTime: number): number {
-    const currentSpeed = usedCores * this.growthState.programCompletionSpeed.totalMultiplier;
+    const currentSpeed = usedCores * this.mainframeState.processes.processCompletionSpeed.totalMultiplier;
     const allowedSpeed =
       (threads * this.completionPoints) /
-      this.globalState.scenario.currentValues.mainframeSoftware.minProgramCompletionTime;
+      this.globalState.scenario.currentValues.mainframeSoftware.minProcessCompletionTime;
 
     return passedTime * Math.min(currentSpeed, allowedSpeed);
   }

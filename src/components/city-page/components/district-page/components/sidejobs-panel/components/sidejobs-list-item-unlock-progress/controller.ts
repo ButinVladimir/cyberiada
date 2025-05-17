@@ -9,4 +9,8 @@ export class CityDistrictSidejobsListItemUnlockProgressController extends BaseCo
   getRequiredConnectivity(sidejobName: SidejobName) {
     return this.companyState.sidejobs.getConnectivityRequirement(sidejobName);
   }
+
+  getConnectivityGrowth(districtIndex: number) {
+    return this.growthState.connectivity.getTotalGrowthByDistrict(districtIndex);
+  }
 }

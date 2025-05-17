@@ -38,7 +38,7 @@
     },
     {
       "name": "ca-city-map-background",
-      "description": "Attributes:\n\n  * `size` {`number`} - \n\nProperties:\n\n  * `DX` {`number[]`} - \n\n  * `DY` {`number[]`} - \n\n  * `styles` {`CSSResult`} - \n\n  * `size` {`number`} - \n\n  * `_canvasRef` {`Ref<HTMLCanvasElement>`} - \n\n  * `_offscreenCanvasContext` {`OffscreenCanvasRenderingContext2D | null`} - \n\n  * `_fullWidth` {`number`} - \n\n  * `_fullHeight` {`number`} - \n\n  * `renderCanvas` - \n\n  * `_controller` {`CityMapBackgroundController`} - ",
+      "description": "Attributes:\n\n  * `size` {`number`} - \n\nProperties:\n\n  * `DX` {`number[]`} - \n\n  * `DY` {`number[]`} - \n\n  * `styles` {`CSSResult`} - \n\n  * `size` {`number`} - \n\n  * `_canvasRef` {`Ref<HTMLCanvasElement>`} - \n\n  * `_offscreenCanvasContext` {`OffscreenCanvasRenderingContext2D | null`} - \n\n  * `renderCanvas` - \n\n  * `_controller` {`CityMapBackgroundController`} - ",
       "attributes": [
         {
           "name": "size",
@@ -47,8 +47,24 @@
       ]
     },
     {
-      "name": "ca-city-map-district",
-      "description": "Attributes:\n\n  * `size` {`number`} - \n\n  * `district` {`number`} - \n\nProperties:\n\n  * `DX` {`number[]`} - \n\n  * `DY` {`number[]`} - \n\n  * `styles` {`CSSResult`} - \n\n  * `size` {`number`} - \n\n  * `district` {`number`} - \n\n  * `_canvasRef` {`Ref<HTMLCanvasElement>`} - \n\n  * `_offscreenCanvasContext` {`OffscreenCanvasRenderingContext2D | null`} - \n\n  * `_fullWidth` {`number`} - \n\n  * `_fullHeight` {`number`} - \n\n  * `renderCanvas` - \n\n  * `_controller` {`CityMapDistrictController`} - ",
+      "name": "ca-city-map",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_size` {`number`} - \n\n  * `_selectedDistrictIndex` {`number | undefined`} - \n\n  * `_contentRef` {`Ref<HTMLDivElement>`} - \n\n  * `renderDistrict` - \n\n  * `handleMouseMove` - \n\n  * `handleMouseLeave` - \n\n  * `handleResize` - \n\n  * `handleMapClick` - \n\n  * `_controller` {`CityMapController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-city-map-district-description",
+      "description": "Attributes:\n\n  * `district` {`number | null | undefined`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `district` {`number | null | undefined`} - \n\n  * `_controller` {`CityMapDistrictDescriptionController`} - ",
+      "attributes": [
+        {
+          "name": "district",
+          "description": "`district` {`number | null | undefined`} - \n\nProperty: district",
+          "values": []
+        }
+      ]
+    },
+    {
+      "name": "ca-city-map-highlighted-district",
+      "description": "Attributes:\n\n  * `size` {`number`} - \n\n  * `district` {`number`} - \n\nProperties:\n\n  * `DX` {`number[]`} - \n\n  * `DY` {`number[]`} - \n\n  * `styles` {`CSSResult`} - \n\n  * `size` {`number`} - \n\n  * `district` {`number`} - \n\n  * `_canvasRef` {`Ref<HTMLCanvasElement>`} - \n\n  * `_offscreenCanvasContext` {`OffscreenCanvasRenderingContext2D | null`} - \n\n  * `renderCanvas` - \n\n  * `_controller` {`CityMapHighlightedDistrictController`} - ",
       "attributes": [
         {
           "name": "size",
@@ -61,22 +77,6 @@
       ]
     },
     {
-      "name": "ca-city-map-tooltip-content",
-      "description": "Attributes:\n\n  * `district` {`number | null | undefined`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `district` {`number | null | undefined`} - \n\n  * `_controller` {`CityMapTooltipContentController`} - ",
-      "attributes": [
-        {
-          "name": "district",
-          "description": "`district` {`number | null | undefined`} - \n\nProperty: district",
-          "values": []
-        }
-      ]
-    },
-    {
-      "name": "ca-city-map",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_size` {`number`} - \n\n  * `_selectedDistrictIndex` {`number | undefined`} - \n\n  * `_contentRef` {`Ref<HTMLDivElement>`} - \n\n  * `_popupRef` {`Ref<SlPopup>`} - \n\n  * `_positionX` {`number`} - \n\n  * `_positionY` {`number`} - \n\n  * `renderDistrict` - \n\n  * `handleMouseMove` - \n\n  * `handleMouseLeave` - \n\n  * `handleResize` - \n\n  * `handleMapClick` - \n\n  * `_controller` {`CityMapController`} - ",
-      "attributes": []
-    },
-    {
       "name": "ca-city-district-page",
       "description": "Attributes:\n\n  * `district-index` {`number`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `districtIndex` {`number`} - \n\n  * `renderTabs` - \n\n  * `renderTab` - \n\n  * `renderTabPanels` - \n\n  * `renderTabPanel` - \n\n  * `renderTabPanelContent` - \n\n  * `handleGoBack` - \n\n  * `_controller` {`CityDistrictPageController`} - ",
       "attributes": [
@@ -87,47 +87,34 @@
       ]
     },
     {
-      "name": "ca-city-district-overiew-panel",
-      "description": "Attributes:\n\n  * `district-index` {`number`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `districtIndex` {`number`} - \n\n  * `_controller` {`CityDistrictOverviewPanelController`} - ",
-      "attributes": [
-        {
-          "name": "district-index",
-          "description": "`district-index` {`number`} - \n\nProperty: districtIndex"
-        }
-      ]
+      "name": "ca-city-district-overview-panel",
+      "description": "Properties:\n\n  * `styles` {`CSSResult[]`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-city-district-overview-panel-next-tier-progress",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_districtIndex` {`number | undefined`} - \n\n  * `_progressBarRef` {`Ref<SlProgressBar>`} - \n\n  * `_hintRef` {`Ref<HTMLParagraphElement>`} - \n\n  * `_timerRef` {`Ref<HTMLSpanElement>`} - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`CityDistrictOverviewPanelNextTierProgressController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-city-district-overview-panel-values",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_districtIndex` {`number | undefined`} - \n\n  * `_controller` {`CityDistrictOverviewPanelValuesController`} - ",
+      "attributes": []
     },
     {
       "name": "ca-city-district-sidejobs-panel",
-      "description": "Attributes:\n\n  * `district-index` {`number`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `districtIndex` {`number`} - \n\n  * `renderEmptyListNotification` - \n\n  * `renderList` - \n\n  * `renderSidejob` - \n\n  * `_controller` {`CityDistrictSidejobsPanelController`} - ",
-      "attributes": [
-        {
-          "name": "district-index",
-          "description": "`district-index` {`number`} - \n\nProperty: districtIndex"
-        }
-      ]
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `renderEmptyListNotification` - \n\n  * `renderList` - \n\n  * `renderSidejob` - \n\n  * `_controller` {`CityDistrictSidejobsPanelController`} - ",
+      "attributes": []
     },
     {
       "name": "ca-city-district-sidejobs-list-item-unlock-progress",
-      "description": "Attributes:\n\n  * `district-index` {`number`} - \n\n  * `sidejob-name` - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`true`} - \n\n  * `districtIndex` {`number`} - \n\n  * `sidejobName` - \n\n  * `_progressBarRef` {`Ref<SlProgressBar>`} - \n\n  * `_hintRef` {`Ref<HTMLParagraphElement>`} - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`CityDistrictSidejobsListItemUnlockProgressController`} - ",
-      "attributes": [
-        {
-          "name": "district-index",
-          "description": "`district-index` {`number`} - \n\nProperty: districtIndex"
-        },
-        {
-          "name": "sidejob-name",
-          "description": "`sidejob-name` - \n\nProperty: sidejobName"
-        }
-      ]
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`true`} - \n\n  * `_districtIndex` {`number`} - \n\n  * `_sidejobName` - \n\n  * `_progressBarRef` {`Ref<SlProgressBar>`} - \n\n  * `_hintRef` {`Ref<HTMLParagraphElement>`} - \n\n  * `_timerRef` {`Ref<HTMLSpanElement>`} - \n\n  * `_unlockedMessageRef` {`Ref<HTMLSpanElement>`} - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`CityDistrictSidejobsListItemUnlockProgressController`} - ",
+      "attributes": []
     },
     {
       "name": "ca-city-district-sidejobs-list-item",
-      "description": "Attributes:\n\n  * `district-index` {`number`} - \n\n  * `sidejob-name` - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `districtIndex` {`number`} - \n\n  * `sidejobName` - ",
+      "description": "Attributes:\n\n  * `sidejob-name` - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `sidejobName` - \n\n  * `_districtIndex` {`number | undefined`} - ",
       "attributes": [
-        {
-          "name": "district-index",
-          "description": "`district-index` {`number`} - \n\nProperty: districtIndex"
-        },
         {
           "name": "sidejob-name",
           "description": "`sidejob-name` - \n\nProperty: sidejobName"
@@ -146,7 +133,7 @@
     },
     {
       "name": "ca-clones-list",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_detailsVisible` {`boolean`} - \n\n  * `renderEmptyListNotification` - \n\n  * `renderClone` - \n\n  * `handleToggleDetails` - \n\n  * `handleToggleAutoupgrade` - \n\n  * `handleMoveClone` - \n\n  * `handleOpenDeleteAllClonesDialog` - \n\n  * `handleConfirmDeleteAllClonesDialog` - \n\n  * `_controller` {`ClonesListController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderEmptyListNotification` - \n\n  * `renderClone` - \n\n  * `handleToggleAutoupgrade` - \n\n  * `handleMoveClone` - \n\n  * `handleOpenDeleteAllClonesDialog` - \n\n  * `handleConfirmDeleteAllClonesDialog` - \n\n  * `_controller` {`ClonesListController`} - ",
       "attributes": []
     },
     {
@@ -156,21 +143,16 @@
     },
     {
       "name": "ca-clones-list-item-experience",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_clone` - \n\n  * `_progressBarRef` {`Ref<SlProgressBar>`} - \n\n  * `_hintRef` {`Ref<HTMLParagraphElement>`} - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_clone` - \n\n  * `_progressBarRef` {`Ref<SlProgressBar>`} - \n\n  * `_hintRef` {`Ref<HTMLParagraphElement>`} - \n\n  * `_timerRef` {`Ref<HTMLSpanElement>`} - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`ClonesListItemExperienceController`} - ",
       "attributes": []
     },
     {
       "name": "ca-clones-list-item",
-      "description": "Attributes:\n\n  * `clone-id` {`string`} - \n\n  * `details-visible` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `cloneId` {`string`} - \n\n  * `detailsVisible` {`boolean`} - \n\n  * `_menuVisible` {`boolean`} - \n\n  * `_clone` - \n\n  * `handleToggleAutoUpgrade` - \n\n  * `handleDragStart` - \n\n  * `handleToggleMenu` - \n\n  * `handleHideMenu` - \n\n  * `handleOpenDeleteCloneDialog` - \n\n  * `handleConfirmDeleteCloneDialog` - \n\n  * `handleOpenRenameCloneDialog` - \n\n  * `_controller` {`ClonesListItemController`} - ",
+      "description": "Attributes:\n\n  * `clone-id` {`string`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `cloneId` {`string`} - \n\n  * `_menuVisible` {`boolean`} - \n\n  * `_detailsVisible` {`boolean`} - \n\n  * `_clone` - \n\n  * `handleToggleAutoUpgrade` - \n\n  * `handleDragStart` - \n\n  * `handleToggleMenu` - \n\n  * `handleHideMenu` - \n\n  * `handleOpenDeleteCloneDialog` - \n\n  * `handleConfirmDeleteCloneDialog` - \n\n  * `handleOpenRenameCloneDialog` - \n\n  * `handleToggleDetails` - \n\n  * `_controller` {`ClonesListItemController`} - ",
       "attributes": [
         {
           "name": "clone-id",
           "description": "`clone-id` {`string`} - \n\nProperty: cloneId"
-        },
-        {
-          "name": "details-visible",
-          "description": "`details-visible` {`boolean`} - \n\nProperty: detailsVisible\n\nDefault: false",
-          "valueSet": "v"
         }
       ]
     },
@@ -224,7 +206,7 @@
     },
     {
       "name": "ca-assign-clone-sidejob-dialog-buttons",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_sidejob` - \n\n  * `_existingSidejob` - \n\n  * `_warningElements` {`NodeListOf<HTMLParagraphElement>`} - \n\n  * `_assignButtonRef` {`Ref<SlButton>`} - \n\n  * `handlePartialUpdate` - \n\n  * `renderWarnings` - \n\n  * `renderOtherWarnings` - \n\n  * `handleCancel` - \n\n  * `handleAssignClone` - \n\n  * `_controller` {`AssignCloneSidejobDialogButtonsController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_sidejob` - \n\n  * `_existingSidejob` - \n\n  * `_warningElements` {`NodeListOf<HTMLParagraphElement>`} - \n\n  * `_assignButtonRef` {`Ref<SlButton>`} - \n\n  * `_availableTimeRef` {`Ref<HTMLSpanElement>`} - \n\n  * `handlePartialUpdate` - \n\n  * `renderWarnings` - \n\n  * `renderOtherWarnings` - \n\n  * `handleCancel` - \n\n  * `handleAssignClone` - \n\n  * `_controller` {`AssignCloneSidejobDialogButtonsController`} - ",
       "attributes": []
     },
     {
@@ -410,7 +392,7 @@
     },
     {
       "name": "ca-processes-list-item-progress",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_progressBarRef` {`Ref<SlProgressBar>`} - \n\n  * `_hintRef` {`Ref<HTMLParagraphElement>`} - \n\n  * `_process` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_progressBarRef` {`Ref<SlProgressBar>`} - \n\n  * `_hintRef` {`Ref<HTMLParagraphElement>`} - \n\n  * `_timerRef` {`Ref<HTMLSpanElement>`} - \n\n  * `_process` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` - ",
       "attributes": []
     },
     {
@@ -526,7 +508,7 @@
     },
     {
       "name": "ca-overview-development-level-progress",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_progressBarRef` {`Ref<SlProgressBar>`} - \n\n  * `_hintRef` {`Ref<HTMLParagraphElement>`} - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`OverviewDevelopmentLevelProgressController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_progressBarRef` {`Ref<SlProgressBar>`} - \n\n  * `_hintRef` {`Ref<HTMLParagraphElement>`} - \n\n  * `_timerRef` {`Ref<HTMLSpanElement>`} - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`OverviewDevelopmentLevelProgressController`} - ",
       "attributes": []
     },
     {
@@ -699,8 +681,8 @@
       ]
     },
     {
-      "name": "ca-statistics-program-completion-speed",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_controller` {`StatisticsProgramCompletionSpeedController`} - ",
+      "name": "ca-statistics-process-completion-speed",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_controller` {`StatisticsProcessCompletionSpeedController`} - ",
       "attributes": []
     },
     {
@@ -721,6 +703,16 @@
     {
       "name": "ca-statistics-development-growth",
       "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_incomeSourceElements` {`NodeListOf<HTMLSpanElement>`} - \n\n  * `_totalGrowthRef` {`Ref<HTMLSpanElement>`} - \n\n  * `renderIncomeSource` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`StatisticsDevelopmentGrowthController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-statistics-district-tier-points-growth",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_districtValueNodes` {`NodeListOf<HTMLSpanElement>`} - \n\n  * `renderDistrict` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`StatisticsDistrictTierPointsGrowthController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-statistics-experience-growth",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_cloneValueNodes` {`NodeListOf<HTMLSpanElement>`} - \n\n  * `renderClone` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`StatisticsExperienceGrowthController`} - ",
       "attributes": []
     },
     {
@@ -756,6 +748,11 @@
     {
       "name": "ca-statistics-district-tier-points-income",
       "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_districtValueNodes` {`NodeListOf<HTMLSpanElement>`} - \n\n  * `renderDistrict` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`StatisticsDistrictTierPointsIncomeController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-statistics-experience-income",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_cloneValueNodes` {`NodeListOf<HTMLSpanElement>`} - \n\n  * `renderClone` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`StatisticsExperienceIncomeController`} - ",
       "attributes": []
     },
     {

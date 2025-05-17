@@ -183,13 +183,13 @@ export class OwnedProgramsListItem extends BaseComponent {
         </div>
       </div>
 
-      <div class="mobile">${COMMON_TEXTS.levelValue(formattedLevel)}</div>
-
-      <div class="desktop">${formattedLevel}</div>
-
       <div class="mobile">${COMMON_TEXTS.qualityValue(formattedQuality)}</div>
 
       <div class="desktop">${formattedQuality}</div>
+
+      <div class="mobile">${COMMON_TEXTS.levelValue(formattedLevel)}</div>
+
+      <div class="desktop">${formattedLevel}</div>
 
       <div class="buttons mobile">
         <sl-button variant=${UPGRADE_MAX_VALUES.buttonVariant} size="medium" @click=${this.handleUpgradeMax}>

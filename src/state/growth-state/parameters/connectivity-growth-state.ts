@@ -42,6 +42,11 @@ export class ConnectivityGrowthState implements IConnectivityGrowthState {
     this._recalculated = false;
   }
 
+  clearValues(): void {
+    this._baseGrowthByDistrict.clear();
+    this._totalGrowthByDistrict.clear();
+  }
+
   getBaseGrowthByDistrict(districtIndex: number): number {
     this.recalculate();
 
@@ -80,7 +85,6 @@ export class ConnectivityGrowthState implements IConnectivityGrowthState {
   private updateGrowthByDistricts() {
     for (let districtIndex = 0; districtIndex < this._cityState.districtsCount; districtIndex++) {
       this._baseGrowthByDistrict.set(districtIndex, 0);
-      this._totalGrowthByDistrict.set(districtIndex, 0);
     }
 
     this.updateGrowthBySidejobs();

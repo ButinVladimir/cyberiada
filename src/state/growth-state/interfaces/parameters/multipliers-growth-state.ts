@@ -5,4 +5,5 @@ export interface IMultipliersGrowthState {
   computationalBase: IMultiplierGrowthState;
   rewards: IMultiplierGrowthState;
   resetValues(): void;
+  clearValues(): void;
 }

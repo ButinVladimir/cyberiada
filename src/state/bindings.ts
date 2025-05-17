@@ -45,8 +45,9 @@ import {
   RewardsGrowthState,
   IMultipliersGrowthState,
   MultipliersGrowthState,
-  IProgramCompletionSpeedState,
-  ProgramCompletionSpeedState,
+  IConnectivityGrowthState,
+  IDistrictTierPointsGrowthState,
+  IExperienceGrowthState,
 } from '@state/growth-state';
 import { SettingsState, ISettingsState } from '@state/settings-state';
 import { CityState, ICityState } from '@state/city-state';
@@ -63,6 +64,8 @@ import {
   IMainframeState,
   MainframeState,
   ProgramName,
+  IProcessCompletionSpeedParameter,
+  ProcessCompletionSpeedParameter,
 } from '@state/mainframe-state';
 import {
   IMainframeHardwareAutomationState,
@@ -87,6 +90,8 @@ import {
   CloneTemplateName,
 } from '@state/company-state';
 import { AvailableCloneTemplatesState } from './global-state/parameters/available-items/available-clone-templates-state';
+import { DistrictTierPointsGrowthState } from './growth-state/parameters/district-tier-points-growth-state';
+import { ExperienceGrowthState } from './growth-state/parameters/experience-growth-state';
 
 container.bind<IStateUIConnector>(TYPES.StateUIConnector).to(StateUIConnector).inSingletonScope().whenTargetIsDefault();
 
@@ -171,12 +176,6 @@ container
   .whenTargetIsDefault();
 
 container
-  .bind<IMultiplierGrowthState>(TYPES.ConnectivityGrowthState)
-  .to(ConnectivityGrowthState)
-  .inSingletonScope()
-  .whenTargetIsDefault();
-
-container
   .bind<IMultiplierGrowthState>(TYPES.RewardsGrowthState)
   .to(RewardsGrowthState)
   .inSingletonScope()
@@ -189,8 +188,26 @@ container
   .whenTargetIsDefault();
 
 container
-  .bind<IProgramCompletionSpeedState>(TYPES.ProgramCompletionSpeedState)
-  .to(ProgramCompletionSpeedState)
+  .bind<IConnectivityGrowthState>(TYPES.ConnectivityGrowthState)
+  .to(ConnectivityGrowthState)
+  .inSingletonScope()
+  .whenTargetIsDefault();
+
+container
+  .bind<IDistrictTierPointsGrowthState>(TYPES.DistrictTierPointsGrowthState)
+  .to(DistrictTierPointsGrowthState)
+  .inSingletonScope()
+  .whenTargetIsDefault();
+
+container
+  .bind<IExperienceGrowthState>(TYPES.ExperienceGrowthState)
+  .to(ExperienceGrowthState)
+  .inSingletonScope()
+  .whenTargetIsDefault();
+
+container
+  .bind<IProcessCompletionSpeedParameter>(TYPES.ProcessCompletionSpeedParameter)
+  .to(ProcessCompletionSpeedParameter)
   .inSingletonScope()
   .whenTargetIsDefault();
 

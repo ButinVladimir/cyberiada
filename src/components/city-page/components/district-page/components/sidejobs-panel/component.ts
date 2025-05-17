@@ -1,5 +1,5 @@
 import { css, html } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement } from 'lit/decorators.js';
 import { localized, msg } from '@lit/localize';
 import { BaseComponent } from '@shared/base-component';
 import { hintStyle, SCREEN_WIDTH_POINTS } from '@shared/styles';
@@ -67,12 +67,6 @@ export class CityDistrictSidejobsPanel extends BaseComponent {
     `,
   ];
 
-  @property({
-    attribute: 'district-index',
-    type: Number,
-  })
-  districtIndex!: number;
-
   private _controller: CityDistrictSidejobsPanelController;
 
   constructor() {
@@ -111,8 +105,7 @@ Clones could be assigned to sidejobs on company page under sidejobs tab.`)}
 
   private renderSidejob = (sidejobName: SidejobName) => {
     return html`
-      <ca-city-district-sidejobs-list-item district-index=${this.districtIndex} sidejob-name=${sidejobName}>
-      </ca-city-district-sidejobs-list-item>
+      <ca-city-district-sidejobs-list-item sidejob-name=${sidejobName}> </ca-city-district-sidejobs-list-item>
     `;
   };
 }

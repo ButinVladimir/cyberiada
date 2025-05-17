@@ -21,7 +21,7 @@ export class StatisticsGeneralPanel extends BaseComponent {
     return html`
       <ca-statistics-game-time></ca-statistics-game-time>
 
-      <ca-statistics-program-completion-speed></ca-statistics-program-completion-speed>
+      <ca-statistics-process-completion-speed></ca-statistics-process-completion-speed>
 
       ${this._controller.isFeatureUnlocked(Feature.companyManagement)
         ? html`<ca-statistics-synchronization></ca-statistics-synchronization>`

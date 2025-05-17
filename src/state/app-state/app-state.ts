@@ -91,8 +91,7 @@ export class AppState implements IAppState {
     await this._companyState.startNewState();
 
     this._globalState.recalculate();
-    this._growthState.recalculateGrowth();
-    this._growthState.resetValues();
+    this._growthState.clearValues();
   }
 
   serialize(): ISerializedState {
@@ -134,8 +133,7 @@ export class AppState implements IAppState {
     await this._companyState.deserialize(migratedSaveData.company);
 
     this._globalState.recalculate();
-    this._growthState.recalculateGrowth();
-    this._growthState.resetValues();
+    this._growthState.clearValues();
   }
 
   private processTicks(maxUpdates: number): number {
@@ -156,6 +154,5 @@ export class AppState implements IAppState {
     this._globalState.makeNextTick();
     this._cityState.recalculate();
     this._globalState.recalculate();
-    this._growthState.recalculateGrowth();
   };
 }

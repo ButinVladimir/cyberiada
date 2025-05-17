@@ -1,17 +1,15 @@
-import { css, html, PropertyValues } from 'lit';
+import { css, html } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { localized } from '@lit/localize';
-import clamp from 'lodash/clamp';
 import { range } from 'lit/directives/range.js';
 import { map } from 'lit/directives/map.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import SlPopup from '@shoelace-style/shoelace/dist/components/popup/popup.js';
-import { BaseComponent } from '@shared/base-component';
+import { BaseComponent, SCREEN_WIDTH_POINTS } from '@shared/index';
 import { DistrictUnlockState } from '@state/city-state';
 import { CityMapController } from './controller';
-import { TEXT_HEIGHT, TOP_BAR_HEIGHT, VERTICAL_PADDING } from './constants';
+import { BOTTOM_GAP } from './constants';
 import { CityMapClickEvent } from './events';
 
 @localized()
@@ -19,11 +17,15 @@ import { CityMapClickEvent } from './events';
 export class CityMap extends BaseComponent {
   static styles = css`
     :host {
-      display: block;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: stretch;
+      flex-direction: column;
+      gap: var(--sl-spacing-medium);
+      width: 100%;
     }
 
     div.content {
-      width: 100%;
       position: relative;
       cursor: not-allowed;
     }
@@ -32,65 +34,44 @@ export class CityMap extends BaseComponent {
       cursor: pointer;
     }
 
-    div.tooltip-anchor {
-      position: absolute;
-    }
-
-    sl-popup {
-      --arrow-size: var(--sl-tooltip-arrow-size);
-      --arrow-color: var(--sl-tooltip-background-color);
-    }
-
-    ca-city-map-district {
+    ca-city-map-highlighted-district {
       opacity: 0;
     }
 
-    ca-city-map-district.visible {
+    ca-city-map-highlighted-district.visible {
       opacity: 1;
+    }
+
+    @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
+      :host {
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+
+      div.content {
+        flex: 1.5;
+      }
+
+      ca-city-map-district-description {
+        flex: 1;
+      }
     }
   `;
 
   private _controller: CityMapController;
 
   @state()
-  private _size = 5;
+  private _size = 0;
 
   @state()
   private _selectedDistrictIndex?: number;
 
   private _contentRef = createRef<HTMLDivElement>();
 
-  private _popupRef = createRef<SlPopup>();
-
-  private _positionX = 0;
-  private _positionY = 0;
-
   constructor() {
     super();
 
     this._controller = new CityMapController(this);
-  }
-
-  firstUpdated(_changedProperties: PropertyValues) {
-    super.firstUpdated(_changedProperties);
-
-    if (this._popupRef.value) {
-      this._popupRef.value.anchor = {
-        getBoundingClientRect: () => {
-          return {
-            width: 0,
-            height: 0,
-            x: this._positionX,
-            y: this._positionY,
-            top: this._positionY,
-            left: this._positionX,
-            right: this._positionX,
-            bottom: this._positionY,
-            toJSON() {},
-          };
-        },
-      };
-    }
   }
 
   render() {
@@ -119,19 +100,10 @@ export class CityMap extends BaseComponent {
           <ca-city-map-background size=${this._size}></ca-city-map-background>
 
           ${map(range(this._controller.districtsCount), this.renderDistrict)}
-
-          <sl-popup
-            ${ref(this._popupRef)}
-            ?active=${this._selectedDistrictIndex !== undefined}
-            distance=${8}
-            skidding=${8}
-            placement="top-start"
-          >
-            <ca-city-map-tooltip-content district=${ifDefined(this._selectedDistrictIndex)}>
-            </ca-city-map-tooltip-content>
-          </sl-popup>
         </div>
       </sl-resize-observer>
+      <ca-city-map-district-description district=${ifDefined(this._selectedDistrictIndex)}>
+      </ca-city-map-district-description>
     `;
   }
 
@@ -140,31 +112,24 @@ export class CityMap extends BaseComponent {
       visible: this._selectedDistrictIndex === districtNum,
     });
 
-    return html`<ca-city-map-district
+    return html`<ca-city-map-highlighted-district
       class=${classes}
       district=${districtNum}
       size=${this._size}
-    ></ca-city-map-district>`;
+    ></ca-city-map-highlighted-district>`;
   };
 
   private handleMouseMove = (event: MouseEvent) => {
     if (this._contentRef.value) {
       const contentBoundingRect = this._contentRef.value.getBoundingClientRect();
 
-      this._positionX = event.clientX;
-      this._positionY = event.clientY;
+      const offsetX = event.clientX - contentBoundingRect.x;
+      const x = Math.round((offsetX / this._size) * (this._controller.mapWidth - 1));
 
-      const offsetX = event.clientX - contentBoundingRect.x - 1;
-      const x = clamp(Math.floor(offsetX / (this._size + 1)), 0, this._controller.mapWidth - 1);
-
-      const offsetY = event.clientY - contentBoundingRect.y - 1;
-      const y = clamp(Math.floor(offsetY / (this._size + 1)), 0, this._controller.mapHeight - 1);
+      const offsetY = event.clientY - contentBoundingRect.y;
+      const y = Math.round((offsetY / this._size) * (this._controller.mapHeight - 1));
 
       this._selectedDistrictIndex = this._controller.layout[x][y];
-    }
-
-    if (this._popupRef.value) {
-      this._popupRef.value.reposition();
     }
   };
 
@@ -173,14 +138,15 @@ export class CityMap extends BaseComponent {
   };
 
   private handleResize = (event: { detail: { entries: ResizeObserverEntry[] } }) => {
-    const maxWidth = event.detail.entries[0].contentRect.width;
-    const maxHeight = window.innerHeight - TOP_BAR_HEIGHT - VERTICAL_PADDING - TEXT_HEIGHT;
+    const containerBoundingClientRect = this.getBoundingClientRect();
+    const width = event.detail.entries[0].contentRect.width;
+    const height = window.innerHeight - containerBoundingClientRect.y - BOTTOM_GAP;
+    this._size = Math.min(width, height);
 
-    const widthSize = maxWidth / this._controller.mapWidth;
-    const heightSize = maxHeight / this._controller.mapHeight;
-    const minSize = Math.min(heightSize, widthSize);
-
-    this._size = Math.max(1, Math.floor(minSize) - 1);
+    if (this._contentRef.value) {
+      this._contentRef.value.style.width = `${this._size}px`;
+      this._contentRef.value.style.height = `${this._size}px`;
+    }
   };
 
   private handleMapClick = () => {

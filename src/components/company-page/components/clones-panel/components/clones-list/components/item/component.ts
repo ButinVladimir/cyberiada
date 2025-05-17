@@ -2,16 +2,22 @@ import { css, html, nothing } from 'lit';
 import { provide } from '@lit/context';
 import { localized, msg, str } from '@lit/localize';
 import { customElement, property, state } from 'lit/decorators.js';
-import { BaseComponent } from '@shared/base-component';
 import { COMMON_TEXTS } from '@texts/common';
-import { CloneAlert } from '@shared/types';
 import {
   ConfirmationAlertOpenEvent,
   ConfirmationAlertSubmitEvent,
 } from '@components/game-screen/components/confirmation-alert/events';
-import { AUTOUPGRADE_VALUES, dragIconStyle, hintStyle, sectionTitleStyle } from '@shared/styles';
 import { CLONE_TEMPLATE_TEXTS } from '@texts/clone-templates';
 import { type IClone } from '@state/company-state';
+import {
+  BaseComponent,
+  CloneAlert,
+  AUTOUPGRADE_VALUES,
+  dragIconStyle,
+  hintStyle,
+  sectionTitleStyle,
+  TOGGLE_DETAILS_VALUES,
+} from '@shared/index';
 import { ClonesListItemController } from './controller';
 import { OpenCloneListItemDialogEvent } from '../../../../events/open-clone-list-item-dialog';
 import { cloneContext } from './contexts';
@@ -89,16 +95,13 @@ export class ClonesListItem extends BaseComponent {
   })
   public cloneId!: string;
 
-  @property({
-    attribute: 'details-visible',
-    type: Boolean,
-  })
-  public detailsVisible = false;
-
   private _controller: ClonesListItemController;
 
   @state()
   private _menuVisible = false;
+
+  @state()
+  private _detailsVisible = false;
 
   @provide({ context: cloneContext })
   private _clone?: IClone;
@@ -140,6 +143,14 @@ export class ClonesListItem extends BaseComponent {
     const autoupgradeLabel = this._clone.autoUpgradeEnabled
       ? COMMON_TEXTS.disableAutoupgrade()
       : COMMON_TEXTS.enableAutoupgrade();
+
+    const toggleDetailsLabel = this._detailsVisible ? COMMON_TEXTS.hideDetails() : COMMON_TEXTS.showDetails();
+    const toggleDetailsIcon = this._detailsVisible
+      ? TOGGLE_DETAILS_VALUES.icon.enabled
+      : TOGGLE_DETAILS_VALUES.icon.disabled;
+    const toggleDetailsVariant = this._detailsVisible
+      ? TOGGLE_DETAILS_VALUES.buttonVariant.enabled
+      : TOGGLE_DETAILS_VALUES.buttonVariant.disabled;
 
     const formatter = this._controller.formatter;
 
@@ -201,7 +212,17 @@ export class ClonesListItem extends BaseComponent {
         <div>
           <ca-clones-list-item-experience></ca-clones-list-item-experience>
 
-          ${this.detailsVisible ? html` <ca-clones-list-item-description></ca-clones-list-item-description> ` : nothing}
+          ${this._detailsVisible
+            ? html` <ca-clones-list-item-description></ca-clones-list-item-description> `
+            : nothing}
+        </div>
+
+        <div slot="footer">
+          <sl-button variant=${toggleDetailsVariant} size="medium" @click=${this.handleToggleDetails}>
+            <sl-icon slot="prefix" name=${toggleDetailsIcon}></sl-icon>
+
+            ${toggleDetailsLabel}
+          </sl-button>
         </div>
       </sl-card>
     `;
@@ -277,5 +298,9 @@ export class ClonesListItem extends BaseComponent {
     this._menuVisible = false;
 
     this.dispatchEvent(new OpenCloneListItemDialogEvent('rename-clone', this._clone));
+  };
+
+  private handleToggleDetails = () => {
+    this._detailsVisible = !this._detailsVisible;
   };
 }

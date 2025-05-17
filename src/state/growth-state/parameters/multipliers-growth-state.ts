@@ -36,4 +36,10 @@ export class MultipliersGrowthState implements IMultipliersGrowthState {
     this._computationalBaseGrowthState.resetValues();
     this._rewardsGrowthState.resetValues();
   }
+
+  clearValues() {
+    this._codeBaseGrowthState.clearValues();
+    this._computationalBaseGrowthState.clearValues();
+    this._rewardsGrowthState.clearValues();
+  }
 }

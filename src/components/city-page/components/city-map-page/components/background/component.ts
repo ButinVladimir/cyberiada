@@ -5,6 +5,7 @@ import { localized } from '@lit/localize';
 import { BaseComponent } from '@shared/base-component';
 import { DistrictUnlockState } from '@state/city-state/types';
 import { CityMapBackgroundController } from './controller';
+import { CELL_SIZE } from '../../constants';
 
 @localized()
 @customElement('ca-city-map-background')
@@ -39,16 +40,8 @@ export class CityMapBackground extends BaseComponent {
     this._controller = new CityMapBackgroundController(this);
   }
 
-  private get _fullWidth() {
-    return this._controller.mapWidth * (this.size + 1) + 1;
-  }
-
-  private get _fullHeight() {
-    return this._controller.mapHeight * (this.size + 1) + 1;
-  }
-
   render() {
-    return html` <canvas ${ref(this._canvasRef)} width=${this._fullWidth} height=${this._fullHeight}></canvas> `;
+    return html` <canvas ${ref(this._canvasRef)} width=${this.size} height=${this.size}></canvas> `;
   }
 
   updated(_changedProperties: PropertyValues) {
@@ -67,7 +60,9 @@ export class CityMapBackground extends BaseComponent {
       throw new Error('Canvas context is not supported');
     }
 
-    const offscreenCanvas = new OffscreenCanvas(this._fullWidth, this._fullHeight);
+    const fullWidth = (CELL_SIZE + 1) * this._controller.mapWidth + 1;
+    const fullHeight = (CELL_SIZE + 1) * this._controller.mapHeight + 1;
+    const offscreenCanvas = new OffscreenCanvas(fullWidth, fullHeight);
 
     this._offscreenCanvasContext = offscreenCanvas.getContext('2d');
     if (!this._offscreenCanvasContext) {
@@ -80,7 +75,7 @@ export class CityMapBackground extends BaseComponent {
     this.renderInnerHorizontalBorders();
     this.renderInnerDots();
 
-    context.drawImage(offscreenCanvas, 0, 0);
+    context.drawImage(offscreenCanvas, 0, 0, fullWidth, fullHeight, 0, 0, this.size, this.size);
   };
 
   private renderCells() {
@@ -101,7 +96,7 @@ export class CityMapBackground extends BaseComponent {
         districtState = this._controller.getDistrict(districtNum).state;
 
         context.fillStyle = styles.stateStyles[districtState].backgroundColor;
-        context.fillRect(1 + x * (this.size + 1), 1 + y * (this.size + 1), this.size, this.size);
+        context.fillRect(1 + x * (CELL_SIZE + 1), 1 + y * (CELL_SIZE + 1), CELL_SIZE, CELL_SIZE);
       }
     }
   }
@@ -118,8 +113,8 @@ export class CityMapBackground extends BaseComponent {
     context.lineWidth = 2;
     context.strokeStyle = styles.borderColor;
 
-    const rightMostX = 1 + this._controller.mapWidth * (this.size + 1);
-    const bottomMostY = 1 + this._controller.mapHeight * (this.size + 1);
+    const rightMostX = 1 + this._controller.mapWidth * (CELL_SIZE + 1);
+    const bottomMostY = 1 + this._controller.mapHeight * (CELL_SIZE + 1);
 
     context.beginPath();
     context.moveTo(0, 0);
@@ -154,12 +149,12 @@ export class CityMapBackground extends BaseComponent {
           context.strokeStyle = styles.stateStyles[districtState].backgroundColor;
         }
 
-        lineX = 1 + (x + 1) * (this.size + 1);
-        lineY = 1 + y * (this.size + 1);
+        lineX = 1 + (x + 1) * (CELL_SIZE + 1);
+        lineY = 1 + y * (CELL_SIZE + 1);
 
         context.beginPath();
         context.moveTo(lineX, lineY);
-        context.lineTo(lineX, lineY + this.size);
+        context.lineTo(lineX, lineY + CELL_SIZE);
         context.stroke();
       }
     }
@@ -189,12 +184,12 @@ export class CityMapBackground extends BaseComponent {
           context.strokeStyle = styles.stateStyles[districtState].backgroundColor;
         }
 
-        lineX = 1 + x * (this.size + 1);
-        lineY = 1 + (y + 1) * (this.size + 1);
+        lineX = 1 + x * (CELL_SIZE + 1);
+        lineY = 1 + (y + 1) * (CELL_SIZE + 1);
 
         context.beginPath();
         context.moveTo(lineX, lineY);
-        context.lineTo(lineX + this.size, lineY);
+        context.lineTo(lineX + CELL_SIZE, lineY);
         context.stroke();
       }
     }
@@ -224,8 +219,8 @@ export class CityMapBackground extends BaseComponent {
           context.fillStyle = styles.borderColor;
         }
 
-        dotX = 1 + (x + 1) * (this.size + 1);
-        dotY = 1 + (y + 1) * (this.size + 1);
+        dotX = 1 + (x + 1) * (CELL_SIZE + 1);
+        dotY = 1 + (y + 1) * (CELL_SIZE + 1);
 
         context.beginPath();
         context.ellipse(dotX, dotY, 1, 1, 0, 0, Pi2);

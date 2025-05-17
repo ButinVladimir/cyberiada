@@ -39,6 +39,10 @@ export abstract class BaseMultiplierGrowthState implements IMultiplierGrowthStat
     this._recalculated = false;
   }
 
+  clearValues() {
+    this._growthByDistrict.clear();
+  }
+
   getGrowthByDistrict(districtIndex: number): number {
     this.recalculate();
 
@@ -81,7 +85,7 @@ export abstract class BaseMultiplierGrowthState implements IMultiplierGrowthStat
         continue;
       }
 
-      let currentGrow = this._growthByDistrict.get(sidejob.district.index)!;
+      let currentGrow = this._growthByDistrict.get(sidejob.district.index) ?? 0;
       currentGrow += this.getGrowthBySidejob(sidejob);
       this._growthByDistrict.set(sidejob.district.index, currentGrow);
     }

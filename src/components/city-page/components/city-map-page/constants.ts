@@ -2,6 +2,8 @@ import { Theme } from '@shared/types';
 import { IMapStyles } from './interfaces';
 import { DistrictUnlockState } from '@state/city-state/types';
 
+export const CELL_SIZE = 10;
+
 export const MAP_STYLES: Record<Theme, IMapStyles> = {
   [Theme.light]: {
     borderColor: '#e4e4e7',

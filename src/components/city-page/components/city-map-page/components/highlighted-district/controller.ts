@@ -2,7 +2,7 @@ import { BaseController } from '@shared/base-controller';
 import { MAP_STYLES } from '../../constants';
 import { IMapStyles } from '../../interfaces';
 
-export class CityMapDistrictController extends BaseController {
+export class CityMapHighlightedDistrictController extends BaseController {
   get layout() {
     return this.cityState.getLayout();
   }

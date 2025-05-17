@@ -4,11 +4,12 @@ import { createRef, ref } from 'lit/directives/ref.js';
 import { localized } from '@lit/localize';
 import { BaseComponent } from '@shared/base-component';
 import { DistrictUnlockState } from '@state/city-state/types';
-import { CityMapDistrictController } from './controller';
+import { CityMapHighlightedDistrictController } from './controller';
+import { CELL_SIZE } from '../../constants';
 
 @localized()
-@customElement('ca-city-map-district')
-export class CityMapDistrict extends BaseComponent {
+@customElement('ca-city-map-highlighted-district')
+export class CityMapHighlightedDistrict extends BaseComponent {
   private static DX: number[] = [0, 1, 0, 1];
   private static DY: number[] = [0, 0, 1, 1];
 
@@ -33,7 +34,7 @@ export class CityMapDistrict extends BaseComponent {
   })
   public district!: number;
 
-  private _controller: CityMapDistrictController;
+  private _controller: CityMapHighlightedDistrictController;
 
   private _canvasRef = createRef<HTMLCanvasElement>();
 
@@ -42,19 +43,11 @@ export class CityMapDistrict extends BaseComponent {
   constructor() {
     super();
 
-    this._controller = new CityMapDistrictController(this);
-  }
-
-  private get _fullWidth() {
-    return this._controller.mapWidth * (this.size + 1) + 1;
-  }
-
-  private get _fullHeight() {
-    return this._controller.mapHeight * (this.size + 1) + 1;
+    this._controller = new CityMapHighlightedDistrictController(this);
   }
 
   render() {
-    return html` <canvas ${ref(this._canvasRef)} width=${this._fullWidth} height=${this._fullHeight}></canvas> `;
+    return html` <canvas ${ref(this._canvasRef)} width=${this.size} height=${this.size}></canvas> `;
   }
 
   updated(_changedProperties: PropertyValues) {
@@ -73,7 +66,9 @@ export class CityMapDistrict extends BaseComponent {
       throw new Error('Canvas context is not supported');
     }
 
-    const offscreenCanvas = new OffscreenCanvas(this._fullWidth, this._fullHeight);
+    const fullWidth = (CELL_SIZE + 1) * this._controller.mapWidth + 1;
+    const fullHeight = (CELL_SIZE + 1) * this._controller.mapHeight + 1;
+    const offscreenCanvas = new OffscreenCanvas(fullWidth, fullHeight);
 
     this._offscreenCanvasContext = offscreenCanvas.getContext('2d');
     if (!this._offscreenCanvasContext) {
@@ -86,7 +81,7 @@ export class CityMapDistrict extends BaseComponent {
     this.renderInnerHorizontalBorders();
     this.renderInnerDots();
 
-    context.drawImage(offscreenCanvas, 0, 0);
+    context.drawImage(offscreenCanvas, 0, 0, fullWidth, fullHeight, 0, 0, this.size, this.size);
   };
 
   private renderCells() {
@@ -112,7 +107,7 @@ export class CityMapDistrict extends BaseComponent {
         districtState = this._controller.getDistrict(districtNum).state;
 
         context.fillStyle = styles.stateStyles[districtState].selectedColor;
-        context.fillRect(1 + x * (this.size + 1), 1 + y * (this.size + 1), this.size, this.size);
+        context.fillRect(1 + x * (CELL_SIZE + 1), 1 + y * (CELL_SIZE + 1), CELL_SIZE, CELL_SIZE);
       }
     }
   }
@@ -140,26 +135,26 @@ export class CityMapDistrict extends BaseComponent {
         continue;
       }
 
-      lineX = 1 + x * (this.size + 1) - 1;
+      lineX = 1 + x * (CELL_SIZE + 1) - 1;
 
       context.beginPath();
       context.moveTo(lineX, lineY);
-      context.lineTo(lineX + 1 + this.size + 1, lineY);
+      context.lineTo(lineX + 1 + CELL_SIZE + 1, lineY);
       context.stroke();
     }
 
-    lineY = 1 + this._controller.mapHeight * (this.size + 1);
+    lineY = 1 + this._controller.mapHeight * (CELL_SIZE + 1);
 
     for (let x = 0; x < this._controller.mapWidth; x++) {
       if (this._controller.layout[x][this._controller.mapHeight - 1] !== this.district) {
         continue;
       }
 
-      lineX = 1 + x * (this.size + 1) - 1;
+      lineX = 1 + x * (CELL_SIZE + 1) - 1;
 
       context.beginPath();
       context.moveTo(lineX, lineY);
-      context.lineTo(lineX + 1 + this.size + 1, lineY);
+      context.lineTo(lineX + 1 + CELL_SIZE + 1, lineY);
       context.stroke();
     }
 
@@ -170,26 +165,26 @@ export class CityMapDistrict extends BaseComponent {
         continue;
       }
 
-      lineY = 1 + y * (this.size + 1) - 1;
+      lineY = 1 + y * (CELL_SIZE + 1) - 1;
 
       context.beginPath();
       context.moveTo(lineX, lineY);
-      context.lineTo(lineX, lineY + 1 + this.size + 1);
+      context.lineTo(lineX, lineY + 1 + CELL_SIZE + 1);
       context.stroke();
     }
 
-    lineX = 1 + this._controller.mapWidth * (this.size + 1);
+    lineX = 1 + this._controller.mapWidth * (CELL_SIZE + 1);
 
     for (let y = 0; y < this._controller.mapHeight; y++) {
       if (this._controller.layout[this._controller.mapWidth - 1][y] !== this.district) {
         continue;
       }
 
-      lineY = 1 + y * (this.size + 1) - 1;
+      lineY = 1 + y * (CELL_SIZE + 1) - 1;
 
       context.beginPath();
       context.moveTo(lineX, lineY);
-      context.lineTo(lineX, lineY + 1 + this.size + 1);
+      context.lineTo(lineX, lineY + 1 + CELL_SIZE + 1);
       context.stroke();
     }
   }
@@ -226,12 +221,12 @@ export class CityMapDistrict extends BaseComponent {
           context.strokeStyle = styles.stateStyles[districtState].selectedBorderColor;
         }
 
-        lineX = 1 + (x + 1) * (this.size + 1);
-        lineY = 1 + y * (this.size + 1);
+        lineX = 1 + (x + 1) * (CELL_SIZE + 1);
+        lineY = 1 + y * (CELL_SIZE + 1);
 
         context.beginPath();
         context.moveTo(lineX, lineY);
-        context.lineTo(lineX, lineY + this.size);
+        context.lineTo(lineX, lineY + CELL_SIZE);
         context.stroke();
       }
     }
@@ -269,12 +264,12 @@ export class CityMapDistrict extends BaseComponent {
           context.strokeStyle = styles.stateStyles[districtState].selectedBorderColor;
         }
 
-        lineX = 1 + x * (this.size + 1);
-        lineY = 1 + (y + 1) * (this.size + 1);
+        lineX = 1 + x * (CELL_SIZE + 1);
+        lineY = 1 + (y + 1) * (CELL_SIZE + 1);
 
         context.beginPath();
         context.moveTo(lineX, lineY);
-        context.lineTo(lineX + this.size, lineY);
+        context.lineTo(lineX + CELL_SIZE, lineY);
         context.stroke();
       }
     }
@@ -310,8 +305,8 @@ export class CityMapDistrict extends BaseComponent {
           context.fillStyle = styles.stateStyles[districtState].selectedBorderColor;
         }
 
-        dotX = 1 + (x + 1) * (this.size + 1);
-        dotY = 1 + (y + 1) * (this.size + 1);
+        dotX = 1 + (x + 1) * (CELL_SIZE + 1);
+        dotY = 1 + (y + 1) * (CELL_SIZE + 1);
 
         context.beginPath();
         context.ellipse(dotX, dotY, 1, 1, 0, 0, Pi2);
@@ -325,9 +320,9 @@ export class CityMapDistrict extends BaseComponent {
     let ny: number;
     let count = 0;
 
-    for (let i = 0; i < CityMapDistrict.DX.length; i++) {
-      nx = x + CityMapDistrict.DX[i];
-      ny = y + CityMapDistrict.DY[i];
+    for (let i = 0; i < CityMapHighlightedDistrict.DX.length; i++) {
+      nx = x + CityMapHighlightedDistrict.DX[i];
+      ny = y + CityMapHighlightedDistrict.DY[i];
 
       if (this._controller.layout[nx][ny] === this.district) {
         count++;

@@ -24,7 +24,7 @@ export interface IScenarioValues {
   mainframeSoftware: {
     performanceBoost: number;
     startingPrograms: ProgramName[];
-    minProgramCompletionTime: number;
+    minProcessCompletionTime: number;
   };
   developmentLevelRequirements: IExponent;
   programMultipliers: {

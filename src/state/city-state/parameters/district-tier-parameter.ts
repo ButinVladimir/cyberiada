@@ -53,6 +53,13 @@ export class DistrictTierParameter implements IDistrictTierParameter {
     this._points += delta;
   }
 
+  getTierRequirements(tier: number): number {
+    const districtTypeInfo = this._district.template;
+    const { base, multiplier } = districtTypeInfo.parameters.districtTierPoints.requirements;
+
+    return calculateGeometricProgressionSum(tier, multiplier, base);
+  }
+
   recalculate(): void {
     const newLevel = this.calculateNewLevel();
 
@@ -71,11 +78,8 @@ export class DistrictTierParameter implements IDistrictTierParameter {
   }
 
   setTier(tier: number): void {
-    const districtTypeInfo = this._district.template;
-    const { base, multiplier } = districtTypeInfo.parameters.districtTierPoints.requirements;
-
     this._tier = tier;
-    this._points = calculateGeometricProgressionSum(tier - 1, multiplier, base);
+    this._points = this.getTierRequirements(tier - 1);
 
     this._globalState.synchronization.requestRecalculation();
     this._companyState.requestReassignment();

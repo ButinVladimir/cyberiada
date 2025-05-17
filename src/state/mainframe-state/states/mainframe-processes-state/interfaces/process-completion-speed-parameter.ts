@@ -1,4 +1,4 @@
-export interface IProgramCompletionSpeedState {
+export interface IProcessCompletionSpeedParameter {
   multiplierByHardware: number;
   multiplierByProgram: number;
   totalMultiplier: number;

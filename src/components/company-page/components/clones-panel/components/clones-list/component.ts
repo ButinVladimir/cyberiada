@@ -10,7 +10,7 @@ import {
   ConfirmationAlertOpenEvent,
   ConfirmationAlertSubmitEvent,
 } from '@components/game-screen/components/confirmation-alert/events';
-import { AUTOUPGRADE_VALUES, DELETE_VALUES, TOGGLE_DETAILS_VALUES } from '@shared/styles';
+import { AUTOUPGRADE_VALUES, DELETE_VALUES } from '@shared/styles';
 import { IClone } from '@state/company-state/states/clone-factory/interfaces/clone';
 import { ClonesListController } from './controller';
 import { CLONE_LIST_ITEMS_GAP } from './constants';
@@ -57,9 +57,6 @@ export class ClonesList extends BaseComponent {
 
   private _controller: ClonesListController;
 
-  @state()
-  private _detailsVisible = false;
-
   constructor() {
     super();
 
@@ -79,14 +76,6 @@ export class ClonesList extends BaseComponent {
   }
 
   render() {
-    const toggleDetailsLabel = this._detailsVisible ? COMMON_TEXTS.hideDetails() : COMMON_TEXTS.showDetails();
-    const toggleDetailsIcon = this._detailsVisible
-      ? TOGGLE_DETAILS_VALUES.icon.enabled
-      : TOGGLE_DETAILS_VALUES.icon.disabled;
-    const toggleDetailsVariant = this._detailsVisible
-      ? TOGGLE_DETAILS_VALUES.buttonVariant.enabled
-      : TOGGLE_DETAILS_VALUES.buttonVariant.disabled;
-
     const isAutoupgradeActive = this.checkSomeClonesAutoupgradeActive();
 
     const autoupgradeLabel = isAutoupgradeActive
@@ -101,12 +90,6 @@ export class ClonesList extends BaseComponent {
 
     return html`
       <div class="header">
-        <sl-button variant=${toggleDetailsVariant} size="medium" @click=${this.handleToggleDetails}>
-          <sl-icon slot="prefix" name=${toggleDetailsIcon}></sl-icon>
-
-          ${toggleDetailsLabel}
-        </sl-button>
-
         <sl-button variant=${autoupgradeVariant} size="medium" @click=${this.handleToggleAutoupgrade}>
           <sl-icon slot="prefix" name=${autoupgradeIcon}></sl-icon>
 
@@ -135,15 +118,7 @@ export class ClonesList extends BaseComponent {
   };
 
   private renderClone = (clone: IClone) => {
-    return html`<ca-clones-list-item
-      clone-id=${clone.id}
-      data-drag-id=${clone.id}
-      ?details-visible=${this._detailsVisible}
-    ></ca-clones-list-item>`;
-  };
-
-  private handleToggleDetails = () => {
-    this._detailsVisible = !this._detailsVisible;
+    return html`<ca-clones-list-item clone-id=${clone.id} data-drag-id=${clone.id}></ca-clones-list-item>`;
   };
 
   private checkSomeClonesAutoupgradeActive(): boolean {

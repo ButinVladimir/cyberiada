@@ -9,4 +9,8 @@ export class AssignCloneSidejobDialogButtonsController extends BaseController {
   getRequiredConnectivity(sidejobName: SidejobName): number {
     return this.companyState.sidejobs.getConnectivityRequirement(sidejobName);
   }
+
+  getConnectivityGrowth(districtIndex: number): number {
+    return this.growthState.connectivity.getTotalGrowthByDistrict(districtIndex);
+  }
 }
