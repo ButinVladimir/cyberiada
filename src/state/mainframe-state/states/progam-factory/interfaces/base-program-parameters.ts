@@ -1,5 +1,5 @@
 export interface IBaseProgramParameters {
   level: number;
-  quality: number;
+  tier: number;
   autoUpgradeEnabled: boolean;
 }

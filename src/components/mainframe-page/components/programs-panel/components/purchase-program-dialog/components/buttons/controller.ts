@@ -10,11 +10,11 @@ export class PurchaseProgramDialogButtonsController extends BaseController {
     return this.growthState.money.totalGrowth;
   }
 
-  getProgramCost(programName: ProgramName, quality: number, level: number): number {
-    return this.mainframeState.programs.getProgramCost(programName, quality, level);
+  getProgramCost(programName: ProgramName, tier: number, level: number): number {
+    return this.mainframeState.programs.getProgramCost(programName, tier, level);
   }
 
-  isProgramAvailable(programName: ProgramName, quality: number, level: number): boolean {
-    return this.globalState.availableItems.programs.isItemAvailable(programName, quality, level);
+  isProgramAvailable(programName: ProgramName, tier: number, level: number): boolean {
+    return this.globalState.availableItems.programs.isItemAvailable(programName, tier, level);
   }
 }

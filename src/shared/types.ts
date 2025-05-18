@@ -176,4 +176,6 @@ export enum RewardParameter {
   codeBase = 'code-base',
   computationalBase = 'computational-base',
   rewards = 'rewards',
+  processCompletionSpeedMultiplier = 'process-completion-speed-multiplier',
+  actions = 'actions',
 }

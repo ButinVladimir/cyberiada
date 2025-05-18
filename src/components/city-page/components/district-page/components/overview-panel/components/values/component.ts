@@ -1,10 +1,10 @@
 import { css, html, nothing } from 'lit';
 import { consume } from '@lit/context';
 import { customElement } from 'lit/decorators.js';
-import { localized, msg, str } from '@lit/localize';
+import { localized, msg } from '@lit/localize';
 import { BaseComponent } from '@shared/base-component';
 import { HINT_ICON, hintIconStyle } from '@shared/styles';
-import { DISTRICT_TYPE_TEXTS, FACTION_TEXTS } from '@texts/index';
+import { COMMON_TEXTS, DISTRICT_TYPE_TEXTS, FACTION_TEXTS } from '@texts/index';
 import { DISTRICT_STATE_TEXTS } from '../../../../../../constants';
 import { CityDistrictOverviewPanelValuesController } from './controller';
 import { districtIndexContext } from '../../../../contexts';
@@ -45,11 +45,13 @@ export class CityDistrictOverviewPanelValues extends BaseComponent {
 
     const districtState = this._controller.getDistrictState(this._districtIndex);
 
-    const formattedTier = formatter.formatQuality(districtState.parameters.tier.tier);
+    const formattedTier = formatter.formatTier(districtState.parameters.tier.tier);
 
     return html`
       <p class="text">
-        ${msg(str`District type: ${DISTRICT_TYPE_TEXTS[districtState.districtType].title()}`)}
+        ${msg(
+          COMMON_TEXTS.parameterValue(msg('District type'), DISTRICT_TYPE_TEXTS[districtState.districtType].title()),
+        )}
 
         <sl-tooltip>
           <span slot="content">${DISTRICT_TYPE_TEXTS[districtState.districtType].overview()}</span>
@@ -58,10 +60,10 @@ export class CityDistrictOverviewPanelValues extends BaseComponent {
         </sl-tooltip>
       </p>
 
-      <p class="text">${msg(str`Tier: ${formattedTier}`)}</p>
+      <p class="text">${msg(COMMON_TEXTS.parameterValue(COMMON_TEXTS.tier(), formattedTier))}</p>
 
       <p class="text">
-        ${msg(str`Faction: ${FACTION_TEXTS[districtState.faction].title()}`)}
+        ${msg(COMMON_TEXTS.parameterValue(COMMON_TEXTS.faction(), FACTION_TEXTS[districtState.faction].title()))}
 
         <sl-tooltip>
           <span slot="content">${FACTION_TEXTS[districtState.faction].overview()}</span>
@@ -69,7 +71,7 @@ export class CityDistrictOverviewPanelValues extends BaseComponent {
         </sl-tooltip>
       </p>
 
-      <p class="text">${msg(str`State: ${DISTRICT_STATE_TEXTS[districtState.state]()}`)}</p>
+      <p class="text">${msg(COMMON_TEXTS.parameterValue(msg('State'), DISTRICT_STATE_TEXTS[districtState.state]()))}</p>
     `;
   }
 }

@@ -157,7 +157,7 @@ export class OwnedProgramsListItem extends BaseComponent {
 
     const programTitle = PROGRAM_TEXTS[this.programName].title();
     const formattedLevel = formatter.formatLevel(this._program.level);
-    const formattedQuality = formatter.formatQuality(this._program.quality);
+    const formattedTier = formatter.formatTier(this._program.tier);
 
     return html`
       <div class="program">
@@ -183,11 +183,11 @@ export class OwnedProgramsListItem extends BaseComponent {
         </div>
       </div>
 
-      <div class="mobile">${COMMON_TEXTS.qualityValue(formattedQuality)}</div>
+      <div class="mobile">${COMMON_TEXTS.parameterValue(COMMON_TEXTS.tier(), formattedTier)}</div>
 
-      <div class="desktop">${formattedQuality}</div>
+      <div class="desktop">${formattedTier}</div>
 
-      <div class="mobile">${COMMON_TEXTS.levelValue(formattedLevel)}</div>
+      <div class="mobile">${COMMON_TEXTS.parameterValue(COMMON_TEXTS.level(), formattedLevel)}</div>
 
       <div class="desktop">${formattedLevel}</div>
 

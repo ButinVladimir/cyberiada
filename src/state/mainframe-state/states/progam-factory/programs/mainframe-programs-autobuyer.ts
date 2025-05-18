@@ -35,13 +35,9 @@ export class MainframeProgramsAutobuyerProgram extends BaseProgram {
       const newLevel = binarySearchDecimal(existingProgram.level, this.globalState.development.level, checkProgram);
 
       if (newLevel > existingProgram.level) {
-        const cost = this.mainframeState.programs.getProgramCost(
-          existingProgram.name,
-          existingProgram.quality,
-          newLevel,
-        );
+        const cost = this.mainframeState.programs.getProgramCost(existingProgram.name, existingProgram.tier, newLevel);
 
-        if (this.mainframeState.programs.purchaseProgram(existingProgram.name, existingProgram.quality, newLevel)) {
+        if (this.mainframeState.programs.purchaseProgram(existingProgram.name, existingProgram.tier, newLevel)) {
           availableMoney -= cost;
           actionsLeft--;
         }
@@ -53,12 +49,12 @@ export class MainframeProgramsAutobuyerProgram extends BaseProgram {
     (existingProgram: IProgram, availableMoney: number) =>
     (level: number): boolean => {
       if (
-        !this.globalState.availableItems.programs.isItemAvailable(existingProgram.name, existingProgram.quality, level)
+        !this.globalState.availableItems.programs.isItemAvailable(existingProgram.name, existingProgram.tier, level)
       ) {
         return false;
       }
 
-      const cost = this.mainframeState.programs.getProgramCost(existingProgram.name, existingProgram.quality, level);
+      const cost = this.mainframeState.programs.getProgramCost(existingProgram.name, existingProgram.tier, level);
 
       return cost <= availableMoney;
     };

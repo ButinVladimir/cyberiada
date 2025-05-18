@@ -1,10 +1,10 @@
 import { css, html, nothing } from 'lit';
-import { msg, localized } from '@lit/localize';
+import { localized } from '@lit/localize';
 import { customElement, queryAll } from 'lit/decorators.js';
 import { consume } from '@lit/context';
 import { BaseComponent } from '@shared/index';
-import { PROGRAM_DESCRIPTION_TEXTS, PROGRAM_TEXTS } from '@texts/programs';
-import { type IProcess, OtherProgramName, MultiplierProgramName } from '@/state/mainframe-state';
+import { COMMON_TEXTS, PROGRAM_DESCRIPTION_TEXTS, PROGRAM_TEXTS } from '@texts/index';
+import { type IProcess, OtherProgramName, MultiplierProgramName } from '@state/mainframe-state';
 import {
   CodeGeneratorDescriptionEffectRenderer,
   CircuitDesignerDescriptionEffectRenderer,
@@ -42,8 +42,8 @@ export class ProcessDescriptionText extends BaseComponent {
 
   private _renderer?: IDescriptionEffectRenderer;
 
-  @queryAll('p[data-name]')
-  private _paragraphs!: NodeListOf<HTMLParagraphElement>;
+  @queryAll('span[data-value]')
+  private _valueEls!: NodeListOf<HTMLSpanElement>;
 
   @consume({ context: processContext, subscribe: true })
   private _process?: IProcess;
@@ -77,7 +77,7 @@ export class ProcessDescriptionText extends BaseComponent {
 
       <p class="line-break"></p>
 
-      <p>${msg('Effects')}</p>
+      <p>${PROGRAM_DESCRIPTION_TEXTS.effects()}</p>
 
       ${effects}
     `;
@@ -87,11 +87,13 @@ export class ProcessDescriptionText extends BaseComponent {
     return html`
       <p>${PROGRAM_DESCRIPTION_TEXTS.requirementsAutoscalable()}</p>
 
-      <p>${PROGRAM_DESCRIPTION_TEXTS.ramAllUnused()}</p>
+      <p>${COMMON_TEXTS.parameterValue(PROGRAM_DESCRIPTION_TEXTS.ram(), PROGRAM_DESCRIPTION_TEXTS.allAvailable())}</p>
 
-      <p>${PROGRAM_DESCRIPTION_TEXTS.coresAllUnused()}</p>
+      <p>${COMMON_TEXTS.parameterValue(PROGRAM_DESCRIPTION_TEXTS.cores(), PROGRAM_DESCRIPTION_TEXTS.allAvailable())}</p>
 
-      <p>${PROGRAM_DESCRIPTION_TEXTS.completionTimeAutoscalable()}</p>
+      <p>
+        ${COMMON_TEXTS.parameterValue(PROGRAM_DESCRIPTION_TEXTS.completionTime(), PROGRAM_DESCRIPTION_TEXTS.instant())}
+      </p>
     `;
   };
 
@@ -109,24 +111,28 @@ export class ProcessDescriptionText extends BaseComponent {
     const formattedCores = formatter.formatNumberDecimal(this._process!.program.cores * this._process!.threads);
 
     let completionTimeLabel: string;
+
     if (completionDelta > 0) {
-      const formattedTime = formatter.formatTimeShort(
+      completionTimeLabel = formatter.formatTimeShort(
         this._process!.program.calculateCompletionTime(this._process!.threads, this._process!.usedCores),
       );
-
-      completionTimeLabel = PROGRAM_DESCRIPTION_TEXTS.completionTimeProcess(formattedTime);
     } else {
-      completionTimeLabel = PROGRAM_DESCRIPTION_TEXTS.completionTimeNever();
+      completionTimeLabel = PROGRAM_DESCRIPTION_TEXTS.never();
     }
 
     return html`
       <p>${PROGRAM_DESCRIPTION_TEXTS.requirementsProcess(formattedThreads)}</p>
 
-      <p>${PROGRAM_DESCRIPTION_TEXTS.ram(formattedRam)}</p>
+      <p>${COMMON_TEXTS.parameterValue(PROGRAM_DESCRIPTION_TEXTS.ram(), formattedRam)}</p>
 
-      <p>${PROGRAM_DESCRIPTION_TEXTS.cores(formattedCores)}</p>
+      <p>
+        ${COMMON_TEXTS.parameterValue(
+          PROGRAM_DESCRIPTION_TEXTS.cores(),
+          PROGRAM_DESCRIPTION_TEXTS.upToValue(formattedCores),
+        )}
+      </p>
 
-      <p>${completionTimeLabel}</p>
+      <p>${COMMON_TEXTS.parameterValue(PROGRAM_DESCRIPTION_TEXTS.completionTime(), completionTimeLabel)}</p>
     `;
   };
 
@@ -143,7 +149,11 @@ export class ProcessDescriptionText extends BaseComponent {
       return;
     }
 
-    return this._renderer.partialUpdate(this._paragraphs);
+    this._renderer.recalculateValues();
+
+    this._valueEls.forEach((valueEl) => {
+      valueEl.textContent = this._renderer!.values[valueEl.dataset.value!];
+    });
   };
 
   private updateRenderer(): void {

@@ -2,14 +2,7 @@ import { css, html, nothing } from 'lit';
 import { localized } from '@lit/localize';
 import { consume } from '@lit/context';
 import { customElement, queryAll } from 'lit/decorators.js';
-import {
-  BaseComponent,
-  Feature,
-  getHighlightDifferenceClass,
-  MS_IN_SECOND,
-  RewardParameter,
-  highlightedValuesStyle,
-} from '@shared/index';
+import { BaseComponent, Feature, MS_IN_SECOND, RewardParameter, highlightedValuesStyle } from '@shared/index';
 import { type ISidejob } from '@state/company-state';
 import { COMMON_TEXTS, REWARD_PARAMETER_NAMES, SIDEJOB_TEXTS } from '@texts/index';
 import { SidejobsListItemDescriptionController } from './controller';
@@ -58,6 +51,8 @@ export class SidejobsListItemDescription extends BaseComponent {
     [RewardParameter.codeBase]: 0,
     [RewardParameter.computationalBase]: 0,
     [RewardParameter.rewards]: 0,
+    [RewardParameter.processCompletionSpeedMultiplier]: 0,
+    [RewardParameter.actions]: 0,
   };
 
   constructor() {
@@ -96,7 +91,7 @@ export class SidejobsListItemDescription extends BaseComponent {
     const parameterName = REWARD_PARAMETER_NAMES[parameter]();
     const valueElement = html`<span data-value=${parameter}></span>`;
 
-    return html`<p class="text">${COMMON_TEXTS.parameterValue(parameterName, valueElement)}</p>`;
+    return html`<p class="text">${COMMON_TEXTS.parameterSpeedValue(parameterName, valueElement)}</p>`;
   };
 
   handlePartialUpdate = () => {
@@ -163,9 +158,7 @@ export class SidejobsListItemDescription extends BaseComponent {
   private updateValueElement = (element: HTMLSpanElement) => {
     const parameter = element.dataset.value as RewardParameter;
     const value = this._rewardValues[parameter];
-    const className = getHighlightDifferenceClass(value);
 
     element.textContent = this._controller.formatter.formatNumberFloat(value);
-    element.className = className;
   };
 }

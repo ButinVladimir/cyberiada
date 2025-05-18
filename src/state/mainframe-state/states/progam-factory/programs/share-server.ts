@@ -1,7 +1,7 @@
 import programs from '@configs/programs.json';
 import { type ISettingsState } from '@state/settings-state';
 import { IncomeSource } from '@shared/types';
-import { calculateQualityLinear } from '@shared/helpers';
+import { calculateTierLinear } from '@shared/helpers';
 import { decorators } from '@state/container';
 import { TYPES } from '@state/types';
 import { OtherProgramName } from '../types';
@@ -36,7 +36,7 @@ export class ShareServerProgram extends BaseProgram {
     return (
       this.globalState.scenario.currentValues.programMultipliers.money.pointsMultiplier *
       this.calculateModifier(threads, usedRam, passedTime) *
-      calculateQualityLinear(this.level, this.quality, programData.money)
+      calculateTierLinear(this.level, this.tier, programData.money)
     );
   }
 
@@ -46,7 +46,7 @@ export class ShareServerProgram extends BaseProgram {
     return (
       this.globalState.scenario.currentValues.programMultipliers.developmentPoints.pointsMultiplier *
       this.calculateModifier(threads, usedRam, passedTime) *
-      calculateQualityLinear(this.level, this.quality, programData.developmentPoints)
+      calculateTierLinear(this.level, this.tier, programData.developmentPoints)
     );
   }
 

@@ -8,8 +8,8 @@ export interface ICompanyClonesState extends ISerializeable<ICompanyClonesSerial
   availableSynchronization: number;
   listClones(): IClone[];
   getCloneById(id: string): IClone | undefined;
-  getCloneCost(template: CloneTemplateName, quality: number, level: number): number;
-  getCloneSynchronization(template: CloneTemplateName, quality: number): number;
+  getCloneCost(template: CloneTemplateName, tier: number, level: number): number;
+  getCloneSynchronization(template: CloneTemplateName, tier: number): number;
   purchaseClone(args: IPurchaseCloneArgs): boolean;
   toggleAllClonesAutoupgrade(active: boolean): void;
   deleteClone(id: string): void;

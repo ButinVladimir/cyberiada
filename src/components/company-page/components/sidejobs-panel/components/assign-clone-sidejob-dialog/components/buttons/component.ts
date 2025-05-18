@@ -85,7 +85,7 @@ export class AssignCloneSidejobDialogButtons extends BaseComponent {
         ${msg('Not enough connectivity')}
       </p>
       <p class="warning" data-warning=${AssignCloneSidejobDialogWarning.willBeAvailableIn}>
-        ${COMMON_TEXTS.willBeAvailableInNew(html`<span ${ref(this._availableTimeRef)}></span>`)}
+        ${COMMON_TEXTS.willBeAvailableIn(html`<span ${ref(this._availableTimeRef)}></span>`)}
       </p>
       <p class="warning" data-warning=${AssignCloneSidejobDialogWarning.other}>${this.renderOtherWarnings()}</p>
     `;

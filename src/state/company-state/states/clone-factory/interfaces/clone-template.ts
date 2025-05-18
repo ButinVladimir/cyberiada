@@ -1,13 +1,13 @@
-import { IExponent, IQualityExponent, IQualityLinear } from '@shared/interfaces/formulas';
+import { IExponent, ITierExponent, ITierLinear } from '@shared/interfaces/formulas';
 import { Attribute, Skill } from '@shared/types';
 
 export interface ICloneTemplate {
-  cost: IQualityExponent;
+  cost: ITierExponent;
   synchronization: {
     multiplier: number;
-    baseQuality: number;
+    baseTier: number;
   };
   levelRequirements: IExponent;
-  attributes: Record<Attribute, IQualityLinear>;
-  skills: Record<Skill, IQualityLinear>;
+  attributes: Record<Attribute, ITierLinear>;
+  skills: Record<Skill, ITierLinear>;
 }

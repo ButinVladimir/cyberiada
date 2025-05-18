@@ -131,7 +131,7 @@ export class OwnedProgramsList extends BaseComponent {
     return html`
       <div class="header">
         <div class="header-column">${msg('Program')}</div>
-        <div class="header-column">${COMMON_TEXTS.quality()}</div>
+        <div class="header-column">${COMMON_TEXTS.tier()}</div>
         <div class="header-column">${COMMON_TEXTS.level()}</div>
         <div class="buttons desktop">
           <sl-tooltip>

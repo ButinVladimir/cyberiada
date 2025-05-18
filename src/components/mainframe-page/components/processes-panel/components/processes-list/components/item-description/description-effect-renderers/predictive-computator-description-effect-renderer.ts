@@ -1,11 +1,12 @@
 import { html } from 'lit';
-import { msg, str } from '@lit/localize';
-import { PredictiveComputatorProgram } from '@state/mainframe-state/states/progam-factory/programs/predictive-computator';
-import { IFormatter } from '@shared/interfaces/formatter';
-import { IProcess } from '@state/mainframe-state/states/mainframe-processes-state/interfaces/process';
+import { PredictiveComputatorProgram, IProcess } from '@state/mainframe-state';
+import { IFormatter, RewardParameter } from '@shared/index';
+import { COMMON_TEXTS, REWARD_PARAMETER_NAMES } from '@texts/index';
 import { IDescriptionParameters, IDescriptionEffectRenderer } from '../interfaces';
 
 export class PredictiveComputatorDescriptionEffectRenderer implements IDescriptionEffectRenderer {
+  public readonly values = {};
+
   private _process: IProcess;
 
   private _formatter: IFormatter;
@@ -22,12 +23,17 @@ export class PredictiveComputatorDescriptionEffectRenderer implements IDescripti
     const { usedCores } = this._process;
     const program = this._process.program as PredictiveComputatorProgram;
 
-    const value = this._formatter.formatNumberFloat(
+    const formattedValue = this._formatter.formatNumberFloat(
       program.calculateProcessCompletionSpeedMultiplier(usedCores, this._autoscalableProcessRam),
     );
 
-    return html` <p>${msg(str`Speed multiplier: ${value}`)}</p> `;
+    return html`<p>
+      ${COMMON_TEXTS.parameterValue(
+        REWARD_PARAMETER_NAMES[RewardParameter.processCompletionSpeedMultiplier](),
+        formattedValue,
+      )}
+    </p>`;
   };
 
-  public partialUpdate() {}
+  public recalculateValues() {}
 }

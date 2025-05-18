@@ -9,7 +9,12 @@ import type { IMessageLogState } from '@state/message-log-state/interfaces/messa
 import type { IFormatter } from '@shared/interfaces/formatter';
 import { TYPES } from '@state/types';
 import { ClonesEvent, Feature, PurchaseType } from '@shared/types';
-import { calculateQualityPower, moveElementInArray, removeElementsFromArray } from '@shared/helpers';
+import {
+  calculateTierMultiplier,
+  calculateTierPower,
+  moveElementInArray,
+  removeElementsFromArray,
+} from '@shared/helpers';
 import { CLONE_TEMPLATE_TEXTS } from '@texts/clone-templates';
 import { ICloneNameGeneratorResult } from '@workers/clone-name-generator/interfaces';
 import type { ICompanyState } from '../../interfaces/company-state';
@@ -60,14 +65,16 @@ export class CompanyClonesState implements ICompanyClonesState {
     return this._clonesMap.get(id);
   }
 
-  getCloneCost(templateName: CloneTemplateName, quality: number, level: number): number {
-    return calculateQualityPower(level, quality, cloneTemplates[templateName].cost);
+  getCloneCost(templateName: CloneTemplateName, tier: number, level: number): number {
+    return calculateTierPower(level, tier, cloneTemplates[templateName].cost);
   }
 
-  getCloneSynchronization(templateName: CloneTemplateName, quality: number): number {
+  getCloneSynchronization(templateName: CloneTemplateName, tier: number): number {
     const template = cloneTemplates[templateName];
 
-    return Math.ceil(template.synchronization.multiplier * Math.pow(template.synchronization.baseQuality, quality));
+    return Math.ceil(
+      template.synchronization.multiplier * calculateTierMultiplier(tier, template.synchronization.baseTier),
+    );
   }
 
   purchaseClone(args: IPurchaseCloneArgs): boolean {
@@ -79,13 +86,13 @@ export class CompanyClonesState implements ICompanyClonesState {
       return false;
     }
 
-    const synchronization = this.getCloneSynchronization(args.templateName, args.quality);
+    const synchronization = this.getCloneSynchronization(args.templateName, args.tier);
 
     if (synchronization > this._availableSynchronization) {
       return false;
     }
 
-    const cost = this.getCloneCost(args.templateName, args.quality, args.level);
+    const cost = this.getCloneCost(args.templateName, args.tier, args.level);
 
     const bought = this._globalState.money.purchase(cost, PurchaseType.clones, this.handlePurhaseClone(args));
 
@@ -173,7 +180,7 @@ export class CompanyClonesState implements ICompanyClonesState {
     this._availableSynchronization = this._globalState.synchronization.totalValue;
 
     for (const clone of this._clonesList) {
-      this._availableSynchronization -= this.getCloneSynchronization(clone.templateName, clone.quality);
+      this._availableSynchronization -= this.getCloneSynchronization(clone.templateName, clone.tier);
     }
   }
 
@@ -228,7 +235,7 @@ export class CompanyClonesState implements ICompanyClonesState {
       id: uuid(),
       name: args.name,
       templateName: args.templateName,
-      quality: args.quality,
+      tier: args.tier,
       level: args.level,
       experience: 0,
       autoUpgradeEnabled: true,
@@ -237,12 +244,12 @@ export class CompanyClonesState implements ICompanyClonesState {
     this.addClone(clone);
 
     const formattedLevel = this._formatter.formatLevel(clone.level);
-    const formattedQuality = this._formatter.formatQuality(clone.quality);
+    const formattedTier = this._formatter.formatTier(clone.tier);
 
     this._messageLogState.postMessage(
       ClonesEvent.clonePurchased,
       msg(
-        str`Clone "${clone.name}" with template "${CLONE_TEMPLATE_TEXTS[clone.templateName].title()}", quality ${formattedQuality} and level ${formattedLevel} has been purchased`,
+        str`Clone "${clone.name}" with template "${CLONE_TEMPLATE_TEXTS[clone.templateName].title()}", tier ${formattedTier} and level ${formattedLevel} has been purchased`,
       ),
     );
   };

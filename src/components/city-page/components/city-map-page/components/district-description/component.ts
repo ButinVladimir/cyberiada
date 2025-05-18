@@ -1,8 +1,8 @@
-import { css, html } from 'lit';
+import { css, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { localized, msg, str } from '@lit/localize';
+import { localized, msg } from '@lit/localize';
 import { BaseComponent } from '@shared/base-component';
-import { DISTRICT_TYPE_TEXTS, FACTION_TEXTS } from '@texts/index';
+import { COMMON_TEXTS, DISTRICT_NAMES, DISTRICT_TYPE_TEXTS, FACTION_TEXTS } from '@texts/index';
 import { DISTRICT_STATE_TEXTS } from '../../../../constants';
 import { CityMapDistrictDescriptionController } from './controller';
 
@@ -43,14 +43,18 @@ export class CityMapDistrictDescription extends BaseComponent {
 
     const districtState = this._controller.getDistrictState(this.district);
 
-    const formattedTier = formatter.formatQuality(districtState.parameters.tier.tier);
+    const formattedTier = formatter.formatTier(districtState.parameters.tier.tier);
 
     return html`
-      <p>${msg(districtState.name)}</p>
-      <p>${msg(str`District type: ${DISTRICT_TYPE_TEXTS[districtState.districtType].title()}`)}</p>
-      <p>${msg(str`Tier: ${formattedTier}`)}</p>
-      <p>${msg(str`Faction: ${FACTION_TEXTS[districtState.faction].title()}`)}</p>
-      <p>${msg(str`State: ${DISTRICT_STATE_TEXTS[districtState.state]()}`)}</p>
+      <p>${msg(DISTRICT_NAMES[districtState.name]())}</p>
+      <p>
+        ${msg(
+          COMMON_TEXTS.parameterValue(msg('District type'), DISTRICT_TYPE_TEXTS[districtState.districtType].title()),
+        )}
+      </p>
+      <p>${msg(COMMON_TEXTS.parameterValue(COMMON_TEXTS.tier(), formattedTier))}</p>
+      <p>${msg(COMMON_TEXTS.parameterValue(COMMON_TEXTS.faction(), FACTION_TEXTS[districtState.faction].title()))}</p>
+      <p>${msg(COMMON_TEXTS.parameterValue(msg('State'), DISTRICT_STATE_TEXTS[districtState.state]()))}</p>
     `;
   }
 }

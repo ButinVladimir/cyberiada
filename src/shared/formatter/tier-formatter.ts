@@ -1,7 +1,7 @@
-import { IQualityFormatter } from '../interfaces';
+import { ITierFormatter } from '../interfaces';
 import { ROMAN_NUMERALS } from './constants';
 
-export class QualityFormatter implements IQualityFormatter {
+export class TierFormatter implements ITierFormatter {
   private _cache: Map<number, string>;
 
   constructor() {

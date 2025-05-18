@@ -141,6 +141,6 @@ export abstract class MainframeHardwareParameter implements IMainframeHardwarePa
     this.postPurchaseMessge();
 
     this.mainframeState.processes.requestUpdateProcesses();
-    this.mainframeState.processes.processCompletionSpeed.requestMultipliersRecalculation();
+    this.mainframeState.processes.requestUpdatePerformance();
   };
 }

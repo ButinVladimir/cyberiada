@@ -42,7 +42,7 @@ export class OverviewUnlockedPrograms extends BaseComponent {
   private renderListItem = (itemName: ProgramName) => {
     const programTitle = PROGRAM_TEXTS[itemName].title();
     const programOverview = PROGRAM_TEXTS[itemName].overview();
-    const quality = this._controller.getItemHighestAvailableQuality(itemName);
+    const tier = this._controller.getItemHighestAvailableTier(itemName);
 
     return html`
       <span>
@@ -54,7 +54,7 @@ export class OverviewUnlockedPrograms extends BaseComponent {
           <sl-icon name=${HINT_ICON}></sl-icon>
         </sl-tooltip>
       </span>
-      <span> ${this._controller.formatter.formatQuality(quality)} </span>
+      <span> ${this._controller.formatter.formatTier(tier)} </span>
     `;
   };
 }

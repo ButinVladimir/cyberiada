@@ -154,7 +154,7 @@ export class ClonesListItem extends BaseComponent {
 
     const formatter = this._controller.formatter;
 
-    const formattedQuality = formatter.formatQuality(this._clone.quality);
+    const formattedTier = formatter.formatTier(this._clone.tier);
     const formattedLevel = formatter.formatLevel(this._clone.level);
 
     return html`
@@ -180,7 +180,7 @@ export class ClonesListItem extends BaseComponent {
 
           <p class="description hint">
             ${msg(
-              str`${CLONE_TEMPLATE_TEXTS[this._clone.templateName].title()}, quality ${formattedQuality}, level ${formattedLevel}`,
+              str`${CLONE_TEMPLATE_TEXTS[this._clone.templateName].title()}, tier ${formattedTier}, level ${formattedLevel}`,
             )}
           </p>
 

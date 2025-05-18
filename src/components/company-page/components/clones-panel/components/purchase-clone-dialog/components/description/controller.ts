@@ -6,15 +6,15 @@ export class PurchaseCloneDialogDescriptionTextController extends BaseController
     return this.companyState.clones.availableSynchronization;
   }
 
-  getCloneSynchronization(cloneTemplateName: CloneTemplateName, quality: number): number {
-    return this.companyState.clones.getCloneSynchronization(cloneTemplateName, quality);
+  getCloneSynchronization(cloneTemplateName: CloneTemplateName, tier: number): number {
+    return this.companyState.clones.getCloneSynchronization(cloneTemplateName, tier);
   }
 
   get money(): number {
     return this.globalState.money.money;
   }
 
-  getCloneCost(cloneTemplateName: CloneTemplateName, quality: number, level: number): number {
-    return this.companyState.clones.getCloneCost(cloneTemplateName, quality, level);
+  getCloneCost(cloneTemplateName: CloneTemplateName, tier: number, level: number): number {
+    return this.companyState.clones.getCloneCost(cloneTemplateName, tier, level);
   }
 }

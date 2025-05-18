@@ -66,7 +66,7 @@ export class DistrictTierParameter implements IDistrictTierParameter {
     if (newLevel > this._tier) {
       this._tier = newLevel;
 
-      const formattedTier = this._formatter.formatQuality(this._tier);
+      const formattedTier = this._formatter.formatTier(this._tier);
       this._messageLogState.postMessage(
         CityEvent.districtTierIncreased,
         msg(str`District ${DISTRICT_NAMES[this._district.name]()} tier has been increased to ${formattedTier}`),

@@ -1,11 +1,13 @@
 import { html } from 'lit';
-import { msg, str } from '@lit/localize';
-import { PredictiveComputatorProgram } from '@state/mainframe-state/states/progam-factory/programs/predictive-computator';
-import { IFormatter } from '@shared/interfaces/formatter';
-import { diffFormatterParameters } from '@shared/formatter-parameters';
+import { PredictiveComputatorProgram } from '@state/mainframe-state';
+import { RewardParameter, IFormatter, diffFormatterParameters, getHighlightDifferenceClass } from '@shared/index';
+import { COMMON_TEXTS, PROGRAM_DESCRIPTION_TEXTS, REWARD_PARAMETER_NAMES } from '@texts/index';
 import { IDescriptionParameters, IDescriptionEffectRenderer } from '../interfaces';
 
 export class PredictiveComputatorDescriptionEffectRenderer implements IDescriptionEffectRenderer {
+  public readonly values = {};
+  public readonly diffs = {};
+
   private _program: PredictiveComputatorProgram;
 
   private _ownedProgram?: PredictiveComputatorProgram;
@@ -31,10 +33,19 @@ export class PredictiveComputatorDescriptionEffectRenderer implements IDescripti
       : value;
 
     const formattedValue = this._formatter.formatNumberFloat(value);
-    const formattedValueDiff = this._formatter.formatNumberFloat(valueDiff, diffFormatterParameters);
 
-    return html` <p>${msg(str`Speed multiplier: Up to ${formattedValue} (${formattedValueDiff})`)}</p> `;
+    const valueDiffClass = getHighlightDifferenceClass(valueDiff);
+    const valueDiffEl = html`<span class=${valueDiffClass}
+      >${this._formatter.formatNumberFloat(valueDiff, diffFormatterParameters)}</span
+    >`;
+
+    return html`<p>
+      ${COMMON_TEXTS.parameterValue(
+        REWARD_PARAMETER_NAMES[RewardParameter.processCompletionSpeedMultiplier](),
+        PROGRAM_DESCRIPTION_TEXTS.upToDiff(formattedValue, valueDiffEl),
+      )}
+    </p>`;
   };
 
-  public partialUpdate(): void {}
+  public recalculateValues(): void {}
 }

@@ -1,4 +1,5 @@
 export interface IDescriptionEffectRenderer {
+  values: Record<string, any>;
   renderEffect(): unknown;
-  partialUpdate(nodeList: NodeListOf<HTMLParagraphElement>): void;
+  recalculateValues(): void;
 }

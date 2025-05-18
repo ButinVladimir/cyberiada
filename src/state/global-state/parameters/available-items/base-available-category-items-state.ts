@@ -19,46 +19,46 @@ export abstract class BaseAvailableCategoryItemsState<Key = string> implements I
   @lazyInject(TYPES.GlobalState)
   protected _globalState!: IGlobalState;
 
-  protected _loanedQuality: number;
+  protected _loanedTier: number;
   protected _neutralItems: Set<Key>;
   protected _loanedItems: Set<Key>;
   protected _itemsList: Key[];
 
   constructor() {
-    this._loanedQuality = 0;
+    this._loanedTier = 0;
     this._neutralItems = new Set();
     this._loanedItems = new Set();
     this._itemsList = [];
 
-    this._stateUiConnector.registerEventEmitter(this, ['_loanedQuality', '_itemsList']);
+    this._stateUiConnector.registerEventEmitter(this, ['_loanedTier', '_itemsList']);
   }
 
-  get loanedQuality() {
-    return this._loanedQuality;
+  get loanedTier() {
+    return this._loanedTier;
   }
 
   listAvailableItems(): Key[] {
     return this._itemsList;
   }
 
-  isItemAvailable(itemName: Key, quality: number, level: number): boolean {
+  isItemAvailable(itemName: Key, tier: number, level: number): boolean {
     if (!(this._neutralItems.has(itemName) || this._loanedItems.has(itemName))) {
       return false;
     }
 
-    const highestAvailableQuality = this.getItemHighestAvailableQuality(itemName);
-    if (quality > highestAvailableQuality) {
+    const highestAvailableTier = this.getItemHighestAvailableTier(itemName);
+    if (tier > highestAvailableTier) {
       return false;
     }
 
     return level <= this._globalState.development.level;
   }
 
-  getItemHighestAvailableQuality(itemName: Key): number {
+  getItemHighestAvailableTier(itemName: Key): number {
     let result: number | undefined = undefined;
 
     if (this._neutralItems.has(itemName) || this._loanedItems.has(itemName)) {
-      result = this._loanedQuality;
+      result = this._loanedTier;
     }
 
     if (result === undefined) {
@@ -74,12 +74,12 @@ export abstract class BaseAvailableCategoryItemsState<Key = string> implements I
   }
 
   async startNewState(): Promise<void> {
-    this._loanedQuality = 6;
+    this._loanedTier = 6;
     this._loanedItems.clear();
   }
 
   async deserialize(serializedState: IAvailableCategoryItemsSerializedState<Key>): Promise<void> {
-    this._loanedQuality = serializedState.loanedQuality;
+    this._loanedTier = serializedState.loanedTier;
     this._loanedItems.clear();
 
     serializedState.loanedItems.forEach((itemName) => {
@@ -89,7 +89,7 @@ export abstract class BaseAvailableCategoryItemsState<Key = string> implements I
 
   serialize(): IAvailableCategoryItemsSerializedState<Key> {
     return {
-      loanedQuality: this._loanedQuality,
+      loanedTier: this._loanedTier,
       loanedItems: Array.from(this._loanedItems.values()),
     };
   }

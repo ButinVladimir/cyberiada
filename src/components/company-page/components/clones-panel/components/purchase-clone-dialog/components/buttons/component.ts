@@ -77,7 +77,7 @@ export class PurchaseCloneDialogButtons extends BaseComponent {
     return html`
       <p class="warning" data-warning=${PurchaseCloneDialogWarning.notEnoughMoney}>${COMMON_TEXTS.notEnoughMoney()}</p>
       <p class="warning" data-warning=${PurchaseCloneDialogWarning.willBeAvailableIn}>
-        ${COMMON_TEXTS.willBeAvailableInNew(html`<span ${ref(this._availableTimeRef)}></span>`)}
+        ${COMMON_TEXTS.willBeAvailableIn(html`<span ${ref(this._availableTimeRef)}></span>`)}
       </p>
       <p class="warning" data-warning=${PurchaseCloneDialogWarning.other}>${this.renderOtherWarnings()}</p>
     `;
@@ -92,7 +92,7 @@ export class PurchaseCloneDialogButtons extends BaseComponent {
       return msg('Enter clone name');
     }
 
-    const synchronization = this._controller.getCloneSynchronization(this._clone.templateName, this._clone.quality);
+    const synchronization = this._controller.getCloneSynchronization(this._clone.templateName, this._clone.tier);
     if (synchronization > this._controller.availableSynchronization) {
       return msg('Not enough synchronization');
     }
@@ -105,7 +105,7 @@ export class PurchaseCloneDialogButtons extends BaseComponent {
       return PurchaseCloneDialogWarning.other;
     }
 
-    const cost = this._controller.getCloneCost(this._clone.templateName, this._clone.quality, this._clone.level);
+    const cost = this._controller.getCloneCost(this._clone.templateName, this._clone.tier, this._clone.level);
     const moneyGrowth = this._controller.moneyGrowth;
     const moneyDiff = cost - this._controller.money;
 
@@ -129,7 +129,7 @@ export class PurchaseCloneDialogButtons extends BaseComponent {
       return;
     }
 
-    const cost = this._controller.getCloneCost(this._clone.templateName, this._clone.quality, this._clone.level);
+    const cost = this._controller.getCloneCost(this._clone.templateName, this._clone.tier, this._clone.level);
     const moneyGrowth = this._controller.moneyGrowth;
     const moneyDiff = cost - this._controller.money;
 
@@ -153,11 +153,11 @@ export class PurchaseCloneDialogButtons extends BaseComponent {
 
     const { money } = this._controller;
 
-    const cost = this._controller.getCloneCost(this._clone.templateName, this._clone.quality, this._clone.level);
-    const synchronization = this._controller.getCloneSynchronization(this._clone.templateName, this._clone.quality);
+    const cost = this._controller.getCloneCost(this._clone.templateName, this._clone.tier, this._clone.level);
+    const synchronization = this._controller.getCloneSynchronization(this._clone.templateName, this._clone.tier);
     const cloneAvailable = this._controller.isCloneAvailable(
       this._clone.templateName,
-      this._clone.quality,
+      this._clone.tier,
       this._clone.level,
     );
 

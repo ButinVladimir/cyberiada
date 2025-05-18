@@ -84,7 +84,7 @@ export class PurchaseProgramDialogButtons extends BaseComponent {
         ${COMMON_TEXTS.notEnoughMoney()}
       </p>
       <p class="warning" data-warning=${PurchaseProgramDialogWarning.willBeAvailableIn}>
-        ${COMMON_TEXTS.willBeAvailableInNew(html`<span ${ref(this._availableTimeRef)}></span>`)}
+        ${COMMON_TEXTS.willBeAvailableIn(html`<span ${ref(this._availableTimeRef)}></span>`)}
       </p>
       <p class="warning" data-warning=${PurchaseProgramDialogWarning.other}>${this.renderOtherWarnings()}</p>
     `;
@@ -98,12 +98,10 @@ export class PurchaseProgramDialogButtons extends BaseComponent {
     if (this._ownedProgram) {
       const formatter = this._controller.formatter;
 
-      const formattedQuality = formatter.formatQuality(this._ownedProgram.quality);
+      const formattedTier = formatter.formatTier(this._ownedProgram.tier);
       const formattedLevel = formatter.formatLevel(this._ownedProgram.level);
 
-      return html`
-        ${msg(str`Program is already bought with quality ${formattedQuality} and level ${formattedLevel}`)}
-      `;
+      return html` ${msg(str`Program is already bought with tier ${formattedTier} and level ${formattedLevel}`)} `;
     }
 
     return nothing;
@@ -114,7 +112,7 @@ export class PurchaseProgramDialogButtons extends BaseComponent {
       return PurchaseProgramDialogWarning.other;
     }
 
-    const cost = this._controller.getProgramCost(this._program.name, this._program.quality, this._program.level);
+    const cost = this._controller.getProgramCost(this._program.name, this._program.tier, this._program.level);
     const moneyGrowth = this._controller.moneyGrowth;
     const moneyDiff = cost - this._controller.money;
 
@@ -134,7 +132,7 @@ export class PurchaseProgramDialogButtons extends BaseComponent {
       return;
     }
 
-    const cost = this._controller.getProgramCost(this._program.name, this._program.quality, this._program.level);
+    const cost = this._controller.getProgramCost(this._program.name, this._program.tier, this._program.level);
     const moneyGrowth = this._controller.moneyGrowth;
     const moneyDiff = cost - this._controller.money;
 
@@ -152,11 +150,11 @@ export class PurchaseProgramDialogButtons extends BaseComponent {
     if (this._program) {
       const { money } = this._controller;
 
-      const cost = this._controller.getProgramCost(this._program.name, this._program.quality, this._program.level);
+      const cost = this._controller.getProgramCost(this._program.name, this._program.tier, this._program.level);
 
       purchaseButtonDisabled = !(
         cost <= money &&
-        this._controller.isProgramAvailable(this._program.name, this._program.quality, this._program.level)
+        this._controller.isProgramAvailable(this._program.name, this._program.tier, this._program.level)
       );
     }
 

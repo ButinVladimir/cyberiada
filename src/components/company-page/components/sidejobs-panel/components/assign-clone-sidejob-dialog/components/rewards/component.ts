@@ -85,6 +85,14 @@ export class AssignCloneSidejobDialogRewards extends BaseComponent {
       value: 0,
       diff: 0,
     },
+    [RewardParameter.processCompletionSpeedMultiplier]: {
+      value: 0,
+      diff: 0,
+    },
+    [RewardParameter.actions]: {
+      value: 0,
+      diff: 0,
+    },
   };
 
   constructor() {
@@ -122,7 +130,7 @@ export class AssignCloneSidejobDialogRewards extends BaseComponent {
     const valueElement = html`<span data-value=${parameter} data-type=${DISPLAY_TYPES.VALUE}></span>`;
     const diffElement = html`<span data-value=${parameter} data-type=${DISPLAY_TYPES.DIFF}></span>`;
 
-    return html`<p class="text">${COMMON_TEXTS.parameterValueWithDiff(parameterName, valueElement, diffElement)}</p>`;
+    return html`<p class="text">${COMMON_TEXTS.parameterSpeedDiff(parameterName, valueElement, diffElement)}</p>`;
   };
 
   handlePartialUpdate = () => {
@@ -210,10 +218,8 @@ export class AssignCloneSidejobDialogRewards extends BaseComponent {
   private updateValueElement = (element: HTMLSpanElement) => {
     const parameter = element.dataset.value as RewardParameter;
     const value = this._rewardValues[parameter].value;
-    const className = getHighlightDifferenceClass(value);
 
     element.textContent = this._controller.formatter.formatNumberFloat(value);
-    element.className = className;
   };
 
   private updateDiffElement = (element: HTMLSpanElement) => {

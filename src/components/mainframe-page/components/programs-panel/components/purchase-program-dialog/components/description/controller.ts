@@ -14,7 +14,7 @@ export class ProgramDiffTextController extends BaseController {
     return this.mainframeState.hardware.cores.totalLevel;
   }
 
-  getProgramCost(programName: ProgramName, quality: number, level: number): number {
-    return this.mainframeState.programs.getProgramCost(programName, quality, level);
+  getProgramCost(programName: ProgramName, tier: number, level: number): number {
+    return this.mainframeState.programs.getProgramCost(programName, tier, level);
   }
 }

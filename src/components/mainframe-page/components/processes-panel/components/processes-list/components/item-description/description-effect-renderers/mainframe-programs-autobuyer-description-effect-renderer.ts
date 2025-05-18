@@ -1,12 +1,12 @@
 import { html } from 'lit';
-import { msg, str } from '@lit/localize';
-import { MainframeProgramsAutobuyerProgram } from '@state/mainframe-state/states/progam-factory/programs/mainframe-programs-autobuyer';
-import { IFormatter } from '@shared/interfaces/formatter';
-import { MS_IN_SECOND } from '@shared/constants';
-import { IProcess } from '@state/mainframe-state/states/mainframe-processes-state/interfaces/process';
+import { MainframeProgramsAutobuyerProgram, IProcess } from '@state/mainframe-state';
+import { RewardParameter, IFormatter, MS_IN_SECOND } from '@shared/index';
+import { COMMON_TEXTS, PROGRAM_DESCRIPTION_TEXTS, REWARD_PARAMETER_NAMES } from '@texts/index';
 import { IDescriptionParameters, IDescriptionEffectRenderer } from '../interfaces';
 
 export class MainframeProgramsAutobuyerDescriptionEffectRenderer implements IDescriptionEffectRenderer {
+  public readonly values = {};
+
   private _process: IProcess;
 
   private _formatter: IFormatter;
@@ -26,8 +26,13 @@ export class MainframeProgramsAutobuyerDescriptionEffectRenderer implements IDes
     const formattedValue = this._formatter.formatNumberDecimal(threads);
     const formattedAvgValue = this._formatter.formatNumberFloat(avgValue);
 
-    return html` <p>${msg(str`Actions: ${formattedValue} per completion (${formattedAvgValue} per second)`)}</p> `;
+    return html`<p>
+      ${COMMON_TEXTS.parameterValue(
+        REWARD_PARAMETER_NAMES[RewardParameter.actions](),
+        PROGRAM_DESCRIPTION_TEXTS.processCompletionValues(formattedValue, formattedAvgValue),
+      )}
+    </p>`;
   };
 
-  public partialUpdate() {}
+  public recalculateValues() {}
 }

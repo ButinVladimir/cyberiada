@@ -14,18 +14,18 @@ export class PurchaseProgramDialogController extends BaseController {
     return this.globalState.development.level;
   }
 
-  getSelectedProgram(name: ProgramName, quality: number, level: number): IProgram {
+  getSelectedProgram(name: ProgramName, tier: number, level: number): IProgram {
     if (
       this._selectedProgram?.name !== name ||
       this._selectedProgram.level !== level ||
-      this._selectedProgram.quality !== quality
+      this._selectedProgram.tier !== tier
     ) {
       this.deleteSelectedProgram();
 
       this._selectedProgram = this.mainframeState.programFactory.makeProgram({
         name,
         level,
-        quality,
+        tier,
         autoUpgradeEnabled: true,
       });
     }
@@ -37,16 +37,16 @@ export class PurchaseProgramDialogController extends BaseController {
     return this.mainframeState.programs.getOwnedProgramByName(name);
   }
 
-  getHighestAvailableQuality(programName: ProgramName): number {
-    return this.globalState.availableItems.programs.getItemHighestAvailableQuality(programName);
+  getHighestAvailableTier(programName: ProgramName): number {
+    return this.globalState.availableItems.programs.getItemHighestAvailableTier(programName);
   }
 
   listAvailablePrograms(): ProgramName[] {
     return this.globalState.availableItems.programs.listAvailableItems();
   }
 
-  purchaseProgram(name: ProgramName, quality: number, level: number): boolean {
-    return this.mainframeState.programs.purchaseProgram(name, quality, level);
+  purchaseProgram(name: ProgramName, tier: number, level: number): boolean {
+    return this.mainframeState.programs.purchaseProgram(name, tier, level);
   }
 
   private deleteSelectedProgram() {

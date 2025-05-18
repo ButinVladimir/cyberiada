@@ -1,5 +1,5 @@
 import { css, html, nothing } from 'lit';
-import { localized, msg, str } from '@lit/localize';
+import { localized } from '@lit/localize';
 import { customElement } from 'lit/decorators.js';
 import { consume } from '@lit/context';
 import { BaseComponent } from '@shared/base-component';
@@ -53,7 +53,7 @@ export class ClonesListItemAttributes extends BaseComponent {
     const formattedSynchronization = formatter.formatNumberDecimal(synchronization);
 
     return html`
-      <div>${msg(str`Synchronization: ${formattedSynchronization}`)}</div>
+      <div>${COMMON_TEXTS.parameterValue(COMMON_TEXTS.synchronization(), formattedSynchronization)}</div>
 
       <div class="attributes-skills-tables">
         <div>

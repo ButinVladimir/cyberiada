@@ -106,7 +106,7 @@ export class MainframeHardwarePanelArticleButtons extends BaseComponent {
         ${COMMON_TEXTS.notEnoughMoney()}
       </p>
       <p class="warning" data-warning=${MainframeHardwarePanelArticleWarning.willBeAvailableIn}>
-        ${COMMON_TEXTS.willBeAvailableInNew(html`<span ${ref(this._availableTimeRef)}></span>`)}
+        ${COMMON_TEXTS.willBeAvailableIn(html`<span ${ref(this._availableTimeRef)}></span>`)}
       </p>
     `;
   };

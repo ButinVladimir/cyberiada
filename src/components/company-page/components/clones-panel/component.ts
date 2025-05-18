@@ -1,12 +1,12 @@
 import { css, html } from 'lit';
 import { choose } from 'lit/directives/choose.js';
 import { provide } from '@lit/context';
-import { msg, localized, str } from '@lit/localize';
+import { msg, localized } from '@lit/localize';
 import { customElement, state } from 'lit/decorators.js';
-import { BaseComponent } from '@shared/base-component';
-import { hintStyle, SCREEN_WIDTH_POINTS } from '@shared/styles';
-import { ClonesPanelController } from './controller';
+import { BaseComponent, hintStyle, SCREEN_WIDTH_POINTS } from '@shared/index';
 import { type IClone } from '@state/company-state';
+import { COMMON_TEXTS } from '@texts/index';
+import { ClonesPanelController } from './controller';
 import { type CloneListItemDialog } from './type';
 import { OpenCloneListItemDialogEvent } from './events';
 import { modalCloneContext } from './contexts';
@@ -95,7 +95,10 @@ Clones cannot have level above current development level but they can store exce
 
         <div class="synchronization">
           ${msg(
-            str`Available synchronization: ${formattedAvailableSynchronization} / ${formattedTotalSynchronization}`,
+            COMMON_TEXTS.parameterValue(
+              msg('Available synchronization'),
+              `${formattedAvailableSynchronization} / ${formattedTotalSynchronization}`,
+            ),
           )}
         </div>
       </div>

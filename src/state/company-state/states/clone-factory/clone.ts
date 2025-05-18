@@ -8,8 +8,8 @@ import {
   ATTRIBUTES,
   SKILLS,
   calculateGeometricProgressionSum,
-  calculateQualityLinear,
-  calculateQualityMultiplier,
+  calculateTierLinear,
+  calculateTierMultiplier,
   reverseGeometricProgressionSum,
   type IFormatter,
 } from '@shared/index';
@@ -46,7 +46,7 @@ export class Clone implements IClone {
   private _template: ICloneTemplate;
   private _experience: number;
   private _level: number;
-  private _quality: number;
+  private _tier: number;
   private _synchronization!: number;
   private _autoUpgradeEnabled: boolean;
 
@@ -60,10 +60,10 @@ export class Clone implements IClone {
     this._template = cloneTemplates[parameters.templateName] as ICloneTemplate;
     this._experience = parameters.experience;
     this._level = parameters.level;
-    this._quality = parameters.quality;
+    this._tier = parameters.tier;
     this._autoUpgradeEnabled = parameters.autoUpgradeEnabled;
 
-    this._stateUiConnector.registerEventEmitter(this, ['_name', '_level', '_quality', '_autoUpgradeEnabled']);
+    this._stateUiConnector.registerEventEmitter(this, ['_name', '_level', '_tier', '_autoUpgradeEnabled']);
 
     this.initSynchronization();
     this.initExperience();
@@ -103,8 +103,8 @@ export class Clone implements IClone {
     return this._level;
   }
 
-  get quality() {
-    return this._quality;
+  get tier() {
+    return this._tier;
   }
 
   get synchonization() {
@@ -166,7 +166,7 @@ export class Clone implements IClone {
       templateName: this.templateName,
       experience: this.experience,
       level: this.level,
-      quality: this.quality,
+      tier: this.tier,
       autoUpgradeEnabled: this.autoUpgradeEnabled,
     };
   }
@@ -178,7 +178,7 @@ export class Clone implements IClone {
   private initSynchronization() {
     this._synchronization = Math.ceil(
       this._template.synchronization.multiplier *
-        calculateQualityMultiplier(this._quality, this._template.synchronization.baseQuality),
+        calculateTierMultiplier(this._tier, this._template.synchronization.baseTier),
     );
   }
 
@@ -240,7 +240,7 @@ export class Clone implements IClone {
       const currentValues = this._attributes.get(attribute)!;
       const templateValues = this._template.attributes[attribute];
 
-      currentValues.baseValue = calculateQualityLinear(this._level, this._quality, templateValues);
+      currentValues.baseValue = calculateTierLinear(this._level, this._tier, templateValues);
 
       currentValues.totalValue = Math.floor(currentValues.baseValue);
     });
@@ -251,7 +251,7 @@ export class Clone implements IClone {
       const currentValues = this._skills.get(skill)!;
       const templateValues = this._template.skills[skill];
 
-      currentValues.baseValue = calculateQualityLinear(this._level, this._quality, templateValues);
+      currentValues.baseValue = calculateTierLinear(this._level, this._tier, templateValues);
 
       currentValues.totalValue = Math.floor(currentValues.baseValue);
     });

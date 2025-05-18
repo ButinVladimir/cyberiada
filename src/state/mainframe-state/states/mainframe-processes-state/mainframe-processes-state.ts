@@ -216,9 +216,18 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     this._processUpdateRequested = true;
   }
 
+  requestUpdatePerformance() {
+    this._processCompletionSpeed.requestMultipliersRecalculation();
+    this._performanceUpdateRequested = true;
+  }
+
   processTick() {
     if (this._processUpdateRequested) {
       this.updateRunningProcesses();
+    }
+
+    if (this._performanceUpdateRequested) {
+      this.updatePerformance();
     }
 
     this._processCompletionSpeed.recalculateMultipliers();
@@ -286,7 +295,7 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     this.clearState();
 
     this.requestUpdateProcesses();
-    this._processCompletionSpeed.requestMultipliersRecalculation();
+    this.requestUpdatePerformance();
   }
 
   async deserialize(serializedState: IMainframeProcessesSerializedState): Promise<void> {
@@ -299,7 +308,7 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     });
 
     this.requestUpdateProcesses();
-    this._processCompletionSpeed.requestMultipliersRecalculation();
+    this.requestUpdatePerformance();
   }
 
   serialize(): IMainframeProcessesSerializedState {
@@ -413,5 +422,13 @@ export class MainframeProcessesState implements IMainframeProcessesState {
 
     this._processesList.length = 0;
     this._processesMap.clear();
+  }
+
+  private updatePerformance() {
+    this._performanceUpdateRequested = false;
+
+    for (const process of this._processesList) {
+      process.program.handlePerformanceUpdate();
+    }
   }
 }

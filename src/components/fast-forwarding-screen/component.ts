@@ -66,16 +66,12 @@ export class FastForwardingScreen extends BaseComponent {
 
   handlePartialUpdate = () => {
     if (this._progressBarRef.value) {
-      const formatter = this._controller.formatter;
-
       const accumulatedTime = this._controller.accumulatedTime;
       this._maxTime = Math.max(this._maxTime, accumulatedTime);
 
       const progressBarValue = ((this._maxTime - accumulatedTime) / this._maxTime) * 100;
-      const formattedAccumulatedTime = formatter.formatTimeShort(accumulatedTime);
 
       this._progressBarRef.value.value = progressBarValue;
-      this._progressBarRef.value.textContent = formattedAccumulatedTime;
     }
   };
 }

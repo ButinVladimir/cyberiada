@@ -1,4 +1,4 @@
 export interface IAvailableCategoryItemsSerializedState<Key = string> {
-  loanedQuality: number;
+  loanedTier: number;
   loanedItems: Key[];
 }

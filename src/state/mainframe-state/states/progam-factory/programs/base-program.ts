@@ -26,26 +26,26 @@ export abstract class BaseProgram implements IProgram {
   protected formatter!: IFormatter;
 
   private _level!: number;
-  private _quality!: number;
+  private _tier!: number;
   private _autoUpgradeEnabled: boolean;
 
   abstract get name(): ProgramName;
 
   constructor(parameters: IBaseProgramParameters) {
     this._level = parameters.level;
-    this._quality = parameters.quality;
+    this._tier = parameters.tier;
 
     this._autoUpgradeEnabled = parameters.autoUpgradeEnabled;
 
-    this.stateUiConnector.registerEventEmitter(this, ['_level', '_quality', '_autoUpgradeEnabled']);
+    this.stateUiConnector.registerEventEmitter(this, ['_level', '_tier', '_autoUpgradeEnabled']);
   }
 
   get level() {
     return this._level;
   }
 
-  get quality() {
-    return this._quality;
+  get tier() {
+    return this._tier;
   }
 
   get completionPoints() {
@@ -69,7 +69,7 @@ export abstract class BaseProgram implements IProgram {
   }
 
   get cores() {
-    return this.quality + 1;
+    return this.tier + 1;
   }
 
   get unlockFeatures() {
@@ -80,8 +80,8 @@ export abstract class BaseProgram implements IProgram {
 
   abstract perform(usedCores: number, usedRam: number): void;
 
-  upgrade(quality: number, level: number): void {
-    this._quality = quality;
+  upgrade(tier: number, level: number): void {
+    this._tier = tier;
     this._level = level;
 
     this.handlePerformanceUpdate();
@@ -116,7 +116,7 @@ export abstract class BaseProgram implements IProgram {
     return {
       name: this.name,
       level: this.level,
-      quality: this.quality,
+      tier: this.tier,
       autoUpgradeEnabled: this.autoUpgradeEnabled,
     };
   }

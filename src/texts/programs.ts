@@ -4,6 +4,7 @@ import {
   OtherProgramName,
   ProgramName,
 } from '@state/mainframe-state/states/progam-factory/types';
+import { html } from 'lit';
 
 interface IProgramTexts {
   title: () => string;
@@ -56,21 +57,43 @@ Generates connectivity points and improves chances to receive new contracts and 
 };
 
 export const PROGRAM_DESCRIPTION_TEXTS = {
+  effects: () => msg('Effects'),
   requirementsProcess: (threads: string) => msg(str`Requirements for ${threads} threads`),
-  requirementsDiff: (threads: string, threadsDiff: string) =>
-    msg(str`Requirements for ${threads} (${threadsDiff}) threads`),
+  requirementsDiff: (threads: string, threadsDiffEl: any) =>
+    msg(html`Requirements for ${threads} (${threadsDiffEl}) threads`),
   requirementsAutoscalable: () => msg('Requirements for autoscalable program'),
   requirementsSingle: () => msg('Requirements for single thread'),
-  ram: (ram: string) => msg(str`RAM: ${ram}`),
+  ram: () => msg('RAM'),
   ramDiff: (ram: string, availableRam: string, ramDiff: string) => msg(str`RAM: ${ram} / ${availableRam} (${ramDiff})`),
   ramAllUnused: () => msg('RAM: 1 + All available'),
-  cores: (cores: string) => msg(str`Cores: Up to ${cores}`),
-  coresDiff: (cores: string, coresDiff: string) => msg(str`Cores: Up to ${cores} (${coresDiff})`),
-  coresAllUnused: () => msg('Cores: 1 + All available'),
-  completionTimeAutoscalable: () => msg('Completion time: Instant'),
-  completionTimeNever: () => msg('Completion time: Never'),
-  completionTimeProcess: (time: string) => msg(str`Completion time: ${time}`),
+  cores: () => msg('Cores'),
+  upToValue: (value: any) => msg(html`Up to ${value}`),
+  upToDiff: (value: any, diff: any) => msg(html`Up to ${value} (${diff})`),
+  allAvailable: () => msg('1 + All available'),
+  completionTime: () => msg('Completion time'),
+  instant: () => msg('Instant'),
+  never: () => msg('Never'),
+  minMaxInterval: (minValue: string, maxValue: string) => msg(str`${minValue} \u2014 ${maxValue}`),
+  minMaxIntervalDiff: (minValue: string, maxValue: string, minValueDiff: any, maxValueDiff: any) =>
+    msg(html`${minValue} — ${maxValue} (${minValueDiff} — ${maxValueDiff})`),
   completionTimeDiff: (minTime: string, maxTime: string, minTimeDiff: string, maxTimeDiff: string) =>
     msg(str`Completion time: ${minTime} \u2014 ${maxTime} (${minTimeDiff} \u2014 ${maxTimeDiff})`),
-  completionTimeProgram: (minTime: string, maxTime: string) => msg(str`Completion time: ${minTime} \u2014 ${maxTime}`),
+  parameterCompletionValues: (value: any, minAvgValue: any, maxAvgValue: any) =>
+    msg(html`${value} per completion (${minAvgValue} — ${maxAvgValue} per second)`),
+  parameterCompletionDiffs: (
+    value: any,
+    diff: any,
+    minAvgValue: any,
+    minAvgDiff: any,
+    maxAvgValue: any,
+    maxAvgDiff: any,
+  ) =>
+    msg(
+      html`${value} (${diff}) per completion (${minAvgValue} — ${maxAvgValue} per second) (${minAvgDiff} —
+      ${maxAvgDiff})`,
+    ),
+  actionCompletionDiffs: (value: any, minAvgValue: any, minAvgDiff: any, maxAvgValue: any, maxAvgDiff: any) =>
+    msg(html`${value} per completion (${minAvgValue} — ${maxAvgValue} per second) (${minAvgDiff} — ${maxAvgDiff})`),
+  processCompletionValues: (value: any, avgValue: any) => msg(html`${value} per completion (${avgValue} per second)`),
+  valuePerSec: (value: any) => msg(html`${value} per second`),
 };

@@ -23,7 +23,7 @@ export class ProgramFactory implements IProgramFactory {
   private makeProgramImplementation(parameters: IMakeProgramParameters): IProgram {
     const baseParameters: IBaseProgramParameters = {
       level: parameters.level,
-      quality: parameters.quality,
+      tier: parameters.tier,
       autoUpgradeEnabled: parameters.autoUpgradeEnabled,
     };
 

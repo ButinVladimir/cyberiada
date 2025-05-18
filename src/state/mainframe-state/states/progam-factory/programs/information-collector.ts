@@ -1,5 +1,5 @@
 import programs from '@configs/programs.json';
-import { calculateQualityPower } from '@shared/helpers';
+import { calculateTierPower } from '@shared/helpers';
 import { OtherProgramName } from '../types';
 import { BaseProgram } from './base-program';
 
@@ -20,7 +20,7 @@ export class InformationCollectorProgram extends BaseProgram {
       this.globalState.scenario.currentValues.programMultipliers.connectivity.pointsMultiplier *
       this.globalState.multipliers.rewards.totalMultiplier *
       threads *
-      calculateQualityPower(this.level, this.quality, programData.connectivity)
+      calculateTierPower(this.level, this.tier, programData.connectivity)
     );
   }
 }

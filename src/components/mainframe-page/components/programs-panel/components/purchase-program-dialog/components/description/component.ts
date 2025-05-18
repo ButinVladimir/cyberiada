@@ -1,12 +1,17 @@
 import { css, html, nothing } from 'lit';
-import { msg, localized } from '@lit/localize';
+import { localized } from '@lit/localize';
 import { customElement, queryAll } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { consume } from '@lit/context';
 import { type IProgram, OtherProgramName, MultiplierProgramName } from '@state/mainframe-state';
-import { BaseComponent, getHighlightValueClass, diffFormatterParameters, highlightedValuesStyle } from '@shared/index';
-import { COMMON_TEXTS } from '@texts/index';
-import { PROGRAM_DESCRIPTION_TEXTS, PROGRAM_TEXTS } from '@texts/programs';
+import {
+  BaseComponent,
+  getHighlightValueClass,
+  diffFormatterParameters,
+  highlightedValuesStyle,
+  getHighlightDifferenceClassMap,
+} from '@shared/index';
+import { COMMON_TEXTS, PROGRAM_DESCRIPTION_TEXTS, PROGRAM_TEXTS } from '@texts/index';
 import {
   CodeGeneratorDescriptionEffectRenderer,
   CircuitDesignerDescriptionEffectRenderer,
@@ -54,8 +59,11 @@ export class PurchaseProgramDialogDescription extends BaseComponent {
 
   private _renderer?: IDescriptionEffectRenderer;
 
-  @queryAll('p[data-name]')
-  private _paragraphs!: NodeListOf<HTMLParagraphElement>;
+  @queryAll('span[data-value]')
+  private _valueEls!: NodeListOf<HTMLSpanElement>;
+
+  @queryAll('span[data-diff]')
+  private _diffEls!: NodeListOf<HTMLSpanElement>;
 
   private _costElRef = createRef<HTMLSpanElement>();
 
@@ -82,7 +90,9 @@ export class PurchaseProgramDialogDescription extends BaseComponent {
 
       <p class="line-break"></p>
 
-      <p>${COMMON_TEXTS.cost(html`<span ${ref(this._costElRef)}></span>`)}</p>
+      <p class="text">
+        ${COMMON_TEXTS.parameterValue(COMMON_TEXTS.cost(), html`<span ${ref(this._costElRef)}></span>`)}
+      </p>
 
       <p class="line-break"></p>
 
@@ -90,7 +100,7 @@ export class PurchaseProgramDialogDescription extends BaseComponent {
 
       <p class="line-break"></p>
 
-      <p>${msg('Effects')}</p>
+      <p>${PROGRAM_DESCRIPTION_TEXTS.effects()}</p>
 
       ${effects}
     `;
@@ -100,18 +110,20 @@ export class PurchaseProgramDialogDescription extends BaseComponent {
     return html`
       <p>${PROGRAM_DESCRIPTION_TEXTS.requirementsAutoscalable()}</p>
 
-      <p>${PROGRAM_DESCRIPTION_TEXTS.ramAllUnused()}</p>
+      <p>${COMMON_TEXTS.parameterValue(PROGRAM_DESCRIPTION_TEXTS.ram(), PROGRAM_DESCRIPTION_TEXTS.allAvailable())}</p>
 
-      <p>${PROGRAM_DESCRIPTION_TEXTS.coresAllUnused()}</p>
+      <p>${COMMON_TEXTS.parameterValue(PROGRAM_DESCRIPTION_TEXTS.cores(), PROGRAM_DESCRIPTION_TEXTS.allAvailable())}</p>
 
-      <p>${PROGRAM_DESCRIPTION_TEXTS.completionTimeAutoscalable()}</p>
+      <p>
+        ${COMMON_TEXTS.parameterValue(PROGRAM_DESCRIPTION_TEXTS.completionTime(), PROGRAM_DESCRIPTION_TEXTS.instant())}
+      </p>
     `;
   };
 
   private renderNormalRequirements = () => {
     const formatter = this._controller.formatter;
 
-    const coresDiff = this._ownedProgram ? this._ownedProgram.cores - this._ownedProgram.cores : this._program!.cores;
+    const coresDiff = this._ownedProgram ? this._program!.cores - this._ownedProgram.cores : this._program!.cores;
 
     const minTime = this._program!.calculateCompletionMinTime(1);
     const minTimeDiff = this._ownedProgram ? minTime - this._ownedProgram.calculateCompletionMinTime(1) : minTime;
@@ -120,26 +132,46 @@ export class PurchaseProgramDialogDescription extends BaseComponent {
 
     const formattedRam = formatter.formatNumberDecimal(this._program!.ram);
     const formattedCores = formatter.formatNumberDecimal(this._program!.cores);
-    const formattedCoresDiff = formatter.formatNumberDecimal(coresDiff, diffFormatterParameters);
+
+    const coresDiffClass = getHighlightDifferenceClassMap(coresDiff);
+    const coresDiffEl = html`<span class=${coresDiffClass}
+      >${formatter.formatNumberDecimal(coresDiff, diffFormatterParameters)}</span
+    >`;
 
     const formattedMinTime = formatter.formatTimeShort(minTime);
-    const formattedMinTimeDiff = formatter.formatTimeShort(minTimeDiff, diffFormatterParameters);
     const formattedMaxTime = formatter.formatTimeShort(maxTime);
-    const formattedMaxTimeDiff = formatter.formatTimeShort(maxTimeDiff, diffFormatterParameters);
+
+    const minTimeDiffClass = getHighlightDifferenceClassMap(-minTimeDiff);
+    const minTimeDiffEl = html`<span class=${minTimeDiffClass}
+      >${formatter.formatTimeShort(minTimeDiff, diffFormatterParameters)}</span
+    >`;
+
+    const maxTimeDiffClass = getHighlightDifferenceClassMap(-maxTimeDiff);
+    const maxTimeDiffEl = html`<span class=${maxTimeDiffClass}
+      >${formatter.formatTimeShort(maxTimeDiff, diffFormatterParameters)}</span
+    >`;
 
     return html`
       <p>${PROGRAM_DESCRIPTION_TEXTS.requirementsSingle()}</p>
 
-      <p>${PROGRAM_DESCRIPTION_TEXTS.ram(formattedRam)}</p>
-
-      <p>${PROGRAM_DESCRIPTION_TEXTS.coresDiff(formattedCores, formattedCoresDiff)}</p>
+      <p>${COMMON_TEXTS.parameterValue(PROGRAM_DESCRIPTION_TEXTS.ram(), formattedRam)}</p>
 
       <p>
-        ${PROGRAM_DESCRIPTION_TEXTS.completionTimeDiff(
-          formattedMinTime,
-          formattedMaxTime,
-          formattedMinTimeDiff,
-          formattedMaxTimeDiff,
+        ${COMMON_TEXTS.parameterValue(
+          PROGRAM_DESCRIPTION_TEXTS.cores(),
+          PROGRAM_DESCRIPTION_TEXTS.upToDiff(formattedCores, coresDiffEl),
+        )}
+      </p>
+
+      <p>
+        ${COMMON_TEXTS.parameterValue(
+          PROGRAM_DESCRIPTION_TEXTS.completionTime(),
+          PROGRAM_DESCRIPTION_TEXTS.minMaxIntervalDiff(
+            formattedMinTime,
+            formattedMaxTime,
+            minTimeDiffEl,
+            maxTimeDiffEl,
+          ),
         )}
       </p>
     `;
@@ -160,7 +192,18 @@ export class PurchaseProgramDialogDescription extends BaseComponent {
 
     this.renderCost();
 
-    return this._renderer.partialUpdate(this._paragraphs);
+    this._renderer.recalculateValues();
+
+    this._valueEls.forEach((valueEl) => {
+      valueEl.textContent = this._renderer!.values[valueEl.dataset.value!];
+    });
+
+    this._diffEls.forEach((diffEl) => {
+      const { value, className } = this._renderer!.diffs[diffEl.dataset.diff!];
+
+      diffEl.textContent = value;
+      diffEl.className = className;
+    });
   };
 
   private renderCost() {
@@ -168,7 +211,7 @@ export class PurchaseProgramDialogDescription extends BaseComponent {
       return;
     }
 
-    const cost = this._controller.getProgramCost(this._program!.name, this._program!.quality, this._program!.level);
+    const cost = this._controller.getProgramCost(this._program!.name, this._program!.tier, this._program!.level);
     const money = this._controller.money;
 
     const formattedCost = this._controller.formatter.formatNumberFloat(cost);

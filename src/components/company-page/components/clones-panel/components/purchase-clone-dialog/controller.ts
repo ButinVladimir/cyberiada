@@ -14,8 +14,8 @@ export class PurchaseCloneDialogController extends BaseController {
     return this.globalState.development.level;
   }
 
-  getHighestAvailableQuality(cloneTemplateName: CloneTemplateName): number {
-    return this.globalState.availableItems.cloneTemplates.getItemHighestAvailableQuality(cloneTemplateName);
+  getHighestAvailableTier(cloneTemplateName: CloneTemplateName): number {
+    return this.globalState.availableItems.cloneTemplates.getItemHighestAvailableTier(cloneTemplateName);
   }
 
   listAvailableCloneTemplates(): CloneTemplateName[] {
@@ -30,11 +30,11 @@ export class PurchaseCloneDialogController extends BaseController {
     return this.companyState.clones.generateCloneName();
   }
 
-  getClone(name: string, cloneTemplateName: CloneTemplateName, quality: number, level: number): IClone {
+  getClone(name: string, cloneTemplateName: CloneTemplateName, tier: number, level: number): IClone {
     if (
       this._clone?.name !== name ||
       this._clone.templateName !== cloneTemplateName ||
-      this._clone.quality !== quality ||
+      this._clone.tier !== tier ||
       this._clone.level !== level
     ) {
       this.deleteTemporaryClone();
@@ -43,7 +43,7 @@ export class PurchaseCloneDialogController extends BaseController {
         id: 'temporary',
         name,
         templateName: cloneTemplateName,
-        quality,
+        tier,
         level,
         experience: 0,
         autoUpgradeEnabled: true,

@@ -1,9 +1,10 @@
 import { css, html } from 'lit';
-import { localized, msg, str } from '@lit/localize';
+import { localized, msg } from '@lit/localize';
 import { customElement, state } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { hintStyle, SCREEN_WIDTH_POINTS } from '@shared/styles';
 import { ProcessesPanelController } from './controller';
+import { COMMON_TEXTS } from '@/texts';
 
 @localized()
 @customElement('ca-mainframe-processes-panel')
@@ -92,9 +93,13 @@ Processes can be rearranged by dragging them by their title.`)}
           ${msg('Start process')}
         </sl-button>
 
-        <div class="ram">${msg(str`Available RAM: ${formattedAvailableRam} / ${formattedMaxRam}`)}</div>
+        <div class="ram">
+          ${COMMON_TEXTS.parameterValue(msg('Available RAM'), `${formattedAvailableRam} / ${formattedMaxRam}`)}
+        </div>
 
-        <div class="cores">${msg(str`Available cores: ${formattedAvailableCores} / ${formattedMaxCores}`)}</div>
+        <div class="cores">
+          ${COMMON_TEXTS.parameterValue(msg('Available cores'), `${formattedAvailableCores} / ${formattedMaxCores}`)}
+        </div>
       </div>
 
       <ca-processes-list></ca-processes-list>

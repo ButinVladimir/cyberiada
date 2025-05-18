@@ -7,8 +7,8 @@ export interface IClone {
   name: string;
   templateName: CloneTemplateName;
   experience: number;
+  tier: number;
   level: number;
-  quality: number;
   autoUpgradeEnabled: boolean;
   increaseExperience(delta: number): void;
   earnExperience(delta: number): void;

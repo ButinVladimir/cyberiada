@@ -1,10 +1,10 @@
 import { css, html, nothing } from 'lit';
-import { msg, localized } from '@lit/localize';
+import { localized } from '@lit/localize';
 import { customElement, queryAll } from 'lit/decorators.js';
-import { BaseComponent } from '@shared/base-component';
 import { consume } from '@lit/context';
+import { BaseComponent } from '@shared/index';
 import { OtherProgramName, MultiplierProgramName, type IProgram } from '@state/mainframe-state';
-import { PROGRAM_DESCRIPTION_TEXTS, PROGRAM_TEXTS } from '@texts/index';
+import { COMMON_TEXTS, PROGRAM_DESCRIPTION_TEXTS, PROGRAM_TEXTS } from '@texts/index';
 import {
   CodeGeneratorDescriptionEffectRenderer,
   MainframeHardwareAutobuyerDescriptionEffectRenderer,
@@ -42,8 +42,8 @@ export class ProgramDescriptionText extends BaseComponent {
 
   private _renderer?: IDescriptionEffectRenderer;
 
-  @queryAll('p[data-name]')
-  private _paragraphs!: NodeListOf<HTMLParagraphElement>;
+  @queryAll('span[data-value]')
+  private _valueEls!: NodeListOf<HTMLSpanElement>;
 
   @consume({ context: programContext, subscribe: true })
   private _program?: IProgram;
@@ -77,7 +77,7 @@ export class ProgramDescriptionText extends BaseComponent {
 
       <p class="line-break"></p>
 
-      <p>${msg('Effects')}</p>
+      <p>${PROGRAM_DESCRIPTION_TEXTS.effects()}</p>
 
       ${effects}
     `;
@@ -87,11 +87,13 @@ export class ProgramDescriptionText extends BaseComponent {
     return html`
       <p>${PROGRAM_DESCRIPTION_TEXTS.requirementsAutoscalable()}</p>
 
-      <p>${PROGRAM_DESCRIPTION_TEXTS.ramAllUnused()}</p>
+      <p>${COMMON_TEXTS.parameterValue(PROGRAM_DESCRIPTION_TEXTS.ram(), PROGRAM_DESCRIPTION_TEXTS.allAvailable())}</p>
 
-      <p>${PROGRAM_DESCRIPTION_TEXTS.coresAllUnused()}</p>
+      <p>${COMMON_TEXTS.parameterValue(PROGRAM_DESCRIPTION_TEXTS.cores(), PROGRAM_DESCRIPTION_TEXTS.allAvailable())}</p>
 
-      <p>${PROGRAM_DESCRIPTION_TEXTS.completionTimeAutoscalable()}</p>
+      <p>
+        ${COMMON_TEXTS.parameterValue(PROGRAM_DESCRIPTION_TEXTS.completionTime(), PROGRAM_DESCRIPTION_TEXTS.instant())}
+      </p>
     `;
   };
 
@@ -107,11 +109,21 @@ export class ProgramDescriptionText extends BaseComponent {
     return html`
       <p>${PROGRAM_DESCRIPTION_TEXTS.requirementsSingle()}</p>
 
-      <p>${PROGRAM_DESCRIPTION_TEXTS.ram(formattedRam)}</p>
+      <p>${COMMON_TEXTS.parameterValue(PROGRAM_DESCRIPTION_TEXTS.ram(), formattedRam)}</p>
 
-      <p>${PROGRAM_DESCRIPTION_TEXTS.cores(formattedCores)}</p>
+      <p>
+        ${COMMON_TEXTS.parameterValue(
+          PROGRAM_DESCRIPTION_TEXTS.cores(),
+          PROGRAM_DESCRIPTION_TEXTS.upToValue(formattedCores),
+        )}
+      </p>
 
-      <p>${PROGRAM_DESCRIPTION_TEXTS.completionTimeProgram(formattedMinTime, formattedMaxTime)}</p>
+      <p>
+        ${COMMON_TEXTS.parameterValue(
+          PROGRAM_DESCRIPTION_TEXTS.completionTime(),
+          PROGRAM_DESCRIPTION_TEXTS.minMaxInterval(formattedMinTime, formattedMaxTime),
+        )}
+      </p>
     `;
   };
 
@@ -128,7 +140,11 @@ export class ProgramDescriptionText extends BaseComponent {
       return;
     }
 
-    return this._renderer.partialUpdate(this._paragraphs);
+    this._renderer.recalculateValues();
+
+    this._valueEls.forEach((valueEl) => {
+      valueEl.textContent = this._renderer!.values[valueEl.dataset.value!];
+    });
   };
 
   private updateRenderer(): void {

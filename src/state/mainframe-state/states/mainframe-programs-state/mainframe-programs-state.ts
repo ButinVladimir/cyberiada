@@ -9,7 +9,7 @@ import type { IFormatter } from '@shared/interfaces/formatter';
 import type { IMainframeState } from '@state/mainframe-state/interfaces/mainframe-state';
 import { TYPES } from '@state/types';
 import { Feature, ProgramsEvent, PurchaseType } from '@shared/types';
-import { calculateQualityPower } from '@shared/helpers';
+import { calculateTierPower } from '@shared/helpers';
 import { binarySearchDecimal, moveElementInArray } from '@shared/helpers';
 import { PROGRAM_TEXTS } from '@texts/programs';
 import { IMainframeProgramsState, IMainframeProgramsSerializedState } from './interfaces';
@@ -45,29 +45,27 @@ export class MainframeProgramsState implements IMainframeProgramsState {
     this._stateUiConnector.registerEventEmitter(this, ['_programsList']);
   }
 
-  getProgramCost(name: ProgramName, quality: number, level: number): number {
+  getProgramCost(name: ProgramName, tier: number, level: number): number {
     const programData = programs[name];
 
-    return (
-      calculateQualityPower(level, quality, programData.cost) / this._globalState.multipliers.codeBase.totalMultiplier
-    );
+    return calculateTierPower(level, tier, programData.cost) / this._globalState.multipliers.codeBase.totalMultiplier;
   }
 
-  purchaseProgram(name: ProgramName, quality: number, level: number): boolean {
+  purchaseProgram(name: ProgramName, tier: number, level: number): boolean {
     if (!this._globalState.unlockedFeatures.isFeatureUnlocked(Feature.mainframeUpgrades)) {
       return false;
     }
 
-    if (!this._globalState.availableItems.programs.isItemAvailable(name, quality, level)) {
+    if (!this._globalState.availableItems.programs.isItemAvailable(name, tier, level)) {
       return false;
     }
 
-    const cost = this.getProgramCost(name, quality, level);
+    const cost = this.getProgramCost(name, tier, level);
 
     const bought = this._globalState.money.purchase(
       cost,
       PurchaseType.mainframePrograms,
-      this.handlePurchaseProgram(name, quality, level),
+      this.handlePurchaseProgram(name, tier, level),
     );
 
     return bought;
@@ -87,7 +85,7 @@ export class MainframeProgramsState implements IMainframeProgramsState {
       return false;
     }
 
-    return this.purchaseProgram(name, existingProgram.quality, level);
+    return this.purchaseProgram(name, existingProgram.tier, level);
   }
 
   upgradeMaxAllPrograms(): void {
@@ -150,15 +148,15 @@ export class MainframeProgramsState implements IMainframeProgramsState {
     return program.serialize();
   };
 
-  private addProgram(name: ProgramName, quality: number, level: number): void {
+  private addProgram(name: ProgramName, tier: number, level: number): void {
     const existingProgram = this._ownedPrograms.get(name);
 
     if (existingProgram) {
-      existingProgram.upgrade(quality, level);
+      existingProgram.upgrade(tier, level);
     } else {
       const newProgram = this._mainframeState.programFactory.makeProgram({
         name,
-        quality,
+        tier: tier,
         level,
         autoUpgradeEnabled: true,
       });
@@ -172,17 +170,15 @@ export class MainframeProgramsState implements IMainframeProgramsState {
     }
   }
 
-  private handlePurchaseProgram = (name: ProgramName, quality: number, level: number) => () => {
-    this.addProgram(name, quality, level);
+  private handlePurchaseProgram = (name: ProgramName, tier: number, level: number) => () => {
+    this.addProgram(name, tier, level);
 
     const programTitle = PROGRAM_TEXTS[name].title();
     const formattedLevel = this._formatter.formatLevel(level);
-    const formattedQuality = this._formatter.formatQuality(quality);
+    const formattedTier = this._formatter.formatTier(tier);
     this._messageLogState.postMessage(
       ProgramsEvent.programPurchased,
-      msg(
-        str`Program "${programTitle}" with quality ${formattedQuality} and level ${formattedLevel} has been purchased`,
-      ),
+      msg(str`Program "${programTitle}" with tier ${formattedTier} and level ${formattedLevel} has been purchased`),
     );
   };
 
@@ -196,13 +192,11 @@ export class MainframeProgramsState implements IMainframeProgramsState {
   }
 
   private handleCheckProgramUpgrade = (existingProgram: IProgram) => (level: number) => {
-    if (
-      !this._globalState.availableItems.programs.isItemAvailable(existingProgram.name, existingProgram.quality, level)
-    ) {
+    if (!this._globalState.availableItems.programs.isItemAvailable(existingProgram.name, existingProgram.tier, level)) {
       return false;
     }
 
-    const cost = this.getProgramCost(existingProgram.name, existingProgram.quality, level);
+    const cost = this.getProgramCost(existingProgram.name, existingProgram.tier, level);
 
     return cost <= this._globalState.money.money;
   };
