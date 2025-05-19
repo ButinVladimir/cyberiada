@@ -130,7 +130,9 @@ export class AssignCloneSidejobDialogRewards extends BaseComponent {
     const valueElement = html`<span data-value=${parameter} data-type=${DISPLAY_TYPES.VALUE}></span>`;
     const diffElement = html`<span data-value=${parameter} data-type=${DISPLAY_TYPES.DIFF}></span>`;
 
-    return html`<p class="text">${COMMON_TEXTS.parameterSpeedDiff(parameterName, valueElement, diffElement)}</p>`;
+    return html`<p class="text">
+      ${COMMON_TEXTS.parameterValue(parameterName, COMMON_TEXTS.parameterSpeedDiff(valueElement, diffElement))}
+    </p>`;
   };
 
   handlePartialUpdate = () => {

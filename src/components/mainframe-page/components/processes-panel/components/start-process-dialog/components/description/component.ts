@@ -1,10 +1,16 @@
 import { css, html, nothing } from 'lit';
 import { msg, localized } from '@lit/localize';
 import { customElement, property, queryAll } from 'lit/decorators.js';
-import { BaseComponent } from '@shared/base-component';
+import { consume } from '@lit/context';
 import { type IProcess, type IProgram, OtherProgramName, MultiplierProgramName } from '@state/mainframe-state';
-import { diffFormatterParameters } from '@shared/formatter-parameters';
-import { PROGRAM_DESCRIPTION_TEXTS, PROGRAM_TEXTS } from '@texts/programs';
+import {
+  BaseComponent,
+  diffFormatterParameters,
+  getHighlightDifferenceClassMap,
+  getHighlightValueClassMap,
+  highlightedValuesStyle,
+} from '@shared/index';
+import { COMMON_TEXTS, PROGRAM_DESCRIPTION_TEXTS, PROGRAM_TEXTS } from '@texts/index';
 import {
   CodeGeneratorDescriptionEffectRenderer,
   CircuitDesignerDescriptionEffectRenderer,
@@ -17,26 +23,28 @@ import {
 } from './description-effect-renderers';
 import { IDescriptionEffectRenderer, IDescriptionParameters } from './interfaces';
 import { ProcessDiffTextController } from './controller';
-import { consume } from '@lit/context';
 import { existingProcessContext, programContext } from '../../contexts';
 
 @localized()
 @customElement('ca-start-process-dialog-description')
 export class StartProcessDialogDescription extends BaseComponent {
-  static styles = css`
-    :host {
-      margin-top: var(--sl-spacing-medium);
-      margin-bottom: 0;
-    }
+  static styles = [
+    highlightedValuesStyle,
+    css`
+      :host {
+        margin-top: var(--sl-spacing-medium);
+        margin-bottom: 0;
+      }
 
-    p {
-      margin: 0;
-    }
+      p {
+        margin: 0;
+      }
 
-    p.line-break {
-      height: var(--sl-spacing-medium);
-    }
-  `;
+      p.line-break {
+        height: var(--sl-spacing-medium);
+      }
+    `,
+  ];
 
   hasPartialUpdate = true;
 
@@ -50,8 +58,11 @@ export class StartProcessDialogDescription extends BaseComponent {
 
   private _renderer?: IDescriptionEffectRenderer;
 
-  @queryAll('p[data-name]')
-  private _paragraphs!: NodeListOf<HTMLParagraphElement>;
+  @queryAll('span[data-value]')
+  private _valueEls!: NodeListOf<HTMLSpanElement>;
+
+  @queryAll('span[data-diff]')
+  private _diffEls!: NodeListOf<HTMLSpanElement>;
 
   @consume({ context: programContext, subscribe: true })
   private _program?: IProgram;
@@ -65,6 +76,11 @@ export class StartProcessDialogDescription extends BaseComponent {
     this._controller = new ProcessDiffTextController(this);
   }
 
+  performUpdate() {
+    this.updateRenderer();
+    super.performUpdate();
+  }
+
   render() {
     if (!this._program) {
       return nothing;
@@ -74,7 +90,6 @@ export class StartProcessDialogDescription extends BaseComponent {
       ? this.renderAutoscalableRequirements()
       : this.renderNormalRequirements();
 
-    this.updateRenderer();
     const effects = this.renderEffects();
 
     return html`
@@ -93,14 +108,23 @@ export class StartProcessDialogDescription extends BaseComponent {
   }
 
   private renderAutoscalableRequirements = () => {
+    const availableRam = this._controller.getAvailableRamForProgram(this._program!.name);
+    const programRam = this._program!.ram;
+    const ramClass = getHighlightValueClassMap(availableRam >= programRam);
+    const ramEl = html`<span class=${ramClass}>${PROGRAM_DESCRIPTION_TEXTS.allAvailable(programRam)}</span>`;
+
     return html`
       <p>${PROGRAM_DESCRIPTION_TEXTS.requirementsAutoscalable()}</p>
 
-      <p>${PROGRAM_DESCRIPTION_TEXTS.ramAllUnused()}</p>
+      <p>${COMMON_TEXTS.parameterValue(PROGRAM_DESCRIPTION_TEXTS.ram(), ramEl)}</p>
 
-      <p>${PROGRAM_DESCRIPTION_TEXTS.coresAllUnused()}</p>
+      <p>
+        ${COMMON_TEXTS.parameterValue(PROGRAM_DESCRIPTION_TEXTS.cores(), PROGRAM_DESCRIPTION_TEXTS.allAvailable(1))}
+      </p>
 
-      <p>${PROGRAM_DESCRIPTION_TEXTS.completionTimeAutoscalable()}</p>
+      <p>
+        ${COMMON_TEXTS.parameterValue(PROGRAM_DESCRIPTION_TEXTS.completionTime(), PROGRAM_DESCRIPTION_TEXTS.instant())}
+      </p>
     `;
   };
 
@@ -113,20 +137,33 @@ export class StartProcessDialogDescription extends BaseComponent {
     const programRam = this._program!.ram * this.threads;
 
     const formattedThreads = formatter.formatNumberDecimal(this.threads);
-    const formattedThreadsDiff = formatter.formatNumberDecimal(threadsDiff, diffFormatterParameters);
+    const threadsDiffClass = getHighlightDifferenceClassMap(threadsDiff);
+    const threadsDiffEl = html`<span class=${threadsDiffClass}
+      >${formatter.formatNumberDecimal(threadsDiff, diffFormatterParameters)}</span
+    >`;
 
     const ramDiff = programRam - this._program!.ram * currentThreads;
     const availableRam = this._controller.getAvailableRamForProgram(this._program!.name);
 
     const formattedRam = formatter.formatNumberDecimal(programRam);
     const formattedAvailableRam = formatter.formatNumberDecimal(availableRam);
-    const formattedRamDiff = formatter.formatNumberDecimal(ramDiff, diffFormatterParameters);
+    const ramClass = getHighlightValueClassMap(availableRam >= programRam);
+    const ramEl = html`<span class=${ramClass}>${formattedRam} / ${formattedAvailableRam}</span>`;
+
+    const ramDiffClass = getHighlightDifferenceClassMap(-ramDiff);
+    const ramDiffEl = html`<span class=${ramDiffClass}
+      >${formatter.formatNumberDecimal(ramDiff, diffFormatterParameters)}</span
+    >`;
 
     const cores = this._program!.cores * this.threads;
     const coresDiff = cores - this._program!.cores * currentThreads;
 
     const formattedCores = formatter.formatNumberDecimal(cores);
-    const formattedCoresDiff = formatter.formatNumberDecimal(coresDiff, diffFormatterParameters);
+
+    const coresDiffClass = getHighlightDifferenceClassMap(coresDiff);
+    const coresDiffEl = html`<span class=${coresDiffClass}
+      >${formatter.formatNumberDecimal(coresDiff, diffFormatterParameters)}</span
+    >`;
 
     const minTime = this._program!.calculateCompletionMinTime(this.threads);
     const maxTime = this._program!.calculateCompletionMaxTime(this.threads);
@@ -141,22 +178,37 @@ export class StartProcessDialogDescription extends BaseComponent {
 
     const formattedMinTime = formatter.formatTimeShort(minTime);
     const formattedMaxTime = formatter.formatTimeShort(maxTime);
-    const formattedMinTimeDiff = formatter.formatTimeShort(minTimeDiff, diffFormatterParameters);
-    const formattedMaxTimeDiff = formatter.formatTimeShort(maxTimeDiff, diffFormatterParameters);
+
+    const minTimeDiffClass = getHighlightDifferenceClassMap(-minTimeDiff);
+    const minTimeDiffEl = html`<span class=${minTimeDiffClass}
+      >${formatter.formatTimeShort(minTimeDiff, diffFormatterParameters)}</span
+    >`;
+    const maxTimeDiffClass = getHighlightDifferenceClassMap(-maxTimeDiff);
+    const maxTimeDiffEl = html`<span class=${maxTimeDiffClass}
+      >${formatter.formatTimeShort(maxTimeDiff, diffFormatterParameters)}</span
+    >`;
 
     return html`
-      <p>${PROGRAM_DESCRIPTION_TEXTS.requirementsDiff(formattedThreads, formattedThreadsDiff)}</p>
+      <p>${PROGRAM_DESCRIPTION_TEXTS.requirementsDiff(formattedThreads, threadsDiffEl)}</p>
 
-      <p>${PROGRAM_DESCRIPTION_TEXTS.ramDiff(formattedRam, formattedAvailableRam, formattedRamDiff)}</p>
-
-      <p>${PROGRAM_DESCRIPTION_TEXTS.coresDiff(formattedCores, formattedCoresDiff)}</p>
+      <p>${COMMON_TEXTS.parameterValue(PROGRAM_DESCRIPTION_TEXTS.ram(), html`${ramEl} (${ramDiffEl})`)}</p>
 
       <p>
-        ${PROGRAM_DESCRIPTION_TEXTS.completionTimeDiff(
-          formattedMinTime,
-          formattedMaxTime,
-          formattedMinTimeDiff,
-          formattedMaxTimeDiff,
+        ${COMMON_TEXTS.parameterValue(
+          PROGRAM_DESCRIPTION_TEXTS.cores(),
+          PROGRAM_DESCRIPTION_TEXTS.upToDiff(formattedCores, coresDiffEl),
+        )}
+      </p>
+
+      <p>
+        ${COMMON_TEXTS.parameterValue(
+          PROGRAM_DESCRIPTION_TEXTS.completionTime(),
+          PROGRAM_DESCRIPTION_TEXTS.minMaxIntervalDiff(
+            formattedMinTime,
+            formattedMaxTime,
+            minTimeDiffEl,
+            maxTimeDiffEl,
+          ),
         )}
       </p>
     `;
@@ -175,10 +227,26 @@ export class StartProcessDialogDescription extends BaseComponent {
       return;
     }
 
-    return this._renderer.partialUpdate(this._paragraphs);
+    this._renderer.recalculateValues();
+
+    this._valueEls.forEach((valueEl) => {
+      valueEl.textContent = this._renderer!.values[valueEl.dataset.value!];
+    });
+
+    this._diffEls.forEach((diffEl) => {
+      const { value, className } = this._renderer!.diffs[diffEl.dataset.diff!];
+
+      diffEl.className = className;
+      diffEl.textContent = value;
+    });
   };
 
   private updateRenderer(): void {
+    if (!this._program) {
+      this._renderer = undefined;
+      return;
+    }
+
     const currentThreads = this._existingProcess ? this._existingProcess.threads : 0;
 
     const parameters: IDescriptionParameters = {

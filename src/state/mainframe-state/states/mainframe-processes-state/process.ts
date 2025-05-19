@@ -52,7 +52,7 @@ export class Process implements IProcess {
 
   get totalRam() {
     return this.program.isAutoscalable
-      ? this._mainframeState.processes.availableRam + 1
+      ? this._mainframeState.processes.availableRam + this.program.ram
       : this.program.ram * this.threads;
   }
 

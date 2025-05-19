@@ -127,7 +127,7 @@ export class Sidejob implements ISidejob {
     const passedTime = this._settingsState.updateInterval;
     const cloneModifier = this.getCommonModifier();
 
-    this._assignedClone.earnExperience(passedTime * cloneModifier * this.calculateExperienceModifier());
+    this._assignedClone.earnExperience(passedTime * this.calculateExperienceModifier());
     this._globalState.money.increase(passedTime * cloneModifier * this.calculateMoneyModifier(), IncomeSource.sidejob);
     this._globalState.development.increase(
       passedTime * cloneModifier * this.calculateDevelopmentPointsModifier(),
@@ -151,7 +151,7 @@ export class Sidejob implements ISidejob {
   }
 
   calculateExperienceDelta(passedTime: number): number {
-    return passedTime * this.getCommonModifier() * this.calculateExperienceModifier();
+    return passedTime * this.calculateExperienceModifier();
   }
 
   calculateMoneyDelta(passedTime: number): number {
@@ -213,6 +213,8 @@ export class Sidejob implements ISidejob {
 
   private calculateExperienceModifier() {
     return (
+      this._assignedClone!.experienceMultiplier *
+      this._globalState.multipliers.rewards.totalMultiplier *
       calculatePower(this._globalState.threat.level, this._sidejobTemplate.rewards.experience) *
       calculatePower(this._district.parameters.tier.tier, this._district.template.parameters.experience)
     );
@@ -233,7 +235,13 @@ export class Sidejob implements ISidejob {
   }
 
   private calculateDistrictTierPointsModifier() {
-    return calculatePower(this._globalState.threat.level, this._sidejobTemplate.rewards.distictTierPoints);
+    return (
+      calculatePower(this._globalState.threat.level, this._sidejobTemplate.rewards.distictTierPoints) *
+      calculatePower(
+        this._district.parameters.tier.tier,
+        this._district.template.parameters.districtTierPoints.pointsMultiplier,
+      )
+    );
   }
 
   private calculateConnectivityModifier() {

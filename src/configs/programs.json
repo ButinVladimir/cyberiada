@@ -1,6 +1,6 @@
 {
   "shareServer": {
-    "ram": 0,
+    "ram": 1,
     "completionPoints": { "multiplier": 0, "base": 1 },
     "cost": { "multiplier": 30000, "base": 1.15, "baseTier": 10 },
     "requiredFeatures": [],
@@ -9,7 +9,7 @@
     "developmentPoints": { "base": 1, "multiplier": 1, "baseTier": 2 }
   },
   "predictiveComputator": {
-    "ram": 0,
+    "ram": 1,
     "completionPoints": { "multiplier": 0, "base": 1 },
     "cost": { "multiplier": 60000, "base": 1.15, "baseTier": 10 },
     "requiredFeatures": [],

@@ -277,7 +277,7 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     let result = this.availableRam;
 
     if (program.isAutoscalable && this._runningScalableProcess) {
-      result++;
+      result += program.ram;
     }
 
     if (!program.isAutoscalable) {

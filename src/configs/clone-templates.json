@@ -3,6 +3,7 @@
     "cost": { "multiplier": 10000, "base": 1.15, "baseTier": 10 },
     "levelRequirements": { "multiplier": 100000, "base": 1.5 },
     "synchronization": { "multiplier": 10, "baseTier": 1.5 },
+    "experienceMultiplier": { "base": 1, "multiplier": 0.01, "baseTier": 1.5 },
     "attributes": {
       "strength": {
         "base": 1,

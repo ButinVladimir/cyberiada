@@ -1,14 +1,34 @@
 import { html } from 'lit';
-import { msg, str } from '@lit/localize';
-import { CodeGeneratorProgram } from '@state/mainframe-state/states/progam-factory/programs/code-generator';
-import { IFormatter } from '@shared/interfaces/formatter';
-import { diffFormatterParameters } from '@shared/formatter-parameters';
-import { MS_IN_SECOND } from '@shared/constants';
+import { CodeGeneratorProgram } from '@state/mainframe-state';
+import {
+  RewardParameter,
+  IFormatter,
+  diffFormatterParameters,
+  MS_IN_SECOND,
+  getHighlightDifferenceClass,
+} from '@shared/index';
+import { COMMON_TEXTS, PROGRAM_DESCRIPTION_TEXTS, REWARD_PARAMETER_NAMES } from '@texts/index';
 import { IDescriptionParameters, IDescriptionEffectRenderer } from '../interfaces';
 
-const PARAGRAPH_NAME_POINTS = 'points';
+const VALUES = {
+  value: 'value',
+  minAvgValue: 'min-avg-value',
+  maxAvgValue: 'max-avg-value',
+};
 
 export class CodeGeneratorDescriptionEffectRenderer implements IDescriptionEffectRenderer {
+  public readonly values = {
+    [VALUES.value]: '',
+    [VALUES.minAvgValue]: '',
+    [VALUES.maxAvgValue]: '',
+  };
+
+  public readonly diffs = {
+    [VALUES.value]: { value: '', className: '' },
+    [VALUES.minAvgValue]: { value: '', className: '' },
+    [VALUES.maxAvgValue]: { value: '', className: '' },
+  };
+
   private _program: CodeGeneratorProgram;
 
   private _formatter: IFormatter;
@@ -25,18 +45,22 @@ export class CodeGeneratorDescriptionEffectRenderer implements IDescriptionEffec
   }
 
   public renderEffect = () => {
-    return html` <p data-name=${PARAGRAPH_NAME_POINTS}></p> `;
+    return html` <p>
+      ${COMMON_TEXTS.parameterValue(
+        REWARD_PARAMETER_NAMES[RewardParameter.codeBase](),
+        PROGRAM_DESCRIPTION_TEXTS.parameterCompletionDiffs(
+          html`<span data-value=${VALUES.value}></span>`,
+          html`<span data-diff=${VALUES.value}></span>`,
+          html`<span data-value=${VALUES.minAvgValue}></span>`,
+          html`<span data-diff=${VALUES.minAvgValue}></span>`,
+          html`<span data-value=${VALUES.maxAvgValue}></span>`,
+          html`<span data-diff=${VALUES.maxAvgValue}></span>`,
+        ),
+      )}
+    </p>`;
   };
 
-  public partialUpdate(nodeList: NodeListOf<HTMLParagraphElement>): void {
-    nodeList.forEach((element) => {
-      if (element.dataset.name === PARAGRAPH_NAME_POINTS) {
-        this.partialUpdatePoints(element);
-      }
-    });
-  }
-
-  private partialUpdatePoints(element: HTMLParagraphElement) {
+  public recalculateValues() {
     const value = this._program.calculateDelta(this._threads);
     const minTime = this._program.calculateCompletionMinTime(this._threads);
     const maxTime = this._program.calculateCompletionMaxTime(this._threads);
@@ -59,15 +83,16 @@ export class CodeGeneratorDescriptionEffectRenderer implements IDescriptionEffec
       maxAvgValueDiff = maxAvgValue - currentMaxAvgValue;
     }
 
-    const formattedValue = this._formatter.formatNumberFloat(value);
-    const formattedValueDiff = this._formatter.formatNumberFloat(valueDiff, diffFormatterParameters);
-    const formattedMinAvgValue = this._formatter.formatNumberFloat(minAvgValue);
-    const formattedMaxAvgValue = this._formatter.formatNumberFloat(maxAvgValue);
-    const formattedMinAvgValueDiff = this._formatter.formatNumberFloat(minAvgValueDiff, diffFormatterParameters);
-    const formattedMaxAvgValueDiff = this._formatter.formatNumberFloat(maxAvgValueDiff, diffFormatterParameters);
+    this.values[VALUES.value] = this._formatter.formatNumberFloat(value);
+    this.diffs[VALUES.value].value = this._formatter.formatNumberFloat(valueDiff, diffFormatterParameters);
+    this.diffs[VALUES.value].className = getHighlightDifferenceClass(valueDiff);
 
-    element.textContent = msg(
-      str`Code base points: ${formattedValue} (${formattedValueDiff}) per completion (${formattedMinAvgValue} \u2014 ${formattedMaxAvgValue} per second) (${formattedMinAvgValueDiff} \u2014 ${formattedMaxAvgValueDiff})`,
-    );
+    this.values[VALUES.minAvgValue] = this._formatter.formatNumberFloat(minAvgValue);
+    this.diffs[VALUES.minAvgValue].value = this._formatter.formatNumberFloat(minAvgValueDiff, diffFormatterParameters);
+    this.diffs[VALUES.minAvgValue].className = getHighlightDifferenceClass(minAvgValueDiff);
+
+    this.values[VALUES.maxAvgValue] = this._formatter.formatNumberFloat(maxAvgValue);
+    this.diffs[VALUES.maxAvgValue].value = this._formatter.formatNumberFloat(maxAvgValueDiff, diffFormatterParameters);
+    this.diffs[VALUES.maxAvgValue].className = getHighlightDifferenceClass(maxAvgValueDiff);
   }
 }

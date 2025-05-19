@@ -69,15 +69,13 @@ export const PROGRAM_DESCRIPTION_TEXTS = {
   cores: () => msg('Cores'),
   upToValue: (value: any) => msg(html`Up to ${value}`),
   upToDiff: (value: any, diff: any) => msg(html`Up to ${value} (${diff})`),
-  allAvailable: () => msg('1 + All available'),
+  allAvailable: (value: any) => msg(str`${value} + All available`),
   completionTime: () => msg('Completion time'),
   instant: () => msg('Instant'),
   never: () => msg('Never'),
   minMaxInterval: (minValue: string, maxValue: string) => msg(str`${minValue} \u2014 ${maxValue}`),
   minMaxIntervalDiff: (minValue: string, maxValue: string, minValueDiff: any, maxValueDiff: any) =>
     msg(html`${minValue} — ${maxValue} (${minValueDiff} — ${maxValueDiff})`),
-  completionTimeDiff: (minTime: string, maxTime: string, minTimeDiff: string, maxTimeDiff: string) =>
-    msg(str`Completion time: ${minTime} \u2014 ${maxTime} (${minTimeDiff} \u2014 ${maxTimeDiff})`),
   parameterCompletionValues: (value: any, minAvgValue: any, maxAvgValue: any) =>
     msg(html`${value} per completion (${minAvgValue} — ${maxAvgValue} per second)`),
   parameterCompletionDiffs: (
@@ -95,5 +93,4 @@ export const PROGRAM_DESCRIPTION_TEXTS = {
   actionCompletionDiffs: (value: any, minAvgValue: any, minAvgDiff: any, maxAvgValue: any, maxAvgDiff: any) =>
     msg(html`${value} per completion (${minAvgValue} — ${maxAvgValue} per second) (${minAvgDiff} — ${maxAvgDiff})`),
   processCompletionValues: (value: any, avgValue: any) => msg(html`${value} per completion (${avgValue} per second)`),
-  valuePerSec: (value: any) => msg(html`${value} per second`),
 };

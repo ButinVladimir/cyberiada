@@ -1,6 +1,6 @@
 import { css, html } from 'lit';
 import { localized, msg } from '@lit/localize';
-import { customElement, state } from 'lit/decorators.js';
+import { customElement } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { BaseComponent } from '@shared/base-component';
 import { SortableElementMovedEvent } from '@components/shared/sortable-list/events/sortable-element-moved';

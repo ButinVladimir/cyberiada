@@ -34,12 +34,17 @@ export class PurchaseCloneDialogDescription extends BaseComponent {
         align-items: stretch;
       }
 
+      p.overview {
+        margin-top: 0;
+        margin-bottom: var(--sl-spacing-medium);
+      }
+
       p.text {
         margin: 0;
       }
 
-      p.with-blank-space {
-        margin-bottom: var(--sl-spacing-medium);
+      .attributes-skills-tables {
+        margin-top: var(--sl-spacing-medium);
       }
     `,
   ];
@@ -65,12 +70,12 @@ export class PurchaseCloneDialogDescription extends BaseComponent {
     }
 
     return html`
-      <p class="text with-blank-space">${CLONE_TEMPLATE_TEXTS[this._clone.templateName].overview()}</p>
+      <p class="overview">${CLONE_TEMPLATE_TEXTS[this._clone.templateName].overview()}</p>
 
       <p class="text">
         ${COMMON_TEXTS.parameterValue(COMMON_TEXTS.cost(), html`<span ${ref(this._costElRef)}></span>`)}
       </p>
-      ${this.renderSynchronization()} ${this.renderParameters()}
+      ${this.renderSynchronization()} ${this.renderExperienceMultiplier()} ${this.renderParameters()}
     `;
   }
 
@@ -90,7 +95,7 @@ export class PurchaseCloneDialogDescription extends BaseComponent {
       >${formattedCloneSynchronization} / ${formattedAvailableSynchronization}</span
     >`;
 
-    return html`<p class="text with-blank-space">
+    return html`<p class="text">
       ${COMMON_TEXTS.parameterValue(COMMON_TEXTS.synchronization(), synchronizationValue)}
     </p>`;
   };
@@ -128,6 +133,14 @@ export class PurchaseCloneDialogDescription extends BaseComponent {
     return html`
       <div>${SKILL_TEXTS[skill]()}</div>
       <div>${formattedValue}</div>
+    `;
+  };
+
+  private renderExperienceMultiplier = () => {
+    const formattedValue = this._controller.formatter.formatNumberFloat(this._clone!.experienceMultiplier);
+
+    return html`
+      <p class="text">${COMMON_TEXTS.parameterValue(COMMON_TEXTS.experienceMultiplier(), formattedValue)}</p>
     `;
   };
 

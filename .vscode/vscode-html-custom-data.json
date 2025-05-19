@@ -174,7 +174,7 @@
     },
     {
       "name": "ca-purchase-clone-dialog-description",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_clone` - \n\n  * `_costElRef` {`Ref<HTMLSpanElement>`} - \n\n  * `renderSynchronization` - \n\n  * `renderParameters` - \n\n  * `renderAttribute` - \n\n  * `renderSkill` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`PurchaseCloneDialogDescriptionTextController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_clone` - \n\n  * `_costElRef` {`Ref<HTMLSpanElement>`} - \n\n  * `renderSynchronization` - \n\n  * `renderParameters` - \n\n  * `renderAttribute` - \n\n  * `renderSkill` - \n\n  * `renderExperienceMultiplier` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`PurchaseCloneDialogDescriptionTextController`} - ",
       "attributes": []
     },
     {
@@ -432,7 +432,7 @@
     },
     {
       "name": "ca-start-process-dialog-description",
-      "description": "Attributes:\n\n  * `threads` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `threads` {`number`} - \n\n  * `_renderer` {`IDescriptionEffectRenderer | undefined`} - \n\n  * `_paragraphs` {`NodeListOf<HTMLParagraphElement>`} - \n\n  * `_program` - \n\n  * `_existingProcess` - \n\n  * `renderAutoscalableRequirements` - \n\n  * `renderNormalRequirements` - \n\n  * `renderEffects` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`ProcessDiffTextController`} - ",
+      "description": "Attributes:\n\n  * `threads` {`number`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `threads` {`number`} - \n\n  * `_renderer` {`IDescriptionEffectRenderer | undefined`} - \n\n  * `_valueEls` {`NodeListOf<HTMLSpanElement>`} - \n\n  * `_diffEls` {`NodeListOf<HTMLSpanElement>`} - \n\n  * `_program` - \n\n  * `_existingProcess` - \n\n  * `renderAutoscalableRequirements` - \n\n  * `renderNormalRequirements` - \n\n  * `renderEffects` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`ProcessDiffTextController`} - ",
       "attributes": [
         {
           "name": "threads",

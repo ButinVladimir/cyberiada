@@ -91,7 +91,9 @@ export class SidejobsListItemDescription extends BaseComponent {
     const parameterName = REWARD_PARAMETER_NAMES[parameter]();
     const valueElement = html`<span data-value=${parameter}></span>`;
 
-    return html`<p class="text">${COMMON_TEXTS.parameterSpeedValue(parameterName, valueElement)}</p>`;
+    return html`<p class="text">
+      ${COMMON_TEXTS.parameterValue(parameterName, COMMON_TEXTS.parameterSpeed(valueElement))}
+    </p>`;
   };
 
   handlePartialUpdate = () => {

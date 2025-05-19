@@ -54,6 +54,11 @@ export class ProgramDescriptionText extends BaseComponent {
     this._controller = new ProgramDescriptionTextController(this);
   }
 
+  performUpdate() {
+    this.updateRenderer();
+    super.performUpdate();
+  }
+
   render() {
     if (!this._program) {
       this._renderer = undefined;
@@ -65,7 +70,6 @@ export class ProgramDescriptionText extends BaseComponent {
       ? this.renderAutoscalableRequirements()
       : this.renderNormalRequirements();
 
-    this.updateRenderer();
     const effects = this.renderEffects();
 
     return html`
@@ -87,9 +91,16 @@ export class ProgramDescriptionText extends BaseComponent {
     return html`
       <p>${PROGRAM_DESCRIPTION_TEXTS.requirementsAutoscalable()}</p>
 
-      <p>${COMMON_TEXTS.parameterValue(PROGRAM_DESCRIPTION_TEXTS.ram(), PROGRAM_DESCRIPTION_TEXTS.allAvailable())}</p>
+      <p>
+        ${COMMON_TEXTS.parameterValue(
+          PROGRAM_DESCRIPTION_TEXTS.ram(),
+          PROGRAM_DESCRIPTION_TEXTS.allAvailable(this._program!.ram),
+        )}
+      </p>
 
-      <p>${COMMON_TEXTS.parameterValue(PROGRAM_DESCRIPTION_TEXTS.cores(), PROGRAM_DESCRIPTION_TEXTS.allAvailable())}</p>
+      <p>
+        ${COMMON_TEXTS.parameterValue(PROGRAM_DESCRIPTION_TEXTS.cores(), PROGRAM_DESCRIPTION_TEXTS.allAvailable(1))}
+      </p>
 
       <p>
         ${COMMON_TEXTS.parameterValue(PROGRAM_DESCRIPTION_TEXTS.completionTime(), PROGRAM_DESCRIPTION_TEXTS.instant())}
@@ -148,6 +159,11 @@ export class ProgramDescriptionText extends BaseComponent {
   };
 
   private updateRenderer(): void {
+    if (!this._program) {
+      this._renderer = undefined;
+      return;
+    }
+
     const parameters: IDescriptionParameters = {
       formatter: this._controller.formatter,
       program: this._program!,

@@ -54,6 +54,11 @@ export class ProcessDescriptionText extends BaseComponent {
     this._controller = new ProcessDescriptionTextController(this);
   }
 
+  performUpdate() {
+    this.updateRenderer();
+    super.performUpdate();
+  }
+
   render() {
     if (!this._process) {
       this._renderer = undefined;
@@ -65,7 +70,6 @@ export class ProcessDescriptionText extends BaseComponent {
       ? this.renderAutoscalableRequirements()
       : this.renderNormalRequirements();
 
-    this.updateRenderer();
     const effects = this.renderEffects();
 
     return html`
@@ -87,9 +91,16 @@ export class ProcessDescriptionText extends BaseComponent {
     return html`
       <p>${PROGRAM_DESCRIPTION_TEXTS.requirementsAutoscalable()}</p>
 
-      <p>${COMMON_TEXTS.parameterValue(PROGRAM_DESCRIPTION_TEXTS.ram(), PROGRAM_DESCRIPTION_TEXTS.allAvailable())}</p>
+      <p>
+        ${COMMON_TEXTS.parameterValue(
+          PROGRAM_DESCRIPTION_TEXTS.ram(),
+          PROGRAM_DESCRIPTION_TEXTS.allAvailable(this._process!.program.ram),
+        )}
+      </p>
 
-      <p>${COMMON_TEXTS.parameterValue(PROGRAM_DESCRIPTION_TEXTS.cores(), PROGRAM_DESCRIPTION_TEXTS.allAvailable())}</p>
+      <p>
+        ${COMMON_TEXTS.parameterValue(PROGRAM_DESCRIPTION_TEXTS.cores(), PROGRAM_DESCRIPTION_TEXTS.allAvailable(1))}
+      </p>
 
       <p>
         ${COMMON_TEXTS.parameterValue(PROGRAM_DESCRIPTION_TEXTS.completionTime(), PROGRAM_DESCRIPTION_TEXTS.instant())}
@@ -157,6 +168,11 @@ export class ProcessDescriptionText extends BaseComponent {
   };
 
   private updateRenderer(): void {
+    if (!this._process) {
+      this._renderer = undefined;
+      return;
+    }
+
     const parameters: IDescriptionParameters = {
       formatter: this._controller.formatter,
       autoscalableProcessRam: this._controller.autoscalableProcessRam,

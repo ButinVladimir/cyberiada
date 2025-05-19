@@ -7,6 +7,7 @@ export interface ICloneTemplate {
     multiplier: number;
     baseTier: number;
   };
+  experienceMultiplier: ITierLinear;
   levelRequirements: IExponent;
   attributes: Record<Attribute, ITierLinear>;
   skills: Record<Skill, ITierLinear>;

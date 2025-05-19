@@ -33,12 +33,11 @@ export const COMMON_TEXTS = {
   skills: () => msg('Skills'),
   cost: () => msg('Cost'),
   synchronization: () => msg('Synchronization'),
+  experienceMultiplier: () => msg('Experience multiplier'),
   faction: () => msg('Faction'),
-  parameterSpeedDiff: (parameterName: string, valueElement: any, diffElement: any) =>
-    msg(html`${parameterName}: ${valueElement} (${diffElement}) per second`),
-  parameterSpeedValue: (parameterName: string, valueElement: any) =>
-    msg(html`${parameterName}: ${valueElement} per second`),
   parameterValue: (parameterName: string, valueElement: any) => msg(html`${parameterName}: ${valueElement}`),
+  parameterSpeed: (value: any) => msg(html`${value} per second`),
+  parameterSpeedDiff: (valueElement: any, diffElement: any) => msg(html`${valueElement} (${diffElement}) per second`),
 };
 
 export const CATEGORY_TEXTS: Record<ItemCategory, () => string> = {

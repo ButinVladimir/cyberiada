@@ -73,6 +73,11 @@ export class PurchaseProgramDialogDescription extends BaseComponent {
     this._controller = new ProgramDiffTextController(this);
   }
 
+  performUpdate() {
+    this.updateRenderer();
+    super.performUpdate();
+  }
+
   render() {
     if (!this._program) {
       return;
@@ -82,7 +87,6 @@ export class PurchaseProgramDialogDescription extends BaseComponent {
       ? this.renderAutoscalableRequirements()
       : this.renderNormalRequirements();
 
-    this.updateRenderer();
     const effects = this.renderEffects();
 
     return html`
@@ -110,9 +114,16 @@ export class PurchaseProgramDialogDescription extends BaseComponent {
     return html`
       <p>${PROGRAM_DESCRIPTION_TEXTS.requirementsAutoscalable()}</p>
 
-      <p>${COMMON_TEXTS.parameterValue(PROGRAM_DESCRIPTION_TEXTS.ram(), PROGRAM_DESCRIPTION_TEXTS.allAvailable())}</p>
+      <p>
+        ${COMMON_TEXTS.parameterValue(
+          PROGRAM_DESCRIPTION_TEXTS.ram(),
+          PROGRAM_DESCRIPTION_TEXTS.allAvailable(this._program!.ram),
+        )}
+      </p>
 
-      <p>${COMMON_TEXTS.parameterValue(PROGRAM_DESCRIPTION_TEXTS.cores(), PROGRAM_DESCRIPTION_TEXTS.allAvailable())}</p>
+      <p>
+        ${COMMON_TEXTS.parameterValue(PROGRAM_DESCRIPTION_TEXTS.cores(), PROGRAM_DESCRIPTION_TEXTS.allAvailable(1))}
+      </p>
 
       <p>
         ${COMMON_TEXTS.parameterValue(PROGRAM_DESCRIPTION_TEXTS.completionTime(), PROGRAM_DESCRIPTION_TEXTS.instant())}
@@ -222,6 +233,11 @@ export class PurchaseProgramDialogDescription extends BaseComponent {
   }
 
   private updateRenderer(): void {
+    if (!this._program) {
+      this._renderer = undefined;
+      return;
+    }
+
     const parameters: IDescriptionParameters = {
       formatter: this._controller.formatter,
       program: this._program!,

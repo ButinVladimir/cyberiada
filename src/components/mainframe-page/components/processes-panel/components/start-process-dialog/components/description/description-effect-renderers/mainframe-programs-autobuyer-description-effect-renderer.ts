@@ -1,12 +1,19 @@
 import { html } from 'lit';
-import { msg, str } from '@lit/localize';
-import { MainframeProgramsAutobuyerProgram } from '@state/mainframe-state/states/progam-factory/programs/mainframe-programs-autobuyer';
-import { IFormatter } from '@shared/interfaces/formatter';
-import { diffFormatterParameters } from '@shared/formatter-parameters';
-import { MS_IN_SECOND } from '@shared/constants';
+import { MainframeProgramsAutobuyerProgram } from '@state/mainframe-state';
+import {
+  IFormatter,
+  diffFormatterParameters,
+  MS_IN_SECOND,
+  getHighlightDifferenceClass,
+  RewardParameter,
+} from '@shared/index';
+import { COMMON_TEXTS, PROGRAM_DESCRIPTION_TEXTS, REWARD_PARAMETER_NAMES } from '@texts/index';
 import { IDescriptionParameters, IDescriptionEffectRenderer } from '../interfaces';
 
 export class MainframeProgramsAutobuyerDescriptionEffectRenderer implements IDescriptionEffectRenderer {
+  public readonly values = {};
+  public readonly diffs = {};
+
   private _program: MainframeProgramsAutobuyerProgram;
 
   private _formatter: IFormatter;
@@ -43,20 +50,40 @@ export class MainframeProgramsAutobuyerDescriptionEffectRenderer implements IDes
     }
 
     const formattedValue = this._formatter.formatNumberFloat(this._threads);
-    const formattedValueDiff = this._formatter.formatNumberFloat(valueDiff, diffFormatterParameters);
     const formattedMinAvgValue = this._formatter.formatNumberFloat(minAvgValue);
     const formattedMaxAvgValue = this._formatter.formatNumberFloat(maxAvgValue);
-    const formattedMinAvgValueDiff = this._formatter.formatNumberFloat(minAvgValueDiff, diffFormatterParameters);
-    const formattedMaxAvgValueDiff = this._formatter.formatNumberFloat(maxAvgValueDiff, diffFormatterParameters);
+
+    const diffClass = getHighlightDifferenceClass(valueDiff);
+    const diffEl = html`<span class=${diffClass}
+      >${this._formatter.formatNumberFloat(valueDiff, diffFormatterParameters)}</span
+    >`;
+
+    const minAvgDiffClass = getHighlightDifferenceClass(minAvgValueDiff);
+    const minAvgDiffEl = html`<span class=${minAvgDiffClass}
+      >${this._formatter.formatNumberFloat(minAvgValueDiff, diffFormatterParameters)}</span
+    >`;
+
+    const maxAvgDiffClass = getHighlightDifferenceClass(maxAvgValueDiff);
+    const maxAvgDiffEl = html`<span class=${maxAvgDiffClass}
+      >${this._formatter.formatNumberFloat(maxAvgValueDiff, diffFormatterParameters)}</span
+    >`;
 
     return html`
       <p>
-        ${msg(
-          str`Actions: ${formattedValue} (${formattedValueDiff}) per completion (${formattedMinAvgValue} \u2014 ${formattedMaxAvgValue} per second) (${formattedMinAvgValueDiff} \u2014 ${formattedMaxAvgValueDiff})`,
+        ${COMMON_TEXTS.parameterValue(
+          REWARD_PARAMETER_NAMES[RewardParameter.actions](),
+          PROGRAM_DESCRIPTION_TEXTS.parameterCompletionDiffs(
+            formattedValue,
+            diffEl,
+            formattedMinAvgValue,
+            minAvgDiffEl,
+            formattedMaxAvgValue,
+            maxAvgDiffEl,
+          ),
         )}
       </p>
     `;
   };
 
-  public partialUpdate(): void {}
+  public recalculateValues(): void {}
 }

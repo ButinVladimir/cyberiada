@@ -49,6 +49,7 @@ export class Clone implements IClone {
   private _tier: number;
   private _synchronization!: number;
   private _autoUpgradeEnabled: boolean;
+  private _experienceMultiplier: number;
 
   private _attributes!: Map<Attribute, ICloneParameterValues>;
   private _skills!: Map<Skill, ICloneParameterValues>;
@@ -62,8 +63,17 @@ export class Clone implements IClone {
     this._level = parameters.level;
     this._tier = parameters.tier;
     this._autoUpgradeEnabled = parameters.autoUpgradeEnabled;
+    this._experienceMultiplier = 1;
 
-    this._stateUiConnector.registerEventEmitter(this, ['_name', '_level', '_tier', '_autoUpgradeEnabled']);
+    this._stateUiConnector.registerEventEmitter(this, [
+      '_name',
+      '_level',
+      '_tier',
+      '_autoUpgradeEnabled',
+      '_attributes',
+      '_skills',
+      '_experienceMultiplier',
+    ]);
 
     this.initSynchronization();
     this.initExperience();
@@ -117,6 +127,10 @@ export class Clone implements IClone {
 
   set autoUpgradeEnabled(value: boolean) {
     this._autoUpgradeEnabled = value;
+  }
+
+  get experienceMultiplier() {
+    return this._experienceMultiplier;
   }
 
   increaseExperience(delta: number) {
@@ -233,27 +247,42 @@ export class Clone implements IClone {
   private recalculateParameters(): void {
     this.recalculateAttributes();
     this.recalculateSkills();
+    this.recalculateExperienceMultiplier();
   }
 
   private recalculateAttributes(): void {
     ATTRIBUTES.forEach((attribute) => {
-      const currentValues = this._attributes.get(attribute)!;
       const templateValues = this._template.attributes[attribute];
 
-      currentValues.baseValue = calculateTierLinear(this._level, this._tier, templateValues);
+      const baseValue = calculateTierLinear(this._level, this._tier, templateValues);
+      const totalValue = Math.floor(baseValue);
 
-      currentValues.totalValue = Math.floor(currentValues.baseValue);
+      this._attributes.set(attribute, {
+        baseValue,
+        totalValue,
+      });
     });
   }
 
   private recalculateSkills(): void {
     SKILLS.forEach((skill) => {
-      const currentValues = this._skills.get(skill)!;
       const templateValues = this._template.skills[skill];
 
-      currentValues.baseValue = calculateTierLinear(this._level, this._tier, templateValues);
+      const baseValue = calculateTierLinear(this._level, this._tier, templateValues);
+      const totalValue = Math.floor(baseValue);
 
-      currentValues.totalValue = Math.floor(currentValues.baseValue);
+      this._skills.set(skill, {
+        baseValue,
+        totalValue,
+      });
     });
+  }
+
+  private recalculateExperienceMultiplier(): void {
+    this._experienceMultiplier = calculateTierLinear(
+      this.getTotalAttributeValue(Attribute.intellect),
+      this._tier,
+      this._template.experienceMultiplier,
+    );
   }
 }

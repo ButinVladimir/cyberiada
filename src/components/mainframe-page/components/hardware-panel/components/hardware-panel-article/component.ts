@@ -167,7 +167,7 @@ export class MainframeHardwarePanelArticle extends BaseComponent {
         </h4>
       </div>
 
-      <p class="text">
+      <p class="cost">
         ${COMMON_TEXTS.parameterValue(COMMON_TEXTS.cost(), html`<span ${ref(this._costElRef)}></span>`)}
       </p>
 
