@@ -1,17 +1,12 @@
 import { msg, str } from '@lit/localize';
 import {
   MultiplierProgramName,
+  AutobuyerProgramName,
   OtherProgramName,
-  ProgramName,
 } from '@state/mainframe-state/states/progam-factory/types';
 import { html } from 'lit';
 
-interface IProgramTexts {
-  title: () => string;
-  overview: () => string;
-}
-
-export const PROGRAM_TEXTS: Record<ProgramName, IProgramTexts> = {
+export const PROGRAM_TEXTS = {
   [OtherProgramName.shareServer]: {
     title: () => msg('Mainframe share server'),
     overview: () =>
@@ -36,23 +31,27 @@ Generates computational base points and improves mainframe hardware cost divisor
       msg(`Program to assist with making deals.
 Generates rewards points and improves all rewards.`),
   },
-  [OtherProgramName.predictiveComputator]: {
-    title: () => msg('Predictive computator'),
-    overview: () => msg('Program to speed up completion of currently running processes.'),
-  },
-  [OtherProgramName.mainframeHardwareAutobuyer]: {
-    title: () => msg('Mainframe hardware autobuyer'),
-    overview: () => msg('Program to automatically buy mainframe hardware upgrades.'),
-  },
-  [OtherProgramName.mainframeProgramsAutobuyer]: {
-    title: () => msg('Mainframe programs autobuyer'),
-    overview: () => msg('Program to automatically buy mainframe programs.'),
-  },
-  [OtherProgramName.informationCollector]: {
+  [MultiplierProgramName.informationCollector]: {
     title: () => msg('Information collector'),
     overview: () =>
       msg(`Program to collect all sorts of information.
 Generates connectivity points and improves chances to receive new contracts and sidejobs.`),
+  },
+  [AutobuyerProgramName.mainframeHardwareAutobuyer]: {
+    title: () => msg('Mainframe hardware autobuyer'),
+    overview: () => msg('Program to automatically buy mainframe hardware upgrades.'),
+  },
+  [AutobuyerProgramName.mainframeProgramsAutobuyer]: {
+    title: () => msg('Mainframe programs autobuyer'),
+    overview: () => msg('Program to automatically buy mainframe programs.'),
+  },
+  [AutobuyerProgramName.cloneLevelAutoupgrader]: {
+    title: () => msg('Clone level autoupgrader'),
+    overview: () => msg('Program to automatically upgrade levels of clones.'),
+  },
+  [OtherProgramName.predictiveComputator]: {
+    title: () => msg('Predictive computator'),
+    overview: () => msg('Program to speed up completion of currently running processes.'),
   },
 };
 

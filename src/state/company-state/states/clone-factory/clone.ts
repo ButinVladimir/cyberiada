@@ -12,6 +12,9 @@ import {
   calculateTierMultiplier,
   reverseGeometricProgressionSum,
   type IFormatter,
+  binarySearchDecimal,
+  PurchaseType,
+  Feature,
 } from '@shared/index';
 import { type ICompanyState } from '@state/company-state/interfaces/company-state';
 import { type IGlobalState } from '@state/global-state';
@@ -139,6 +142,32 @@ export class Clone implements IClone {
 
   earnExperience(delta: number) {
     this.increaseExperience(delta);
+  }
+
+  purchaseLevelUpgrade(level: number): boolean {
+    if (!this._globalState.unlockedFeatures.isFeatureUnlocked(Feature.companyManagement)) {
+      return false;
+    }
+
+    if (!this._globalState.availableItems.cloneTemplates.isItemAvailable(this._templateName, this._tier, level)) {
+      return false;
+    }
+
+    const cost = this._companyState.clones.getCloneCost(this._templateName, this._tier, level);
+
+    return this._globalState.money.purchase(cost, PurchaseType.clones, () => {
+      this.upgradeLevel(level);
+    });
+  }
+
+  upgradeMaxLevel() {
+    const level = binarySearchDecimal(this._level, this._globalState.development.level, this.handleCheckLevelUpgrade);
+
+    if (level <= this._level) {
+      return false;
+    }
+
+    return this.purchaseLevelUpgrade(level);
   }
 
   getLevelRequirements(level: number): number {
@@ -284,5 +313,29 @@ export class Clone implements IClone {
       this._tier,
       this._template.experienceMultiplier,
     );
+  }
+
+  private handleCheckLevelUpgrade = (level: number): boolean => {
+    if (!this._globalState.availableItems.cloneTemplates.isItemAvailable(this._templateName, this._tier, level)) {
+      return false;
+    }
+
+    const cost = this._companyState.clones.getCloneCost(this._templateName, this._tier, level);
+
+    return cost <= this._globalState.money.money;
+  };
+
+  private upgradeLevel(level: number) {
+    this._level = level;
+    this._experience = this.getLevelRequirements(level - 1);
+    this._companyState.requestReassignment();
+
+    const formattedLevel = this._formatter.formatLevel(level);
+    this._messageLogState.postMessage(
+      ClonesEvent.cloneLevelUpgraded,
+      `Clone "${this._name}" level has been upgraded to ${formattedLevel}`,
+    );
+
+    this.recalculateParameters();
   }
 }

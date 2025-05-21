@@ -41,6 +41,7 @@ export const TYPES = {
   AutomationState: Symbol('AutomationState'),
   MainframeHardwareAutomationState: Symbol('MainframeHardwareAutomationState'),
   MainframeProgramsAutomationState: Symbol('MainframeProgramsAutomationState'),
+  CloneLevelAutomationState: Symbol('CloneLevelAutomationState'),
   CompanyState: Symbol('CompanyState'),
   CloneFactory: Symbol('CloneFactory'),
   CompanyClonesState: Symbol('CompanyClonesState'),

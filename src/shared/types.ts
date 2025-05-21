@@ -57,6 +57,7 @@ export enum ProgramsEvent {
 
 export enum ClonesEvent {
   clonePurchased = 'clonePurchased',
+  cloneLevelUpgraded = 'cloneLevelUpgraded',
   cloneDeleted = 'cloneDeleted',
   allClonesDeleted = 'allClonesDeleted',
   cloneLevelReached = 'cloneLevelReached',

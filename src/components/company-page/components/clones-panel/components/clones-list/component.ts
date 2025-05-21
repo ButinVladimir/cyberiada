@@ -10,7 +10,7 @@ import {
   ConfirmationAlertOpenEvent,
   ConfirmationAlertSubmitEvent,
 } from '@components/game-screen/components/confirmation-alert/events';
-import { AUTOUPGRADE_VALUES, DELETE_VALUES } from '@shared/styles';
+import { AUTOUPGRADE_VALUES, DELETE_VALUES, UPGRADE_MAX_VALUES } from '@shared/styles';
 import { IClone } from '@state/company-state/states/clone-factory/interfaces/clone';
 import { ClonesListController } from './controller';
 import { CLONE_LIST_ITEMS_GAP } from './constants';
@@ -26,12 +26,16 @@ export class ClonesList extends BaseComponent {
       border-top: var(--ca-border);
     }
 
-    .header {
+    .header-row {
       display: flex;
       flex-wrap: wrap;
       justify-content: flex-start;
       padding: var(--sl-spacing-medium) 0;
       gap: var(--sl-spacing-small);
+    }
+
+    .header-row.with-border {
+      border-bottom: var(--ca-border);
     }
 
     .notification {
@@ -89,7 +93,17 @@ export class ClonesList extends BaseComponent {
     const clones = this._controller.listClones();
 
     return html`
-      <div class="header">
+      <div class="header-row with-border">
+        <sl-button-group>
+          <sl-button variant=${UPGRADE_MAX_VALUES.buttonVariant} @click=${this.handleUpgradeMaxAllLevels}>
+            <sl-icon slot="prefix" name=${UPGRADE_MAX_VALUES.icon}></sl-icon>
+
+            ${msg('Upgrade all levels')}
+          </sl-button>
+        </sl-button-group>
+      </div>
+
+      <div class="header-row">
         <sl-button variant=${autoupgradeVariant} size="medium" @click=${this.handleToggleAutoupgrade}>
           <sl-icon slot="prefix" name=${autoupgradeIcon}></sl-icon>
 
@@ -154,5 +168,9 @@ export class ClonesList extends BaseComponent {
     }
 
     this._controller.deleteAllClones();
+  };
+
+  private handleUpgradeMaxAllLevels = () => {
+    this._controller.upgradeMaxAllLevels();
   };
 }

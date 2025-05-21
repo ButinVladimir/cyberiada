@@ -59,5 +59,11 @@
     "completionPoints": { "multiplier": 900000, "base": 1.01 },
     "cost": { "multiplier": 1800000, "base": 1.15, "baseTier": 10 },
     "requiredFeatures": ["automation", "automationMainframePrograms"]
+  },
+  "cloneLevelAutoupgrader": {
+    "ram": 5,
+    "completionPoints": { "multiplier": 900000, "base": 1.01 },
+    "cost": { "multiplier": 1800000, "base": 1.15, "baseTier": 10 },
+    "requiredFeatures": ["automation", "companyManagement"]
   }
 }

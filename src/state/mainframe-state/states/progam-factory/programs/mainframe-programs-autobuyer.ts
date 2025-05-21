@@ -2,14 +2,14 @@ import { binarySearchDecimal } from '@shared/index';
 import { type IAutomationState } from '@state/automation-state';
 import { decorators } from '@state/container';
 import { TYPES } from '@state/types';
-import { OtherProgramName } from '../types';
+import { AutobuyerProgramName } from '../types';
 import { BaseProgram } from './base-program';
 import { IProgram } from '../interfaces';
 
 const { lazyInject } = decorators;
 
 export class MainframeProgramsAutobuyerProgram extends BaseProgram {
-  public readonly name = OtherProgramName.mainframeProgramsAutobuyer;
+  public readonly name = AutobuyerProgramName.mainframeProgramsAutobuyer;
   public readonly isAutoscalable = false;
 
   @lazyInject(TYPES.AutomationState)

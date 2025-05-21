@@ -17,6 +17,11 @@
       "attributes": []
     },
     {
+      "name": "ca-automation-clone-level-autoupgrader",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_moneyShareRef` {`Ref<SlInput>`} - \n\n  * `handleChangeMoneyShare` - \n\n  * `_controller` {`AutomationCloneLevelAutoupgraderController`} - ",
+      "attributes": []
+    },
+    {
       "name": "ca-automation-mainframe-hardware-autobuyer",
       "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_moneyShareRef` {`Ref<SlInput>`} - \n\n  * `handleChangeMoneyShare` - \n\n  * `_controller` {`AutomationMainframeHardwareAutobuyerController`} - ",
       "attributes": []
@@ -133,7 +138,7 @@
     },
     {
       "name": "ca-clones-list",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderEmptyListNotification` - \n\n  * `renderClone` - \n\n  * `handleToggleAutoupgrade` - \n\n  * `handleMoveClone` - \n\n  * `handleOpenDeleteAllClonesDialog` - \n\n  * `handleConfirmDeleteAllClonesDialog` - \n\n  * `_controller` {`ClonesListController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderEmptyListNotification` - \n\n  * `renderClone` - \n\n  * `handleToggleAutoupgrade` - \n\n  * `handleMoveClone` - \n\n  * `handleOpenDeleteAllClonesDialog` - \n\n  * `handleConfirmDeleteAllClonesDialog` - \n\n  * `handleUpgradeMaxAllLevels` - \n\n  * `_controller` {`ClonesListController`} - ",
       "attributes": []
     },
     {
@@ -148,7 +153,7 @@
     },
     {
       "name": "ca-clones-list-item",
-      "description": "Attributes:\n\n  * `clone-id` {`string`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `cloneId` {`string`} - \n\n  * `_menuVisible` {`boolean`} - \n\n  * `_detailsVisible` {`boolean`} - \n\n  * `_clone` - \n\n  * `handleToggleAutoUpgrade` - \n\n  * `handleDragStart` - \n\n  * `handleToggleMenu` - \n\n  * `handleHideMenu` - \n\n  * `handleOpenDeleteCloneDialog` - \n\n  * `handleConfirmDeleteCloneDialog` - \n\n  * `handleOpenRenameCloneDialog` - \n\n  * `handleToggleDetails` - \n\n  * `_controller` {`ClonesListItemController`} - ",
+      "description": "Attributes:\n\n  * `clone-id` {`string`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `cloneId` {`string`} - \n\n  * `_menuVisible` {`boolean`} - \n\n  * `_detailsVisible` {`boolean`} - \n\n  * `_clone` - \n\n  * `handleToggleAutoUpgrade` - \n\n  * `handleDragStart` - \n\n  * `handleToggleMenu` - \n\n  * `handleHideMenu` - \n\n  * `handleOpenDeleteCloneDialog` - \n\n  * `handleConfirmDeleteCloneDialog` - \n\n  * `handleOpenRenameCloneDialog` - \n\n  * `handleToggleDetails` - \n\n  * `handleUpgradeLevelMax` - \n\n  * `_controller` {`ClonesListItemController`} - ",
       "attributes": [
         {
           "name": "clone-id",

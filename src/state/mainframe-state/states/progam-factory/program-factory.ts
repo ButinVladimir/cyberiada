@@ -1,6 +1,6 @@
 import { injectable } from 'inversify';
 import { IBaseProgramParameters, IMakeProgramParameters, IProgram, IProgramFactory } from './interfaces';
-import { OtherProgramName, MultiplierProgramName } from './types';
+import { OtherProgramName, MultiplierProgramName, AutobuyerProgramName } from './types';
 import {
   ShareServerProgram,
   CodeGeneratorProgram,
@@ -10,6 +10,7 @@ import {
   CircuitDesignerProgram,
   InformationCollectorProgram,
   DealMakerProgram,
+  CloneLevelAutoupgraderProgram,
 } from './programs';
 
 @injectable()
@@ -40,17 +41,20 @@ export class ProgramFactory implements IProgramFactory {
       case MultiplierProgramName.dealMaker:
         return new DealMakerProgram(baseParameters);
 
+      case MultiplierProgramName.informationCollector:
+        return new InformationCollectorProgram(baseParameters);
+
       case OtherProgramName.predictiveComputator:
         return new PredictiveComputatorProgram(baseParameters);
 
-      case OtherProgramName.mainframeHardwareAutobuyer:
+      case AutobuyerProgramName.mainframeHardwareAutobuyer:
         return new MainframeHardwareAutobuyerProgram(baseParameters);
 
-      case OtherProgramName.mainframeProgramsAutobuyer:
+      case AutobuyerProgramName.mainframeProgramsAutobuyer:
         return new MainframeProgramsAutobuyerProgram(baseParameters);
 
-      case OtherProgramName.informationCollector:
-        return new InformationCollectorProgram(baseParameters);
+      case AutobuyerProgramName.cloneLevelAutoupgrader:
+        return new CloneLevelAutoupgraderProgram(baseParameters);
     }
   }
 }

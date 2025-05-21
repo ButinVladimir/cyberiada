@@ -1,50 +1,11 @@
-import { html } from 'lit';
-import { CodeGeneratorProgram, IProcess } from '@state/mainframe-state';
-import { RewardParameter, IFormatter, MS_IN_SECOND } from '@shared/index';
-import { COMMON_TEXTS, PROGRAM_DESCRIPTION_TEXTS, REWARD_PARAMETER_NAMES } from '@texts/index';
-import { IDescriptionParameters, IDescriptionEffectRenderer } from '../interfaces';
+import { CodeGeneratorProgram } from '@state/mainframe-state';
+import { RewardParameter } from '@shared/index';
+import { BaseMultiplierDescriptionEffectRenderer } from './base-multiplier-program-description-effect-renderer';
 
-const VALUES = {
-  value: 'value',
-  avgValue: 'avg-value',
-};
+export class CodeGeneratorDescriptionEffectRenderer extends BaseMultiplierDescriptionEffectRenderer {
+  protected parameterName = RewardParameter.codeBase;
 
-export class CodeGeneratorDescriptionEffectRenderer implements IDescriptionEffectRenderer {
-  public readonly values = {
-    [VALUES.value]: '',
-    [VALUES.avgValue]: '',
-  };
-
-  private _process: IProcess;
-
-  private _formatter: IFormatter;
-
-  constructor(parameters: IDescriptionParameters) {
-    this._process = parameters.process;
-    this._formatter = parameters.formatter;
-  }
-
-  public renderEffect = () => {
-    return html`<p>
-      ${COMMON_TEXTS.parameterValue(
-        REWARD_PARAMETER_NAMES[RewardParameter.codeBase](),
-        PROGRAM_DESCRIPTION_TEXTS.processCompletionValues(
-          html`<span data-value=${VALUES.value}></span>`,
-          html`<span data-value=${VALUES.avgValue}></span>`,
-        ),
-      )}
-    </p> `;
-  };
-
-  public recalculateValues() {
-    const { usedCores, threads } = this._process;
-    const program = this._process.program as CodeGeneratorProgram;
-
-    const value = program.calculateDelta(threads);
-    const time = program.calculateCompletionTime(threads, usedCores);
-    const avgValue = (value / time) * MS_IN_SECOND;
-
-    this.values[VALUES.value] = this._formatter.formatNumberFloat(value);
-    this.values[VALUES.avgValue] = this._formatter.formatNumberFloat(avgValue);
+  protected getProgramValue() {
+    return (this.process.program as CodeGeneratorProgram).calculateDelta(this.process.threads);
   }
 }

@@ -1,7 +1,7 @@
 import { injectable } from 'inversify';
 import { decorators } from '@state/container';
 import { TYPES } from '@state/types';
-import { type IMainframeState, OtherProgramName, InformationCollectorProgram } from '@state/mainframe-state';
+import { type IMainframeState, InformationCollectorProgram, MultiplierProgramName } from '@state/mainframe-state';
 import { type ICityState } from '@state/city-state';
 import { type ICompanyState } from '@state/company-state';
 import { IConnectivityGrowthState } from '../interfaces';
@@ -74,7 +74,7 @@ export class ConnectivityGrowthState implements IConnectivityGrowthState {
   private updateGrowthByProgram() {
     this._baseGrowthByProgram = 0;
 
-    const process = this._mainframeState.processes.getProcessByName(OtherProgramName.informationCollector);
+    const process = this._mainframeState.processes.getProcessByName(MultiplierProgramName.informationCollector);
 
     if (process?.isActive) {
       const program = process.program as InformationCollectorProgram;

@@ -1,10 +1,10 @@
 import programs from '@configs/programs.json';
 import { calculateTierPower } from '@shared/helpers';
-import { OtherProgramName } from '../types';
+import { MultiplierProgramName } from '../types';
 import { BaseProgram } from './base-program';
 
 export class InformationCollectorProgram extends BaseProgram {
-  public readonly name = OtherProgramName.informationCollector;
+  public readonly name = MultiplierProgramName.informationCollector;
   public readonly isAutoscalable = false;
 
   handlePerformanceUpdate(): void {}

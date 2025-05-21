@@ -184,6 +184,14 @@ export class CompanyClonesState implements ICompanyClonesState {
     }
   }
 
+  upgradeMaxAllLevels() {
+    for (const clone of this._clonesList) {
+      if (clone.autoUpgradeEnabled) {
+        clone.upgradeMaxLevel();
+      }
+    }
+  }
+
   async startNewState(): Promise<void> {
     this.clearState();
     this.recalculateSynchronization();

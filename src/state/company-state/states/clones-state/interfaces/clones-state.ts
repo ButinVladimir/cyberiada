@@ -18,4 +18,5 @@ export interface ICompanyClonesState extends ISerializeable<ICompanyClonesSerial
   recalculateSynchronization(): void;
   moveClone(id: string, newPosition: number): void;
   generateCloneName(): Promise<string>;
+  upgradeMaxAllLevels(): void;
 }

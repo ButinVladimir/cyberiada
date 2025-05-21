@@ -72,6 +72,8 @@ import {
   MainframeHardwareAutomationState,
   IMainframeProgramsAutomationState,
   MainframeProgramsAutomationState,
+  ICloneLevelAutomationState,
+  CloneLevelAutomationState,
   IAutomationState,
   AutomationState,
 } from '@state/automation-state';
@@ -256,6 +258,12 @@ container
 container
   .bind<IMainframeProgramsAutomationState>(TYPES.MainframeProgramsAutomationState)
   .to(MainframeProgramsAutomationState)
+  .inSingletonScope()
+  .whenTargetIsDefault();
+
+container
+  .bind<ICloneLevelAutomationState>(TYPES.CloneLevelAutomationState)
+  .to(CloneLevelAutomationState)
   .inSingletonScope()
   .whenTargetIsDefault();
 

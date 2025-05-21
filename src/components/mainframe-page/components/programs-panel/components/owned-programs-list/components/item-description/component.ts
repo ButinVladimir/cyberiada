@@ -3,7 +3,7 @@ import { localized } from '@lit/localize';
 import { customElement, queryAll } from 'lit/decorators.js';
 import { consume } from '@lit/context';
 import { BaseComponent } from '@shared/index';
-import { OtherProgramName, MultiplierProgramName, type IProgram } from '@state/mainframe-state';
+import { OtherProgramName, MultiplierProgramName, type IProgram, AutobuyerProgramName } from '@state/mainframe-state';
 import { COMMON_TEXTS, PROGRAM_DESCRIPTION_TEXTS, PROGRAM_TEXTS } from '@texts/index';
 import {
   CodeGeneratorDescriptionEffectRenderer,
@@ -14,6 +14,7 @@ import {
   CircuitDesignerDescriptionEffectRenderer,
   InformationCollectorDescriptionEffectRenderer,
   DealMakerDescriptionEffectRenderer,
+  CloneLevelAutoupgraderDescriptionEffectRenderer,
 } from './description-effect-renderers';
 import { IDescriptionEffectRenderer, IDescriptionParameters } from './interfaces';
 import { ProgramDescriptionTextController } from './controller';
@@ -188,20 +189,24 @@ export class ProgramDescriptionText extends BaseComponent {
         this._renderer = new DealMakerDescriptionEffectRenderer(parameters);
         break;
 
+      case MultiplierProgramName.informationCollector:
+        this._renderer = new InformationCollectorDescriptionEffectRenderer(parameters);
+        break;
+
       case OtherProgramName.predictiveComputator:
         this._renderer = new PredictiveComputatorDescriptionEffectRenderer(parameters);
         break;
 
-      case OtherProgramName.mainframeHardwareAutobuyer:
+      case AutobuyerProgramName.mainframeHardwareAutobuyer:
         this._renderer = new MainframeHardwareAutobuyerDescriptionEffectRenderer(parameters);
         break;
 
-      case OtherProgramName.mainframeProgramsAutobuyer:
+      case AutobuyerProgramName.mainframeProgramsAutobuyer:
         this._renderer = new MainframeProgramsAutobuyerDescriptionEffectRenderer(parameters);
         break;
 
-      case OtherProgramName.informationCollector:
-        this._renderer = new InformationCollectorDescriptionEffectRenderer(parameters);
+      case AutobuyerProgramName.cloneLevelAutoupgrader:
+        this._renderer = new CloneLevelAutoupgraderDescriptionEffectRenderer(parameters);
         break;
 
       default:

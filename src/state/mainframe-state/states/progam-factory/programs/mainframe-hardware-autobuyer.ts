@@ -3,13 +3,13 @@ import { IMainframeHardwareParameter } from '@state/mainframe-state';
 import { type IAutomationState } from '@state/automation-state';
 import { decorators } from '@state/container';
 import { TYPES } from '@state/types';
-import { OtherProgramName } from '../types';
+import { AutobuyerProgramName } from '../types';
 import { BaseProgram } from './base-program';
 
 const { lazyInject } = decorators;
 
 export class MainframeHardwareAutobuyerProgram extends BaseProgram {
-  public readonly name = OtherProgramName.mainframeHardwareAutobuyer;
+  public readonly name = AutobuyerProgramName.mainframeHardwareAutobuyer;
   public readonly isAutoscalable = false;
 
   @lazyInject(TYPES.AutomationState)

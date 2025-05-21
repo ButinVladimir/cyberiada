@@ -17,4 +17,8 @@ export class ClonesListController extends BaseController {
   deleteAllClones() {
     this.companyState.clones.deleteAllClones();
   }
+
+  upgradeMaxAllLevels() {
+    this.companyState.clones.upgradeMaxAllLevels();
+  }
 }
