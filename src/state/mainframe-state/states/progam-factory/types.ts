@@ -14,6 +14,7 @@ export enum AutobuyerProgramName {
 export enum OtherProgramName {
   shareServer = 'shareServer',
   predictiveComputator = 'predictiveComputator',
+  peerReviewer = 'peerReviewer',
 }
 
 export type ProgramName = MultiplierProgramName | AutobuyerProgramName | OtherProgramName;

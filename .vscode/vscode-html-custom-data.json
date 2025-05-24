@@ -660,6 +660,11 @@
       "attributes": []
     },
     {
+      "name": "ca-statistics-experience-share",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_controller` {`StatisticsExperienceShareController`} - ",
+      "attributes": []
+    },
+    {
       "name": "ca-statistics-game-time",
       "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_gameTimeRef` {`Ref<HTMLSpanElement>`} - \n\n  * `_gameTotalTimeRef` {`Ref<HTMLSpanElement>`} - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`StatisticsGameTimeController`} - ",
       "attributes": []

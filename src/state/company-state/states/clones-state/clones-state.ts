@@ -1,4 +1,4 @@
-import { injectable } from 'inversify';
+import { inject, injectable } from 'inversify';
 import { v4 as uuid } from 'uuid';
 import { msg, str } from '@lit/localize';
 import cloneTemplates from '@configs/clone-templates.json';
@@ -19,7 +19,12 @@ import { CLONE_TEMPLATE_TEXTS } from '@texts/clone-templates';
 import { ICloneNameGeneratorResult } from '@workers/clone-name-generator/interfaces';
 import type { ICompanyState } from '../../interfaces/company-state';
 import { IClone } from '../clone-factory/interfaces/clone';
-import { ICompanyClonesSerializedState, ICompanyClonesState, IPurchaseCloneArgs } from './interfaces';
+import {
+  ICompanyClonesSerializedState,
+  ICompanyClonesState,
+  type IExperienceShareParameter,
+  IPurchaseCloneArgs,
+} from './interfaces';
 import { CloneTemplateName, IMakeCloneParameters } from '../clone-factory';
 
 const { lazyInject } = decorators;
@@ -41,11 +46,15 @@ export class CompanyClonesState implements ICompanyClonesState {
   @lazyInject(TYPES.Formatter)
   private _formatter!: IFormatter;
 
+  private _experienceShare: IExperienceShareParameter;
+
   private _availableSynchronization: number;
   private _clonesList: IClone[];
   private _clonesMap: Map<string, IClone>;
 
-  constructor() {
+  constructor(@inject(TYPES.ExperienceShareParameter) _experienceShare: IExperienceShareParameter) {
+    this._experienceShare = _experienceShare;
+
     this._availableSynchronization = 0;
     this._clonesList = [];
     this._clonesMap = new Map<string, IClone>();
@@ -57,8 +66,23 @@ export class CompanyClonesState implements ICompanyClonesState {
     return this._availableSynchronization;
   }
 
+  get experienceShare() {
+    return this._experienceShare;
+  }
+
   listClones(): IClone[] {
     return this._clonesList;
+  }
+
+  earnCloneExperience(id: string, delta: number): void {
+    const clone = this.getCloneById(id);
+
+    if (!clone) {
+      return;
+    }
+
+    clone.increaseExperience(delta);
+    this._experienceShare.increaseExperience(delta);
   }
 
   getCloneById(id: string): IClone | undefined {
@@ -122,23 +146,25 @@ export class CompanyClonesState implements ICompanyClonesState {
       this._messageLogState.postMessage(ClonesEvent.cloneDeleted, msg(str`Clone "${clone.name}" has been deleted`));
     }
 
-    this.recalculateSynchronization();
+    this.updateSynchronization();
 
     this._companyState.requestReassignment();
   }
 
   deleteAllClones(): void {
     this.clearState();
+    this._companyState.sidejobs.cancelAllSidejobs();
 
     this._messageLogState.postMessage(ClonesEvent.allClonesDeleted, msg('All clones have been deleted'));
 
-    this.recalculateSynchronization();
+    this.updateSynchronization();
 
-    this._companyState.sidejobs.cancelAllSidejobs();
     this._companyState.requestReassignment();
   }
 
-  recalculate(): void {
+  recalculateClones(): void {
+    this._experienceShare.spendExperience();
+
     for (const clone of this._clonesList) {
       clone.recalculate();
     }
@@ -176,12 +202,14 @@ export class CompanyClonesState implements ICompanyClonesState {
     });
   }
 
-  recalculateSynchronization() {
+  updateSynchronization() {
     this._availableSynchronization = this._globalState.synchronization.totalValue;
 
     for (const clone of this._clonesList) {
       this._availableSynchronization -= this.getCloneSynchronization(clone.templateName, clone.tier);
     }
+
+    this._experienceShare.recalculateMultipliers();
   }
 
   upgradeMaxAllLevels() {
@@ -194,7 +222,7 @@ export class CompanyClonesState implements ICompanyClonesState {
 
   async startNewState(): Promise<void> {
     this.clearState();
-    this.recalculateSynchronization();
+    this.handleStateReset();
   }
 
   async deserialize(serializedState: ICompanyClonesSerializedState): Promise<void> {
@@ -206,7 +234,7 @@ export class CompanyClonesState implements ICompanyClonesState {
       this._clonesMap.set(clone.id, clone);
     });
 
-    this.recalculateSynchronization();
+    this.handleStateReset();
   }
 
   serialize(): ICompanyClonesSerializedState {
@@ -235,7 +263,7 @@ export class CompanyClonesState implements ICompanyClonesState {
 
     this._clonesMap.set(clone.id, clone);
 
-    this.recalculateSynchronization();
+    this.updateSynchronization();
   }
 
   private handlePurhaseClone = (args: IPurchaseCloneArgs) => () => {
@@ -268,5 +296,11 @@ export class CompanyClonesState implements ICompanyClonesState {
     if (sidejob) {
       this._companyState.sidejobs.cancelSidejob(sidejob.id);
     }
+  }
+
+  private handleStateReset() {
+    this._experienceShare.resetExperience();
+    this.recalculateClones();
+    this.updateSynchronization();
   }
 }

@@ -53,7 +53,7 @@ export class SynchronizationParameter implements ISynchronizationParameter {
 
     this.calculateBaseValue();
     this.calculateDistrictValues();
-    this._companyState.clones.recalculateSynchronization();
+    this._companyState.clones.updateSynchronization();
   }
 
   private calculateBaseValue() {

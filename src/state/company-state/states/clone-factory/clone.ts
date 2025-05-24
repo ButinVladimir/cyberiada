@@ -140,10 +140,6 @@ export class Clone implements IClone {
     this._experience += delta;
   }
 
-  earnExperience(delta: number) {
-    this.increaseExperience(delta);
-  }
-
   purchaseLevelUpgrade(level: number): boolean {
     if (!this._globalState.unlockedFeatures.isFeatureUnlocked(Feature.companyManagement)) {
       return false;

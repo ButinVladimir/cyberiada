@@ -3,3 +3,4 @@ import './process-completion-speed';
 import './multipliers';
 import './connectivity';
 import './synchronization';
+import './experience-share';

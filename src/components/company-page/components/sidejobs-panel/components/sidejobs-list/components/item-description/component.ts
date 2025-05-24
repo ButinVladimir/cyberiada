@@ -53,6 +53,7 @@ export class SidejobsListItemDescription extends BaseComponent {
     [RewardParameter.rewards]: 0,
     [RewardParameter.processCompletionSpeedMultiplier]: 0,
     [RewardParameter.actions]: 0,
+    [RewardParameter.sharedExperienceMultiplier]: 0,
   };
 
   constructor() {

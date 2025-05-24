@@ -81,8 +81,6 @@ export class ProcessCompletionSpeedParameter implements IProcessCompletionSpeedP
         predictiveComputatorProcess.usedCores,
         predictiveComputatorProcess.totalRam,
       );
-    } else {
-      multiplierByProgram = 1;
     }
 
     this._multiplierByProgram = multiplierByProgram;

@@ -9,12 +9,16 @@ import { type IStateUIConnector } from '@state/state-ui-connector';
 import { IClone } from '../clone-factory';
 import { ISerializedSidejob, ISidejob, ISidejobArguments, ISidejobTemplate } from './interfaces';
 import { SidejobName } from './types';
+import { type ICompanyState } from '../../interfaces';
 
 const { lazyInject } = decorators;
 
 export class Sidejob implements ISidejob {
   @lazyInject(TYPES.GlobalState)
   private _globalState!: IGlobalState;
+
+  @lazyInject(TYPES.CompanyState)
+  private _companyState!: ICompanyState;
 
   @lazyInject(TYPES.SettingsState)
   private _settingsState!: ISettingsState;
@@ -127,7 +131,10 @@ export class Sidejob implements ISidejob {
     const passedTime = this._settingsState.updateInterval;
     const cloneModifier = this.getCommonModifier();
 
-    this._assignedClone.earnExperience(passedTime * this.calculateExperienceModifier());
+    this._companyState.clones.earnCloneExperience(
+      this._assignedClone.id,
+      passedTime * this.calculateExperienceModifier(),
+    );
     this._globalState.money.increase(passedTime * cloneModifier * this.calculateMoneyModifier(), IncomeSource.sidejob);
     this._globalState.development.increase(
       passedTime * cloneModifier * this.calculateDevelopmentPointsModifier(),

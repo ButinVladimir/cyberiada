@@ -1,4 +1,4 @@
-import { css, html } from 'lit';
+import { css, html, nothing } from 'lit';
 import { choose } from 'lit/directives/choose.js';
 import { provide } from '@lit/context';
 import { msg, localized } from '@lit/localize';
@@ -29,24 +29,16 @@ export class CompanyClonesPanel extends BaseComponent {
       }
 
       div.top-container {
-        display: grid;
-        grid-template-areas:
-          'synchronization'
-          'purchase-clone';
+        display: flex;
+        align-items: flex-start;
+        flex-direction: column;
         gap: var(--sl-spacing-medium);
         margin-bottom: var(--sl-spacing-large);
       }
 
-      .purchase-clone {
-        grid-area: purchase-clone;
-      }
-
-      .synchronization {
-        grid-area: synchronization;
-      }
-
       @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
         div.top-container {
+          flex-direction: row;
           grid-template-areas: 'purchase-clone synchronization';
           align-items: center;
           gap: var(--sl-spacing-3x-large);
@@ -81,6 +73,8 @@ export class CompanyClonesPanel extends BaseComponent {
     const formattedAvailableSynchronization = formatter.formatNumberDecimal(this._controller.availableSynchronization);
     const formattedTotalSynchronization = formatter.formatNumberDecimal(this._controller.totalSynchronization);
 
+    const formattedExperienceShareMultiplier = formatter.formatNumberFloat(this._controller.experienceShareMultiplier);
+
     return html`
       <p class="hint">
         ${msg(`Clone autoupgrade priority can be changed by dragging it by the name.
@@ -89,11 +83,11 @@ Clones cannot have level above current development level but they can store exce
       </p>
 
       <div class="top-container">
-        <sl-button class="purchase-clone" variant="primary" size="medium" @click=${this.handlePurchaseCloneDialogOpen}>
+        <sl-button variant="primary" size="medium" @click=${this.handlePurchaseCloneDialogOpen}>
           ${msg('Purchase clone')}
         </sl-button>
 
-        <div class="synchronization">
+        <div>
           ${msg(
             COMMON_TEXTS.parameterValue(
               msg('Available synchronization'),
@@ -101,6 +95,14 @@ Clones cannot have level above current development level but they can store exce
             ),
           )}
         </div>
+
+        ${this._controller.isExperienceShareUnlocked()
+          ? html`
+              <div>
+                ${msg(COMMON_TEXTS.parameterValue(msg('Shared experience'), `× ${formattedExperienceShareMultiplier}`))}
+              </div>
+            `
+          : nothing}
       </div>
 
       <ca-clones-list @open-clone-list-item-dialog=${this.handleCloneListItemDialogOpen}></ca-clones-list>

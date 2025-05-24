@@ -15,6 +15,7 @@ import {
   InformationCollectorDescriptionEffectRenderer,
   DealMakerDescriptionEffectRenderer,
   CloneLevelAutoupgraderDescriptionEffectRenderer,
+  PeerReviewerDescriptionEffectRenderer,
 } from './description-effect-renderers';
 import { IDescriptionEffectRenderer, IDescriptionParameters } from './interfaces';
 import { ProgramDescriptionTextController } from './controller';
@@ -173,10 +174,6 @@ export class ProgramDescriptionText extends BaseComponent {
     };
 
     switch (this._program!.name) {
-      case OtherProgramName.shareServer:
-        this._renderer = new ShareServerDescriptionEffectRenderer(parameters);
-        break;
-
       case MultiplierProgramName.codeGenerator:
         this._renderer = new CodeGeneratorDescriptionEffectRenderer(parameters);
         break;
@@ -193,10 +190,6 @@ export class ProgramDescriptionText extends BaseComponent {
         this._renderer = new InformationCollectorDescriptionEffectRenderer(parameters);
         break;
 
-      case OtherProgramName.predictiveComputator:
-        this._renderer = new PredictiveComputatorDescriptionEffectRenderer(parameters);
-        break;
-
       case AutobuyerProgramName.mainframeHardwareAutobuyer:
         this._renderer = new MainframeHardwareAutobuyerDescriptionEffectRenderer(parameters);
         break;
@@ -207,6 +200,18 @@ export class ProgramDescriptionText extends BaseComponent {
 
       case AutobuyerProgramName.cloneLevelAutoupgrader:
         this._renderer = new CloneLevelAutoupgraderDescriptionEffectRenderer(parameters);
+        break;
+
+      case OtherProgramName.shareServer:
+        this._renderer = new ShareServerDescriptionEffectRenderer(parameters);
+        break;
+
+      case OtherProgramName.predictiveComputator:
+        this._renderer = new PredictiveComputatorDescriptionEffectRenderer(parameters);
+        break;
+
+      case OtherProgramName.peerReviewer:
+        this._renderer = new PeerReviewerDescriptionEffectRenderer(parameters);
         break;
 
       default:

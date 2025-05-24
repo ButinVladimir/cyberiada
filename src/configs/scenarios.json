@@ -110,7 +110,7 @@
       },
       {
         "key": "tutorial_level_11",
-        "level": 3,
+        "level": 4,
         "unlockFeatures": ["codeBase", "computationalBase", "rewards"],
         "messages": []
       },
@@ -130,6 +130,12 @@
         "key": "tutorial_level_12",
         "level": 7,
         "unlockFeatures": ["automationMainframePrograms"],
+        "messages": []
+      },
+      {
+        "key": "tutorial_level_13",
+        "level": 8,
+        "unlockFeatures": ["experienceShare"],
         "messages": []
       }
     ]

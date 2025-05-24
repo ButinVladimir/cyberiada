@@ -9,7 +9,8 @@
       "dealMaker",
       "mainframeHardwareAutobuyer",
       "mainframeProgramsAutobuyer",
-      "cloneLevelAutoupgrader"
+      "cloneLevelAutoupgrader",
+      "peerReviewer"
     ],
     "cloneTemplates": ["anthrodrone"],
     "sidejobs": ["oddjob", "infoBroker"]

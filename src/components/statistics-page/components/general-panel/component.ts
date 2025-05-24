@@ -23,6 +23,9 @@ export class StatisticsGeneralPanel extends BaseComponent {
 
       <ca-statistics-process-completion-speed></ca-statistics-process-completion-speed>
 
+      ${this._controller.isFeatureUnlocked(Feature.experienceShare)
+        ? html`<ca-statistics-experience-share></ca-statistics-experience-share>`
+        : nothing}
       ${this._controller.isFeatureUnlocked(Feature.companyManagement)
         ? html`<ca-statistics-synchronization></ca-statistics-synchronization>`
         : nothing}

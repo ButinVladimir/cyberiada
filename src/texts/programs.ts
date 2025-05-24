@@ -53,6 +53,10 @@ Generates connectivity points and improves chances to receive new contracts and 
     title: () => msg('Predictive computator'),
     overview: () => msg('Program to speed up completion of currently running processes.'),
   },
+  [OtherProgramName.peerReviewer]: {
+    title: () => msg('Peer reviewer'),
+    overview: () => msg('Program to review clone experience before sharing it. Increases shared experience.'),
+  },
 };
 
 export const PROGRAM_DESCRIPTION_TEXTS = {

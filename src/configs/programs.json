@@ -20,6 +20,18 @@
       "baseTier": 1.3
     }
   },
+  "peerReviewer": {
+    "ram": 1,
+    "completionPoints": { "multiplier": 0, "base": 1 },
+    "cost": { "multiplier": 60000, "base": 1.15, "baseTier": 10 },
+    "requiredFeatures": ["experienceShare"],
+    "autoscalableResourcesPower": 0.5,
+    "experienceModifier": {
+      "base": 0.001,
+      "multiplier": 0.001,
+      "baseTier": 1.3
+    }
+  },
   "codeGenerator": {
     "ram": 1,
     "completionPoints": { "multiplier": 120000, "base": 1 },

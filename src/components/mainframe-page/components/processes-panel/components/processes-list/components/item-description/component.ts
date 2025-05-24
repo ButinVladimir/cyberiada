@@ -19,6 +19,7 @@ import {
 import { IDescriptionEffectRenderer, IDescriptionParameters } from './interfaces';
 import { ProcessDescriptionTextController } from './controller';
 import { processContext } from '../item/contexts';
+import { PeerReviewerDescriptionEffectRenderer } from './description-effect-renderers/peer-reviewer-description-effect-renderer';
 
 @localized()
 @customElement('ca-processes-list-item-description')
@@ -181,10 +182,6 @@ export class ProcessDescriptionText extends BaseComponent {
     };
 
     switch (this._process!.program.name) {
-      case OtherProgramName.shareServer:
-        this._renderer = new ShareServerDescriptionEffectRenderer(parameters);
-        break;
-
       case MultiplierProgramName.codeGenerator:
         this._renderer = new CodeGeneratorDescriptionEffectRenderer(parameters);
         break;
@@ -201,10 +198,6 @@ export class ProcessDescriptionText extends BaseComponent {
         this._renderer = new InformationCollectorDescriptionEffectRenderer(parameters);
         break;
 
-      case OtherProgramName.predictiveComputator:
-        this._renderer = new PredictiveComputatorDescriptionEffectRenderer(parameters);
-        break;
-
       case AutobuyerProgramName.mainframeHardwareAutobuyer:
         this._renderer = new MainframeHardwareAutobuyerDescriptionEffectRenderer(parameters);
         break;
@@ -215,6 +208,18 @@ export class ProcessDescriptionText extends BaseComponent {
 
       case AutobuyerProgramName.cloneLevelAutoupgrader:
         this._renderer = new CloneLevelAutoupgraderDescriptionEffectRenderer(parameters);
+        break;
+
+      case OtherProgramName.shareServer:
+        this._renderer = new ShareServerDescriptionEffectRenderer(parameters);
+        break;
+
+      case OtherProgramName.predictiveComputator:
+        this._renderer = new PredictiveComputatorDescriptionEffectRenderer(parameters);
+        break;
+
+      case OtherProgramName.peerReviewer:
+        this._renderer = new PeerReviewerDescriptionEffectRenderer(parameters);
         break;
 
       default:

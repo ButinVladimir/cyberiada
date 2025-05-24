@@ -90,6 +90,8 @@ import {
   ICompanyState,
   CompanyState,
   CloneTemplateName,
+  IExperienceShareParameter,
+  ExperienceShareParameter,
 } from '@state/company-state';
 import { AvailableCloneTemplatesState } from './global-state/parameters/available-items/available-clone-templates-state';
 import { DistrictTierPointsGrowthState } from './growth-state/parameters/district-tier-points-growth-state';
@@ -272,6 +274,12 @@ container.bind<IAutomationState>(TYPES.AutomationState).to(AutomationState).inSi
 container.bind<IFormatter>(TYPES.Formatter).to(Formatter).inSingletonScope().whenTargetIsDefault();
 
 container.bind<ICloneFactory>(TYPES.CloneFactory).to(CloneFactory).inSingletonScope().whenTargetIsDefault();
+
+container
+  .bind<IExperienceShareParameter>(TYPES.ExperienceShareParameter)
+  .to(ExperienceShareParameter)
+  .inSingletonScope()
+  .whenTargetIsDefault();
 
 container
   .bind<ICompanyClonesState>(TYPES.CompanyClonesState)

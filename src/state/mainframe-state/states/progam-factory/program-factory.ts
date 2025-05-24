@@ -11,6 +11,7 @@ import {
   InformationCollectorProgram,
   DealMakerProgram,
   CloneLevelAutoupgraderProgram,
+  PeerReviewerProgram,
 } from './programs';
 
 @injectable()
@@ -55,6 +56,9 @@ export class ProgramFactory implements IProgramFactory {
 
       case AutobuyerProgramName.cloneLevelAutoupgrader:
         return new CloneLevelAutoupgraderProgram(baseParameters);
+
+      case OtherProgramName.peerReviewer:
+        return new PeerReviewerProgram(baseParameters);
     }
   }
 }

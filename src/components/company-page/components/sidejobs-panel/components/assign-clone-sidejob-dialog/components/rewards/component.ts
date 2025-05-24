@@ -93,6 +93,10 @@ export class AssignCloneSidejobDialogRewards extends BaseComponent {
       value: 0,
       diff: 0,
     },
+    [RewardParameter.sharedExperienceMultiplier]: {
+      value: 0,
+      diff: 0,
+    },
   };
 
   constructor() {

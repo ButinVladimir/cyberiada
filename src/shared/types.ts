@@ -139,6 +139,7 @@ export enum Feature {
   computationalBase = 'computationalBase',
   connectivity = 'connectivity',
   rewards = 'rewards',
+  experienceShare = 'experienceShare',
 }
 
 export type PointsMultiplierType = 'codeBase' | 'computationalBase' | 'rewards';
@@ -179,4 +180,5 @@ export enum RewardParameter {
   rewards = 'rewards',
   processCompletionSpeedMultiplier = 'process-completion-speed-multiplier',
   actions = 'actions',
+  sharedExperienceMultiplier = 'shared-experience-multiplier',
 }

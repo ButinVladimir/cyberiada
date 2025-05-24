@@ -45,5 +45,6 @@ export const TYPES = {
   CompanyState: Symbol('CompanyState'),
   CloneFactory: Symbol('CloneFactory'),
   CompanyClonesState: Symbol('CompanyClonesState'),
+  ExperienceShareParameter: Symbol('ExperienceShareParameter'),
   Formatter: Symbol('Formatter'),
 };

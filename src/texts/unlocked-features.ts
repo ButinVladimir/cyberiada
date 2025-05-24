@@ -1,13 +1,7 @@
 import { msg } from '@lit/localize';
 import { Feature } from '@shared/types';
 
-interface IUnlockedFeatureTexts {
-  title: () => string;
-  hint: () => string;
-  message: () => string;
-}
-
-export const UNLOCKED_FEATURE_TEXTS: Record<Feature, IUnlockedFeatureTexts> = {
+export const UNLOCKED_FEATURE_TEXTS = {
   [Feature.automation]: {
     title: () => msg('Automation'),
     hint: () => msg('Automation page is available'),
@@ -66,5 +60,13 @@ Multipliers for programs and districts stack.`),
       msg(`Rewards points are now available.
 Increase them to get more rewards from everything.
 Multipliers for programs and districts stack.`),
+  },
+  [Feature.experienceShare]: {
+    title: () => msg('Experience share'),
+    hint: () => msg('Clones can share their experience between each other'),
+    message: () =>
+      msg(`Clone experience is now can be shared between them.
+Whenever clone receives experience, all available clones in company will receive part of it.
+How big is this part depends on running processes and available synchronization.`),
   },
 };

@@ -45,6 +45,7 @@ export class ExperienceGrowthState implements IExperienceGrowthState {
     }
 
     this.updateGrowthBySidejobs();
+    this.updateGrowthBySharing();
   }
 
   private updateGrowthBySidejobs(): void {
@@ -56,6 +57,22 @@ export class ExperienceGrowthState implements IExperienceGrowthState {
       let currentGrowth = this._growthByCloneId.get(sidejob.assignedClone!.id) ?? 0;
       currentGrowth += sidejob.calculateExperienceDelta(1);
       this._growthByCloneId.set(sidejob.assignedClone!.id, currentGrowth);
+    }
+  }
+
+  private updateGrowthBySharing(): void {
+    let sharedExperience = 0;
+
+    for (const clone of this._companyState.clones.listClones()) {
+      sharedExperience += this._growthByCloneId.get(clone.id) ?? 0;
+    }
+
+    sharedExperience *= this._companyState.clones.experienceShare.totalMultiplier;
+
+    for (const clone of this._companyState.clones.listClones()) {
+      const currentExperience = this._growthByCloneId.get(clone.id) ?? 0;
+
+      this._growthByCloneId.set(clone.id, currentExperience + sharedExperience);
     }
   }
 }
