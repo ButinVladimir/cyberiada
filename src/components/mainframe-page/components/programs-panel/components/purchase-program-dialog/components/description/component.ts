@@ -75,12 +75,9 @@ export class PurchaseProgramDialogDescription extends BaseComponent {
     this._controller = new ProgramDiffTextController(this);
   }
 
-  performUpdate() {
-    this.updateRenderer();
-    super.performUpdate();
-  }
-
   render() {
+    this.updateRenderer();
+
     if (!this._program) {
       return;
     }

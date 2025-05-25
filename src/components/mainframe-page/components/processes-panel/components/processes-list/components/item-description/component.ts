@@ -56,12 +56,9 @@ export class ProcessDescriptionText extends BaseComponent {
     this._controller = new ProcessDescriptionTextController(this);
   }
 
-  performUpdate() {
-    this.updateRenderer();
-    super.performUpdate();
-  }
-
   render() {
+    this.updateRenderer();
+
     if (!this._process) {
       this._renderer = undefined;
 
@@ -177,7 +174,7 @@ export class ProcessDescriptionText extends BaseComponent {
 
     const parameters: IDescriptionParameters = {
       formatter: this._controller.formatter,
-      autoscalableProcessRam: this._controller.autoscalableProcessRam,
+      availableRam: this._controller.getAvailableRamForProgram(this._process.program.name),
       process: this._process!,
     };
 

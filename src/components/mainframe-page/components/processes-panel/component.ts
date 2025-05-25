@@ -81,9 +81,9 @@ export class MainframeProcessesPanel extends BaseComponent {
     return html`
       <p class="hint">
         ${msg(`To make a program run, a process has to be start for it.
-Topmost processes for non-scalable programs have more priority when cores are assigned to processes.
-Process for scalable program has cores and RAM assigned last.
-Only one process for scalable program can run at same time.
+Topmost processes for non-autoscalable programs have more priority when cores are assigned to processes.
+Process for autoscalable program has cores and RAM assigned last.
+Only one process for autoscalable program can run at same time.
 Process minimal completion time is limited.
 Processes can be rearranged by dragging them by their title.`)}
       </p>

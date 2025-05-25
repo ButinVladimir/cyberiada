@@ -102,25 +102,24 @@ export class Sidejob implements ISidejob {
 
   getAttributeModifier(attribute: Attribute): number {
     if (!this._assignedClone) {
-      return 1;
+      return 0;
     }
 
-    const base = calculatePower(
-      this._globalState.threat.level,
-      this._sidejobTemplate.rewardModifiers.attributes[attribute],
+    return (
+      calculatePower(this._globalState.threat.level, this._sidejobTemplate.rewardModifiers.attributes[attribute]) *
+      this._assignedClone.getTotalAttributeValue(attribute)
     );
-
-    return Math.pow(base, this._assignedClone.getTotalAttributeValue(attribute));
   }
 
   getSkillModifier(skill: Skill): number {
     if (!this._assignedClone) {
-      return 1;
+      return 0;
     }
 
-    const base = calculatePower(this._globalState.threat.level, this._sidejobTemplate.rewardModifiers.skills[skill]);
-
-    return Math.pow(base, this._assignedClone.getTotalSkillValue(skill));
+    return (
+      calculatePower(this._globalState.threat.level, this._sidejobTemplate.rewardModifiers.skills[skill]) *
+      this._assignedClone.getTotalSkillValue(skill)
+    );
   }
 
   perform(): void {
@@ -203,14 +202,14 @@ export class Sidejob implements ISidejob {
   }
 
   private getCommonModifier(): number {
-    let modifier = 1;
+    let modifier = 0;
 
     for (const attribute of ATTRIBUTES) {
-      modifier *= this.getAttributeModifier(attribute);
+      modifier += this.getAttributeModifier(attribute);
     }
 
     for (const skill of SKILLS) {
-      modifier *= this.getSkillModifier(skill);
+      modifier += this.getSkillModifier(skill);
     }
 
     modifier *= this._globalState.multipliers.rewards.totalMultiplier;

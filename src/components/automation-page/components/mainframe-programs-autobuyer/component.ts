@@ -28,7 +28,7 @@ export class AutomationMainframeProgramsAutobuyer extends BaseComponent {
     return html`
       <h4 class="title">${msg('Mainframe programs autobuyer')}</h4>
 
-      <p class="hint">${msg('Percentage of available money reserved for buying programs')}</p>
+      <p class="hint">${msg('Percentage of available money reserved for buying programs.')}</p>
 
       <div class="input-container">
         <sl-input

@@ -93,7 +93,7 @@
     },
     {
       "name": "ca-city-district-overview-panel",
-      "description": "Properties:\n\n  * `styles` {`CSSResult[]`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult[]`} - \n\n  * `_controller` {`CityDistrictOverviewPanelController`} - ",
       "attributes": []
     },
     {
@@ -261,7 +261,7 @@
     },
     {
       "name": "ca-fast-forwarding-screen",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_maxTime` {`number`} - \n\n  * `_progressBarRef` {`Ref<SlProgressBar>`} - \n\n  * `handleStopFastForwarding` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`FastForwardingScreenController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_maxTime` {`number`} - \n\n  * `_progressBarRef` {`Ref<SlProgressBar>`} - \n\n  * `_timerElRef` {`Ref<HTMLSpanElement>`} - \n\n  * `handleStopFastForwarding` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`FastForwardingScreenController`} - ",
       "attributes": []
     },
     {

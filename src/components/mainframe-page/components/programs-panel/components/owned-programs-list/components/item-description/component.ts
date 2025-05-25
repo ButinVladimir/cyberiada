@@ -56,12 +56,9 @@ export class ProgramDescriptionText extends BaseComponent {
     this._controller = new ProgramDescriptionTextController(this);
   }
 
-  performUpdate() {
-    this.updateRenderer();
-    super.performUpdate();
-  }
-
   render() {
+    this.updateRenderer();
+
     if (!this._program) {
       this._renderer = undefined;
 

@@ -23,13 +23,16 @@ export class StatisticsExperienceShare extends BaseComponent {
   render() {
     const formatter = this._controller.formatter;
 
-    const { totalMultiplier, multiplierBySynchronization, multiplierByProgram } = this._controller;
+    const { baseMultiplier, totalMultiplier, multiplierBySynchronization, multiplierByProgram } = this._controller;
 
     return html`
       <sl-details>
         <h4 class="title" slot="summary">${msg('Shared experience multipliers')}</h4>
 
         <div class="parameters-table">
+          <span> ${STATISTIC_PAGE_TEXTS.baseValue()} </span>
+          <span> ${formatter.formatNumberFloat(baseMultiplier)} </span>
+
           <span> ${msg('By synchronization')} </span>
           <span> ${formatter.formatNumberFloat(multiplierBySynchronization)} </span>
 

@@ -329,7 +329,7 @@ export class Clone implements IClone {
     const formattedLevel = this._formatter.formatLevel(level);
     this._messageLogState.postMessage(
       ClonesEvent.cloneLevelUpgraded,
-      `Clone "${this._name}" level has been upgraded to ${formattedLevel}`,
+      msg(str`Clone "${this._name}" level has been upgraded to ${formattedLevel}`),
     );
 
     this.recalculateParameters();

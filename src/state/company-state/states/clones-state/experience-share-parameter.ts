@@ -45,6 +45,10 @@ export class ExperienceShareParameter implements IExperienceShareParameter {
     ]);
   }
 
+  get baseMultiplier() {
+    return this._globalState.scenario.currentValues.baseSharedExperienceMultiplier;
+  }
+
   get synchronizationMultiplier() {
     return this._synchronizationMultiplier;
   }
@@ -93,7 +97,7 @@ export class ExperienceShareParameter implements IExperienceShareParameter {
     this.calculateSynchronizationMultiplier();
     this.calculateProgramMultiplier();
 
-    this._totalMultiplier = this._synchronizationMultiplier * this._programMultiplier;
+    this._totalMultiplier = this.baseMultiplier * this._synchronizationMultiplier * this._programMultiplier;
   }
 
   private isFeatureAvailable(): boolean {

@@ -52,7 +52,7 @@ export class OverviewUnlockedItemsPanel extends BaseComponent {
 
     return html`
       <p class="hint">
-        ${msg(`Loaned items are items received on start and rewarded by capturing districts.
+        ${msg(`Loaned items are received on the start and rewarded by capturing districts.
 Number next to item name is it's maximum tier available.`)}
       </p>
       <div class="categories">

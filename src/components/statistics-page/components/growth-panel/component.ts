@@ -24,10 +24,10 @@ export class StatisticsGrowthPanel extends BaseComponent {
       <ca-statistics-development-growth></ca-statistics-development-growth>
 
       ${this._controller.isFeatureUnlocked(Feature.companyManagement)
-        ? html`
-            <ca-statistics-district-tier-points-growth></ca-statistics-district-tier-points-growth>
-            <ca-statistics-experience-growth></ca-statistics-experience-growth>
-          `
+        ? html`<ca-statistics-experience-growth></ca-statistics-experience-growth>`
+        : nothing}
+      ${this._controller.isFeatureUnlocked(Feature.districtTiers)
+        ? html`<ca-statistics-district-tier-points-growth></ca-statistics-district-tier-points-growth>`
         : nothing}
       ${this._controller.isFeatureUnlocked(Feature.connectivity)
         ? html`<ca-statistics-connectivity-points-growth></ca-statistics-connectivity-points-growth>`

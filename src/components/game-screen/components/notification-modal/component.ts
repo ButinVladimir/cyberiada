@@ -49,7 +49,7 @@ export class NotificationModal extends BaseComponent {
     const hasNextNotification = this._controller.hasNextNotification();
 
     return html`
-      <sl-dialog no-header ?open=${hasNotifications} @sl-request-close=${this.handleCloseCurrentNotification}>
+      <sl-dialog no-header ?open=${hasNotifications} @sl-request-close=${this.handleCloseAllNotifications}>
         ${this.renderModalContent()}
 
         <sl-button

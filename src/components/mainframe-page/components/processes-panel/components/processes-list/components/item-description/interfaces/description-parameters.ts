@@ -3,6 +3,6 @@ import { IProcess } from '@state/mainframe-state/states/mainframe-processes-stat
 
 export interface IDescriptionParameters {
   formatter: IFormatter;
-  autoscalableProcessRam: number;
+  availableRam: number;
   process: IProcess;
 }

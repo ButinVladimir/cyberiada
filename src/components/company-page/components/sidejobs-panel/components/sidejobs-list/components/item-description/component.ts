@@ -73,7 +73,10 @@ export class SidejobsListItemDescription extends BaseComponent {
       ${this.renderParameter(RewardParameter.money, true)}
       ${this.renderParameter(RewardParameter.developmentPoints, true)}
       ${this.renderParameter(RewardParameter.experience, true)}
-      ${this.renderParameter(RewardParameter.districtTierPoints, true)}
+      ${this.renderParameter(
+        RewardParameter.districtTierPoints,
+        this._controller.isFeatureUnlocked(Feature.districtTiers),
+      )}
       ${this.renderParameter(RewardParameter.connectivity, this._controller.isFeatureUnlocked(Feature.connectivity))}
       ${this.renderParameter(RewardParameter.codeBase, this._controller.isFeatureUnlocked(Feature.codeBase))}
       ${this.renderParameter(

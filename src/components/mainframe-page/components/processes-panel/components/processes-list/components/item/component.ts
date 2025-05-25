@@ -192,7 +192,7 @@ export class ProcessesListItem extends BaseComponent {
       : `${formattedUsedCores} / ${formattedMaxCores}`;
     const coresFull = this._process.program.isAutoscalable
       ? msg('Autoscalable')
-      : msg(str`Uses cores: ${formattedUsedCores} / ${formattedMaxCores}`);
+      : COMMON_TEXTS.parameterValue(msg('Uses cores'), `${formattedUsedCores} / ${formattedMaxCores}`);
 
     const toggleIcon = this._process.isActive ? ENTITY_ACTIVE_VALUES.icon.active : ENTITY_ACTIVE_VALUES.icon.stopped;
     const toggleLabel = this._process.isActive ? msg('Disable process') : msg('Enable process');

@@ -1,12 +1,18 @@
 import { css, html, nothing } from 'lit';
-import { localized, msg } from '@lit/localize';
+import { localized } from '@lit/localize';
 import { consume } from '@lit/context';
 import { customElement, state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { choose } from 'lit/directives/choose.js';
 import SlRadioGroup from '@shoelace-style/shoelace/dist/components/radio-group/radio-group.component.js';
-import { BaseComponent, getHighlightValueClass, highlightedValuesStyle, hintStyle } from '@shared/index';
-import { SIDEJOB_TEXTS } from '@texts/index';
+import {
+  BaseComponent,
+  getHighlightValueClass,
+  highlightedValuesStyle,
+  hintStyle,
+  RewardParameter,
+} from '@shared/index';
+import { COMMON_TEXTS, REWARD_PARAMETER_NAMES, SIDEJOB_TEXTS } from '@texts/index';
 import { type ISidejob } from '@state/company-state';
 import { temporarySidejobContext } from '../../contexts';
 import { AssignCloneSidejobDialogDescriptionMode } from './types';
@@ -99,7 +105,11 @@ export class AssignCloneSidejobDialogDescription extends BaseComponent {
       >
     `;
 
-    return html` <p class="text">${msg(html`Connectivity: ${connectivityValue}`)}</p> `;
+    return html`
+      <p class="text">
+        ${COMMON_TEXTS.parameterValue(REWARD_PARAMETER_NAMES[RewardParameter.connectivity](), connectivityValue)}
+      </p>
+    `;
   };
 
   private handleDescriptionModeChange = () => {

@@ -17,5 +17,6 @@ export class ProcessesListController extends BaseController {
 
   moveProcess(programName: ProgramName, newPosition: number) {
     this.mainframeState.processes.moveProcess(programName, newPosition);
+    this.host.requestUpdate();
   }
 }

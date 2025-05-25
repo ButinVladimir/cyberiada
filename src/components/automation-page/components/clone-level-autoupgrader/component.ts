@@ -28,7 +28,7 @@ export class AutomationCloneLevelAutoupgrader extends BaseComponent {
     return html`
       <h4 class="title">${msg('Clone level autoupgrader')}</h4>
 
-      <p class="hint">${msg('Percentage of available money reserved for upgrading clone levels')}</p>
+      <p class="hint">${msg('Percentage of available money reserved for upgrading clone levels.')}</p>
 
       <div class="input-container">
         <sl-input

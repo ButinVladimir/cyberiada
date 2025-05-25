@@ -1,4 +1,5 @@
 export interface IExperienceShareParameter {
+  baseMultiplier: number;
   synchronizationMultiplier: number;
   programMultiplier: number;
   totalMultiplier: number;

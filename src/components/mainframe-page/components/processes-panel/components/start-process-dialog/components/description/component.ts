@@ -84,12 +84,9 @@ export class StartProcessDialogDescription extends BaseComponent {
     this._controller = new ProcessDiffTextController(this);
   }
 
-  performUpdate() {
-    this.updateRenderer();
-    super.performUpdate();
-  }
-
   render() {
+    this.updateRenderer();
+
     if (!this._program) {
       return nothing;
     }

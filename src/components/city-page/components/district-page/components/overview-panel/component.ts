@@ -1,7 +1,8 @@
-import { css, html } from 'lit';
+import { css, html, nothing } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { localized } from '@lit/localize';
 import { BaseComponent } from '@shared/base-component';
+import { CityDistrictOverviewPanelController } from './controller';
 
 @localized()
 @customElement('ca-city-district-overview-panel')
@@ -17,10 +18,20 @@ export class CityDistrictOverviewPanel extends BaseComponent {
     `,
   ];
 
+  private _controller: CityDistrictOverviewPanelController;
+
+  constructor() {
+    super();
+
+    this._controller = new CityDistrictOverviewPanelController(this);
+  }
+
   render() {
     return html`
       <ca-city-district-overview-panel-values></ca-city-district-overview-panel-values>
-      <ca-city-district-overview-panel-next-tier-progress></ca-city-district-overview-panel-next-tier-progress>
+      ${this._controller.isDistrictTiersUnlocked()
+        ? html`<ca-city-district-overview-panel-next-tier-progress></ca-city-district-overview-panel-next-tier-progress>`
+        : nothing}
     `;
   }
 }

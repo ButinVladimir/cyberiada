@@ -1,15 +1,10 @@
 import { msg } from '@lit/localize';
 import { DistrictType } from '@shared/types';
 
-interface IDistrictTypeTexts {
-  title: () => string;
-  overview: () => string;
-}
-
-export const DISTRICT_TYPE_TEXTS: Record<DistrictType, IDistrictTypeTexts> = {
-  [DistrictType.suburb]: {
-    title: () => msg('Suburb'),
-    overview: () => msg(`Relatively silent arrays of houses. Suburbs don't have a lot of opportunities.`),
+export const DISTRICT_TYPE_TEXTS = {
+  [DistrictType.residential]: {
+    title: () => msg('Residential district'),
+    overview: () => msg(`Relatively silent arrays of houses. Residential districts don't have a lot of opportunities.`),
   },
   [DistrictType.corpoDistrict]: {
     title: () => msg('Corpo district'),

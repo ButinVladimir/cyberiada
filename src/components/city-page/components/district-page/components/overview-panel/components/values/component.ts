@@ -4,10 +4,11 @@ import { customElement } from 'lit/decorators.js';
 import { localized, msg } from '@lit/localize';
 import { BaseComponent } from '@shared/base-component';
 import { HINT_ICON, hintIconStyle } from '@shared/styles';
-import { COMMON_TEXTS, DISTRICT_TYPE_TEXTS, FACTION_TEXTS } from '@texts/index';
+import { COMMON_TEXTS, DISTRICT_TYPE_TEXTS } from '@texts/index';
 import { DISTRICT_STATE_TEXTS } from '../../../../../../constants';
 import { CityDistrictOverviewPanelValuesController } from './controller';
 import { districtIndexContext } from '../../../../contexts';
+import { DISTRICT_TIER_HINT } from '../../../../constants';
 
 @localized()
 @customElement('ca-city-district-overview-panel-values')
@@ -49,9 +50,7 @@ export class CityDistrictOverviewPanelValues extends BaseComponent {
 
     return html`
       <p class="text">
-        ${msg(
-          COMMON_TEXTS.parameterValue(msg('District type'), DISTRICT_TYPE_TEXTS[districtState.districtType].title()),
-        )}
+        ${COMMON_TEXTS.parameterValue(msg('District type'), DISTRICT_TYPE_TEXTS[districtState.districtType].title())}
 
         <sl-tooltip>
           <span slot="content">${DISTRICT_TYPE_TEXTS[districtState.districtType].overview()}</span>
@@ -60,18 +59,28 @@ export class CityDistrictOverviewPanelValues extends BaseComponent {
         </sl-tooltip>
       </p>
 
-      <p class="text">${msg(COMMON_TEXTS.parameterValue(COMMON_TEXTS.tier(), formattedTier))}</p>
+      ${this._controller.isDistrictTiersUnlocked()
+        ? html`
+            <p class="text">
+              ${COMMON_TEXTS.parameterValue(COMMON_TEXTS.tier(), formattedTier)}
+
+              <sl-tooltip>
+                <span slot="content">${DISTRICT_TIER_HINT()}</span>
+
+                <sl-icon name=${HINT_ICON}></sl-icon>
+              </sl-tooltip>
+            </p>
+          `
+        : nothing}
 
       <p class="text">
-        ${msg(COMMON_TEXTS.parameterValue(COMMON_TEXTS.faction(), FACTION_TEXTS[districtState.faction].title()))}
+        ${COMMON_TEXTS.parameterValue(msg('State'), DISTRICT_STATE_TEXTS[districtState.state].title())}
 
         <sl-tooltip>
-          <span slot="content">${FACTION_TEXTS[districtState.faction].overview()}</span>
+          <span slot="content">${DISTRICT_STATE_TEXTS[districtState.state].hint()}</span>
           <sl-icon name=${HINT_ICON}></sl-icon>
         </sl-tooltip>
       </p>
-
-      <p class="text">${msg(COMMON_TEXTS.parameterValue(msg('State'), DISTRICT_STATE_TEXTS[districtState.state]()))}</p>
     `;
   }
 }

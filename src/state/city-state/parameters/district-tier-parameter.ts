@@ -69,7 +69,7 @@ export class DistrictTierParameter implements IDistrictTierParameter {
       const formattedTier = this._formatter.formatTier(this._tier);
       this._messageLogState.postMessage(
         CityEvent.districtTierIncreased,
-        msg(str`District ${DISTRICT_NAMES[this._district.name]()} tier has been increased to ${formattedTier}`),
+        msg(str`District "${DISTRICT_NAMES[this._district.name]()}" tier has been increased to ${formattedTier}`),
       );
 
       this._globalState.synchronization.requestRecalculation();

@@ -52,7 +52,7 @@ export class MainframeProgramsState implements IMainframeProgramsState {
   }
 
   purchaseProgram(name: ProgramName, tier: number, level: number): boolean {
-    if (!this._globalState.unlockedFeatures.isFeatureUnlocked(Feature.mainframeUpgrades)) {
+    if (!this._globalState.unlockedFeatures.isFeatureUnlocked(Feature.mainframePrograms)) {
       return false;
     }
 

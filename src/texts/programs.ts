@@ -10,7 +10,7 @@ export const PROGRAM_TEXTS = {
   [OtherProgramName.shareServer]: {
     title: () => msg('Mainframe share server'),
     overview: () =>
-      msg(`Program to share your mainframe capabilities to city network.
+      msg(`Program to share your mainframe capabilities with city network.
 Passively generates money and development points.`),
   },
   [MultiplierProgramName.codeGenerator]: {
@@ -35,7 +35,7 @@ Generates rewards points and improves all rewards.`),
     title: () => msg('Information collector'),
     overview: () =>
       msg(`Program to collect all sorts of information.
-Generates connectivity points and improves chances to receive new contracts and sidejobs.`),
+Generates connectivity points, unlocks sidejobs and improves chances to receive new contracts.`),
   },
   [AutobuyerProgramName.mainframeHardwareAutobuyer]: {
     title: () => msg('Mainframe hardware autobuyer'),
@@ -67,8 +67,6 @@ export const PROGRAM_DESCRIPTION_TEXTS = {
   requirementsAutoscalable: () => msg('Requirements for autoscalable program'),
   requirementsSingle: () => msg('Requirements for single thread'),
   ram: () => msg('RAM'),
-  ramDiff: (ram: string, availableRam: string, ramDiff: string) => msg(str`RAM: ${ram} / ${availableRam} (${ramDiff})`),
-  ramAllUnused: () => msg('RAM: 1 + All available'),
   cores: () => msg('Cores'),
   upToValue: (value: any) => msg(html`Up to ${value}`),
   upToDiff: (value: any, diff: any) => msg(html`Up to ${value} (${diff})`),

@@ -88,18 +88,16 @@ Clones cannot have level above current development level but they can store exce
         </sl-button>
 
         <div>
-          ${msg(
-            COMMON_TEXTS.parameterValue(
-              msg('Available synchronization'),
-              `${formattedAvailableSynchronization} / ${formattedTotalSynchronization}`,
-            ),
+          ${COMMON_TEXTS.parameterValue(
+            msg('Available synchronization'),
+            `${formattedAvailableSynchronization} / ${formattedTotalSynchronization}`,
           )}
         </div>
 
         ${this._controller.isExperienceShareUnlocked()
           ? html`
               <div>
-                ${msg(COMMON_TEXTS.parameterValue(msg('Shared experience'), `× ${formattedExperienceShareMultiplier}`))}
+                ${COMMON_TEXTS.parameterValue(msg('Shared experience'), `× ${formattedExperienceShareMultiplier}`)}
               </div>
             `
           : nothing}

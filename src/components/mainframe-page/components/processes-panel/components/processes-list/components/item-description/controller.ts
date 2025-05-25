@@ -1,7 +1,8 @@
-import { BaseController } from '@shared/base-controller';
+import { BaseController } from '@shared/index';
+import { ProgramName } from '@state/mainframe-state';
 
 export class ProcessDescriptionTextController extends BaseController {
-  get autoscalableProcessRam(): number {
-    return this.mainframeState.processes.availableRam + 1;
+  getAvailableRamForProgram(programName: ProgramName): number {
+    return this.mainframeState.processes.getAvailableRamForProgram(programName);
   }
 }

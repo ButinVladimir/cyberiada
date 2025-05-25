@@ -56,7 +56,7 @@ export class AssignCloneSidejobDialogButtons extends BaseComponent {
           disabled
           @click=${this.handleAssignClone}
         >
-          Assign clone
+          ${msg('Assign clone')}
         </sl-button>
       </div>
     `;

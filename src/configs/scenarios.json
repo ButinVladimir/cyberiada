@@ -5,38 +5,38 @@
       "height": 100,
       "districts": [
         {
-          "type": "suburb",
+          "type": "residential",
           "tier": {
             "min": 0,
             "max": 0
           }
         },
         {
-          "type": "random",
+          "type": "residential",
           "tier": {
             "min": 0,
             "max": 6
           }
         },
         {
-          "type": "random",
+          "type": "residential",
           "tier": {
             "min": 0,
             "max": 6
           }
         },
         {
-          "type": "random",
+          "type": "residential",
           "tier": {
             "min": 0,
-            "max": 3
+            "max": 6
           }
         },
         {
-          "type": "suburb",
+          "type": "residential",
           "tier": {
             "min": 0,
-            "max": 3
+            "max": 6
           }
         }
       ],
@@ -49,93 +49,111 @@
       ],
       "startingDistrict": 0
     },
-    "mainframeHardware": {
-      "performancePrice": { "multiplier": 10000, "base": 1.3 },
-      "coresPrice": { "multiplier": 60000, "base": 1.3 },
-      "ramPrice": { "multiplier": 120000, "base": 1.3 }
-    },
     "mainframeSoftware": {
-      "performanceBoost": 1.01
+      "performanceBoost": 1.1
     },
-    "developmentLevelRequirements": { "multiplier": 30000, "base": 1.5 },
     "programMultipliers": {
       "money": {
-        "pointsMultiplier": 10
+        "pointsMultiplier": 1
       },
       "developmentPoints": {
-        "pointsMultiplier": 10
+        "pointsMultiplier": 1
       },
       "codeBase": {
-        "pointsMultiplier": 2,
-        "pointsToSoftCap": 3600,
-        "logBase": 2
+        "pointsMultiplier": 5
       },
       "computationalBase": {
-        "pointsMultiplier": 2,
-        "pointsToSoftCap": 3600,
-        "logBase": 2
+        "pointsMultiplier": 5
       },
       "connectivity": {
-        "pointsMultiplier": 2
+        "pointsMultiplier": 1
       },
       "rewards": {
-        "pointsMultiplier": 2,
-        "pointsToSoftCap": 3600,
-        "logBase": 2
+        "pointsMultiplier": 5
       }
     },
     "storyEvents": [
       {
-        "key": "tutorial_level_1",
+        "key": "tutorial_1",
         "level": 0,
-        "messages": ["tutorial_level_1"]
+        "messages": ["disclaimer", "tutorial_1_1", "tutorial_1_2", "tutorial_1_3"]
       },
       {
-        "key": "tutorial_level_2",
+        "key": "tutorial_2",
         "level": 1,
-        "unlockFeatures": ["mainframeUpgrades"],
-        "messages": ["tutorial_level_2"]
+        "unlockFeatures": ["mainframePrograms"],
+        "messages": ["tutorial_2_1"]
+      },
+      {
+        "key": "tutorial_level_3",
+        "level": 4,
+        "unlockFeatures": ["mainframeHardware"],
+        "messages": ["tutorial_3_1"]
+      },
+      {
+        "key": "tutorial_level_4",
+        "level": 9,
+        "unlockFeatures": ["companyManagement"],
+        "messages": ["tutorial_4_1"]
       },
       {
         "key": "tutorial_level_5",
-        "level": 2,
-        "unlockFeatures": ["companyManagement"],
-        "messages": ["tutorial_level_15"]
+        "level": 14,
+        "unlockFeatures": ["automation"],
+        "messages": ["tutorial_5_1"]
       },
       {
-        "key": "tutorial_level_11",
-        "level": 3,
+        "key": "tutorial_level_6",
+        "level": 17,
+        "unlockFeatures": ["districtTiers"],
+        "messages": ["tutorial_6_1"]
+      },
+      {
+        "key": "tutorial_level_7",
+        "level": 19,
         "unlockFeatures": ["connectivity"],
-        "messages": []
+        "messages": ["tutorial_7_1"]
       },
       {
-        "key": "tutorial_level_11",
-        "level": 4,
-        "unlockFeatures": ["codeBase", "computationalBase", "rewards"],
+        "key": "tutorial_level_8",
+        "level": 24,
+        "unlockFeatures": [],
+        "messages": ["disclaimer_content_end"]
+      },
+      {
+        "key": "tutorial_level_9",
+        "level": 29,
+        "unlockFeatures": ["rewards"],
         "messages": []
       },
       {
         "key": "tutorial_level_10",
-        "level": 5,
-        "unlockFeatures": ["automation"],
+        "level": 31,
+        "unlockFeatures": ["computationalBase"],
         "messages": []
       },
       {
         "key": "tutorial_level_11",
-        "level": 6,
+        "level": 33,
         "unlockFeatures": ["automationMainframeHardware"],
         "messages": []
       },
       {
         "key": "tutorial_level_12",
-        "level": 7,
-        "unlockFeatures": ["automationMainframePrograms"],
+        "level": 35,
+        "unlockFeatures": ["experienceShare"],
         "messages": []
       },
       {
         "key": "tutorial_level_13",
-        "level": 8,
-        "unlockFeatures": ["experienceShare"],
+        "level": 37,
+        "unlockFeatures": ["codeBase"],
+        "messages": []
+      },
+      {
+        "key": "tutorial_level_14",
+        "level": 39,
+        "unlockFeatures": ["automationMainframePrograms"],
         "messages": []
       }
     ]

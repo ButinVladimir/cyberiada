@@ -13,6 +13,7 @@ export interface IScenarioValues {
   startingDevelopmentLevel: number;
   startingAccumulatedTime: number;
   startingSynchronization: number;
+  baseSharedExperienceMultiplier: number;
   mainframeHardware: {
     basePerformanceLevel: number;
     baseCoresLevel: number;
