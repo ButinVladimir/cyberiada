@@ -1,67 +1,64 @@
 import { injectable } from 'inversify';
 import { decorators } from '@state/container';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
-import { EventBatcher } from '@shared/event-batcher';
 import { TYPES } from '@state/types';
-import type { IGlobalState } from '../../interfaces/global-state';
-import { IAvailableCategoryItemsState } from '../../interfaces/parameters/available-category-items-state';
-import { IAvailableCategoryItemsSerializedState } from '../../interfaces/serialized-states/available-category-items-serialized-state';
+import { Feature } from '@shared/types';
+import {
+  type IGlobalState,
+  IAvailableCategoryItemsState,
+  IAvailableCategoryItemsSerializedState,
+} from '../../interfaces';
 
 const { lazyInject } = decorators;
 
 @injectable()
 export abstract class BaseAvailableCategoryItemsState<Key = string> implements IAvailableCategoryItemsState<Key> {
-  readonly uiEventBatcher: EventBatcher;
-
   @lazyInject(TYPES.StateUIConnector)
   protected _stateUiConnector!: IStateUIConnector;
 
   @lazyInject(TYPES.GlobalState)
   protected _globalState!: IGlobalState;
 
-  protected _loanedQuality: number;
+  protected _loanedTier: number;
   protected _neutralItems: Set<Key>;
   protected _loanedItems: Set<Key>;
   protected _itemsList: Key[];
 
   constructor() {
-    this._loanedQuality = 0;
+    this._loanedTier = 0;
     this._neutralItems = new Set();
     this._loanedItems = new Set();
     this._itemsList = [];
 
-    this.recalculateList();
-
-    this.uiEventBatcher = new EventBatcher();
-    this._stateUiConnector.registerEventEmitter(this);
+    this._stateUiConnector.registerEventEmitter(this, ['_loanedTier', '_itemsList']);
   }
 
-  get loanedQuality() {
-    return this._loanedQuality;
+  get loanedTier() {
+    return this._loanedTier;
   }
 
   listAvailableItems(): Key[] {
     return this._itemsList;
   }
 
-  isItemAvailable(itemName: Key, quality: number, level: number): boolean {
+  isItemAvailable(itemName: Key, tier: number, level: number): boolean {
     if (!(this._neutralItems.has(itemName) || this._loanedItems.has(itemName))) {
       return false;
     }
 
-    const highestAvailableQuality = this.getItemHighestAvailableQuality(itemName);
-    if (quality > highestAvailableQuality) {
+    const highestAvailableTier = this.getItemHighestAvailableTier(itemName);
+    if (tier > highestAvailableTier) {
       return false;
     }
 
     return level <= this._globalState.development.level;
   }
 
-  getItemHighestAvailableQuality(itemName: Key): number {
+  getItemHighestAvailableTier(itemName: Key): number {
     let result: number | undefined = undefined;
 
     if (this._neutralItems.has(itemName) || this._loanedItems.has(itemName)) {
-      result = this._loanedQuality;
+      result = this._loanedTier;
     }
 
     if (result === undefined) {
@@ -71,42 +68,55 @@ export abstract class BaseAvailableCategoryItemsState<Key = string> implements I
     return result;
   }
 
-  async startNewState(): Promise<void> {
-    this._loanedQuality = 6;
-    this._loanedItems.clear();
-
+  recalculate() {
     this.recalculateNeutralItemsList();
-    this.recalculateList();
+    this.recalculateCompleteList();
+  }
+
+  async startNewState(): Promise<void> {
+    this._loanedTier = 6;
+    this._loanedItems.clear();
   }
 
   async deserialize(serializedState: IAvailableCategoryItemsSerializedState<Key>): Promise<void> {
-    this._loanedQuality = serializedState.loanedQuality;
+    this._loanedTier = serializedState.loanedTier;
     this._loanedItems.clear();
 
     serializedState.loanedItems.forEach((itemName) => {
       this._loanedItems.add(itemName);
     });
-
-    this.recalculateNeutralItemsList();
-    this.recalculateList();
   }
 
   serialize(): IAvailableCategoryItemsSerializedState<Key> {
     return {
-      loanedQuality: this._loanedQuality,
+      loanedTier: this._loanedTier,
       loanedItems: Array.from(this._loanedItems.values()),
     };
   }
 
   protected abstract recalculateNeutralItemsList(): void;
 
-  private recalculateList() {
-    this._itemsList = Array.from(this._neutralItems.values());
+  protected abstract getItemRequiredFeatures(itemName: Key): Feature[];
+
+  private recalculateCompleteList() {
+    const completeList = Array.from(this._neutralItems.values());
 
     this._loanedItems.forEach((itemName) => {
       if (!this._neutralItems.has(itemName)) {
-        this._itemsList.push(itemName);
+        completeList.push(itemName);
       }
     });
+
+    const filteredList = completeList.filter((itemName) => {
+      const requiredFeatures = this.getItemRequiredFeatures(itemName);
+      const allFeaturesUnlocked = requiredFeatures.every((feature) =>
+        this._globalState.unlockedFeatures.isFeatureUnlocked(feature),
+      );
+
+      return allFeaturesUnlocked;
+    });
+
+    this._itemsList.length = 0;
+    this._itemsList.push(...filteredList);
   }
 }

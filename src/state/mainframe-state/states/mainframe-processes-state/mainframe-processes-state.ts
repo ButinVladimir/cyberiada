@@ -6,7 +6,6 @@ import type { IMessageLogState } from '@state/message-log-state/interfaces/messa
 import type { ISettingsState } from '@state/settings-state/interfaces/settings-state';
 import type { IFormatter } from '@shared/interfaces/formatter';
 import { TYPES } from '@state/types';
-import { EventBatcher } from '@shared/event-batcher';
 import { ProgramsEvent } from '@shared/types';
 import { moveElementInArray, removeElementsFromArray } from '@shared/helpers';
 import { PROGRAM_TEXTS } from '@texts/programs';
@@ -16,24 +15,31 @@ import {
   IMainframeProcessesSerializedState,
   IMainframeProcessesState,
   IProcess,
+  type IProcessCompletionSpeedParameter,
   ISerializedProcess,
 } from './interfaces';
 import { Process } from './process';
-import { MAINFRAME_PROCESSES_STATE_UI_EVENTS } from './constants';
 
 const { lazyInject } = decorators;
 
 @injectable()
 export class MainframeProcessesState implements IMainframeProcessesState {
-  readonly uiEventBatcher: EventBatcher;
-
   @lazyInject(TYPES.MainframeState)
   private _mainframeState!: IMainframeState;
 
-  private _stateUiConnector: IStateUIConnector;
-  private _settingsState: ISettingsState;
-  private _messageLogState: IMessageLogState;
-  private _formatter: IFormatter;
+  @lazyInject(TYPES.StateUIConnector)
+  private _stateUiConnector!: IStateUIConnector;
+
+  @lazyInject(TYPES.SettingsState)
+  private _settingsState!: ISettingsState;
+
+  @lazyInject(TYPES.MessageLogState)
+  private _messageLogState!: IMessageLogState;
+
+  @lazyInject(TYPES.Formatter)
+  private _formatter!: IFormatter;
+
+  private _processCompletionSpeed: IProcessCompletionSpeedParameter;
 
   private _processesList: IProcess[];
   private _processesMap: Map<ProgramName, IProcess>;
@@ -45,15 +51,9 @@ export class MainframeProcessesState implements IMainframeProcessesState {
   private _performanceUpdateRequested: boolean;
 
   constructor(
-    @inject(TYPES.StateUIConnector) _stateUiConnector: IStateUIConnector,
-    @inject(TYPES.SettingsState) _settingsState: ISettingsState,
-    @inject(TYPES.MessageLogState) _messageLogState: IMessageLogState,
-    @inject(TYPES.Formatter) _formatter: IFormatter,
+    @inject(TYPES.ProcessCompletionSpeedParameter) _processCompletionSpeed: IProcessCompletionSpeedParameter,
   ) {
-    this._stateUiConnector = _stateUiConnector;
-    this._settingsState = _settingsState;
-    this._messageLogState = _messageLogState;
-    this._formatter = _formatter;
+    this._processCompletionSpeed = _processCompletionSpeed;
 
     this._processesMap = new Map<ProgramName, IProcess>();
     this._processesList = [];
@@ -63,31 +63,31 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     this._processUpdateRequested = false;
     this._performanceUpdateRequested = false;
 
-    this.uiEventBatcher = new EventBatcher();
-    this._stateUiConnector.registerEventEmitter(this);
+    this._stateUiConnector.registerEventEmitter(this, [
+      '_availableCores',
+      '_availableRam',
+      '_runningScalableProcess',
+      '_processesList',
+    ]);
   }
 
   get availableCores() {
-    this._stateUiConnector.connectEventHandler(this, MAINFRAME_PROCESSES_STATE_UI_EVENTS.AVAILABLE_CORES_UPDATED);
-
     return this._availableCores;
   }
 
   get availableRam() {
-    this._stateUiConnector.connectEventHandler(this, MAINFRAME_PROCESSES_STATE_UI_EVENTS.AVAILABLE_RAM_UPDATED);
-
     return this._availableRam;
   }
 
   get runningScalableProcess() {
-    this._stateUiConnector.connectEventHandler(this, MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESSES_UPDATED);
-
     return this._runningScalableProcess;
   }
 
-  listProcesses(): IProcess[] {
-    this._stateUiConnector.connectEventHandler(this, MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESSES_UPDATED);
+  get processCompletionSpeed() {
+    return this._processCompletionSpeed;
+  }
 
+  listProcesses(): IProcess[] {
     return this._processesList;
   }
 
@@ -108,17 +108,14 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     const threadCount = program.isAutoscalable ? 0 : threads;
 
     const existingProcess = this.getProcessByName(programName);
+    const availableRam = this.getAvailableRamForProgram(programName);
 
-    if (!program.isAutoscalable) {
-      let availableRam = this.availableRam;
+    if (!program.isAutoscalable && availableRam < program.ram * threads) {
+      return false;
+    }
 
-      if (existingProcess) {
-        availableRam += existingProcess.totalRam;
-      }
-
-      if (availableRam < program.ram * threads) {
-        return false;
-      }
+    if (program.isAutoscalable && availableRam === 0) {
+      return false;
     }
 
     if (program.isAutoscalable && !existingProcess) {
@@ -162,8 +159,6 @@ export class MainframeProcessesState implements IMainframeProcessesState {
       );
     }
 
-    this.uiEventBatcher.enqueueEvent(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESSES_UPDATED);
-
     return true;
   }
 
@@ -206,8 +201,6 @@ export class MainframeProcessesState implements IMainframeProcessesState {
       }
     }
 
-    this.uiEventBatcher.enqueueEvent(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESSES_UPDATED);
-
     this.requestUpdateProcesses();
   }
 
@@ -215,8 +208,6 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     this.clearState();
 
     this._messageLogState.postMessage(ProgramsEvent.allProcessesDeleted, msg('All process have been deleted'));
-
-    this.uiEventBatcher.enqueueEvent(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESSES_UPDATED);
 
     this.requestUpdateProcesses();
   }
@@ -226,6 +217,7 @@ export class MainframeProcessesState implements IMainframeProcessesState {
   }
 
   requestUpdatePerformance() {
+    this._processCompletionSpeed.requestMultipliersRecalculation();
     this._performanceUpdateRequested = true;
   }
 
@@ -237,6 +229,8 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     if (this._performanceUpdateRequested) {
       this.updatePerformance();
     }
+
+    this._processCompletionSpeed.recalculateMultipliers();
 
     if (this._runningScalableProcess?.isActive) {
       this._runningScalableProcess.program.perform(
@@ -274,10 +268,34 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     this.requestUpdateProcesses();
   }
 
+  getAvailableRamForProgram(programName: ProgramName): number {
+    const program = this._mainframeState.programs.getOwnedProgramByName(programName);
+    if (!program) {
+      return 0;
+    }
+
+    let result = this.availableRam;
+
+    if (program.isAutoscalable && this._runningScalableProcess) {
+      result += program.ram;
+    }
+
+    if (!program.isAutoscalable) {
+      const existingProcess = this.getProcessByName(programName);
+
+      if (existingProcess) {
+        result += existingProcess.totalRam;
+      }
+    }
+
+    return result;
+  }
+
   async startNewState(): Promise<void> {
     this.clearState();
 
     this.requestUpdateProcesses();
+    this.requestUpdatePerformance();
   }
 
   async deserialize(serializedState: IMainframeProcessesSerializedState): Promise<void> {
@@ -290,19 +308,24 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     });
 
     this.requestUpdateProcesses();
+    this.requestUpdatePerformance();
   }
 
   serialize(): IMainframeProcessesSerializedState {
     return {
-      processes: this._processesList.map((process) => process.serialize()),
+      processes: this._processesList.map(this.serializeProcess),
     };
   }
+
+  private serializeProcess = (process: IProcess): ISerializedProcess => {
+    return process.serialize();
+  };
 
   private updateRunningProcesses = () => {
     this._processUpdateRequested = false;
 
-    let availableCores = this._mainframeState.hardware.cores.level;
-    let availableRam = this._mainframeState.hardware.ram.level;
+    let availableCores = this._mainframeState.hardware.cores.totalLevel;
+    let availableRam = this._mainframeState.hardware.ram.totalLevel;
     this._runningProcesses.length = 0;
     this._runningScalableProcess = this._processesList.find((process) => process.program.isAutoscalable);
     let runningScalableProcessCores = 0;
@@ -350,17 +373,8 @@ export class MainframeProcessesState implements IMainframeProcessesState {
       this._runningScalableProcess.usedCores = runningScalableProcessCores;
     }
 
-    if (this._availableRam !== availableRam) {
-      this._availableRam = availableRam;
-      this.uiEventBatcher.enqueueEvent(MAINFRAME_PROCESSES_STATE_UI_EVENTS.AVAILABLE_RAM_UPDATED);
-    }
-
-    if (this._availableCores !== availableCores) {
-      this._availableCores = availableCores;
-      this.uiEventBatcher.enqueueEvent(MAINFRAME_PROCESSES_STATE_UI_EVENTS.AVAILABLE_CORES_UPDATED);
-    }
-
-    this.uiEventBatcher.enqueueEvent(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESSES_UPDATED);
+    this._availableRam = availableRam;
+    this._availableCores = availableCores;
   };
 
   private updateFinishedProcesses(): void {
@@ -377,14 +391,10 @@ export class MainframeProcessesState implements IMainframeProcessesState {
         index++;
       }
     }
-
-    this.uiEventBatcher.enqueueEvent(MAINFRAME_PROCESSES_STATE_UI_EVENTS.PROCESSES_UPDATED);
   }
 
   private createProcess = (processParameters: ISerializedProcess): IProcess => {
     const process = new Process({
-      mainframeProcessesState: this,
-      stateUiConnector: this._stateUiConnector,
       isActive: processParameters.isActive,
       threads: processParameters.threads,
       program: this._mainframeState.programs.getOwnedProgramByName(processParameters.programName)!,

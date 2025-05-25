@@ -11,6 +11,8 @@ export class AvailableItemsState implements IAvailableItemsState {
   private _availableProgramsState: IAvailableCategoryItemsState<ProgramName>;
   private _availableCloneTemplatesState: IAvailableCategoryItemsState<CloneTemplateName>;
 
+  private _recalculationRequested: boolean;
+
   constructor(
     @inject(TYPES.AvailableProgramsState) _availableProgramsState: IAvailableCategoryItemsState<ProgramName>,
     @inject(TYPES.AvailableCloneTemplatesState)
@@ -18,6 +20,8 @@ export class AvailableItemsState implements IAvailableItemsState {
   ) {
     this._availableProgramsState = _availableProgramsState;
     this._availableCloneTemplatesState = _availableCloneTemplatesState;
+
+    this._recalculationRequested = true;
   }
 
   get programs(): IAvailableCategoryItemsState<ProgramName> {
@@ -26,6 +30,21 @@ export class AvailableItemsState implements IAvailableItemsState {
 
   get cloneTemplates(): IAvailableCategoryItemsState<CloneTemplateName> {
     return this._availableCloneTemplatesState;
+  }
+
+  requestRecalculation() {
+    this._recalculationRequested = true;
+  }
+
+  recalculate() {
+    if (!this._recalculationRequested) {
+      return;
+    }
+
+    this._recalculationRequested = false;
+
+    this._availableProgramsState.recalculate();
+    this._availableCloneTemplatesState.recalculate();
   }
 
   async startNewState(): Promise<void> {

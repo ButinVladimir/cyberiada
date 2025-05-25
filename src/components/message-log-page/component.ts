@@ -12,7 +12,7 @@ import { MessageLogBarController } from './controller';
 
 @localized()
 @customElement('ca-message-log-page')
-export class MessageLogPage extends BaseComponent<MessageLogBarController> {
+export class MessageLogPage extends BaseComponent {
   static styles = [
     pageTitleStyle,
     css`
@@ -33,12 +33,12 @@ export class MessageLogPage extends BaseComponent<MessageLogBarController> {
     `,
   ];
 
-  protected controller: MessageLogBarController;
+  private _controller: MessageLogBarController;
 
   constructor() {
     super();
 
-    this.controller = new MessageLogBarController(this);
+    this._controller = new MessageLogBarController(this);
   }
 
   connectedCallback() {
@@ -76,9 +76,7 @@ export class MessageLogPage extends BaseComponent<MessageLogBarController> {
     `;
   }
 
-  private handleOpenClearMessagesDialog = (event: Event) => {
-    event.stopPropagation();
-
+  private handleOpenClearMessagesDialog = () => {
     this.dispatchEvent(
       new ConfirmationAlertOpenEvent(GameStateAlert.clearMessages, msg('Are you sure want to clear log messages?')),
     );
@@ -91,6 +89,6 @@ export class MessageLogPage extends BaseComponent<MessageLogBarController> {
       return;
     }
 
-    this.controller.clearMessages();
+    this._controller.clearMessages();
   };
 }

@@ -1,20 +1,18 @@
 import { injectable } from 'inversify';
 import { decorators } from '@state/container';
 import { Feature, NotificationType } from '@shared/types';
-import { EventBatcher } from '@shared/event-batcher';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import type { INotificationsState } from '@state/notifications-state/interfaces/notifications-state';
 import { TYPES } from '@state/types';
 import { UNLOCKED_FEATURE_TEXTS } from '@texts/unlocked-features';
-import { IUnlockedFeaturesState } from '../interfaces/parameters/unlocked-features-state';
-import { IUnlockedFeaturesSerializedState } from '../interfaces/serialized-states/unlocked-features-serialized-state';
-import { GLOBAL_STATE_UI_EVENTS } from '../constants';
+import { type IGlobalState, IUnlockedFeaturesSerializedState, IUnlockedFeaturesState } from '../interfaces';
 
 const { lazyInject } = decorators;
 
 @injectable()
 export class UnlockedFeaturesState implements IUnlockedFeaturesState {
-  readonly uiEventBatcher: EventBatcher;
+  @lazyInject(TYPES.GlobalState)
+  private _globalState!: IGlobalState;
 
   @lazyInject(TYPES.StateUIConnector)
   private _stateUiConnector!: IStateUIConnector;
@@ -27,21 +25,19 @@ export class UnlockedFeaturesState implements IUnlockedFeaturesState {
   constructor() {
     this._unlockedFeatures = new Set<Feature>();
 
-    this.uiEventBatcher = new EventBatcher();
-    this._stateUiConnector.registerEventEmitter(this);
+    this._stateUiConnector.registerEventEmitter(this, ['_unlockedFeatures']);
   }
 
   isFeatureUnlocked(feature: Feature): boolean {
-    this._stateUiConnector.connectEventHandler(this, GLOBAL_STATE_UI_EVENTS.FEATURE_UNLOCKED);
-
     return this._unlockedFeatures.has(feature);
   }
 
   unlockFeature(feature: Feature) {
     if (!this._unlockedFeatures.has(feature)) {
-      this.uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.FEATURE_UNLOCKED);
-
       this._unlockedFeatures.add(feature);
+
+      this._globalState.availableItems.requestRecalculation();
+      this._globalState.availableActivities.requestRecalculation();
 
       this._notificationsState.pushNotification(
         NotificationType.featureUnlocked,
@@ -51,23 +47,17 @@ export class UnlockedFeaturesState implements IUnlockedFeaturesState {
   }
 
   listUnlockedFeatures(): Feature[] {
-    this._stateUiConnector.connectEventHandler(this, GLOBAL_STATE_UI_EVENTS.FEATURE_UNLOCKED);
-
     return Array.from(this._unlockedFeatures.values());
   }
 
   async startNewState(): Promise<void> {
     this._unlockedFeatures.clear();
-
-    this.uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.FEATURE_UNLOCKED);
   }
 
   async deserialize(serializedState: IUnlockedFeaturesSerializedState): Promise<void> {
     this._unlockedFeatures.clear();
 
     serializedState.unlockedFeatures.forEach((feature: Feature) => this._unlockedFeatures.add(feature));
-
-    this.uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.FEATURE_UNLOCKED);
   }
 
   serialize(): IUnlockedFeaturesSerializedState {

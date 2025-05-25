@@ -1,10 +1,3 @@
 import { StoryGoalState } from './types';
 
-export const GLOBAL_STATE_UI_EVENTS = {
-  MONEY_SPENT: Symbol('MONEY_SPENT'),
-  DEVELOPMENT_LEVEL_CHANGED: Symbol('DEVELOPMENT_LEVEL_CHANGED'),
-  FEATURE_UNLOCKED: Symbol('FEATURE_UNLOCKED'),
-  STORY_EVENT_REACHED: Symbol('STORY_EVENT_REACHED'),
-};
-
 export const STORY_GOAL_STATES = Object.values(StoryGoalState);

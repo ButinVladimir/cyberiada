@@ -15,16 +15,6 @@ export const TIME_PARTS = [
   },
 ];
 
-export const QUALITY_MAP: Record<number, string> = {
-  0: 'I',
-  1: 'II',
-  2: 'III',
-  3: 'IV',
-  4: 'V',
-  5: 'VI',
-  6: 'VII',
-};
-
 export const DEFAULT_TIME_SHORT_FORMAT_PARAMETERS: IFormatterParameters = {
   alwaysShowSign: false,
   prefix: '',
@@ -40,7 +30,7 @@ export const DEFAULT_NUMBER_DECIMAL_FORMAT_PARAMETERS: IFormatterParameters = {
   prefix: '',
 };
 
-export const DEFAULT_NUMBER_QUALITY_FORMAT_PARAMETERS: IFormatterParameters = {
+export const DEFAULT_NUMBER_TIER_FORMAT_PARAMETERS: IFormatterParameters = {
   alwaysShowSign: false,
   prefix: '',
 };
@@ -85,3 +75,13 @@ export const DATE_TIME_FORMATTER_OPTIONS: Intl.DateTimeFormatOptions = {
 
 export const LONG_NUMBER_FORMATTER_MAX_THRESHOLD = 1000;
 export const LONG_NUMBER_FORMATTER_MIN_THRESHOLD = 0.001;
+
+export const ROMAN_NUMERALS = [
+  { letter: 'M', value: 1000 },
+  { letter: 'D', value: 500 },
+  { letter: 'C', value: 100 },
+  { letter: 'L', value: 50 },
+  { letter: 'X', value: 10 },
+  { letter: 'V', value: 5 },
+  { letter: 'I', value: 1 },
+];

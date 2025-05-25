@@ -12,7 +12,7 @@ import { ConfirmationAlertController } from './controller';
 
 @localized()
 @customElement('ca-confirmation-alert')
-export class ConfirmationAlert extends BaseComponent<ConfirmationAlertController> {
+export class ConfirmationAlert extends BaseComponent {
   static styles = [
     smallModalStyle,
     modalBodyScrollStyle,
@@ -33,7 +33,7 @@ export class ConfirmationAlert extends BaseComponent<ConfirmationAlertController
     `,
   ];
 
-  protected controller: ConfirmationAlertController;
+  private _controller: ConfirmationAlertController;
 
   private _gameAlertToggleRef = createRef<SlCheckbox>();
 
@@ -55,7 +55,7 @@ export class ConfirmationAlert extends BaseComponent<ConfirmationAlertController
   constructor() {
     super();
 
-    this.controller = new ConfirmationAlertController(this);
+    this._controller = new ConfirmationAlertController(this);
   }
 
   connectedCallback() {
@@ -97,14 +97,13 @@ export class ConfirmationAlert extends BaseComponent<ConfirmationAlertController
   }
 
   private handleOpen = (event: Event) => {
-    event.stopPropagation();
     const convertedEvent = event as ConfirmationAlertOpenEvent;
 
     this._gameAlert = convertedEvent.gameAlert;
     this._message = convertedEvent.message;
     this._gameAlertKey = convertedEvent.gameAlertKey;
 
-    if (this.controller.isGameAlertEnabled(this._gameAlert)) {
+    if (this._controller.isGameAlertEnabled(this._gameAlert)) {
       this._isOpen = true;
       this._alertToggled = true;
     } else {
@@ -114,10 +113,7 @@ export class ConfirmationAlert extends BaseComponent<ConfirmationAlertController
     }
   };
 
-  private handleClose = (event: Event) => {
-    event.stopPropagation();
-    event.preventDefault();
-
+  private handleClose = () => {
     this._isOpen = false;
 
     if (this._gameAlert) {
@@ -125,23 +121,19 @@ export class ConfirmationAlert extends BaseComponent<ConfirmationAlertController
     }
   };
 
-  private handleSubmit = (event: Event) => {
-    event.stopPropagation();
-
+  private handleSubmit = () => {
     if (this._gameAlert) {
       this._isOpen = false;
 
       if (this._gameAlertToggleRef.value) {
-        this.controller.toggleGameAlert(this._gameAlert, this._alertToggled);
+        this._controller.toggleGameAlert(this._gameAlert, this._alertToggled);
       }
 
       this.dispatchEvent(new ConfirmationAlertSubmitEvent(this._gameAlert, this._gameAlertKey));
     }
   };
 
-  private handleToggleAlert = (event: Event) => {
-    event.stopPropagation();
-
+  private handleToggleAlert = () => {
     if (this._gameAlert && this._gameAlertToggleRef.value) {
       this._alertToggled = this._gameAlertToggleRef.value.checked;
     }

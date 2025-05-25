@@ -1,18 +1,19 @@
-import { IUIEventEmitter } from '@shared/interfaces/ui-event-emitter';
 import { Attribute, Skill } from '@shared/types';
 import { CloneTemplateName } from '../types';
 import { IMakeCloneParameters } from './make-clone-parameters';
 
-export interface IClone extends IUIEventEmitter {
+export interface IClone {
   id: string;
   name: string;
   templateName: CloneTemplateName;
   experience: number;
+  tier: number;
   level: number;
-  quality: number;
   autoUpgradeEnabled: boolean;
+  experienceMultiplier: number;
+  purchaseLevelUpgrade(level: number): boolean;
+  upgradeMaxLevel(): boolean;
   increaseExperience(delta: number): void;
-  earnExperience(delta: number): void;
   getLevelRequirements(level: number): number;
   getBaseAttributeValue(attribute: Attribute): number;
   getTotalAttributeValue(attribute: Attribute): number;

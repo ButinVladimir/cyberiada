@@ -45,8 +45,9 @@ import {
   RewardsGrowthState,
   IMultipliersGrowthState,
   MultipliersGrowthState,
-  IProgramCompletionSpeedState,
-  ProgramCompletionSpeedState,
+  IConnectivityGrowthState,
+  IDistrictTierPointsGrowthState,
+  IExperienceGrowthState,
 } from '@state/growth-state';
 import { SettingsState, ISettingsState } from '@state/settings-state';
 import { CityState, ICityState } from '@state/city-state';
@@ -63,12 +64,16 @@ import {
   IMainframeState,
   MainframeState,
   ProgramName,
+  IProcessCompletionSpeedParameter,
+  ProcessCompletionSpeedParameter,
 } from '@state/mainframe-state';
 import {
   IMainframeHardwareAutomationState,
   MainframeHardwareAutomationState,
   IMainframeProgramsAutomationState,
   MainframeProgramsAutomationState,
+  ICloneLevelAutomationState,
+  CloneLevelAutomationState,
   IAutomationState,
   AutomationState,
 } from '@state/automation-state';
@@ -85,8 +90,12 @@ import {
   ICompanyState,
   CompanyState,
   CloneTemplateName,
+  IExperienceShareParameter,
+  ExperienceShareParameter,
 } from '@state/company-state';
 import { AvailableCloneTemplatesState } from './global-state/parameters/available-items/available-clone-templates-state';
+import { DistrictTierPointsGrowthState } from './growth-state/parameters/district-tier-points-growth-state';
+import { ExperienceGrowthState } from './growth-state/parameters/experience-growth-state';
 
 container.bind<IStateUIConnector>(TYPES.StateUIConnector).to(StateUIConnector).inSingletonScope().whenTargetIsDefault();
 
@@ -171,12 +180,6 @@ container
   .whenTargetIsDefault();
 
 container
-  .bind<IMultiplierGrowthState>(TYPES.ConnectivityGrowthState)
-  .to(ConnectivityGrowthState)
-  .inSingletonScope()
-  .whenTargetIsDefault();
-
-container
   .bind<IMultiplierGrowthState>(TYPES.RewardsGrowthState)
   .to(RewardsGrowthState)
   .inSingletonScope()
@@ -189,8 +192,26 @@ container
   .whenTargetIsDefault();
 
 container
-  .bind<IProgramCompletionSpeedState>(TYPES.ProgramCompletionSpeedState)
-  .to(ProgramCompletionSpeedState)
+  .bind<IConnectivityGrowthState>(TYPES.ConnectivityGrowthState)
+  .to(ConnectivityGrowthState)
+  .inSingletonScope()
+  .whenTargetIsDefault();
+
+container
+  .bind<IDistrictTierPointsGrowthState>(TYPES.DistrictTierPointsGrowthState)
+  .to(DistrictTierPointsGrowthState)
+  .inSingletonScope()
+  .whenTargetIsDefault();
+
+container
+  .bind<IExperienceGrowthState>(TYPES.ExperienceGrowthState)
+  .to(ExperienceGrowthState)
+  .inSingletonScope()
+  .whenTargetIsDefault();
+
+container
+  .bind<IProcessCompletionSpeedParameter>(TYPES.ProcessCompletionSpeedParameter)
+  .to(ProcessCompletionSpeedParameter)
   .inSingletonScope()
   .whenTargetIsDefault();
 
@@ -242,11 +263,23 @@ container
   .inSingletonScope()
   .whenTargetIsDefault();
 
+container
+  .bind<ICloneLevelAutomationState>(TYPES.CloneLevelAutomationState)
+  .to(CloneLevelAutomationState)
+  .inSingletonScope()
+  .whenTargetIsDefault();
+
 container.bind<IAutomationState>(TYPES.AutomationState).to(AutomationState).inSingletonScope().whenTargetIsDefault();
 
 container.bind<IFormatter>(TYPES.Formatter).to(Formatter).inSingletonScope().whenTargetIsDefault();
 
 container.bind<ICloneFactory>(TYPES.CloneFactory).to(CloneFactory).inSingletonScope().whenTargetIsDefault();
+
+container
+  .bind<IExperienceShareParameter>(TYPES.ExperienceShareParameter)
+  .to(ExperienceShareParameter)
+  .inSingletonScope()
+  .whenTargetIsDefault();
 
 container
   .bind<ICompanyClonesState>(TYPES.CompanyClonesState)

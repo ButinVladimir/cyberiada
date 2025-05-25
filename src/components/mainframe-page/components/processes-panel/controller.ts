@@ -6,7 +6,7 @@ export class ProcessesPanelController extends BaseController {
   }
 
   get maxCores(): number {
-    return this.mainframeState.hardware.cores.level;
+    return this.mainframeState.hardware.cores.totalLevel;
   }
 
   get availableRam(): number {
@@ -14,6 +14,6 @@ export class ProcessesPanelController extends BaseController {
   }
 
   get maxRam(): number {
-    return this.mainframeState.hardware.ram.level;
+    return this.mainframeState.hardware.ram.totalLevel;
   }
 }

@@ -49,8 +49,6 @@ export class MultipliersState implements IMultipliersState {
     await this._computationalBaseState.startNewState();
     await this._connectivityState.startNewState();
     await this._rewardsState.startNewState();
-
-    this.recalculate();
   }
 
   async deserialize(serializedState: IMultipliersSerializedState): Promise<void> {
@@ -58,8 +56,6 @@ export class MultipliersState implements IMultipliersState {
     await this._computationalBaseState.deserialize(serializedState.computationalBase);
     await this._connectivityState.deserialize(serializedState.connectivity);
     await this._rewardsState.deserialize(serializedState.rewards);
-
-    this.recalculate();
   }
 
   serialize(): IMultipliersSerializedState {

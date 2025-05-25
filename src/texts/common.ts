@@ -1,11 +1,12 @@
 import { msg, str } from '@lit/localize';
-import { Attribute, ItemCategory, Skill } from '@shared/types';
+import { Attribute, ItemCategory, RewardParameter, Skill } from '@shared/types';
+import { html } from 'lit';
 
 export const COMMON_TEXTS = {
   notEnoughMoney: () => msg('Not enough money'),
-  willBeAvailableIn: (time: string) => msg(str`Will be available in ${time}`),
+  willBeAvailableIn: (timeElement: any) => msg(html`Will be available in ${timeElement}`),
   higherDevelopmentLevelRequired: () => msg('Higher development level required'),
-  buyIncrease: (increase: string, cost: string) => msg(str`Buy x${increase} for ${cost}`),
+  buyIncrease: (increase: string) => msg(str`Buy x${increase}`),
   buyMax: () => msg('Buy max'),
   buyMaxAllUpgrades: () => msg('Buy all upgrades'),
   enableAutoupgrade: () => msg('Enable autoupgrade'),
@@ -19,15 +20,24 @@ export const COMMON_TEXTS = {
   upgrade: () => msg('Upgrade'),
   upgradeAll: () => msg('Upgrade all'),
   level: () => msg('Level'),
-  levelValue: (level: string) => msg(str`Level: ${level}`),
-  quality: () => msg('Quality'),
-  qualityValue: (quality: string) => msg(str`Quality: ${quality}`),
+  tier: () => msg('Tier'),
   cancel: () => msg('Cancel'),
   continue: () => msg('Continue'),
   close: () => msg('Close'),
-  purchase: (cost: string) => msg(str`Purchase for ${cost}`),
-  percentage: (value: string) => msg(str`${value}%`),
+  purchase: () => msg('Purchase'),
   menu: () => msg('Menu'),
+  requirements: () => msg('Requirements'),
+  rewards: () => msg('Rewards'),
+  rewardsMultipliers: () => msg('Rewards multipliers'),
+  attributes: () => msg('Attributes'),
+  skills: () => msg('Skills'),
+  cost: () => msg('Cost'),
+  synchronization: () => msg('Synchronization'),
+  experienceMultiplier: () => msg('Experience multiplier'),
+  faction: () => msg('Faction'),
+  parameterValue: (parameterName: string, valueElement: any) => msg(html`${parameterName}: ${valueElement}`),
+  parameterSpeed: (value: any) => msg(html`${value} per second`),
+  parameterSpeedDiff: (valueElement: any, diffElement: any) => msg(html`${valueElement} (${diffElement}) per second`),
 };
 
 export const CATEGORY_TEXTS: Record<ItemCategory, () => string> = {
@@ -51,4 +61,18 @@ export const SKILL_TEXTS: Record<Skill, () => string> = {
   engineering: () => msg('Engineering'),
   hacking: () => msg('Hacking'),
   stealth: () => msg('Stealth'),
+};
+
+export const REWARD_PARAMETER_NAMES = {
+  [RewardParameter.money]: () => msg('Money'),
+  [RewardParameter.developmentPoints]: () => msg('Development points'),
+  [RewardParameter.experience]: () => msg('Experience'),
+  [RewardParameter.districtTierPoints]: () => msg('District tier points'),
+  [RewardParameter.connectivity]: () => msg('Connectivity points'),
+  [RewardParameter.codeBase]: () => msg('Code base points'),
+  [RewardParameter.computationalBase]: () => msg('Computational base points'),
+  [RewardParameter.rewards]: () => msg('Rewards points'),
+  [RewardParameter.processCompletionSpeedMultiplier]: () => msg('Process completion speed multiplier'),
+  [RewardParameter.actions]: () => msg('Actions'),
+  [RewardParameter.sharedExperienceMultiplier]: () => msg('Shared experience multiplier'),
 };

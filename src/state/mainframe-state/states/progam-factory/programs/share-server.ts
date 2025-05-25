@@ -1,26 +1,22 @@
-import { ISettingsState } from '@state/settings-state/interfaces/settings-state';
-import { IncomeSource } from '@shared/types';
 import programs from '@configs/programs.json';
+import { type ISettingsState } from '@state/settings-state';
+import { IncomeSource } from '@shared/types';
+import { calculateTierLinear } from '@shared/helpers';
+import { decorators } from '@state/container';
+import { TYPES } from '@state/types';
 import { OtherProgramName } from '../types';
-import { IShareServerParameters } from '../interfaces/program-parameters/share-server-parameters';
 import { BaseProgram } from './base-program';
+
+const { lazyInject } = decorators;
 
 export class ShareServerProgram extends BaseProgram {
   public readonly name = OtherProgramName.shareServer;
   public readonly isAutoscalable = true;
 
-  private _settingsState: ISettingsState;
+  @lazyInject(TYPES.SettingsState)
+  private _settingsState!: ISettingsState;
 
-  constructor(parameters: IShareServerParameters) {
-    super(parameters);
-
-    this._settingsState = parameters.settingsState;
-  }
-
-  handlePerformanceUpdate(): void {
-    this.growthState.money.requestGrowthRecalculation();
-    this.growthState.development.requestGrowthRecalculation();
-  }
+  handlePerformanceUpdate(): void {}
 
   perform(threads: number, usedRam: number): void {
     const moneyDelta = this.calculateMoneyDelta(threads, usedRam, this._settingsState.updateInterval);
@@ -38,10 +34,9 @@ export class ShareServerProgram extends BaseProgram {
     const programData = programs[this.name];
 
     return (
-      this.globalState.multipliers.rewards.totalMultiplier *
+      this.globalState.scenario.currentValues.programMultipliers.money.pointsMultiplier *
       this.calculateModifier(threads, usedRam, passedTime) *
-      programData.money *
-      Math.pow(programData.moneyQualityMultiplier, this.quality)
+      calculateTierLinear(this.level, this.tier, programData.money)
     );
   }
 
@@ -49,10 +44,9 @@ export class ShareServerProgram extends BaseProgram {
     const programData = programs[this.name];
 
     return (
-      this.globalState.multipliers.rewards.totalMultiplier *
+      this.globalState.scenario.currentValues.programMultipliers.developmentPoints.pointsMultiplier *
       this.calculateModifier(threads, usedRam, passedTime) *
-      programData.developmentPoints *
-      Math.pow(programData.developmentPointsQualityMultiplier, this.quality)
+      calculateTierLinear(this.level, this.tier, programData.developmentPoints)
     );
   }
 
@@ -60,12 +54,13 @@ export class ShareServerProgram extends BaseProgram {
     const programData = programs[this.name];
 
     return (
+      this.globalState.multipliers.rewards.totalMultiplier *
       passedTime *
-      Math.pow(threads * usedRam, programData.scalableResourcesModifier) *
-      this.level *
-      (1 +
-        (this.mainframeState.hardware.performance.level - 1) *
-          this.globalState.scenario.currentValues.mainframeSoftware.performanceBoost)
+      Math.pow(threads * usedRam, programData.autoscalableResourcesPower) *
+      Math.pow(
+        this.globalState.scenario.currentValues.mainframeSoftware.performanceBoost,
+        this.mainframeState.hardware.performance.totalLevel,
+      )
     );
   }
 }

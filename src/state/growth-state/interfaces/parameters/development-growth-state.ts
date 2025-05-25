@@ -1,9 +1,7 @@
-import { IUIEventEmitter } from '@shared/interfaces/ui-event-emitter';
 import { IncomeSource } from '@shared/types';
 
-export interface IDevelopmentGrowthState extends IUIEventEmitter {
+export interface IDevelopmentGrowthState {
   totalGrowth: number;
   getGrowth(incomeSource: IncomeSource): number;
-  requestGrowthRecalculation(): void;
-  recalculateGrowth(): void;
+  resetValues(): void;
 }

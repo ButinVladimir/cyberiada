@@ -12,7 +12,7 @@ import { OwnedProgramsListController } from './controller';
 
 @localized()
 @customElement('ca-owned-programs-list')
-export class OwnedProgramsList extends BaseComponent<OwnedProgramsListController> {
+export class OwnedProgramsList extends BaseComponent {
   static styles = css`
     :host {
       width: 100%;
@@ -24,7 +24,7 @@ export class OwnedProgramsList extends BaseComponent<OwnedProgramsListController
     .header {
       display: grid;
       grid-template-columns: auto;
-      grid-template-rows: auto;
+      grid-template-rows: repeat(auto);
       gap: var(--sl-spacing-small);
       align-items: center;
       border-bottom: var(--ca-border);
@@ -86,7 +86,7 @@ export class OwnedProgramsList extends BaseComponent<OwnedProgramsListController
 
     @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
       .header {
-        grid-template-columns: 2fr 1fr 1fr 0;
+        grid-template-columns: 2fr 1fr 1fr auto;
         grid-template-rows: auto;
         padding: var(--sl-spacing-small);
       }
@@ -105,12 +105,12 @@ export class OwnedProgramsList extends BaseComponent<OwnedProgramsListController
     }
   `;
 
-  protected controller: OwnedProgramsListController;
+  private _controller: OwnedProgramsListController;
 
   constructor() {
     super();
 
-    this.controller = new OwnedProgramsListController(this);
+    this._controller = new OwnedProgramsListController(this);
   }
 
   render() {
@@ -124,15 +124,15 @@ export class OwnedProgramsList extends BaseComponent<OwnedProgramsListController
       ? AUTOUPGRADE_VALUES.buttonVariant.enabled
       : AUTOUPGRADE_VALUES.buttonVariant.disabled;
 
-    const ownedPrograms = this.controller.listOwnedPrograms();
+    const ownedPrograms = this._controller.listOwnedPrograms();
 
     const upgradeAllProgramsLabel = COMMON_TEXTS.upgradeAll();
 
     return html`
       <div class="header">
         <div class="header-column">${msg('Program')}</div>
+        <div class="header-column">${COMMON_TEXTS.tier()}</div>
         <div class="header-column">${COMMON_TEXTS.level()}</div>
-        <div class="header-column">${COMMON_TEXTS.quality()}</div>
         <div class="buttons desktop">
           <sl-tooltip>
             <span slot="content"> ${upgradeAllProgramsLabel} </span>
@@ -194,31 +194,22 @@ export class OwnedProgramsList extends BaseComponent<OwnedProgramsListController
   };
 
   private checkSomeProgramsAutoupgradeActive(): boolean {
-    const programs = this.controller.listOwnedPrograms();
+    const programs = this._controller.listOwnedPrograms();
 
     return programs.some((program) => program.autoUpgradeEnabled);
   }
 
-  private handleToggleAutoupgrade = (event: Event) => {
-    event.stopPropagation();
-    event.preventDefault();
-
+  private handleToggleAutoupgrade = () => {
     const active = this.checkSomeProgramsAutoupgradeActive();
 
-    this.controller.toggleAutoupgrade(!active);
+    this._controller.toggleAutoupgrade(!active);
   };
 
   private handleMoveProgram = (event: SortableElementMovedEvent) => {
-    event.stopPropagation();
-    event.preventDefault();
-
-    this.controller.moveProgram(event.keyName as ProgramName, event.position);
+    this._controller.moveProgram(event.keyName as ProgramName, event.position);
   };
 
-  private handleUpgradeMaxAllPrograms = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
-    this.controller.upgradeMaxAllPrograms();
+  private handleUpgradeMaxAllPrograms = () => {
+    this._controller.upgradeMaxAllPrograms();
   };
 }

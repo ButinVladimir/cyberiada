@@ -1,8 +1,7 @@
-import { IUIEventEmitter } from '@shared/interfaces/ui-event-emitter';
 import { ISerializeable } from '@shared/interfaces/serializable';
 import { ITimeSerializedState } from '../serialized-states/time-serialized-state';
 
-export interface ITimeState extends ISerializeable<ITimeSerializedState>, IUIEventEmitter {
+export interface ITimeState extends ISerializeable<ITimeSerializedState> {
   lastUpdateTime: number;
   accumulatedTime: number;
   activeTime: number;

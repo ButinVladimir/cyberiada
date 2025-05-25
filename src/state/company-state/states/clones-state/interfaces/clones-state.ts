@@ -1,19 +1,25 @@
-import { ISerializeable, IUIEventEmitter } from '@shared/interfaces';
+import { ISerializeable } from '@shared/interfaces';
 import { ICompanyClonesSerializedState } from './clones-serialized-state';
 import { IClone } from '../../clone-factory/interfaces/clone';
 import { CloneTemplateName } from '../../clone-factory';
+import { IPurchaseCloneArgs } from './purchase-clone-args';
+import { IExperienceShareParameter } from './experience-share-parameter';
 
-export interface ICompanyClonesState extends IUIEventEmitter, ISerializeable<ICompanyClonesSerializedState> {
-  totalSynchronization: number;
+export interface ICompanyClonesState extends ISerializeable<ICompanyClonesSerializedState> {
   availableSynchronization: number;
+  experienceShare: IExperienceShareParameter;
   listClones(): IClone[];
+  earnCloneExperience(id: string, delta: number): void;
   getCloneById(id: string): IClone | undefined;
-  getCloneCost(template: CloneTemplateName, quality: number, level: number): number;
-  getCloneSynchronization(template: CloneTemplateName, quality: number): number;
-  purchaseClone(name: string, template: CloneTemplateName, quality: number, level: number): boolean;
+  getCloneCost(template: CloneTemplateName, tier: number, level: number): number;
+  getCloneSynchronization(template: CloneTemplateName, tier: number): number;
+  purchaseClone(args: IPurchaseCloneArgs): boolean;
   toggleAllClonesAutoupgrade(active: boolean): void;
   deleteClone(id: string): void;
   deleteAllClones(): void;
-  processTick(): void;
+  recalculateClones(): void;
+  updateSynchronization(): void;
   moveClone(id: string, newPosition: number): void;
+  generateCloneName(): Promise<string>;
+  upgradeMaxAllLevels(): void;
 }

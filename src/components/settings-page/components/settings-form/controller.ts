@@ -45,51 +45,41 @@ export class SettingsFormController extends BaseController {
 
   async setLanguage(language: Language) {
     await this.settingsState.setLanguage(language);
-    this.handleRefreshUI();
   }
 
   setTheme(theme: Theme) {
     this.settingsState.setTheme(theme);
-    this.handleRefreshUI();
   }
 
   setMessageLogSize(messageLogSize: number) {
     this.settingsState.setMessageLogSize(messageLogSize);
-    this.handleRefreshUI();
   }
 
   setToastDuration(duration: number) {
     this.settingsState.setToastDuration(duration);
-    this.handleRefreshUI();
   }
 
   setUpdateFPS(fps: number) {
     this.settingsState.setUpdateInterval(MS_IN_SECOND / fps);
-    this.handleRefreshUI();
   }
 
   setAutosaveEnabled(autosaveEnabled: boolean) {
     this.settingsState.setAutosaveEnabledOnHide(autosaveEnabled);
-    this.handleRefreshUI();
   }
 
   setAutosaveInterval(autosaveInterval: number) {
     this.settingsState.setAutosaveInterval(autosaveInterval);
-    this.handleRefreshUI();
   }
 
   setFastSpeedMultiplier(fastSpeedMultiplier: number) {
     this.settingsState.setFastSpeedMultiplier(fastSpeedMultiplier);
-    this.handleRefreshUI();
   }
 
   setMaxUpdatesPerTick(maxUpdatesPerTick: number) {
     this.settingsState.setMaxUpdatesPerTick(maxUpdatesPerTick);
-    this.handleRefreshUI();
   }
 
   setLongNumberFormat(longNumberFormat: LongNumberFormat) {
     this.settingsState.setLongNumberFormat(longNumberFormat);
-    this.handleRefreshUI();
   }
 }

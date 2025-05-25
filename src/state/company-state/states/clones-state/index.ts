@@ -1,3 +1,3 @@
 export * from './clones-state';
-export * from './constants';
 export * from './interfaces';
+export * from './experience-share-parameter';

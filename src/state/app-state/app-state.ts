@@ -90,7 +90,8 @@ export class AppState implements IAppState {
     await this._automationState.startNewState();
     await this._companyState.startNewState();
 
-    this._growthState.recalculateGrowth();
+    this._globalState.recalculate();
+    this._growthState.clearValues();
   }
 
   serialize(): ISerializedState {
@@ -131,7 +132,8 @@ export class AppState implements IAppState {
     await this._automationState.deserialize(migratedSaveData.automation);
     await this._companyState.deserialize(migratedSaveData.company);
 
-    this._growthState.recalculateGrowth();
+    this._globalState.recalculate();
+    this._growthState.clearValues();
   }
 
   private processTicks(maxUpdates: number): number {
@@ -141,13 +143,16 @@ export class AppState implements IAppState {
       this.processSingleTick();
     }
 
+    this._growthState.resetValues();
+
     return ticksProcessed;
   }
 
   private processSingleTick = () => {
     this._mainframeState.processes.processTick();
-    this._companyState.clones.processTick();
+    this._companyState.processTick();
     this._globalState.makeNextTick();
-    this._growthState.recalculateGrowth();
+    this._cityState.recalculate();
+    this._globalState.recalculate();
   };
 }

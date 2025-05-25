@@ -5,17 +5,17 @@ import { BaseComponent } from '@shared/base-component';
 import { AppRootController } from './controller';
 
 @customElement('ca-app-root')
-export class AppRoot extends BaseComponent<AppRootController> {
-  protected controller: AppRootController;
+export class AppRoot extends BaseComponent {
+  private _controller: AppRootController;
 
   constructor() {
     super();
 
-    this.controller = new AppRootController(this);
+    this._controller = new AppRootController(this);
   }
 
   render() {
-    switch (this.controller.appStage) {
+    switch (this._controller.appStage) {
       case AppStage.loading:
         return html`<ca-loading-screen></ca-loading-screen>`;
 

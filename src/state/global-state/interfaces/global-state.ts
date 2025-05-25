@@ -11,6 +11,10 @@ import {
   IFactionState,
   IMultipliersState,
   IAvailableItemsState,
+  IConnectivityState,
+  IThreatState,
+  ISynchronizationParameter,
+  IAvailableActivities,
 } from './parameters';
 
 export interface IGlobalState extends ISerializeable<IGlobalSerializedState> {
@@ -22,10 +26,15 @@ export interface IGlobalState extends ISerializeable<IGlobalSerializedState> {
   money: IMoneyState;
   time: ITimeState;
   development: IDevelopmentState;
+  threat: IThreatState;
+  synchronization: ISynchronizationParameter;
+  connectivity: IConnectivityState;
   multipliers: IMultipliersState;
   availableItems: IAvailableItemsState;
+  availableActivities: IAvailableActivities;
   unlockedFeatures: IUnlockedFeaturesState;
   storyEvents: IStoryEventsState;
+  recalculate(): void;
   makeNextTick(): void;
   setRandomShift(value: number | bigint | string | boolean): void;
 }

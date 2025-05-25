@@ -3,21 +3,22 @@ import { localized } from '@lit/localize';
 import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { CATEGORY_TEXTS, CLONE_TEMPLATE_TEXTS } from '@texts/index';
-import { OverviewUnlockedCloneTemplatesController } from './controller';
 import { CloneTemplateName } from '@state/company-state/states/clone-factory/types';
+import { HINT_ICON } from '@shared/styles';
+import { OverviewUnlockedCloneTemplatesController } from './controller';
 import { unlockedItemsCategoryStyles } from '../../constants';
 
 @localized()
 @customElement('ca-overview-unlocked-clone-templates')
-export class OverviewUnlockedCloneTemplates extends BaseComponent<OverviewUnlockedCloneTemplatesController> {
+export class OverviewUnlockedCloneTemplates extends BaseComponent {
   static styles = unlockedItemsCategoryStyles;
 
-  protected controller: OverviewUnlockedCloneTemplatesController;
+  private _controller: OverviewUnlockedCloneTemplatesController;
 
   constructor() {
     super();
 
-    this.controller = new OverviewUnlockedCloneTemplatesController(this);
+    this._controller = new OverviewUnlockedCloneTemplatesController(this);
   }
 
   render() {
@@ -33,7 +34,7 @@ export class OverviewUnlockedCloneTemplates extends BaseComponent<OverviewUnlock
   }
 
   private renderList = () => {
-    const itemNames = this.controller.listItems();
+    const itemNames = this._controller.listItems();
 
     return itemNames.map(this.renderListItem);
   };
@@ -41,7 +42,7 @@ export class OverviewUnlockedCloneTemplates extends BaseComponent<OverviewUnlock
   private renderListItem = (itemName: CloneTemplateName) => {
     const cloneTemplateTitle = CLONE_TEMPLATE_TEXTS[itemName].title();
     const cloneTemplateOverview = CLONE_TEMPLATE_TEXTS[itemName].overview();
-    const quality = this.controller.getItemHighestAvailableQuality(itemName);
+    const tier = this._controller.getItemHighestAvailableTier(itemName);
 
     return html`
       <span>
@@ -50,10 +51,10 @@ export class OverviewUnlockedCloneTemplates extends BaseComponent<OverviewUnlock
         <sl-tooltip>
           <span slot="content"> ${cloneTemplateOverview} </span>
 
-          <sl-icon name="question-circle"></sl-icon>
+          <sl-icon name=${HINT_ICON}></sl-icon>
         </sl-tooltip>
       </span>
-      <span> ${this.controller.formatter.formatQuality(quality)} </span>
+      <span> ${this._controller.formatter.formatTier(tier)} </span>
     `;
   };
 }

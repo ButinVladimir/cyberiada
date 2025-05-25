@@ -4,7 +4,7 @@ import { customElement, property } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import SlCheckbox from '@shoelace-style/shoelace/dist/components/checkbox/checkbox.component.js';
 import { BaseComponent } from '@shared/base-component';
-import { CLONE_ALERTS, GAME_STATE_ALERTS, PROGRAM_ALERTS } from '@shared/constants';
+import { CLONE_ALERTS, GAME_STATE_ALERTS, PROGRAM_ALERTS, SIDEJOB_ALERTS } from '@shared/constants';
 import { GameAlert } from '@shared/types';
 import { COMMON_TEXTS } from '@texts/common';
 import {
@@ -20,7 +20,7 @@ import { ALERT_NAMES } from './constants';
 
 @localized()
 @customElement('ca-alert-filter-dialog')
-export class AlertFilterDialog extends BaseComponent<AlertFilterDialogController> {
+export class AlertFilterDialog extends BaseComponent {
   static styles = [
     hintStyle,
     sectionTitleStyle,
@@ -67,7 +67,7 @@ export class AlertFilterDialog extends BaseComponent<AlertFilterDialogController
     `,
   ];
 
-  protected controller: AlertFilterDialogController;
+  private _controller: AlertFilterDialogController;
 
   @property({
     attribute: 'is-open',
@@ -78,7 +78,7 @@ export class AlertFilterDialog extends BaseComponent<AlertFilterDialogController
   constructor() {
     super();
 
-    this.controller = new AlertFilterDialogController(this);
+    this._controller = new AlertFilterDialogController(this);
   }
 
   render() {
@@ -100,6 +100,10 @@ export class AlertFilterDialog extends BaseComponent<AlertFilterDialogController
           <sl-divider></sl-divider>
 
           <div class="events-container">${repeat(CLONE_ALERTS, (event) => event, this.renderGameAlertCheckbox)}</div>
+
+          <sl-divider></sl-divider>
+
+          <div class="events-container">${repeat(SIDEJOB_ALERTS, (event) => event, this.renderGameAlertCheckbox)}</div>
         </div>
 
         <sl-button slot="footer" size="medium" variant="default" outline @click=${this.handleClose}>
@@ -115,7 +119,7 @@ export class AlertFilterDialog extends BaseComponent<AlertFilterDialogController
         size="small"
         name="event"
         value=${gameAlert}
-        ?checked=${this.controller.isAlertEnabled(gameAlert)}
+        ?checked=${this._controller.isAlertEnabled(gameAlert)}
         @sl-change=${this.handleToggleAlert}
       >
         ${ALERT_NAMES[gameAlert]()}
@@ -123,16 +127,13 @@ export class AlertFilterDialog extends BaseComponent<AlertFilterDialogController
     `;
   };
 
-  private handleClose = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  private handleClose = () => {
     this.dispatchEvent(new AlertFilterDialogCloseEvent());
   };
 
   private handleToggleAlert = (event: Event) => {
     const target = event.target as SlCheckbox;
 
-    this.controller.toggleAlertFilterEvent(target.value as GameAlert, target.checked);
+    this._controller.toggleAlertFilterEvent(target.value as GameAlert, target.checked);
   };
 }

@@ -1,13 +1,14 @@
 import { css, html } from 'lit';
-import { localized, msg, str } from '@lit/localize';
+import { localized, msg } from '@lit/localize';
 import { customElement, state } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { hintStyle, SCREEN_WIDTH_POINTS } from '@shared/styles';
 import { ProcessesPanelController } from './controller';
+import { COMMON_TEXTS } from '@/texts';
 
 @localized()
 @customElement('ca-mainframe-processes-panel')
-export class MainframeProcessesPanel extends BaseComponent<ProcessesPanelController> {
+export class MainframeProcessesPanel extends BaseComponent {
   static styles = [
     hintStyle,
     css`
@@ -57,7 +58,7 @@ export class MainframeProcessesPanel extends BaseComponent<ProcessesPanelControl
     `,
   ];
 
-  protected controller: ProcessesPanelController;
+  private _controller: ProcessesPanelController;
 
   @state()
   private _isStartProcessDialogOpen = false;
@@ -65,24 +66,24 @@ export class MainframeProcessesPanel extends BaseComponent<ProcessesPanelControl
   constructor() {
     super();
 
-    this.controller = new ProcessesPanelController(this);
+    this._controller = new ProcessesPanelController(this);
   }
 
   render() {
-    const formatter = this.controller.formatter;
+    const formatter = this._controller.formatter;
 
-    const formattedAvailableRam = formatter.formatNumberDecimal(this.controller.availableRam);
-    const formattedMaxRam = formatter.formatNumberDecimal(this.controller.maxRam);
+    const formattedAvailableRam = formatter.formatNumberDecimal(this._controller.availableRam);
+    const formattedMaxRam = formatter.formatNumberDecimal(this._controller.maxRam);
 
-    const formattedAvailableCores = formatter.formatNumberDecimal(this.controller.availableCores);
-    const formattedMaxCores = formatter.formatNumberDecimal(this.controller.maxCores);
+    const formattedAvailableCores = formatter.formatNumberDecimal(this._controller.availableCores);
+    const formattedMaxCores = formatter.formatNumberDecimal(this._controller.maxCores);
 
     return html`
       <p class="hint">
         ${msg(`To make a program run, a process has to be start for it.
-Topmost processes for non-scalable programs have more priority when cores are assigned to processes.
-Process for scalable program has cores and RAM assigned last.
-Only one process for scalable program can run at same time.
+Topmost processes for non-autoscalable programs have more priority when cores are assigned to processes.
+Process for autoscalable program has cores and RAM assigned last.
+Only one process for autoscalable program can run at same time.
 Process minimal completion time is limited.
 Processes can be rearranged by dragging them by their title.`)}
       </p>
@@ -92,9 +93,13 @@ Processes can be rearranged by dragging them by their title.`)}
           ${msg('Start process')}
         </sl-button>
 
-        <div class="ram">${msg(str`Available RAM: ${formattedAvailableRam} / ${formattedMaxRam}`)}</div>
+        <div class="ram">
+          ${COMMON_TEXTS.parameterValue(msg('Available RAM'), `${formattedAvailableRam} / ${formattedMaxRam}`)}
+        </div>
 
-        <div class="cores">${msg(str`Available cores: ${formattedAvailableCores} / ${formattedMaxCores}`)}</div>
+        <div class="cores">
+          ${COMMON_TEXTS.parameterValue(msg('Available cores'), `${formattedAvailableCores} / ${formattedMaxCores}`)}
+        </div>
       </div>
 
       <ca-processes-list></ca-processes-list>
@@ -107,17 +112,11 @@ Processes can be rearranged by dragging them by their title.`)}
     `;
   }
 
-  private handleStartProcessDialogOpen = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  private handleStartProcessDialogOpen = () => {
     this._isStartProcessDialogOpen = true;
   };
 
-  private handleStartProcessDialogClose = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  private handleStartProcessDialogClose = () => {
     this._isStartProcessDialogOpen = false;
   };
 }

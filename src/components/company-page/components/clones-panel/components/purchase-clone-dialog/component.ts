@@ -1,9 +1,11 @@
-import { css, html, nothing } from 'lit';
+import { css, html } from 'lit';
 import { localized, msg } from '@lit/localize';
 import { customElement, property, state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.component.js';
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.component.js';
+import clamp from 'lodash/clamp';
+import { provide } from '@lit/context';
 import { BaseComponent } from '@shared/base-component';
 import { CloneTemplateName } from '@state/company-state/states/clone-factory/types';
 import {
@@ -15,13 +17,14 @@ import {
   SCREEN_WIDTH_POINTS,
 } from '@shared/styles';
 import { COMMON_TEXTS, CLONE_TEMPLATE_TEXTS } from '@texts/index';
+import { type IClone } from '@state/company-state';
 import { PurchaseCloneDialogCloseEvent } from './events';
 import { PurchaseCloneDialogController } from './controller';
-import { ifDefined } from 'lit/directives/if-defined.js';
+import { temporaryCloneContext } from './contexts';
 
 @localized()
 @customElement('ca-purchase-clone-dialog')
-export class PurchaseCloneDialog extends BaseComponent<PurchaseCloneDialogController> {
+export class PurchaseCloneDialog extends BaseComponent {
   static styles = [
     inputLabelStyle,
     hintStyle,
@@ -80,13 +83,13 @@ export class PurchaseCloneDialog extends BaseComponent<PurchaseCloneDialogContro
     `,
   ];
 
-  protected controller: PurchaseCloneDialogController;
+  private _controller: PurchaseCloneDialogController;
 
   private _nameInputRef = createRef<SlInput>();
 
   private _cloneTemplateInputRef = createRef<SlSelect>();
 
-  private _qualityInputRef = createRef<SlSelect>();
+  private _tierInputRef = createRef<SlSelect>();
 
   private _levelInputRef = createRef<SlInput>();
 
@@ -103,15 +106,28 @@ export class PurchaseCloneDialog extends BaseComponent<PurchaseCloneDialogContro
   private _cloneTemplateName?: CloneTemplateName = undefined;
 
   @state()
-  private _quality = 0;
+  private _tier = 0;
 
   @state()
   private _level = 1;
 
+  @provide({ context: temporaryCloneContext })
+  private _clone?: IClone;
+
   constructor() {
     super();
 
-    this.controller = new PurchaseCloneDialogController(this);
+    this._controller = new PurchaseCloneDialogController(this);
+  }
+
+  performUpdate() {
+    if (this._cloneTemplateName !== undefined) {
+      this._clone = this._controller.getClone(this._name, this._cloneTemplateName, this._tier, this._level);
+    } else {
+      this._clone = undefined;
+    }
+
+    super.performUpdate();
   }
 
   updated(_changedProperties: Map<string, any>) {
@@ -120,8 +136,8 @@ export class PurchaseCloneDialog extends BaseComponent<PurchaseCloneDialogContro
     if (_changedProperties.has('isOpen')) {
       this._name = '';
       this._cloneTemplateName = undefined;
-      this._quality = 0;
-      this._level = this.controller.developmentLevel;
+      this._tier = 0;
+      this._level = this._controller.developmentLevel;
 
       if (this.isOpen) {
         this.generateName();
@@ -130,7 +146,7 @@ export class PurchaseCloneDialog extends BaseComponent<PurchaseCloneDialogContro
   }
 
   render() {
-    const { developmentLevel } = this.controller;
+    const { developmentLevel } = this._controller;
 
     return html`
       <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
@@ -138,9 +154,9 @@ export class PurchaseCloneDialog extends BaseComponent<PurchaseCloneDialogContro
 
         <div class="body">
           <p class="hint">
-            ${msg(`Select clone name, template, level and quality to purchase it.
+            ${msg(`Select clone name, template, tier and level to purchase it.
 Level cannot be above current development level.
-Quality is limited depending on gained favors.
+Tier is limited depending on gained favors.
 Synchronization is earned by capturing districts and gaining certain favors.`)}
           </p>
 
@@ -172,36 +188,29 @@ Synchronization is earned by capturing districts and gaining certain favors.`)}
             >
               <span class="input-label" slot="label"> ${msg('Clone template')} </span>
 
-              ${this.controller
-                .listAvailableCloneTemplates()
-                .map(
-                  (cloneTemplate) =>
-                    html`<sl-option value=${cloneTemplate}>
-                      ${CLONE_TEMPLATE_TEXTS[cloneTemplate].title()}
-                    </sl-option>`,
-                )}
+              ${this._controller.listAvailableCloneTemplates().map(this.renderCloneTemplateOption)}
             </sl-select>
 
             <sl-select
-              ${ref(this._qualityInputRef)}
-              name="quality"
-              value=${this._quality}
+              ${ref(this._tierInputRef)}
+              name="tier"
+              value=${this._tier}
               hoist
-              @sl-change=${this.handleQualityChange}
+              @sl-change=${this.handleTierChange}
             >
-              <span class="input-label" slot="label"> ${COMMON_TEXTS.quality()} </span>
+              <span class="input-label" slot="label"> ${COMMON_TEXTS.tier()} </span>
 
-              ${this.renderQualityOptions()}
+              ${this.renderTierOptions()}
             </sl-select>
 
             <sl-input
               ${ref(this._levelInputRef)}
               name="level"
-              value=${this._level}
+              value=${this._level + 1}
               type="number"
               inputmode="decimal"
               min="1"
-              max=${developmentLevel}
+              max=${developmentLevel + 1}
               step="1"
               @sl-change=${this.handleLevelChange}
             >
@@ -209,20 +218,13 @@ Synchronization is earned by capturing districts and gaining certain favors.`)}
             </sl-input>
           </div>
 
-          ${this._cloneTemplateName
-            ? html`<ca-clone-dialog-description-text
-                clone-template-name=${this._cloneTemplateName}
-                quality=${this._quality}
-                level=${this._level}
-              ></ca-clone-dialog-description-text>`
-            : nothing}
+          <ca-purchase-clone-dialog-description></ca-purchase-clone-dialog-description>
         </div>
 
         <ca-purchase-clone-dialog-buttons
           slot="footer"
-          clone-template-name=${ifDefined(this._cloneTemplateName)}
           level=${this._level}
-          quality=${this._quality}
+          tier=${this._tier}
           name=${this._name}
           @purchase-clone=${this.handlePurchaseClone}
           @cancel=${this.handleClose}
@@ -232,24 +234,26 @@ Synchronization is earned by capturing districts and gaining certain favors.`)}
     `;
   }
 
-  private renderQualityOptions = () => {
-    const highestAvailableQuality = this._cloneTemplateName
-      ? this.controller.getHighestAvailableQuality(this._cloneTemplateName)
+  private renderCloneTemplateOption = (cloneTemplate: CloneTemplateName) => {
+    return html`<sl-option value=${cloneTemplate}> ${CLONE_TEMPLATE_TEXTS[cloneTemplate].title()} </sl-option>`;
+  };
+
+  private renderTierOptions = () => {
+    const highestAvailableTier = this._cloneTemplateName
+      ? this._controller.getHighestAvailableTier(this._cloneTemplateName)
       : 0;
-    const formatter = this.controller.formatter;
+    const formatter = this._controller.formatter;
 
     const result: unknown[] = [];
-    for (let quality = 0; quality <= highestAvailableQuality; quality++) {
-      result.push(html`<sl-option value=${quality}> ${formatter.formatQuality(quality)} </sl-option>`);
+
+    for (let tier = 0; tier <= highestAvailableTier; tier++) {
+      result.push(html`<sl-option value=${tier}> ${formatter.formatTier(tier)} </sl-option>`);
     }
 
     return result;
   };
 
-  private handleClose = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  private handleClose = () => {
     this.dispatchEvent(new PurchaseCloneDialogCloseEvent());
   };
 
@@ -270,13 +274,13 @@ Synchronization is earned by capturing districts and gaining certain favors.`)}
     this._cloneTemplateName = cloneTemplateName;
   };
 
-  private handleQualityChange = () => {
-    if (!this._qualityInputRef.value) {
+  private handleTierChange = () => {
+    if (!this._tierInputRef.value) {
       return;
     }
 
-    const quality = +this._qualityInputRef.value.value;
-    this._quality = quality;
+    const tier = +this._tierInputRef.value.value;
+    this._tier = tier;
   };
 
   private handleLevelChange = () => {
@@ -284,24 +288,12 @@ Synchronization is earned by capturing districts and gaining certain favors.`)}
       return;
     }
 
-    let level = this._levelInputRef.value.valueAsNumber;
-
-    if (level < 1) {
-      level = 1;
-    }
-
-    if (level > this.controller.developmentLevel) {
-      level = this.controller.developmentLevel;
-    }
-
+    const level = clamp(this._levelInputRef.value.valueAsNumber - 1, 0, this._controller.developmentLevel);
     this._level = level;
-    this._levelInputRef.value.valueAsNumber = level;
+    this._levelInputRef.value.valueAsNumber = level + 1;
   };
 
-  private handlePurchaseClone = (event: Event) => {
-    event.stopPropagation();
-    event.preventDefault();
-
+  private handlePurchaseClone = () => {
     if (!this._cloneTemplateName) {
       return;
     }
@@ -310,22 +302,24 @@ Synchronization is earned by capturing districts and gaining certain favors.`)}
       return;
     }
 
-    const isBought = this.controller.purchaseClone(this._name, this._cloneTemplateName, this._quality, this._level);
+    const isBought = this._controller.purchaseClone({
+      name: this._name,
+      templateName: this._cloneTemplateName,
+      tier: this._tier,
+      level: this._level,
+    });
 
     if (isBought) {
       this.dispatchEvent(new PurchaseCloneDialogCloseEvent());
     }
   };
 
-  private handleGenerateName = (event: Event) => {
-    event.stopPropagation();
-    event.preventDefault();
-
+  private handleGenerateName = () => {
     this.generateName();
   };
 
   private generateName(): void {
-    this.controller
+    this._controller
       .generateName()
       .then((name) => {
         this._name = name;

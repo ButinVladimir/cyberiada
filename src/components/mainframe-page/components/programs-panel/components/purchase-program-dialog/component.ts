@@ -1,32 +1,34 @@
 import { css, html, nothing } from 'lit';
+import { provide } from '@lit/context';
 import { localized, msg, str } from '@lit/localize';
 import { customElement, property, state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.component.js';
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.component.js';
-import { BaseComponent } from '@shared/base-component';
-import type { ProgramName } from '@state/mainframe-state/states/progam-factory/types';
+import clamp from 'lodash/clamp';
+import { type ProgramName, type IProgram } from '@state/mainframe-state';
 import {
   ConfirmationAlertOpenEvent,
   ConfirmationAlertSubmitEvent,
 } from '@components/game-screen/components/confirmation-alert/events';
-import { ProgramAlert } from '@shared/types';
 import {
+  BaseComponent,
+  ProgramAlert,
   inputLabelStyle,
   hintStyle,
   sectionTitleStyle,
   mediumModalStyle,
   modalBodyScrollStyle,
   SCREEN_WIDTH_POINTS,
-} from '@shared/styles';
+} from '@shared/index';
 import { PROGRAM_TEXTS, COMMON_TEXTS } from '@texts/index';
 import { PurchaseProgramDialogCloseEvent } from './events';
 import { PurchaseProgramDialogController } from './controller';
+import { existingProgramContext, temporaryProgramContext } from './contexts';
 
 @localized()
 @customElement('ca-purchase-program-dialog')
-export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogController> {
+export class PurchaseProgramDialog extends BaseComponent {
   static styles = [
     inputLabelStyle,
     hintStyle,
@@ -80,11 +82,11 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
     `,
   ];
 
-  protected controller: PurchaseProgramDialogController;
+  private _controller: PurchaseProgramDialogController;
 
   private _programInputRef = createRef<SlSelect>();
 
-  private _qualityInputRef = createRef<SlSelect>();
+  private _tierInputRef = createRef<SlSelect>();
 
   private _levelInputRef = createRef<SlInput>();
 
@@ -98,15 +100,21 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
   private _programName?: ProgramName = undefined;
 
   @state()
-  private _quality = 0;
+  private _tier = 0;
 
   @state()
   private _level = 1;
 
+  @provide({ context: temporaryProgramContext })
+  private _program?: IProgram;
+
+  @provide({ context: existingProgramContext })
+  private _existingProgram?: IProgram;
+
   constructor() {
     super();
 
-    this.controller = new PurchaseProgramDialogController(this);
+    this._controller = new PurchaseProgramDialogController(this);
   }
 
   connectedCallback() {
@@ -121,18 +129,24 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
     document.removeEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmConfirmationAlert);
   }
 
+  performUpdate() {
+    this.updateContext();
+
+    super.performUpdate();
+  }
+
   updated(_changedProperties: Map<string, any>) {
     super.updated(_changedProperties);
 
     if (_changedProperties.has('isOpen')) {
       this._programName = undefined;
-      this._quality = 0;
-      this._level = this.controller.developmentLevel;
+      this._tier = 0;
+      this._level = this._controller.developmentLevel;
     }
   }
 
   render() {
-    const { developmentLevel } = this.controller;
+    const { developmentLevel } = this._controller;
 
     return html`
       <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
@@ -140,9 +154,9 @@ export class PurchaseProgramDialog extends BaseComponent<PurchaseProgramDialogCo
 
         <div class="body">
           <p class="hint">
-            ${msg(`Select program type, level and quality to purchase it.
+            ${msg(`Select program type, tier and level to purchase it.
 Level cannot be above current development level.
-Quality is limited depending on gained favors.
+Tier is limited depending on gained favors.
 If you already have program with same name, old one will be replaced with new one.`)}
           </p>
 
@@ -156,31 +170,29 @@ If you already have program with same name, old one will be replaced with new on
             >
               <span class="input-label" slot="label"> ${msg('Program')} </span>
 
-              ${this.controller
-                .listAvailablePrograms()
-                .map((program) => html`<sl-option value=${program}> ${PROGRAM_TEXTS[program].title()} </sl-option>`)}
+              ${this._controller.listAvailablePrograms().map(this.renderProgramOption)}
             </sl-select>
 
             <sl-select
-              ${ref(this._qualityInputRef)}
-              name="quality"
-              value=${this._quality}
+              ${ref(this._tierInputRef)}
+              name="tier"
+              value=${this._tier}
               hoist
-              @sl-change=${this.handleQualityChange}
+              @sl-change=${this.handleTierChange}
             >
-              <span class="input-label" slot="label"> ${COMMON_TEXTS.quality()} </span>
+              <span class="input-label" slot="label"> ${COMMON_TEXTS.tier()} </span>
 
-              ${this.renderQualityOptions()}
+              ${this.renderTierOptions()}
             </sl-select>
 
             <sl-input
               ${ref(this._levelInputRef)}
               name="level"
-              value=${this._level}
+              value=${this._level + 1}
               type="number"
               inputmode="decimal"
               min="1"
-              max=${developmentLevel}
+              max=${developmentLevel + 1}
               step="1"
               @sl-change=${this.handleLevelChange}
             >
@@ -189,20 +201,12 @@ If you already have program with same name, old one will be replaced with new on
           </div>
 
           ${this._programName
-            ? html`<ca-program-diff-text
-                program-name=${this._programName}
-                level=${this._level}
-                quality=${this._quality}
-              >
-              </ca-program-diff-text>`
+            ? html`<ca-purchase-program-dialog-description> </ca-purchase-program-dialog-description>`
             : nothing}
         </div>
 
         <ca-purchase-program-dialog-buttons
           slot="footer"
-          program-name=${ifDefined(this._programName)}
-          level=${this._level}
-          quality=${this._quality}
           @buy-program=${this.handleOpenConfirmationAlert}
           @cancel=${this.handleClose}
         >
@@ -211,24 +215,33 @@ If you already have program with same name, old one will be replaced with new on
     `;
   }
 
-  private renderQualityOptions = () => {
-    const highestAvailableQuality = this._programName
-      ? this.controller.getHighestAvailableQuality(this._programName)
-      : 0;
-    const formatter = this.controller.formatter;
+  private updateContext() {
+    if (this._programName) {
+      this._program = this._controller.getSelectedProgram(this._programName, this._tier, this._level);
+      this._existingProgram = this._controller.getOwnedProgram(this._programName);
+    } else {
+      this._program = undefined;
+      this._existingProgram = undefined;
+    }
+  }
+
+  private renderProgramOption = (program: ProgramName) => {
+    return html`<sl-option value=${program}> ${PROGRAM_TEXTS[program].title()} </sl-option>`;
+  };
+
+  private renderTierOptions = () => {
+    const highestAvailableTier = this._programName ? this._controller.getHighestAvailableTier(this._programName) : 0;
+    const formatter = this._controller.formatter;
 
     const result: unknown[] = [];
-    for (let quality = 0; quality <= highestAvailableQuality; quality++) {
-      result.push(html`<sl-option value=${quality}> ${formatter.formatQuality(quality)} </sl-option>`);
+    for (let tier = 0; tier <= highestAvailableTier; tier++) {
+      result.push(html`<sl-option value=${tier}> ${formatter.formatTier(tier)} </sl-option>`);
     }
 
     return result;
   };
 
-  private handleClose = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  private handleClose = () => {
     this.dispatchEvent(new PurchaseProgramDialogCloseEvent());
   };
 
@@ -241,13 +254,13 @@ If you already have program with same name, old one will be replaced with new on
     this._programName = programName;
   };
 
-  private handleQualityChange = () => {
-    if (!this._qualityInputRef.value) {
+  private handleTierChange = () => {
+    if (!this._tierInputRef.value) {
       return;
     }
 
-    const quality = +this._qualityInputRef.value.value;
-    this._quality = quality;
+    const tier = +this._tierInputRef.value.value;
+    this._tier = tier;
   };
 
   private handleLevelChange = () => {
@@ -255,42 +268,30 @@ If you already have program with same name, old one will be replaced with new on
       return;
     }
 
-    let level = this._levelInputRef.value.valueAsNumber;
-
-    if (level < 1) {
-      level = 1;
-    }
-
-    if (level > this.controller.developmentLevel) {
-      level = this.controller.developmentLevel;
-    }
-
+    const level = clamp(this._levelInputRef.value.valueAsNumber - 1, 0, this._controller.developmentLevel);
     this._level = level;
-    this._levelInputRef.value.valueAsNumber = level;
+    this._levelInputRef.value.valueAsNumber = level + 1;
   };
 
-  private handleOpenConfirmationAlert = (event: Event) => {
-    event.stopPropagation();
-    event.preventDefault();
-
+  private handleOpenConfirmationAlert = () => {
     if (!this._programName) {
       return;
     }
 
-    const ownedProgram = this.controller.getOwnedProgram(this._programName);
+    const ownedProgram = this._controller.getOwnedProgram(this._programName);
 
     if (ownedProgram) {
-      const formatter = this.controller.formatter;
+      const formatter = this._controller.formatter;
 
       const programTitle = PROGRAM_TEXTS[this._programName].title();
-      const formattedLevel = formatter.formatNumberDecimal(ownedProgram.level);
-      const formattedQuality = formatter.formatQuality(ownedProgram.quality);
+      const formattedLevel = formatter.formatLevel(ownedProgram.level);
+      const formattedTier = formatter.formatTier(ownedProgram.tier);
 
       this.dispatchEvent(
         new ConfirmationAlertOpenEvent(
           ProgramAlert.purchaseProgramOverwrite,
           msg(
-            str`Are you sure want to purchase program "${programTitle}"? This will replace your current program with quality ${formattedQuality} and level ${formattedLevel}.`,
+            str`Are you sure want to purchase program "${programTitle}"? This will replace your current program with tier ${formattedTier} and level ${formattedLevel}.`,
           ),
         ),
       );
@@ -314,7 +315,7 @@ If you already have program with same name, old one will be replaced with new on
       return;
     }
 
-    const isBought = this.controller.purchaseProgram(this._programName, this._quality, this._level);
+    const isBought = this._controller.purchaseProgram(this._programName, this._tier, this._level);
 
     if (isBought) {
       this.dispatchEvent(new PurchaseProgramDialogCloseEvent());

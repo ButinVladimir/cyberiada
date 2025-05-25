@@ -3,21 +3,22 @@ import { localized } from '@lit/localize';
 import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { CATEGORY_TEXTS, PROGRAM_TEXTS } from '@texts/index';
-import { OverviewUnlockedProgramsController } from './controller';
 import { ProgramName } from '@state/mainframe-state/states/progam-factory/types';
+import { HINT_ICON } from '@shared/styles';
+import { OverviewUnlockedProgramsController } from './controller';
 import { unlockedItemsCategoryStyles } from '../../constants';
 
 @localized()
 @customElement('ca-overview-unlocked-programs')
-export class OverviewUnlockedPrograms extends BaseComponent<OverviewUnlockedProgramsController> {
+export class OverviewUnlockedPrograms extends BaseComponent {
   static styles = unlockedItemsCategoryStyles;
 
-  protected controller: OverviewUnlockedProgramsController;
+  private _controller: OverviewUnlockedProgramsController;
 
   constructor() {
     super();
 
-    this.controller = new OverviewUnlockedProgramsController(this);
+    this._controller = new OverviewUnlockedProgramsController(this);
   }
 
   render() {
@@ -33,7 +34,7 @@ export class OverviewUnlockedPrograms extends BaseComponent<OverviewUnlockedProg
   }
 
   private renderList = () => {
-    const itemNames = this.controller.listItems();
+    const itemNames = this._controller.listItems();
 
     return itemNames.map(this.renderListItem);
   };
@@ -41,7 +42,7 @@ export class OverviewUnlockedPrograms extends BaseComponent<OverviewUnlockedProg
   private renderListItem = (itemName: ProgramName) => {
     const programTitle = PROGRAM_TEXTS[itemName].title();
     const programOverview = PROGRAM_TEXTS[itemName].overview();
-    const quality = this.controller.getItemHighestAvailableQuality(itemName);
+    const tier = this._controller.getItemHighestAvailableTier(itemName);
 
     return html`
       <span>
@@ -50,10 +51,10 @@ export class OverviewUnlockedPrograms extends BaseComponent<OverviewUnlockedProg
         <sl-tooltip>
           <span slot="content"> ${programOverview} </span>
 
-          <sl-icon name="question-circle"></sl-icon>
+          <sl-icon name=${HINT_ICON}></sl-icon>
         </sl-tooltip>
       </span>
-      <span> ${this.controller.formatter.formatQuality(quality)} </span>
+      <span> ${this._controller.formatter.formatTier(tier)} </span>
     `;
   };
 }

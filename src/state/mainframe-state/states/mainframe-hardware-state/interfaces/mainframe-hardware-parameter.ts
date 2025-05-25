@@ -6,6 +6,7 @@ export interface IMainframeHardwareParameter extends ISerializeable<IMainframeHa
   type: MainframeHardwareParameterType;
   autoUpgradeEnabled: boolean;
   level: number;
+  totalLevel: number;
   getIncreaseCost(increase: number): number;
   purchase(increase: number): boolean;
   purchaseMax(): boolean;

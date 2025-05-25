@@ -7,17 +7,11 @@ export class StartProcessDialogController extends BaseController {
   private _program?: IProgram;
 
   getAvailableRamForProgram(programName?: ProgramName): number {
-    let availableRam = this.mainframeState.processes.availableRam;
-
     if (programName) {
-      const existingProcess = this.mainframeState.processes.getProcessByName(programName);
-
-      if (existingProcess) {
-        availableRam += existingProcess.totalRam;
-      }
+      return this.mainframeState.processes.getAvailableRamForProgram(programName);
     }
 
-    return availableRam;
+    return this.mainframeState.processes.availableRam;
   }
 
   listPrograms(): IProgram[] {
@@ -25,10 +19,6 @@ export class StartProcessDialogController extends BaseController {
   }
 
   getProgram(name: ProgramName): IProgram | undefined {
-    if (this._program?.name !== name && this._program) {
-      this.removeEventListenersByEmitter(this._program);
-    }
-
     this._program = this.mainframeState.programs.getOwnedProgramByName(name)!;
 
     return this._program;

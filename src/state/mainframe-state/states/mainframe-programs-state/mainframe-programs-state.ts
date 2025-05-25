@@ -1,4 +1,4 @@
-import { inject, injectable } from 'inversify';
+import { injectable } from 'inversify';
 import { msg, str } from '@lit/localize';
 import { decorators } from '@state/container';
 import programs from '@configs/programs.json';
@@ -6,78 +6,66 @@ import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/sta
 import type { IGlobalState } from '@state/global-state/interfaces/global-state';
 import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
 import type { IFormatter } from '@shared/interfaces/formatter';
-import { IExponentWithQuality } from '@shared/interfaces/exponent-with-quality';
 import type { IMainframeState } from '@state/mainframe-state/interfaces/mainframe-state';
 import { TYPES } from '@state/types';
-import { Feature, PurchaseEvent, PurchaseType } from '@shared/types';
-import { calculatePowWithQuality } from '@shared/helpers';
-import { EventBatcher } from '@shared/event-batcher';
+import { Feature, ProgramsEvent, PurchaseType } from '@shared/types';
+import { calculateTierPower } from '@shared/helpers';
 import { binarySearchDecimal, moveElementInArray } from '@shared/helpers';
 import { PROGRAM_TEXTS } from '@texts/programs';
 import { IMainframeProgramsState, IMainframeProgramsSerializedState } from './interfaces';
-import { MAINFRAME_PROGRAMS_STATE_UI_EVENTS } from './constants';
 import { ProgramName } from '../progam-factory/types';
-import { IProgram } from '../progam-factory/interfaces';
+import { IMakeProgramParameters, IProgram } from '../progam-factory/interfaces';
 
 const { lazyInject } = decorators;
 
 @injectable()
 export class MainframeProgramsState implements IMainframeProgramsState {
-  readonly uiEventBatcher: EventBatcher;
-
   @lazyInject(TYPES.MainframeState)
   private _mainframeState!: IMainframeState;
 
-  private _stateUiConnector: IStateUIConnector;
-  private _globalState: IGlobalState;
-  private _messageLogState: IMessageLogState;
-  private _formatter: IFormatter;
+  @lazyInject(TYPES.StateUIConnector)
+  private _stateUiConnector!: IStateUIConnector;
+
+  @lazyInject(TYPES.GlobalState)
+  private _globalState!: IGlobalState;
+
+  @lazyInject(TYPES.MessageLogState)
+  private _messageLogState!: IMessageLogState;
+
+  @lazyInject(TYPES.Formatter)
+  private _formatter!: IFormatter;
 
   private _programsList: IProgram[];
   private _ownedPrograms: Map<ProgramName, IProgram>;
 
-  constructor(
-    @inject(TYPES.StateUIConnector) _stateUiConnector: IStateUIConnector,
-    @inject(TYPES.GlobalState) _globalState: IGlobalState,
-    @inject(TYPES.MessageLogState) _messageLogState: IMessageLogState,
-    @inject(TYPES.Formatter) _formatter: IFormatter,
-  ) {
-    this._stateUiConnector = _stateUiConnector;
-    this._globalState = _globalState;
-    this._messageLogState = _messageLogState;
-    this._formatter = _formatter;
-
+  constructor() {
     this._programsList = [];
     this._ownedPrograms = new Map();
 
-    this.uiEventBatcher = new EventBatcher();
-    this._stateUiConnector.registerEventEmitter(this);
+    this._stateUiConnector.registerEventEmitter(this, ['_programsList']);
   }
 
-  getProgramCost(name: ProgramName, quality: number, level: number): number {
+  getProgramCost(name: ProgramName, tier: number, level: number): number {
     const programData = programs[name];
 
-    return (
-      calculatePowWithQuality(level - 1, quality, programData.cost as IExponentWithQuality) /
-      this._globalState.multipliers.codeBase.totalMultiplier
-    );
+    return calculateTierPower(level, tier, programData.cost) / this._globalState.multipliers.codeBase.totalMultiplier;
   }
 
-  purchaseProgram(name: ProgramName, quality: number, level: number): boolean {
-    if (!this._globalState.unlockedFeatures.isFeatureUnlocked(Feature.mainframeUpgrades)) {
+  purchaseProgram(name: ProgramName, tier: number, level: number): boolean {
+    if (!this._globalState.unlockedFeatures.isFeatureUnlocked(Feature.mainframePrograms)) {
       return false;
     }
 
-    if (!this._globalState.availableItems.programs.isItemAvailable(name, quality, level)) {
+    if (!this._globalState.availableItems.programs.isItemAvailable(name, tier, level)) {
       return false;
     }
 
-    const cost = this.getProgramCost(name, quality, level);
+    const cost = this.getProgramCost(name, tier, level);
 
     const bought = this._globalState.money.purchase(
       cost,
       PurchaseType.mainframePrograms,
-      this.handlePurchaseProgram(name, quality, level),
+      this.handlePurchaseProgram(name, tier, level),
     );
 
     return bought;
@@ -97,7 +85,7 @@ export class MainframeProgramsState implements IMainframeProgramsState {
       return false;
     }
 
-    return this.purchaseProgram(name, existingProgram.quality, level);
+    return this.purchaseProgram(name, existingProgram.tier, level);
   }
 
   upgradeMaxAllPrograms(): void {
@@ -109,8 +97,6 @@ export class MainframeProgramsState implements IMainframeProgramsState {
   }
 
   listOwnedPrograms(): IProgram[] {
-    this._stateUiConnector.connectEventHandler(this, MAINFRAME_PROGRAMS_STATE_UI_EVENTS.OWNED_PROGRAMS_UPDATED);
-
     return this._programsList;
   }
 
@@ -122,12 +108,6 @@ export class MainframeProgramsState implements IMainframeProgramsState {
     for (const program of this._ownedPrograms.values()) {
       program.autoUpgradeEnabled = active;
     }
-
-    this.requestUiUpdate();
-  }
-
-  requestUiUpdate() {
-    this.uiEventBatcher.enqueueEvent(MAINFRAME_PROGRAMS_STATE_UI_EVENTS.OWNED_PROGRAMS_UPDATED);
   }
 
   moveProgram(programName: ProgramName, newPosition: number) {
@@ -138,18 +118,14 @@ export class MainframeProgramsState implements IMainframeProgramsState {
     }
 
     moveElementInArray(this._programsList, oldPosition, newPosition);
-
-    this.requestUiUpdate();
   }
 
   async startNewState(): Promise<void> {
     this.clearState();
 
-    for (const programName of this._globalState.scenario.currentValues.mainframeSoftware.programs) {
-      this.addProgram(programName, 0, 1);
+    for (const programName of this._globalState.scenario.currentValues.mainframeSoftware.startingPrograms) {
+      this.addProgram(programName, 0, 0);
     }
-
-    this.requestUiUpdate();
   }
 
   async deserialize(serializedState: IMainframeProgramsSerializedState): Promise<void> {
@@ -160,25 +136,27 @@ export class MainframeProgramsState implements IMainframeProgramsState {
       this._ownedPrograms.set(programParameters.name, program);
       this._programsList.push(program);
     });
-
-    this.requestUiUpdate();
   }
 
   serialize(): IMainframeProgramsSerializedState {
     return {
-      ownedPrograms: this._programsList.map((program) => program.serialize()),
+      ownedPrograms: this._programsList.map(this.serializeProgram),
     };
   }
 
-  private addProgram(name: ProgramName, quality: number, level: number): void {
+  private serializeProgram = (program: IProgram): IMakeProgramParameters => {
+    return program.serialize();
+  };
+
+  private addProgram(name: ProgramName, tier: number, level: number): void {
     const existingProgram = this._ownedPrograms.get(name);
 
     if (existingProgram) {
-      existingProgram.upgrade(quality, level);
+      existingProgram.upgrade(tier, level);
     } else {
       const newProgram = this._mainframeState.programFactory.makeProgram({
         name,
-        quality,
+        tier: tier,
         level,
         autoUpgradeEnabled: true,
       });
@@ -190,21 +168,17 @@ export class MainframeProgramsState implements IMainframeProgramsState {
         this._globalState.unlockedFeatures.unlockFeature(feature);
       }
     }
-
-    this.requestUiUpdate();
   }
 
-  private handlePurchaseProgram = (name: ProgramName, quality: number, level: number) => () => {
-    this.addProgram(name, quality, level);
+  private handlePurchaseProgram = (name: ProgramName, tier: number, level: number) => () => {
+    this.addProgram(name, tier, level);
 
     const programTitle = PROGRAM_TEXTS[name].title();
-    const formattedLevel = this._formatter.formatNumberDecimal(level);
-    const formattedQuality = this._formatter.formatQuality(quality);
+    const formattedLevel = this._formatter.formatLevel(level);
+    const formattedTier = this._formatter.formatTier(tier);
     this._messageLogState.postMessage(
-      PurchaseEvent.programPurchased,
-      msg(
-        str`Program "${programTitle}" with quality ${formattedQuality} and level ${formattedLevel} has been purchased`,
-      ),
+      ProgramsEvent.programPurchased,
+      msg(str`Program "${programTitle}" with tier ${formattedTier} and level ${formattedLevel} has been purchased`),
     );
   };
 
@@ -218,13 +192,11 @@ export class MainframeProgramsState implements IMainframeProgramsState {
   }
 
   private handleCheckProgramUpgrade = (existingProgram: IProgram) => (level: number) => {
-    if (
-      !this._globalState.availableItems.programs.isItemAvailable(existingProgram.name, existingProgram.quality, level)
-    ) {
+    if (!this._globalState.availableItems.programs.isItemAvailable(existingProgram.name, existingProgram.tier, level)) {
       return false;
     }
 
-    const cost = this.getProgramCost(existingProgram.name, existingProgram.quality, level);
+    const cost = this.getProgramCost(existingProgram.name, existingProgram.tier, level);
 
     return cost <= this._globalState.money.money;
   };

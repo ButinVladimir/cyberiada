@@ -2,21 +2,18 @@ import { css, html } from 'lit';
 import { localized, msg } from '@lit/localize';
 import { customElement } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
-import { BaseComponent } from '@shared/base-component';
-import { ProgramAlert } from '@shared/types';
 import {
   ConfirmationAlertOpenEvent,
   ConfirmationAlertSubmitEvent,
 } from '@components/game-screen/components/confirmation-alert/events';
-import { IProcess } from '@state/mainframe-state/states/mainframe-processes-state/interfaces/process';
-import { ProgramName } from '@state/mainframe-state/states/progam-factory/types';
-import { DELETE_VALUES, ENTITY_ACTIVE_VALUES, SCREEN_WIDTH_POINTS } from '@shared/styles';
+import { IProcess, ProgramName } from '@state/mainframe-state';
+import { BaseComponent, ProgramAlert, DELETE_VALUES, ENTITY_ACTIVE_VALUES, SCREEN_WIDTH_POINTS } from '@shared/index';
 import { SortableElementMovedEvent } from '@components/shared/sortable-list/events/sortable-element-moved';
 import { ProcessesListController } from './controller';
 
 @localized()
 @customElement('ca-processes-list')
-export class ProcessesList extends BaseComponent<ProcessesListController> {
+export class ProcessesList extends BaseComponent {
   static styles = css`
     :host {
       width: 100%;
@@ -28,7 +25,7 @@ export class ProcessesList extends BaseComponent<ProcessesListController> {
     .header {
       display: grid;
       grid-template-columns: auto;
-      grid-template-rows: auto;
+      grid-template-rows: repeat(auto);
       gap: var(--sl-spacing-small);
       align-items: center;
       border-bottom: var(--ca-border);
@@ -94,7 +91,7 @@ export class ProcessesList extends BaseComponent<ProcessesListController> {
 
     @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
       .header {
-        grid-template-columns: 3fr 1fr 2fr 6rem;
+        grid-template-columns: 3fr 1fr 2fr auto;
         grid-template-rows: auto;
         padding: var(--sl-spacing-small);
       }
@@ -113,12 +110,12 @@ export class ProcessesList extends BaseComponent<ProcessesListController> {
     }
   `;
 
-  protected controller: ProcessesListController;
+  private _controller: ProcessesListController;
 
   constructor() {
     super();
 
-    this.controller = new ProcessesListController(this);
+    this._controller = new ProcessesListController(this);
   }
 
   connectedCallback() {
@@ -144,13 +141,13 @@ export class ProcessesList extends BaseComponent<ProcessesListController> {
 
     const deleteAllProcessLabel = msg('Delete all processes');
 
-    const processes = this.controller.listProcesses();
+    const processes = this._controller.listProcesses();
 
     return html`
       <div class="header">
         <div class="header-column">${msg('Program')}</div>
         <div class="header-column">${msg('Cores')}</div>
-        <div class="header-column"></div>
+        <div class="header-column">${msg('Progress')}</div>
         <div class="buttons desktop">
           <sl-tooltip>
             <span slot="content"> ${toggleProcessesLabel} </span>
@@ -220,22 +217,16 @@ export class ProcessesList extends BaseComponent<ProcessesListController> {
   };
 
   private checkSomeProcessesActive(): boolean {
-    return this.controller.listProcesses().some((process) => process.isActive);
+    return this._controller.listProcesses().some((process) => process.isActive);
   }
 
-  private handleToggleAllProcesses = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  private handleToggleAllProcesses = () => {
     const processesActive = this.checkSomeProcessesActive();
 
-    this.controller.toggleAllProcesses(!processesActive);
+    this._controller.toggleAllProcesses(!processesActive);
   };
 
-  private handleOpenDeleteAllProcessesDialog = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  private handleOpenDeleteAllProcessesDialog = () => {
     this.dispatchEvent(
       new ConfirmationAlertOpenEvent(
         ProgramAlert.deleteAllProcesses,
@@ -251,13 +242,10 @@ export class ProcessesList extends BaseComponent<ProcessesListController> {
       return;
     }
 
-    this.controller.deleteAllProcesses();
+    this._controller.deleteAllProcesses();
   };
 
   private handleMoveProcess = (event: SortableElementMovedEvent) => {
-    event.stopPropagation();
-    event.preventDefault();
-
-    this.controller.moveProcess(event.keyName as ProgramName, event.position);
+    this._controller.moveProcess(event.keyName as ProgramName, event.position);
   };
 }

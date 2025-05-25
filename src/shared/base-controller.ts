@@ -12,14 +12,13 @@ import { IAutomationState } from '@state/automation-state/interfaces/automation-
 import { ICompanyState } from '@state/company-state/interfaces/company-state';
 import { container } from '@state/container';
 import { TYPES } from '@state/types';
-import { APP_UI_EVENTS, IApp } from '@state/app';
-import { IFormatter, IUIEventEmitter, IUIEventListener } from './interfaces';
-import { COMMON_UI_EVENTS } from './constants';
+import { IApp } from '@state/app';
+import { IFormatter } from './interfaces';
 
 export type PartialUpdateFunction = () => void;
 
 export class BaseController<T extends ReactiveControllerHost & HTMLElement = ReactiveControllerHost & HTMLElement>
-  implements ReactiveController, IUIEventListener
+  implements ReactiveController
 {
   private static _containerValuesCache = new Map<symbol, any>();
 
@@ -36,103 +35,14 @@ export class BaseController<T extends ReactiveControllerHost & HTMLElement = Rea
 
   protected host: T;
 
-  protected removeEventsEmitterMap: Map<IUIEventEmitter, () => void>;
-
-  protected eventsEmitterMap: Map<IUIEventEmitter, Set<symbol>>;
-
-  private _partialUpdateFn?: PartialUpdateFunction;
-
-  constructor(host: T, partialUpdateFn?: PartialUpdateFunction) {
+  constructor(host: T) {
     this.host = host;
     host.addController(this);
-
-    this.removeEventsEmitterMap = new Map<IUIEventEmitter, () => void>();
-    this.eventsEmitterMap = new Map<IUIEventEmitter, Set<symbol>>();
-
-    this._partialUpdateFn = partialUpdateFn;
   }
 
-  hostConnected() {
-    for (const [eventEmitter, callback] of this.removeEventsEmitterMap.entries()) {
-      eventEmitter.uiEventBatcher.addListener(COMMON_UI_EVENTS.REMOVE_EVENT_LISTENERS_BY_EMITTER, callback);
-    }
+  hostConnected() {}
 
-    for (const [eventEmitter, eventSet] of this.eventsEmitterMap.entries()) {
-      for (const event of eventSet.values()) {
-        eventEmitter.uiEventBatcher.addListener(event, this.handleRefreshUI);
-      }
-    }
-
-    if (this._partialUpdateFn) {
-      this.app.uiEventBatcher.addListener(APP_UI_EVENTS.UI_FRAME_UPDATE, this._partialUpdateFn);
-    }
-  }
-
-  hostDisconnected() {
-    for (const [eventEmitter, callback] of this.removeEventsEmitterMap.entries()) {
-      eventEmitter.uiEventBatcher.removeListener(COMMON_UI_EVENTS.REMOVE_EVENT_LISTENERS_BY_EMITTER, callback);
-    }
-
-    for (const [eventEmitter, eventSet] of this.eventsEmitterMap.entries()) {
-      this.clearEventSet(eventEmitter, eventSet);
-    }
-
-    if (this._partialUpdateFn) {
-      this.app.uiEventBatcher.removeListener(APP_UI_EVENTS.UI_FRAME_UPDATE, this._partialUpdateFn);
-    }
-  }
-
-  addEventListener(eventEmitter: IUIEventEmitter, event: symbol) {
-    if (!this.removeEventsEmitterMap.has(eventEmitter)) {
-      const removeEventEmitterCallback = this.handleRemoveEventEmitterCallback(eventEmitter);
-
-      this.removeEventsEmitterMap.set(eventEmitter, removeEventEmitterCallback);
-      eventEmitter.uiEventBatcher.addListener(
-        COMMON_UI_EVENTS.REMOVE_EVENT_LISTENERS_BY_EMITTER,
-        removeEventEmitterCallback,
-      );
-    }
-
-    let eventSet: Set<symbol> | undefined = this.eventsEmitterMap.get(eventEmitter);
-
-    if (!eventSet) {
-      eventSet = new Set<symbol>();
-      this.eventsEmitterMap.set(eventEmitter, eventSet);
-    }
-
-    if (!eventSet.has(event)) {
-      eventSet.add(event);
-      eventEmitter.uiEventBatcher.addListener(event, this.handleRefreshUI);
-    }
-  }
-
-  removeEventListenersByEmitter(eventEmitter: IUIEventEmitter) {
-    const eventSet = this.eventsEmitterMap.get(eventEmitter);
-
-    if (eventSet) {
-      this.clearEventSet(eventEmitter, eventSet);
-    }
-
-    this.eventsEmitterMap.delete(eventEmitter);
-    this.removeEventsEmitterMap.delete(eventEmitter);
-  }
-
-  removeAllEventListeners() {
-    for (const [eventEmitter, eventSet] of this.eventsEmitterMap.entries()) {
-      this.clearEventSet(eventEmitter, eventSet);
-    }
-
-    this.eventsEmitterMap.clear();
-    this.removeEventsEmitterMap.clear();
-  }
-
-  startRendering() {
-    this.stateUiConnector.pushEventListener(this);
-  }
-
-  stopRendering() {
-    this.stateUiConnector.popEventListener();
-  }
+  hostDisconnected() {}
 
   protected get stateUiConnector(): IStateUIConnector {
     return BaseController.getContainerValue(TYPES.StateUIConnector);
@@ -185,18 +95,4 @@ export class BaseController<T extends ReactiveControllerHost & HTMLElement = Rea
   protected get companyState(): ICompanyState {
     return BaseController.getContainerValue(TYPES.CompanyState);
   }
-
-  protected handleRefreshUI = (): void => {
-    this.host.requestUpdate();
-  };
-
-  private clearEventSet(eventEmitter: IUIEventEmitter, eventSet: Set<symbol>) {
-    for (const event of eventSet.values()) {
-      eventEmitter.uiEventBatcher.removeListener(event, this.handleRefreshUI);
-    }
-  }
-
-  private handleRemoveEventEmitterCallback = (eventEmitter: IUIEventEmitter) => () => {
-    this.removeEventListenersByEmitter(eventEmitter);
-  };
 }

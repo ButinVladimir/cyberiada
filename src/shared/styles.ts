@@ -89,6 +89,8 @@ export const hintIconStyle = css`
   }
 `;
 
+export const HINT_ICON = 'question-circle';
+
 export const DESCRIPTION_ICONS = {
   hidden: 'chevron-right',
   expanded: 'chevron-down',
@@ -178,3 +180,76 @@ export const TOGGLE_DETAILS_VALUES: {
     disabled: 'default',
   },
 };
+
+export const attributesSkillsTablesStyle = css`
+  div.attributes-skills-tables {
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: repeat(auto);
+    grid-row-gap: var(--sl-spacing-medium);
+    grid-column-gap: var(--sl-spacing-3x-large);
+  }
+
+  div.attributes-skills-tables div.attributes-skills-table {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: repeat(auto);
+    grid-column-gap: var(--sl-spacing-medium);
+    color: var(--ca-hint-color);
+    font-size: var(--ca-hint-font-size);
+    line-height: var(--ca-hint-line-height);
+  }
+
+  div.attributes-skills-tables h5.title {
+    margin: 0;
+  }
+
+  @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
+    div.attributes-skills-tables {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+`;
+
+export const highlightedValuesStyle = css`
+  .success {
+    color: var(--ca-success-color);
+  }
+
+  .danger {
+    color: var(--ca-danger-color);
+  }
+`;
+
+export const dialogButtonsStyle = css`
+  p.warning {
+    display: none;
+    margin-top: var(--sl-spacing-3x-small);
+    margin-bottom: 0;
+  }
+
+  p.warning.visible {
+    display: block;
+  }
+
+  div.buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--sl-spacing-medium);
+  }
+`;
+
+export const progressBarHintStyle = css`
+  p.progress-bar-hint {
+    color: var(--ca-hint-color);
+    font-size: var(--ca-hint-font-size);
+    line-height: var(--ca-hint-line-height);
+    display: none;
+    margin-top: var(--sl-spacing-3x-small);
+    margin-bottom: 0;
+  }
+
+  p.progress-bar-hint.visible {
+    display: block;
+  }
+`;

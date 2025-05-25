@@ -1,6 +1,6 @@
 import { css, html } from 'lit';
 import { localized, msg } from '@lit/localize';
-import { customElement, state } from 'lit/decorators.js';
+import { customElement } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { BaseComponent } from '@shared/base-component';
 import { SortableElementMovedEvent } from '@components/shared/sortable-list/events/sortable-element-moved';
@@ -10,14 +10,14 @@ import {
   ConfirmationAlertOpenEvent,
   ConfirmationAlertSubmitEvent,
 } from '@components/game-screen/components/confirmation-alert/events';
-import { AUTOUPGRADE_VALUES, DELETE_VALUES, TOGGLE_DETAILS_VALUES } from '@shared/styles';
+import { AUTOUPGRADE_VALUES, DELETE_VALUES, UPGRADE_MAX_VALUES } from '@shared/styles';
 import { IClone } from '@state/company-state/states/clone-factory/interfaces/clone';
 import { ClonesListController } from './controller';
 import { CLONE_LIST_ITEMS_GAP } from './constants';
 
 @localized()
 @customElement('ca-clones-list')
-export class ClonesList extends BaseComponent<ClonesListController> {
+export class ClonesList extends BaseComponent {
   static styles = css`
     :host {
       width: 100%;
@@ -26,12 +26,16 @@ export class ClonesList extends BaseComponent<ClonesListController> {
       border-top: var(--ca-border);
     }
 
-    .header {
+    .header-row {
       display: flex;
       flex-wrap: wrap;
       justify-content: flex-start;
       padding: var(--sl-spacing-medium) 0;
       gap: var(--sl-spacing-small);
+    }
+
+    .header-row.with-border {
+      border-bottom: var(--ca-border);
     }
 
     .notification {
@@ -55,15 +59,12 @@ export class ClonesList extends BaseComponent<ClonesListController> {
     }
   `;
 
-  protected controller: ClonesListController;
-
-  @state()
-  private _detailsVisible = false;
+  private _controller: ClonesListController;
 
   constructor() {
     super();
 
-    this.controller = new ClonesListController(this);
+    this._controller = new ClonesListController(this);
   }
 
   connectedCallback() {
@@ -79,14 +80,6 @@ export class ClonesList extends BaseComponent<ClonesListController> {
   }
 
   render() {
-    const toggleDetailsLabel = this._detailsVisible ? COMMON_TEXTS.hideDetails() : COMMON_TEXTS.showDetails();
-    const toggleDetailsIcon = this._detailsVisible
-      ? TOGGLE_DETAILS_VALUES.icon.enabled
-      : TOGGLE_DETAILS_VALUES.icon.disabled;
-    const toggleDetailsVariant = this._detailsVisible
-      ? TOGGLE_DETAILS_VALUES.buttonVariant.enabled
-      : TOGGLE_DETAILS_VALUES.buttonVariant.disabled;
-
     const isAutoupgradeActive = this.checkSomeClonesAutoupgradeActive();
 
     const autoupgradeLabel = isAutoupgradeActive
@@ -97,16 +90,20 @@ export class ClonesList extends BaseComponent<ClonesListController> {
       ? AUTOUPGRADE_VALUES.buttonVariant.enabled
       : AUTOUPGRADE_VALUES.buttonVariant.disabled;
 
-    const clones = this.controller.listClones();
+    const clones = this._controller.listClones();
 
     return html`
-      <div class="header">
-        <sl-button variant=${toggleDetailsVariant} size="medium" @click=${this.handleToggleDetails}>
-          <sl-icon slot="prefix" name=${toggleDetailsIcon}></sl-icon>
+      <div class="header-row with-border">
+        <sl-button-group>
+          <sl-button variant=${UPGRADE_MAX_VALUES.buttonVariant} @click=${this.handleUpgradeMaxAllLevels}>
+            <sl-icon slot="prefix" name=${UPGRADE_MAX_VALUES.icon}></sl-icon>
 
-          ${toggleDetailsLabel}
-        </sl-button>
+            ${msg('Upgrade all levels')}
+          </sl-button>
+        </sl-button-group>
+      </div>
 
+      <div class="header-row">
         <sl-button variant=${autoupgradeVariant} size="medium" @click=${this.handleToggleAutoupgrade}>
           <sl-icon slot="prefix" name=${autoupgradeIcon}></sl-icon>
 
@@ -123,7 +120,7 @@ export class ClonesList extends BaseComponent<ClonesListController> {
       ${clones.length > 0
         ? html`
             <ca-sortable-list gap=${CLONE_LIST_ITEMS_GAP} @sortable-element-moved=${this.handleMoveClone}>
-              ${repeat(clones, (program) => program.name, this.renderClone)}
+              ${repeat(clones, (clone) => clone.id, this.renderClone)}
             </ca-sortable-list>
           `
         : this.renderEmptyListNotification()}
@@ -135,48 +132,26 @@ export class ClonesList extends BaseComponent<ClonesListController> {
   };
 
   private renderClone = (clone: IClone) => {
-    return html`<ca-clones-list-item
-      clone-id=${clone.id}
-      data-drag-id=${clone.id}
-      ?details-visible=${this._detailsVisible}
-    ></ca-clones-list-item>`;
-  };
-
-  private handleToggleDetails = (event: Event) => {
-    event.stopPropagation();
-    event.preventDefault();
-
-    this._detailsVisible = !this._detailsVisible;
+    return html`<ca-clones-list-item clone-id=${clone.id} data-drag-id=${clone.id}></ca-clones-list-item>`;
   };
 
   private checkSomeClonesAutoupgradeActive(): boolean {
-    const clones = this.controller.listClones();
+    const clones = this._controller.listClones();
 
     return clones.some((clone) => clone.autoUpgradeEnabled);
   }
 
-  private handleToggleAutoupgrade = (event: Event) => {
-    event.stopPropagation();
-    event.preventDefault();
-
+  private handleToggleAutoupgrade = () => {
     const active = this.checkSomeClonesAutoupgradeActive();
 
-    this.controller.toggleAutoupgrade(!active);
+    this._controller.toggleAutoupgrade(!active);
   };
 
   private handleMoveClone = (event: SortableElementMovedEvent) => {
-    event.stopPropagation();
-    event.preventDefault();
-
-    console.log(`Move ${event.keyName} to ${event.position}`);
-
-    this.controller.moveClone(event.keyName, event.position);
+    this._controller.moveClone(event.keyName, event.position);
   };
 
-  private handleOpenDeleteAllClonesDialog = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  private handleOpenDeleteAllClonesDialog = () => {
     this.dispatchEvent(
       new ConfirmationAlertOpenEvent(
         CloneAlert.deleteAllClones,
@@ -192,6 +167,10 @@ export class ClonesList extends BaseComponent<ClonesListController> {
       return;
     }
 
-    this.controller.deleteAllClones();
+    this._controller.deleteAllClones();
+  };
+
+  private handleUpgradeMaxAllLevels = () => {
+    this._controller.upgradeMaxAllLevels();
   };
 }

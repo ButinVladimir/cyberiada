@@ -1,4 +1,5 @@
 import programs from '@configs/programs.json';
+import { calculateTierPower } from '@shared/helpers';
 import { MultiplierProgramName } from '../types';
 import { BaseProgram } from './base-program';
 
@@ -6,9 +7,7 @@ export class DealMakerProgram extends BaseProgram {
   public readonly name = MultiplierProgramName.dealMaker;
   public readonly isAutoscalable = false;
 
-  handlePerformanceUpdate(): void {
-    this.growthState.multipliers.rewards.requestGrowthRecalculation();
-  }
+  handlePerformanceUpdate(): void {}
 
   perform(threads: number): void {
     this.globalState.multipliers.rewards.increasePointsByProgram(this.calculateDelta(threads));
@@ -18,12 +17,10 @@ export class DealMakerProgram extends BaseProgram {
     const programData = programs[this.name];
 
     return (
-      this.globalState.scenario.currentValues.programMultipliers.rewards.pointsPerCompletion *
+      this.globalState.scenario.currentValues.programMultipliers.rewards.pointsMultiplier *
       this.globalState.multipliers.rewards.totalMultiplier *
       threads *
-      programData.rewardsLevelMultiplier *
-      this.level *
-      Math.pow(programData.rewardsQualityMultiplier, this.quality)
+      calculateTierPower(this.level, this.tier, programData.rewards)
     );
   }
 }

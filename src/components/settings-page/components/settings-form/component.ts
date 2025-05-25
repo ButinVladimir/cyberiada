@@ -15,7 +15,7 @@ import * as constants from './constants';
 
 @localized()
 @customElement('ca-settings-form')
-export class SettingsForm extends BaseComponent<SettingsFormController> {
+export class SettingsForm extends BaseComponent {
   static styles = [
     inputLabelStyle,
     css`
@@ -39,7 +39,7 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
     `,
   ];
 
-  protected controller: SettingsFormController;
+  private _controller: SettingsFormController;
 
   private _languageInputRef = createRef<SlSelect>();
 
@@ -64,7 +64,7 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
   constructor() {
     super();
 
-    this.controller = new SettingsFormController(this);
+    this._controller = new SettingsFormController(this);
   }
 
   render() {
@@ -72,31 +72,29 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
       <sl-select
         ${ref(this._languageInputRef)}
         name="language"
-        value=${this.controller.language}
+        value=${this._controller.language}
         @sl-change=${this.handleChangeLanguage}
       >
         <span class="input-label" slot="label"> ${msg('Language')} </span>
 
-        ${constants.LANGUAGE_OPTIONS.map(
-          ([language, optionText]) => html`<sl-option value=${language}> ${optionText} </sl-option>`,
-        )}
+        ${constants.LANGUAGE_OPTIONS.map(this.renderLanguageOption)}
       </sl-select>
 
       <sl-select
         ${ref(this._themeInputRef)}
         name="theme"
-        value=${this.controller.theme}
+        value=${this._controller.theme}
         @sl-change=${this.handleChangeTheme}
       >
         <span class="input-label" slot="label"> ${msg('Theme')} </span>
 
-        ${THEMES.map((theme) => html`<sl-option value=${theme}> ${constants.THEME_NAMES[theme]()} </sl-option>`)}
+        ${THEMES.map(this.renderThemeOption)}
       </sl-select>
 
       <sl-input
         ${ref(this._messageLogSizeInputRef)}
         name="messageLogSize"
-        value=${this.controller.messageLogSize}
+        value=${this._controller.messageLogSize}
         type="number"
         inputmode="decimal"
         min=${constants.MESSAGE_LOG_SIZE_MIN}
@@ -117,7 +115,7 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
         max=${constants.TOAST_DURATION_MAX}
         step=${constants.TOAST_DURATION_STEP}
         name="toastDuration"
-        value=${this.controller.toastDuration}
+        value=${this._controller.toastDuration}
         @sl-change=${this.handleChangeToastDuration}
       >
         <span class="input-label" slot="label"> ${msg('Message popup duration (s)')} </span>
@@ -131,7 +129,7 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
         max=${constants.FPS_MAX}
         step=${constants.FPS_STEP}
         name="fps"
-        value=${this.controller.fps}
+        value=${this._controller.fps}
         @sl-change=${this.handleChangeUpdateFPS}
       >
         <span class="input-label" slot="label"> ${msg('Frames per second')} </span>
@@ -145,7 +143,7 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
         max=${constants.FAST_SPEED_MULTIPLIER_MAX}
         step=${constants.FAST_SPEED_MULTIPLIER_STEP}
         name="fastSpeedMultiplier"
-        value=${this.controller.fastSpeedMultiplier}
+        value=${this._controller.fastSpeedMultiplier}
         @sl-change=${this.handleChangeFastSpeedMultiplier}
       >
         <span class="input-label" slot="label"> ${msg('Speed multiplier when game speed is fast')} </span>
@@ -156,7 +154,7 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
       <sl-input
         ${ref(this._maxUpdatesPerTickInputRef)}
         name="maxUpdatesPerTick"
-        value=${this.controller.maxUpdatesPerTick}
+        value=${this._controller.maxUpdatesPerTick}
         type="number"
         inputmode="decimal"
         min=${constants.MAX_UPDATES_PER_FRAME_MIN}
@@ -172,24 +170,19 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
       <sl-select
         ${ref(this._longNumberFormatInputRef)}
         name="longNumberFormat"
-        value=${this.controller.longNumberFormat}
+        value=${this._controller.longNumberFormat}
         @sl-change=${this.handleChangeLongNumberFormat}
       >
         <span class="input-label" slot="label"> ${msg('Long number format')} </span>
 
-        ${LONG_NUMBER_FORMATS.map(
-          (longNumberFormat) =>
-            html` <sl-option value=${longNumberFormat}>
-              ${constants.LONG_NUMBER_FORMAT_NAMES[longNumberFormat]()}
-            </sl-option>`,
-        )}
+        ${LONG_NUMBER_FORMATS.map(this.renderLongNumberFormatOption)}
       </sl-select>
 
       <sl-switch
         ${ref(this._autosaveEnabledOnHideSwitchRef)}
         size="medium"
         name="autosaveEnabledOnHide"
-        ?checked=${this.controller.autosaveEnabledOnHide}
+        ?checked=${this._controller.autosaveEnabledOnHide}
         @sl-change=${this.handleChangeAutosaveEnabledOnHide}
       >
         <span class="input-label"> ${msg('Enable autosave when game tab hides or closes')} </span>
@@ -201,7 +194,7 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
         max=${constants.AUTOSAVE_INTERVAL_MAX}
         step=${constants.AUTOSAVE_INTERVAL_STEP}
         name="autosaveInterval"
-        value=${this.controller.autosaveInterval}
+        value=${this._controller.autosaveInterval}
         @sl-change=${this.handleChangeAutosaveInterval}
       >
         <span class="input-label" slot="label"> ${msg('Autosave interval (s)')} </span>
@@ -233,13 +226,27 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
     }
   }
 
+  private renderLanguageOption = ([language, optionText]: string[]) => {
+    return html`<sl-option value=${language}> ${optionText} </sl-option>`;
+  };
+
+  private renderThemeOption = (theme: Theme) => {
+    return html`<sl-option value=${theme}> ${constants.THEME_NAMES[theme]()} </sl-option>`;
+  };
+
+  private renderLongNumberFormatOption = (longNumberFormat: LongNumberFormat) => {
+    return html`<sl-option value=${longNumberFormat}>
+      ${constants.LONG_NUMBER_FORMAT_NAMES[longNumberFormat]()}
+    </sl-option>`;
+  };
+
   private handleChangeLanguage = async () => {
     if (!this._languageInputRef.value) {
       return;
     }
 
     try {
-      await this.controller.setLanguage(this._languageInputRef.value.value as Language);
+      await this._controller.setLanguage(this._languageInputRef.value.value as Language);
     } catch (e) {
       console.error(e);
     }
@@ -250,7 +257,7 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
       return;
     }
 
-    this.controller.setTheme(this._themeInputRef.value.value as Theme);
+    this._controller.setTheme(this._themeInputRef.value.value as Theme);
   };
 
   private handleChangeMessageLogSize = () => {
@@ -268,7 +275,7 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
       value = constants.MESSAGE_LOG_SIZE_MAX;
     }
 
-    this.controller.setMessageLogSize(value);
+    this._controller.setMessageLogSize(value);
     this._messageLogSizeInputRef.value.valueAsNumber = value;
   };
 
@@ -277,7 +284,7 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
       return;
     }
 
-    this.controller.setToastDuration(this._toastDurationInputRef.value.value);
+    this._controller.setToastDuration(this._toastDurationInputRef.value.value);
   };
 
   private handleChangeUpdateFPS = () => {
@@ -285,7 +292,7 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
       return;
     }
 
-    this.controller.setUpdateFPS(this._updateFPSInputRef.value.value);
+    this._controller.setUpdateFPS(this._updateFPSInputRef.value.value);
   };
 
   private handleChangeAutosaveEnabledOnHide = () => {
@@ -293,7 +300,7 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
       return;
     }
 
-    this.controller.setAutosaveEnabled(this._autosaveEnabledOnHideSwitchRef.value.checked);
+    this._controller.setAutosaveEnabled(this._autosaveEnabledOnHideSwitchRef.value.checked);
   };
 
   private handleChangeAutosaveInterval = () => {
@@ -301,7 +308,7 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
       return;
     }
 
-    this.controller.setAutosaveInterval(this._autosaveIntervalInputRef.value.value);
+    this._controller.setAutosaveInterval(this._autosaveIntervalInputRef.value.value);
   };
 
   private handleChangeFastSpeedMultiplier = () => {
@@ -309,7 +316,7 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
       return;
     }
 
-    this.controller.setFastSpeedMultiplier(this._fastSpeedMultiplierInputRef.value.value);
+    this._controller.setFastSpeedMultiplier(this._fastSpeedMultiplierInputRef.value.value);
   };
 
   private handleChangeMaxUpdatesPerTick = () => {
@@ -327,7 +334,7 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
       value = constants.MAX_UPDATES_PER_FRAME_MAX;
     }
 
-    this.controller.setMaxUpdatesPerTick(value);
+    this._controller.setMaxUpdatesPerTick(value);
     this._maxUpdatesPerTickInputRef.value.valueAsNumber = value;
   };
 
@@ -336,14 +343,14 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
       return;
     }
 
-    this.controller.setLongNumberFormat(this._longNumberFormatInputRef.value.value as LongNumberFormat);
+    this._controller.setLongNumberFormat(this._longNumberFormatInputRef.value.value as LongNumberFormat);
   };
 
   private timeSecondsFormatter = (value: number): string => {
-    return this.controller.formatter.formatNumberDecimal(value / 1000);
+    return this._controller.formatter.formatNumberDecimal(value / 1000);
   };
 
   private decimalNumberFormatter = (value: number): string => {
-    return this.controller.formatter.formatNumberDecimal(value);
+    return this._controller.formatter.formatNumberDecimal(value);
   };
 }

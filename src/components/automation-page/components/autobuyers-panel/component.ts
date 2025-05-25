@@ -5,7 +5,7 @@ import { Feature } from '@shared/types';
 import { AutomationAutobuyersPanelController } from './controller';
 
 @customElement('ca-automation-autobuyers-panel')
-export class AutomationAutobuyersPanel extends BaseComponent<AutomationAutobuyersPanelController> {
+export class AutomationAutobuyersPanel extends BaseComponent {
   static styles = css`
     :host {
       width: 100%;
@@ -16,20 +16,23 @@ export class AutomationAutobuyersPanel extends BaseComponent<AutomationAutobuyer
     }
   `;
 
-  protected controller: AutomationAutobuyersPanelController;
+  private _controller: AutomationAutobuyersPanelController;
 
   constructor() {
     super();
 
-    this.controller = new AutomationAutobuyersPanelController(this);
+    this._controller = new AutomationAutobuyersPanelController(this);
   }
 
   render() {
     return html`
-      ${this.controller.isFeatureUnlocked(Feature.automationMainframeHardware)
+      ${this._controller.isFeatureUnlocked(Feature.companyManagement)
+        ? html`<ca-automation-clone-level-autoupgrader></ca-automation-clone-level-autoupgrader>`
+        : nothing}
+      ${this._controller.isFeatureUnlocked(Feature.automationMainframeHardware)
         ? html`<ca-automation-mainframe-hardware-autobuyer></ca-automation-mainframe-hardware-autobuyer>`
         : nothing}
-      ${this.controller.isFeatureUnlocked(Feature.automationMainframePrograms)
+      ${this._controller.isFeatureUnlocked(Feature.automationMainframePrograms)
         ? html`<ca-automation-mainframe-programs-autobuyer></ca-automation-mainframe-programs-autobuyer>`
         : nothing}
     `;

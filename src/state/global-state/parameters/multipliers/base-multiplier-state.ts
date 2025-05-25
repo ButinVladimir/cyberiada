@@ -1,9 +1,9 @@
 import { injectable } from 'inversify';
 import { decorators } from '@state/container';
-import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import type { IGrowthState } from '@state/growth-state/interfaces/growth-state';
-import { EventBatcher } from '@shared/event-batcher';
 import { TYPES } from '@state/types';
+import { type ICityState, IDistrictMultipliers } from '@state/city-state';
+import { IDistrictMultiplierParameter } from '@state/city-state/interfaces/parameters/district-multiplier-parameter';
 import type { IGlobalState } from '../../interfaces/global-state';
 import { IMultiplierState } from '../../interfaces/parameters/multiplier-state';
 import { IMultiplierSerializedState } from '../../interfaces/serialized-states/multiplier-serialized-state';
@@ -13,30 +13,23 @@ const { lazyInject } = decorators;
 
 @injectable()
 export abstract class BaseMultiplierState implements IMultiplierState {
-  readonly uiEventBatcher: EventBatcher;
-
-  @lazyInject(TYPES.StateUIConnector)
-  private _stateUiConnector!: IStateUIConnector;
-
   @lazyInject(TYPES.GlobalState)
   protected globalState!: IGlobalState;
 
   @lazyInject(TYPES.GrowthState)
   protected growthState!: IGrowthState;
 
+  @lazyInject(TYPES.CityState)
+  protected cityState!: ICityState;
+
   private _pointsByProgram: number;
   private _multiplierByProgram: number;
   private _totalMultiplier: number;
-  private _multiplierUpdateRequested: boolean;
 
   constructor() {
-    this._pointsByProgram = 0;
+    this._pointsByProgram = 1;
     this._totalMultiplier = 1;
     this._multiplierByProgram = 1;
-    this._multiplierUpdateRequested = false;
-
-    this.uiEventBatcher = new EventBatcher();
-    this._stateUiConnector.registerEventEmitter(this);
   }
 
   get pointsByProgram() {
@@ -53,28 +46,18 @@ export abstract class BaseMultiplierState implements IMultiplierState {
 
   increasePointsByProgram(delta: number) {
     this._pointsByProgram += delta;
-
-    this.requestMultipliersRecalculation();
-  }
-
-  requestMultipliersRecalculation() {
-    this._multiplierUpdateRequested = true;
   }
 
   async startNewState(): Promise<void> {
     this._pointsByProgram = 0;
     this._multiplierByProgram = 1;
     this._totalMultiplier = 1;
-
-    this.requestMultipliersRecalculation();
   }
 
   async deserialize(serializedState: IMultiplierSerializedState): Promise<void> {
     this._pointsByProgram = serializedState.pointsByProgram;
     this._multiplierByProgram = 1;
     this._totalMultiplier = 1;
-
-    this.requestMultipliersRecalculation();
   }
 
   serialize(): IMultiplierSerializedState {
@@ -84,12 +67,6 @@ export abstract class BaseMultiplierState implements IMultiplierState {
   }
 
   recalculateMultipliers() {
-    if (!this._multiplierUpdateRequested) {
-      return;
-    }
-
-    this._multiplierUpdateRequested = false;
-
     this.updateMultiplierByProgram();
     this.updateTotalMultiplier();
   }
@@ -98,12 +75,26 @@ export abstract class BaseMultiplierState implements IMultiplierState {
     const parameters = this.getMultiplierParameters();
 
     this._multiplierByProgram =
-      1 + Math.log(1 + this._pointsByProgram / parameters.pointsToMax) / Math.log(parameters.logBase);
+      1 + Math.log(1 + this._pointsByProgram / parameters.pointsToSoftCap) / Math.log(parameters.logBase);
   }
 
   private updateTotalMultiplier() {
     this._totalMultiplier = this._multiplierByProgram;
+
+    const availableDistricts = this.cityState.listAvailableDistricts();
+
+    availableDistricts.forEach((districtState) => {
+      const districtMultiplierParameter = this.getDistrictMultiplierParameter(districtState.parameters.multipliers);
+
+      districtMultiplierParameter.recalculate();
+
+      this._totalMultiplier *= districtMultiplierParameter.multiplier;
+    });
   }
 
   protected abstract getMultiplierParameters(): IMultiplierScenarioParameters;
+
+  protected abstract getDistrictMultiplierParameter(
+    districtMultipliers: IDistrictMultipliers,
+  ): IDistrictMultiplierParameter;
 }

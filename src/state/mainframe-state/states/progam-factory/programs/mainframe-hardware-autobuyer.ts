@@ -1,21 +1,19 @@
-import { binarySearchDecimal } from '@shared/helpers';
-import { IMainframeHardwareParameter } from '@state/mainframe-state/states/mainframe-hardware-state/interfaces/mainframe-hardware-parameter';
-import { IAutomationState } from '@state/automation-state/interfaces/automation-state';
-import { OtherProgramName } from '../types';
+import { binarySearchDecimal } from '@shared/index';
+import { IMainframeHardwareParameter } from '@state/mainframe-state';
+import { type IAutomationState } from '@state/automation-state';
+import { decorators } from '@state/container';
+import { TYPES } from '@state/types';
+import { AutobuyerProgramName } from '../types';
 import { BaseProgram } from './base-program';
-import { IMainframeHardwareAutobuyerParameters } from '../interfaces/program-parameters/mainframe-hardware-autobuyer-parameters';
+
+const { lazyInject } = decorators;
 
 export class MainframeHardwareAutobuyerProgram extends BaseProgram {
-  public readonly name = OtherProgramName.mainframeHardwareAutobuyer;
+  public readonly name = AutobuyerProgramName.mainframeHardwareAutobuyer;
   public readonly isAutoscalable = false;
 
-  private _automationState: IAutomationState;
-
-  constructor(parameters: IMainframeHardwareAutobuyerParameters) {
-    super(parameters);
-
-    this._automationState = parameters.automationState;
-  }
+  @lazyInject(TYPES.AutomationState)
+  private _automationState!: IAutomationState;
 
   handlePerformanceUpdate(): void {}
 

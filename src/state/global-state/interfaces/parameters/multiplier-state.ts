@@ -1,12 +1,10 @@
-import { IUIEventEmitter } from '@shared/interfaces/ui-event-emitter';
 import { ISerializeable } from '@shared/interfaces/serializable';
 import { IMultiplierSerializedState } from '../serialized-states/multiplier-serialized-state';
 
-export interface IMultiplierState extends ISerializeable<IMultiplierSerializedState>, IUIEventEmitter {
+export interface IMultiplierState extends ISerializeable<IMultiplierSerializedState> {
   pointsByProgram: number;
   programMultiplier: number;
   totalMultiplier: number;
   increasePointsByProgram(pointsDelta: number): void;
-  requestMultipliersRecalculation(): void;
   recalculateMultipliers(): void;
 }

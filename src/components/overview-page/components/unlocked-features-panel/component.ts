@@ -4,13 +4,13 @@ import { customElement } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { BaseComponent } from '@shared/base-component';
 import { Feature } from '@shared/types';
-import { hintIconStyle } from '@shared/styles';
+import { HINT_ICON, hintIconStyle } from '@shared/styles';
 import { UNLOCKED_FEATURE_TEXTS } from '@texts/unlocked-features';
 import { OverviewUnlockedFeaturesPanelController } from './controller';
 
 @localized()
 @customElement('ca-overview-unlocked-features-panel')
-export class OverviewUnlockedFeaturesPanel extends BaseComponent<OverviewUnlockedFeaturesPanelController> {
+export class OverviewUnlockedFeaturesPanel extends BaseComponent {
   static styles = [
     hintIconStyle,
     css`
@@ -26,16 +26,16 @@ export class OverviewUnlockedFeaturesPanel extends BaseComponent<OverviewUnlocke
     `,
   ];
 
-  protected controller: OverviewUnlockedFeaturesPanelController;
+  private _controller: OverviewUnlockedFeaturesPanelController;
 
   constructor() {
     super();
 
-    this.controller = new OverviewUnlockedFeaturesPanelController(this);
+    this._controller = new OverviewUnlockedFeaturesPanelController(this);
   }
 
   render() {
-    const features = this.controller.listUnlockedFeatures();
+    const features = this._controller.listUnlockedFeatures();
 
     if (features.length === 0) {
       return html`${msg('No features has been unlocked yet')}`;
@@ -55,7 +55,7 @@ export class OverviewUnlockedFeaturesPanel extends BaseComponent<OverviewUnlocke
       <sl-tooltip>
         <span slot="content"> ${UNLOCKED_FEATURE_TEXTS[feature].hint()} </span>
 
-        <sl-icon name="question-circle"></sl-icon>
+        <sl-icon name=${HINT_ICON}></sl-icon>
       </sl-tooltip>
     </li>
   `;

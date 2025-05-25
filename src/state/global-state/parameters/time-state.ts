@@ -1,7 +1,6 @@
 import { injectable } from 'inversify';
 import { msg, str } from '@lit/localize';
 import { decorators } from '@state/container';
-import { EventBatcher } from '@shared/event-batcher';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import type { ISettingsState } from '@state/settings-state/interfaces/settings-state';
 import type { INotificationsState } from '@state/notifications-state/interfaces/notifications-state';
@@ -16,8 +15,6 @@ const { lazyInject } = decorators;
 
 @injectable()
 export class TimeState implements ITimeState {
-  readonly uiEventBatcher: EventBatcher;
-
   @lazyInject(TYPES.StateUIConnector)
   private _stateUiConnector!: IStateUIConnector;
 
@@ -46,8 +43,7 @@ export class TimeState implements ITimeState {
     this._gameTime = 0;
     this._gameTimeTotal = 0;
 
-    this.uiEventBatcher = new EventBatcher();
-    this._stateUiConnector.registerEventEmitter(this);
+    this._stateUiConnector.registerEventEmitter(this, []);
   }
 
   get lastUpdateTime() {
@@ -116,7 +112,7 @@ export class TimeState implements ITimeState {
 
   async startNewState(): Promise<void> {
     this._lastUpdateTime = Date.now();
-    this._accumulatedTime = this._globalState.scenario.currentValues.accumulatedTime;
+    this._accumulatedTime = this._globalState.scenario.currentValues.startingAccumulatedTime;
     this._activeTime = 0;
     this._gameTime = 0;
     this._gameTimeTotal = 0;

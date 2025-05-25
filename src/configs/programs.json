@@ -1,66 +1,81 @@
 {
   "shareServer": {
-    "ram": 0,
-    "completionPoints": { "baseMultiplier": 0, "base": 1 },
-    "cost": { "baseMultiplier": 30000, "base": 1.15, "qualityMultiplier": 10 },
-    "unlockFeatures": [],
-    "scalableResourcesModifier": 0.5,
-    "money": 1,
-    "moneyQualityMultiplier": 2,
-    "developmentPoints": 1,
-    "developmentPointsQualityMultiplier": 2
+    "ram": 1,
+    "completionPoints": { "multiplier": 0, "base": 1 },
+    "cost": { "multiplier": 30, "base": 1.1, "baseTier": 10000 },
+    "requiredFeatures": [],
+    "autoscalableResourcesPower": 0.9,
+    "money": { "base": 0.001, "multiplier": 0.001, "baseTier": 100 },
+    "developmentPoints": { "base": 0.001, "multiplier": 0.001, "baseTier": 100 }
   },
   "predictiveComputator": {
-    "ram": 0,
-    "completionPoints": { "baseMultiplier": 0, "base": 1 },
-    "cost": { "baseMultiplier": 60000, "base": 1.15, "qualityMultiplier": 10 },
-    "unlockFeatures": [],
-    "scalableResourcesModifier": 0.5,
-    "speedModifierLevelMultiplier": 0.001,
-    "speedModifierQualityMultiplier": 1.3
+    "ram": 1,
+    "completionPoints": { "multiplier": 0, "base": 1 },
+    "cost": { "multiplier": 10000000, "base": 1.25, "baseTier": 4000000000 },
+    "requiredFeatures": [],
+    "autoscalableResourcesPower": 0.5,
+    "speedModifier": {
+      "base": 0.001,
+      "multiplier": 0.001,
+      "baseTier": 1.2
+    }
+  },
+  "peerReviewer": {
+    "ram": 1,
+    "completionPoints": { "multiplier": 0, "base": 1 },
+    "cost": { "multiplier": 10000000, "base": 1.25, "baseTier": 4000000000 },
+    "requiredFeatures": ["experienceShare"],
+    "autoscalableResourcesPower": 0.5,
+    "experienceModifier": {
+      "base": 0.001,
+      "multiplier": 0.001,
+      "baseTier": 1.2
+    }
   },
   "codeGenerator": {
-    "ram": 1,
-    "completionPoints": { "baseMultiplier": 120000, "base": 1 },
-    "cost": { "baseMultiplier": 60000, "base": 1.15, "qualityMultiplier": 10 },
-    "unlockFeatures": ["codeBasePoints"],
-    "codeBaseLevelMultiplier": 1,
-    "codeBaseQualityMultiplier": 900
+    "ram": 10,
+    "completionPoints": { "multiplier": 300000, "base": 1 },
+    "cost": { "multiplier": 500000, "base": 1.3, "baseTier": 200000000000 },
+    "requiredFeatures": ["codeBase"],
+    "codeBase": { "multiplier": 1, "base": 1.1, "baseTier": 15000 }
   },
   "circuitDesigner": {
-    "ram": 1,
-    "completionPoints": { "baseMultiplier": 120000, "base": 1 },
-    "cost": { "baseMultiplier": 60000, "base": 1.15, "qualityMultiplier": 10 },
-    "unlockFeatures": ["computationalBasePoints"],
-    "computationalBaseLevelMultiplier": 1,
-    "computationalBaseQualityMultiplier": 900
+    "ram": 10,
+    "completionPoints": { "multiplier": 300000, "base": 1 },
+    "cost": { "multiplier": 500000, "base": 1.3, "baseTier": 200000000000 },
+    "requiredFeatures": ["computationalBase"],
+    "computationalBase": { "multiplier": 1, "base": 1.1, "baseTier": 15000 }
   },
   "informationCollector": {
-    "ram": 1,
-    "completionPoints": { "baseMultiplier": 120000, "base": 1 },
-    "cost": { "baseMultiplier": 60000, "base": 1.15, "qualityMultiplier": 10 },
-    "unlockFeatures": ["connectivityPoints"],
-    "connectivityLevelMultiplier": 1,
-    "connectivityQualityMultiplier": 900
+    "ram": 5,
+    "completionPoints": { "multiplier": 300000, "base": 1 },
+    "cost": { "multiplier": 20000, "base": 1.15, "baseTier": 1000000 },
+    "requiredFeatures": ["connectivity"],
+    "connectivity": { "multiplier": 1, "base": 1.1, "baseTier": 15000 }
   },
   "dealMaker": {
-    "ram": 1,
-    "completionPoints": { "baseMultiplier": 120000, "base": 1 },
-    "cost": { "baseMultiplier": 60000, "base": 1.15, "qualityMultiplier": 10 },
-    "unlockFeatures": ["rewardsPoints"],
-    "rewardsLevelMultiplier": 1,
-    "rewardsQualityMultiplier": 900
+    "ram": 20,
+    "completionPoints": { "multiplier": 300000, "base": 1 },
+    "cost": { "multiplier": 1000000, "base": 1.3, "baseTier": 200000000000 },
+    "requiredFeatures": ["rewards"],
+    "rewards": { "multiplier": 1, "base": 1.1, "baseTier": 15000 }
   },
   "mainframeHardwareAutobuyer": {
     "ram": 3,
-    "completionPoints": { "baseMultiplier": 300000, "base": 1.01 },
-    "cost": { "baseMultiplier": 900000, "base": 1.15, "qualityMultiplier": 10 },
-    "unlockFeatures": ["automation", "automationMainframeHardware"]
+    "completionPoints": { "multiplier": 900000, "base": 1.01 },
+    "cost": { "multiplier": 5000000, "base": 1.2, "baseTier": 10000000 },
+    "requiredFeatures": ["automation", "automationMainframeHardware"]
   },
   "mainframeProgramsAutobuyer": {
     "ram": 5,
-    "completionPoints": { "baseMultiplier": 900000, "base": 1.01 },
-    "cost": { "baseMultiplier": 1800000, "base": 1.15, "qualityMultiplier": 10 },
-    "unlockFeatures": ["automation", "automationMainframePrograms"]
+    "completionPoints": { "multiplier": 1800000, "base": 1.01 },
+    "cost": { "multiplier": 10000000, "base": 1.2, "baseTier": 10000000 },
+    "requiredFeatures": ["automation", "automationMainframePrograms"]
+  },
+  "cloneLevelAutoupgrader": {
+    "ram": 5,
+    "completionPoints": { "multiplier": 900000, "base": 1.01 },
+    "cost": { "multiplier": 10000, "base": 1.2, "baseTier": 10000000 },
+    "requiredFeatures": ["automation", "companyManagement"]
   }
 }

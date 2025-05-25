@@ -7,16 +7,13 @@ import type { IMessageLogState } from '@state/message-log-state/interfaces/messa
 import type { ISettingsState } from '@state/settings-state/interfaces/settings-state';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import { TYPES } from '@state/types';
-import { EventBatcher } from '@shared/event-batcher';
 import { GameStateEvent } from '@shared/types';
 import { IApp } from './interfaces';
-import { LOCAL_STORAGE_KEY, APP_UI_EVENTS, REFRESH_UI_TIME } from './constants';
+import { LOCAL_STORAGE_KEY, REFRESH_UI_TIME } from './constants';
 import { AppStage } from './types';
 
 @injectable()
 export class App implements IApp {
-  readonly uiEventBatcher: EventBatcher;
-
   private _appState: IAppState;
   private _settingsState: ISettingsState;
   private _messageLogState: IMessageLogState;
@@ -42,15 +39,12 @@ export class App implements IApp {
     this._stateUIConnector = _stateUiConnector;
     this._uiVisible = true;
 
-    this.uiEventBatcher = new EventBatcher();
-    this._stateUIConnector.registerEventEmitter(this);
+    this._stateUIConnector.registerEventEmitter(this, ['_appStage']);
 
     document.addEventListener('visibilitychange', this.handleVisibilityChange);
   }
 
   get appStage() {
-    this._stateUIConnector.connectEventHandler(this, APP_UI_EVENTS.CHANGED_APP_STAGE);
-
     return this._appStage;
   }
 
@@ -201,8 +195,7 @@ export class App implements IApp {
   };
 
   private emitChangedAppStageEvent() {
-    this.uiEventBatcher.enqueueEvent(APP_UI_EVENTS.CHANGED_APP_STAGE);
-    this._stateUIConnector.fireUIEvents();
+    this._stateUIConnector.fireEvents();
   }
 
   private stopUpdateTimer() {
@@ -237,8 +230,7 @@ export class App implements IApp {
     }
 
     if (this._uiVisible) {
-      this.uiEventBatcher.enqueueEvent(APP_UI_EVENTS.UI_FRAME_UPDATE);
-      this._stateUIConnector.fireUIEvents();
+      this._stateUIConnector.fireEvents();
     }
   };
 
@@ -253,7 +245,7 @@ export class App implements IApp {
         this.saveGame();
       }
     } else {
-      this._stateUIConnector.fireUIEvents();
+      this._stateUIConnector.fireEvents();
     }
   };
 }

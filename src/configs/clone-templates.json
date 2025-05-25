@@ -1,70 +1,71 @@
 {
   "anthrodrone": {
-    "cost": { "baseMultiplier": 10000, "base": 1.15, "qualityMultiplier": 10 },
-    "levelRequirements": { "baseMultiplier": 1000, "base": 1.5 },
-    "synchronization": { "baseMultiplier": 10, "qualityMultiplier": 1.5 },
+    "cost": { "multiplier": 1000, "base": 1.1, "baseTier": 10000 },
+    "levelRequirements": { "multiplier": 60, "base": 1.5 },
+    "synchronization": { "multiplier": 10, "baseTier": 1.1 },
+    "experienceMultiplier": { "base": 1, "multiplier": 0.1, "baseTier": 1.1 },
     "attributes": {
       "strength": {
         "base": 1,
-        "perLevel": 1,
-        "qualityMultiplier": 1.1
+        "multiplier": 1,
+        "baseTier": 10
       },
       "endurance": {
         "base": 1,
-        "perLevel": 1,
-        "qualityMultiplier": 1.1
+        "multiplier": 1,
+        "baseTier": 10
       },
       "agility": {
         "base": 1,
-        "perLevel": 1,
-        "qualityMultiplier": 1.1
+        "multiplier": 1,
+        "baseTier": 10
       },
       "perception": {
         "base": 1,
-        "perLevel": 1,
-        "qualityMultiplier": 1.1
+        "multiplier": 1,
+        "baseTier": 10
       },
       "intellect": {
         "base": 1,
-        "perLevel": 1,
-        "qualityMultiplier": 1.1
+        "multiplier": 1,
+        "baseTier": 10
       },
       "charisma": {
         "base": 1,
-        "perLevel": 1,
-        "qualityMultiplier": 1.1
+        "multiplier": 1,
+        "baseTier": 10
       }
     },
     "skills": {
       "closeCombat": {
         "base": 1,
-        "perLevel": 1,
-        "qualityMultiplier": 1.1
+        "multiplier": 1,
+        "baseTier": 10
       },
       "rangedCombat": {
         "base": 1,
-        "perLevel": 1,
-        "qualityMultiplier": 1.1
+        "multiplier": 1,
+        "baseTier": 10
       },
       "engineering": {
         "base": 1,
-        "perLevel": 1,
-        "qualityMultiplier": 1.1
+        "multiplier": 1,
+        "baseTier": 10
       },
       "hacking": {
         "base": 1,
-        "perLevel": 1,
-        "qualityMultiplier": 1.1
+        "multiplier": 1,
+        "baseTier": 10
       },
       "stealth": {
         "base": 1,
-        "perLevel": 1,
-        "qualityMultiplier": 1.1
+        "multiplier": 1,
+        "baseTier": 10
       },
       "diplomacy": {
         "base": 1,
-        "perLevel": 1,
-        "qualityMultiplier": 1.1
+        "multiplier": 1,
+        "baseTier": 10
       }
     }
   }

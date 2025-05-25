@@ -1,5 +1,5 @@
 export interface IMultiplierScenarioParameters {
-  pointsPerCompletion: number;
-  pointsToMax: number;
+  pointsMultiplier: number;
+  pointsToSoftCap: number;
   logBase: number;
 }

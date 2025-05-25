@@ -16,7 +16,7 @@ import { type StoryGoalStateFilter } from './types';
 
 @localized()
 @customElement('ca-overview-story-panel')
-export class OverviewStoryPanel extends BaseComponent<OverviewStoryPanelController> {
+export class OverviewStoryPanel extends BaseComponent {
   static styles = [
     inputLabelStyle,
     css`
@@ -41,7 +41,7 @@ export class OverviewStoryPanel extends BaseComponent<OverviewStoryPanelControll
     `,
   ];
 
-  protected controller: OverviewStoryPanelController;
+  private _controller: OverviewStoryPanelController;
 
   private _stateFilterInputRef = createRef<SlSelect>();
 
@@ -51,11 +51,11 @@ export class OverviewStoryPanel extends BaseComponent<OverviewStoryPanelControll
   constructor() {
     super();
 
-    this.controller = new OverviewStoryPanelController(this);
+    this._controller = new OverviewStoryPanelController(this);
   }
 
   render() {
-    const goals = this.controller.listGoals();
+    const goals = this._controller.listGoals();
 
     return html`
       <div class="state-filter-container">

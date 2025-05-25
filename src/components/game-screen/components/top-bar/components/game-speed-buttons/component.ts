@@ -14,7 +14,7 @@ import { GAME_SPEED_TEXTS } from './constants';
 
 @localized()
 @customElement('ca-game-speed-buttons')
-export class GameSpeedButtons extends BaseComponent<GameSpeedButtonsController> {
+export class GameSpeedButtons extends BaseComponent {
   static styles = css`
     :host {
       height: 100%;
@@ -28,12 +28,12 @@ export class GameSpeedButtons extends BaseComponent<GameSpeedButtonsController> 
     }
   `;
 
-  protected controller: GameSpeedButtonsController;
+  private _controller: GameSpeedButtonsController;
 
   constructor() {
     super();
 
-    this.controller = new GameSpeedButtonsController(this);
+    this._controller = new GameSpeedButtonsController(this);
   }
 
   connectedCallback() {
@@ -49,7 +49,7 @@ export class GameSpeedButtons extends BaseComponent<GameSpeedButtonsController> 
   }
 
   render() {
-    const gameSpeed = this.controller.gameSpeed;
+    const gameSpeed = this._controller.gameSpeed;
 
     return html`
       ${this.renderButton({
@@ -94,16 +94,11 @@ export class GameSpeedButtons extends BaseComponent<GameSpeedButtonsController> 
     `;
   };
 
-  private handleChangeGameSpeed = (gameSpeed: GameSpeed) => (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
-    this.controller.changeGameSpeed(gameSpeed);
+  private handleChangeGameSpeed = (gameSpeed: GameSpeed) => () => {
+    this._controller.changeGameSpeed(gameSpeed);
   };
 
-  private handleOpenFastForwardDialog = (event: Event) => {
-    event.stopPropagation();
-
+  private handleOpenFastForwardDialog = () => {
     this.dispatchEvent(
       new ConfirmationAlertOpenEvent(GameStateAlert.fastForward, msg('Are you sure want to spend accumulated time?')),
     );
@@ -116,6 +111,6 @@ export class GameSpeedButtons extends BaseComponent<GameSpeedButtonsController> 
       return;
     }
 
-    this.controller.fastForward();
+    this._controller.fastForward();
   };
 }

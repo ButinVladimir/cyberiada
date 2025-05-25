@@ -30,7 +30,7 @@ export class MainframeProgramsPanel extends BaseComponent {
     return html`
       <p class="hint">
         ${msg(`Program autoupgrade priority can be changed by dragging it by the title.
-Programs on top have higher priority. Autoupgrade for programs won"t change their quality but will attempt to increase level.`)}
+Programs on top have higher priority. Autoupgrade for programs won't change their tier but will attempt to increase level.`)}
       </p>
 
       <sl-button variant="primary" size="medium" @click=${this.handlePurchaseProgramDialogOpen}>
@@ -47,17 +47,11 @@ Programs on top have higher priority. Autoupgrade for programs won"t change thei
     `;
   }
 
-  private handlePurchaseProgramDialogOpen = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  private handlePurchaseProgramDialogOpen = () => {
     this._isPurchaseProgramDialogOpen = true;
   };
 
-  private handlePurchaseProgramDialogClose = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  private handlePurchaseProgramDialogClose = () => {
     this._isPurchaseProgramDialogOpen = false;
   };
 }

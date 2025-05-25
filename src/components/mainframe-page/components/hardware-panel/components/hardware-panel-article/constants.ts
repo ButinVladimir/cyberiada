@@ -1,23 +1,18 @@
 import { msg, str } from '@lit/localize';
-import { MainframeHardwareParameterType } from '@state/mainframe-state/states/mainframe-hardware-state/types';
 
-interface IMainframeHardwareTexts {
-  title: (level: string) => string;
-  hint: () => string;
-}
-
-export const MAINFRAME_HARDWARE_TEXTS: Record<MainframeHardwareParameterType, IMainframeHardwareTexts> = {
+export const MAINFRAME_HARDWARE_TEXTS = {
   performance: {
-    title: (level) => msg(str`Performance level: ${level}`),
-    hint: () => msg('Higher performance level leads to overall faster performance'),
+    title: () => msg(str`Performance level`),
+    hint: () =>
+      msg('Higher performance level leads to faster process completion and better yields from autoscalable programs.'),
   },
   cores: {
-    title: (level) => msg(str`Cores level: ${level}`),
-    hint: () => msg('Additional cores allow better scalability and running more processes at same time'),
+    title: () => msg(str`Cores level`),
+    hint: () => msg('Additional cores allow better scalability and running more processes at same time.'),
   },
   ram: {
-    title: (level) => msg(str`RAM level: ${level}`),
+    title: () => msg(str`RAM level`),
     hint: () =>
-      msg('Additional RAM allows to keep more processes in memory so they could ran later or in bigger batches'),
+      msg('Additional RAM allows to keep more processes in memory so they could ran later or in bigger batches.'),
   },
 };

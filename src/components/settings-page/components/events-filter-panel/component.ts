@@ -64,45 +64,27 @@ export class EventsFilterPanel extends BaseComponent {
     `;
   }
 
-  private handleMessageFilterDialogOpen = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  private handleMessageFilterDialogOpen = () => {
     this._isMessageFilterOpen = true;
   };
 
-  private handleMessageFilterDialogClose = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  private handleMessageFilterDialogClose = () => {
     this._isMessageFilterOpen = false;
   };
 
-  private handleAlertFilterDialogOpen = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  private handleAlertFilterDialogOpen = () => {
     this._isAlertFilterOpen = true;
   };
 
-  private handleAlertFilterDialogClose = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  private handleAlertFilterDialogClose = () => {
     this._isAlertFilterOpen = false;
   };
 
-  private handleNotificationTypeFilterDialogOpen = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  private handleNotificationTypeFilterDialogOpen = () => {
     this._isNotificationTypeFilterOpen = true;
   };
 
-  private handleNotificationTypeFilterDialogClose = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  private handleNotificationTypeFilterDialogClose = () => {
     this._isNotificationTypeFilterOpen = false;
   };
 }

@@ -1,7 +1,6 @@
-import { IUIEventEmitter } from '@shared/interfaces/ui-event-emitter';
 import { AppStage } from '../types';
 
-export interface IApp extends IUIEventEmitter {
+export interface IApp {
   appStage: AppStage;
   startUp(): Promise<void>;
   saveGame(): void;

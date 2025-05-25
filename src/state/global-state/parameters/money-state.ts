@@ -1,20 +1,16 @@
 import { injectable } from 'inversify';
 import { decorators } from '@state/container';
 import { IncomeSource, PurchaseType } from '@shared/types';
-import { EventBatcher } from '@shared/event-batcher';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import { TYPES } from '@state/types';
 import { IMoneyState } from '../interfaces/parameters/money-state';
 import { IMoneySerializedState } from '../interfaces/serialized-states/money-serialized-state';
 import type { IGlobalState } from '../interfaces/global-state';
-import { GLOBAL_STATE_UI_EVENTS } from '../constants';
 
 const { lazyInject } = decorators;
 
 @injectable()
 export class MoneyState implements IMoneyState {
-  readonly uiEventBatcher: EventBatcher;
-
   @lazyInject(TYPES.StateUIConnector)
   private _stateUiConnector!: IStateUIConnector;
 
@@ -30,8 +26,7 @@ export class MoneyState implements IMoneyState {
     this._income = new Map<IncomeSource, number>();
     this._expenses = new Map<PurchaseType, number>();
 
-    this.uiEventBatcher = new EventBatcher();
-    this._stateUiConnector.registerEventEmitter(this);
+    this._stateUiConnector.registerEventEmitter(this, ['_expenses']);
   }
 
   get money() {
@@ -52,8 +47,6 @@ export class MoneyState implements IMoneyState {
       const prevExpenses = this.getExpenses(purchaseType);
       this._expenses.set(purchaseType, prevExpenses + cost);
 
-      this.uiEventBatcher.enqueueEvent(GLOBAL_STATE_UI_EVENTS.MONEY_SPENT);
-
       return true;
     }
 
@@ -65,13 +58,11 @@ export class MoneyState implements IMoneyState {
   }
 
   getExpenses(purchaseType: PurchaseType): number {
-    this._stateUiConnector.connectEventHandler(this, GLOBAL_STATE_UI_EVENTS.MONEY_SPENT);
-
     return this._expenses.get(purchaseType) ?? 0;
   }
 
   async startNewState(): Promise<void> {
-    this._money = this._globalState.scenario.currentValues.money;
+    this._money = this._globalState.scenario.currentValues.startingMoney;
     this._income.clear();
     this._expenses.clear();
   }

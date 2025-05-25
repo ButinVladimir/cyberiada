@@ -1,12 +1,14 @@
 import { ProgramName } from '@state/mainframe-state/states/progam-factory/types';
-import { ISerializeable, IUIEventEmitter } from '@shared/interfaces';
+import { ISerializeable } from '@shared/interfaces';
 import { IProcess } from './process';
 import { IMainframeProcessesSerializedState } from './mainframe-processes-serialized-state';
+import { IProcessCompletionSpeedParameter } from './process-completion-speed-parameter';
 
-export interface IMainframeProcessesState extends ISerializeable<IMainframeProcessesSerializedState>, IUIEventEmitter {
+export interface IMainframeProcessesState extends ISerializeable<IMainframeProcessesSerializedState> {
   availableCores: number;
   availableRam: number;
   runningScalableProcess: IProcess | undefined;
+  processCompletionSpeed: IProcessCompletionSpeedParameter;
   listProcesses(): IProcess[];
   getProcessByName(programName: ProgramName): IProcess | undefined;
   addProcess(programName: ProgramName, threads: number): boolean;
@@ -17,4 +19,5 @@ export interface IMainframeProcessesState extends ISerializeable<IMainframeProce
   requestUpdatePerformance(): void;
   processTick(): void;
   moveProcess(programName: ProgramName, newPosition: number): void;
+  getAvailableRamForProgram(programName: ProgramName): number;
 }

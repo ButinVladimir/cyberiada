@@ -1,4 +1,5 @@
 import programs from '@configs/programs.json';
+import { calculateTierLinear } from '@shared/helpers';
 import { OtherProgramName } from '../types';
 import { BaseProgram } from './base-program';
 
@@ -7,32 +8,22 @@ export class PredictiveComputatorProgram extends BaseProgram {
   public readonly isAutoscalable = true;
 
   handlePerformanceUpdate(): void {
-    for (const process of this.mainframeState.processes.listProcesses()) {
-      if (process.program.name === OtherProgramName.predictiveComputator) {
-        continue;
-      }
-
-      process.program.handlePerformanceUpdate();
-    }
-
-    this.growthState.programCompletionSpeed.requestMultipliersRecalculation();
+    this.mainframeState.processes.processCompletionSpeed.requestMultipliersRecalculation();
   }
 
   perform(): void {}
 
-  calculateProgramCompletionSpeedMultiplier(threads: number, usedRam: number): number {
+  calculateProcessCompletionSpeedMultiplier(threads: number, usedRam: number): number {
     const programData = programs[this.name];
 
-    return Math.max(
-      1,
+    return (
       1 +
-        Math.pow(threads * usedRam, programData.scalableResourcesModifier) *
-          programData.speedModifierLevelMultiplier *
-          this.level *
-          Math.pow(programData.speedModifierQualityMultiplier, this.quality) *
-          (1 +
-            (this.mainframeState.hardware.performance.level - 1) *
-              this.globalState.scenario.currentValues.mainframeSoftware.performanceBoost),
+      Math.pow(threads * usedRam, programData.autoscalableResourcesPower) *
+        calculateTierLinear(this.level, this.tier, programData.speedModifier) *
+        Math.pow(
+          this.globalState.scenario.currentValues.mainframeSoftware.performanceBoost,
+          this.mainframeState.hardware.performance.totalLevel,
+        )
     );
   }
 }

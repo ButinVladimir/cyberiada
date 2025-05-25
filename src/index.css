@@ -31,12 +31,21 @@ body {
   --ca-warning-font-size: var(--sl-font-size-small);
   --ca-warning-line-height: var(--sl-line-height-small);
 
+  --ca-danger-color: var(--sl-color-danger-600);
+  --ca-success-color: var(--sl-color-success-600);
+
   --ca-border: var(--sl-panel-border-width) solid var(--sl-panel-border-color);
 
   --ca-table-header-font-weight: var(--sl-font-weight-bold);
   --ca-table-row-odd-color: var(--sl-color-neutral-50);
 
   --ca-dragged-color: var(--sl-color-primary-100);
+}
+
+.sl-theme-dark {
+  --ca-warning-color: var(--sl-color-warning-500);
+  --ca-danger-color: var(--sl-color-danger-500);
+  --ca-success-color: var(--sl-color-success-500);
 }
 
 .sl-toast-stack {

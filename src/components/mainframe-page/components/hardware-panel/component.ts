@@ -2,17 +2,15 @@ import { css, html } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { msg, localized } from '@lit/localize';
-import { BaseComponent } from '@shared/base-component';
-import { IMainframeHardwareParameter } from '@state/mainframe-state/states/mainframe-hardware-state/interfaces/mainframe-hardware-parameter';
-import type { MainframeHardwareParameterType } from '@state/mainframe-state/states/mainframe-hardware-state/types';
+import { IMainframeHardwareParameter, type MainframeHardwareParameterType } from '@state/mainframe-state';
 import { SortableElementMovedEvent } from '@components/shared/sortable-list/events/sortable-element-moved';
-import { hintStyle } from '@shared/styles';
+import { BaseComponent, hintStyle } from '@shared/index';
 import { MainframeHardwarePanelController } from './controller';
 import { GAP } from './constants';
 
 @localized()
 @customElement('ca-mainframe-hardware-panel')
-export class MainframeHardwarePanel extends BaseComponent<MainframeHardwarePanelController> {
+export class MainframeHardwarePanel extends BaseComponent {
   static styles = [
     hintStyle,
     css`
@@ -49,7 +47,7 @@ export class MainframeHardwarePanel extends BaseComponent<MainframeHardwarePanel
     `,
   ];
 
-  protected controller: MainframeHardwarePanelController;
+  private _controller: MainframeHardwarePanelController;
 
   @state()
   private _shiftPressed = false;
@@ -60,7 +58,7 @@ export class MainframeHardwarePanel extends BaseComponent<MainframeHardwarePanel
   constructor() {
     super();
 
-    this.controller = new MainframeHardwarePanelController(this);
+    this._controller = new MainframeHardwarePanelController(this);
   }
 
   connectedCallback() {
@@ -92,7 +90,7 @@ Upgrades on top have higher priority.`)}
       </div>
 
       <ca-sortable-list gap=${GAP} @sortable-element-moved=${this.handleMoveElement}>
-        ${repeat(this.controller.listParameters(), (parameter) => parameter.type, this.renderParameter)}
+        ${repeat(this._controller.listParameters(), (parameter) => parameter.type, this.renderParameter)}
       </ca-sortable-list>
     `;
   }
@@ -129,17 +127,11 @@ Upgrades on top have higher priority.`)}
     return maxIncrease;
   }
 
-  private handleBuyMax = (event: Event) => {
-    event.stopPropagation();
-    event.preventDefault();
-
-    this.controller.purchaseMax();
+  private handleBuyMax = () => {
+    this._controller.purchaseMax();
   };
 
   private handleMoveElement = (event: SortableElementMovedEvent) => {
-    event.stopPropagation();
-    event.preventDefault();
-
-    this.controller.moveParameter(event.keyName as MainframeHardwareParameterType, event.position);
+    this._controller.moveParameter(event.keyName as MainframeHardwareParameterType, event.position);
   };
 }

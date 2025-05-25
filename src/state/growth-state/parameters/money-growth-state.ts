@@ -1,67 +1,61 @@
 import { injectable } from 'inversify';
 import { decorators } from '@state/container';
-import { IncomeSource } from '@shared/types';
-import { EventBatcher } from '@shared/event-batcher';
-import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
-import type { IMainframeState } from '@state/mainframe-state/interfaces/mainframe-state';
 import { TYPES } from '@state/types';
-import { OtherProgramName } from '@state/mainframe-state/states/progam-factory/types';
-import { ShareServerProgram } from '@state/mainframe-state/states/progam-factory/programs/share-server';
-import { INCOME_SOURCES } from '@shared/constants';
+import { type IMainframeState, OtherProgramName, ShareServerProgram } from '@state/mainframe-state';
+import { type ICompanyState } from '@state/company-state';
+import { INCOME_SOURCES, IncomeSource } from '@shared/index';
 import { IMoneyGrowthState } from '../interfaces/parameters/money-growth-state';
 
 const { lazyInject } = decorators;
 
 @injectable()
 export class MoneyGrowthState implements IMoneyGrowthState {
-  readonly uiEventBatcher: EventBatcher;
-
-  @lazyInject(TYPES.StateUIConnector)
-  private _stateUiConnector!: IStateUIConnector;
-
   @lazyInject(TYPES.MainframeState)
   private _mainframeState!: IMainframeState;
 
+  @lazyInject(TYPES.CompanyState)
+  private _companyState!: ICompanyState;
+
+  private _recalculated: boolean;
   private _totalGrowth: number;
   private _growth: Map<IncomeSource, number>;
-  private _updateRequested: boolean;
 
   constructor() {
+    this._recalculated = false;
     this._totalGrowth = 0;
     this._growth = new Map<IncomeSource, number>();
-    this._updateRequested = true;
-
-    this.uiEventBatcher = new EventBatcher();
-    this._stateUiConnector.registerEventEmitter(this);
   }
 
   get totalGrowth() {
+    this.recalculate();
+
     return this._totalGrowth;
   }
 
   getGrowth(incomeSource: IncomeSource): number {
+    this.recalculate();
+
     return this._growth.get(incomeSource) ?? 0;
   }
 
-  requestGrowthRecalculation() {
-    this._updateRequested = true;
+  resetValues() {
+    this._recalculated = false;
   }
 
-  recalculateGrowth() {
-    if (!this._updateRequested) {
+  private recalculate() {
+    if (this._recalculated) {
       return;
     }
 
-    this._updateRequested = false;
+    this._recalculated = true;
 
     this.updateGrowthByProgram();
+    this.updateGrowthBySidejobs();
     this.updateTotalGrowth();
   }
 
   private updateGrowthByProgram() {
-    const mainframeProcessesState = this._mainframeState.processes;
-
-    const shareServerProcess = mainframeProcessesState.getProcessByName(OtherProgramName.shareServer);
+    const shareServerProcess = this._mainframeState.processes.getProcessByName(OtherProgramName.shareServer);
     let incomeByProgram = 0;
 
     if (shareServerProcess?.isActive) {
@@ -73,6 +67,20 @@ export class MoneyGrowthState implements IMoneyGrowthState {
     }
 
     this._growth.set(IncomeSource.program, incomeByProgram);
+  }
+
+  private updateGrowthBySidejobs() {
+    let incomeBySidejobs = 0;
+
+    for (const sidejob of this._companyState.sidejobs.listSidejobs()) {
+      if (!sidejob.isActive) {
+        continue;
+      }
+
+      incomeBySidejobs += sidejob.calculateMoneyDelta(1);
+    }
+
+    this._growth.set(IncomeSource.sidejob, incomeBySidejobs);
   }
 
   private updateTotalGrowth() {

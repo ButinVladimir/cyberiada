@@ -5,9 +5,10 @@ import { OverviewMenuItem, MiscMenuItem } from '@shared/types';
 import constants from '@configs/constants.json';
 import { Feature } from '@shared/types';
 import { ViewportController } from './controller';
+import { cache } from 'lit/directives/cache.js';
 
 @customElement('ca-viewport')
-export class Viewport extends BaseComponent<ViewportController> {
+export class Viewport extends BaseComponent {
   static styles = css`
     div.content-wrapper {
       width: 100%;
@@ -23,23 +24,23 @@ export class Viewport extends BaseComponent<ViewportController> {
   })
   selectedMenuItem = '';
 
-  protected controller: ViewportController;
+  private _controller: ViewportController;
 
   constructor() {
     super();
 
-    this.controller = new ViewportController(this);
+    this._controller = new ViewportController(this);
   }
 
   render() {
-    return html` <div class="content-wrapper">${this.renderPage()}</div> `;
+    return html` <div class="content-wrapper">${cache(this.renderPage())}</div> `;
   }
 
   private renderPage = () => {
     const requirements = constants.menuUnlockRequirements as Record<string, Feature>;
     const feature = requirements[this.selectedMenuItem] as Feature | undefined;
 
-    if (feature && !this.controller.isFeatureUnlocked(feature)) {
+    if (feature && !this._controller.isFeatureUnlocked(feature)) {
       return nothing;
     }
 

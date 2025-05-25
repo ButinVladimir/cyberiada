@@ -71,10 +71,7 @@ export class MenuItem extends BaseComponent {
     `;
   }
 
-  private handleClick = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  private handleClick = () => {
     this.dispatchEvent(new MenuItemSelectedEvent(this.name));
   };
 }

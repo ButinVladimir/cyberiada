@@ -1,4 +1,5 @@
 import programs from '@configs/programs.json';
+import { calculateTierPower } from '@shared/helpers';
 import { MultiplierProgramName } from '../types';
 import { BaseProgram } from './base-program';
 
@@ -6,24 +7,20 @@ export class InformationCollectorProgram extends BaseProgram {
   public readonly name = MultiplierProgramName.informationCollector;
   public readonly isAutoscalable = false;
 
-  handlePerformanceUpdate(): void {
-    this.growthState.multipliers.connectivity.requestGrowthRecalculation();
-  }
+  handlePerformanceUpdate(): void {}
 
   perform(threads: number): void {
-    this.globalState.multipliers.connectivity.increasePointsByProgram(this.calculateDelta(threads));
+    this.globalState.connectivity.increasePointsByProgram(this.calculateDelta(threads));
   }
 
   calculateDelta(threads: number): number {
     const programData = programs[this.name];
 
     return (
-      this.globalState.scenario.currentValues.programMultipliers.connectivity.pointsPerCompletion *
+      this.globalState.scenario.currentValues.programMultipliers.connectivity.pointsMultiplier *
       this.globalState.multipliers.rewards.totalMultiplier *
       threads *
-      programData.connectivityLevelMultiplier *
-      this.level *
-      Math.pow(programData.connectivityQualityMultiplier, this.quality)
+      calculateTierPower(this.level, this.tier, programData.connectivity)
     );
   }
 }

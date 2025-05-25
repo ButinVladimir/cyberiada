@@ -6,7 +6,7 @@ export class OverviewUnlockedProgramsController extends BaseController {
     return this.globalState.availableItems.programs.listAvailableItems();
   }
 
-  getItemHighestAvailableQuality(itemName: ProgramName) {
-    return this.globalState.availableItems.programs.getItemHighestAvailableQuality(itemName);
+  getItemHighestAvailableTier(itemName: ProgramName) {
+    return this.globalState.availableItems.programs.getItemHighestAvailableTier(itemName);
   }
 }

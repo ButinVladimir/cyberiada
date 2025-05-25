@@ -1,8 +1,6 @@
 import { ProgramName } from '../types';
+import { IBaseProgramParameters } from './base-program-parameters';
 
-export interface IMakeProgramParameters {
+export interface IMakeProgramParameters extends IBaseProgramParameters {
   name: ProgramName;
-  level: number;
-  quality: number;
-  autoUpgradeEnabled: boolean;
 }

@@ -12,9 +12,14 @@ export class ClonesListController extends BaseController {
 
   moveClone(cloneId: string, newPosition: number) {
     this.companyState.clones.moveClone(cloneId, newPosition);
+    this.host.requestUpdate();
   }
 
   deleteAllClones() {
     this.companyState.clones.deleteAllClones();
+  }
+
+  upgradeMaxAllLevels() {
+    this.companyState.clones.upgradeMaxAllLevels();
   }
 }

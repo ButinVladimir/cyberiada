@@ -1,15 +1,15 @@
-import { injectable, inject } from 'inversify';
+import { injectable } from 'inversify';
 import type { ISettingsState } from '@state/settings-state/interfaces/settings-state';
 import { TYPES } from '@state/types';
+import { decorators } from '@state/container';
 import { LongNumberFormat } from '../types';
-import { IFormatterParameters, IFormatter } from '../interfaces';
+import { IFormatterParameters, IFormatter, ITierFormatter } from '../interfaces';
 import {
-  QUALITY_MAP,
   TIME_PARTS,
   DATE_TIME_FORMATTER_OPTIONS,
   DEFAULT_NUMBER_DECIMAL_FORMAT_PARAMETERS,
   DEFAULT_NUMBER_FLOAT_FORMAT_PARAMETERS,
-  DEFAULT_NUMBER_QUALITY_FORMAT_PARAMETERS,
+  DEFAULT_NUMBER_TIER_FORMAT_PARAMETERS,
   DEFAULT_TIME_SHORT_FORMAT_PARAMETERS,
   DECIMAL_LONG_FORMATTER_OPTIONS,
   FLOAT_SHORT_FORMATTER_OPTIONS,
@@ -19,10 +19,14 @@ import {
   LONG_NUMBER_FORMATTER_MAX_THRESHOLD,
   LONG_NUMBER_FORMATTER_MIN_THRESHOLD,
 } from './constants';
+import { TierFormatter } from './tier-formatter';
+
+const { lazyInject } = decorators;
 
 @injectable()
 export class Formatter implements IFormatter {
-  private _settingsState: ISettingsState;
+  @lazyInject(TYPES.SettingsState)
+  private _settingsState!: ISettingsState;
 
   private _decimalLongFormatter!: Intl.NumberFormat;
   private _floatLongFormatter!: Intl.NumberFormat;
@@ -30,9 +34,10 @@ export class Formatter implements IFormatter {
   private _floatScientificFormatter!: Intl.NumberFormat;
   private _floatEngineeringFormatter!: Intl.NumberFormat;
   private _dateTimeFormatter!: Intl.DateTimeFormat;
+  private _tierFormatter: ITierFormatter;
 
-  constructor(@inject(TYPES.SettingsState) _settingsState: ISettingsState) {
-    this._settingsState = _settingsState;
+  constructor() {
+    this._tierFormatter = new TierFormatter();
 
     this.updateBuiltInFormatters();
   }
@@ -85,15 +90,18 @@ export class Formatter implements IFormatter {
     return this.formatLongNumber(value, parameters);
   }
 
-  formatQuality(value: number, parameters: IFormatterParameters = DEFAULT_NUMBER_QUALITY_FORMAT_PARAMETERS): string {
+  formatLevel(value: number, parameters: IFormatterParameters = DEFAULT_NUMBER_DECIMAL_FORMAT_PARAMETERS): string {
+    return this.formatNumberDecimal(value + 1, parameters);
+  }
+
+  formatTier(value: number, parameters: IFormatterParameters = DEFAULT_NUMBER_TIER_FORMAT_PARAMETERS): string {
     let formattedValue = '';
 
     if (value < 0) {
       formattedValue = '0';
-    } else if (value > 6) {
-      formattedValue = 'VII+';
-    } else {
-      formattedValue = QUALITY_MAP[value];
+    }
+    {
+      formattedValue = this._tierFormatter.format(value);
     }
 
     return this.applyNumberFormatterParameters(value, formattedValue, parameters);

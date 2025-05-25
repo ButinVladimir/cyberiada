@@ -1,6 +1,10 @@
-import { IPoint } from '@shared/interfaces';
+import { IPoint } from '@shared/interfaces/point';
+import { DistrictType, Faction } from '@shared/types';
 
 export interface IMapGeneratorDistrictResult {
-  startingPoint: IPoint;
   name: string;
+  faction: Faction;
+  districtType: DistrictType;
+  startingPoint: IPoint;
+  tier: number;
 }
