@@ -1,6 +1,5 @@
 import { BaseController } from '@shared/base-controller';
-import { IProgram } from '@state/progam-factory/interfaces/program';
-import { ProgramName } from '@state/progam-factory/types';
+import { IProgram, ProgramName } from '@state/mainframe-state';
 
 export class PurchaseProgramDialogController extends BaseController {
   private _selectedProgram?: IProgram;
@@ -15,18 +14,18 @@ export class PurchaseProgramDialogController extends BaseController {
     return this.globalState.development.level;
   }
 
-  getSelectedProgram(name: ProgramName, level: number, quality: number): IProgram {
+  getSelectedProgram(name: ProgramName, tier: number, level: number): IProgram {
     if (
       this._selectedProgram?.name !== name ||
       this._selectedProgram.level !== level ||
-      this._selectedProgram.quality !== quality
+      this._selectedProgram.tier !== tier
     ) {
       this.deleteSelectedProgram();
 
-      this._selectedProgram = this.programFactory.makeProgram({
+      this._selectedProgram = this.mainframeState.programFactory.makeProgram({
         name,
         level,
-        quality,
+        tier,
         autoUpgradeEnabled: true,
       });
     }
@@ -35,22 +34,24 @@ export class PurchaseProgramDialogController extends BaseController {
   }
 
   getOwnedProgram(name: ProgramName): IProgram | undefined {
-    return this.mainframeProgramsState.getOwnedProgramByName(name);
+    return this.mainframeState.programs.getOwnedProgramByName(name);
   }
 
-  purchaseProgram(name: ProgramName, level: number, quality: number): boolean {
-    return this.mainframeProgramsState.purchaseProgram({
-      name,
-      level,
-      quality,
-      autoUpgradeEnabled: true,
-    });
+  getHighestAvailableTier(programName: ProgramName): number {
+    return this.globalState.availableItems.programs.getItemHighestAvailableTier(programName);
+  }
+
+  listAvailablePrograms(): ProgramName[] {
+    return this.globalState.availableItems.programs.listAvailableItems();
+  }
+
+  purchaseProgram(name: ProgramName, tier: number, level: number): boolean {
+    return this.mainframeState.programs.purchaseProgram(name, tier, level);
   }
 
   private deleteSelectedProgram() {
     if (this._selectedProgram) {
-      this.removeEventListenersByEmitter(this._selectedProgram);
-      this._selectedProgram.removeEventListeners();
+      this._selectedProgram.removeAllEventListeners();
     }
   }
 }

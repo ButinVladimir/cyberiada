@@ -1,6 +1,7 @@
+import { Scenario } from '@shared/types';
+
 export interface IMapGeneratorArgs {
-  mapWidth: number;
-  mapHeight: number;
-  districtsNum: number;
+  scenario: Scenario;
   randomSeed: number;
+  randomShift: bigint;
 }

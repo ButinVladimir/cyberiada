@@ -1,0 +1,69 @@
+{
+  "residential": {
+    "captureDifficulty": { "multiplier": 1, "base": 1 },
+    "parameters": {
+      "experience": { "multiplier": 1, "base": 1.5 },
+      "money": { "multiplier": 1, "base": 1.5 },
+      "developmentPoints": { "multiplier": 1, "base": 1.5 },
+      "districtTierPoints": {
+        "requirements": { "multiplier": 10000000, "base": 10 },
+        "pointsMultiplier": { "multiplier": 1, "base": 1 }
+      },
+      "synchronization": { "multiplier": 10, "base": 1.1 },
+      "connectivity": {
+        "pointsMultiplier": { "multiplier": 1, "base": 1.5 },
+        "programPointsMultiplier": { "multiplier": 1, "base": 1.1 }
+      },
+      "codeBase": {
+        "pointsMultiplier": { "multiplier": 1, "base": 1.5 },
+        "pointsToSoftCap": { "multiplier": 86400, "base": 0.99 },
+        "logBase": 2
+      },
+      "computationalBase": {
+        "pointsMultiplier": { "multiplier": 1, "base": 1.5 },
+        "pointsToSoftCap": { "multiplier": 86400, "base": 0.99 },
+        "logBase": 2
+      },
+      "rewards": {
+        "pointsMultiplier": { "multiplier": 1, "base": 1.5 },
+        "pointsToSoftCap": { "multiplier": 86400, "base": 0.99 },
+        "logBase": 2
+      }
+    }
+  },
+  "corpoDistrict": {
+    "captureDifficulty": { "multiplier": 2, "base": 1.01 },
+    "parameters": {
+      "experience": { "multiplier": 1, "base": 1.1 },
+      "money": { "multiplier": 10, "base": 1.1 },
+      "developmentPoints": { "multiplier": 5, "base": 1.1 },
+      "districtTierPoints": {
+        "requirements": { "multiplier": 60000, "base": 1.5 },
+        "pointsMultiplier": { "multiplier": 1, "base": 1 }
+      },
+      "synchronization": {
+        "multiplier": 30,
+        "base": 1.1
+      },
+      "connectivity": {
+        "pointsMultiplier": { "multiplier": 5, "base": 1.5 },
+        "programPointsMultiplier": { "multiplier": 5, "base": 1.5 }
+      },
+      "codeBase": {
+        "pointsMultiplier": { "multiplier": 5, "base": 1.5 },
+        "pointsToSoftCap": { "multiplier": 86400, "base": 0.9 },
+        "logBase": 20
+      },
+      "computationalBase": {
+        "pointsMultiplier": { "multiplier": 5, "base": 1.5 },
+        "pointsToSoftCap": { "multiplier": 86400, "base": 0.9 },
+        "logBase": 20
+      },
+      "rewards": {
+        "pointsMultiplier": { "multiplier": 3, "base": 1.5 },
+        "pointsToSoftCap": { "multiplier": 86400, "base": 0.9 },
+        "logBase": 20
+      }
+    }
+  }
+}

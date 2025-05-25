@@ -1,5 +1,5 @@
-import { t } from 'i18next';
 import { html, css } from 'lit';
+import { msg, localized } from '@lit/localize';
 import { customElement } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { BaseComponent } from '@shared/base-component';
@@ -13,8 +13,9 @@ import { Language, LongNumberFormat, Theme } from '@shared/types';
 import { SettingsFormController } from './controller';
 import * as constants from './constants';
 
+@localized()
 @customElement('ca-settings-form')
-export class SettingsForm extends BaseComponent<SettingsFormController> {
+export class SettingsForm extends BaseComponent {
   static styles = [
     inputLabelStyle,
     css`
@@ -38,7 +39,7 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
     `,
   ];
 
-  protected controller: SettingsFormController;
+  private _controller: SettingsFormController;
 
   private _languageInputRef = createRef<SlSelect>();
 
@@ -48,9 +49,9 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
 
   private _toastDurationInputRef = createRef<SlRange>();
 
-  private _updateIntervalInputRef = createRef<SlRange>();
+  private _updateFPSInputRef = createRef<SlRange>();
 
-  private _autosaveEnabledSwitchRef = createRef<SlSwitch>();
+  private _autosaveEnabledOnHideSwitchRef = createRef<SlSwitch>();
 
   private _autosaveIntervalInputRef = createRef<SlRange>();
 
@@ -63,52 +64,49 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
   constructor() {
     super();
 
-    this.controller = new SettingsFormController(this);
+    this._controller = new SettingsFormController(this);
   }
 
-  renderContent() {
+  render() {
     return html`
       <sl-select
         ${ref(this._languageInputRef)}
         name="language"
-        value=${this.controller.language}
+        value=${this._controller.language}
         @sl-change=${this.handleChangeLanguage}
       >
-        <span class="input-label" slot="label"> ${t('settings.language', { ns: 'ui' })} </span>
+        <span class="input-label" slot="label"> ${msg('Language')} </span>
 
-        <span slot="help-text"> ${t('settings.languageHint', { ns: 'ui' })} </span>
-
-        ${constants.LANGUAGE_OPTIONS.map(
-          ([language, optionText]) => html`<sl-option value=${language}> ${optionText} </sl-option>`,
-        )}
+        ${constants.LANGUAGE_OPTIONS.map(this.renderLanguageOption)}
       </sl-select>
 
       <sl-select
         ${ref(this._themeInputRef)}
         name="theme"
-        value=${this.controller.theme}
+        value=${this._controller.theme}
         @sl-change=${this.handleChangeTheme}
       >
-        <span class="input-label" slot="label"> ${t('settings.theme', { ns: 'ui' })} </span>
+        <span class="input-label" slot="label"> ${msg('Theme')} </span>
 
-        ${THEMES.map(
-          (theme) => html`<sl-option value=${theme}> ${t(`settings.themes.${theme}`, { ns: 'ui' })} </sl-option>`,
-        )}
+        ${THEMES.map(this.renderThemeOption)}
       </sl-select>
 
       <sl-input
         ${ref(this._messageLogSizeInputRef)}
         name="messageLogSize"
-        value=${this.controller.messageLogSize}
+        value=${this._controller.messageLogSize}
         type="number"
+        inputmode="decimal"
         min=${constants.MESSAGE_LOG_SIZE_MIN}
         max=${constants.MESSAGE_LOG_SIZE_MAX}
         step=${constants.MESSAGE_LOG_SIZE_STEP}
         @sl-change=${this.handleChangeMessageLogSize}
       >
-        <span class="input-label" slot="label"> ${t('settings.messageLogSize', { ns: 'ui' })} </span>
+        <span class="input-label" slot="label"> ${msg('Maximum amount of messages in log')} </span>
 
-        <span slot="help-text"> ${t('settings.messageLogSizeHint', { ns: 'ui' })} </span>
+        <span slot="help-text">
+          ${msg("Excessive messages in log won't be removed until new message is received")}
+        </span>
       </sl-input>
 
       <sl-range
@@ -117,24 +115,26 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
         max=${constants.TOAST_DURATION_MAX}
         step=${constants.TOAST_DURATION_STEP}
         name="toastDuration"
-        value=${this.controller.toastDuration}
+        value=${this._controller.toastDuration}
         @sl-change=${this.handleChangeToastDuration}
       >
-        <span class="input-label" slot="label"> ${t('settings.toastDuration', { ns: 'ui' })} </span>
+        <span class="input-label" slot="label"> ${msg('Message popup duration (s)')} </span>
 
-        <span slot="help-text"> ${t('settings.toastDurationHint', { ns: 'ui' })} </span>
+        <span slot="help-text"> ${msg('Set 0 to disable message popups')} </span>
       </sl-range>
 
       <sl-range
-        ${ref(this._updateIntervalInputRef)}
-        min=${constants.UPDATE_INTERVAL_MIN}
-        max=${constants.UPDATE_INTERVAL_MAX}
-        step=${constants.UPDATE_INTERVAL_STEP}
-        name="updateInterval"
-        value=${this.controller.updateInterval}
-        @sl-change=${this.handleChangeUpdateInterval}
+        ${ref(this._updateFPSInputRef)}
+        min=${constants.FPS_MIN}
+        max=${constants.FPS_MAX}
+        step=${constants.FPS_STEP}
+        name="fps"
+        value=${this._controller.fps}
+        @sl-change=${this.handleChangeUpdateFPS}
       >
-        <span class="input-label" slot="label"> ${t('settings.updateInterval', { ns: 'ui' })} </span>
+        <span class="input-label" slot="label"> ${msg('Frames per second')} </span>
+
+        <span slot="help-text"> ${msg('Too high number can cause strain on CPU')} </span>
       </sl-range>
 
       <sl-range
@@ -143,53 +143,49 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
         max=${constants.FAST_SPEED_MULTIPLIER_MAX}
         step=${constants.FAST_SPEED_MULTIPLIER_STEP}
         name="fastSpeedMultiplier"
-        value=${this.controller.fastSpeedMultiplier}
+        value=${this._controller.fastSpeedMultiplier}
         @sl-change=${this.handleChangeFastSpeedMultiplier}
       >
-        <span class="input-label" slot="label"> ${t('settings.fastSpeedMultiplier', { ns: 'ui' })} </span>
+        <span class="input-label" slot="label"> ${msg('Speed multiplier when game speed is fast')} </span>
 
-        <span slot="help-text"> ${t('settings.fastSpeedMultiplierHint', { ns: 'ui' })} </span>
+        <span slot="help-text"> ${msg('Too high number can cause strain on CPU')} </span>
       </sl-range>
 
       <sl-input
         ${ref(this._maxUpdatesPerTickInputRef)}
         name="maxUpdatesPerTick"
-        value=${this.controller.maxUpdatesPerTick}
+        value=${this._controller.maxUpdatesPerTick}
         type="number"
-        min=${constants.MAX_UPDATES_PER_TICK_MIN}
-        max=${constants.MAX_UPDATES_PER_TICK_MAX}
-        step=${constants.MAX_UPDATES_PER_TICK_STEP}
+        inputmode="decimal"
+        min=${constants.MAX_UPDATES_PER_FRAME_MIN}
+        max=${constants.MAX_UPDATES_PER_FRAME_MAX}
+        step=${constants.MAX_UPDATES_PER_FRAME_STEP}
         @sl-change=${this.handleChangeMaxUpdatesPerTick}
       >
-        <span class="input-label" slot="label"> ${t('settings.maxUpdatesPerTick', { ns: 'ui' })} </span>
+        <span class="input-label" slot="label"> ${msg('Maximum amount of updates per frame')} </span>
 
-        <span slot="help-text"> ${t('settings.maxUpdatesPerTickHint', { ns: 'ui' })} </span>
+        <span slot="help-text"> ${msg('Too high number can cause strain on CPU')} </span>
       </sl-input>
 
       <sl-select
         ${ref(this._longNumberFormatInputRef)}
         name="longNumberFormat"
-        value=${this.controller.longNumberFormat}
+        value=${this._controller.longNumberFormat}
         @sl-change=${this.handleChangeLongNumberFormat}
       >
-        <span class="input-label" slot="label"> ${t('settings.longNumberFormat', { ns: 'ui' })} </span>
+        <span class="input-label" slot="label"> ${msg('Long number format')} </span>
 
-        ${LONG_NUMBER_FORMATS.map(
-          (longNumberFormat) =>
-            html` <sl-option value=${longNumberFormat}>
-              ${t(`settings.longNumberFormats.${longNumberFormat}`, { ns: 'ui' })}
-            </sl-option>`,
-        )}
+        ${LONG_NUMBER_FORMATS.map(this.renderLongNumberFormatOption)}
       </sl-select>
 
       <sl-switch
-        ${ref(this._autosaveEnabledSwitchRef)}
-        size="large"
-        name="autosaveEnabled"
-        ?checked=${this.controller.autosaveEnabled}
-        @sl-change=${this.handleChangeAutosaveEnabled}
+        ${ref(this._autosaveEnabledOnHideSwitchRef)}
+        size="medium"
+        name="autosaveEnabledOnHide"
+        ?checked=${this._controller.autosaveEnabledOnHide}
+        @sl-change=${this.handleChangeAutosaveEnabledOnHide}
       >
-        <span class="input-label"> ${t('settings.autosaveEnabled', { ns: 'ui' })} </span>
+        <span class="input-label"> ${msg('Enable autosave when game tab hides or closes')} </span>
       </sl-switch>
 
       <sl-range
@@ -198,12 +194,14 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
         max=${constants.AUTOSAVE_INTERVAL_MAX}
         step=${constants.AUTOSAVE_INTERVAL_STEP}
         name="autosaveInterval"
-        value=${this.controller.autosaveInterval}
+        value=${this._controller.autosaveInterval}
         @sl-change=${this.handleChangeAutosaveInterval}
       >
-        <span class="input-label" slot="label"> ${t('settings.autosaveInterval', { ns: 'ui' })} </span>
+        <span class="input-label" slot="label"> ${msg('Autosave interval (s)')} </span>
 
-        <span slot="help-text"> ${t('settings.autosaveIntervalHint', { ns: 'ui' })} </span>
+        <span slot="help-text">
+          ${msg('Too low number can cause strain on CPU. Select 0 to disable regular autosave')}
+        </span>
       </sl-range>
     `;
   }
@@ -219,8 +217,8 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
       this._autosaveIntervalInputRef.value.tooltipFormatter = this.timeSecondsFormatter;
     }
 
-    if (this._updateIntervalInputRef.value) {
-      this._updateIntervalInputRef.value.tooltipFormatter = this.decimalNumberFormatter;
+    if (this._updateFPSInputRef.value) {
+      this._updateFPSInputRef.value.tooltipFormatter = this.decimalNumberFormatter;
     }
 
     if (this._fastSpeedMultiplierInputRef.value) {
@@ -228,13 +226,27 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
     }
   }
 
+  private renderLanguageOption = ([language, optionText]: string[]) => {
+    return html`<sl-option value=${language}> ${optionText} </sl-option>`;
+  };
+
+  private renderThemeOption = (theme: Theme) => {
+    return html`<sl-option value=${theme}> ${constants.THEME_NAMES[theme]()} </sl-option>`;
+  };
+
+  private renderLongNumberFormatOption = (longNumberFormat: LongNumberFormat) => {
+    return html`<sl-option value=${longNumberFormat}>
+      ${constants.LONG_NUMBER_FORMAT_NAMES[longNumberFormat]()}
+    </sl-option>`;
+  };
+
   private handleChangeLanguage = async () => {
     if (!this._languageInputRef.value) {
       return;
     }
 
     try {
-      await this.controller.setLanguage(this._languageInputRef.value.value as Language);
+      await this._controller.setLanguage(this._languageInputRef.value.value as Language);
     } catch (e) {
       console.error(e);
     }
@@ -245,7 +257,7 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
       return;
     }
 
-    this.controller.setTheme(this._themeInputRef.value.value as Theme);
+    this._controller.setTheme(this._themeInputRef.value.value as Theme);
   };
 
   private handleChangeMessageLogSize = () => {
@@ -263,7 +275,7 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
       value = constants.MESSAGE_LOG_SIZE_MAX;
     }
 
-    this.controller.setMessageLogSize(value);
+    this._controller.setMessageLogSize(value);
     this._messageLogSizeInputRef.value.valueAsNumber = value;
   };
 
@@ -272,23 +284,23 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
       return;
     }
 
-    this.controller.setToastDuration(this._toastDurationInputRef.value.value);
+    this._controller.setToastDuration(this._toastDurationInputRef.value.value);
   };
 
-  private handleChangeUpdateInterval = () => {
-    if (!this._updateIntervalInputRef.value) {
+  private handleChangeUpdateFPS = () => {
+    if (!this._updateFPSInputRef.value) {
       return;
     }
 
-    this.controller.setUpdateInterval(this._updateIntervalInputRef.value.value);
+    this._controller.setUpdateFPS(this._updateFPSInputRef.value.value);
   };
 
-  private handleChangeAutosaveEnabled = () => {
-    if (!this._autosaveEnabledSwitchRef.value) {
+  private handleChangeAutosaveEnabledOnHide = () => {
+    if (!this._autosaveEnabledOnHideSwitchRef.value) {
       return;
     }
 
-    this.controller.setAutosaveEnabled(this._autosaveEnabledSwitchRef.value.checked);
+    this._controller.setAutosaveEnabled(this._autosaveEnabledOnHideSwitchRef.value.checked);
   };
 
   private handleChangeAutosaveInterval = () => {
@@ -296,7 +308,7 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
       return;
     }
 
-    this.controller.setAutosaveInterval(this._autosaveIntervalInputRef.value.value);
+    this._controller.setAutosaveInterval(this._autosaveIntervalInputRef.value.value);
   };
 
   private handleChangeFastSpeedMultiplier = () => {
@@ -304,7 +316,7 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
       return;
     }
 
-    this.controller.setFastSpeedMultiplier(this._fastSpeedMultiplierInputRef.value.value);
+    this._controller.setFastSpeedMultiplier(this._fastSpeedMultiplierInputRef.value.value);
   };
 
   private handleChangeMaxUpdatesPerTick = () => {
@@ -314,15 +326,15 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
 
     let value = this._maxUpdatesPerTickInputRef.value.valueAsNumber;
 
-    if (value < constants.MAX_UPDATES_PER_TICK_MIN) {
-      value = constants.MAX_UPDATES_PER_TICK_MIN;
+    if (value < constants.MAX_UPDATES_PER_FRAME_MIN) {
+      value = constants.MAX_UPDATES_PER_FRAME_MIN;
     }
 
-    if (value > constants.MAX_UPDATES_PER_TICK_MAX) {
-      value = constants.MAX_UPDATES_PER_TICK_MAX;
+    if (value > constants.MAX_UPDATES_PER_FRAME_MAX) {
+      value = constants.MAX_UPDATES_PER_FRAME_MAX;
     }
 
-    this.controller.setMaxUpdatesPerTick(value);
+    this._controller.setMaxUpdatesPerTick(value);
     this._maxUpdatesPerTickInputRef.value.valueAsNumber = value;
   };
 
@@ -331,14 +343,14 @@ export class SettingsForm extends BaseComponent<SettingsFormController> {
       return;
     }
 
-    this.controller.setLongNumberFormat(this._longNumberFormatInputRef.value.value as LongNumberFormat);
+    this._controller.setLongNumberFormat(this._longNumberFormatInputRef.value.value as LongNumberFormat);
   };
 
   private timeSecondsFormatter = (value: number): string => {
-    return this.controller.formatter.formatNumberDecimal(value / 1000);
+    return this._controller.formatter.formatNumberDecimal(value / 1000);
   };
 
   private decimalNumberFormatter = (value: number): string => {
-    return this.controller.formatter.formatNumberDecimal(value);
+    return this._controller.formatter.formatNumberDecimal(value);
   };
 }

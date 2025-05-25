@@ -7,20 +7,19 @@ import { Feature } from '@shared/types';
 import { MenuBarController } from './controller';
 
 @customElement('ca-menu-bar')
-export class MenuBar extends BaseComponent<MenuBarController> {
+export class MenuBar extends BaseComponent {
   static styles = css`
     :host {
       display: block;
       width: 100%;
       height: 100%;
-      scrollbar-gutter: stable;
       scrollbar-width: thin;
       overflow: auto;
     }
 
     aside {
       box-sizing: border-box;
-      padding: var(--sl-spacing-2x-small);
+      padding: var(--sl-spacing-large) var(--sl-spacing-2x-small);
       width: 100%;
       display: flex;
       flex-direction: column;
@@ -42,15 +41,15 @@ export class MenuBar extends BaseComponent<MenuBarController> {
   @property({ attribute: 'selected-menu-item', type: String })
   selectedMenuItem?: string;
 
-  protected controller: MenuBarController;
+  private _controller: MenuBarController;
 
   constructor() {
     super();
 
-    this.controller = new MenuBarController(this);
+    this._controller = new MenuBarController(this);
   }
 
-  renderContent() {
+  render() {
     return html`
       <aside>
         <ca-menu-bar-values></ca-menu-bar-values>
@@ -72,7 +71,7 @@ export class MenuBar extends BaseComponent<MenuBarController> {
     const requirements = constants.menuUnlockRequirements as Record<string, Feature>;
     const feature = requirements[menuItem] as Feature | undefined;
 
-    if (feature && !this.controller.isFeatureUnlocked(feature)) {
+    if (feature && !this._controller.isFeatureUnlocked(feature)) {
       return nothing;
     }
 

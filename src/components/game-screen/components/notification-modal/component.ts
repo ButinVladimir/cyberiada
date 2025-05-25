@@ -1,23 +1,27 @@
-import { t } from 'i18next';
 import { css, html, nothing } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import { msg, localized } from '@lit/localize';
+import { customElement, state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
-import type { INotification } from '@state/notifications-state/interfaces/notitification';
 import SlCheckbox from '@shoelace-style/shoelace/dist/components/checkbox/checkbox.component.js';
 import { BaseComponent } from '@shared/base-component';
 import { FORCE_NOTIFICATION_TYPES } from '@shared/constants';
 import { modalBodyScrollStyle, smallModalStyle } from '@shared/styles';
 import { NotificationModalController } from './controller';
-import { INotificationModal } from './interfaces';
 
+@localized()
 @customElement('ca-notification-modal')
-export class NotificationModal extends BaseComponent<NotificationModalController> implements INotificationModal {
+export class NotificationModal extends BaseComponent {
   static styles = [
     smallModalStyle,
     modalBodyScrollStyle,
     css`
       sl-dialog::part(footer) {
-        text-align: right;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: var(--sl-spacing-small);
       }
 
       p {
@@ -27,12 +31,7 @@ export class NotificationModal extends BaseComponent<NotificationModalController
     `,
   ];
 
-  protected controller: NotificationModalController;
-
-  @property({
-    attribute: false,
-  })
-  notification?: INotification;
+  private _controller: NotificationModalController;
 
   private _notificationTypeToggleRef = createRef<SlCheckbox>();
 
@@ -42,77 +41,81 @@ export class NotificationModal extends BaseComponent<NotificationModalController
   constructor() {
     super();
 
-    this.controller = new NotificationModalController(this);
+    this._controller = new NotificationModalController(this);
   }
 
-  connectedCallback() {
-    super.connectedCallback();
+  render() {
+    const hasNotifications = this._controller.hasUnreadNotifications();
+    const hasNextNotification = this._controller.hasNextNotification();
 
-    window.addEventListener('popstate', this.handlePopState);
-  }
-
-  disconnectedCallback() {
-    super.disconnectedCallback();
-
-    window.removeEventListener('popstate', this.handlePopState);
-  }
-
-  renderContent() {
     return html`
-      <sl-dialog no-header ?open=${!!this.notification} @sl-request-close=${this.handleClose}>
+      <sl-dialog no-header ?open=${hasNotifications} @sl-request-close=${this.handleCloseAllNotifications}>
         ${this.renderModalContent()}
 
-        <sl-button slot="footer" size="medium" variant="primary" @click=${this.handleClose}>
-          ${t('common.continue', { ns: 'ui' })}
+        <sl-button
+          slot="footer"
+          ?disabled=${!hasNextNotification}
+          size="medium"
+          variant="primary"
+          @click=${this.handleCloseCurrentNotification}
+        >
+          ${msg('Read next notification')}
+        </sl-button>
+
+        <sl-button slot="footer" size="medium" variant="danger" @click=${this.handleCloseAllNotifications}>
+          ${msg('Close all notifications')}
         </sl-button>
       </sl-dialog>
     `;
   }
 
   private renderModalContent = () => {
-    if (!this.notification) {
+    const notification = this._controller.getUnreadNotification();
+
+    if (!notification) {
       return nothing;
     }
 
-    const parameters = this.notification.parameters ?? {};
-    const showToggle = !FORCE_NOTIFICATION_TYPES.has(this.notification.notificationType);
+    const showToggle = !FORCE_NOTIFICATION_TYPES.has(notification.notificationType);
 
     return html`
-      <p>${t(`${this.notification.notificationType}.message`, { ns: 'notifications', ...parameters })}</p>
+      <p>${notification.message}</p>
 
       ${showToggle
         ? html`
             <sl-checkbox
               ref=${ref(this._notificationTypeToggleRef)}
-              size="medium"
+              size="small"
               name="notification-type"
               ?checked=${this._notificationTypeToggled}
               @sl-change=${this.handleToggleNotificationType}
             >
-              ${t('settings.notificationTypeToggle', { ns: 'ui' })}
+              ${msg('Show notifications like this in the future')}
             </sl-checkbox>
           `
         : nothing}
     `;
   };
 
-  private handleClose = (event: Event) => {
-    event.stopPropagation();
-
-    window.history.back();
+  private handleCloseCurrentNotification = () => {
+    this.closeCurrentNotification();
   };
 
-  private handleToggleNotificationType = (event: Event) => {
-    event.stopPropagation();
+  private handleCloseAllNotifications = () => {
+    this.closeCurrentNotification();
 
+    this._controller.clearNotifications();
+  };
+
+  private handleToggleNotificationType = () => {
     if (this._notificationTypeToggleRef.value) {
       this._notificationTypeToggled = this._notificationTypeToggleRef.value.checked;
     }
   };
 
-  private handlePopState = () => {
-    if (this.notification) {
-      this.controller.handleCloseModal(this.notification, this._notificationTypeToggled);
+  private closeCurrentNotification = () => {
+    if (this._controller.hasUnreadNotifications()) {
+      this._controller.popNotification(this._notificationTypeToggled);
       this._notificationTypeToggled = true;
     }
   };

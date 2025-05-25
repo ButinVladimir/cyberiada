@@ -1,79 +1,101 @@
-import { injectable, inject } from 'inversify';
-import type { IScenarioState } from '@state/scenario-state/interfaces/scenario-state';
+import { injectable } from 'inversify';
+import scenarios from '@configs/scenarios.json';
 import type { IGlobalState } from '@state/global-state/interfaces/global-state';
+import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import { IMapGeneratorResult } from '@workers/map-generator/interfaces';
 import { TYPES } from '@state/types';
-import { ICityState, ICitySerializedState, IDistrictInfo, IDistrictSerializedInfo } from './interfaces';
-import { DistrictInfo } from './district-info';
+import { decorators } from '@state/container';
+import { ICityState, ICitySerializedState, IDistrictState, IDistrictSerializedState } from './interfaces';
+import { DistrictState } from './district-state';
+import { DistrictUnlockState } from './types';
+
+const { lazyInject } = decorators;
 
 @injectable()
 export class CityState implements ICityState {
-  private _scenarioState: IScenarioState;
-  private _globalState: IGlobalState;
+  @lazyInject(TYPES.GlobalState)
+  private _globalState!: IGlobalState;
 
-  private _map: number[][];
-  private _districts: Map<number, IDistrictInfo>;
+  @lazyInject(TYPES.StateUIConnector)
+  private _stateUiConnector!: IStateUIConnector;
 
-  constructor(
-    @inject(TYPES.ScenarioState) _scenarioState: IScenarioState,
-    @inject(TYPES.GlobalState) _globalState: IGlobalState,
-  ) {
-    this._scenarioState = _scenarioState;
-    this._globalState = _globalState;
+  private _layout: number[][];
+  private _districts: Map<number, IDistrictState>;
+  private _availableDistricts: IDistrictState[];
 
-    this._map = [];
+  constructor() {
+    this._layout = [];
     this._districts = new Map();
+    this._availableDistricts = [];
+
+    this._stateUiConnector.registerEventEmitter(this, []);
   }
 
-  getMap(): number[][] {
-    return this._map;
+  get districtsCount() {
+    return this._globalState.scenario.currentValues.map.districts.length;
   }
 
-  getDistrictInfo(num: number): IDistrictInfo {
-    if (!this._districts.has(num)) {
-      throw new Error(`Missing district ${num}`);
+  getLayout(): number[][] {
+    return this._layout;
+  }
+
+  getDistrictState(districtIndex: number): IDistrictState {
+    if (!this._districts.has(districtIndex)) {
+      throw new Error(`Missing district ${districtIndex}`);
     }
 
-    return this._districts.get(num)!;
+    return this._districts.get(districtIndex)!;
+  }
+
+  listAvailableDistricts(): IDistrictState[] {
+    return this._availableDistricts;
+  }
+
+  recalculate() {
+    for (const district of this._districts.values()) {
+      district.recalculate();
+    }
   }
 
   async startNewState(): Promise<void> {
     await this.generateMap();
+    this.recalculate();
   }
 
-  // eslint-disable-next-line @typescript-eslint/require-await
   async deserialize(serializedState: ICitySerializedState): Promise<void> {
-    this._map = [];
-    for (let x = 0; x < this._scenarioState.currentValues.mapWidth; x++) {
+    this.clearDistricts();
+
+    this._layout = [];
+    for (let x = 0; x < this._globalState.scenario.currentValues.map.width; x++) {
       const row: number[] = [];
 
-      for (let y = 0; y < this._scenarioState.currentValues.mapHeight; y++) {
-        row.push(serializedState.map[x][y]);
+      for (let y = 0; y < this._globalState.scenario.currentValues.map.height; y++) {
+        row.push(serializedState.layout[x][y]);
       }
 
-      this._map.push(row);
+      this._layout.push(row);
     }
 
-    this._districts.clear();
+    Object.entries(serializedState.districts).forEach(([districtIndex, districtSerializedInfo]) => {
+      const parsedDistrictIndex = parseInt(districtIndex);
+      const districtState = DistrictState.deserialize(parsedDistrictIndex, districtSerializedInfo);
 
-    Object.entries(serializedState.districts).forEach(([districtNum, districtSerializedInfo]) => {
-      const districtNumParsed = parseInt(districtNum);
-      const districtInfo = DistrictInfo.deserialize(districtSerializedInfo);
-
-      this._districts.set(districtNumParsed, districtInfo);
+      this._districts.set(parsedDistrictIndex, districtState);
     });
+
+    this.updateAvailableDistricts();
   }
 
   serialize(): ICitySerializedState {
-    const map: number[][] = this.getMap();
+    const layout: number[][] = this.getLayout();
 
-    const districts: Record<number, IDistrictSerializedInfo> = {};
-    this._districts.forEach((districtInfo, districtNum) => {
-      districts[districtNum] = districtInfo.serialize();
+    const districts: Record<number, IDistrictSerializedState> = {};
+    this._districts.forEach((districtState, districtNum) => {
+      districts[districtNum] = districtState.serialize();
     });
 
     return {
-      map,
+      layout,
       districts,
     };
   }
@@ -83,14 +105,27 @@ export class CityState implements ICityState {
       const worker = new Worker(new URL('@workers/map-generator/index.js', import.meta.url), { type: 'module' });
 
       worker.addEventListener('message', (event: MessageEvent<IMapGeneratorResult>) => {
-        this._map = event.data.map;
-        this._districts.clear();
-        for (const [districtNum, district] of Object.entries(event.data.districts)) {
-          const parsedDistrictNum = parseInt(districtNum);
-          const districtInfo = DistrictInfo.deserializeMapGeneratorResult(district);
+        this._globalState.setRandomShift(event.data.randomShift);
 
-          this._districts.set(parsedDistrictNum, districtInfo);
+        this._layout = event.data.layout;
+
+        this.clearDistricts();
+
+        for (const [districtIndex, district] of Object.entries(event.data.districts)) {
+          const parsedDistrictIndex = parseInt(districtIndex);
+          const districtState = DistrictState.createByMapGenerator(parsedDistrictIndex, district);
+
+          districtState.state =
+            parsedDistrictIndex === scenarios[this._globalState.scenario.scenario].map.startingDistrict
+              ? DistrictUnlockState.contested
+              : DistrictUnlockState.locked;
+
+          this._districts.set(parsedDistrictIndex, districtState);
         }
+
+        this.updateAvailableDistricts();
+
+        worker.terminate();
 
         resolve();
       });
@@ -103,14 +138,29 @@ export class CityState implements ICityState {
         reject('Unable to parse map generator message');
       });
 
-      const scenarioValues = this._scenarioState.currentValues;
-
       worker.postMessage({
-        mapWidth: scenarioValues.mapWidth,
-        mapHeight: scenarioValues.mapHeight,
-        districtsNum: scenarioValues.districtsNum,
+        scenario: this._globalState.scenario.scenario,
         randomSeed: this._globalState.randomSeed,
       });
     });
+  }
+
+  private updateAvailableDistricts() {
+    this._availableDistricts.length = 0;
+
+    this._districts.forEach((district) => {
+      if (district.state !== DistrictUnlockState.locked) {
+        this._availableDistricts.push(district);
+      }
+    });
+  }
+
+  private clearDistricts() {
+    for (const district of this._districts.values()) {
+      district.removeAllEventListeners();
+    }
+
+    this._availableDistricts.length = 0;
+    this._districts.clear();
   }
 }

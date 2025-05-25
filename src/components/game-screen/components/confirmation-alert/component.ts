@@ -1,18 +1,18 @@
-import { t } from 'i18next';
 import { css, html } from 'lit';
+import { localized, msg } from '@lit/localize';
 import { customElement, state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import SlCheckbox from '@shoelace-style/shoelace/dist/components/checkbox/checkbox.component.js';
 import { BaseComponent } from '@shared/base-component';
 import type { GameAlert } from '@shared/types';
 import { smallModalStyle, modalBodyScrollStyle } from '@shared/styles';
-import { IHistoryState } from '@shared/interfaces';
+import { COMMON_TEXTS } from '@texts/common';
 import { ConfirmationAlertOpenEvent, ConfirmationAlertCloseEvent, ConfirmationAlertSubmitEvent } from './events';
 import { ConfirmationAlertController } from './controller';
-import { SUBMIT_DELAY } from './constants';
 
+@localized()
 @customElement('ca-confirmation-alert')
-export class ConfirmationAlert extends BaseComponent<ConfirmationAlertController> {
+export class ConfirmationAlert extends BaseComponent {
   static styles = [
     smallModalStyle,
     modalBodyScrollStyle,
@@ -21,6 +21,7 @@ export class ConfirmationAlert extends BaseComponent<ConfirmationAlertController
         width: 100%;
         display: flex;
         flex-direction: row;
+        flex-wrap: wrap;
         justify-content: flex-end;
         gap: var(--sl-spacing-small);
       }
@@ -32,7 +33,7 @@ export class ConfirmationAlert extends BaseComponent<ConfirmationAlertController
     `,
   ];
 
-  protected controller: ConfirmationAlertController;
+  private _controller: ConfirmationAlertController;
 
   private _gameAlertToggleRef = createRef<SlCheckbox>();
 
@@ -43,7 +44,7 @@ export class ConfirmationAlert extends BaseComponent<ConfirmationAlertController
   private _gameAlertKey?: string;
 
   @state()
-  private _messageParams = {};
+  private _message = '';
 
   @state()
   private _isOpen = false;
@@ -54,63 +55,57 @@ export class ConfirmationAlert extends BaseComponent<ConfirmationAlertController
   constructor() {
     super();
 
-    this.controller = new ConfirmationAlertController(this);
+    this._controller = new ConfirmationAlertController(this);
   }
 
   connectedCallback() {
     super.connectedCallback();
 
     document.addEventListener(ConfirmationAlertOpenEvent.type, this.handleOpen);
-    window.addEventListener('popstate', this.handlePopState);
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
 
     document.removeEventListener(ConfirmationAlertOpenEvent.type, this.handleOpen);
-    window.removeEventListener('popstate', this.handlePopState);
   }
 
-  renderContent() {
+  render() {
     return html`
       <sl-dialog no-header ?open=${this._isOpen} @sl-request-close=${this.handleClose}>
-        <p>${t(`${this._gameAlert}.message`, { ns: 'alerts', ...this._messageParams })}</p>
+        <p>${this._message}</p>
 
         <sl-checkbox
           ref=${ref(this._gameAlertToggleRef)}
-          size="medium"
+          size="small"
           name="game-alert"
           ?checked=${this._alertToggled}
           @sl-change=${this.handleToggleAlert}
         >
-          ${t('settings.alertToggle', { ns: 'ui' })}
+          ${msg('Show alerts like this in the future')}
         </sl-checkbox>
 
         <sl-button slot="footer" size="medium" variant="default" outline @click=${this.handleClose}>
-          ${t('common.cancel', { ns: 'ui' })}
+          ${COMMON_TEXTS.cancel()}
         </sl-button>
 
         <sl-button slot="footer" size="medium" variant="danger" @click=${this.handleSubmit}>
-          ${t('common.continue', { ns: 'ui' })}
+          ${COMMON_TEXTS.continue()}
         </sl-button>
       </sl-dialog>
     `;
   }
 
   private handleOpen = (event: Event) => {
-    event.stopPropagation();
     const convertedEvent = event as ConfirmationAlertOpenEvent;
 
     this._gameAlert = convertedEvent.gameAlert;
-    this._messageParams = convertedEvent.messageParams;
+    this._message = convertedEvent.message;
     this._gameAlertKey = convertedEvent.gameAlertKey;
 
-    if (this.controller.isGameAlertEnabled(this._gameAlert)) {
+    if (this._controller.isGameAlertEnabled(this._gameAlert)) {
       this._isOpen = true;
       this._alertToggled = true;
-
-      const historyState = { ...window.history.state, showConfirmationAlert: true } as IHistoryState;
-      window.history.pushState(historyState, '');
     } else {
       this._isOpen = false;
 
@@ -118,45 +113,29 @@ export class ConfirmationAlert extends BaseComponent<ConfirmationAlertController
     }
   };
 
-  private handleClose = (event: Event) => {
-    event.stopPropagation();
-
-    window.history.back();
-  };
-
-  private handleSubmit = (event: Event) => {
-    event.stopPropagation();
-
-    if (this._gameAlert) {
-      window.history.back();
-
-      if (this._gameAlertToggleRef.value) {
-        this.controller.toggleGameAlert(this._gameAlert, this._alertToggled);
-      }
-
-      const gameAlert = this._gameAlert;
-      const gameAlertKey = this._gameAlertKey;
-      setTimeout(() => {
-        this.dispatchEvent(new ConfirmationAlertSubmitEvent(gameAlert, gameAlertKey));
-      }, SUBMIT_DELAY);
-    }
-  };
-
-  private handleToggleAlert = (event: Event) => {
-    event.stopPropagation();
-
-    if (this._gameAlert && this._gameAlertToggleRef.value) {
-      this._alertToggled = this._gameAlertToggleRef.value.checked;
-    }
-  };
-
-  private handlePopState = (event: PopStateEvent) => {
-    const state = event.state as IHistoryState;
-
-    this._isOpen = state.showConfirmationAlert;
+  private handleClose = () => {
+    this._isOpen = false;
 
     if (this._gameAlert) {
       this.dispatchEvent(new ConfirmationAlertCloseEvent(this._gameAlert, this._gameAlertKey));
+    }
+  };
+
+  private handleSubmit = () => {
+    if (this._gameAlert) {
+      this._isOpen = false;
+
+      if (this._gameAlertToggleRef.value) {
+        this._controller.toggleGameAlert(this._gameAlert, this._alertToggled);
+      }
+
+      this.dispatchEvent(new ConfirmationAlertSubmitEvent(this._gameAlert, this._gameAlertKey));
+    }
+  };
+
+  private handleToggleAlert = () => {
+    if (this._gameAlert && this._gameAlertToggleRef.value) {
+      this._alertToggled = this._gameAlertToggleRef.value.checked;
     }
   };
 }

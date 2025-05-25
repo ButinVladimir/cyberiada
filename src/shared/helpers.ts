@@ -1,7 +1,24 @@
-import { IExponent } from './interfaces/exponent';
+import clamp from 'lodash/clamp';
+import { IExponent, ILinear, ITierExponent, ITierLinear } from './interfaces/formulas';
 
-export const calculatePow = (exponent: number, params: IExponent): number => {
-  return params.baseMultiplier * Math.pow(params.base, exponent);
+export const calculatePower = (exponent: number, params: IExponent): number => {
+  return params.multiplier * Math.pow(params.base, exponent);
+};
+
+export const calculateTierPower = (exponent: number, tier: number, params: ITierExponent): number => {
+  return calculatePower(exponent, params) * calculateTierMultiplier(tier, params.baseTier);
+};
+
+export const calculateLinear = (level: number, params: ILinear): number => {
+  return params.base + level * params.multiplier;
+};
+
+export const calculateTierLinear = (level: number, tier: number, params: ITierLinear): number => {
+  return calculateLinear(level, params) * calculateTierMultiplier(tier, params.baseTier);
+};
+
+export const calculateTierMultiplier = (tier: number, base: number): number => {
+  return Math.pow(base, tier);
 };
 
 export const binarySearchDecimal = (
@@ -27,15 +44,7 @@ export const binarySearchDecimal = (
 };
 
 export const normalizePercentage = (value: number): number => {
-  if (value < 0) {
-    return 0;
-  }
-
-  if (value > 100) {
-    return 100;
-  }
-
-  return Math.floor(value);
+  return clamp(Math.floor(value), 0, 100);
 };
 
 export const checkPercentage = (value: number): boolean => {
@@ -66,4 +75,41 @@ export function moveElementInArray<T>(array: T[], fromIndex: number, toIndex: nu
   }
 
   array[fixedToIndex] = movedElement;
+}
+
+export const calculateGeometricProgressionSum = (level: number, multiplier: number, base: number): number =>
+  (multiplier * (Math.pow(base, level + 1) - 1)) / (base - 1);
+
+export const reverseGeometricProgressionSum = (points: number, multiplier: number, base: number): number =>
+  Math.floor(Math.log(1 + (points * (base - 1)) / multiplier) / Math.log(base));
+
+export function removeElementsFromArray<T>(array: T[], fromIndex: number, count: number): void {
+  if (fromIndex + count >= array.length) {
+    array.length = fromIndex;
+    return;
+  }
+
+  let index = fromIndex;
+
+  while (index + count < array.length) {
+    array[index] = array[index + count];
+    index++;
+  }
+
+  array.length -= count;
+}
+
+export function capitalizeFirstLetter(text: string) {
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
+export function calculateLevelProgressPercentage(
+  basePoints: number,
+  currentPoints: number,
+  nextLevelPoints: number,
+): number {
+  const currentDistance = currentPoints - basePoints;
+  const nextLevelDistance = nextLevelPoints - basePoints;
+
+  return clamp((currentDistance / nextLevelDistance) * 100, 0, 100);
 }

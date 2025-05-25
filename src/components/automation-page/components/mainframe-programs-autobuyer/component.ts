@@ -1,33 +1,34 @@
-import { t } from 'i18next';
 import { html } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { customElement } from 'lit/decorators.js';
+import { msg, localized } from '@lit/localize';
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.component.js';
 import { BaseComponent } from '@shared/base-component';
 import { AutomationMainframeProgramsAutobuyerController } from './controller';
 import { autobuyerStyles } from '../../styles';
 
+@localized()
 @customElement('ca-automation-mainframe-programs-autobuyer')
-export class AutomationMainframeProgramsAutobuyer extends BaseComponent<AutomationMainframeProgramsAutobuyerController> {
+export class AutomationMainframeProgramsAutobuyer extends BaseComponent {
   static styles = autobuyerStyles;
 
-  protected controller: AutomationMainframeProgramsAutobuyerController;
+  private _controller: AutomationMainframeProgramsAutobuyerController;
 
   private _moneyShareRef = createRef<SlInput>();
 
   constructor() {
     super();
 
-    this.controller = new AutomationMainframeProgramsAutobuyerController(this);
+    this._controller = new AutomationMainframeProgramsAutobuyerController(this);
   }
 
-  renderContent() {
-    const { moneyShare } = this.controller;
+  render() {
+    const { moneyShare } = this._controller;
 
     return html`
-      <h4 class="title">${t('automation.mainframeProgramsAutobuyer.mainframeProgramsAutobuyer', { ns: 'ui' })}</h4>
+      <h4 class="title">${msg('Mainframe programs autobuyer')}</h4>
 
-      <p class="hint">${t('automation.mainframeProgramsAutobuyer.percentageHint', { ns: 'ui' })}</p>
+      <p class="hint">${msg('Percentage of available money reserved for buying programs.')}</p>
 
       <div class="input-container">
         <sl-input
@@ -35,6 +36,7 @@ export class AutomationMainframeProgramsAutobuyer extends BaseComponent<Automati
           name="moneyShare"
           value=${moneyShare}
           type="number"
+          inputmode="decimal"
           min="0"
           max="100"
           step="1"
@@ -52,7 +54,7 @@ export class AutomationMainframeProgramsAutobuyer extends BaseComponent<Automati
 
     const value = this.normalizeValue(this._moneyShareRef.value.valueAsNumber);
 
-    this.controller.moneyShare = value;
+    this._controller.moneyShare = value;
     this._moneyShareRef.value.valueAsNumber = value;
   };
 

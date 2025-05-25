@@ -1,49 +1,41 @@
-import { inject, injectable } from 'inversify';
-import { EventBatcher } from '@shared/event-batcher';
-import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
-import type { ISettingsState } from '@state/settings-state/interfaces/settings-state';
+import { injectable } from 'inversify';
+import type { IStateUIConnector } from '@state/state-ui-connector';
+import type { ISettingsState } from '@state/settings-state';
 import { TYPES } from '@state/types';
+import { decorators } from '@state/container';
+import { NotificationType } from '@shared/index';
 import { INotificationsState, INotification } from './interfaces';
-import { NOTIFICATION_STATE_UI_EVENTS } from './constants';
-import { NotificationType } from '@shared/types';
+
+const { lazyInject } = decorators;
 
 @injectable()
 export class NotificationsState implements INotificationsState {
-  readonly uiEventBatcher: EventBatcher;
+  @lazyInject(TYPES.StateUIConnector)
+  private _stateUiConnector!: IStateUIConnector;
 
-  private _stateUiConnector: IStateUIConnector;
-  private _settingsState: ISettingsState;
+  @lazyInject(TYPES.SettingsState)
+  private _settingsState!: ISettingsState;
+
   private readonly _notifications: INotification[];
 
-  constructor(
-    @inject(TYPES.StateUIConnector) _stateUiConnector: IStateUIConnector,
-    @inject(TYPES.SettingsState) _settingsState: ISettingsState,
-  ) {
-    this._stateUiConnector = _stateUiConnector;
-    this._settingsState = _settingsState;
-
+  constructor() {
     this._notifications = [];
 
-    this.uiEventBatcher = new EventBatcher();
-    this._stateUiConnector.registerEventEmitter(this);
+    this._stateUiConnector.registerEventEmitter(this, ['_notifications']);
   }
 
-  pushNotification(notificationType: NotificationType, parameters?: Record<string, any>, force?: boolean) {
+  pushNotification(notificationType: NotificationType, message: string, force?: boolean) {
     if (!force && !this._settingsState.isNotificationTypeEnabled(notificationType)) {
       return;
     }
 
     this._notifications.push({
       notificationType,
-      parameters,
+      message,
     });
-
-    this.uiEventBatcher.enqueueEvent(NOTIFICATION_STATE_UI_EVENTS.UPDATED_NOTIFICATIONS);
   }
 
-  getUnreadNotification(): INotification | undefined {
-    this._stateUiConnector.connectEventHandler(this, NOTIFICATION_STATE_UI_EVENTS.UPDATED_NOTIFICATIONS);
-
+  getFirstUnreadNotification(): INotification | undefined {
     while (this.hasUnreadNotifications()) {
       const notification = this._notifications[0];
 
@@ -58,16 +50,20 @@ export class NotificationsState implements INotificationsState {
   }
 
   hasUnreadNotifications(): boolean {
-    this._stateUiConnector.connectEventHandler(this, NOTIFICATION_STATE_UI_EVENTS.UPDATED_NOTIFICATIONS);
-
     return this._notifications.length > 0;
+  }
+
+  hasNextNotification(): boolean {
+    return this._notifications.length > 1;
   }
 
   popUnreadNotification() {
     if (this.hasUnreadNotifications()) {
       this._notifications.shift();
-
-      this.uiEventBatcher.enqueueEvent(NOTIFICATION_STATE_UI_EVENTS.UPDATED_NOTIFICATIONS);
     }
+  }
+
+  clearNotifications() {
+    this._notifications.length = 0;
   }
 }

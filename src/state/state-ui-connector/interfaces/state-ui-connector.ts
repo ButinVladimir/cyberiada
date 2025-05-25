@@ -1,11 +1,11 @@
-import { IUIEventEmitter } from '@shared/interfaces/ui-event-emitter';
-import { IUIEventListener } from '@shared/interfaces/ui-event-listener';
+import { BaseComponent } from '@shared/index';
 
 export interface IStateUIConnector {
-  pushEventListener(eventListener: IUIEventListener): void;
-  popEventListener(): void;
-  connectEventHandler(eventEmitter: IUIEventEmitter, event: symbol): void;
-  registerEventEmitter(eventEmitter: IUIEventEmitter): void;
-  unregisterEventEmitter(eventEmitter: IUIEventEmitter): void;
-  fireUIEvents(): void;
+  connectComponent(component: BaseComponent): void;
+  disconnectComponent(component: BaseComponent): void;
+  startRendering(component: BaseComponent): void;
+  stopRendering(): void;
+  registerEventEmitter(eventEmitter: any, properties: string[]): void;
+  unregisterEventEmitter(eventEmitter: any): void;
+  fireEvents(): void;
 }

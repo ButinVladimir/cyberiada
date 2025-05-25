@@ -1,21 +1,19 @@
-import { t } from 'i18next';
 import { css, html } from 'lit';
+import { localized, msg } from '@lit/localize';
 import { customElement } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
-import { BaseComponent } from '@shared/base-component';
-import { ProgramAlert } from '@shared/types';
 import {
   ConfirmationAlertOpenEvent,
   ConfirmationAlertSubmitEvent,
 } from '@components/game-screen/components/confirmation-alert/events';
-import { IProcess } from '@state/mainframe/mainframe-processes-state/interfaces/process';
-import { ProgramName } from '@state/progam-factory/types';
-import { SCREEN_WIDTH_POINTS } from '@shared/styles';
+import { IProcess, ProgramName } from '@state/mainframe-state';
+import { BaseComponent, ProgramAlert, DELETE_VALUES, ENTITY_ACTIVE_VALUES, SCREEN_WIDTH_POINTS } from '@shared/index';
 import { SortableElementMovedEvent } from '@components/shared/sortable-list/events/sortable-element-moved';
 import { ProcessesListController } from './controller';
 
+@localized()
 @customElement('ca-processes-list')
-export class ProcessesList extends BaseComponent<ProcessesListController> {
+export class ProcessesList extends BaseComponent {
   static styles = css`
     :host {
       width: 100%;
@@ -27,11 +25,11 @@ export class ProcessesList extends BaseComponent<ProcessesListController> {
     .header {
       display: grid;
       grid-template-columns: auto;
-      grid-template-rows: auto;
+      grid-template-rows: repeat(auto);
       gap: var(--sl-spacing-small);
       align-items: center;
       border-bottom: var(--ca-border);
-      padding: var(--sl-spacing-small) 0;
+      padding: var(--sl-spacing-medium) 0;
     }
 
     .header-column {
@@ -93,7 +91,7 @@ export class ProcessesList extends BaseComponent<ProcessesListController> {
 
     @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
       .header {
-        grid-template-columns: 3fr 1fr 2fr 6rem;
+        grid-template-columns: 3fr 1fr 2fr auto;
         grid-template-rows: auto;
         padding: var(--sl-spacing-small);
       }
@@ -112,59 +110,63 @@ export class ProcessesList extends BaseComponent<ProcessesListController> {
     }
   `;
 
-  protected controller: ProcessesListController;
+  private _controller: ProcessesListController;
 
   constructor() {
     super();
 
-    this.controller = new ProcessesListController(this);
+    this._controller = new ProcessesListController(this);
   }
 
   connectedCallback() {
     super.connectedCallback();
 
-    document.addEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmAllDeleteProcessesDialog);
+    document.addEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmDeleteAllProcessesDialog);
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
 
-    document.removeEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmAllDeleteProcessesDialog);
+    document.removeEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmDeleteAllProcessesDialog);
   }
 
-  renderContent() {
+  render() {
     const processesActive = this.checkSomeProcessesActive();
 
-    const toggleProcessesIcon = processesActive ? 'play-fill' : 'pause-fill';
-    const toggleProcessesLabel = processesActive ? 'disableAllProcesses' : 'enableAllProcesses';
-    const toggleProcessesVariant = processesActive ? 'neutral' : 'default';
+    const toggleProcessesIcon = processesActive ? ENTITY_ACTIVE_VALUES.icon.active : ENTITY_ACTIVE_VALUES.icon.stopped;
+    const toggleProcessesLabel = processesActive ? msg('Disable all processes') : msg('Enable all processes');
+    const toggleProcessesVariant = processesActive
+      ? ENTITY_ACTIVE_VALUES.buttonVariant.active
+      : ENTITY_ACTIVE_VALUES.buttonVariant.stopped;
 
-    const processes = this.controller.listProcesses();
+    const deleteAllProcessLabel = msg('Delete all processes');
+
+    const processes = this._controller.listProcesses();
 
     return html`
       <div class="header">
-        <div class="header-column">${t('mainframe.program', { ns: 'ui' })}</div>
-        <div class="header-column">${t('mainframe.cores', { ns: 'ui' })}</div>
-        <div class="header-column"></div>
+        <div class="header-column">${msg('Program')}</div>
+        <div class="header-column">${msg('Cores')}</div>
+        <div class="header-column">${msg('Progress')}</div>
         <div class="buttons desktop">
           <sl-tooltip>
-            <span slot="content"> ${t(`mainframe.processes.${toggleProcessesLabel}`, { ns: 'ui' })} </span>
+            <span slot="content"> ${toggleProcessesLabel} </span>
 
             <sl-icon-button
               name=${toggleProcessesIcon}
-              label=${t(`mainframe.processes.${toggleProcessesLabel}`, { ns: 'ui' })}
+              label=${toggleProcessesLabel}
               @click=${this.handleToggleAllProcesses}
             >
             </sl-icon-button>
           </sl-tooltip>
 
           <sl-tooltip>
-            <span slot="content"> ${t('mainframe.processes.allProcessesDelete', { ns: 'ui' })} </span>
+            <span slot="content"> ${deleteAllProcessLabel} </span>
 
             <sl-icon-button
               id="delete-btn"
-              name="x-lg"
-              label=${t('mainframe.processes.allProcessesDelete', { ns: 'ui' })}
+              name=${DELETE_VALUES.icon}
+              label=${deleteAllProcessLabel}
               @click=${this.handleOpenDeleteAllProcessesDialog}
             >
             </sl-icon-button>
@@ -173,11 +175,18 @@ export class ProcessesList extends BaseComponent<ProcessesListController> {
 
         <div class="buttons mobile">
           <sl-button variant=${toggleProcessesVariant} size="medium" @click=${this.handleToggleAllProcesses}>
-            ${t(`mainframe.processes.${toggleProcessesLabel}`, { ns: 'ui' })}
+            <sl-icon slot="prefix" name=${toggleProcessesIcon}></sl-icon>
+
+            ${toggleProcessesLabel}
           </sl-button>
 
-          <sl-button variant="danger" size="medium" @click=${this.handleOpenDeleteAllProcessesDialog}>
-            ${t('mainframe.processes.allProcessesDelete', { ns: 'ui' })}
+          <sl-button
+            variant=${DELETE_VALUES.buttonVariant}
+            size="medium"
+            @click=${this.handleOpenDeleteAllProcessesDialog}
+          >
+            <sl-icon slot="prefix" name=${DELETE_VALUES.icon}> </sl-icon>
+            ${deleteAllProcessLabel}
           </sl-button>
         </div>
       </div>
@@ -195,7 +204,7 @@ export class ProcessesList extends BaseComponent<ProcessesListController> {
   private renderEmptyListNotification = () => {
     return html`
       <div class="notification">
-        <td colspan="4">${t('mainframe.processes.emptyListNotification', { ns: 'ui' })}</td>
+        <td colspan="4">${msg("You don't have any processes")}</td>
       </div>
     `;
   };
@@ -208,39 +217,35 @@ export class ProcessesList extends BaseComponent<ProcessesListController> {
   };
 
   private checkSomeProcessesActive(): boolean {
-    return this.controller.listProcesses().some((process) => process.isActive);
+    return this._controller.listProcesses().some((process) => process.isActive);
   }
 
-  private handleToggleAllProcesses = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  private handleToggleAllProcesses = () => {
     const processesActive = this.checkSomeProcessesActive();
 
-    this.controller.toggleAllProcesses(!processesActive);
+    this._controller.toggleAllProcesses(!processesActive);
   };
 
-  private handleOpenDeleteAllProcessesDialog = (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
-    this.dispatchEvent(new ConfirmationAlertOpenEvent(ProgramAlert.deleteAllProcesses, {}));
+  private handleOpenDeleteAllProcessesDialog = () => {
+    this.dispatchEvent(
+      new ConfirmationAlertOpenEvent(
+        ProgramAlert.deleteAllProcesses,
+        msg('Are you sure want to delete all processes? Their progress will be lost.'),
+      ),
+    );
   };
 
-  private handleConfirmAllDeleteProcessesDialog = (event: Event) => {
+  private handleConfirmDeleteAllProcessesDialog = (event: Event) => {
     const convertedEvent = event as ConfirmationAlertSubmitEvent;
 
     if (convertedEvent.gameAlert !== ProgramAlert.deleteAllProcesses) {
       return;
     }
 
-    this.controller.deleteAllProcesses();
+    this._controller.deleteAllProcesses();
   };
 
   private handleMoveProcess = (event: SortableElementMovedEvent) => {
-    event.stopPropagation();
-    event.preventDefault();
-
-    this.controller.moveProcess(event.keyName as ProgramName, event.position);
+    this._controller.moveProcess(event.keyName as ProgramName, event.position);
   };
 }

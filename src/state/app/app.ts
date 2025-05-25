@@ -1,20 +1,19 @@
 import { inject, injectable } from 'inversify';
+import { msg } from '@lit/localize';
+import { compressToUTF16, decompressFromUTF16 } from 'lz-string';
 import type { IAppState } from '@state/app-state/interfaces/app-state';
+import { ISerializedState } from '@state/app-state/interfaces/serialized-state';
 import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
 import type { ISettingsState } from '@state/settings-state/interfaces/settings-state';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import { TYPES } from '@state/types';
-import { EventBatcher } from '@shared/event-batcher';
 import { GameStateEvent } from '@shared/types';
-import { IHistoryState } from '@shared/interfaces/history-state';
 import { IApp } from './interfaces';
-import { LOCAL_STORAGE_KEY, APP_UI_EVENTS, REFRESH_UI_TIME } from './constants';
+import { LOCAL_STORAGE_KEY, REFRESH_UI_TIME } from './constants';
 import { AppStage } from './types';
 
 @injectable()
 export class App implements IApp {
-  readonly uiEventBatcher: EventBatcher;
-
   private _appState: IAppState;
   private _settingsState: ISettingsState;
   private _messageLogState: IMessageLogState;
@@ -40,15 +39,12 @@ export class App implements IApp {
     this._stateUIConnector = _stateUiConnector;
     this._uiVisible = true;
 
-    this.uiEventBatcher = new EventBatcher();
-    this._stateUIConnector.registerEventEmitter(this);
+    this._stateUIConnector.registerEventEmitter(this, ['_appStage']);
 
     document.addEventListener('visibilitychange', this.handleVisibilityChange);
   }
 
   get appStage() {
-    this._stateUIConnector.connectEventHandler(this, APP_UI_EVENTS.CHANGED_APP_STAGE);
-
     return this._appStage;
   }
 
@@ -59,7 +55,7 @@ export class App implements IApp {
 
     if (saveData) {
       try {
-        await this._appState.deserialize(saveData);
+        await this.deserializeState(saveData);
       } catch (e) {
         console.error(e);
         await this._appState.startNewState();
@@ -68,15 +64,14 @@ export class App implements IApp {
       await this._appState.startNewState();
     }
 
-    this.setStartingHistoryState();
     this.startRunningGame();
   }
 
   saveGame = (): void => {
-    const encodedSaveData = this._appState.serialize();
+    const encodedSaveData = this.serializeState();
 
     localStorage.setItem(LOCAL_STORAGE_KEY, encodedSaveData);
-    this._messageLogState.postMessage(GameStateEvent.gameSaved);
+    this._messageLogState.postMessage(GameStateEvent.gameSaved, msg('Game has been saved'));
   };
 
   refreshUI(): void {
@@ -95,8 +90,7 @@ export class App implements IApp {
     const fileReader = new FileReader();
 
     fileReader.addEventListener('load', () => {
-      this._appState
-        .deserialize(fileReader.result as string)
+      this.deserializeState(fileReader.result as string)
         .then(() => {
           this.startRunningGame();
         })
@@ -116,7 +110,7 @@ export class App implements IApp {
   }
 
   exportSavefile(): void {
-    const saveData = this._appState.serialize();
+    const saveData = this.serializeState();
     const savefileName = `cyberiada-savefile-${new Date().toLocaleString()}.txt`;
 
     const file = new File([saveData], savefileName, { endings: 'transparent' });
@@ -148,20 +142,12 @@ export class App implements IApp {
   restartAutosaveTimer() {
     this.stopAutosaveTimer();
 
-    if (this._settingsState.autosaveEnabled) {
+    if (this._settingsState.autosaveInterval) {
       this._autosaveTimer = setInterval(this.saveGame, this._settingsState.autosaveInterval);
     }
   }
 
   fastForward() {
-    const currentHistoryState = window.history.state as IHistoryState;
-    const newHistoryState: IHistoryState = {
-      ...currentHistoryState,
-      fastForwarding: true,
-    };
-
-    window.history.pushState(newHistoryState, '');
-
     this._appStage = AppStage.fastForward;
 
     this.emitChangedAppStageEvent();
@@ -169,8 +155,21 @@ export class App implements IApp {
 
   stopFastForwarding() {
     this._appStage = AppStage.running;
-    this._messageLogState.postMessage(GameStateEvent.fastForwared);
+    this._messageLogState.postMessage(
+      GameStateEvent.fastForwared,
+      msg('Spending accumulated time has been interrupted'),
+    );
     this.emitChangedAppStageEvent();
+  }
+
+  private serializeState(): string {
+    return compressToUTF16(JSON.stringify(this._appState.serialize()));
+  }
+
+  private async deserializeState(savedState: string): Promise<void> {
+    const serializedState = JSON.parse(decompressFromUTF16(savedState)) as ISerializedState;
+
+    await this._appState.deserialize(serializedState);
   }
 
   private startLoadingGame = (): void => {
@@ -190,14 +189,13 @@ export class App implements IApp {
     this.restartUpdateTimer();
     this.restartAutosaveTimer();
 
-    this._messageLogState.postMessage(GameStateEvent.gameStarted);
+    this._messageLogState.postMessage(GameStateEvent.gameStarted, msg('Game has been started'));
 
     this.emitChangedAppStageEvent();
   };
 
   private emitChangedAppStageEvent() {
-    this.uiEventBatcher.enqueueEvent(APP_UI_EVENTS.CHANGED_APP_STAGE);
-    this._stateUIConnector.fireUIEvents();
+    this._stateUIConnector.fireEvents();
   }
 
   private stopUpdateTimer() {
@@ -224,37 +222,30 @@ export class App implements IApp {
 
       case AppStage.fastForward:
         if (!this._appState.fastForwardState()) {
-          window.history.back();
-
           this._appStage = AppStage.running;
-          this._messageLogState.postMessage(GameStateEvent.fastForwared);
+          this._messageLogState.postMessage(GameStateEvent.fastForwared, msg('Accumulated time has been spent'));
           this.emitChangedAppStageEvent();
         }
         break;
     }
 
     if (this._uiVisible) {
-      this._stateUIConnector.fireUIEvents();
+      this._stateUIConnector.fireEvents();
     }
   };
 
   private handleVisibilityChange = (): void => {
     this._uiVisible = !document.hidden;
 
-    if (this._uiVisible) {
-      this._stateUIConnector.fireUIEvents();
+    if (!this._uiVisible) {
+      const gameIsRunning = this.appStage === AppStage.fastForward || this.appStage === AppStage.running;
+      const autosaveEnabledOnHide = this._settingsState.autosaveEnabledOnHide;
+
+      if (gameIsRunning && autosaveEnabledOnHide) {
+        this.saveGame();
+      }
+    } else {
+      this._stateUIConnector.fireEvents();
     }
   };
-
-  private setStartingHistoryState(): void {
-    const state: IHistoryState = {
-      selectedMenuItem: undefined,
-      showConfirmationAlert: false,
-      showNotification: false,
-      menuOpened: false,
-      fastForwarding: false,
-    };
-
-    window.history.replaceState(state, '');
-  }
 }

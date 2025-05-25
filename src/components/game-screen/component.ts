@@ -1,20 +1,17 @@
-import { html, css } from 'lit';
+import { html, css, LitElement } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { BaseComponent } from '@shared/base-component';
 import { MiscMenuItem, OverviewMenuItem } from '@shared/types';
 import { SCREEN_WIDTH_POINTS } from '@shared/styles';
-import { IHistoryState } from '@shared/interfaces/history-state';
 import { MenuItemSelectedEvent } from './components/menu-bar/events';
 
 @customElement('ca-game-screen')
-export class GameScreen extends BaseComponent {
+export class GameScreen extends LitElement {
   static styles = css`
     .game-screen {
       width: 100vw;
-      height: 100vh;
-      max-height: 100vh;
+      height: 100dvh;
       display: flex;
       flex-direction: column;
       align-items: stretch;
@@ -35,13 +32,12 @@ export class GameScreen extends BaseComponent {
     .top-bar-inner-container {
       width: 100vw;
       max-width: var(--ca-width-screen);
-      display: flex;
       padding: var(--sl-spacing-2x-small);
     }
 
     .content-outer-container {
       box-sizing: border-box;
-      height: calc(100vh - var(--ca-top-bar-height));
+      height: calc(100dvh - var(--ca-top-bar-height));
       box-shadow: var(--sl-shadow-small);
       display: flex;
       justify-content: center;
@@ -50,20 +46,19 @@ export class GameScreen extends BaseComponent {
     }
 
     .content-inner-container {
+      position: relative;
       width: 100vw;
       max-width: var(--ca-width-screen);
-      display: flex;
-      align-items: stretch;
+      height: 100%;
     }
 
     .menu-bar-container {
-      flex: 0 0 auto;
       box-sizing: border-box;
       background-color: var(--sl-panel-background-color);
-      height: calc(100vh - var(--ca-top-bar-height));
+      height: 100%;
       width: 0;
       position: absolute;
-      top: var(--ca-top-bar-height);
+      top: 0;
       left: 0;
       transition: width var(--sl-transition-x-fast) ease;
     }
@@ -75,9 +70,13 @@ export class GameScreen extends BaseComponent {
     }
 
     .viewport-container {
-      position: relative;
-      flex: 1 1 auto;
-      height: calc(100vh - var(--ca-top-bar-height));
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      scrollbar-width: thin;
+      overflow: auto;
     }
 
     .viewport-overlay {
@@ -103,7 +102,6 @@ export class GameScreen extends BaseComponent {
 
     @media (min-width: ${SCREEN_WIDTH_POINTS.WIDE_SCREEN}) {
       .menu-bar-container {
-        position: static;
         width: var(--ca-menu-bar-max-width);
         background-color: var(--sl-color-neutral-0);
         border-right: var(--ca-border);
@@ -112,6 +110,11 @@ export class GameScreen extends BaseComponent {
       .menu-bar-container.menu-opened {
         width: var(--ca-menu-bar-max-width);
         z-index: 0;
+      }
+
+      .viewport-container {
+        left: var(--ca-menu-bar-max-width);
+        width: calc(100% - var(--ca-menu-bar-max-width));
       }
 
       .viewport-overlay.menu-opened {
@@ -125,32 +128,28 @@ export class GameScreen extends BaseComponent {
   private _menuOpened;
 
   @state()
-  private _selectedMenuItem?: OverviewMenuItem | MiscMenuItem;
+  private _selectedMenuItem?: OverviewMenuItem | MiscMenuItem = OverviewMenuItem.overview;
 
   constructor() {
     super();
 
-    const historyState = history.state as IHistoryState;
-
-    this._menuOpened = historyState.menuOpened;
-    this._selectedMenuItem = historyState.selectedMenuItem ?? undefined;
+    this._menuOpened = false;
+    this._selectedMenuItem = OverviewMenuItem.overview;
   }
 
   connectedCallback() {
     super.connectedCallback();
 
     this.addEventListener(MenuItemSelectedEvent.type, this.handleMenuItemSelect);
-    window.addEventListener('popstate', this.handlePopState);
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
 
     this.removeEventListener(MenuItemSelectedEvent.type, this.handleMenuItemSelect);
-    window.removeEventListener('popstate', this.handlePopState);
   }
 
-  renderContent() {
+  render() {
     const menuClasses = classMap({
       'menu-bar-container': true,
       'menu-opened': this._menuOpened,
@@ -191,47 +190,16 @@ export class GameScreen extends BaseComponent {
   }
 
   private handleMenuToggle = () => {
-    const newMenuOpened = !this._menuOpened;
-
-    const state: IHistoryState = {
-      ...(window.history.state as IHistoryState),
-      menuOpened: newMenuOpened,
-    };
-
-    if (newMenuOpened) {
-      window.history.pushState(state, '');
-      this._menuOpened = newMenuOpened;
-    } else {
-      window.history.back();
-    }
+    this._menuOpened = !this._menuOpened;
   };
 
   private handleMenuItemSelect = (event: Event) => {
-    event.stopPropagation();
-
     const menuItemSelectedEvent = event as MenuItemSelectedEvent;
 
     this._selectedMenuItem = menuItemSelectedEvent.menuItem as OverviewMenuItem;
 
-    const state: IHistoryState = {
-      ...(window.history.state as IHistoryState),
-      selectedMenuItem: this._selectedMenuItem,
-    };
-
     if (this._menuOpened) {
       this._menuOpened = false;
-      state.menuOpened = false;
-
-      window.history.replaceState(state, '');
-    } else {
-      window.history.pushState(state, '');
     }
-  };
-
-  private handlePopState = (event: PopStateEvent) => {
-    const state = event.state as IHistoryState;
-
-    this._selectedMenuItem = state.selectedMenuItem;
-    this._menuOpened = state.menuOpened;
   };
 }

@@ -1,0 +1,23 @@
+{
+  "neutral": {
+    "programs": [
+      "shareServer",
+      "predictiveComputator",
+      "codeGenerator",
+      "circuitDesigner",
+      "informationCollector",
+      "dealMaker",
+      "mainframeHardwareAutobuyer",
+      "mainframeProgramsAutobuyer",
+      "cloneLevelAutoupgrader",
+      "peerReviewer"
+    ],
+    "cloneTemplates": ["anthrodrone"],
+    "sidejobs": ["oddjob", "infoBroker", "freelanceProgrammer", "computerRepairer", "mediator"]
+  },
+  "wsa": {
+    "programs": [],
+    "cloneTemplates": [],
+    "sidejobs": []
+  }
+}

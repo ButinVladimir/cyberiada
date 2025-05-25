@@ -1,8 +1,11 @@
 import { ISerializeable } from '@shared/interfaces/serializable';
-import { ICitySerializedState } from './city-serialized-state';
-import { IDistrictInfo } from './district-info';
+import { ICitySerializedState } from './serialized-states/city-serialized-state';
+import { IDistrictState } from './district-state';
 
 export interface ICityState extends ISerializeable<ICitySerializedState> {
-  getMap(): number[][];
-  getDistrictInfo(num: number): IDistrictInfo;
+  districtsCount: number;
+  getLayout(): number[][];
+  getDistrictState(districtIndex: number): IDistrictState;
+  listAvailableDistricts(): IDistrictState[];
+  recalculate(): void;
 }

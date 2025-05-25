@@ -1,5 +1,5 @@
-import { t } from 'i18next';
 import { html, css, TemplateResult } from 'lit';
+import { localized, msg } from '@lit/localize';
 import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { GameSpeed } from '@state/global-state/types';
@@ -10,9 +10,11 @@ import {
 import { GameStateAlert } from '@shared/types';
 import { GameSpeedButtonsController } from './controller';
 import { GameSpeedButtonProps } from './interfaces';
+import { GAME_SPEED_TEXTS } from './constants';
 
+@localized()
 @customElement('ca-game-speed-buttons')
-export class GameSpeedButtons extends BaseComponent<GameSpeedButtonsController> {
+export class GameSpeedButtons extends BaseComponent {
   static styles = css`
     :host {
       height: 100%;
@@ -26,12 +28,12 @@ export class GameSpeedButtons extends BaseComponent<GameSpeedButtonsController> 
     }
   `;
 
-  protected controller: GameSpeedButtonsController;
+  private _controller: GameSpeedButtonsController;
 
   constructor() {
     super();
 
-    this.controller = new GameSpeedButtonsController(this);
+    this._controller = new GameSpeedButtonsController(this);
   }
 
   connectedCallback() {
@@ -46,31 +48,28 @@ export class GameSpeedButtons extends BaseComponent<GameSpeedButtonsController> 
     document.removeEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmFastForwardDialog);
   }
 
-  renderContent() {
-    const gameSpeed = this.controller.gameSpeed;
+  render() {
+    const gameSpeed = this._controller.gameSpeed;
 
     return html`
       ${this.renderButton({
         gameSpeed: GameSpeed.paused,
-        label: 'pause',
         icon: gameSpeed === GameSpeed.paused ? 'pause-fill' : 'pause',
       })}
       ${this.renderButton({
         gameSpeed: GameSpeed.normal,
-        label: 'playNormal',
         icon: gameSpeed === GameSpeed.normal ? 'play-fill' : 'play',
       })}
       ${this.renderButton({
         gameSpeed: GameSpeed.fast,
-        label: 'playFast',
         icon: gameSpeed === GameSpeed.fast ? 'fast-forward-fill' : 'fast-forward',
       })}
       <sl-tooltip>
-        <span slot="content"> ${t('topBar.gameSpeedButtons.fastForward', { ns: 'ui' })} </span>
+        <span slot="content"> ${msg('Spend all accumulated time')} </span>
 
         <sl-icon-button
           name="skip-end"
-          label=${t(`topBar.gameSpeedButtons.fastForward`, { ns: 'ui' })}
+          label=${msg('Spend all accumulated time')}
           @click=${this.handleOpenFastForwardDialog}
         >
         </sl-icon-button>
@@ -79,15 +78,15 @@ export class GameSpeedButtons extends BaseComponent<GameSpeedButtonsController> 
   }
 
   renderButton = (props: GameSpeedButtonProps): TemplateResult => {
-    const { label, gameSpeed, icon } = props;
+    const { gameSpeed, icon } = props;
 
     return html`
       <sl-tooltip>
-        <span slot="content"> ${t(`topBar.gameSpeedButtons.${label}`, { ns: 'ui' })} </span>
+        <span slot="content"> ${GAME_SPEED_TEXTS[gameSpeed]()} </span>
 
         <sl-icon-button
           name=${icon}
-          label=${t(`topBar.gameSpeedButtons.${label}`, { ns: 'ui' })}
+          label=${GAME_SPEED_TEXTS[gameSpeed]()}
           @click=${this.handleChangeGameSpeed(gameSpeed)}
         >
         </sl-icon-button>
@@ -95,17 +94,14 @@ export class GameSpeedButtons extends BaseComponent<GameSpeedButtonsController> 
     `;
   };
 
-  private handleChangeGameSpeed = (gameSpeed: GameSpeed) => (event: Event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
-    this.controller.changeGameSpeed(gameSpeed);
+  private handleChangeGameSpeed = (gameSpeed: GameSpeed) => () => {
+    this._controller.changeGameSpeed(gameSpeed);
   };
 
-  private handleOpenFastForwardDialog = (event: Event) => {
-    event.stopPropagation();
-
-    this.dispatchEvent(new ConfirmationAlertOpenEvent(GameStateAlert.fastForward, {}));
+  private handleOpenFastForwardDialog = () => {
+    this.dispatchEvent(
+      new ConfirmationAlertOpenEvent(GameStateAlert.fastForward, msg('Are you sure want to spend accumulated time?')),
+    );
   };
 
   private handleConfirmFastForwardDialog = (event: Event) => {
@@ -115,6 +111,6 @@ export class GameSpeedButtons extends BaseComponent<GameSpeedButtonsController> 
       return;
     }
 
-    this.controller.fastForward();
+    this._controller.fastForward();
   };
 }

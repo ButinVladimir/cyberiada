@@ -1,0 +1,3 @@
+export const PROGRAMS_UI_EVENTS = {
+  PROGRAM_UPGRADED: Symbol('PROGRAM_UPGRADED'),
+};

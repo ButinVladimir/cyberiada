@@ -2,11 +2,11 @@ import { css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { BaseComponent } from '@shared/base-component';
-import { EMPTY_IMAGE } from '@shared/constants';
+import { EMPTY_IMAGE } from './constants';
 import { SortableElementMovedEvent } from './events';
 
 @customElement('ca-sortable-list')
-export class MainframeHardwarePanel extends BaseComponent {
+export class SortableList extends BaseComponent {
   static styles = css`
     div.list {
       width: 100%;
@@ -44,7 +44,7 @@ export class MainframeHardwarePanel extends BaseComponent {
     this.removeEventListener('dragend', this.handleDragEnd);
   }
 
-  renderContent() {
+  render() {
     return html`
       <div ${ref(this._listRef)} part="list" class="list" @dragover=${this.handleDragOver}>
         <slot @slotchange=${this.handleChildrenUpdate}></slot>
@@ -58,8 +58,6 @@ export class MainframeHardwarePanel extends BaseComponent {
   };
 
   private handleDragStart = (event: DragEvent) => {
-    event.stopPropagation();
-
     if (event.dataTransfer) {
       event.dataTransfer.effectAllowed = 'move';
       event.dataTransfer.dropEffect = 'move';
@@ -71,9 +69,6 @@ export class MainframeHardwarePanel extends BaseComponent {
   };
 
   private handleDragOver = (event: DragEvent) => {
-    event.stopPropagation();
-    event.preventDefault();
-
     if (!this._listBoundingRect && this._listRef.value) {
       this._listBoundingRect = this._listRef.value.getBoundingClientRect();
     }
@@ -184,9 +179,7 @@ export class MainframeHardwarePanel extends BaseComponent {
     return position;
   }
 
-  private handleDragEnd = (event: DragEvent) => {
-    event.stopPropagation();
-
+  private handleDragEnd = () => {
     if (this._draggedElement) {
       this._draggedElement.classList.remove('dragged');
     }

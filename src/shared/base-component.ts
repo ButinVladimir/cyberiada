@@ -1,20 +1,45 @@
-import { LitElement } from 'lit';
-import { IUIEventListener } from './interfaces';
+import { LitElement, PropertyValues } from 'lit';
+import { IStateUIConnector } from '@state/state-ui-connector';
+import { container } from '@state/container';
+import { TYPES } from '@state/types';
 
-export abstract class BaseComponent<C extends IUIEventListener | undefined = undefined> extends LitElement {
-  protected controller?: C;
+export abstract class BaseComponent extends LitElement {
+  public readonly hasPartialUpdate: boolean = false;
 
-  render() {
-    this.controller?.startRendering();
+  private _stateUIConnector: IStateUIConnector = container.get<IStateUIConnector>(TYPES.StateUIConnector);
 
-    return this.renderContent();
-  }
-
-  updated(_changedProperties: Map<string, any>) {
+  updated(_changedProperties: PropertyValues) {
     super.updated(_changedProperties);
 
-    this.controller?.stopRendering();
+    if (this.hasPartialUpdate && this.isConnected) {
+      this.handlePartialUpdate();
+    }
   }
 
-  abstract renderContent(): unknown;
+  connectedCallback() {
+    super.connectedCallback();
+
+    this._stateUIConnector.connectComponent(this);
+    this.requestUpdate();
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+
+    this._stateUIConnector.disconnectComponent(this);
+  }
+
+  performUpdate() {
+    if (this.isConnected) {
+      this._stateUIConnector.startRendering(this);
+    }
+
+    super.performUpdate();
+
+    if (this.isConnected) {
+      this._stateUIConnector.stopRendering();
+    }
+  }
+
+  handlePartialUpdate = () => {};
 }

@@ -3,55 +3,82 @@
   "defaultSettings": {
     "messageLogSize": 30,
     "toastDuration": 5000,
-    "updateInterval": 50,
-    "autosaveEnabled": true,
+    "updateInterval": 100,
+    "autosaveEnabledOnHide": true,
     "autosaveInterval": 60000,
     "fastSpeedMultiplier": 5,
-    "maxUpdatesPerTick": 10000,
+    "maxUpdatesPerTick": 1000,
     "longNumberFormat": "short",
     "mapSize": 3
   },
   "defaultScenarioSettings": {
-    "mapWidth": 100,
-    "mapHeight": 100,
-    "districtsNum": 1,
-    "money": 0,
-    "developmentLevel": 1,
-    "accumulatedTime": 0,
+    "map": {
+      "width": 100,
+      "height": 100,
+      "districts": []
+    },
+    "startingMoney": 0,
+    "startingDevelopmentLevel": 0,
+    "startingAccumulatedTime": 0,
+    "startingSynchronization": 0,
+    "baseSharedExperienceMultiplier": 1,
     "mainframeHardware": {
-      "performanceLevel": 1,
-      "coresLevel": 1,
-      "ramLevel": 1,
-      "performancePrice": { "baseMultiplier": 30000, "base": 1.3 },
-      "coresPrice": { "baseMultiplier": 300000, "base": 1.3 },
-      "ramPrice": { "baseMultiplier": 600000, "base": 1.3 }
+      "basePerformanceLevel": 0,
+      "baseCoresLevel": 1,
+      "baseRamLevel": 1,
+      "performancePrice": { "multiplier": 50, "base": 1.3 },
+      "ramPrice": { "multiplier": 500, "base": 1.3 },
+      "coresPrice": { "multiplier": 10000, "base": 5 }
     },
     "mainframeSoftware": {
-      "performanceBoost": 0.05,
-      "programs": ["shareServer"],
-      "minCompletionTime": 1000
+      "performanceBoost": 1.01,
+      "startingPrograms": ["shareServer"],
+      "minProcessCompletionTime": 1000
     },
-    "developmentLevelRequirements": { "baseMultiplier": 60000, "base": 1.5 },
-    "pointsByProgramMultipliers": {
-      "program": 1
-    },
-    "discounts": {
-      "program": 2e13
+    "developmentLevelRequirements": { "multiplier": 30, "base": 1.5 },
+    "programMultipliers": {
+      "money": {
+        "pointsMultiplier": 1
+      },
+      "developmentPoints": {
+        "pointsMultiplier": 1
+      },
+      "codeBase": {
+        "pointsMultiplier": 1,
+        "pointsToSoftCap": 288,
+        "logBase": 2
+      },
+      "computationalBase": {
+        "pointsMultiplier": 1,
+        "pointsToSoftCap": 288,
+        "logBase": 2
+      },
+      "connectivity": {
+        "pointsMultiplier": 1
+      },
+      "rewards": {
+        "pointsMultiplier": 1,
+        "pointsToSoftCap": 288,
+        "logBase": 2
+      }
     },
     "storyEvents": []
   },
   "defaultAutomationSettings": {
     "mainframeHardwareAutobuyer": {
       "moneyShare": 10,
-      "priority": ["ram", "cores", "performance"]
+      "priority": ["performance", "ram", "cores"]
     },
     "mainframeProgramsAutobuyer": {
+      "moneyShare": 10
+    },
+    "cloneLevelAutoupgrader": {
       "moneyShare": 10
     }
   },
   "menuUnlockRequirements": {
-    "cityOverview": "cityOverview",
-    "companyManagement": "companyManagement",
+    "city": "companyManagement",
+    "company": "companyManagement",
     "automation": "automation"
   }
 }

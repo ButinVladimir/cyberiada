@@ -1,33 +1,21 @@
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { AppStage } from '@state/app/types';
 import { BaseComponent } from '@shared/base-component';
 import { AppRootController } from './controller';
 
 @customElement('ca-app-root')
-export class AppRoot extends BaseComponent<AppRootController> {
-  protected controller: AppRootController;
+export class AppRoot extends BaseComponent {
+  private _controller: AppRootController;
 
   constructor() {
     super();
 
-    this.controller = new AppRootController(this);
+    this._controller = new AppRootController(this);
   }
 
-  connectedCallback() {
-    super.connectedCallback();
-
-    window.addEventListener('beforeunload', this.handleUnload);
-  }
-
-  disconnectedCallback() {
-    super.disconnectedCallback();
-
-    window.removeEventListener('beforeunload', this.handleUnload);
-  }
-
-  renderContent() {
-    switch (this.controller.appStage) {
+  render() {
+    switch (this._controller.appStage) {
       case AppStage.loading:
         return html`<ca-loading-screen></ca-loading-screen>`;
 
@@ -38,17 +26,7 @@ export class AppRoot extends BaseComponent<AppRootController> {
         return html`<ca-fast-forwarding-screen></ca-fast-forwarding-screen>`;
 
       default:
-        return null;
+        return nothing;
     }
   }
-
-  private handleUnload = () => {
-    const gameIsRunning =
-      this.controller.appStage === AppStage.fastForward || this.controller.appStage === AppStage.running;
-    const autosaveEnabled = this.controller.autosaveEnabled;
-
-    if (gameIsRunning && autosaveEnabled) {
-      this.controller.saveGame();
-    }
-  };
 }

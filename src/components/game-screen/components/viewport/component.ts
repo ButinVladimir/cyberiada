@@ -5,23 +5,15 @@ import { OverviewMenuItem, MiscMenuItem } from '@shared/types';
 import constants from '@configs/constants.json';
 import { Feature } from '@shared/types';
 import { ViewportController } from './controller';
+import { cache } from 'lit/directives/cache.js';
 
 @customElement('ca-viewport')
-export class Viewport extends BaseComponent<ViewportController> {
+export class Viewport extends BaseComponent {
   static styles = css`
-    :host {
-      display: block;
-      width: 100%;
-      height: 100%;
-      scrollbar-gutter: stable;
-      scrollbar-width: thin;
-      overflow: auto;
-    }
-
     div.content-wrapper {
       width: 100%;
       max-width: var(--ca-width-widescreen-content);
-      padding: var(--sl-spacing-medium);
+      padding: var(--sl-spacing-2x-large);
       box-sizing: border-box;
     }
   `;
@@ -32,29 +24,35 @@ export class Viewport extends BaseComponent<ViewportController> {
   })
   selectedMenuItem = '';
 
-  protected controller: ViewportController;
+  private _controller: ViewportController;
 
   constructor() {
     super();
 
-    this.controller = new ViewportController(this);
+    this._controller = new ViewportController(this);
   }
 
-  renderContent() {
-    return html` <div class="content-wrapper">${this.renderPage()}</div> `;
+  render() {
+    return html` <div class="content-wrapper">${cache(this.renderPage())}</div> `;
   }
 
   private renderPage = () => {
     const requirements = constants.menuUnlockRequirements as Record<string, Feature>;
     const feature = requirements[this.selectedMenuItem] as Feature | undefined;
 
-    if (feature && !this.controller.isFeatureUnlocked(feature)) {
+    if (feature && !this._controller.isFeatureUnlocked(feature)) {
       return nothing;
     }
 
     switch (this.selectedMenuItem) {
-      case OverviewMenuItem.cityOverview:
+      case OverviewMenuItem.overview:
+        return html`<ca-overview-page></ca-overview-page>`;
+
+      case OverviewMenuItem.city:
         return html`<ca-city-page></ca-city-page>`;
+
+      case OverviewMenuItem.company:
+        return html`<ca-company-page></ca-company-page>`;
 
       case OverviewMenuItem.mainframe:
         return html`<ca-mainframe-page></ca-mainframe-page>`;

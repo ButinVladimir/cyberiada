@@ -1,0 +1,28 @@
+import { BaseController } from '@shared/index';
+import { CloneTemplateName } from '@state/company-state';
+
+export class PurchaseCloneDialogButtonsController extends BaseController {
+  get money(): number {
+    return this.globalState.money.money;
+  }
+
+  get moneyGrowth(): number {
+    return this.growthState.money.totalGrowth;
+  }
+
+  get availableSynchronization(): number {
+    return this.companyState.clones.availableSynchronization;
+  }
+
+  getCloneCost(cloneTemplateName: CloneTemplateName, tier: number, level: number): number {
+    return this.companyState.clones.getCloneCost(cloneTemplateName, tier, level);
+  }
+
+  getCloneSynchronization(cloneTemplateName: CloneTemplateName, tier: number): number {
+    return this.companyState.clones.getCloneSynchronization(cloneTemplateName, tier);
+  }
+
+  isCloneAvailable(cloneTemplate: CloneTemplateName, tier: number, level: number): boolean {
+    return this.globalState.availableItems.cloneTemplates.isItemAvailable(cloneTemplate, tier, level);
+  }
+}

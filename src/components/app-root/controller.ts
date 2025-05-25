@@ -1,5 +1,5 @@
-import { AppStage } from '@state/app';
 import { BaseController } from '@shared/base-controller';
+import { AppStage } from '@state/app/types';
 
 export class AppRootController extends BaseController {
   hostConnected() {
@@ -12,13 +12,5 @@ export class AppRootController extends BaseController {
 
   get appStage(): AppStage {
     return this.app.appStage;
-  }
-
-  get autosaveEnabled(): boolean {
-    return this.settingsState.autosaveEnabled;
-  }
-
-  saveGame() {
-    this.app.saveGame();
   }
 }
