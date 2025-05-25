@@ -37,7 +37,9 @@ export interface IScenarioValues {
     };
     codeBase: IMultiplierScenarioParameters;
     computationalBase: IMultiplierScenarioParameters;
-    connectivity: IMultiplierScenarioParameters;
+    connectivity: {
+      pointsMultiplier: number;
+    };
     rewards: IMultiplierScenarioParameters;
   };
   storyEvents: IStoryEvent[];
