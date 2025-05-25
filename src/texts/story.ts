@@ -1,6 +1,6 @@
 import { msg } from '@lit/localize';
 
-export const STORY_MESSAGES = {
+export const STORY_MESSAGES: Record<string, () => string> = {
   disclaimer: () =>
     msg(`Game is currently under development. Some parts of it can change and progress between versions may be lost.`),
   tutorial_1_1: () =>
