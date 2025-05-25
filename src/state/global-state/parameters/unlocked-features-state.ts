@@ -11,10 +11,6 @@ const { lazyInject } = decorators;
 
 @injectable()
 export class UnlockedFeaturesState implements IUnlockedFeaturesState {
-  private UI_EVENTS = {
-    FEATURE_UNLOCKED: Symbol('FEATURE_UNLOCKED'),
-  };
-
   @lazyInject(TYPES.GlobalState)
   private _globalState!: IGlobalState;
 
@@ -29,12 +25,10 @@ export class UnlockedFeaturesState implements IUnlockedFeaturesState {
   constructor() {
     this._unlockedFeatures = new Set<Feature>();
 
-    this._stateUiConnector.registerEvents(this.UI_EVENTS);
+    this._stateUiConnector.registerEventEmitter(this, ['_unlockedFeatures']);
   }
 
   isFeatureUnlocked(feature: Feature): boolean {
-    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.FEATURE_UNLOCKED);
-
     return this._unlockedFeatures.has(feature);
   }
 
@@ -49,29 +43,21 @@ export class UnlockedFeaturesState implements IUnlockedFeaturesState {
         NotificationType.featureUnlocked,
         UNLOCKED_FEATURE_TEXTS[feature].message(),
       );
-
-      this._stateUiConnector.enqueueEvent(this.UI_EVENTS.FEATURE_UNLOCKED);
     }
   }
 
   listUnlockedFeatures(): Feature[] {
-    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.FEATURE_UNLOCKED);
-
     return Array.from(this._unlockedFeatures.values());
   }
 
   async startNewState(): Promise<void> {
     this._unlockedFeatures.clear();
-
-    this._stateUiConnector.enqueueEvent(this.UI_EVENTS.FEATURE_UNLOCKED);
   }
 
   async deserialize(serializedState: IUnlockedFeaturesSerializedState): Promise<void> {
     this._unlockedFeatures.clear();
 
     serializedState.unlockedFeatures.forEach((feature: Feature) => this._unlockedFeatures.add(feature));
-
-    this._stateUiConnector.enqueueEvent(this.UI_EVENTS.FEATURE_UNLOCKED);
   }
 
   serialize(): IUnlockedFeaturesSerializedState {

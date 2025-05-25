@@ -24,6 +24,9 @@ export class StatisticsIncomePanel extends BaseComponent {
       <ca-statistics-development-income></ca-statistics-development-income>
 
       ${this._controller.isFeatureUnlocked(Feature.companyManagement)
+        ? html`<ca-statistics-experience-income></ca-statistics-experience-income>`
+        : nothing}
+      ${this._controller.isFeatureUnlocked(Feature.districtTiers)
         ? html`<ca-statistics-district-tier-points-income></ca-statistics-district-tier-points-income>`
         : nothing}
       ${this._controller.isFeatureUnlocked(Feature.connectivity)

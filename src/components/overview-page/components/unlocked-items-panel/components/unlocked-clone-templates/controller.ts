@@ -6,7 +6,7 @@ export class OverviewUnlockedCloneTemplatesController extends BaseController {
     return this.globalState.availableItems.cloneTemplates.listAvailableItems();
   }
 
-  getItemHighestAvailableQuality(itemName: CloneTemplateName) {
-    return this.globalState.availableItems.cloneTemplates.getItemHighestAvailableQuality(itemName);
+  getItemHighestAvailableTier(itemName: CloneTemplateName) {
+    return this.globalState.availableItems.cloneTemplates.getItemHighestAvailableTier(itemName);
   }
 }

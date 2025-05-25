@@ -2,11 +2,9 @@ import { css, html } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { msg, localized } from '@lit/localize';
-import { BaseComponent } from '@shared/base-component';
-import { IMainframeHardwareParameter } from '@state/mainframe-state/states/mainframe-hardware-state/interfaces/mainframe-hardware-parameter';
-import type { MainframeHardwareParameterType } from '@state/mainframe-state/states/mainframe-hardware-state/types';
+import { IMainframeHardwareParameter, type MainframeHardwareParameterType } from '@state/mainframe-state';
 import { SortableElementMovedEvent } from '@components/shared/sortable-list/events/sortable-element-moved';
-import { hintStyle } from '@shared/styles';
+import { BaseComponent, hintStyle } from '@shared/index';
 import { MainframeHardwarePanelController } from './controller';
 import { GAP } from './constants';
 

@@ -3,7 +3,7 @@ import { Feature } from '@shared/types';
 
 export class OverviewUnlockedItemsPanelController extends BaseController {
   areProgramsUnlocked() {
-    return this.globalState.unlockedFeatures.isFeatureUnlocked(Feature.mainframeUpgrades);
+    return this.globalState.unlockedFeatures.isFeatureUnlocked(Feature.mainframePrograms);
   }
 
   areCloneTemplatesUnlocked() {

@@ -1,20 +1,10 @@
-import { injectable, inject } from 'inversify';
+import { injectable } from 'inversify';
 import constants from '@configs/constants.json';
 import { decorators } from '@state/container';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
-import type { IGlobalState } from '@state/global-state/interfaces/global-state';
-import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
-import type { IMainframeState } from '../../interfaces/mainframe-state';
-import type { IGrowthState } from '@state/growth-state/interfaces/growth-state';
-import type { IFormatter } from '@shared/interfaces/formatter';
 import { TYPES } from '@state/types';
 import { moveElementInArray } from '@shared/helpers';
-import {
-  IMainframeHardwareState,
-  IMainframeHardwareSerializedState,
-  IMainframeHardwareParameterArguments,
-  IMainframeHardwareParameter,
-} from './interfaces';
+import { IMainframeHardwareState, IMainframeHardwareSerializedState, IMainframeHardwareParameter } from './interfaces';
 import { MainframeHardwarePerformance } from './mainframe-hardware-performance';
 import { MainframeHardwareCores } from './mainframe-hardware-cores';
 import { MainframeHardwareRam } from './mainframe-hardware-ram';
@@ -24,54 +14,25 @@ const { lazyInject } = decorators;
 
 @injectable()
 export class MainframeHardwareState implements IMainframeHardwareState {
-  private UI_EVENTS = {
-    HARDWARE_LIST_CHANGED: Symbol('HARDWARE_LIST_CHANGED'),
-  };
-
-  @lazyInject(TYPES.MainframeState)
-  private _mainframeState!: IMainframeState;
-
-  @lazyInject(TYPES.GrowthState)
-  private _growthState!: IGrowthState;
-
-  private _stateUiConnector: IStateUIConnector;
-  private _globalState: IGlobalState;
-  private _messageLogState: IMessageLogState;
-  private _formatter: IFormatter;
+  @lazyInject(TYPES.StateUIConnector)
+  private _stateUiConnector!: IStateUIConnector;
 
   private _parametersList!: IMainframeHardwareParameter[];
   private _performance: MainframeHardwarePerformance;
   private _cores: MainframeHardwareCores;
   private _ram: MainframeHardwareRam;
 
-  constructor(
-    @inject(TYPES.StateUIConnector) _stateUiConnector: IStateUIConnector,
-    @inject(TYPES.GlobalState) _globalState: IGlobalState,
-    @inject(TYPES.MessageLogState) _messageLogState: IMessageLogState,
-    @inject(TYPES.Formatter) _formatter: IFormatter,
-  ) {
-    this._stateUiConnector = _stateUiConnector;
-    this._globalState = _globalState;
-    this._messageLogState = _messageLogState;
-    this._formatter = _formatter;
-
-    const parameterArguments: IMainframeHardwareParameterArguments = {
-      stateUiConnector: this._stateUiConnector,
-      mainframeHardwareState: this,
-      globalState: this._globalState,
-      messageLogState: this._messageLogState,
-      formatter: this._formatter,
-    };
-
-    this._performance = new MainframeHardwarePerformance(parameterArguments);
-    this._cores = new MainframeHardwareCores(parameterArguments);
-    this._ram = new MainframeHardwareRam(parameterArguments);
+  constructor() {
+    this._performance = new MainframeHardwarePerformance();
+    this._cores = new MainframeHardwareCores();
+    this._ram = new MainframeHardwareRam();
+    this._parametersList = [];
 
     this.buildParametersList(
       constants.defaultAutomationSettings.mainframeHardwareAutobuyer.priority as MainframeHardwareParameterType[],
     );
 
-    this._stateUiConnector.registerEvents(this.UI_EVENTS);
+    this._stateUiConnector.registerEventEmitter(this, ['_parametersList']);
   }
 
   get performance() {
@@ -87,8 +48,6 @@ export class MainframeHardwareState implements IMainframeHardwareState {
   }
 
   listParameters(): IMainframeHardwareParameter[] {
-    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.HARDWARE_LIST_CHANGED);
-
     return this._parametersList;
   }
 
@@ -100,8 +59,6 @@ export class MainframeHardwareState implements IMainframeHardwareState {
     }
 
     moveElementInArray(this._parametersList, oldPosition, newPosition);
-
-    this._stateUiConnector.enqueueEvent(this.UI_EVENTS.HARDWARE_LIST_CHANGED);
   }
 
   purchaseMax() {
@@ -110,12 +67,6 @@ export class MainframeHardwareState implements IMainframeHardwareState {
         parameter.purchaseMax();
       }
     }
-  }
-
-  emitUpgradedEvent() {
-    this._mainframeState.processes.requestUpdateProcesses();
-    this._mainframeState.processes.requestUpdatePerformance();
-    this._growthState.programCompletionSpeed.requestMultipliersRecalculation();
   }
 
   async startNewState(): Promise<void> {
@@ -146,7 +97,8 @@ export class MainframeHardwareState implements IMainframeHardwareState {
   }
 
   private buildParametersList(parameterTypes: MainframeHardwareParameterType[]) {
-    this._parametersList = parameterTypes.map(this.getParameterByType);
+    this._parametersList.length = 0;
+    this._parametersList.push(...parameterTypes.map(this.getParameterByType));
   }
 
   private serializeParameterType = (parameter: IMainframeHardwareParameter): MainframeHardwareParameterType => {

@@ -3,9 +3,9 @@ import { IAvailableCategoryItemsSerializedState } from '../serialized-states/ava
 
 export interface IAvailableCategoryItemsState<Key = string>
   extends ISerializeable<IAvailableCategoryItemsSerializedState<Key>> {
-  loanedQuality: number;
+  loanedTier: number;
   listAvailableItems(): Key[];
-  isItemAvailable(itemName: Key, quality: number, level: number): boolean;
-  getItemHighestAvailableQuality(itemName: Key): number;
+  isItemAvailable(itemName: Key, tier: number, level: number): boolean;
+  getItemHighestAvailableTier(itemName: Key): number;
   recalculate(): void;
 }

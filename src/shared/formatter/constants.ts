@@ -30,7 +30,7 @@ export const DEFAULT_NUMBER_DECIMAL_FORMAT_PARAMETERS: IFormatterParameters = {
   prefix: '',
 };
 
-export const DEFAULT_NUMBER_QUALITY_FORMAT_PARAMETERS: IFormatterParameters = {
+export const DEFAULT_NUMBER_TIER_FORMAT_PARAMETERS: IFormatterParameters = {
   alwaysShowSign: false,
   prefix: '',
 };

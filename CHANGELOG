@@ -3,18 +3,24 @@
 ## 0.2 (not released yet)
 
 - Added support for factions
+- City page is updated, now it shows available sidejobs and information about districts
+- Clone page is added, clones can be purchased here and assigned to sidejobs. Sidejobs give constant rewards
 - New parameters:
 - - Code base, improves mainframe programs price multiplier
 - - Connectivity, unlocks better sidejobs and contracts
 - - Rewards, improves rewards
+- - District tier points, improves rewards from district
 - New programs:
 - - Circuit designer, increases computational base points
 - - Information collector, increases connectivity points
 - - Deal maker, increases reward points
+- - Clone level autoupgrader, upgrades clones levels
+- - Peer reviewer, increases clones experience
 - New Overview page to see overall progress
 - - Removed available goals icon from top bar, remade as story tab in overview
 - - Reworked unlocked features, moved unlocked features tab from statistics to overview
-- Fixed mobile UI issues, removed history API integration
+- Removed history API integration
+- Updated UI, performance fixes
 
 ## 0.1.3 (2025-02-22)
 

@@ -1,9 +1,9 @@
-import { css, html } from 'lit';
+import { css, html, nothing } from 'lit';
 import { localized } from '@lit/localize';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { customElement, property } from 'lit/decorators.js';
-import type { MainframeHardwareParameterType } from '@state/mainframe-state/states/mainframe-hardware-state/types';
-import { COMMON_TEXTS } from '@texts/common';
+import { provide } from '@lit/context';
+import { COMMON_TEXTS } from '@texts/index';
 import {
   BaseComponent,
   hintStyle,
@@ -13,9 +13,11 @@ import {
   dragIconStyle,
   highlightedValuesStyle,
   getHighlightValueClass,
-} from '@/shared';
+} from '@shared/index';
+import { type IMainframeHardwareParameter, type MainframeHardwareParameterType } from '@state/mainframe-state';
 import { MainframeHardwarePanelArticleController } from './controller';
 import { MAINFRAME_HARDWARE_TEXTS } from './constants';
+import { mainframeHardwareParameterContext } from './contexts';
 
 @localized()
 @customElement('ca-mainframe-hardware-panel-article')
@@ -111,18 +113,31 @@ export class MainframeHardwarePanelArticle extends BaseComponent {
 
   private _costElRef = createRef<HTMLSpanElement>();
 
+  @provide({ context: mainframeHardwareParameterContext })
+  private _parameter?: IMainframeHardwareParameter;
+
   constructor() {
     super();
 
     this._controller = new MainframeHardwarePanelArticleController(this);
   }
 
+  performUpdate() {
+    this.updateContext();
+
+    super.performUpdate();
+  }
+
   render() {
+    if (!this._parameter) {
+      return nothing;
+    }
+
     const formatter = this._controller.formatter;
 
-    const level = this._controller.getLevel(this.type);
+    const level = this._parameter.level;
 
-    const isAutoupgradeEnabled = this._controller.isAutoUpgradeEnabled(this.type);
+    const isAutoupgradeEnabled = this._parameter.autoUpgradeEnabled;
 
     const autoupgradeIcon = isAutoupgradeEnabled ? AUTOUPGRADE_VALUES.icon.enabled : AUTOUPGRADE_VALUES.icon.disabled;
     const autoupgradeLabel = isAutoupgradeEnabled
@@ -136,7 +151,7 @@ export class MainframeHardwarePanelArticle extends BaseComponent {
         <h4 class="title" draggable="true" @dragstart=${this.handleDragStart}>
           <sl-icon id="drag-icon" name="grip-vertical"> </sl-icon>
 
-          ${MAINFRAME_HARDWARE_TEXTS[this.type].title(formatter.formatLevel(level))}
+          ${COMMON_TEXTS.parameterValue(MAINFRAME_HARDWARE_TEXTS[this.type].title(), formatter.formatLevel(level))}
 
           <sl-tooltip>
             <span slot="content"> ${autoupgradeLabel} </span>
@@ -152,13 +167,14 @@ export class MainframeHardwarePanelArticle extends BaseComponent {
         </h4>
       </div>
 
-      <p class="cost">${COMMON_TEXTS.cost(html`<span ${ref(this._costElRef)}></span>`)}</p>
+      <p class="cost">
+        ${COMMON_TEXTS.parameterValue(COMMON_TEXTS.cost(), html`<span ${ref(this._costElRef)}></span>`)}
+      </p>
 
       <p class="hint">${MAINFRAME_HARDWARE_TEXTS[this.type].hint()}</p>
 
       <div class="button-container">
         <ca-mainframe-hardware-panel-article-buttons
-          type=${this.type}
           increase=${increase}
           @buy-hardware=${this.handleBuy}
           @buy-max-hardware=${this.handleBuyMax}
@@ -168,25 +184,33 @@ export class MainframeHardwarePanelArticle extends BaseComponent {
     `;
   }
 
+  private updateContext() {
+    this._parameter = this._controller.getParameter(this.type);
+  }
+
   private handleBuy = () => {
     const increase = this.calculateIncrease();
-    this._controller.purchase(increase, this.type);
+    this._parameter?.purchase(increase);
   };
 
   private handleBuyMax = () => {
-    this._controller.purchaseMax(this.type);
+    this._parameter?.purchaseMax();
   };
 
   private calculateIncrease(): number {
-    return Math.max(
-      Math.min(this.maxIncrease, this._controller.developmentLevel - this._controller.getLevel(this.type)),
-      1,
-    );
+    if (!this._parameter) {
+      return 1;
+    }
+
+    return Math.max(Math.min(this.maxIncrease, this._controller.developmentLevel - this._parameter.level), 1);
   }
 
   private handleToggleAutoUpgrade = () => {
-    const active = this._controller.isAutoUpgradeEnabled(this.type);
-    this._controller.toggleAutoUpdateEnabled(this.type, !active);
+    if (!this._parameter) {
+      return;
+    }
+
+    this._parameter.autoUpgradeEnabled = !this._parameter.autoUpgradeEnabled;
   };
 
   private handleDragStart = (event: DragEvent) => {
@@ -196,11 +220,11 @@ export class MainframeHardwarePanelArticle extends BaseComponent {
   };
 
   handlePartialUpdate = () => {
-    if (!this._costElRef.value) {
+    if (!this._costElRef.value || !this._parameter) {
       return;
     }
 
-    const cost = this._controller.getPurchaseCost(this.calculateIncrease(), this.type);
+    const cost = this._parameter.getIncreaseCost(this.calculateIncrease());
     const money = this._controller.money;
 
     const formattedCost = this._controller.formatter.formatNumberFloat(cost);

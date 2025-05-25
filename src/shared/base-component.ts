@@ -11,7 +11,7 @@ export abstract class BaseComponent extends LitElement {
   updated(_changedProperties: PropertyValues) {
     super.updated(_changedProperties);
 
-    if (this.hasPartialUpdate) {
+    if (this.hasPartialUpdate && this.isConnected) {
       this.handlePartialUpdate();
     }
   }
@@ -30,9 +30,15 @@ export abstract class BaseComponent extends LitElement {
   }
 
   performUpdate() {
-    this._stateUIConnector.startRendering(this);
+    if (this.isConnected) {
+      this._stateUIConnector.startRendering(this);
+    }
+
     super.performUpdate();
-    this._stateUIConnector.stopRendering();
+
+    if (this.isConnected) {
+      this._stateUIConnector.stopRendering();
+    }
   }
 
   handlePartialUpdate = () => {};

@@ -1,15 +1,20 @@
 export enum MultiplierProgramName {
   codeGenerator = 'codeGenerator',
   circuitDesigner = 'circuitDesigner',
-  informationCollector = 'informationCollector',
   dealMaker = 'dealMaker',
+  informationCollector = 'informationCollector',
+}
+
+export enum AutobuyerProgramName {
+  mainframeHardwareAutobuyer = 'mainframeHardwareAutobuyer',
+  mainframeProgramsAutobuyer = 'mainframeProgramsAutobuyer',
+  cloneLevelAutoupgrader = 'cloneLevelAutoupgrader',
 }
 
 export enum OtherProgramName {
   shareServer = 'shareServer',
   predictiveComputator = 'predictiveComputator',
-  mainframeHardwareAutobuyer = 'mainframeHardwareAutobuyer',
-  mainframeProgramsAutobuyer = 'mainframeProgramsAutobuyer',
+  peerReviewer = 'peerReviewer',
 }
 
-export type ProgramName = MultiplierProgramName | OtherProgramName;
+export type ProgramName = MultiplierProgramName | AutobuyerProgramName | OtherProgramName;

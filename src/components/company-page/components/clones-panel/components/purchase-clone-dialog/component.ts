@@ -5,7 +5,6 @@ import { createRef, ref } from 'lit/directives/ref.js';
 import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.component.js';
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.component.js';
 import clamp from 'lodash/clamp';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import { provide } from '@lit/context';
 import { BaseComponent } from '@shared/base-component';
 import { CloneTemplateName } from '@state/company-state/states/clone-factory/types';
@@ -90,7 +89,7 @@ export class PurchaseCloneDialog extends BaseComponent {
 
   private _cloneTemplateInputRef = createRef<SlSelect>();
 
-  private _qualityInputRef = createRef<SlSelect>();
+  private _tierInputRef = createRef<SlSelect>();
 
   private _levelInputRef = createRef<SlInput>();
 
@@ -107,7 +106,7 @@ export class PurchaseCloneDialog extends BaseComponent {
   private _cloneTemplateName?: CloneTemplateName = undefined;
 
   @state()
-  private _quality = 0;
+  private _tier = 0;
 
   @state()
   private _level = 1;
@@ -123,7 +122,7 @@ export class PurchaseCloneDialog extends BaseComponent {
 
   performUpdate() {
     if (this._cloneTemplateName !== undefined) {
-      this._clone = this._controller.getClone(this._name, this._cloneTemplateName, this._quality, this._level);
+      this._clone = this._controller.getClone(this._name, this._cloneTemplateName, this._tier, this._level);
     } else {
       this._clone = undefined;
     }
@@ -137,7 +136,7 @@ export class PurchaseCloneDialog extends BaseComponent {
     if (_changedProperties.has('isOpen')) {
       this._name = '';
       this._cloneTemplateName = undefined;
-      this._quality = 0;
+      this._tier = 0;
       this._level = this._controller.developmentLevel;
 
       if (this.isOpen) {
@@ -155,9 +154,9 @@ export class PurchaseCloneDialog extends BaseComponent {
 
         <div class="body">
           <p class="hint">
-            ${msg(`Select clone name, template, level and quality to purchase it.
+            ${msg(`Select clone name, template, tier and level to purchase it.
 Level cannot be above current development level.
-Quality is limited depending on gained favors.
+Tier is limited depending on gained favors.
 Synchronization is earned by capturing districts and gaining certain favors.`)}
           </p>
 
@@ -193,15 +192,15 @@ Synchronization is earned by capturing districts and gaining certain favors.`)}
             </sl-select>
 
             <sl-select
-              ${ref(this._qualityInputRef)}
-              name="quality"
-              value=${this._quality}
+              ${ref(this._tierInputRef)}
+              name="tier"
+              value=${this._tier}
               hoist
-              @sl-change=${this.handleQualityChange}
+              @sl-change=${this.handleTierChange}
             >
-              <span class="input-label" slot="label"> ${COMMON_TEXTS.quality()} </span>
+              <span class="input-label" slot="label"> ${COMMON_TEXTS.tier()} </span>
 
-              ${this.renderQualityOptions()}
+              ${this.renderTierOptions()}
             </sl-select>
 
             <sl-input
@@ -224,9 +223,8 @@ Synchronization is earned by capturing districts and gaining certain favors.`)}
 
         <ca-purchase-clone-dialog-buttons
           slot="footer"
-          clone-template-name=${ifDefined(this._cloneTemplateName)}
           level=${this._level}
-          quality=${this._quality}
+          tier=${this._tier}
           name=${this._name}
           @purchase-clone=${this.handlePurchaseClone}
           @cancel=${this.handleClose}
@@ -240,16 +238,16 @@ Synchronization is earned by capturing districts and gaining certain favors.`)}
     return html`<sl-option value=${cloneTemplate}> ${CLONE_TEMPLATE_TEXTS[cloneTemplate].title()} </sl-option>`;
   };
 
-  private renderQualityOptions = () => {
-    const highestAvailableQuality = this._cloneTemplateName
-      ? this._controller.getHighestAvailableQuality(this._cloneTemplateName)
+  private renderTierOptions = () => {
+    const highestAvailableTier = this._cloneTemplateName
+      ? this._controller.getHighestAvailableTier(this._cloneTemplateName)
       : 0;
     const formatter = this._controller.formatter;
 
     const result: unknown[] = [];
 
-    for (let quality = 0; quality <= highestAvailableQuality; quality++) {
-      result.push(html`<sl-option value=${quality}> ${formatter.formatQuality(quality)} </sl-option>`);
+    for (let tier = 0; tier <= highestAvailableTier; tier++) {
+      result.push(html`<sl-option value=${tier}> ${formatter.formatTier(tier)} </sl-option>`);
     }
 
     return result;
@@ -276,13 +274,13 @@ Synchronization is earned by capturing districts and gaining certain favors.`)}
     this._cloneTemplateName = cloneTemplateName;
   };
 
-  private handleQualityChange = () => {
-    if (!this._qualityInputRef.value) {
+  private handleTierChange = () => {
+    if (!this._tierInputRef.value) {
       return;
     }
 
-    const quality = +this._qualityInputRef.value.value;
-    this._quality = quality;
+    const tier = +this._tierInputRef.value.value;
+    this._tier = tier;
   };
 
   private handleLevelChange = () => {
@@ -307,7 +305,7 @@ Synchronization is earned by capturing districts and gaining certain favors.`)}
     const isBought = this._controller.purchaseClone({
       name: this._name,
       templateName: this._cloneTemplateName,
-      quality: this._quality,
+      tier: this._tier,
       level: this._level,
     });
 

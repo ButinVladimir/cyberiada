@@ -6,6 +6,6 @@ export interface IMakeCloneParameters {
   templateName: CloneTemplateName;
   experience: number;
   level: number;
-  quality: number;
+  tier: number;
   autoUpgradeEnabled: boolean;
 }

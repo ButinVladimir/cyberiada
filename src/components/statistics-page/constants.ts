@@ -31,6 +31,6 @@ export const POINT_MULTIPLIER_HINTS = {
 };
 
 export const STATISTIC_HINTS = {
-  connectivity: () => msg('Connectivity affects chances to receive new contracts and sidejobs'),
+  connectivity: () => msg('Connectivity affects chances to receive new contracts and unlocks new sidejobs'),
   synchronization: () => msg('Synchronization affects how many clones can be in company'),
 };

@@ -8,10 +8,12 @@
       "informationCollector",
       "dealMaker",
       "mainframeHardwareAutobuyer",
-      "mainframeProgramsAutobuyer"
+      "mainframeProgramsAutobuyer",
+      "cloneLevelAutoupgrader",
+      "peerReviewer"
     ],
     "cloneTemplates": ["anthrodrone"],
-    "sidejobs": ["oddjob", "infoBroker"]
+    "sidejobs": ["oddjob", "infoBroker", "freelanceProgrammer", "computerRepairer", "mediator"]
   },
   "wsa": {
     "programs": [],

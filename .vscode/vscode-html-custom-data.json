@@ -17,6 +17,11 @@
       "attributes": []
     },
     {
+      "name": "ca-automation-clone-level-autoupgrader",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_moneyShareRef` {`Ref<SlInput>`} - \n\n  * `handleChangeMoneyShare` - \n\n  * `_controller` {`AutomationCloneLevelAutoupgraderController`} - ",
+      "attributes": []
+    },
+    {
       "name": "ca-automation-mainframe-hardware-autobuyer",
       "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_moneyShareRef` {`Ref<SlInput>`} - \n\n  * `handleChangeMoneyShare` - \n\n  * `_controller` {`AutomationMainframeHardwareAutobuyerController`} - ",
       "attributes": []
@@ -38,7 +43,7 @@
     },
     {
       "name": "ca-city-map-background",
-      "description": "Attributes:\n\n  * `size` {`number`} - \n\nProperties:\n\n  * `DX` {`number[]`} - \n\n  * `DY` {`number[]`} - \n\n  * `styles` {`CSSResult`} - \n\n  * `size` {`number`} - \n\n  * `_canvasRef` {`Ref<HTMLCanvasElement>`} - \n\n  * `_offscreenCanvasContext` {`OffscreenCanvasRenderingContext2D | null`} - \n\n  * `_fullWidth` {`number`} - \n\n  * `_fullHeight` {`number`} - \n\n  * `renderCanvas` - \n\n  * `_controller` {`CityMapBackgroundController`} - ",
+      "description": "Attributes:\n\n  * `size` {`number`} - \n\nProperties:\n\n  * `DX` {`number[]`} - \n\n  * `DY` {`number[]`} - \n\n  * `styles` {`CSSResult`} - \n\n  * `size` {`number`} - \n\n  * `_canvasRef` {`Ref<HTMLCanvasElement>`} - \n\n  * `_offscreenCanvasContext` {`OffscreenCanvasRenderingContext2D | null`} - \n\n  * `renderCanvas` - \n\n  * `_controller` {`CityMapBackgroundController`} - ",
       "attributes": [
         {
           "name": "size",
@@ -47,8 +52,24 @@
       ]
     },
     {
-      "name": "ca-city-map-district",
-      "description": "Attributes:\n\n  * `size` {`number`} - \n\n  * `district` {`number`} - \n\nProperties:\n\n  * `DX` {`number[]`} - \n\n  * `DY` {`number[]`} - \n\n  * `styles` {`CSSResult`} - \n\n  * `size` {`number`} - \n\n  * `district` {`number`} - \n\n  * `_canvasRef` {`Ref<HTMLCanvasElement>`} - \n\n  * `_offscreenCanvasContext` {`OffscreenCanvasRenderingContext2D | null`} - \n\n  * `_fullWidth` {`number`} - \n\n  * `_fullHeight` {`number`} - \n\n  * `renderCanvas` - \n\n  * `_controller` {`CityMapDistrictController`} - ",
+      "name": "ca-city-map",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_size` {`number`} - \n\n  * `_selectedDistrictIndex` {`number | undefined`} - \n\n  * `_contentRef` {`Ref<HTMLDivElement>`} - \n\n  * `renderDistrict` - \n\n  * `handleMouseMove` - \n\n  * `handleMouseLeave` - \n\n  * `handleResize` - \n\n  * `handleMapClick` - \n\n  * `_controller` {`CityMapController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-city-map-district-description",
+      "description": "Attributes:\n\n  * `district` {`number | null | undefined`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `district` {`number | null | undefined`} - \n\n  * `_controller` {`CityMapDistrictDescriptionController`} - ",
+      "attributes": [
+        {
+          "name": "district",
+          "description": "`district` {`number | null | undefined`} - \n\nProperty: district",
+          "values": []
+        }
+      ]
+    },
+    {
+      "name": "ca-city-map-highlighted-district",
+      "description": "Attributes:\n\n  * `size` {`number`} - \n\n  * `district` {`number`} - \n\nProperties:\n\n  * `DX` {`number[]`} - \n\n  * `DY` {`number[]`} - \n\n  * `styles` {`CSSResult`} - \n\n  * `size` {`number`} - \n\n  * `district` {`number`} - \n\n  * `_canvasRef` {`Ref<HTMLCanvasElement>`} - \n\n  * `_offscreenCanvasContext` {`OffscreenCanvasRenderingContext2D | null`} - \n\n  * `renderCanvas` - \n\n  * `_controller` {`CityMapHighlightedDistrictController`} - ",
       "attributes": [
         {
           "name": "size",
@@ -61,22 +82,6 @@
       ]
     },
     {
-      "name": "ca-city-map-tooltip-content",
-      "description": "Attributes:\n\n  * `district` {`number | null | undefined`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `district` {`number | null | undefined`} - \n\n  * `_controller` {`CityMapTooltipContentController`} - ",
-      "attributes": [
-        {
-          "name": "district",
-          "description": "`district` {`number | null | undefined`} - \n\nProperty: district",
-          "values": []
-        }
-      ]
-    },
-    {
-      "name": "ca-city-map",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_size` {`number`} - \n\n  * `_selectedDistrictIndex` {`number | undefined`} - \n\n  * `_contentRef` {`Ref<HTMLDivElement>`} - \n\n  * `_popupRef` {`Ref<SlPopup>`} - \n\n  * `_positionX` {`number`} - \n\n  * `_positionY` {`number`} - \n\n  * `renderDistrict` - \n\n  * `handleMouseMove` - \n\n  * `handleMouseLeave` - \n\n  * `handleResize` - \n\n  * `handleMapClick` - \n\n  * `_controller` {`CityMapController`} - ",
-      "attributes": []
-    },
-    {
       "name": "ca-city-district-page",
       "description": "Attributes:\n\n  * `district-index` {`number`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `districtIndex` {`number`} - \n\n  * `renderTabs` - \n\n  * `renderTab` - \n\n  * `renderTabPanels` - \n\n  * `renderTabPanel` - \n\n  * `renderTabPanelContent` - \n\n  * `handleGoBack` - \n\n  * `_controller` {`CityDistrictPageController`} - ",
       "attributes": [
@@ -87,47 +92,34 @@
       ]
     },
     {
-      "name": "ca-city-district-overiew-panel",
-      "description": "Attributes:\n\n  * `district-index` {`number`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `districtIndex` {`number`} - \n\n  * `_controller` {`CityDistrictOverviewPanelController`} - ",
-      "attributes": [
-        {
-          "name": "district-index",
-          "description": "`district-index` {`number`} - \n\nProperty: districtIndex"
-        }
-      ]
+      "name": "ca-city-district-overview-panel",
+      "description": "Properties:\n\n  * `styles` {`CSSResult[]`} - \n\n  * `_controller` {`CityDistrictOverviewPanelController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-city-district-overview-panel-next-tier-progress",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_districtIndex` {`number | undefined`} - \n\n  * `_progressBarRef` {`Ref<SlProgressBar>`} - \n\n  * `_hintRef` {`Ref<HTMLParagraphElement>`} - \n\n  * `_timerRef` {`Ref<HTMLSpanElement>`} - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`CityDistrictOverviewPanelNextTierProgressController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-city-district-overview-panel-values",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_districtIndex` {`number | undefined`} - \n\n  * `_controller` {`CityDistrictOverviewPanelValuesController`} - ",
+      "attributes": []
     },
     {
       "name": "ca-city-district-sidejobs-panel",
-      "description": "Attributes:\n\n  * `district-index` {`number`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `districtIndex` {`number`} - \n\n  * `renderEmptyListNotification` - \n\n  * `renderList` - \n\n  * `renderSidejob` - \n\n  * `_controller` {`CityDistrictSidejobsPanelController`} - ",
-      "attributes": [
-        {
-          "name": "district-index",
-          "description": "`district-index` {`number`} - \n\nProperty: districtIndex"
-        }
-      ]
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `renderEmptyListNotification` - \n\n  * `renderList` - \n\n  * `renderSidejob` - \n\n  * `_controller` {`CityDistrictSidejobsPanelController`} - ",
+      "attributes": []
     },
     {
       "name": "ca-city-district-sidejobs-list-item-unlock-progress",
-      "description": "Attributes:\n\n  * `district-index` {`number`} - \n\n  * `sidejob-name` - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`true`} - \n\n  * `districtIndex` {`number`} - \n\n  * `sidejobName` - \n\n  * `_progressBarRef` {`Ref<SlProgressBar>`} - \n\n  * `_hintRef` {`Ref<HTMLParagraphElement>`} - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`CityDistrictSidejobsListItemUnlockProgressController`} - ",
-      "attributes": [
-        {
-          "name": "district-index",
-          "description": "`district-index` {`number`} - \n\nProperty: districtIndex"
-        },
-        {
-          "name": "sidejob-name",
-          "description": "`sidejob-name` - \n\nProperty: sidejobName"
-        }
-      ]
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`true`} - \n\n  * `_districtIndex` {`number`} - \n\n  * `_sidejobName` - \n\n  * `_progressBarRef` {`Ref<SlProgressBar>`} - \n\n  * `_hintRef` {`Ref<HTMLParagraphElement>`} - \n\n  * `_timerRef` {`Ref<HTMLSpanElement>`} - \n\n  * `_unlockedMessageRef` {`Ref<HTMLSpanElement>`} - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`CityDistrictSidejobsListItemUnlockProgressController`} - ",
+      "attributes": []
     },
     {
       "name": "ca-city-district-sidejobs-list-item",
-      "description": "Attributes:\n\n  * `district-index` {`number`} - \n\n  * `sidejob-name` - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `districtIndex` {`number`} - \n\n  * `sidejobName` - ",
+      "description": "Attributes:\n\n  * `sidejob-name` - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `sidejobName` - \n\n  * `_districtIndex` {`number | undefined`} - ",
       "attributes": [
-        {
-          "name": "district-index",
-          "description": "`district-index` {`number`} - \n\nProperty: districtIndex"
-        },
         {
           "name": "sidejob-name",
           "description": "`sidejob-name` - \n\nProperty: sidejobName"
@@ -146,7 +138,7 @@
     },
     {
       "name": "ca-clones-list",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_detailsVisible` {`boolean`} - \n\n  * `renderEmptyListNotification` - \n\n  * `renderClone` - \n\n  * `handleToggleDetails` - \n\n  * `handleToggleAutoupgrade` - \n\n  * `handleMoveClone` - \n\n  * `handleOpenDeleteAllClonesDialog` - \n\n  * `handleConfirmDeleteAllClonesDialog` - \n\n  * `_controller` {`ClonesListController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderEmptyListNotification` - \n\n  * `renderClone` - \n\n  * `handleToggleAutoupgrade` - \n\n  * `handleMoveClone` - \n\n  * `handleOpenDeleteAllClonesDialog` - \n\n  * `handleConfirmDeleteAllClonesDialog` - \n\n  * `handleUpgradeMaxAllLevels` - \n\n  * `_controller` {`ClonesListController`} - ",
       "attributes": []
     },
     {
@@ -156,27 +148,22 @@
     },
     {
       "name": "ca-clones-list-item-experience",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_clone` - \n\n  * `_progressBarRef` {`Ref<SlProgressBar>`} - \n\n  * `_hintRef` {`Ref<HTMLParagraphElement>`} - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_clone` - \n\n  * `_progressBarRef` {`Ref<SlProgressBar>`} - \n\n  * `_hintRef` {`Ref<HTMLParagraphElement>`} - \n\n  * `_timerRef` {`Ref<HTMLSpanElement>`} - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`ClonesListItemExperienceController`} - ",
       "attributes": []
     },
     {
       "name": "ca-clones-list-item",
-      "description": "Attributes:\n\n  * `clone-id` {`string`} - \n\n  * `details-visible` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `cloneId` {`string`} - \n\n  * `detailsVisible` {`boolean`} - \n\n  * `_menuVisible` {`boolean`} - \n\n  * `_clone` - \n\n  * `handleToggleAutoUpgrade` - \n\n  * `handleDragStart` - \n\n  * `handleToggleMenu` - \n\n  * `handleHideMenu` - \n\n  * `handleOpenDeleteCloneDialog` - \n\n  * `handleConfirmDeleteCloneDialog` - \n\n  * `handleOpenRenameCloneDialog` - \n\n  * `_controller` {`ClonesListItemController`} - ",
+      "description": "Attributes:\n\n  * `clone-id` {`string`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `cloneId` {`string`} - \n\n  * `_menuVisible` {`boolean`} - \n\n  * `_detailsVisible` {`boolean`} - \n\n  * `_clone` - \n\n  * `handleToggleAutoUpgrade` - \n\n  * `handleDragStart` - \n\n  * `handleToggleMenu` - \n\n  * `handleHideMenu` - \n\n  * `handleOpenDeleteCloneDialog` - \n\n  * `handleConfirmDeleteCloneDialog` - \n\n  * `handleOpenRenameCloneDialog` - \n\n  * `handleToggleDetails` - \n\n  * `handleUpgradeLevelMax` - \n\n  * `_controller` {`ClonesListItemController`} - ",
       "attributes": [
         {
           "name": "clone-id",
           "description": "`clone-id` {`string`} - \n\nProperty: cloneId"
-        },
-        {
-          "name": "details-visible",
-          "description": "`details-visible` {`boolean`} - \n\nProperty: detailsVisible\n\nDefault: false",
-          "valueSet": "v"
         }
       ]
     },
     {
       "name": "ca-purchase-clone-dialog",
-      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `_nameInputRef` {`Ref<SlInput>`} - \n\n  * `_cloneTemplateInputRef` {`Ref<SlSelect>`} - \n\n  * `_qualityInputRef` {`Ref<SlSelect>`} - \n\n  * `_levelInputRef` {`Ref<SlInput>`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `_name` {`string`} - \n\n  * `_cloneTemplateName` - \n\n  * `_quality` {`number`} - \n\n  * `_level` {`number`} - \n\n  * `_clone` - \n\n  * `renderCloneTemplateOption` - \n\n  * `renderQualityOptions` - \n\n  * `handleClose` - \n\n  * `handleNameChange` - \n\n  * `handleCloneTemplateChange` - \n\n  * `handleQualityChange` - \n\n  * `handleLevelChange` - \n\n  * `handlePurchaseClone` - \n\n  * `handleGenerateName` - \n\n  * `_controller` {`PurchaseCloneDialogController`} - ",
+      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `_nameInputRef` {`Ref<SlInput>`} - \n\n  * `_cloneTemplateInputRef` {`Ref<SlSelect>`} - \n\n  * `_tierInputRef` {`Ref<SlSelect>`} - \n\n  * `_levelInputRef` {`Ref<SlInput>`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `_name` {`string`} - \n\n  * `_cloneTemplateName` - \n\n  * `_tier` {`number`} - \n\n  * `_level` {`number`} - \n\n  * `_clone` - \n\n  * `renderCloneTemplateOption` - \n\n  * `renderTierOptions` - \n\n  * `handleClose` - \n\n  * `handleNameChange` - \n\n  * `handleCloneTemplateChange` - \n\n  * `handleTierChange` - \n\n  * `handleLevelChange` - \n\n  * `handlePurchaseClone` - \n\n  * `handleGenerateName` - \n\n  * `_controller` {`PurchaseCloneDialogController`} - ",
       "attributes": [
         {
           "name": "is-open",
@@ -187,12 +174,12 @@
     },
     {
       "name": "ca-purchase-clone-dialog-buttons",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_clone` - \n\n  * `_warningElements` {`NodeListOf<HTMLParagraphElement>`} - \n\n  * `_purchaseButtonRef` {`Ref<SlButton>`} - \n\n  * `_availableTimeRef` {`Ref<HTMLSpanElement>`} - \n\n  * `_warning` {`PurchaseCloneDialogWarning | undefined`} - \n\n  * `handlePartialUpdate` - \n\n  * `renderWarnings` - \n\n  * `handleCancel` - \n\n  * `handlePurchaseClone` - \n\n  * `_controller` {`PurchaseCloneDialogButtonsController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_clone` - \n\n  * `_warningElements` {`NodeListOf<HTMLParagraphElement>`} - \n\n  * `_purchaseButtonRef` {`Ref<SlButton>`} - \n\n  * `_availableTimeRef` {`Ref<HTMLSpanElement>`} - \n\n  * `handlePartialUpdate` - \n\n  * `renderWarnings` - \n\n  * `renderOtherWarnings` - \n\n  * `handleCancel` - \n\n  * `handlePurchaseClone` - \n\n  * `_controller` {`PurchaseCloneDialogButtonsController`} - ",
       "attributes": []
     },
     {
       "name": "ca-purchase-clone-dialog-description",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_clone` - \n\n  * `_costElRef` {`Ref<HTMLSpanElement>`} - \n\n  * `renderSynchronization` - \n\n  * `renderParameters` - \n\n  * `renderAttribute` - \n\n  * `renderSkill` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`PurchaseCloneDialogDescriptionTextController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_clone` - \n\n  * `_costElRef` {`Ref<HTMLSpanElement>`} - \n\n  * `renderSynchronization` - \n\n  * `renderParameters` - \n\n  * `renderAttribute` - \n\n  * `renderSkill` - \n\n  * `renderExperienceMultiplier` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`PurchaseCloneDialogDescriptionTextController`} - ",
       "attributes": []
     },
     {
@@ -224,7 +211,7 @@
     },
     {
       "name": "ca-assign-clone-sidejob-dialog-buttons",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_sidejob` - \n\n  * `_existingSidejob` - \n\n  * `_warningElements` {`NodeListOf<HTMLParagraphElement>`} - \n\n  * `_assignButtonRef` {`Ref<SlButton>`} - \n\n  * `_warning` {`AssignCloneSidejobDialogWarning | undefined`} - \n\n  * `handlePartialUpdate` - \n\n  * `renderWarnings` - \n\n  * `renderExistingSidejobWarning` - \n\n  * `handleCancel` - \n\n  * `handleAssignClone` - \n\n  * `_controller` {`AssignCloneSidejobDialogButtonsController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_sidejob` - \n\n  * `_existingSidejob` - \n\n  * `_warningElements` {`NodeListOf<HTMLParagraphElement>`} - \n\n  * `_assignButtonRef` {`Ref<SlButton>`} - \n\n  * `_availableTimeRef` {`Ref<HTMLSpanElement>`} - \n\n  * `handlePartialUpdate` - \n\n  * `renderWarnings` - \n\n  * `renderOtherWarnings` - \n\n  * `handleCancel` - \n\n  * `handleAssignClone` - \n\n  * `_controller` {`AssignCloneSidejobDialogButtonsController`} - ",
       "attributes": []
     },
     {
@@ -274,7 +261,7 @@
     },
     {
       "name": "ca-fast-forwarding-screen",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_maxTime` {`number`} - \n\n  * `_progressBarRef` {`Ref<SlProgressBar>`} - \n\n  * `handleStopFastForwarding` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`FastForwardingScreenController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_maxTime` {`number`} - \n\n  * `_progressBarRef` {`Ref<SlProgressBar>`} - \n\n  * `_timerElRef` {`Ref<HTMLSpanElement>`} - \n\n  * `handleStopFastForwarding` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`FastForwardingScreenController`} - ",
       "attributes": []
     },
     {
@@ -370,22 +357,8 @@
       "attributes": []
     },
     {
-      "name": "ca-mainframe-hardware-panel-article-buttons",
-      "description": "Attributes:\n\n  * `type` - \n\n  * `increase` {`number`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `type` - \n\n  * `increase` {`number`} - \n\n  * `_buyButtonRef` {`Ref<SlButton>`} - \n\n  * `_warningRef` {`Ref<HTMLParagraphElement>`} - \n\n  * `handlePurchase` - \n\n  * `handleBuyMax` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`MainframeHardwarePanelArticleButtonsController`} - ",
-      "attributes": [
-        {
-          "name": "type",
-          "description": "`type` - \n\nProperty: type"
-        },
-        {
-          "name": "increase",
-          "description": "`increase` {`number`} - \n\nProperty: increase"
-        }
-      ]
-    },
-    {
       "name": "ca-mainframe-hardware-panel-article",
-      "description": "Attributes:\n\n  * `type` - \n\n  * `max-increase` {`number`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `type` - \n\n  * `maxIncrease` {`number`} - \n\n  * `_costElRef` {`Ref<HTMLSpanElement>`} - \n\n  * `handleBuy` - \n\n  * `handleBuyMax` - \n\n  * `handleToggleAutoUpgrade` - \n\n  * `handleDragStart` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`MainframeHardwarePanelArticleController`} - ",
+      "description": "Attributes:\n\n  * `type` - \n\n  * `max-increase` {`number`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `type` - \n\n  * `maxIncrease` {`number`} - \n\n  * `_costElRef` {`Ref<HTMLSpanElement>`} - \n\n  * `_parameter` - \n\n  * `handleBuy` - \n\n  * `handleBuyMax` - \n\n  * `handleToggleAutoUpgrade` - \n\n  * `handleDragStart` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`MainframeHardwarePanelArticleController`} - ",
       "attributes": [
         {
           "name": "type",
@@ -398,53 +371,19 @@
       ]
     },
     {
+      "name": "ca-mainframe-hardware-panel-article-buttons",
+      "description": "Attributes:\n\n  * `increase` {`number`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `increase` {`number`} - \n\n  * `_warningElements` {`NodeListOf<HTMLParagraphElement>`} - \n\n  * `_buyButtonRef` {`Ref<SlButton>`} - \n\n  * `_availableTimeRef` {`Ref<HTMLSpanElement>`} - \n\n  * `_parameter` - \n\n  * `renderWarnings` - \n\n  * `handlePurchase` - \n\n  * `handleBuyMax` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`MainframeHardwarePanelArticleButtonsController`} - ",
+      "attributes": [
+        {
+          "name": "increase",
+          "description": "`increase` {`number`} - \n\nProperty: increase"
+        }
+      ]
+    },
+    {
       "name": "ca-mainframe-processes-panel",
       "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_isStartProcessDialogOpen` {`boolean`} - \n\n  * `handleStartProcessDialogOpen` - \n\n  * `handleStartProcessDialogClose` - \n\n  * `_controller` {`ProcessesPanelController`} - ",
       "attributes": []
-    },
-    {
-      "name": "ca-process-description-text",
-      "description": "Attributes:\n\n  * `program-name` - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `programName` - \n\n  * `_renderer` {`IDescriptionEffectRenderer | undefined`} - \n\n  * `_paragraphs` {`NodeListOf<HTMLParagraphElement>`} - \n\n  * `renderAutoscalableRequirements` - \n\n  * `renderNormalRequirements` - \n\n  * `renderEffects` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`ProcessDescriptionTextController`} - ",
-      "attributes": [
-        {
-          "name": "program-name",
-          "description": "`program-name` - \n\nProperty: programName"
-        }
-      ]
-    },
-    {
-      "name": "ca-process-diff-text",
-      "description": "Attributes:\n\n  * `program-name` - \n\n  * `threads` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `programName` - \n\n  * `threads` {`number`} - \n\n  * `_renderer` {`IDescriptionEffectRenderer | undefined`} - \n\n  * `_paragraphs` {`NodeListOf<HTMLParagraphElement>`} - \n\n  * `renderAutoscalableRequirements` - \n\n  * `renderNormalRequirements` - \n\n  * `renderEffects` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`ProcessDiffTextController`} - ",
-      "attributes": [
-        {
-          "name": "program-name",
-          "description": "`program-name` - \n\nProperty: programName"
-        },
-        {
-          "name": "threads",
-          "description": "`threads` {`number`} - \n\nProperty: threads\n\nDefault: 0"
-        }
-      ]
-    },
-    {
-      "name": "ca-processes-list-item-progress",
-      "description": "Attributes:\n\n  * `program-name` - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `programName` - \n\n  * `_progressBarRef` {`Ref<SlProgressBar>`} - \n\n  * `_hintRef` {`Ref<HTMLParagraphElement>`} - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`ProcessesListItemProgressController`} - ",
-      "attributes": [
-        {
-          "name": "program-name",
-          "description": "`program-name` - \n\nProperty: programName"
-        }
-      ]
-    },
-    {
-      "name": "ca-processes-list-item",
-      "description": "Attributes:\n\n  * `program-name` - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `programName` - \n\n  * `_descriptionVisible` {`boolean`} - \n\n  * `handleToggleDescription` - \n\n  * `handleToggleProcess` - \n\n  * `handleOpenDeleteProcessDialog` - \n\n  * `handleConfirmDeleteProcessDialog` - \n\n  * `handleDragStart` - \n\n  * `_controller` {`ProcessesListItemController`} - ",
-      "attributes": [
-        {
-          "name": "program-name",
-          "description": "`program-name` - \n\nProperty: programName"
-        }
-      ]
     },
     {
       "name": "ca-processes-list",
@@ -452,27 +391,57 @@
       "attributes": []
     },
     {
-      "name": "ca-start-process-dialog-buttons",
-      "description": "Attributes:\n\n  * `program-name` - \n\n  * `threads` {`number`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `programName` - \n\n  * `threads` {`number`} - \n\n  * `calculateMaxThreads` - \n\n  * `handleCancel` - \n\n  * `handleStart` - \n\n  * `_controller` {`StartProcessDialogButtonsController`} - ",
+      "name": "ca-processes-list-item-description",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_renderer` {`IDescriptionEffectRenderer | undefined`} - \n\n  * `_valueEls` {`NodeListOf<HTMLSpanElement>`} - \n\n  * `_process` - \n\n  * `renderAutoscalableRequirements` - \n\n  * `renderNormalRequirements` - \n\n  * `renderEffects` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`ProcessDescriptionTextController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-processes-list-item-progress",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_progressBarRef` {`Ref<SlProgressBar>`} - \n\n  * `_hintRef` {`Ref<HTMLParagraphElement>`} - \n\n  * `_timerRef` {`Ref<HTMLSpanElement>`} - \n\n  * `_process` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-processes-list-item",
+      "description": "Attributes:\n\n  * `program-name` - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `programName` - \n\n  * `_descriptionVisible` {`boolean`} - \n\n  * `_process` - \n\n  * `handleToggleDescription` - \n\n  * `handleToggleProcess` - \n\n  * `handleOpenDeleteProcessDialog` - \n\n  * `handleConfirmDeleteProcessDialog` - \n\n  * `handleDragStart` - \n\n  * `_controller` {`ProcessesListItemController`} - ",
       "attributes": [
         {
           "name": "program-name",
           "description": "`program-name` - \n\nProperty: programName"
-        },
-        {
-          "name": "threads",
-          "description": "`threads` {`number`} - \n\nProperty: threads"
         }
       ]
     },
     {
       "name": "ca-start-process-dialog",
-      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `_programInputRef` {`Ref<SlSelect>`} - \n\n  * `_threadsInputRef` {`Ref<SlInput>`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `_programName` - \n\n  * `_threads` {`number`} - \n\n  * `handleClose` - \n\n  * `handleProgramChange` - \n\n  * `handleThreadsChange` - \n\n  * `handleOpenConfirmationAlert` - \n\n  * `handleConfirmConfirmationAlert` - \n\n  * `startProcess` - \n\n  * `formatProgramSelectItem` - \n\n  * `calculateMaxThreads` - \n\n  * `_controller` {`StartProcessDialogController`} - ",
+      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `_programInputRef` {`Ref<SlSelect>`} - \n\n  * `_threadsInputRef` {`Ref<SlInput>`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `_programName` - \n\n  * `_threads` {`number`} - \n\n  * `_program` - \n\n  * `_existingProcess` - \n\n  * `handleClose` - \n\n  * `handleProgramChange` - \n\n  * `handleThreadsChange` - \n\n  * `handleOpenConfirmationAlert` - \n\n  * `handleConfirmConfirmationAlert` - \n\n  * `startProcess` - \n\n  * `formatProgramSelectItem` - \n\n  * `calculateMaxThreads` - \n\n  * `_controller` {`StartProcessDialogController`} - ",
       "attributes": [
         {
           "name": "is-open",
           "description": "`is-open` {`boolean`} - \n\nProperty: isOpen\n\nDefault: false",
           "valueSet": "v"
+        }
+      ]
+    },
+    {
+      "name": "ca-start-process-dialog-buttons",
+      "description": "Attributes:\n\n  * `threads` {`number`} - \n\n  * `max-threads` {`number`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `threads` {`number`} - \n\n  * `maxThreads` {`number`} - \n\n  * `_program` - \n\n  * `_existingProcess` - \n\n  * `handleCancel` - \n\n  * `handleStart` - \n\n  * `_controller` {`StartProcessDialogButtonsController`} - ",
+      "attributes": [
+        {
+          "name": "threads",
+          "description": "`threads` {`number`} - \n\nProperty: threads"
+        },
+        {
+          "name": "max-threads",
+          "description": "`max-threads` {`number`} - \n\nProperty: maxThreads"
+        }
+      ]
+    },
+    {
+      "name": "ca-start-process-dialog-description",
+      "description": "Attributes:\n\n  * `threads` {`number`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `threads` {`number`} - \n\n  * `_renderer` {`IDescriptionEffectRenderer | undefined`} - \n\n  * `_valueEls` {`NodeListOf<HTMLSpanElement>`} - \n\n  * `_diffEls` {`NodeListOf<HTMLSpanElement>`} - \n\n  * `_program` - \n\n  * `_existingProcess` - \n\n  * `renderAutoscalableRequirements` - \n\n  * `renderNormalRequirements` - \n\n  * `renderEffects` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`ProcessDiffTextController`} - ",
+      "attributes": [
+        {
+          "name": "threads",
+          "description": "`threads` {`number`} - \n\nProperty: threads\n\nDefault: 0"
         }
       ]
     },
@@ -482,69 +451,28 @@
       "attributes": []
     },
     {
-      "name": "ca-owned-programs-list-item",
-      "description": "Attributes:\n\n  * `program-name` - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `programName` - \n\n  * `_descriptionVisible` {`boolean`} - \n\n  * `handleToggleDescription` - \n\n  * `handleToggleAutoUpgrade` - \n\n  * `handleDragStart` - \n\n  * `handleUpgradeMax` - \n\n  * `_controller` {`OwnedProgramsListItemController`} - ",
-      "attributes": [
-        {
-          "name": "program-name",
-          "description": "`program-name` - \n\nProperty: programName"
-        }
-      ]
-    },
-    {
       "name": "ca-owned-programs-list",
       "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderEmptyListNotification` - \n\n  * `renderProgram` - \n\n  * `handleToggleAutoupgrade` - \n\n  * `handleMoveProgram` - \n\n  * `handleUpgradeMaxAllPrograms` - \n\n  * `_controller` {`OwnedProgramsListController`} - ",
       "attributes": []
     },
     {
-      "name": "ca-program-description-text",
-      "description": "Attributes:\n\n  * `program-name` - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `programName` - \n\n  * `_renderer` {`IDescriptionEffectRenderer | undefined`} - \n\n  * `_paragraphs` {`NodeListOf<HTMLParagraphElement>`} - \n\n  * `renderAutoscalableRequirements` - \n\n  * `renderNormalRequirements` - \n\n  * `renderEffects` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`ProgramDescriptionTextController`} - ",
-      "attributes": [
-        {
-          "name": "program-name",
-          "description": "`program-name` - \n\nProperty: programName"
-        }
-      ]
+      "name": "ca-owned-programs-list-item-description",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_renderer` {`IDescriptionEffectRenderer | undefined`} - \n\n  * `_valueEls` {`NodeListOf<HTMLSpanElement>`} - \n\n  * `_program` - \n\n  * `renderAutoscalableRequirements` - \n\n  * `renderNormalRequirements` - \n\n  * `renderEffects` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`ProgramDescriptionTextController`} - ",
+      "attributes": []
     },
     {
-      "name": "ca-program-diff-text",
-      "description": "Attributes:\n\n  * `program-name` - \n\n  * `level` {`number`} - \n\n  * `quality` {`number`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `programName` - \n\n  * `level` {`number`} - \n\n  * `quality` {`number`} - \n\n  * `_renderer` {`IDescriptionEffectRenderer | undefined`} - \n\n  * `_paragraphs` {`NodeListOf<HTMLParagraphElement>`} - \n\n  * `_costElRef` {`Ref<HTMLSpanElement>`} - \n\n  * `renderAutoscalableRequirements` - \n\n  * `renderNormalRequirements` - \n\n  * `renderEffects` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`ProgramDiffTextController`} - ",
+      "name": "ca-owned-programs-list-item",
+      "description": "Attributes:\n\n  * `program-name` - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `programName` - \n\n  * `_descriptionVisible` {`boolean`} - \n\n  * `_program` - \n\n  * `handleToggleDescription` - \n\n  * `handleToggleAutoUpgrade` - \n\n  * `handleDragStart` - \n\n  * `handleUpgradeMax` - \n\n  * `_controller` {`OwnedProgramsListItemController`} - ",
       "attributes": [
         {
           "name": "program-name",
           "description": "`program-name` - \n\nProperty: programName"
-        },
-        {
-          "name": "level",
-          "description": "`level` {`number`} - \n\nProperty: level\n\nDefault: 0"
-        },
-        {
-          "name": "quality",
-          "description": "`quality` {`number`} - \n\nProperty: quality\n\nDefault: 0"
-        }
-      ]
-    },
-    {
-      "name": "ca-purchase-program-dialog-buttons",
-      "description": "Attributes:\n\n  * `program-name` - \n\n  * `level` {`number`} - \n\n  * `quality` {`number`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `programName` - \n\n  * `level` {`number`} - \n\n  * `quality` {`number`} - \n\n  * `_warningRef` {`Ref<HTMLParagraphElement>`} - \n\n  * `_purchaseButtonRef` {`Ref<SlButton>`} - \n\n  * `handlePartialUpdate` - \n\n  * `handleCancel` - \n\n  * `handlePurchase` - \n\n  * `_controller` {`PurchaseProgramDialogButtonsController`} - ",
-      "attributes": [
-        {
-          "name": "program-name",
-          "description": "`program-name` - \n\nProperty: programName"
-        },
-        {
-          "name": "level",
-          "description": "`level` {`number`} - \n\nProperty: level"
-        },
-        {
-          "name": "quality",
-          "description": "`quality` {`number`} - \n\nProperty: quality"
         }
       ]
     },
     {
       "name": "ca-purchase-program-dialog",
-      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `_programInputRef` {`Ref<SlSelect>`} - \n\n  * `_qualityInputRef` {`Ref<SlSelect>`} - \n\n  * `_levelInputRef` {`Ref<SlInput>`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `_programName` - \n\n  * `_quality` {`number`} - \n\n  * `_level` {`number`} - \n\n  * `renderProgramOption` - \n\n  * `renderQualityOptions` - \n\n  * `handleClose` - \n\n  * `handleProgramChange` - \n\n  * `handleQualityChange` - \n\n  * `handleLevelChange` - \n\n  * `handleOpenConfirmationAlert` - \n\n  * `handleConfirmConfirmationAlert` - \n\n  * `purchase` - \n\n  * `_controller` {`PurchaseProgramDialogController`} - ",
+      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `_programInputRef` {`Ref<SlSelect>`} - \n\n  * `_tierInputRef` {`Ref<SlSelect>`} - \n\n  * `_levelInputRef` {`Ref<SlInput>`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `_programName` - \n\n  * `_tier` {`number`} - \n\n  * `_level` {`number`} - \n\n  * `_program` - \n\n  * `_existingProgram` - \n\n  * `renderProgramOption` - \n\n  * `renderTierOptions` - \n\n  * `handleClose` - \n\n  * `handleProgramChange` - \n\n  * `handleTierChange` - \n\n  * `handleLevelChange` - \n\n  * `handleOpenConfirmationAlert` - \n\n  * `handleConfirmConfirmationAlert` - \n\n  * `purchase` - \n\n  * `_controller` {`PurchaseProgramDialogController`} - ",
       "attributes": [
         {
           "name": "is-open",
@@ -552,6 +480,16 @@
           "valueSet": "v"
         }
       ]
+    },
+    {
+      "name": "ca-purchase-program-dialog-buttons",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_program` - \n\n  * `_ownedProgram` - \n\n  * `_warningElements` {`NodeListOf<HTMLParagraphElement>`} - \n\n  * `_purchaseButtonRef` {`Ref<SlButton>`} - \n\n  * `_availableTimeRef` {`Ref<HTMLSpanElement>`} - \n\n  * `handlePartialUpdate` - \n\n  * `renderWarnings` - \n\n  * `renderOtherWarnings` - \n\n  * `handleCancel` - \n\n  * `handlePurchase` - \n\n  * `_controller` {`PurchaseProgramDialogButtonsController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-purchase-program-dialog-description",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_program` - \n\n  * `_ownedProgram` - \n\n  * `_renderer` {`IDescriptionEffectRenderer | undefined`} - \n\n  * `_valueEls` {`NodeListOf<HTMLSpanElement>`} - \n\n  * `_diffEls` {`NodeListOf<HTMLSpanElement>`} - \n\n  * `_costElRef` {`Ref<HTMLSpanElement>`} - \n\n  * `renderAutoscalableRequirements` - \n\n  * `renderNormalRequirements` - \n\n  * `renderEffects` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`ProgramDiffTextController`} - ",
+      "attributes": []
     },
     {
       "name": "ca-message-log-page",
@@ -575,7 +513,7 @@
     },
     {
       "name": "ca-overview-development-level-progress",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_progressBarRef` {`Ref<SlProgressBar>`} - \n\n  * `_hintRef` {`Ref<HTMLParagraphElement>`} - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`OverviewDevelopmentLevelProgressController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_progressBarRef` {`Ref<SlProgressBar>`} - \n\n  * `_hintRef` {`Ref<HTMLParagraphElement>`} - \n\n  * `_timerRef` {`Ref<HTMLSpanElement>`} - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`OverviewDevelopmentLevelProgressController`} - ",
       "attributes": []
     },
     {
@@ -722,6 +660,11 @@
       "attributes": []
     },
     {
+      "name": "ca-statistics-experience-share",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_controller` {`StatisticsExperienceShareController`} - ",
+      "attributes": []
+    },
+    {
       "name": "ca-statistics-game-time",
       "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_gameTimeRef` {`Ref<HTMLSpanElement>`} - \n\n  * `_gameTotalTimeRef` {`Ref<HTMLSpanElement>`} - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`StatisticsGameTimeController`} - ",
       "attributes": []
@@ -748,8 +691,8 @@
       ]
     },
     {
-      "name": "ca-statistics-program-completion-speed",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_controller` {`StatisticsProgramCompletionSpeedController`} - ",
+      "name": "ca-statistics-process-completion-speed",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_controller` {`StatisticsProcessCompletionSpeedController`} - ",
       "attributes": []
     },
     {
@@ -763,8 +706,23 @@
       "attributes": []
     },
     {
+      "name": "ca-statistics-connectivity-points-growth",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_programGrowthRef` {`Ref<HTMLSpanElement>`} - \n\n  * `_districtValueNodes` {`NodeListOf<HTMLSpanElement>`} - \n\n  * `renderDistrict` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`StatisticsConnectivityPointsGrowthController`} - ",
+      "attributes": []
+    },
+    {
       "name": "ca-statistics-development-growth",
       "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_incomeSourceElements` {`NodeListOf<HTMLSpanElement>`} - \n\n  * `_totalGrowthRef` {`Ref<HTMLSpanElement>`} - \n\n  * `renderIncomeSource` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`StatisticsDevelopmentGrowthController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-statistics-district-tier-points-growth",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_districtValueNodes` {`NodeListOf<HTMLSpanElement>`} - \n\n  * `renderDistrict` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`StatisticsDistrictTierPointsGrowthController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-statistics-experience-growth",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_cloneValueNodes` {`NodeListOf<HTMLSpanElement>`} - \n\n  * `renderClone` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`StatisticsExperienceGrowthController`} - ",
       "attributes": []
     },
     {
@@ -774,7 +732,7 @@
     },
     {
       "name": "ca-statistics-multiplier-points-growth",
-      "description": "Attributes:\n\n  * `type` - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `type` - \n\n  * `_programGrowthRef` {`Ref<HTMLSpanElement>`} - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`StatisticsMultiplierPointsGrowthController`} - ",
+      "description": "Attributes:\n\n  * `type` - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `type` - \n\n  * `_programGrowthRef` {`Ref<HTMLSpanElement>`} - \n\n  * `_districtValueNodes` {`NodeListOf<HTMLSpanElement>`} - \n\n  * `renderDistrict` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`StatisticsMultiplierPointsGrowthController`} - ",
       "attributes": [
         {
           "name": "type",
@@ -800,6 +758,11 @@
     {
       "name": "ca-statistics-district-tier-points-income",
       "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_districtValueNodes` {`NodeListOf<HTMLSpanElement>`} - \n\n  * `renderDistrict` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`StatisticsDistrictTierPointsIncomeController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-statistics-experience-income",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_cloneValueNodes` {`NodeListOf<HTMLSpanElement>`} - \n\n  * `renderClone` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`StatisticsExperienceIncomeController`} - ",
       "attributes": []
     },
     {

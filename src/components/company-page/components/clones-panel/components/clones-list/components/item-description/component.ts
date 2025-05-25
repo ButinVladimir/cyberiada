@@ -1,5 +1,5 @@
 import { css, html, nothing } from 'lit';
-import { localized, msg, str } from '@lit/localize';
+import { localized } from '@lit/localize';
 import { customElement } from 'lit/decorators.js';
 import { consume } from '@lit/context';
 import { BaseComponent } from '@shared/base-component';
@@ -22,11 +22,14 @@ export class ClonesListItemAttributes extends BaseComponent {
         display: flex;
         flex-direction: column;
         align-items: stretch;
-        gap: var(--sl-spacing-small);
       }
 
       h5.title {
         margin: 0;
+      }
+
+      .attributes-skills-tables {
+        margin-top: var(--sl-spacing-small);
       }
     `,
   ];
@@ -52,8 +55,11 @@ export class ClonesListItemAttributes extends BaseComponent {
     const synchronization = this._controller.getCloneSynchronization(this._clone);
     const formattedSynchronization = formatter.formatNumberDecimal(synchronization);
 
+    const formattedExperienceMultiplier = formatter.formatNumberFloat(this._clone.experienceMultiplier);
+
     return html`
-      <div>${msg(str`Synchronization: ${formattedSynchronization}`)}</div>
+      <div>${COMMON_TEXTS.parameterValue(COMMON_TEXTS.synchronization(), formattedSynchronization)}</div>
+      <div>${COMMON_TEXTS.parameterValue(COMMON_TEXTS.experienceMultiplier(), formattedExperienceMultiplier)}</div>
 
       <div class="attributes-skills-tables">
         <div>

@@ -1,34 +1,47 @@
 import { msg, str } from '@lit/localize';
 import cloneTemplates from '@configs/clone-templates.json';
-import { Attribute, ClonesEvent, Skill } from '@shared/types';
-import { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
-import { ATTRIBUTES, SKILLS } from '@shared/constants';
+import { type IStateUIConnector } from '@state/state-ui-connector';
 import {
+  Attribute,
+  ClonesEvent,
+  Skill,
+  ATTRIBUTES,
+  SKILLS,
   calculateGeometricProgressionSum,
-  calculateQualityLinear,
-  calculateQualityMultiplier,
+  calculateTierLinear,
+  calculateTierMultiplier,
   reverseGeometricProgressionSum,
-} from '@shared/helpers';
-import { ICompanyState } from '@state/company-state/interfaces/company-state';
-import { IGlobalState } from '@state/global-state/interfaces/global-state';
-import { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
-import { IFormatter } from '@shared/interfaces/formatter';
-import { IClone, IBaseCloneParameters, IMakeCloneParameters, ICloneParameterValues } from './interfaces';
+  type IFormatter,
+  binarySearchDecimal,
+  PurchaseType,
+  Feature,
+} from '@shared/index';
+import { type ICompanyState } from '@state/company-state/interfaces/company-state';
+import { type IGlobalState } from '@state/global-state';
+import { type IMessageLogState } from '@state/message-log-state';
+import { decorators } from '@state/container';
+import { TYPES } from '@state/types';
+import { IClone, IMakeCloneParameters, ICloneParameterValues } from './interfaces';
 import { CloneTemplateName } from './types';
 import { ICloneTemplate } from './interfaces/clone-template';
 
-export class Clone implements IClone {
-  private UI_EVENTS = {
-    CLONE_NAME_CHANGED: Symbol('CLONE_NAME_CHANGED'),
-    CLONE_AUTOUPGRADE_TOGGLED: Symbol('CLONE_AUTOUPGRADE_TOGGLED'),
-    CLONE_CHANGED: Symbol('CLONE_CHANGED'),
-  };
+const { lazyInject } = decorators;
 
-  private _companyState: ICompanyState;
-  private _globalState: IGlobalState;
-  private _messageLogState: IMessageLogState;
-  private _stateUiConnector: IStateUIConnector;
-  private _formatter: IFormatter;
+export class Clone implements IClone {
+  @lazyInject(TYPES.CompanyState)
+  private _companyState!: ICompanyState;
+
+  @lazyInject(TYPES.GlobalState)
+  private _globalState!: IGlobalState;
+
+  @lazyInject(TYPES.MessageLogState)
+  private _messageLogState!: IMessageLogState;
+
+  @lazyInject(TYPES.StateUIConnector)
+  private _stateUiConnector!: IStateUIConnector;
+
+  @lazyInject(TYPES.Formatter)
+  private _formatter!: IFormatter;
 
   private _id: string;
   private _name: string;
@@ -36,30 +49,34 @@ export class Clone implements IClone {
   private _template: ICloneTemplate;
   private _experience: number;
   private _level: number;
-  private _quality: number;
+  private _tier: number;
   private _synchronization!: number;
   private _autoUpgradeEnabled: boolean;
+  private _experienceMultiplier: number;
 
   private _attributes!: Map<Attribute, ICloneParameterValues>;
   private _skills!: Map<Skill, ICloneParameterValues>;
 
-  constructor(parameters: IBaseCloneParameters) {
-    this._companyState = parameters.companyState;
-    this._globalState = parameters.globalState;
-    this._messageLogState = parameters.messageLogState;
-    this._stateUiConnector = parameters.stateUiConnector;
-    this._formatter = parameters.formatter;
-
+  constructor(parameters: IMakeCloneParameters) {
     this._id = parameters.id;
     this._name = parameters.name;
     this._templateName = parameters.templateName;
     this._template = cloneTemplates[parameters.templateName] as ICloneTemplate;
     this._experience = parameters.experience;
     this._level = parameters.level;
-    this._quality = parameters.quality;
+    this._tier = parameters.tier;
     this._autoUpgradeEnabled = parameters.autoUpgradeEnabled;
+    this._experienceMultiplier = 1;
 
-    this._stateUiConnector.registerEvents(this.UI_EVENTS);
+    this._stateUiConnector.registerEventEmitter(this, [
+      '_name',
+      '_level',
+      '_tier',
+      '_autoUpgradeEnabled',
+      '_attributes',
+      '_skills',
+      '_experienceMultiplier',
+    ]);
 
     this.initSynchronization();
     this.initExperience();
@@ -74,8 +91,6 @@ export class Clone implements IClone {
   }
 
   get name() {
-    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.CLONE_NAME_CHANGED);
-
     return this._name;
   }
 
@@ -87,8 +102,6 @@ export class Clone implements IClone {
       ClonesEvent.cloneRenamed,
       msg(str`Clone "${oldName}" has been renamed to "${value}"`),
     );
-
-    this._stateUiConnector.enqueueEvent(this.UI_EVENTS.CLONE_NAME_CHANGED);
   }
 
   get templateName() {
@@ -100,13 +113,11 @@ export class Clone implements IClone {
   }
 
   get level() {
-    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.CLONE_CHANGED);
-
     return this._level;
   }
 
-  get quality() {
-    return this._quality;
+  get tier() {
+    return this._tier;
   }
 
   get synchonization() {
@@ -114,23 +125,45 @@ export class Clone implements IClone {
   }
 
   get autoUpgradeEnabled() {
-    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.CLONE_AUTOUPGRADE_TOGGLED);
-
     return this._autoUpgradeEnabled;
   }
 
   set autoUpgradeEnabled(value: boolean) {
     this._autoUpgradeEnabled = value;
+  }
 
-    this._stateUiConnector.enqueueEvent(this.UI_EVENTS.CLONE_AUTOUPGRADE_TOGGLED);
+  get experienceMultiplier() {
+    return this._experienceMultiplier;
   }
 
   increaseExperience(delta: number) {
     this._experience += delta;
   }
 
-  earnExperience(delta: number) {
-    this.increaseExperience(delta);
+  purchaseLevelUpgrade(level: number): boolean {
+    if (!this._globalState.unlockedFeatures.isFeatureUnlocked(Feature.companyManagement)) {
+      return false;
+    }
+
+    if (!this._globalState.availableItems.cloneTemplates.isItemAvailable(this._templateName, this._tier, level)) {
+      return false;
+    }
+
+    const cost = this._companyState.clones.getCloneCost(this._templateName, this._tier, level);
+
+    return this._globalState.money.purchase(cost, PurchaseType.clones, () => {
+      this.upgradeLevel(level);
+    });
+  }
+
+  upgradeMaxLevel() {
+    const level = binarySearchDecimal(this._level, this._globalState.development.level, this.handleCheckLevelUpgrade);
+
+    if (level <= this._level) {
+      return false;
+    }
+
+    return this.purchaseLevelUpgrade(level);
   }
 
   getLevelRequirements(level: number): number {
@@ -146,26 +179,18 @@ export class Clone implements IClone {
   }
 
   getBaseAttributeValue(attribute: Attribute): number {
-    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.CLONE_CHANGED);
-
     return this._attributes.get(attribute)!.baseValue;
   }
 
   getTotalAttributeValue(attribute: Attribute): number {
-    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.CLONE_CHANGED);
-
     return this._attributes.get(attribute)!.totalValue;
   }
 
   getBaseSkillValue(skill: Skill): number {
-    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.CLONE_CHANGED);
-
     return this._skills.get(skill)!.baseValue;
   }
 
   getTotalSkillValue(skill: Skill): number {
-    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.CLONE_CHANGED);
-
     return this._skills.get(skill)!.totalValue;
   }
 
@@ -180,19 +205,19 @@ export class Clone implements IClone {
       templateName: this.templateName,
       experience: this.experience,
       level: this.level,
-      quality: this.quality,
+      tier: this.tier,
       autoUpgradeEnabled: this.autoUpgradeEnabled,
     };
   }
 
   removeAllEventListeners() {
-    this._stateUiConnector.unregisterEvents(this.UI_EVENTS);
+    this._stateUiConnector.unregisterEventEmitter(this);
   }
 
   private initSynchronization() {
     this._synchronization = Math.ceil(
       this._template.synchronization.multiplier *
-        calculateQualityMultiplier(this._quality, this._template.synchronization.baseQuality),
+        calculateTierMultiplier(this._tier, this._template.synchronization.baseTier),
     );
   }
 
@@ -247,29 +272,66 @@ export class Clone implements IClone {
   private recalculateParameters(): void {
     this.recalculateAttributes();
     this.recalculateSkills();
-
-    this._stateUiConnector.enqueueEvent(this.UI_EVENTS.CLONE_CHANGED);
+    this.recalculateExperienceMultiplier();
   }
 
   private recalculateAttributes(): void {
     ATTRIBUTES.forEach((attribute) => {
-      const currentValues = this._attributes.get(attribute)!;
       const templateValues = this._template.attributes[attribute];
 
-      currentValues.baseValue = calculateQualityLinear(this._level, this._quality, templateValues);
+      const baseValue = calculateTierLinear(this._level, this._tier, templateValues);
+      const totalValue = Math.floor(baseValue);
 
-      currentValues.totalValue = Math.floor(currentValues.baseValue);
+      this._attributes.set(attribute, {
+        baseValue,
+        totalValue,
+      });
     });
   }
 
   private recalculateSkills(): void {
     SKILLS.forEach((skill) => {
-      const currentValues = this._skills.get(skill)!;
       const templateValues = this._template.skills[skill];
 
-      currentValues.baseValue = calculateQualityLinear(this._level, this._quality, templateValues);
+      const baseValue = calculateTierLinear(this._level, this._tier, templateValues);
+      const totalValue = Math.floor(baseValue);
 
-      currentValues.totalValue = Math.floor(currentValues.baseValue);
+      this._skills.set(skill, {
+        baseValue,
+        totalValue,
+      });
     });
+  }
+
+  private recalculateExperienceMultiplier(): void {
+    this._experienceMultiplier = calculateTierLinear(
+      this.getTotalAttributeValue(Attribute.intellect),
+      this._tier,
+      this._template.experienceMultiplier,
+    );
+  }
+
+  private handleCheckLevelUpgrade = (level: number): boolean => {
+    if (!this._globalState.availableItems.cloneTemplates.isItemAvailable(this._templateName, this._tier, level)) {
+      return false;
+    }
+
+    const cost = this._companyState.clones.getCloneCost(this._templateName, this._tier, level);
+
+    return cost <= this._globalState.money.money;
+  };
+
+  private upgradeLevel(level: number) {
+    this._level = level;
+    this._experience = this.getLevelRequirements(level - 1);
+    this._companyState.requestReassignment();
+
+    const formattedLevel = this._formatter.formatLevel(level);
+    this._messageLogState.postMessage(
+      ClonesEvent.cloneLevelUpgraded,
+      msg(str`Clone "${this._name}" level has been upgraded to ${formattedLevel}`),
+    );
+
+    this.recalculateParameters();
   }
 }

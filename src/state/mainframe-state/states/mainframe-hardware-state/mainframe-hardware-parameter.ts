@@ -1,71 +1,64 @@
-import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
-import type { IGlobalState } from '@state/global-state/interfaces/global-state';
-import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
-import type { IFormatter } from '@shared/interfaces/formatter';
-import { calculateGeometricProgressionSum } from '@shared/helpers';
-import { IExponent } from '@shared/interfaces/formulas/exponent';
-import { Feature, PurchaseType } from '@shared/types';
-import { binarySearchDecimal } from '@shared/helpers';
+import type { IStateUIConnector } from '@state/state-ui-connector';
+import type { IGlobalState } from '@state/global-state';
+import type { IMessageLogState } from '@state/message-log-state';
 import {
-  IMainframeHardwareParameter,
-  IMainframeHardwareParameterArguments,
-  IMainframeHardwareState,
-  IMainframeHardwareParameterSerializedState,
-} from './interfaces';
+  type IFormatter,
+  calculateGeometricProgressionSum,
+  IExponent,
+  Feature,
+  PurchaseType,
+  binarySearchDecimal,
+} from '@shared/index';
+import { decorators } from '@state/container';
+import { IMainframeHardwareParameter, IMainframeHardwareParameterSerializedState } from './interfaces';
 import { MainframeHardwareParameterType } from './types';
+import { type IMainframeState } from '../../interfaces';
+import { TYPES } from '@/state/types';
+
+const { lazyInject } = decorators;
 
 export abstract class MainframeHardwareParameter implements IMainframeHardwareParameter {
-  private UI_EVENTS = {
-    HARDWARE_UPGRADED: Symbol('HARDWARE_UPGRADED'),
-    HARDWARE_AUTOBUYER_UPDATED: Symbol('HARDWARE_AUTOBUYER_UPDATED'),
-  };
+  @lazyInject(TYPES.StateUIConnector)
+  protected stateUiConnector!: IStateUIConnector;
 
-  protected stateUiConnector: IStateUIConnector;
-  protected mainframeHardwareState: IMainframeHardwareState;
-  protected globalState: IGlobalState;
-  protected messageLogState: IMessageLogState;
-  protected formatter: IFormatter;
+  @lazyInject(TYPES.MainframeState)
+  protected mainframeState!: IMainframeState;
+
+  @lazyInject(TYPES.GlobalState)
+  protected globalState!: IGlobalState;
+
+  @lazyInject(TYPES.MessageLogState)
+  protected messageLogState!: IMessageLogState;
+
+  @lazyInject(TYPES.Formatter)
+  protected formatter!: IFormatter;
 
   protected _level: number;
   protected _autoUpgradeEnabled: boolean;
 
-  constructor(parameters: IMainframeHardwareParameterArguments) {
-    this.stateUiConnector = parameters.stateUiConnector;
-    this.mainframeHardwareState = parameters.mainframeHardwareState;
-    this.globalState = parameters.globalState;
-    this.messageLogState = parameters.messageLogState;
-    this.formatter = parameters.formatter;
-
+  constructor() {
     this._level = 0;
     this._autoUpgradeEnabled = true;
 
-    this.stateUiConnector.registerEvents(this.UI_EVENTS);
+    this.stateUiConnector.registerEventEmitter(this, ['_level', '_autoUpgradeEnabled']);
   }
 
   get level() {
-    this.stateUiConnector.connectEventHandler(this.UI_EVENTS.HARDWARE_UPGRADED);
-
     return this._level;
   }
 
   protected abstract get baseLevel(): number;
 
   get totalLevel() {
-    this.stateUiConnector.connectEventHandler(this.UI_EVENTS.HARDWARE_UPGRADED);
-
     return this._level + this.baseLevel;
   }
 
   get autoUpgradeEnabled() {
-    this.stateUiConnector.connectEventHandler(this.UI_EVENTS.HARDWARE_AUTOBUYER_UPDATED);
-
     return this._autoUpgradeEnabled;
   }
 
   set autoUpgradeEnabled(value: boolean) {
     this._autoUpgradeEnabled = value;
-
-    this.stateUiConnector.enqueueEvent(this.UI_EVENTS.HARDWARE_AUTOBUYER_UPDATED);
   }
 
   abstract get type(): MainframeHardwareParameterType;
@@ -111,7 +104,7 @@ export abstract class MainframeHardwareParameter implements IMainframeHardwarePa
       return false;
     }
 
-    if (!this.globalState.unlockedFeatures.isFeatureUnlocked(Feature.mainframeUpgrades)) {
+    if (!this.globalState.unlockedFeatures.isFeatureUnlocked(Feature.mainframeHardware)) {
       return false;
     }
 
@@ -147,7 +140,7 @@ export abstract class MainframeHardwareParameter implements IMainframeHardwarePa
     this._level += increase;
     this.postPurchaseMessge();
 
-    this.mainframeHardwareState.emitUpgradedEvent();
-    this.stateUiConnector.enqueueEvent(this.UI_EVENTS.HARDWARE_UPGRADED);
+    this.mainframeState.processes.requestUpdateProcesses();
+    this.mainframeState.processes.requestUpdatePerformance();
   };
 }

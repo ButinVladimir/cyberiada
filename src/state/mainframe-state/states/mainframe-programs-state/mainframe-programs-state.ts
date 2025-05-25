@@ -1,4 +1,4 @@
-import { inject, injectable } from 'inversify';
+import { injectable } from 'inversify';
 import { msg, str } from '@lit/localize';
 import { decorators } from '@state/container';
 import programs from '@configs/programs.json';
@@ -9,7 +9,7 @@ import type { IFormatter } from '@shared/interfaces/formatter';
 import type { IMainframeState } from '@state/mainframe-state/interfaces/mainframe-state';
 import { TYPES } from '@state/types';
 import { Feature, ProgramsEvent, PurchaseType } from '@shared/types';
-import { calculateQualityPower } from '@shared/helpers';
+import { calculateTierPower } from '@shared/helpers';
 import { binarySearchDecimal, moveElementInArray } from '@shared/helpers';
 import { PROGRAM_TEXTS } from '@texts/programs';
 import { IMainframeProgramsState, IMainframeProgramsSerializedState } from './interfaces';
@@ -20,61 +20,52 @@ const { lazyInject } = decorators;
 
 @injectable()
 export class MainframeProgramsState implements IMainframeProgramsState {
-  private UI_EVENTS = {
-    OWNED_PROGRAMS_UPDATED: Symbol('OWNED_PROGRAMS_UPDATED'),
-  };
-
   @lazyInject(TYPES.MainframeState)
   private _mainframeState!: IMainframeState;
 
-  private _stateUiConnector: IStateUIConnector;
-  private _globalState: IGlobalState;
-  private _messageLogState: IMessageLogState;
-  private _formatter: IFormatter;
+  @lazyInject(TYPES.StateUIConnector)
+  private _stateUiConnector!: IStateUIConnector;
+
+  @lazyInject(TYPES.GlobalState)
+  private _globalState!: IGlobalState;
+
+  @lazyInject(TYPES.MessageLogState)
+  private _messageLogState!: IMessageLogState;
+
+  @lazyInject(TYPES.Formatter)
+  private _formatter!: IFormatter;
 
   private _programsList: IProgram[];
   private _ownedPrograms: Map<ProgramName, IProgram>;
 
-  constructor(
-    @inject(TYPES.StateUIConnector) _stateUiConnector: IStateUIConnector,
-    @inject(TYPES.GlobalState) _globalState: IGlobalState,
-    @inject(TYPES.MessageLogState) _messageLogState: IMessageLogState,
-    @inject(TYPES.Formatter) _formatter: IFormatter,
-  ) {
-    this._stateUiConnector = _stateUiConnector;
-    this._globalState = _globalState;
-    this._messageLogState = _messageLogState;
-    this._formatter = _formatter;
-
+  constructor() {
     this._programsList = [];
     this._ownedPrograms = new Map();
 
-    this._stateUiConnector.registerEvents(this.UI_EVENTS);
+    this._stateUiConnector.registerEventEmitter(this, ['_programsList']);
   }
 
-  getProgramCost(name: ProgramName, quality: number, level: number): number {
+  getProgramCost(name: ProgramName, tier: number, level: number): number {
     const programData = programs[name];
 
-    return (
-      calculateQualityPower(level, quality, programData.cost) / this._globalState.multipliers.codeBase.totalMultiplier
-    );
+    return calculateTierPower(level, tier, programData.cost) / this._globalState.multipliers.codeBase.totalMultiplier;
   }
 
-  purchaseProgram(name: ProgramName, quality: number, level: number): boolean {
-    if (!this._globalState.unlockedFeatures.isFeatureUnlocked(Feature.mainframeUpgrades)) {
+  purchaseProgram(name: ProgramName, tier: number, level: number): boolean {
+    if (!this._globalState.unlockedFeatures.isFeatureUnlocked(Feature.mainframePrograms)) {
       return false;
     }
 
-    if (!this._globalState.availableItems.programs.isItemAvailable(name, quality, level)) {
+    if (!this._globalState.availableItems.programs.isItemAvailable(name, tier, level)) {
       return false;
     }
 
-    const cost = this.getProgramCost(name, quality, level);
+    const cost = this.getProgramCost(name, tier, level);
 
     const bought = this._globalState.money.purchase(
       cost,
       PurchaseType.mainframePrograms,
-      this.handlePurchaseProgram(name, quality, level),
+      this.handlePurchaseProgram(name, tier, level),
     );
 
     return bought;
@@ -94,7 +85,7 @@ export class MainframeProgramsState implements IMainframeProgramsState {
       return false;
     }
 
-    return this.purchaseProgram(name, existingProgram.quality, level);
+    return this.purchaseProgram(name, existingProgram.tier, level);
   }
 
   upgradeMaxAllPrograms(): void {
@@ -106,8 +97,6 @@ export class MainframeProgramsState implements IMainframeProgramsState {
   }
 
   listOwnedPrograms(): IProgram[] {
-    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.OWNED_PROGRAMS_UPDATED);
-
     return this._programsList;
   }
 
@@ -119,12 +108,6 @@ export class MainframeProgramsState implements IMainframeProgramsState {
     for (const program of this._ownedPrograms.values()) {
       program.autoUpgradeEnabled = active;
     }
-
-    this.requestUiUpdate();
-  }
-
-  requestUiUpdate() {
-    this._stateUiConnector.enqueueEvent(this.UI_EVENTS.OWNED_PROGRAMS_UPDATED);
   }
 
   moveProgram(programName: ProgramName, newPosition: number) {
@@ -135,8 +118,6 @@ export class MainframeProgramsState implements IMainframeProgramsState {
     }
 
     moveElementInArray(this._programsList, oldPosition, newPosition);
-
-    this.requestUiUpdate();
   }
 
   async startNewState(): Promise<void> {
@@ -145,8 +126,6 @@ export class MainframeProgramsState implements IMainframeProgramsState {
     for (const programName of this._globalState.scenario.currentValues.mainframeSoftware.startingPrograms) {
       this.addProgram(programName, 0, 0);
     }
-
-    this.requestUiUpdate();
   }
 
   async deserialize(serializedState: IMainframeProgramsSerializedState): Promise<void> {
@@ -157,8 +136,6 @@ export class MainframeProgramsState implements IMainframeProgramsState {
       this._ownedPrograms.set(programParameters.name, program);
       this._programsList.push(program);
     });
-
-    this.requestUiUpdate();
   }
 
   serialize(): IMainframeProgramsSerializedState {
@@ -171,15 +148,15 @@ export class MainframeProgramsState implements IMainframeProgramsState {
     return program.serialize();
   };
 
-  private addProgram(name: ProgramName, quality: number, level: number): void {
+  private addProgram(name: ProgramName, tier: number, level: number): void {
     const existingProgram = this._ownedPrograms.get(name);
 
     if (existingProgram) {
-      existingProgram.upgrade(quality, level);
+      existingProgram.upgrade(tier, level);
     } else {
       const newProgram = this._mainframeState.programFactory.makeProgram({
         name,
-        quality,
+        tier: tier,
         level,
         autoUpgradeEnabled: true,
       });
@@ -191,21 +168,17 @@ export class MainframeProgramsState implements IMainframeProgramsState {
         this._globalState.unlockedFeatures.unlockFeature(feature);
       }
     }
-
-    this.requestUiUpdate();
   }
 
-  private handlePurchaseProgram = (name: ProgramName, quality: number, level: number) => () => {
-    this.addProgram(name, quality, level);
+  private handlePurchaseProgram = (name: ProgramName, tier: number, level: number) => () => {
+    this.addProgram(name, tier, level);
 
     const programTitle = PROGRAM_TEXTS[name].title();
     const formattedLevel = this._formatter.formatLevel(level);
-    const formattedQuality = this._formatter.formatQuality(quality);
+    const formattedTier = this._formatter.formatTier(tier);
     this._messageLogState.postMessage(
       ProgramsEvent.programPurchased,
-      msg(
-        str`Program "${programTitle}" with quality ${formattedQuality} and level ${formattedLevel} has been purchased`,
-      ),
+      msg(str`Program "${programTitle}" with tier ${formattedTier} and level ${formattedLevel} has been purchased`),
     );
   };
 
@@ -219,13 +192,11 @@ export class MainframeProgramsState implements IMainframeProgramsState {
   }
 
   private handleCheckProgramUpgrade = (existingProgram: IProgram) => (level: number) => {
-    if (
-      !this._globalState.availableItems.programs.isItemAvailable(existingProgram.name, existingProgram.quality, level)
-    ) {
+    if (!this._globalState.availableItems.programs.isItemAvailable(existingProgram.name, existingProgram.tier, level)) {
       return false;
     }
 
-    const cost = this.getProgramCost(existingProgram.name, existingProgram.quality, level);
+    const cost = this.getProgramCost(existingProgram.name, existingProgram.tier, level);
 
     return cost <= this._globalState.money.money;
   };

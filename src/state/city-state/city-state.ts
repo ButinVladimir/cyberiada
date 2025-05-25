@@ -1,36 +1,34 @@
-import { injectable, inject } from 'inversify';
+import { injectable } from 'inversify';
 import scenarios from '@configs/scenarios.json';
 import type { IGlobalState } from '@state/global-state/interfaces/global-state';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import { IMapGeneratorResult } from '@workers/map-generator/interfaces';
 import { TYPES } from '@state/types';
+import { decorators } from '@state/container';
 import { ICityState, ICitySerializedState, IDistrictState, IDistrictSerializedState } from './interfaces';
 import { DistrictState } from './district-state';
 import { DistrictUnlockState } from './types';
 
+const { lazyInject } = decorators;
+
 @injectable()
 export class CityState implements ICityState {
-  private UI_EVENTS = {};
+  @lazyInject(TYPES.GlobalState)
+  private _globalState!: IGlobalState;
 
-  private _globalState: IGlobalState;
-  private _stateUiConnector: IStateUIConnector;
+  @lazyInject(TYPES.StateUIConnector)
+  private _stateUiConnector!: IStateUIConnector;
 
   private _layout: number[][];
   private _districts: Map<number, IDistrictState>;
   private _availableDistricts: IDistrictState[];
 
-  constructor(
-    @inject(TYPES.GlobalState) _globalState: IGlobalState,
-    @inject(TYPES.StateUIConnector) _stateUiConnector: IStateUIConnector,
-  ) {
-    this._globalState = _globalState;
-    this._stateUiConnector = _stateUiConnector;
-
+  constructor() {
     this._layout = [];
     this._districts = new Map();
     this._availableDistricts = [];
 
-    this._stateUiConnector.registerEvents(this.UI_EVENTS);
+    this._stateUiConnector.registerEventEmitter(this, []);
   }
 
   get districtsCount() {

@@ -1,11 +1,11 @@
 import { html } from 'lit';
 import { map } from 'lit/directives/map.js';
-import { localized, msg } from '@lit/localize';
+import { localized } from '@lit/localize';
 import { customElement } from 'lit/decorators.js';
-import { BaseComponent } from '@shared/base-component';
 import { STATISTIC_HINTS, STATISTIC_PAGE_TEXTS } from '@components/statistics-page/constants';
 import { IDistrictState } from '@state/city-state';
-import { HINT_ICON } from '@shared/styles';
+import { BaseComponent, HINT_ICON } from '@shared/index';
+import { COMMON_TEXTS } from '@texts/index';
 import { StatisticsSynchronizationController } from './controller';
 import { statisticsPanelContentStyle } from '../../../../styles';
 
@@ -31,7 +31,7 @@ export class StatisticsSynchronization extends BaseComponent {
     return html`
       <sl-details>
         <h4 class="title" slot="summary">
-          ${msg('Synchronization')}
+          ${COMMON_TEXTS.synchronization()}
 
           <sl-tooltip>
             <span slot="content"> ${STATISTIC_HINTS.synchronization()} </span>

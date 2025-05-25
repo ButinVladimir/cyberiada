@@ -2,13 +2,18 @@ import {
   IMultipliersGrowthState,
   IDevelopmentGrowthState,
   IMoneyGrowthState,
-  IProgramCompletionSpeedState,
+  IConnectivityGrowthState,
+  IDistrictTierPointsGrowthState,
+  IExperienceGrowthState,
 } from './parameters';
 
 export interface IGrowthState {
   money: IMoneyGrowthState;
   development: IDevelopmentGrowthState;
   multipliers: IMultipliersGrowthState;
-  programCompletionSpeed: IProgramCompletionSpeedState;
-  recalculateGrowth(): void;
+  connectivity: IConnectivityGrowthState;
+  districtTierPoints: IDistrictTierPointsGrowthState;
+  experience: IExperienceGrowthState;
+  resetValues(): void;
+  clearValues(): void;
 }

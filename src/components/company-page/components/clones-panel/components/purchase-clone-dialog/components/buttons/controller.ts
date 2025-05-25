@@ -1,5 +1,5 @@
-import { BaseController } from '@shared/base-controller';
-import { CloneTemplateName } from '@state/company-state/states/clone-factory/types';
+import { BaseController } from '@shared/index';
+import { CloneTemplateName } from '@state/company-state';
 
 export class PurchaseCloneDialogButtonsController extends BaseController {
   get money(): number {
@@ -14,15 +14,15 @@ export class PurchaseCloneDialogButtonsController extends BaseController {
     return this.companyState.clones.availableSynchronization;
   }
 
-  getCloneCost(cloneTemplateName: CloneTemplateName, quality: number, level: number): number {
-    return this.companyState.clones.getCloneCost(cloneTemplateName, quality, level);
+  getCloneCost(cloneTemplateName: CloneTemplateName, tier: number, level: number): number {
+    return this.companyState.clones.getCloneCost(cloneTemplateName, tier, level);
   }
 
-  getCloneSynchronization(cloneTemplateName: CloneTemplateName, quality: number): number {
-    return this.companyState.clones.getCloneSynchronization(cloneTemplateName, quality);
+  getCloneSynchronization(cloneTemplateName: CloneTemplateName, tier: number): number {
+    return this.companyState.clones.getCloneSynchronization(cloneTemplateName, tier);
   }
 
-  isCloneAvailable(cloneTemplate: CloneTemplateName, quality: number, level: number): boolean {
-    return this.globalState.availableItems.cloneTemplates.isItemAvailable(cloneTemplate, quality, level);
+  isCloneAvailable(cloneTemplate: CloneTemplateName, tier: number, level: number): boolean {
+    return this.globalState.availableItems.cloneTemplates.isItemAvailable(cloneTemplate, tier, level);
   }
 }

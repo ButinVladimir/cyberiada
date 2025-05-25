@@ -7,3 +7,5 @@ export * from './deal-maker';
 export * from './predictive-computator';
 export * from './mainframe-hardware-autobuyer';
 export * from './mainframe-programs-autobuyer';
+export * from './clone-level-autoupgrader';
+export * from './peer-reviewer';

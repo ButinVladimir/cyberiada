@@ -1,10 +1,13 @@
-import { css, html } from 'lit';
+import { css, html, nothing } from 'lit';
 import { localized } from '@lit/localize';
+import { consume, provide } from '@lit/context';
 import { customElement, property } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { HINT_ICON, SCREEN_WIDTH_POINTS, dragIconStyle, hintIconStyle } from '@shared/styles';
 import { SIDEJOB_TEXTS } from '@texts/index';
 import { SidejobName } from '@state/company-state';
+import { sidejobNameContext } from './contexts';
+import { districtIndexContext } from '../../../../contexts';
 
 @localized()
 @customElement('ca-city-district-sidejobs-list-item')
@@ -48,19 +51,21 @@ export class CityDistrictSidejobsListItem extends BaseComponent {
     `,
   ];
 
-  @property({
-    attribute: 'district-index',
-    type: Number,
-  })
-  districtIndex!: number;
-
+  @provide({ context: sidejobNameContext })
   @property({
     attribute: 'sidejob-name',
     type: String,
   })
   sidejobName!: SidejobName;
 
+  @consume({ context: districtIndexContext, subscribe: true })
+  private _districtIndex?: number;
+
   render() {
+    if (this._districtIndex === undefined) {
+      return nothing;
+    }
+
     return html`
       <div class="sidejob">
         <div class="description">
@@ -77,11 +82,7 @@ export class CityDistrictSidejobsListItem extends BaseComponent {
       </div>
 
       <div class="progress-bar">
-        <ca-city-district-sidejobs-list-item-unlock-progress
-          district-index=${this.districtIndex}
-          sidejob-name=${this.sidejobName}
-        >
-        </ca-city-district-sidejobs-list-item-unlock-progress>
+        <ca-city-district-sidejobs-list-item-unlock-progress> </ca-city-district-sidejobs-list-item-unlock-progress>
       </div>
     `;
   }

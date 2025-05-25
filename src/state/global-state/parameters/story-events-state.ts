@@ -14,10 +14,6 @@ const { lazyInject } = decorators;
 
 @injectable()
 export class StoryEventsState implements IStoryEventsState {
-  private UI_EVENTS = {
-    STORY_EVENT_REACHED: Symbol('STORY_EVENT_REACHED'),
-  };
-
   @lazyInject(TYPES.StateUIConnector)
   private _stateUiConnector!: IStateUIConnector;
 
@@ -28,7 +24,7 @@ export class StoryEventsState implements IStoryEventsState {
   private _globalState!: IGlobalState;
 
   constructor() {
-    this._stateUiConnector.registerEvents(this.UI_EVENTS);
+    this._stateUiConnector.registerEventEmitter(this, []);
   }
 
   visitEventsByLevel(prevLevel: number) {
@@ -36,8 +32,6 @@ export class StoryEventsState implements IStoryEventsState {
   }
 
   listGoals(): IStoryGoal[] {
-    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.STORY_EVENT_REACHED);
-
     const availableGoals: IStoryGoal[] = [];
     const storyEvents = this._globalState.scenario.currentValues.storyEvents;
     let state: StoryGoalState = StoryGoalState.passed;
@@ -86,7 +80,5 @@ export class StoryEventsState implements IStoryEventsState {
         });
       }
     }
-
-    this._stateUiConnector.enqueueEvent(this.UI_EVENTS.STORY_EVENT_REACHED);
   }
 }

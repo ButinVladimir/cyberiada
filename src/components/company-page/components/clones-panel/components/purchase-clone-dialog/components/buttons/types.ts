@@ -1,7 +1,5 @@
 export enum PurchaseCloneDialogWarning {
-  selectTemplate = 'selectTemplate',
-  enterCloneName = 'enterCloneName',
-  notEnoughSynchronization = 'notEnoughSynchronization',
+  other = 'other',
   notEnoughMoney = 'notEnoughMoney',
   willBeAvailableIn = 'willBeAvailableIn',
 }

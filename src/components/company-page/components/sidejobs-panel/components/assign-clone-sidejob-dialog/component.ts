@@ -279,7 +279,7 @@ Sidejobs availability depends on unlocked features and district connectivity.`)}
         new ConfirmationAlertOpenEvent(
           SidejobAlert.replaceSidejob,
           msg(
-            str`Are you sure want to replace sidejob for clone "${cloneName}"? This will stop their current sidejob "${existingSidejobName}" in district "${districtName}".`,
+            str`Are you sure want to replace sidejob for clone "${cloneName}"? This will cancel their current sidejob "${existingSidejobName}" in district "${districtName}".`,
           ),
         ),
       );

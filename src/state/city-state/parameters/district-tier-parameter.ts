@@ -14,10 +14,6 @@ import { IDistrictState, IDistrictTierParameter, IDistrictTierSerializedParamete
 const { lazyInject } = decorators;
 
 export class DistrictTierParameter implements IDistrictTierParameter {
-  private UI_EVENTS = {
-    DISTRICT_TIER_CHANGED: Symbol('DISTRICT_TIER_CHANGED'),
-  };
-
   @lazyInject(TYPES.CompanyState)
   private _companyState!: ICompanyState;
 
@@ -42,12 +38,10 @@ export class DistrictTierParameter implements IDistrictTierParameter {
     this._tier = 0;
     this._points = 0;
 
-    this._stateUIConnector.registerEvents(this.UI_EVENTS);
+    this._stateUIConnector.registerEventEmitter(this, ['_tier']);
   }
 
   get tier(): number {
-    this._stateUIConnector.connectEventHandler(this.UI_EVENTS.DISTRICT_TIER_CHANGED);
-
     return this._tier;
   }
 
@@ -59,43 +53,41 @@ export class DistrictTierParameter implements IDistrictTierParameter {
     this._points += delta;
   }
 
+  getTierRequirements(tier: number): number {
+    const districtTypeInfo = this._district.template;
+    const { base, multiplier } = districtTypeInfo.parameters.districtTierPoints.requirements;
+
+    return calculateGeometricProgressionSum(tier, multiplier, base);
+  }
+
   recalculate(): void {
     const newLevel = this.calculateNewLevel();
 
     if (newLevel > this._tier) {
       this._tier = newLevel;
 
-      const formattedTier = this._formatter.formatQuality(this._tier);
+      const formattedTier = this._formatter.formatTier(this._tier);
       this._messageLogState.postMessage(
         CityEvent.districtTierIncreased,
-        msg(str`District ${DISTRICT_NAMES[this._district.name]()} tier has been increased to ${formattedTier}`),
+        msg(str`District "${DISTRICT_NAMES[this._district.name]()}" tier has been increased to ${formattedTier}`),
       );
 
       this._globalState.synchronization.requestRecalculation();
       this._companyState.requestReassignment();
-
-      this._stateUIConnector.enqueueEvent(this.UI_EVENTS.DISTRICT_TIER_CHANGED);
     }
   }
 
   setTier(tier: number): void {
-    const districtTypeInfo = this._district.template;
-    const { base, multiplier } = districtTypeInfo.parameters.districtTierPoints.requirements;
-
     this._tier = tier;
-    this._points = calculateGeometricProgressionSum(tier - 1, multiplier, base);
+    this._points = this.getTierRequirements(tier - 1);
 
     this._globalState.synchronization.requestRecalculation();
     this._companyState.requestReassignment();
-
-    this._stateUIConnector.enqueueEvent(this.UI_EVENTS.DISTRICT_TIER_CHANGED);
   }
 
   async deserialize(serializedState: IDistrictTierSerializedParameter): Promise<void> {
     this._points = serializedState.points;
     this._tier = this.calculateNewLevel();
-
-    this._stateUIConnector.enqueueEvent(this.UI_EVENTS.DISTRICT_TIER_CHANGED);
   }
 
   serialize(): IDistrictTierSerializedParameter {
@@ -105,7 +97,7 @@ export class DistrictTierParameter implements IDistrictTierParameter {
   }
 
   removeAllEventListeners(): void {
-    this._stateUIConnector.unregisterEvents(this.UI_EVENTS);
+    this._stateUIConnector.unregisterEventEmitter(this);
   }
 
   private calculateNewLevel(): number {

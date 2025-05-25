@@ -1,24 +1,24 @@
 import clamp from 'lodash/clamp';
-import { IExponent, ILinear, IQualityExponent, IQualityLinear } from './interfaces/formulas';
+import { IExponent, ILinear, ITierExponent, ITierLinear } from './interfaces/formulas';
 
 export const calculatePower = (exponent: number, params: IExponent): number => {
   return params.multiplier * Math.pow(params.base, exponent);
 };
 
-export const calculateQualityPower = (exponent: number, quality: number, params: IQualityExponent): number => {
-  return calculatePower(exponent, params) * calculateQualityMultiplier(quality, params.baseQuality);
+export const calculateTierPower = (exponent: number, tier: number, params: ITierExponent): number => {
+  return calculatePower(exponent, params) * calculateTierMultiplier(tier, params.baseTier);
 };
 
 export const calculateLinear = (level: number, params: ILinear): number => {
   return params.base + level * params.multiplier;
 };
 
-export const calculateQualityLinear = (level: number, quality: number, params: IQualityLinear): number => {
-  return calculateLinear(level, params) * calculateQualityMultiplier(quality, params.baseQuality);
+export const calculateTierLinear = (level: number, tier: number, params: ITierLinear): number => {
+  return calculateLinear(level, params) * calculateTierMultiplier(tier, params.baseTier);
 };
 
-export const calculateQualityMultiplier = (quality: number, base: number): number => {
-  return Math.pow(base, quality);
+export const calculateTierMultiplier = (tier: number, base: number): number => {
+  return Math.pow(base, tier);
 };
 
 export const binarySearchDecimal = (

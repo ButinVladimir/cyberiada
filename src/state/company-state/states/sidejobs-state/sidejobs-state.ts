@@ -25,10 +25,6 @@ import { DISTRICT_NAMES, SIDEJOB_TEXTS } from '@/texts';
 const { lazyInject } = decorators;
 
 export class SidejobsState implements ISidejobsState {
-  private UI_EVENTS = {
-    SIDEJOBS_UPDATED: Symbol('SIDEJOBS_UPDATED'),
-  };
-
   @lazyInject(TYPES.GlobalState)
   private _globalState!: IGlobalState;
 
@@ -53,7 +49,7 @@ export class SidejobsState implements ISidejobsState {
     this._sidejobCloneIdMap = new Map<string, ISidejob>();
     this._sidejobMap = new Map<string, ISidejob>();
 
-    this._stateUIConnector.registerEvents(this.UI_EVENTS);
+    this._stateUIConnector.registerEventEmitter(this, ['_sidejobsList']);
   }
 
   getConnectivityRequirement(sidejobName: SidejobName): number {
@@ -63,8 +59,6 @@ export class SidejobsState implements ISidejobsState {
   }
 
   listSidejobs(): ISidejob[] {
-    this._stateUIConnector.connectEventHandler(this.UI_EVENTS.SIDEJOBS_UPDATED);
-
     return this._sidejobsList;
   }
 
@@ -129,8 +123,6 @@ export class SidejobsState implements ISidejobsState {
       ),
     );
 
-    this._stateUIConnector.enqueueEvent(this.UI_EVENTS.SIDEJOBS_UPDATED);
-
     return true;
   }
 
@@ -156,24 +148,12 @@ export class SidejobsState implements ISidejobsState {
     }
 
     this._companyState.requestReassignment();
-
-    this._stateUIConnector.enqueueEvent(this.UI_EVENTS.SIDEJOBS_UPDATED);
   }
 
   cancelAllSidejobs(): void {
-    for (const sidejob of this._sidejobsList) {
-      sidejob.removeAllEventListeners();
-    }
-
-    this._sidejobsList.length = 0;
-    this._sidejobCloneIdMap.clear();
-    this._sidejobMap.clear();
-
-    this._companyState.requestReassignment();
+    this.clearSidejobs();
 
     this._messageLogState.postMessage(SidejobsEvent.allSidejobsCancelled, msg('All sidejobs have been cancelled'));
-
-    this._stateUIConnector.enqueueEvent(this.UI_EVENTS.SIDEJOBS_UPDATED);
   }
 
   perform(): void {
@@ -199,11 +179,11 @@ export class SidejobsState implements ISidejobsState {
   }
 
   async startNewState(): Promise<void> {
-    this.cancelAllSidejobs();
+    this.clearSidejobs();
   }
 
   async deserialize(serializedState: ISidejobsSerializedState): Promise<void> {
-    this.cancelAllSidejobs();
+    this.clearSidejobs();
 
     serializedState.sidejobs.forEach((serializedSidejob) => {
       const sidejob = this.makeSidejob(serializedSidejob);
@@ -232,5 +212,17 @@ export class SidejobsState implements ISidejobsState {
     this._sidejobsList.push(sidejob);
     this._sidejobMap.set(sidejob.id, sidejob);
     this._sidejobCloneIdMap.set(sidejob.assignedClone!.id, sidejob);
+  }
+
+  private clearSidejobs() {
+    for (const sidejob of this._sidejobsList) {
+      sidejob.removeAllEventListeners();
+    }
+
+    this._sidejobsList.length = 0;
+    this._sidejobCloneIdMap.clear();
+    this._sidejobMap.clear();
+
+    this._companyState.requestReassignment();
   }
 }

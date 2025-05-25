@@ -15,10 +15,6 @@ const { lazyInject } = decorators;
 
 @injectable()
 export class DevelopmentState implements IDevelopmentState {
-  private UI_EVENTS = {
-    DEVELOPMENT_LEVEL_CHANGED: Symbol('DEVELOPMENT_LEVEL_CHANGED'),
-  };
-
   @lazyInject(TYPES.StateUIConnector)
   private _stateUiConnector!: IStateUIConnector;
 
@@ -40,7 +36,7 @@ export class DevelopmentState implements IDevelopmentState {
     this._level = 0;
     this._income = new Map<IncomeSource, number>();
 
-    this._stateUiConnector.registerEvents(this.UI_EVENTS);
+    this._stateUiConnector.registerEventEmitter(this, ['_level']);
   }
 
   get points() {
@@ -48,8 +44,6 @@ export class DevelopmentState implements IDevelopmentState {
   }
 
   get level() {
-    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.DEVELOPMENT_LEVEL_CHANGED);
-
     return this._level;
   }
 
@@ -88,7 +82,6 @@ export class DevelopmentState implements IDevelopmentState {
         msg(str`Development level ${formattedLevel} has been reached`),
       );
       this._globalState.storyEvents.visitEventsByLevel(prevLevel);
-      this._stateUiConnector.enqueueEvent(this.UI_EVENTS.DEVELOPMENT_LEVEL_CHANGED);
     }
   }
 

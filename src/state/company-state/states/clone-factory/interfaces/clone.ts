@@ -7,11 +7,13 @@ export interface IClone {
   name: string;
   templateName: CloneTemplateName;
   experience: number;
+  tier: number;
   level: number;
-  quality: number;
   autoUpgradeEnabled: boolean;
+  experienceMultiplier: number;
+  purchaseLevelUpgrade(level: number): boolean;
+  upgradeMaxLevel(): boolean;
   increaseExperience(delta: number): void;
-  earnExperience(delta: number): void;
   getLevelRequirements(level: number): number;
   getBaseAttributeValue(attribute: Attribute): number;
   getTotalAttributeValue(attribute: Attribute): number;

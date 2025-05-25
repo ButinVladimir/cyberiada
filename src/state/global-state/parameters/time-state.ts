@@ -15,8 +15,6 @@ const { lazyInject } = decorators;
 
 @injectable()
 export class TimeState implements ITimeState {
-  private UI_EVENTS = {};
-
   @lazyInject(TYPES.StateUIConnector)
   private _stateUiConnector!: IStateUIConnector;
 
@@ -45,7 +43,7 @@ export class TimeState implements ITimeState {
     this._gameTime = 0;
     this._gameTimeTotal = 0;
 
-    this._stateUiConnector.registerEvents(this.UI_EVENTS);
+    this._stateUiConnector.registerEventEmitter(this, []);
   }
 
   get lastUpdateTime() {

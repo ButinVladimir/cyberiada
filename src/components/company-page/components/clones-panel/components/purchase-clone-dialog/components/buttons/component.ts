@@ -1,11 +1,10 @@
-import { css, html } from 'lit';
+import { html, nothing } from 'lit';
 import { customElement, queryAll } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { msg, localized } from '@lit/localize';
 import { consume } from '@lit/context';
 import SlButton from '@shoelace-style/shoelace/dist/components/button/button.component.js';
-import { BaseComponent } from '@shared/base-component';
-import { warningStyle } from '@shared/styles';
+import { BaseComponent, dialogButtonsStyle, warningStyle } from '@shared/index';
 import { COMMON_TEXTS } from '@texts/index';
 import { type IClone } from '@state/company-state';
 import { PurchaseCloneDialogButtonsController } from './controller';
@@ -16,26 +15,7 @@ import { PurchaseCloneDialogWarning } from './types';
 @localized()
 @customElement('ca-purchase-clone-dialog-buttons')
 export class PurchaseCloneDialogButtons extends BaseComponent {
-  static styles = [
-    warningStyle,
-    css`
-      p.warning {
-        display: none;
-        margin-top: var(--sl-spacing-3x-small);
-        margin-bottom: 0;
-      }
-
-      p.warning.visible {
-        display: block;
-      }
-
-      div.buttons {
-        display: flex;
-        justify-content: flex-end;
-        gap: var(--sl-spacing-medium);
-      }
-    `,
-  ];
+  static styles = [warningStyle, dialogButtonsStyle];
 
   hasPartialUpdate = true;
 
@@ -51,18 +31,10 @@ export class PurchaseCloneDialogButtons extends BaseComponent {
 
   private _availableTimeRef = createRef<HTMLSpanElement>();
 
-  private _warning?: PurchaseCloneDialogWarning;
-
   constructor() {
     super();
 
     this._controller = new PurchaseCloneDialogButtonsController(this);
-  }
-
-  performUpdate() {
-    this._warning = this.selectInitialWarning();
-
-    super.performUpdate();
   }
 
   render() {
@@ -103,47 +75,37 @@ export class PurchaseCloneDialogButtons extends BaseComponent {
 
   private renderWarnings = () => {
     return html`
-      <p class="warning" data-warning=${PurchaseCloneDialogWarning.selectTemplate}>
-        ${msg('Select clone template name')}
-      </p>
-      <p class="warning" data-warning=${PurchaseCloneDialogWarning.enterCloneName}>${msg('Enter clone name')}</p>
-      <p class="warning" data-warning=${PurchaseCloneDialogWarning.notEnoughSynchronization}>
-        ${msg('Not enough synchronization')}
-      </p>
       <p class="warning" data-warning=${PurchaseCloneDialogWarning.notEnoughMoney}>${COMMON_TEXTS.notEnoughMoney()}</p>
       <p class="warning" data-warning=${PurchaseCloneDialogWarning.willBeAvailableIn}>
-        ${COMMON_TEXTS.willBeAvailableInNew(html`<span ${ref(this._availableTimeRef)}></span>`)}
+        ${COMMON_TEXTS.willBeAvailableIn(html`<span ${ref(this._availableTimeRef)}></span>`)}
       </p>
+      <p class="warning" data-warning=${PurchaseCloneDialogWarning.other}>${this.renderOtherWarnings()}</p>
     `;
   };
 
-  private selectInitialWarning(): PurchaseCloneDialogWarning | undefined {
+  private renderOtherWarnings = () => {
     if (!this._clone) {
-      return PurchaseCloneDialogWarning.selectTemplate;
+      return msg('Select clone template name');
     }
 
     if (!this._clone.name) {
-      return PurchaseCloneDialogWarning.enterCloneName;
+      return msg('Enter clone name');
     }
 
-    const synchronization = this._controller.getCloneSynchronization(this._clone.templateName, this._clone.quality);
+    const synchronization = this._controller.getCloneSynchronization(this._clone.templateName, this._clone.tier);
     if (synchronization > this._controller.availableSynchronization) {
-      return PurchaseCloneDialogWarning.notEnoughSynchronization;
+      return msg('Not enough synchronization');
     }
 
-    return undefined;
-  }
+    return nothing;
+  };
 
   private selectWarning(): PurchaseCloneDialogWarning | undefined {
     if (!this._clone) {
-      return PurchaseCloneDialogWarning.selectTemplate;
+      return PurchaseCloneDialogWarning.other;
     }
 
-    if (this._warning) {
-      return this._warning;
-    }
-
-    const cost = this._controller.getCloneCost(this._clone.templateName, this._clone.quality, this._clone.level);
+    const cost = this._controller.getCloneCost(this._clone.templateName, this._clone.tier, this._clone.level);
     const moneyGrowth = this._controller.moneyGrowth;
     const moneyDiff = cost - this._controller.money;
 
@@ -155,7 +117,7 @@ export class PurchaseCloneDialogButtons extends BaseComponent {
       return PurchaseCloneDialogWarning.willBeAvailableIn;
     }
 
-    return this._warning;
+    return PurchaseCloneDialogWarning.other;
   }
 
   private updateAvailabilityTimer(): void {
@@ -167,7 +129,7 @@ export class PurchaseCloneDialogButtons extends BaseComponent {
       return;
     }
 
-    const cost = this._controller.getCloneCost(this._clone.templateName, this._clone.quality, this._clone.level);
+    const cost = this._controller.getCloneCost(this._clone.templateName, this._clone.tier, this._clone.level);
     const moneyGrowth = this._controller.moneyGrowth;
     const moneyDiff = cost - this._controller.money;
 
@@ -191,11 +153,11 @@ export class PurchaseCloneDialogButtons extends BaseComponent {
 
     const { money } = this._controller;
 
-    const cost = this._controller.getCloneCost(this._clone.templateName, this._clone.quality, this._clone.level);
-    const synchronization = this._controller.getCloneSynchronization(this._clone.templateName, this._clone.quality);
+    const cost = this._controller.getCloneCost(this._clone.templateName, this._clone.tier, this._clone.level);
+    const synchronization = this._controller.getCloneSynchronization(this._clone.templateName, this._clone.tier);
     const cloneAvailable = this._controller.isCloneAvailable(
       this._clone.templateName,
-      this._clone.quality,
+      this._clone.tier,
       this._clone.level,
     );
 

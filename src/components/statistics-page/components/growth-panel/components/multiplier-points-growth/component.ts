@@ -1,11 +1,11 @@
 import { html } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
+import { map } from 'lit/directives/map.js';
 import { localized } from '@lit/localize';
-import { customElement, property } from 'lit/decorators.js';
-import { BaseComponent } from '@shared/base-component';
-import type { PointsMultiplierType } from '@shared/types';
+import { customElement, property, queryAll } from 'lit/decorators.js';
+import { BaseComponent, HINT_ICON, type PointsMultiplierType } from '@shared/index';
 import { POINT_MULTIPLIER_HINTS, STATISTIC_PAGE_TEXTS } from '@components/statistics-page/constants';
-import { HINT_ICON } from '@shared/styles';
+import { IDistrictState } from '@state/city-state';
 import { StatisticsMultiplierPointsGrowthController } from './controller';
 import { statisticsPanelContentStyle } from '../../../../styles';
 import { MULTIPLIER_POINT_GROWTH_TITLES } from './constants';
@@ -25,6 +25,9 @@ export class StatisticsMultiplierPointsGrowth extends BaseComponent {
   private _controller: StatisticsMultiplierPointsGrowthController;
 
   private _programGrowthRef = createRef<HTMLSpanElement>();
+
+  @queryAll('span[data-district]')
+  private _districtValueNodes!: NodeListOf<HTMLSpanElement>;
 
   constructor() {
     super();
@@ -48,10 +51,19 @@ export class StatisticsMultiplierPointsGrowth extends BaseComponent {
         <div class="parameters-table">
           <span>${STATISTIC_PAGE_TEXTS.byPrograms()} </span>
           <span ${ref(this._programGrowthRef)}> </span>
+
+          ${map(this._controller.listAvailableDistricts(), this.renderDistrict)}
         </div>
       </sl-details>
     `;
   }
+
+  private renderDistrict = (districtState: IDistrictState) => {
+    return html`
+      <span> ${STATISTIC_PAGE_TEXTS.byDistrict(districtState.name)}</span>
+      <span data-district=${districtState.index}></span>
+    `;
+  };
 
   handlePartialUpdate = () => {
     const formatter = this._controller.formatter;
@@ -61,5 +73,12 @@ export class StatisticsMultiplierPointsGrowth extends BaseComponent {
 
       this._programGrowthRef.value.textContent = formatter.formatNumberFloat(growthByProgram);
     }
+
+    this._districtValueNodes.forEach((element) => {
+      const districtIndex = parseInt(element.dataset.district!);
+      const value = this._controller.getGrowthByDistrict(this.type, districtIndex);
+
+      element.textContent = formatter.formatNumberFloat(value);
+    });
   };
 }

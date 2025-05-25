@@ -1,58 +1,51 @@
 import programs from '@configs/programs.json';
-import { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
-import { IFormatter } from '@shared/interfaces/formatter';
-import { calculatePower } from '@shared/helpers';
-import { IGlobalState } from '@state/global-state/interfaces/global-state';
-import { IGrowthState } from '@state/growth-state/interfaces/growth-state';
-import { IMainframeState } from '@state/mainframe-state/interfaces/mainframe-state';
+import { type IStateUIConnector } from '@state/state-ui-connector';
+import { type IFormatter, calculatePower } from '@shared/index';
+import { type IGlobalState } from '@state/global-state';
+import { type IMainframeState } from '@state/mainframe-state';
 import { Feature } from '@shared/types';
+import { decorators } from '@state/container';
+import { TYPES } from '@state/types';
 import { ProgramName } from '../types';
-import { IMakeProgramParameters } from '../interfaces/make-program-parameters';
-import { IBaseProgramParameters } from '../interfaces/program-parameters/base-program-parameters';
+import { IBaseProgramParameters, IMakeProgramParameters } from '../interfaces';
 import { IProgram } from '../interfaces';
 
-export abstract class BaseProgram implements IProgram {
-  private UI_EVENTS = {
-    PROGRAM_UPGRADED: Symbol('PROGRAM_UPGRADED'),
-  };
+const { lazyInject } = decorators;
 
-  protected stateUiConnector: IStateUIConnector;
-  protected globalState: IGlobalState;
-  protected growthState: IGrowthState;
-  protected mainframeState: IMainframeState;
-  protected formatter: IFormatter;
+export abstract class BaseProgram implements IProgram {
+  @lazyInject(TYPES.StateUIConnector)
+  protected stateUiConnector!: IStateUIConnector;
+
+  @lazyInject(TYPES.GlobalState)
+  protected globalState!: IGlobalState;
+
+  @lazyInject(TYPES.MainframeState)
+  protected mainframeState!: IMainframeState;
+
+  @lazyInject(TYPES.Formatter)
+  protected formatter!: IFormatter;
 
   private _level!: number;
-  private _quality!: number;
+  private _tier!: number;
   private _autoUpgradeEnabled: boolean;
 
   abstract get name(): ProgramName;
 
   constructor(parameters: IBaseProgramParameters) {
-    this.stateUiConnector = parameters.stateUiConnector;
-    this.globalState = parameters.globalState;
-    this.growthState = parameters.growthState;
-    this.mainframeState = parameters.mainframeState;
-    this.formatter = parameters.formatter;
-
     this._level = parameters.level;
-    this._quality = parameters.quality;
+    this._tier = parameters.tier;
 
     this._autoUpgradeEnabled = parameters.autoUpgradeEnabled;
 
-    this.stateUiConnector.registerEvents(this.UI_EVENTS);
+    this.stateUiConnector.registerEventEmitter(this, ['_level', '_tier', '_autoUpgradeEnabled']);
   }
 
   get level() {
-    this.stateUiConnector.connectEventHandler(this.UI_EVENTS.PROGRAM_UPGRADED);
-
     return this._level;
   }
 
-  get quality() {
-    this.stateUiConnector.connectEventHandler(this.UI_EVENTS.PROGRAM_UPGRADED);
-
-    return this._quality;
+  get tier() {
+    return this._tier;
   }
 
   get completionPoints() {
@@ -62,16 +55,11 @@ export abstract class BaseProgram implements IProgram {
   }
 
   get autoUpgradeEnabled() {
-    this.stateUiConnector.connectEventHandler(this.UI_EVENTS.PROGRAM_UPGRADED);
-
     return this._autoUpgradeEnabled;
   }
 
   set autoUpgradeEnabled(value: boolean) {
     this._autoUpgradeEnabled = value;
-
-    this.stateUiConnector.enqueueEvent(this.UI_EVENTS.PROGRAM_UPGRADED);
-    this.mainframeState.programs.requestUiUpdate();
   }
 
   abstract get isAutoscalable(): boolean;
@@ -81,7 +69,7 @@ export abstract class BaseProgram implements IProgram {
   }
 
   get cores() {
-    return this.quality + 1;
+    return this.tier + 1;
   }
 
   get unlockFeatures() {
@@ -92,21 +80,19 @@ export abstract class BaseProgram implements IProgram {
 
   abstract perform(usedCores: number, usedRam: number): void;
 
-  upgrade(quality: number, level: number): void {
-    this._quality = quality;
+  upgrade(tier: number, level: number): void {
+    this._tier = tier;
     this._level = level;
 
     this.handlePerformanceUpdate();
     this.mainframeState.processes.requestUpdateProcesses();
-
-    this.stateUiConnector.enqueueEvent(this.UI_EVENTS.PROGRAM_UPGRADED);
   }
 
   calculateCompletionDelta(threads: number, usedCores: number, passedTime: number): number {
-    const currentSpeed = usedCores * this.growthState.programCompletionSpeed.totalMultiplier;
+    const currentSpeed = usedCores * this.mainframeState.processes.processCompletionSpeed.totalMultiplier;
     const allowedSpeed =
       (threads * this.completionPoints) /
-      this.globalState.scenario.currentValues.mainframeSoftware.minProgramCompletionTime;
+      this.globalState.scenario.currentValues.mainframeSoftware.minProcessCompletionTime;
 
     return passedTime * Math.min(currentSpeed, allowedSpeed);
   }
@@ -130,12 +116,12 @@ export abstract class BaseProgram implements IProgram {
     return {
       name: this.name,
       level: this.level,
-      quality: this.quality,
+      tier: this.tier,
       autoUpgradeEnabled: this.autoUpgradeEnabled,
     };
   }
 
   removeAllEventListeners() {
-    this.stateUiConnector.unregisterEvents(this.UI_EVENTS);
+    this.stateUiConnector.unregisterEventEmitter(this);
   }
 }

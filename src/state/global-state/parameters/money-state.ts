@@ -11,10 +11,6 @@ const { lazyInject } = decorators;
 
 @injectable()
 export class MoneyState implements IMoneyState {
-  private UI_EVENTS = {
-    MONEY_SPENT: Symbol('MONEY_SPENT'),
-  };
-
   @lazyInject(TYPES.StateUIConnector)
   private _stateUiConnector!: IStateUIConnector;
 
@@ -30,7 +26,7 @@ export class MoneyState implements IMoneyState {
     this._income = new Map<IncomeSource, number>();
     this._expenses = new Map<PurchaseType, number>();
 
-    this._stateUiConnector.registerEvents(this.UI_EVENTS);
+    this._stateUiConnector.registerEventEmitter(this, ['_expenses']);
   }
 
   get money() {
@@ -51,8 +47,6 @@ export class MoneyState implements IMoneyState {
       const prevExpenses = this.getExpenses(purchaseType);
       this._expenses.set(purchaseType, prevExpenses + cost);
 
-      this._stateUiConnector.enqueueEvent(this.UI_EVENTS.MONEY_SPENT);
-
       return true;
     }
 
@@ -64,8 +58,6 @@ export class MoneyState implements IMoneyState {
   }
 
   getExpenses(purchaseType: PurchaseType): number {
-    this._stateUiConnector.connectEventHandler(this.UI_EVENTS.MONEY_SPENT);
-
     return this._expenses.get(purchaseType) ?? 0;
   }
 

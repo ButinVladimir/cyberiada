@@ -13,6 +13,7 @@ export class OwnedProgramsListController extends BaseController {
 
   moveProgram(programName: ProgramName, newPosition: number) {
     this.mainframeState.programs.moveProgram(programName, newPosition);
+    this.host.requestUpdate();
   }
 
   upgradeMaxAllPrograms() {

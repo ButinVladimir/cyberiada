@@ -14,6 +14,7 @@ export const MESSAGE_EVENT_NAMES = {
   [ProgramsEvent.processDeleted]: () => msg('Process deleted'),
   [ProgramsEvent.allProcessesDeleted]: () => msg('All processes deleted'),
   [ClonesEvent.clonePurchased]: () => msg('Clone purchased'),
+  [ClonesEvent.cloneLevelUpgraded]: () => msg('Clone level upgraded'),
   [ClonesEvent.cloneDeleted]: () => msg('Clone deleted'),
   [ClonesEvent.allClonesDeleted]: () => msg('All clones deleted'),
   [ClonesEvent.cloneLevelReached]: () => msg('Clone reached next level'),

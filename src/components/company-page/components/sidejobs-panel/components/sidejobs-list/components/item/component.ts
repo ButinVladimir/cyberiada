@@ -163,8 +163,8 @@ export class SidejobsListItem extends BaseComponent {
     const districtName = DISTRICT_NAMES[this._sidejob.district.name]();
     const cloneName = this._sidejob.assignedClone!.name;
 
-    const districtNameFull = msg(str`District: ${districtName}`);
-    const cloneNameFull = msg(str`Assigned clone: ${cloneName}`);
+    const districtNameFull = COMMON_TEXTS.parameterValue(msg('District'), districtName);
+    const cloneNameFull = COMMON_TEXTS.parameterValue(msg('Assigned clone'), cloneName);
 
     const cancelSidejobLabel = msg('Cancel sidejob');
 

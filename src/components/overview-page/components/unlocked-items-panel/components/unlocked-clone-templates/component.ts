@@ -42,7 +42,7 @@ export class OverviewUnlockedCloneTemplates extends BaseComponent {
   private renderListItem = (itemName: CloneTemplateName) => {
     const cloneTemplateTitle = CLONE_TEMPLATE_TEXTS[itemName].title();
     const cloneTemplateOverview = CLONE_TEMPLATE_TEXTS[itemName].overview();
-    const quality = this._controller.getItemHighestAvailableQuality(itemName);
+    const tier = this._controller.getItemHighestAvailableTier(itemName);
 
     return html`
       <span>
@@ -54,7 +54,7 @@ export class OverviewUnlockedCloneTemplates extends BaseComponent {
           <sl-icon name=${HINT_ICON}></sl-icon>
         </sl-tooltip>
       </span>
-      <span> ${this._controller.formatter.formatQuality(quality)} </span>
+      <span> ${this._controller.formatter.formatTier(tier)} </span>
     `;
   };
 }

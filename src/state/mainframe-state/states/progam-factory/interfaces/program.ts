@@ -5,14 +5,14 @@ import { IMakeProgramParameters } from './make-program-parameters';
 export interface IProgram {
   name: ProgramName;
   level: number;
-  quality: number;
+  tier: number;
   completionPoints: number;
   isAutoscalable: boolean;
   ram: number;
   cores: number;
   autoUpgradeEnabled: boolean;
   unlockFeatures: Feature[];
-  upgrade(quality: number, level: number): void;
+  upgrade(tier: number, level: number): void;
   removeAllEventListeners(): void;
   handlePerformanceUpdate(): void;
   perform(threads: number, usedRam: number): void;

@@ -2,16 +2,23 @@ import { css, html, nothing } from 'lit';
 import { provide } from '@lit/context';
 import { localized, msg, str } from '@lit/localize';
 import { customElement, property, state } from 'lit/decorators.js';
-import { BaseComponent } from '@shared/base-component';
 import { COMMON_TEXTS } from '@texts/common';
-import { CloneAlert } from '@shared/types';
 import {
   ConfirmationAlertOpenEvent,
   ConfirmationAlertSubmitEvent,
 } from '@components/game-screen/components/confirmation-alert/events';
-import { AUTOUPGRADE_VALUES, dragIconStyle, hintStyle, sectionTitleStyle } from '@shared/styles';
 import { CLONE_TEMPLATE_TEXTS } from '@texts/clone-templates';
 import { type IClone } from '@state/company-state';
+import {
+  BaseComponent,
+  CloneAlert,
+  AUTOUPGRADE_VALUES,
+  dragIconStyle,
+  hintStyle,
+  sectionTitleStyle,
+  TOGGLE_DETAILS_VALUES,
+  UPGRADE_MAX_VALUES,
+} from '@shared/index';
 import { ClonesListItemController } from './controller';
 import { OpenCloneListItemDialogEvent } from '../../../../events/open-clone-list-item-dialog';
 import { cloneContext } from './contexts';
@@ -80,6 +87,13 @@ export class ClonesListItem extends BaseComponent {
       sl-popup {
         --arrow-color: var(--sl-color-neutral-200);
       }
+
+      div.footer {
+        display: flex;
+        align-items: flex-start;
+        gap: var(--sl-spacing-small);
+        flex-wrap: wrap;
+      }
     `,
   ];
 
@@ -89,16 +103,13 @@ export class ClonesListItem extends BaseComponent {
   })
   public cloneId!: string;
 
-  @property({
-    attribute: 'details-visible',
-    type: Boolean,
-  })
-  public detailsVisible = false;
-
   private _controller: ClonesListItemController;
 
   @state()
   private _menuVisible = false;
+
+  @state()
+  private _detailsVisible = false;
 
   @provide({ context: cloneContext })
   private _clone?: IClone;
@@ -141,9 +152,17 @@ export class ClonesListItem extends BaseComponent {
       ? COMMON_TEXTS.disableAutoupgrade()
       : COMMON_TEXTS.enableAutoupgrade();
 
+    const toggleDetailsLabel = this._detailsVisible ? COMMON_TEXTS.hideDetails() : COMMON_TEXTS.showDetails();
+    const toggleDetailsIcon = this._detailsVisible
+      ? TOGGLE_DETAILS_VALUES.icon.enabled
+      : TOGGLE_DETAILS_VALUES.icon.disabled;
+    const toggleDetailsVariant = this._detailsVisible
+      ? TOGGLE_DETAILS_VALUES.buttonVariant.enabled
+      : TOGGLE_DETAILS_VALUES.buttonVariant.disabled;
+
     const formatter = this._controller.formatter;
 
-    const formattedQuality = formatter.formatQuality(this._clone.quality);
+    const formattedTier = formatter.formatTier(this._clone.tier);
     const formattedLevel = formatter.formatLevel(this._clone.level);
 
     return html`
@@ -169,7 +188,7 @@ export class ClonesListItem extends BaseComponent {
 
           <p class="description hint">
             ${msg(
-              str`${CLONE_TEMPLATE_TEXTS[this._clone.templateName].title()}, quality ${formattedQuality}, level ${formattedLevel}`,
+              str`${CLONE_TEMPLATE_TEXTS[this._clone.templateName].title()}, tier ${formattedTier}, level ${formattedLevel}`,
             )}
           </p>
 
@@ -201,7 +220,25 @@ export class ClonesListItem extends BaseComponent {
         <div>
           <ca-clones-list-item-experience></ca-clones-list-item-experience>
 
-          ${this.detailsVisible ? html` <ca-clones-list-item-description></ca-clones-list-item-description> ` : nothing}
+          ${this._detailsVisible
+            ? html` <ca-clones-list-item-description></ca-clones-list-item-description> `
+            : nothing}
+        </div>
+
+        <div class="footer" slot="footer">
+          <sl-button variant=${toggleDetailsVariant} size="medium" @click=${this.handleToggleDetails}>
+            <sl-icon slot="prefix" name=${toggleDetailsIcon}></sl-icon>
+
+            ${toggleDetailsLabel}
+          </sl-button>
+
+          <sl-button-group>
+            <sl-button variant=${UPGRADE_MAX_VALUES.buttonVariant} size="medium" @click=${this.handleUpgradeLevelMax}>
+              <sl-icon slot="prefix" name=${UPGRADE_MAX_VALUES.icon}></sl-icon>
+
+              ${msg('Upgrade level')}
+            </sl-button>
+          </sl-button-group>
         </div>
       </sl-card>
     `;
@@ -277,5 +314,17 @@ export class ClonesListItem extends BaseComponent {
     this._menuVisible = false;
 
     this.dispatchEvent(new OpenCloneListItemDialogEvent('rename-clone', this._clone));
+  };
+
+  private handleToggleDetails = () => {
+    this._detailsVisible = !this._detailsVisible;
+  };
+
+  private handleUpgradeLevelMax = () => {
+    if (!this._clone) {
+      return;
+    }
+
+    this._clone.upgradeMaxLevel();
   };
 }

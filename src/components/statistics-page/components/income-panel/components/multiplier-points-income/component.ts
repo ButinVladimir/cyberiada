@@ -3,10 +3,8 @@ import { localized } from '@lit/localize';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { map } from 'lit/directives/map.js';
 import { customElement, property, queryAll } from 'lit/decorators.js';
-import { BaseComponent } from '@shared/base-component';
-import type { PointsMultiplierType } from '@shared/types';
+import { BaseComponent, HINT_ICON, type PointsMultiplierType } from '@shared/index';
 import { POINT_MULTIPLIER_HINTS, STATISTIC_PAGE_TEXTS } from '@components/statistics-page/constants';
-import { HINT_ICON } from '@shared/styles';
 import { IDistrictState } from '@state/city-state';
 import { StatisticsMultiplierPointsIncomeController } from './controller';
 import { statisticsPanelContentStyle } from '../../../../styles';
@@ -78,7 +76,7 @@ export class StatisticsMultiplierPointsIncome extends BaseComponent {
 
     this._districtValueNodes.forEach((element) => {
       const districtIndex = parseInt(element.dataset.district!);
-      const value = this._controller.getPointsByDistrict(districtIndex, this.type);
+      const value = this._controller.getPointsByDistrict(this.type, districtIndex);
 
       element.textContent = formatter.formatNumberFloat(value);
     });

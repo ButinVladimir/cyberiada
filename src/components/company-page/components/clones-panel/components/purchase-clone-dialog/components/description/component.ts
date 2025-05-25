@@ -1,5 +1,5 @@
 import { css, html, nothing } from 'lit';
-import { msg, localized } from '@lit/localize';
+import { localized } from '@lit/localize';
 import { customElement } from 'lit/decorators.js';
 import { consume } from '@lit/context';
 import { createRef, ref } from 'lit/directives/ref.js';
@@ -34,12 +34,17 @@ export class PurchaseCloneDialogDescription extends BaseComponent {
         align-items: stretch;
       }
 
+      p.overview {
+        margin-top: 0;
+        margin-bottom: var(--sl-spacing-medium);
+      }
+
       p.text {
         margin: 0;
       }
 
-      p.with-blank-space {
-        margin-bottom: var(--sl-spacing-medium);
+      .attributes-skills-tables {
+        margin-top: var(--sl-spacing-medium);
       }
     `,
   ];
@@ -65,17 +70,19 @@ export class PurchaseCloneDialogDescription extends BaseComponent {
     }
 
     return html`
-      <p class="text with-blank-space">${CLONE_TEMPLATE_TEXTS[this._clone.templateName].overview()}</p>
+      <p class="overview">${CLONE_TEMPLATE_TEXTS[this._clone.templateName].overview()}</p>
 
-      <p class="text">${COMMON_TEXTS.cost(html`<span ${ref(this._costElRef)}></span>`)}</p>
-      ${this.renderSynchronization()} ${this.renderParameters()}
+      <p class="text">
+        ${COMMON_TEXTS.parameterValue(COMMON_TEXTS.cost(), html`<span ${ref(this._costElRef)}></span>`)}
+      </p>
+      ${this.renderSynchronization()} ${this.renderExperienceMultiplier()} ${this.renderParameters()}
     `;
   }
 
   private renderSynchronization = () => {
     const formatter = this._controller.formatter;
 
-    const synchronization = this._controller.getCloneSynchronization(this._clone!.templateName, this._clone!.quality);
+    const synchronization = this._controller.getCloneSynchronization(this._clone!.templateName, this._clone!.tier);
     const availableSynchronization = this._controller.availableSynchronization;
 
     const formattedCloneSynchronization = formatter.formatNumberDecimal(synchronization);
@@ -88,7 +95,9 @@ export class PurchaseCloneDialogDescription extends BaseComponent {
       >${formattedCloneSynchronization} / ${formattedAvailableSynchronization}</span
     >`;
 
-    return html`<p class="text with-blank-space">${msg(html`Synchronization: ${synchronizationValue}`)}</p>`;
+    return html`<p class="text">
+      ${COMMON_TEXTS.parameterValue(COMMON_TEXTS.synchronization(), synchronizationValue)}
+    </p>`;
   };
 
   private renderParameters = () => {
@@ -127,12 +136,20 @@ export class PurchaseCloneDialogDescription extends BaseComponent {
     `;
   };
 
+  private renderExperienceMultiplier = () => {
+    const formattedValue = this._controller.formatter.formatNumberFloat(this._clone!.experienceMultiplier);
+
+    return html`
+      <p class="text">${COMMON_TEXTS.parameterValue(COMMON_TEXTS.experienceMultiplier(), formattedValue)}</p>
+    `;
+  };
+
   handlePartialUpdate = () => {
     if (!this._costElRef.value) {
       return;
     }
 
-    const cost = this._controller.getCloneCost(this._clone!.templateName, this._clone!.quality, this._clone!.level);
+    const cost = this._controller.getCloneCost(this._clone!.templateName, this._clone!.tier, this._clone!.level);
     const money = this._controller.money;
 
     const formattedCost = this._controller.formatter.formatNumberFloat(cost);

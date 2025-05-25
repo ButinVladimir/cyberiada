@@ -24,6 +24,7 @@ import '@shoelace-style/shoelace/dist/components/popup/popup.js';
 import '@shoelace-style/shoelace/dist/components/resize-observer/resize-observer.js';
 import '@shoelace-style/shoelace/dist/components/radio-group/radio-group.js';
 import '@shoelace-style/shoelace/dist/components/radio-button/radio-button.js';
+import '@shoelace-style/shoelace/dist/components/button-group/button-group.js';
 
 import './shared';
 import './app-root';

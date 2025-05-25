@@ -26,6 +26,9 @@ export class AutomationAutobuyersPanel extends BaseComponent {
 
   render() {
     return html`
+      ${this._controller.isFeatureUnlocked(Feature.companyManagement)
+        ? html`<ca-automation-clone-level-autoupgrader></ca-automation-clone-level-autoupgrader>`
+        : nothing}
       ${this._controller.isFeatureUnlocked(Feature.automationMainframeHardware)
         ? html`<ca-automation-mainframe-hardware-autobuyer></ca-automation-mainframe-hardware-autobuyer>`
         : nothing}

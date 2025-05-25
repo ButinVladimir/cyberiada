@@ -1,9 +1,10 @@
 import { css, html } from 'lit';
-import { localized, msg, str } from '@lit/localize';
+import { localized, msg } from '@lit/localize';
 import { customElement, state } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { hintStyle, SCREEN_WIDTH_POINTS } from '@shared/styles';
 import { ProcessesPanelController } from './controller';
+import { COMMON_TEXTS } from '@/texts';
 
 @localized()
 @customElement('ca-mainframe-processes-panel')
@@ -80,9 +81,9 @@ export class MainframeProcessesPanel extends BaseComponent {
     return html`
       <p class="hint">
         ${msg(`To make a program run, a process has to be start for it.
-Topmost processes for non-scalable programs have more priority when cores are assigned to processes.
-Process for scalable program has cores and RAM assigned last.
-Only one process for scalable program can run at same time.
+Topmost processes for non-autoscalable programs have more priority when cores are assigned to processes.
+Process for autoscalable program has cores and RAM assigned last.
+Only one process for autoscalable program can run at same time.
 Process minimal completion time is limited.
 Processes can be rearranged by dragging them by their title.`)}
       </p>
@@ -92,9 +93,13 @@ Processes can be rearranged by dragging them by their title.`)}
           ${msg('Start process')}
         </sl-button>
 
-        <div class="ram">${msg(str`Available RAM: ${formattedAvailableRam} / ${formattedMaxRam}`)}</div>
+        <div class="ram">
+          ${COMMON_TEXTS.parameterValue(msg('Available RAM'), `${formattedAvailableRam} / ${formattedMaxRam}`)}
+        </div>
 
-        <div class="cores">${msg(str`Available cores: ${formattedAvailableCores} / ${formattedMaxCores}`)}</div>
+        <div class="cores">
+          ${COMMON_TEXTS.parameterValue(msg('Available cores'), `${formattedAvailableCores} / ${formattedMaxCores}`)}
+        </div>
       </div>
 
       <ca-processes-list></ca-processes-list>

@@ -13,6 +13,7 @@ export interface IScenarioValues {
   startingDevelopmentLevel: number;
   startingAccumulatedTime: number;
   startingSynchronization: number;
+  baseSharedExperienceMultiplier: number;
   mainframeHardware: {
     basePerformanceLevel: number;
     baseCoresLevel: number;
@@ -24,7 +25,7 @@ export interface IScenarioValues {
   mainframeSoftware: {
     performanceBoost: number;
     startingPrograms: ProgramName[];
-    minProgramCompletionTime: number;
+    minProcessCompletionTime: number;
   };
   developmentLevelRequirements: IExponent;
   programMultipliers: {

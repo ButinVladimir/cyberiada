@@ -2,6 +2,8 @@ import { Theme } from '@shared/types';
 import { IMapStyles } from './interfaces';
 import { DistrictUnlockState } from '@state/city-state/types';
 
+export const CELL_SIZE = 10;
+
 export const MAP_STYLES: Record<Theme, IMapStyles> = {
   [Theme.light]: {
     borderColor: '#e4e4e7',
@@ -16,7 +18,7 @@ export const MAP_STYLES: Record<Theme, IMapStyles> = {
         selectedColor: '#f59e0b',
         selectedBorderColor: '#d97706',
       },
-      [DistrictUnlockState.controlled]: {
+      [DistrictUnlockState.captured]: {
         backgroundColor: '#0c4a6e',
         selectedColor: '#0ea5e9',
         selectedBorderColor: '#0284c7',
@@ -36,7 +38,7 @@ export const MAP_STYLES: Record<Theme, IMapStyles> = {
         selectedColor: '#d97706',
         selectedBorderColor: '#f59e0b',
       },
-      [DistrictUnlockState.controlled]: {
+      [DistrictUnlockState.captured]: {
         backgroundColor: '#0c4a6e',
         selectedColor: '#0284c7',
         selectedBorderColor: '#0ea5e9',

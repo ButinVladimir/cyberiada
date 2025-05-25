@@ -52,8 +52,8 @@ export class OverviewUnlockedItemsPanel extends BaseComponent {
 
     return html`
       <p class="hint">
-        ${msg(`Loaned items are items received on start and rewarded by capturing districts.
-Number next to item name is it's maximum quality available.`)}
+        ${msg(`Loaned items are received on the start and rewarded by capturing districts.
+Number next to item name is it's maximum tier available.`)}
       </p>
       <div class="categories">
         ${programsUnlocked ? html`<ca-overview-unlocked-programs></ca-overview-unlocked-programs>` : nothing}

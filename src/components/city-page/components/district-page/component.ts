@@ -8,6 +8,8 @@ import { CITY_DISTRICT_PAGE_TAB_LIST, CITY_DISTRICT_PAGE_TAB_TITLES } from './co
 import { CityDistrictPageTabs } from './types';
 import { CityDistrictPageController } from './controller';
 import { ReturnCityMapPageEvent } from './events';
+import { provide } from '@lit/context';
+import { districtIndexContext } from './contexts';
 
 @localized()
 @customElement('ca-city-district-page')
@@ -40,6 +42,7 @@ export class CityDistrictPage extends BaseComponent {
     `,
   ];
 
+  @provide({ context: districtIndexContext })
   @property({
     attribute: 'district-index',
     type: Number,
@@ -98,14 +101,10 @@ export class CityDistrictPage extends BaseComponent {
   private renderTabPanelContent = (tab: CityDistrictPageTabs) => {
     switch (tab) {
       case CityDistrictPageTabs.overview:
-        return html`
-          <ca-city-district-overiew-panel district-index=${this.districtIndex}> </ca-city-district-overiew-panel>
-        `;
+        return html` <ca-city-district-overview-panel> </ca-city-district-overview-panel> `;
 
       case CityDistrictPageTabs.sidejobs:
-        return html`
-          <ca-city-district-sidejobs-panel district-index=${this.districtIndex}> </ca-city-district-sidejobs-panel>
-        `;
+        return html` <ca-city-district-sidejobs-panel> </ca-city-district-sidejobs-panel> `;
     }
   };
 

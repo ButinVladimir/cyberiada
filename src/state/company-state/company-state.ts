@@ -41,7 +41,7 @@ export class CompanyState implements ICompanyState {
   processTick() {
     this.reassign();
     this._sidejobs.perform();
-    this._clones.recalculate();
+    this._clones.recalculateClones();
   }
 
   private reassign() {

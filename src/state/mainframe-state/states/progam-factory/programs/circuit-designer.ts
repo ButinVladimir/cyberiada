@@ -1,5 +1,5 @@
 import programs from '@configs/programs.json';
-import { calculateQualityPower } from '@shared/helpers';
+import { calculateTierPower } from '@shared/helpers';
 import { MultiplierProgramName } from '../types';
 import { BaseProgram } from './base-program';
 
@@ -20,7 +20,7 @@ export class CircuitDesignerProgram extends BaseProgram {
       this.globalState.scenario.currentValues.programMultipliers.computationalBase.pointsMultiplier *
       this.globalState.multipliers.rewards.totalMultiplier *
       threads *
-      calculateQualityPower(this.level, this.quality, programData.computationalBase)
+      calculateTierPower(this.level, this.tier, programData.computationalBase)
     );
   }
 }

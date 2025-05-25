@@ -2,6 +2,7 @@ export enum GameVersion {
   '0.1.1' = '0.1.1',
   '0.1.2' = '0.1.2',
   '0.1.3' = '0.1.3',
+  '0.2.0' = '0.2.0',
 }
 
 export enum Language {
@@ -57,6 +58,7 @@ export enum ProgramsEvent {
 
 export enum ClonesEvent {
   clonePurchased = 'clonePurchased',
+  cloneLevelUpgraded = 'cloneLevelUpgraded',
   cloneDeleted = 'cloneDeleted',
   allClonesDeleted = 'allClonesDeleted',
   cloneLevelReached = 'cloneLevelReached',
@@ -132,12 +134,15 @@ export enum Feature {
   automation = 'automation',
   automationMainframeHardware = 'automationMainframeHardware',
   automationMainframePrograms = 'automationMainframePrograms',
-  mainframeUpgrades = 'mainframeUpgrades',
+  mainframePrograms = 'mainframePrograms',
+  mainframeHardware = 'mainframeHardware',
   companyManagement = 'companyManagement',
   codeBase = 'codeBase',
   computationalBase = 'computationalBase',
   connectivity = 'connectivity',
   rewards = 'rewards',
+  experienceShare = 'experienceShare',
+  districtTiers = 'districtTiers',
 }
 
 export type PointsMultiplierType = 'codeBase' | 'computationalBase' | 'rewards';
@@ -163,7 +168,7 @@ export enum Skill {
 }
 
 export enum DistrictType {
-  suburb = 'suburb',
+  residential = 'residential',
   corpoDistrict = 'corpoDistrict',
 }
 
@@ -176,4 +181,7 @@ export enum RewardParameter {
   codeBase = 'code-base',
   computationalBase = 'computational-base',
   rewards = 'rewards',
+  processCompletionSpeedMultiplier = 'process-completion-speed-multiplier',
+  actions = 'actions',
+  sharedExperienceMultiplier = 'shared-experience-multiplier',
 }
