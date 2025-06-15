@@ -7,10 +7,6 @@ export class OwnedProgramsListController extends BaseController {
     return this.mainframeState.programs.listOwnedPrograms();
   }
 
-  toggleAutoupgrade(active: boolean) {
-    this.mainframeState.programs.toggleProgramsAutoUpgrade(active);
-  }
-
   moveProgram(programName: ProgramName, newPosition: number) {
     this.mainframeState.programs.moveProgram(programName, newPosition);
     this.host.requestUpdate();

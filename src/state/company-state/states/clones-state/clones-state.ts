@@ -1,7 +1,9 @@
 import { inject, injectable } from 'inversify';
 import { v4 as uuid } from 'uuid';
 import { msg, str } from '@lit/localize';
+import padStart from 'lodash/padStart';
 import cloneTemplates from '@configs/clone-templates.json';
+import names from '@configs/names.json';
 import { decorators } from '@state/container';
 import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
 import type { IGlobalState } from '@state/global-state/interfaces/global-state';
@@ -15,8 +17,7 @@ import {
   moveElementInArray,
   removeElementsFromArray,
 } from '@shared/helpers';
-import { CLONE_TEMPLATE_TEXTS } from '@texts/clone-templates';
-import { ICloneNameGeneratorResult } from '@workers/clone-name-generator/interfaces';
+import { CLONE_TEMPLATE_TEXTS, CLONE_NAMES } from '@texts/index';
 import type { ICompanyState } from '../../interfaces/company-state';
 import { IClone } from '../clone-factory/interfaces/clone';
 import {
@@ -26,6 +27,7 @@ import {
   IPurchaseCloneArgs,
 } from './interfaces';
 import { CloneTemplateName, IMakeCloneParameters } from '../clone-factory';
+
 
 const { lazyInject } = decorators;
 
@@ -178,28 +180,13 @@ export class CompanyClonesState implements ICompanyClonesState {
     }
   }
 
-  async generateCloneName(): Promise<string> {
-    return new Promise((resolve, reject) => {
-      const worker = new Worker(new URL('@workers/clone-name-generator/index.js', import.meta.url), { type: 'module' });
+  generateCloneName(): string {
+    const namePart = CLONE_NAMES[this._globalState.random.choice(names.clones)]();
 
-      worker.addEventListener('message', (event: MessageEvent<ICloneNameGeneratorResult>) => {
-        this._globalState.setRandomShift(event.data.randomShift);
+    const serialNumber = this._globalState.random.randRange(0, 9999);
+    const serialNumberPart = padStart(serialNumber.toString(), 4, '0');
 
-        worker.terminate();
-
-        resolve(event.data.name);
-      });
-
-      worker.addEventListener('error', (event: ErrorEvent) => {
-        reject(event.error);
-      });
-
-      worker.addEventListener('messageerror', () => {
-        reject('Unable to parse clone name generator message');
-      });
-
-      worker.postMessage(this._globalState.randomSeed);
-    });
+    return `${namePart}#${serialNumberPart}`;
   }
 
   updateSynchronization() {

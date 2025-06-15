@@ -1,17 +1,38 @@
+import { msg, str } from '@lit/localize';
 import { IFormatterParameters } from '../interfaces';
 
-export const TIME_PARTS = [
+export const SHORT_TIME_FORMAT_PARTS = [
   {
-    units: 24 * 60 * 60 * 1000,
+    unit: 60 * 60 * 1000,
   },
   {
-    units: 60 * 60 * 1000,
+    unit: 60 * 1000,
   },
   {
-    units: 60 * 1000,
+    unit: 1000,
+  },
+];
+
+export const LONG_TIME_FORMAT_PARTS = [
+  {
+    unit: 365 * 24 * 60 * 60 * 1000,
+    unitText: (value: string) => msg(str`${value} years`),
   },
   {
-    units: 1000,
+    unit: 24 * 60 * 60 * 1000,
+    unitText: (value: string) => msg(str`${value} days`),
+  },
+  {
+    unit: 60 * 60 * 1000,
+    unitText: (value: string) => msg(str`${value} hours`),
+  },
+  {
+    unit: 60 * 1000,
+    unitText: (value: string) => msg(str`${value} minutes`),
+  },
+  {
+    unit: 1000,
+    unitText: (value: string) => msg(str`${value} seconds`),
   },
 ];
 

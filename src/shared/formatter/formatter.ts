@@ -5,7 +5,7 @@ import { decorators } from '@state/container';
 import { LongNumberFormat } from '../types';
 import { IFormatterParameters, IFormatter, ITierFormatter } from '../interfaces';
 import {
-  TIME_PARTS,
+  SHORT_TIME_FORMAT_PARTS,
   DATE_TIME_FORMATTER_OPTIONS,
   DEFAULT_NUMBER_DECIMAL_FORMAT_PARAMETERS,
   DEFAULT_NUMBER_FLOAT_FORMAT_PARAMETERS,
@@ -18,8 +18,10 @@ import {
   FLOAT_ENGINEERING_FORMATTER_OPTIONS,
   LONG_NUMBER_FORMATTER_MAX_THRESHOLD,
   LONG_NUMBER_FORMATTER_MIN_THRESHOLD,
+  LONG_TIME_FORMAT_PARTS,
 } from './constants';
 import { TierFormatter } from './tier-formatter';
+import { msg, str } from '@lit/localize';
 
 const { lazyInject } = decorators;
 
@@ -46,17 +48,55 @@ export class Formatter implements IFormatter {
     let remainingTime = Math.abs(time);
     let formattedTime = '';
 
-    for (let unitNumber = 0; unitNumber < TIME_PARTS.length; unitNumber++) {
-      const { units } = TIME_PARTS[unitNumber];
-      const value = Math.floor(remainingTime / units);
-      remainingTime = remainingTime - value * units;
+    for (let unitNumber = 0; unitNumber < SHORT_TIME_FORMAT_PARTS.length; unitNumber++) {
+      const { unit } = SHORT_TIME_FORMAT_PARTS[unitNumber];
+      const value = Math.floor(remainingTime / unit);
+      remainingTime = remainingTime - value * unit;
 
-      formattedTime += value.toString().padStart(2, '0');
+      formattedTime += this.formatNumberDecimal(value).padStart(2, '0');
 
-      if (unitNumber < TIME_PARTS.length - 1) {
+      if (unitNumber < SHORT_TIME_FORMAT_PARTS.length - 1) {
         formattedTime += ':';
       }
     }
+
+    return this.applyNumberFormatterParameters(time, formattedTime, parameters);
+  }
+
+  formatTimeLong(time: number, parameters: IFormatterParameters = DEFAULT_TIME_SHORT_FORMAT_PARAMETERS): string {
+    let unitNumber = 0;
+    let remainingTime = Math.abs(time);
+
+    while (unitNumber < LONG_TIME_FORMAT_PARTS.length - 1) {
+      const { unit: units } = LONG_TIME_FORMAT_PARTS[unitNumber];
+
+      if (remainingTime >= units) {
+        break;
+      }
+
+      unitNumber++;
+    }
+
+    if (unitNumber < LONG_TIME_FORMAT_PARTS.length - 1) {
+      const { unitText: biggerUnitText, unit: biggerUnit } = LONG_TIME_FORMAT_PARTS[unitNumber];
+      const { unitText: smallerUnitText, unit: smallerUnit } = LONG_TIME_FORMAT_PARTS[unitNumber + 1];
+
+      const biggerValue = Math.floor(remainingTime / biggerUnit);
+      remainingTime -= biggerValue * biggerUnit;
+      const smallerValue = Math.ceil(remainingTime / smallerUnit);
+      
+      const biggerText = biggerUnitText(this.formatNumberDecimal(biggerValue));
+      const smallerText = smallerUnitText(this.formatNumberDecimal(smallerValue));
+
+      const formattedTime = msg(str`${biggerText} and ${smallerText}`);
+
+      return this.applyNumberFormatterParameters(time, formattedTime, parameters);
+    }
+
+    const {unitText, unit} = LONG_TIME_FORMAT_PARTS[unitNumber];
+    const value = Math.floor(remainingTime / unit);
+
+    const formattedTime = unitText(this.formatNumberDecimal(value));
 
     return this.applyNumberFormatterParameters(time, formattedTime, parameters);
   }

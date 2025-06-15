@@ -95,7 +95,7 @@ export class CityDistrictOverviewPanelNextTierProgress extends BaseComponent {
     }
 
     if (this._timerRef.value && developmentGrowth > 0) {
-      const formattedTime = formatter.formatTimeShort((nexTierRequirements - currentPoints) / developmentGrowth);
+      const formattedTime = formatter.formatTimeLong((nexTierRequirements - currentPoints) / developmentGrowth);
 
       this._timerRef.value.textContent = formattedTime;
     }

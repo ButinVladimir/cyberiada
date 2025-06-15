@@ -82,7 +82,7 @@ export class ProcessesListItemProgressColumn extends BaseComponent {
     }
 
     if (this._timerRef.value && processCompletionDelta > 0) {
-      const hintTime = formatter.formatTimeShort(
+      const hintTime = formatter.formatTimeLong(
         (this._process.maxCompletionPoints - this._process.currentCompletionPoints) / processCompletionDelta,
       );
 

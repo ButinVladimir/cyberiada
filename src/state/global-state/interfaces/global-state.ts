@@ -1,3 +1,4 @@
+import { XORShift128Plus } from 'random-seedable';
 import { ISerializeable } from '@shared/interfaces/serializable';
 import { IGlobalSerializedState } from './serialized-states/global-serialized-state';
 import { GameSpeed } from '../types';
@@ -18,8 +19,7 @@ import {
 } from './parameters';
 
 export interface IGlobalState extends ISerializeable<IGlobalSerializedState> {
-  randomSeed: number;
-  randomShift: bigint;
+  random: XORShift128Plus;
   scenario: IScenarioState;
   faction: IFactionState;
   gameSpeed: GameSpeed;
@@ -36,5 +36,4 @@ export interface IGlobalState extends ISerializeable<IGlobalSerializedState> {
   storyEvents: IStoryEventsState;
   recalculate(): void;
   makeNextTick(): void;
-  setRandomShift(value: number | bigint | string | boolean): void;
 }

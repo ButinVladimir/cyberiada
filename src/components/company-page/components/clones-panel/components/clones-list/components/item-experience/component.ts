@@ -92,7 +92,7 @@ export class ClonesListItemExperience extends BaseComponent {
     }
 
     if (this._timerRef.value && canReachNextLevel) {
-      const formattedTime = this._controller.formatter.formatTimeShort(
+      const formattedTime = this._controller.formatter.formatTimeLong(
         (nextLevelRequirements - this._clone.experience) / experienceGrowth,
       );
 

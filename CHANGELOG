@@ -1,6 +1,11 @@
 # Changelog
 
-## 0.2 (not released yet)
+## 0.2.1 (not released)
+
+- Fixed various issues
+- Added hotkey support
+
+## 0.2 (2025-05-25)
 
 - Added support for factions
 - City page is updated, now it shows available sidejobs and information about districts

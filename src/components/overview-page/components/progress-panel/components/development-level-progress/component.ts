@@ -66,7 +66,7 @@ export class OverviewDevelopmentLevelProgress extends BaseComponent {
     }
 
     if (this._timerRef.value && developmentGrowth > 0) {
-      const formattedTime = formatter.formatTimeShort(
+      const formattedTime = formatter.formatTimeLong(
         this._controller.getDevelopmentPointsUntilNextLevel() / developmentGrowth,
       );
 

@@ -10,8 +10,4 @@ export class MainframeHardwarePanelController extends BaseController {
     this.mainframeState.hardware.moveParameter(parameterType, newPosition);
     this.host.requestUpdate();
   }
-
-  purchaseMax() {
-    this.mainframeState.hardware.purchaseMax();
-  }
 }

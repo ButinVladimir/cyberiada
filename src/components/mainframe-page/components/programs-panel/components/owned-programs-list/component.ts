@@ -6,7 +6,7 @@ import { BaseComponent } from '@shared/base-component';
 import { IProgram } from '@state/mainframe-state/states/progam-factory/interfaces/program';
 import { ProgramName } from '@state/mainframe-state/states/progam-factory/types';
 import { SortableElementMovedEvent } from '@components/shared/sortable-list/events/sortable-element-moved';
-import { AUTOUPGRADE_VALUES, SCREEN_WIDTH_POINTS, UPGRADE_MAX_VALUES } from '@shared/styles';
+import { SCREEN_WIDTH_POINTS } from '@shared/styles';
 import { COMMON_TEXTS } from '@texts/common';
 import { OwnedProgramsListController } from './controller';
 
@@ -34,24 +34,6 @@ export class OwnedProgramsList extends BaseComponent {
     .header-column {
       display: none;
       font-weight: var(--sl-font-weight-bold);
-    }
-
-    .buttons {
-      align-items: center;
-      flex-direction: row;
-      gap: var(--sl-spacing-small);
-    }
-
-    .buttons.desktop {
-      display: none;
-      justify-content: flex-end;
-      font-size: var(--sl-font-size-large);
-    }
-
-    .buttons.mobile {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: flex-start;
     }
 
     .notification {
@@ -94,14 +76,6 @@ export class OwnedProgramsList extends BaseComponent {
       .header-column {
         display: block;
       }
-
-      .buttons.desktop {
-        display: flex;
-      }
-
-      .buttons.mobile {
-        display: none;
-      }
     }
   `;
 
@@ -114,62 +88,14 @@ export class OwnedProgramsList extends BaseComponent {
   }
 
   render() {
-    const isAutoupgradeActive = this.checkSomeProgramsAutoupgradeActive();
-
-    const autoupgradeIcon = isAutoupgradeActive ? AUTOUPGRADE_VALUES.icon.enabled : AUTOUPGRADE_VALUES.icon.disabled;
-    const autoupgradeLabel = isAutoupgradeActive
-      ? COMMON_TEXTS.disableAutoupgradeAll()
-      : COMMON_TEXTS.enableAutoupgradeAll();
-    const autoupgradeVariant = isAutoupgradeActive
-      ? AUTOUPGRADE_VALUES.buttonVariant.enabled
-      : AUTOUPGRADE_VALUES.buttonVariant.disabled;
-
     const ownedPrograms = this._controller.listOwnedPrograms();
-
-    const upgradeAllProgramsLabel = COMMON_TEXTS.upgradeAll();
 
     return html`
       <div class="header">
         <div class="header-column">${msg('Program')}</div>
         <div class="header-column">${COMMON_TEXTS.tier()}</div>
         <div class="header-column">${COMMON_TEXTS.level()}</div>
-        <div class="buttons desktop">
-          <sl-tooltip>
-            <span slot="content"> ${upgradeAllProgramsLabel} </span>
-
-            <sl-icon-button
-              name=${UPGRADE_MAX_VALUES.icon}
-              label=${upgradeAllProgramsLabel}
-              @click=${this.handleUpgradeMaxAllPrograms}
-            >
-            </sl-icon-button>
-          </sl-tooltip>
-
-          <sl-tooltip>
-            <span slot="content"> ${autoupgradeLabel} </span>
-
-            <sl-icon-button name=${autoupgradeIcon} label=${autoupgradeLabel} @click=${this.handleToggleAutoupgrade}>
-            </sl-icon-button>
-          </sl-tooltip>
-        </div>
-
-        <div class="buttons mobile">
-          <sl-button
-            variant=${UPGRADE_MAX_VALUES.buttonVariant}
-            size="medium"
-            @click=${this.handleUpgradeMaxAllPrograms}
-          >
-            <sl-icon slot="prefix" name=${UPGRADE_MAX_VALUES.icon}> </sl-icon>
-
-            ${upgradeAllProgramsLabel}
-          </sl-button>
-
-          <sl-button variant=${autoupgradeVariant} size="medium" @click=${this.handleToggleAutoupgrade}>
-            <sl-icon slot="prefix" name=${autoupgradeIcon}> </sl-icon>
-
-            ${autoupgradeLabel}
-          </sl-button>
-        </div>
+        <ca-owned-programs-list-buttons></ca-owned-programs-list-buttons>
       </div>
 
       ${ownedPrograms.length > 0
@@ -199,17 +125,7 @@ export class OwnedProgramsList extends BaseComponent {
     return programs.some((program) => program.autoUpgradeEnabled);
   }
 
-  private handleToggleAutoupgrade = () => {
-    const active = this.checkSomeProgramsAutoupgradeActive();
-
-    this._controller.toggleAutoupgrade(!active);
-  };
-
   private handleMoveProgram = (event: SortableElementMovedEvent) => {
     this._controller.moveProgram(event.keyName as ProgramName, event.position);
-  };
-
-  private handleUpgradeMaxAllPrograms = () => {
-    this._controller.upgradeMaxAllPrograms();
   };
 }

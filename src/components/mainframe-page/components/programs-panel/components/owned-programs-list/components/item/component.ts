@@ -6,10 +6,8 @@ import { provide } from '@lit/context';
 import { BaseComponent } from '@shared/base-component';
 import { type ProgramName, type IProgram } from '@state/mainframe-state/states';
 import {
-  AUTOUPGRADE_VALUES,
   DESCRIPTION_ICONS,
   SCREEN_WIDTH_POINTS,
-  UPGRADE_MAX_VALUES,
   dragIconStyle,
   hintIconStyle,
 } from '@shared/index';
@@ -35,23 +33,6 @@ export class OwnedProgramsListItem extends BaseComponent {
 
       .desktop {
         display: none;
-      }
-
-      .buttons {
-        align-items: center;
-        flex-direction: row;
-        gap: var(--sl-spacing-small);
-      }
-
-      .buttons.desktop {
-        justify-content: flex-end;
-        font-size: var(--sl-font-size-large);
-      }
-
-      .buttons.mobile {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: flex-start;
       }
 
       .program-title {
@@ -90,14 +71,6 @@ export class OwnedProgramsListItem extends BaseComponent {
 
         .mobile {
           display: none;
-        }
-
-        .buttons.mobile {
-          display: none;
-        }
-
-        .buttons.desktop {
-          display: flex;
         }
       }
     `,
@@ -145,16 +118,6 @@ export class OwnedProgramsListItem extends BaseComponent {
       visible: this._descriptionVisible,
     });
 
-    const autoupgradeIcon = this._program.autoUpgradeEnabled
-      ? AUTOUPGRADE_VALUES.icon.enabled
-      : AUTOUPGRADE_VALUES.icon.disabled;
-    const autoupgradeLabel = this._program.autoUpgradeEnabled
-      ? COMMON_TEXTS.disableAutoupgrade()
-      : COMMON_TEXTS.enableAutoupgrade();
-    const autoupgradeVariant = this._program.autoUpgradeEnabled
-      ? AUTOUPGRADE_VALUES.buttonVariant.enabled
-      : AUTOUPGRADE_VALUES.buttonVariant.disabled;
-
     const programTitle = PROGRAM_TEXTS[this.programName].title();
     const formattedLevel = formatter.formatLevel(this._program.level);
     const formattedTier = formatter.formatTier(this._program.tier);
@@ -191,39 +154,7 @@ export class OwnedProgramsListItem extends BaseComponent {
 
       <div class="desktop">${formattedLevel}</div>
 
-      <div class="buttons mobile">
-        <sl-button variant=${UPGRADE_MAX_VALUES.buttonVariant} size="medium" @click=${this.handleUpgradeMax}>
-          <sl-icon slot="prefix" name=${UPGRADE_MAX_VALUES.icon}> </sl-icon>
-
-          ${COMMON_TEXTS.upgrade()}
-        </sl-button>
-
-        <sl-button variant=${autoupgradeVariant} size="medium" @click=${this.handleToggleAutoUpgrade}>
-          <sl-icon slot="prefix" name=${autoupgradeIcon}> </sl-icon>
-
-          ${autoupgradeLabel}
-        </sl-button>
-      </div>
-
-      <div class="buttons desktop">
-        <sl-tooltip>
-          <span slot="content"> ${COMMON_TEXTS.upgrade()} </span>
-
-          <sl-icon-button
-            name=${UPGRADE_MAX_VALUES.icon}
-            label=${COMMON_TEXTS.upgrade()}
-            @click=${this.handleUpgradeMax}
-          >
-          </sl-icon-button>
-        </sl-tooltip>
-
-        <sl-tooltip>
-          <span slot="content"> ${autoupgradeLabel} </span>
-
-          <sl-icon-button name=${autoupgradeIcon} label=${autoupgradeLabel} @click=${this.handleToggleAutoUpgrade}>
-          </sl-icon-button>
-        </sl-tooltip>
-      </div>
+      <ca-owned-programs-list-item-buttons></ca-owned-programs-list-item-buttons>
     `;
   }
 
@@ -239,19 +170,9 @@ export class OwnedProgramsListItem extends BaseComponent {
     this._descriptionVisible = !this._descriptionVisible;
   };
 
-  private handleToggleAutoUpgrade = () => {
-    if (this._program) {
-      this._program.autoUpgradeEnabled = !this._program.autoUpgradeEnabled;
-    }
-  };
-
   private handleDragStart = (event: DragEvent) => {
     if (event.dataTransfer) {
       event.dataTransfer.setData('text/plain', this.programName);
     }
-  };
-
-  private handleUpgradeMax = () => {
-    this._controller.upgradeMaxProgram(this.programName as ProgramName);
   };
 }
