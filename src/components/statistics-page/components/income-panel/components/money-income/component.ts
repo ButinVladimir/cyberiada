@@ -1,10 +1,8 @@
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { msg, localized } from '@lit/localize';
 import { customElement, queryAll } from 'lit/decorators.js';
-import { BaseComponent } from '@shared/base-component';
-import { IncomeSource } from '@shared/types';
-import { INCOME_SOURCES } from '@shared/constants';
+import { BaseComponent, Feature, IncomeSource } from '@shared/index';
 import { INCOME_SOURCE_NAMES, STATISTIC_PAGE_TEXTS } from '../../../../constants';
 import { StatisticsMoneyIncomeController } from './controller';
 import { statisticsPanelContentStyle } from '../../../../styles';
@@ -35,7 +33,10 @@ export class StatisticsMoneyIncome extends BaseComponent {
         <h4 class="title" slot="summary">${msg('Money')}</h4>
 
         <div class="parameters-table">
-          ${INCOME_SOURCES.map(this.renderIncomeSource)}
+          ${this.renderIncomeSource(IncomeSource.program)}
+          ${this._controller.isFeatureUnlocked(Feature.companyManagement)
+            ? this.renderIncomeSource(IncomeSource.sidejob)
+            : nothing}
 
           <span> ${STATISTIC_PAGE_TEXTS.total()} </span>
           <span ${ref(this._totalIncomeRef)}> </span>

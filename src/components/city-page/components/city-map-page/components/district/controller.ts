@@ -1,6 +1,4 @@
 import { BaseController } from '@shared/base-controller';
-import { MAP_STYLES } from '../../constants';
-import { IMapStyles } from '../../interfaces';
 
 export class CityMapHighlightedDistrictController extends BaseController {
   get layout() {
@@ -15,11 +13,7 @@ export class CityMapHighlightedDistrictController extends BaseController {
     return this.globalState.scenario.currentValues.map.height;
   }
 
-  getDistrict(districtNum: number) {
-    return this.cityState.getDistrictState(districtNum);
-  }
-
-  getStyles(): IMapStyles {
-    return MAP_STYLES[this.settingsState.theme];
+  get theme() {
+    return this.settingsState.theme;
   }
 }

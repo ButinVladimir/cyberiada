@@ -34,11 +34,11 @@ export class CityMap extends BaseComponent {
       cursor: pointer;
     }
 
-    ca-city-map-highlighted-district {
+    ca-city-map-district {
       opacity: 0;
     }
 
-    ca-city-map-highlighted-district.visible {
+    ca-city-map-district.visible {
       opacity: 1;
     }
 
@@ -97,9 +97,8 @@ export class CityMap extends BaseComponent {
           @mouseleave=${this.handleMouseLeave}
           @click=${this.handleMapClick}
         >
-          <ca-city-map-background size=${this._size}></ca-city-map-background>
-
-          ${map(range(this._controller.districtsCount), this.renderDistrict)}
+          ${map(range(this._controller.districtsCount), this.renderBackgroundDistrict)}
+          ${map(range(this._controller.districtsCount), this.renderSelectedDistrict)}
         </div>
       </sl-resize-observer>
       <ca-city-map-district-description district=${ifDefined(this._selectedDistrictIndex)}>
@@ -107,16 +106,34 @@ export class CityMap extends BaseComponent {
     `;
   }
 
-  private renderDistrict = (districtNum: number) => {
+  private renderBackgroundDistrict = (districtNum: number) => {
+    const district = this._controller.getDistrict(districtNum);
+
+    return html`<ca-city-map-district
+      class="visible"
+      run-id=${this._controller.runId}
+      district-num=${districtNum}
+      district-state=${district.state}
+      ?selected=${false}
+      size=${this._size}
+    ></ca-city-map-district>`;
+  };
+
+  private renderSelectedDistrict = (districtNum: number) => {
     const classes = classMap({
-      visible: this._selectedDistrictIndex === districtNum,
+      visible: districtNum === this._selectedDistrictIndex,
     });
 
-    return html`<ca-city-map-highlighted-district
+    const district = this._controller.getDistrict(districtNum);
+
+    return html`<ca-city-map-district
       class=${classes}
-      district=${districtNum}
+      run-id=${this._controller.runId}
+      district-num=${districtNum}
+      district-state=${district.state}
+      ?selected=${true}
       size=${this._size}
-    ></ca-city-map-highlighted-district>`;
+    ></ca-city-map-district>`;
   };
 
   private handleMouseMove = (event: MouseEvent) => {
@@ -129,7 +146,11 @@ export class CityMap extends BaseComponent {
       const offsetY = event.clientY - contentBoundingRect.y;
       const y = Math.round((offsetY / this._size) * (this._controller.mapHeight - 1));
 
-      this._selectedDistrictIndex = this._controller.layout[x][y];
+      if (x >= 0 && y >= 0 && x < this._controller.mapWidth && y < this._controller.mapHeight) {
+        this._selectedDistrictIndex = this._controller.layout[x][y];
+      } else {
+        this._selectedDistrictIndex = undefined;
+      }
     }
   };
 

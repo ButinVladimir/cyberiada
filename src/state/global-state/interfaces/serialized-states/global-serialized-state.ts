@@ -12,6 +12,7 @@ import { IConnectivitySerializedState } from './connectivity-serialized-state';
 export interface IGlobalSerializedState {
   randomSeed: string;
   randomShift: string;
+  runId: string;
   scenario: IScenarioSerializedState;
   faction: IFactionSerializedState;
   gameSpeed: GameSpeed;

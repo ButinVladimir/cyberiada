@@ -1,5 +1,6 @@
 import { XORShift128Plus } from 'random-seedable';
 import { injectable, inject } from 'inversify';
+import { v4 as uuid } from 'uuid';
 import { TYPES } from '@state/types';
 import { IGlobalSerializedState } from './interfaces/serialized-states/global-serialized-state';
 import type {
@@ -41,6 +42,7 @@ export class GlobalState implements IGlobalState {
 
   private _random: XORShift128Plus;
   private _gameSpeed: GameSpeed;
+  private _runId: string;
 
   constructor(
     @inject(TYPES.ScenarioState) _scenarioState: IScenarioState,
@@ -69,10 +71,15 @@ export class GlobalState implements IGlobalState {
 
     this._random = new XORShift128Plus(0, 0n);
     this._gameSpeed = GameSpeed.normal;
+    this._runId = uuid();
   }
 
   get random() {
     return this._random;
+  }
+
+  get runId() {
+    return this._runId;
   }
 
   get scenario() {
@@ -152,6 +159,7 @@ export class GlobalState implements IGlobalState {
     this._random.seed = BigInt(startingSeed);
     this._random.y = BigInt(startingSeed);
 
+    this._runId = uuid();
     this._gameSpeed = GameSpeed.normal;
 
     await this._scenarioState.startNewState();
@@ -172,7 +180,9 @@ export class GlobalState implements IGlobalState {
     this._random.seed = BigInt(serializedState.randomSeed);
     this._random.y = BigInt(serializedState.randomShift);
 
+    this._runId = serializedState.runId;
     this._gameSpeed = serializedState.gameSpeed;
+
     await this._scenarioState.deserialize(serializedState.scenario);
     await this._factionState.deserialize(serializedState.faction);
     await this._moneyState.deserialize(serializedState.money);
@@ -190,6 +200,7 @@ export class GlobalState implements IGlobalState {
     return {
       randomSeed: this._random.seed.toString(),
       randomShift: this._random.y.toString(),
+      runId: this._runId,
       gameSpeed: this.gameSpeed,
       scenario: this._scenarioState.serialize(),
       faction: this._factionState.serialize(),

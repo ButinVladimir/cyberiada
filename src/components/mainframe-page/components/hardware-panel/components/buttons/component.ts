@@ -13,7 +13,7 @@ export class MainframeHardwarePanelButtons extends BaseComponent {
 
   private _controller: MainframeHardwarePanelButtonsController;
 
-private _buyMaxButtonRef = createRef<SlButton>();
+  private _buyMaxButtonRef = createRef<SlButton>();
 
   constructor() {
     super();
@@ -23,7 +23,13 @@ private _buyMaxButtonRef = createRef<SlButton>();
 
   render() {
     return html`
-      <sl-button ${ref(this._buyMaxButtonRef)} variant="default" type="button" size="medium" @click=${this.handleBuyMax}>
+      <sl-button
+        ${ref(this._buyMaxButtonRef)}
+        variant="default"
+        type="button"
+        size="medium"
+        @click=${this.handleBuyMax}
+      >
         ${msg('Buy all upgrades')}
       </sl-button>
     `;

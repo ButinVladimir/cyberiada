@@ -27,7 +27,7 @@ export class OwnedProgramsListItemButtons extends BaseComponent {
       :host {
         display: contents;
       }
-    
+
       .buttons {
         align-items: center;
         flex-direction: row;
@@ -156,9 +156,9 @@ export class OwnedProgramsListItemButtons extends BaseComponent {
     if (this._upgradeMaxDesktopButton.value) {
       this._upgradeMaxDesktopButton.value.disabled = upgradeMaxButtonDisabled;
     }
-    
+
     if (this._upgradeMaxMobileButton.value) {
       this._upgradeMaxMobileButton.value.disabled = upgradeMaxButtonDisabled;
     }
-  }
+  };
 }

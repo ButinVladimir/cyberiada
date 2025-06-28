@@ -3,6 +3,10 @@ import { BaseController } from '@shared/base-controller';
 import { IPoint } from '@shared/interfaces/point';
 
 export class CityMapController extends BaseController {
+  get runId() {
+    return this.globalState.runId;
+  }
+
   get layout() {
     return this.cityState.getLayout();
   }

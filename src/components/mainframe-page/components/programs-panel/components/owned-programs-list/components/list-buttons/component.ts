@@ -71,47 +71,47 @@ export class OwnedProgramsListButtons extends BaseComponent {
     const upgradeAllProgramsLabel = COMMON_TEXTS.upgradeAll();
 
     return html`
-        <div class="buttons desktop">
-          <sl-tooltip>
-            <span slot="content"> ${upgradeAllProgramsLabel} </span>
+      <div class="buttons desktop">
+        <sl-tooltip>
+          <span slot="content"> ${upgradeAllProgramsLabel} </span>
 
-            <sl-icon-button
-              ${ref(this._upgradeMaxDesktopButton)}
-              disabled
-              name=${UPGRADE_MAX_VALUES.icon}
-              label=${upgradeAllProgramsLabel}
-              @click=${this.handleUpgradeMaxAllPrograms}
-            >
-            </sl-icon-button>
-          </sl-tooltip>
-
-          <sl-tooltip>
-            <span slot="content"> ${autoupgradeLabel} </span>
-
-            <sl-icon-button name=${autoupgradeIcon} label=${autoupgradeLabel} @click=${this.handleToggleAutoupgrade}>
-            </sl-icon-button>
-          </sl-tooltip>
-        </div>
-
-        <div class="buttons mobile">
-          <sl-button
-            ${ref(this._upgradeMaxMobileButton)}
+          <sl-icon-button
+            ${ref(this._upgradeMaxDesktopButton)}
             disabled
-            variant=${UPGRADE_MAX_VALUES.buttonVariant}
-            size="medium"
+            name=${UPGRADE_MAX_VALUES.icon}
+            label=${upgradeAllProgramsLabel}
             @click=${this.handleUpgradeMaxAllPrograms}
           >
-            <sl-icon slot="prefix" name=${UPGRADE_MAX_VALUES.icon}> </sl-icon>
+          </sl-icon-button>
+        </sl-tooltip>
 
-            ${upgradeAllProgramsLabel}
-          </sl-button>
+        <sl-tooltip>
+          <span slot="content"> ${autoupgradeLabel} </span>
 
-          <sl-button variant=${autoupgradeVariant} size="medium" @click=${this.handleToggleAutoupgrade}>
-            <sl-icon slot="prefix" name=${autoupgradeIcon}> </sl-icon>
+          <sl-icon-button name=${autoupgradeIcon} label=${autoupgradeLabel} @click=${this.handleToggleAutoupgrade}>
+          </sl-icon-button>
+        </sl-tooltip>
+      </div>
 
-            ${autoupgradeLabel}
-          </sl-button>
-        </div>
+      <div class="buttons mobile">
+        <sl-button
+          ${ref(this._upgradeMaxMobileButton)}
+          disabled
+          variant=${UPGRADE_MAX_VALUES.buttonVariant}
+          size="medium"
+          @click=${this.handleUpgradeMaxAllPrograms}
+        >
+          <sl-icon slot="prefix" name=${UPGRADE_MAX_VALUES.icon}> </sl-icon>
+
+          ${upgradeAllProgramsLabel}
+        </sl-button>
+
+        <sl-button variant=${autoupgradeVariant} size="medium" @click=${this.handleToggleAutoupgrade}>
+          <sl-icon slot="prefix" name=${autoupgradeIcon}> </sl-icon>
+
+          ${autoupgradeLabel}
+        </sl-button>
+      </div>
     `;
   }
 
@@ -137,9 +137,9 @@ export class OwnedProgramsListButtons extends BaseComponent {
     if (this._upgradeMaxDesktopButton.value) {
       this._upgradeMaxDesktopButton.value.disabled = upgradeMaxButtonDisabled;
     }
-    
+
     if (this._upgradeMaxMobileButton.value) {
       this._upgradeMaxMobileButton.value.disabled = upgradeMaxButtonDisabled;
     }
-  }
+  };
 }

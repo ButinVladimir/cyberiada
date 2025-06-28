@@ -19,6 +19,7 @@ import {
   LONG_NUMBER_FORMATTER_MAX_THRESHOLD,
   LONG_NUMBER_FORMATTER_MIN_THRESHOLD,
   LONG_TIME_FORMAT_PARTS,
+  LONG_NUMBER_FORMATTER_SCIENTIFIC_THRESHOLD,
 } from './constants';
 import { TierFormatter } from './tier-formatter';
 import { msg, str } from '@lit/localize';
@@ -84,7 +85,7 @@ export class Formatter implements IFormatter {
       const biggerValue = Math.floor(remainingTime / biggerUnit);
       remainingTime -= biggerValue * biggerUnit;
       const smallerValue = Math.ceil(remainingTime / smallerUnit);
-      
+
       const biggerText = biggerUnitText(this.formatNumberDecimal(biggerValue));
       const smallerText = smallerUnitText(this.formatNumberDecimal(smallerValue));
 
@@ -93,7 +94,7 @@ export class Formatter implements IFormatter {
       return this.applyNumberFormatterParameters(time, formattedTime, parameters);
     }
 
-    const {unitText, unit} = LONG_TIME_FORMAT_PARTS[unitNumber];
+    const { unitText, unit } = LONG_TIME_FORMAT_PARTS[unitNumber];
     const value = Math.floor(remainingTime / unit);
 
     const formattedTime = unitText(this.formatNumberDecimal(value));
@@ -103,10 +104,15 @@ export class Formatter implements IFormatter {
 
   formatNumberFloat(value: number, parameters: IFormatterParameters = DEFAULT_NUMBER_FLOAT_FORMAT_PARAMETERS): string {
     const absoluteValue = Math.abs(value);
-    const isLongValue = this.checkIfLongFormatNeeded(absoluteValue);
 
-    if (!isLongValue) {
+    if (!this.checkIfLongFormatNeeded(absoluteValue)) {
       const formattedValue = this._floatLongFormatter.format(absoluteValue);
+
+      return this.applyNumberFormatterParameters(value, formattedValue, parameters);
+    }
+
+    if (this.checkIfScientificFormatNeeded(absoluteValue)) {
+      const formattedValue = this._floatScientificFormatter.format(absoluteValue);
 
       return this.applyNumberFormatterParameters(value, formattedValue, parameters);
     }
@@ -119,10 +125,15 @@ export class Formatter implements IFormatter {
     parameters: IFormatterParameters = DEFAULT_NUMBER_DECIMAL_FORMAT_PARAMETERS,
   ): string {
     const absoluteValue = Math.abs(value);
-    const isLongValue = this.checkIfLongFormatNeeded(absoluteValue);
 
-    if (!isLongValue) {
+    if (!this.checkIfLongFormatNeeded(absoluteValue)) {
       const formattedValue = this._decimalLongFormatter.format(absoluteValue);
+
+      return this.applyNumberFormatterParameters(value, formattedValue, parameters);
+    }
+
+    if (this.checkIfScientificFormatNeeded(absoluteValue)) {
+      const formattedValue = this._floatScientificFormatter.format(absoluteValue);
 
       return this.applyNumberFormatterParameters(value, formattedValue, parameters);
     }
@@ -193,6 +204,13 @@ export class Formatter implements IFormatter {
     return (
       (absoluteValue > 0 && absoluteValue < LONG_NUMBER_FORMATTER_MIN_THRESHOLD) ||
       absoluteValue >= LONG_NUMBER_FORMATTER_MAX_THRESHOLD
+    );
+  }
+
+  private checkIfScientificFormatNeeded(absoluteValue: number) {
+    return (
+      this._settingsState.longNumberFormat === LongNumberFormat.short &&
+      absoluteValue >= LONG_NUMBER_FORMATTER_SCIENTIFIC_THRESHOLD
     );
   }
 

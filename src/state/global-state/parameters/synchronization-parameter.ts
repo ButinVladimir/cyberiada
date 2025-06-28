@@ -57,7 +57,7 @@ export class SynchronizationParameter implements ISynchronizationParameter {
   }
 
   private calculateBaseValue() {
-    this._baseValue = this._globalState.scenario.currentValues.startingSynchronization;
+    this._baseValue = Math.ceil(this._globalState.scenario.currentValues.startingSynchronization);
     this._totalValue = this._baseValue;
   }
 

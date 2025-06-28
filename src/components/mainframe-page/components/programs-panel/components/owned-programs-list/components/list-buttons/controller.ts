@@ -9,11 +9,11 @@ export class OwnedProgramsListButtonsController extends BaseController {
   toggleAutoUpgrade(active: boolean) {
     this.mainframeState.programs.toggleProgramsAutoUpgrade(active);
   }
-  
+
   checkCanUpgradeMax(): boolean {
     return this.mainframeState.programs.listOwnedPrograms().some(this.checkCanUpgradeMaxProgram);
   }
-  
+
   upgradeMaxAllPrograms() {
     this.mainframeState.programs.upgradeMaxAllPrograms();
   }
@@ -27,6 +27,9 @@ export class OwnedProgramsListButtonsController extends BaseController {
       return false;
     }
 
-    return this.globalState.money.money >= this.mainframeState.programs.getProgramCost(program.name, program.tier, program.level + 1);
+    return (
+      this.globalState.money.money >=
+      this.mainframeState.programs.getProgramCost(program.name, program.tier, program.level + 1)
+    );
   };
 }

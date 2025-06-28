@@ -96,6 +96,7 @@ export const DATE_TIME_FORMATTER_OPTIONS: Intl.DateTimeFormatOptions = {
 
 export const LONG_NUMBER_FORMATTER_MAX_THRESHOLD = 1000;
 export const LONG_NUMBER_FORMATTER_MIN_THRESHOLD = 0.001;
+export const LONG_NUMBER_FORMATTER_SCIENTIFIC_THRESHOLD = 1e15;
 
 export const ROMAN_NUMERALS = [
   { letter: 'M', value: 1000 },

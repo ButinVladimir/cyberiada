@@ -7,7 +7,10 @@ export class OwnedProgramsListItemButtonsController extends BaseController {
       return false;
     }
 
-    return this.globalState.money.money >= this.mainframeState.programs.getProgramCost(program.name, program.tier, program.level + 1);
+    return (
+      this.globalState.money.money >=
+      this.mainframeState.programs.getProgramCost(program.name, program.tier, program.level + 1)
+    );
   }
 
   upgradeMaxProgram(program: IProgram) {

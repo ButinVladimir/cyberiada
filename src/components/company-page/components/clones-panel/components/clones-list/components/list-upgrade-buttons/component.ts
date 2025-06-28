@@ -20,7 +20,7 @@ export class ClonesListUpgradeButtons extends BaseComponent {
   private _controller: ClonesListUpgradeButtonsController;
 
   private _upgradeLevelMaxButton = createRef<SlButton>();
-  
+
   constructor() {
     super();
 
@@ -30,7 +30,12 @@ export class ClonesListUpgradeButtons extends BaseComponent {
   render() {
     return html`
       <sl-button-group>
-        <sl-button ${ref(this._upgradeLevelMaxButton)} disabled variant=${UPGRADE_MAX_VALUES.buttonVariant} @click=${this.handleUpgradeMaxAllLevels}>
+        <sl-button
+          ${ref(this._upgradeLevelMaxButton)}
+          disabled
+          variant=${UPGRADE_MAX_VALUES.buttonVariant}
+          @click=${this.handleUpgradeMaxAllLevels}
+        >
           <sl-icon slot="prefix" name=${UPGRADE_MAX_VALUES.icon}></sl-icon>
 
           ${msg('Upgrade all levels')}

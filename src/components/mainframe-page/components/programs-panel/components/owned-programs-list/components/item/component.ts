@@ -5,12 +5,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import { provide } from '@lit/context';
 import { BaseComponent } from '@shared/base-component';
 import { type ProgramName, type IProgram } from '@state/mainframe-state/states';
-import {
-  DESCRIPTION_ICONS,
-  SCREEN_WIDTH_POINTS,
-  dragIconStyle,
-  hintIconStyle,
-} from '@shared/index';
+import { DESCRIPTION_ICONS, SCREEN_WIDTH_POINTS, dragIconStyle, hintIconStyle } from '@shared/index';
 import { COMMON_TEXTS, PROGRAM_TEXTS } from '@texts/index';
 import { OwnedProgramsListItemController } from './controller';
 import { programContext } from './contexts';

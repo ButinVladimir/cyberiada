@@ -28,7 +28,6 @@ import {
 } from './interfaces';
 import { CloneTemplateName, IMakeCloneParameters } from '../clone-factory';
 
-
 const { lazyInject } = decorators;
 
 @injectable()

@@ -20,6 +20,7 @@ import {
 
 export interface IGlobalState extends ISerializeable<IGlobalSerializedState> {
   random: XORShift128Plus;
+  runId: string;
   scenario: IScenarioState;
   faction: IFactionState;
   gameSpeed: GameSpeed;

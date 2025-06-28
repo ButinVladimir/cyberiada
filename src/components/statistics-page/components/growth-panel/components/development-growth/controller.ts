@@ -1,6 +1,4 @@
-import { BaseController } from '@shared/base-controller';
-import { IncomeSource } from '@shared/types';
-import { MS_IN_SECOND } from '@shared/constants';
+import { BaseController, Feature, IncomeSource, MS_IN_SECOND } from '@shared/index';
 
 export class StatisticsDevelopmentGrowthController extends BaseController {
   get developmentTotalGrowth() {
@@ -10,4 +8,8 @@ export class StatisticsDevelopmentGrowthController extends BaseController {
   getDevelopmentGrowthByIncoumeSource = (incomeSource: IncomeSource) => {
     return this.growthState.development.getGrowth(incomeSource) * MS_IN_SECOND;
   };
+
+  isFeatureUnlocked(feature: Feature): boolean {
+    return this.globalState.unlockedFeatures.isFeatureUnlocked(feature);
+  }
 }
