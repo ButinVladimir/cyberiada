@@ -92,7 +92,7 @@ export class CityDistrictSidejobsListItemUnlockProgress extends BaseComponent {
     }
 
     if (this._timerRef.value && canReachNextTier) {
-      const formattedTime = this._controller.formatter.formatTimeShort(
+      const formattedTime = this._controller.formatter.formatTimeLong(
         (requiredConnectivity - currentConnectivity) / connectivityGrowth,
       );
 

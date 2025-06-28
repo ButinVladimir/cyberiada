@@ -42,18 +42,8 @@
       "attributes": []
     },
     {
-      "name": "ca-city-map-background",
-      "description": "Attributes:\n\n  * `size` {`number`} - \n\nProperties:\n\n  * `DX` {`number[]`} - \n\n  * `DY` {`number[]`} - \n\n  * `styles` {`CSSResult`} - \n\n  * `size` {`number`} - \n\n  * `_canvasRef` {`Ref<HTMLCanvasElement>`} - \n\n  * `_offscreenCanvasContext` {`OffscreenCanvasRenderingContext2D | null`} - \n\n  * `renderCanvas` - \n\n  * `_controller` {`CityMapBackgroundController`} - ",
-      "attributes": [
-        {
-          "name": "size",
-          "description": "`size` {`number`} - \n\nProperty: size\n\nDefault: 1"
-        }
-      ]
-    },
-    {
       "name": "ca-city-map",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_size` {`number`} - \n\n  * `_selectedDistrictIndex` {`number | undefined`} - \n\n  * `_contentRef` {`Ref<HTMLDivElement>`} - \n\n  * `renderDistrict` - \n\n  * `handleMouseMove` - \n\n  * `handleMouseLeave` - \n\n  * `handleResize` - \n\n  * `handleMapClick` - \n\n  * `_controller` {`CityMapController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_size` {`number`} - \n\n  * `_selectedDistrictIndex` {`number | undefined`} - \n\n  * `_contentRef` {`Ref<HTMLDivElement>`} - \n\n  * `renderBackgroundDistrict` - \n\n  * `renderSelectedDistrict` - \n\n  * `handleMouseMove` - \n\n  * `handleMouseLeave` - \n\n  * `handleResize` - \n\n  * `handleMapClick` - \n\n  * `_controller` {`CityMapController`} - ",
       "attributes": []
     },
     {
@@ -68,16 +58,29 @@
       ]
     },
     {
-      "name": "ca-city-map-highlighted-district",
-      "description": "Attributes:\n\n  * `size` {`number`} - \n\n  * `district` {`number`} - \n\nProperties:\n\n  * `DX` {`number[]`} - \n\n  * `DY` {`number[]`} - \n\n  * `styles` {`CSSResult`} - \n\n  * `size` {`number`} - \n\n  * `district` {`number`} - \n\n  * `_canvasRef` {`Ref<HTMLCanvasElement>`} - \n\n  * `_offscreenCanvasContext` {`OffscreenCanvasRenderingContext2D | null`} - \n\n  * `renderCanvas` - \n\n  * `_controller` {`CityMapHighlightedDistrictController`} - ",
+      "name": "ca-city-map-district",
+      "description": "Attributes:\n\n  * `run-id` {`string`} - \n\n  * `district-num` {`number`} - \n\n  * `district-state` - \n\n  * `selected` {`boolean`} - \n\n  * `size` {`number`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_districtRendererWorker` {`Worker`} - \n\n  * `runId` {`string`} - \n\n  * `districtNum` {`number`} - \n\n  * `districtState` - \n\n  * `selected` {`boolean`} - \n\n  * `size` {`number`} - \n\n  * `_canvasRef` {`Ref<HTMLCanvasElement>`} - \n\n  * `_districtBlob` {`Blob | undefined`} - \n\n  * `fullRenderCanvas` - \n\n  * `renderCanvas` - \n\n  * `handleWorkerResponse` - \n\n  * `_controller` {`CityMapHighlightedDistrictController`} - ",
       "attributes": [
+        {
+          "name": "run-id",
+          "description": "`run-id` {`string`} - \n\nProperty: runId"
+        },
+        {
+          "name": "district-num",
+          "description": "`district-num` {`number`} - \n\nProperty: districtNum"
+        },
+        {
+          "name": "district-state",
+          "description": "`district-state` - \n\nProperty: districtState"
+        },
+        {
+          "name": "selected",
+          "description": "`selected` {`boolean`} - \n\nProperty: selected\n\nDefault: false",
+          "valueSet": "v"
+        },
         {
           "name": "size",
           "description": "`size` {`number`} - \n\nProperty: size\n\nDefault: 1"
-        },
-        {
-          "name": "district",
-          "description": "`district` {`number`} - \n\nProperty: district"
         }
       ]
     },
@@ -138,8 +141,19 @@
     },
     {
       "name": "ca-clones-list",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderEmptyListNotification` - \n\n  * `renderClone` - \n\n  * `handleToggleAutoupgrade` - \n\n  * `handleMoveClone` - \n\n  * `handleOpenDeleteAllClonesDialog` - \n\n  * `handleConfirmDeleteAllClonesDialog` - \n\n  * `handleUpgradeMaxAllLevels` - \n\n  * `_controller` {`ClonesListController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderEmptyListNotification` - \n\n  * `renderClone` - \n\n  * `handleToggleAutoupgrade` - \n\n  * `handleMoveClone` - \n\n  * `handleOpenDeleteAllClonesDialog` - \n\n  * `handleConfirmDeleteAllClonesDialog` - \n\n  * `_controller` {`ClonesListController`} - ",
       "attributes": []
+    },
+    {
+      "name": "ca-clones-list-item-buttons",
+      "description": "Attributes:\n\n  * `details-visible` {`boolean`} - \n\nProperties:\n\n  * `styles` {`CSSResult[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `detailsVisible` {`boolean`} - \n\n  * `_clone` - \n\n  * `_upgradeLevelMaxButton` {`Ref<SlButton>`} - \n\n  * `handleToggleDetails` - \n\n  * `handleUpgradeLevelMax` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`ClonesListItemButtonsController`} - ",
+      "attributes": [
+        {
+          "name": "details-visible",
+          "description": "`details-visible` {`boolean`} - \n\nProperty: detailsVisible",
+          "valueSet": "v"
+        }
+      ]
     },
     {
       "name": "ca-clones-list-item-description",
@@ -153,13 +167,18 @@
     },
     {
       "name": "ca-clones-list-item",
-      "description": "Attributes:\n\n  * `clone-id` {`string`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `cloneId` {`string`} - \n\n  * `_menuVisible` {`boolean`} - \n\n  * `_detailsVisible` {`boolean`} - \n\n  * `_clone` - \n\n  * `handleToggleAutoUpgrade` - \n\n  * `handleDragStart` - \n\n  * `handleToggleMenu` - \n\n  * `handleHideMenu` - \n\n  * `handleOpenDeleteCloneDialog` - \n\n  * `handleConfirmDeleteCloneDialog` - \n\n  * `handleOpenRenameCloneDialog` - \n\n  * `handleToggleDetails` - \n\n  * `handleUpgradeLevelMax` - \n\n  * `_controller` {`ClonesListItemController`} - ",
+      "description": "Attributes:\n\n  * `clone-id` {`string`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `cloneId` {`string`} - \n\n  * `_menuVisible` {`boolean`} - \n\n  * `_detailsVisible` {`boolean`} - \n\n  * `_clone` - \n\n  * `handleToggleAutoUpgrade` - \n\n  * `handleDragStart` - \n\n  * `handleToggleMenu` - \n\n  * `handleHideMenu` - \n\n  * `handleOpenDeleteCloneDialog` - \n\n  * `handleConfirmDeleteCloneDialog` - \n\n  * `handleOpenRenameCloneDialog` - \n\n  * `handleToggleDetails` - \n\n  * `_controller` {`ClonesListItemController`} - ",
       "attributes": [
         {
           "name": "clone-id",
           "description": "`clone-id` {`string`} - \n\nProperty: cloneId"
         }
       ]
+    },
+    {
+      "name": "ca-clones-list-upgrade-buttons",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_upgradeLevelMaxButton` {`Ref<SlButton>`} - \n\n  * `handleUpgradeMaxAllLevels` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`ClonesListUpgradeButtonsController`} - ",
+      "attributes": []
     },
     {
       "name": "ca-purchase-clone-dialog",
@@ -353,7 +372,7 @@
     },
     {
       "name": "ca-mainframe-hardware-panel",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_shiftPressed` {`boolean`} - \n\n  * `_ctrlPressed` {`boolean`} - \n\n  * `renderParameter` - \n\n  * `handleKeypress` - \n\n  * `handleBuyMax` - \n\n  * `handleMoveElement` - \n\n  * `_controller` {`MainframeHardwarePanelController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_shiftPressed` {`boolean`} - \n\n  * `_ctrlPressed` {`boolean`} - \n\n  * `renderParameter` - \n\n  * `handleKeypress` - \n\n  * `handleMoveElement` - \n\n  * `_controller` {`MainframeHardwarePanelController`} - ",
       "attributes": []
     },
     {
@@ -372,13 +391,18 @@
     },
     {
       "name": "ca-mainframe-hardware-panel-article-buttons",
-      "description": "Attributes:\n\n  * `increase` {`number`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `increase` {`number`} - \n\n  * `_warningElements` {`NodeListOf<HTMLParagraphElement>`} - \n\n  * `_buyButtonRef` {`Ref<SlButton>`} - \n\n  * `_availableTimeRef` {`Ref<HTMLSpanElement>`} - \n\n  * `_parameter` - \n\n  * `renderWarnings` - \n\n  * `handlePurchase` - \n\n  * `handleBuyMax` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`MainframeHardwarePanelArticleButtonsController`} - ",
+      "description": "Attributes:\n\n  * `increase` {`number`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `increase` {`number`} - \n\n  * `_warningElements` {`NodeListOf<HTMLParagraphElement>`} - \n\n  * `_buyButtonRef` {`Ref<SlButton>`} - \n\n  * `_buyMaxButtonRef` {`Ref<SlButton>`} - \n\n  * `_availableTimeRef` {`Ref<HTMLSpanElement>`} - \n\n  * `_parameter` - \n\n  * `renderWarnings` - \n\n  * `handlePurchase` - \n\n  * `handleBuyMax` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`MainframeHardwarePanelArticleButtonsController`} - ",
       "attributes": [
         {
           "name": "increase",
           "description": "`increase` {`number`} - \n\nProperty: increase"
         }
       ]
+    },
+    {
+      "name": "ca-mainframe-hardware-panel-buttons",
+      "description": "Properties:\n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_buyMaxButtonRef` {`Ref<SlButton>`} - \n\n  * `handleBuyMax` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`MainframeHardwarePanelButtonsController`} - ",
+      "attributes": []
     },
     {
       "name": "ca-mainframe-processes-panel",
@@ -452,7 +476,12 @@
     },
     {
       "name": "ca-owned-programs-list",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderEmptyListNotification` - \n\n  * `renderProgram` - \n\n  * `handleToggleAutoupgrade` - \n\n  * `handleMoveProgram` - \n\n  * `handleUpgradeMaxAllPrograms` - \n\n  * `_controller` {`OwnedProgramsListController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderEmptyListNotification` - \n\n  * `renderProgram` - \n\n  * `handleMoveProgram` - \n\n  * `_controller` {`OwnedProgramsListController`} - ",
+      "attributes": []
+    },
+    {
+      "name": "ca-owned-programs-list-item-buttons",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_program` - \n\n  * `_upgradeMaxDesktopButton` {`Ref<SlButton>`} - \n\n  * `_upgradeMaxMobileButton` {`Ref<SlButton>`} - \n\n  * `handleToggleAutoUpgrade` - \n\n  * `handleUpgradeMax` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`OwnedProgramsListItemButtonsController`} - ",
       "attributes": []
     },
     {
@@ -462,13 +491,18 @@
     },
     {
       "name": "ca-owned-programs-list-item",
-      "description": "Attributes:\n\n  * `program-name` - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `programName` - \n\n  * `_descriptionVisible` {`boolean`} - \n\n  * `_program` - \n\n  * `handleToggleDescription` - \n\n  * `handleToggleAutoUpgrade` - \n\n  * `handleDragStart` - \n\n  * `handleUpgradeMax` - \n\n  * `_controller` {`OwnedProgramsListItemController`} - ",
+      "description": "Attributes:\n\n  * `program-name` - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `programName` - \n\n  * `_descriptionVisible` {`boolean`} - \n\n  * `_program` - \n\n  * `handleToggleDescription` - \n\n  * `handleDragStart` - \n\n  * `_controller` {`OwnedProgramsListItemController`} - ",
       "attributes": [
         {
           "name": "program-name",
           "description": "`program-name` - \n\nProperty: programName"
         }
       ]
+    },
+    {
+      "name": "ca-owned-programs-list-buttons",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_upgradeMaxDesktopButton` {`Ref<SlButton>`} - \n\n  * `_upgradeMaxMobileButton` {`Ref<SlButton>`} - \n\n  * `handleToggleAutoupgrade` - \n\n  * `handleUpgradeMaxAllPrograms` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`OwnedProgramsListButtonsController`} - ",
+      "attributes": []
     },
     {
       "name": "ca-purchase-program-dialog",
@@ -621,7 +655,7 @@
     },
     {
       "name": "ca-settings-form",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_languageInputRef` {`Ref<SlSelect>`} - \n\n  * `_themeInputRef` {`Ref<SlSelect>`} - \n\n  * `_messageLogSizeInputRef` {`Ref<SlInput>`} - \n\n  * `_toastDurationInputRef` {`Ref<SlRange>`} - \n\n  * `_updateFPSInputRef` {`Ref<SlRange>`} - \n\n  * `_autosaveEnabledOnHideSwitchRef` {`Ref<SlSwitch>`} - \n\n  * `_autosaveIntervalInputRef` {`Ref<SlRange>`} - \n\n  * `_fastSpeedMultiplierInputRef` {`Ref<SlRange>`} - \n\n  * `_maxUpdatesPerTickInputRef` {`Ref<SlInput>`} - \n\n  * `_longNumberFormatInputRef` {`Ref<SlSelect>`} - \n\n  * `renderLanguageOption` - \n\n  * `renderThemeOption` - \n\n  * `renderLongNumberFormatOption` - \n\n  * `handleChangeLanguage` - \n\n  * `handleChangeTheme` - \n\n  * `handleChangeMessageLogSize` - \n\n  * `handleChangeToastDuration` - \n\n  * `handleChangeUpdateFPS` - \n\n  * `handleChangeAutosaveEnabledOnHide` - \n\n  * `handleChangeAutosaveInterval` - \n\n  * `handleChangeFastSpeedMultiplier` - \n\n  * `handleChangeMaxUpdatesPerTick` - \n\n  * `handleChangeLongNumberFormat` - \n\n  * `timeSecondsFormatter` - \n\n  * `decimalNumberFormatter` - \n\n  * `_controller` {`SettingsFormController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_languageInputRef` {`Ref<SlSelect>`} - \n\n  * `_themeInputRef` {`Ref<SlSelect>`} - \n\n  * `_messageLogSizeInputRef` {`Ref<SlInput>`} - \n\n  * `_toastDurationInputRef` {`Ref<SlRange>`} - \n\n  * `_updateFPSInputRef` {`Ref<SlRange>`} - \n\n  * `_autosaveEnabledOnHideSwitchRef` {`Ref<SlSwitch>`} - \n\n  * `_autosaveIntervalInputRef` {`Ref<SlRange>`} - \n\n  * `_fastSpeedMultiplierInputRef` {`Ref<SlRange>`} - \n\n  * `_maxUpdatesPerTickInputRef` {`Ref<SlInput>`} - \n\n  * `_longNumberFormatInputRef` {`Ref<SlSelect>`} - \n\n  * `_spinnerVisible` {`boolean`} - \n\n  * `renderLanguageOption` - \n\n  * `renderThemeOption` - \n\n  * `renderLongNumberFormatOption` - \n\n  * `handleChangeLanguage` - \n\n  * `handleChangeTheme` - \n\n  * `handleChangeMessageLogSize` - \n\n  * `handleChangeToastDuration` - \n\n  * `handleChangeUpdateFPS` - \n\n  * `handleChangeAutosaveEnabledOnHide` - \n\n  * `handleChangeAutosaveInterval` - \n\n  * `handleChangeFastSpeedMultiplier` - \n\n  * `handleChangeMaxUpdatesPerTick` - \n\n  * `handleChangeLongNumberFormat` - \n\n  * `timeSecondsFormatter` - \n\n  * `decimalNumberFormatter` - \n\n  * `_controller` {`SettingsFormController`} - ",
       "attributes": []
     },
     {

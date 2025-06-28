@@ -85,7 +85,7 @@ export class FastForwardingScreen extends BaseComponent {
     }
 
     if (this._timerElRef.value) {
-      this._timerElRef.value.textContent = this._controller.formatter.formatTimeShort(accumulatedTime);
+      this._timerElRef.value.textContent = this._controller.formatter.formatTimeLong(accumulatedTime);
     }
   };
 }

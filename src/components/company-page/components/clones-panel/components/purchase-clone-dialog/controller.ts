@@ -26,7 +26,7 @@ export class PurchaseCloneDialogController extends BaseController {
     return this.companyState.clones.purchaseClone(args);
   }
 
-  generateName(): Promise<string> {
+  generateName(): string {
     return this.companyState.clones.generateCloneName();
   }
 

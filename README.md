@@ -2,17 +2,11 @@
 
 ## About
 
-Cybariada is an idle management game, heavily inspired by [Bitburner](https://github.com/bitburner-official/bitburner-src), in which player controls mainframe and group of up to 10 mercenaries to establish private security company. Player visits different cities, which cover different scenarios, and by working for various factions unlocks new features. Mainframe provides various support buffs, performs hacking and automates gameplay while mercenaries perform sidejobs, contracts and operations.
+Cybariada is an idle management game, heavily inspired by [Bitburner](https://github.com/bitburner-official/bitburner-src), in which player controls AI on mainframe and group of clones to collect intel. Player visits different cities, which cover different scenarios, and by working for various factions unlocks new features. Mainframe provides various support buffs, performs hacking and automates gameplay while clones perform sidejobs, contracts and operations.
 
 Cyberiada is currenly under development. It has roadmap available but info here may be outdated.
 
 Discord for discussions and feedback is available here: https://discord.gg/CmsTxU2EMw
-
-## Troubleshooting
-
-- Autosave on page hide may use a lot of memory if game page visibility is switched often. This can be disable in settings
-- Message popups can use a lot of memory over time. They can be disabled in settings
-- Max FPS can be reduced to 1 but it gameplay won't be smooth
 
 ## Local development and contribution
 
@@ -37,3 +31,5 @@ npm run wca
 npm run prettier
 npm run lint
 ```
+
+For translactions, game uses [@lit/localize](https://github.com/Lit/Lit/tree/main/packages/localize). To update localization, first run `localize:extract`, then update xlf file under `src/xliff` directory, then run `localize:build`.

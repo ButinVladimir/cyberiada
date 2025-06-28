@@ -140,7 +140,7 @@ export class PurchaseCloneDialog extends BaseComponent {
       this._level = this._controller.developmentLevel;
 
       if (this.isOpen) {
-        this.generateName();
+        this._name = this._controller.generateName();
       }
     }
   }
@@ -315,15 +315,6 @@ Synchronization is earned by capturing districts and gaining certain favors.`)}
   };
 
   private handleGenerateName = () => {
-    this.generateName();
+    this._name = this._controller.generateName();
   };
-
-  private generateName(): void {
-    this._controller
-      .generateName()
-      .then((name) => {
-        this._name = name;
-      })
-      .catch((e) => console.error(e));
-  }
 }

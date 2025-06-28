@@ -152,7 +152,7 @@ export class AssignCloneSidejobDialogButtons extends BaseComponent {
     if (pointsDiff < 0 || connectivityGrowth < 0) {
       this._availableTimeRef.value.textContent = '';
     } else {
-      const formattedTime = this._controller.formatter.formatTimeShort(pointsDiff / connectivityGrowth);
+      const formattedTime = this._controller.formatter.formatTimeLong(pointsDiff / connectivityGrowth);
       this._availableTimeRef.value.textContent = formattedTime;
     }
   }

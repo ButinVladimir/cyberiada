@@ -19,7 +19,7 @@
     },
     "startingMoney": 0,
     "startingDevelopmentLevel": 0,
-    "startingAccumulatedTime": 0,
+    "startingAccumulatedTime": 100000000,
     "startingSynchronization": 0,
     "baseSharedExperienceMultiplier": 1,
     "mainframeHardware": {

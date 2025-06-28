@@ -27,7 +27,9 @@ export class DistrictSynchronizationParameter implements IDistrictSynchronizatio
   recalculate(): void {
     const districtTypeData = this._district.template;
 
-    this._value = calculatePower(this._district.parameters.tier.tier, districtTypeData.parameters.synchronization);
+    this._value = Math.ceil(
+      calculatePower(this._district.parameters.tier.tier, districtTypeData.parameters.synchronization),
+    );
   }
 
   removeAllEventListeners(): void {

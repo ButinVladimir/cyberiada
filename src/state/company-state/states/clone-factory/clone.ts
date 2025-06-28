@@ -250,12 +250,7 @@ export class Clone implements IClone {
   }
 
   private recalculateLevel(): void {
-    const { base, multiplier } = this._template.levelRequirements;
-
-    const newLevel = Math.min(
-      reverseGeometricProgressionSum(this._experience, multiplier, base),
-      this._globalState.development.level,
-    );
+    const newLevel = this.calculateLevelFromExperience();
 
     if (newLevel > this._level) {
       this._level = newLevel;
@@ -333,5 +328,14 @@ export class Clone implements IClone {
     );
 
     this.recalculateParameters();
+  }
+
+  private calculateLevelFromExperience(): number {
+    const { base, multiplier } = this._template.levelRequirements;
+
+    return Math.min(
+      reverseGeometricProgressionSum(this._experience, multiplier, base),
+      this._globalState.development.level,
+    );
   }
 }

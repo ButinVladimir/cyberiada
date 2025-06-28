@@ -57,6 +57,7 @@ export class MainframeHardwarePanelArticleButtons extends BaseComponent {
   private _warningElements!: NodeListOf<HTMLParagraphElement>;
 
   private _buyButtonRef = createRef<SlButton>();
+  private _buyMaxButtonRef = createRef<SlButton>();
   private _availableTimeRef = createRef<HTMLSpanElement>();
 
   @consume({ context: mainframeHardwareParameterContext, subscribe: true })
@@ -77,7 +78,14 @@ export class MainframeHardwarePanelArticleButtons extends BaseComponent {
 
     return html`
       <div class="buttons">
-        <sl-button variant="default" type="button" size="medium" @click=${this.handleBuyMax}>
+        <sl-button
+          ${ref(this._buyMaxButtonRef)}
+          disabled
+          variant="default"
+          type="button"
+          size="medium"
+          @click=${this.handleBuyMax}
+        >
           ${COMMON_TEXTS.buyMax()}
         </sl-button>
 
@@ -143,7 +151,7 @@ export class MainframeHardwarePanelArticleButtons extends BaseComponent {
     if (moneyDiff < 0 || moneyGrowth < 0) {
       this._availableTimeRef.value.textContent = '';
     } else {
-      const formattedTime = this._controller.formatter.formatTimeShort(moneyDiff / moneyGrowth);
+      const formattedTime = this._controller.formatter.formatTimeLong(moneyDiff / moneyGrowth);
       this._availableTimeRef.value.textContent = formattedTime;
     }
   }
@@ -176,6 +184,12 @@ export class MainframeHardwarePanelArticleButtons extends BaseComponent {
       const buttonDisabled = !this._parameter?.checkCanPurchase(this.increase);
 
       this._buyButtonRef.value.disabled = buttonDisabled;
+    }
+
+    if (this._buyMaxButtonRef.value) {
+      const buttonDisabled = !this._parameter?.checkCanPurchase(1);
+
+      this._buyMaxButtonRef.value.disabled = buttonDisabled;
     }
   };
 }

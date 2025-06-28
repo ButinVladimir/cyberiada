@@ -1,4 +1,6 @@
+import { XORShift128Plus } from 'random-seedable';
 import { injectable, inject } from 'inversify';
+import { v4 as uuid } from 'uuid';
 import { TYPES } from '@state/types';
 import { IGlobalSerializedState } from './interfaces/serialized-states/global-serialized-state';
 import type {
@@ -38,9 +40,9 @@ export class GlobalState implements IGlobalState {
   private _unlockedFeaturesState: IUnlockedFeaturesState;
   private _storyEventsState: IStoryEventsState;
 
-  private _randomSeed: number;
-  private _randomShift: bigint;
+  private _random: XORShift128Plus;
   private _gameSpeed: GameSpeed;
+  private _runId: string;
 
   constructor(
     @inject(TYPES.ScenarioState) _scenarioState: IScenarioState,
@@ -67,17 +69,17 @@ export class GlobalState implements IGlobalState {
     this._availableActivities = new AvailableActivities();
     this._availableItemsState = _availableItemsState;
 
-    this._randomSeed = 0;
-    this._randomShift = 0n;
+    this._random = new XORShift128Plus(0, 0n);
     this._gameSpeed = GameSpeed.normal;
+    this._runId = uuid();
   }
 
-  get randomSeed() {
-    return this._randomSeed;
+  get random() {
+    return this._random;
   }
 
-  get randomShift() {
-    return this._randomShift;
+  get runId() {
+    return this._runId;
   }
 
   get scenario() {
@@ -152,15 +154,12 @@ export class GlobalState implements IGlobalState {
     this.time.makeNextTick();
   }
 
-  setRandomShift(value: number | bigint | string | boolean) {
-    this._randomShift = BigInt(value);
-  }
-
   async startNewState(): Promise<void> {
     const startingSeed = Date.now();
-    this._randomSeed = startingSeed;
-    this.setRandomShift(startingSeed);
+    this._random.seed = BigInt(startingSeed);
+    this._random.y = BigInt(startingSeed);
 
+    this._runId = uuid();
     this._gameSpeed = GameSpeed.normal;
 
     await this._scenarioState.startNewState();
@@ -173,12 +172,17 @@ export class GlobalState implements IGlobalState {
     await this._availableItemsState.startNewState();
     await this._unlockedFeaturesState.startNewState();
     this.storyEvents.startNewState();
+
+    this._synchronization.requestRecalculation();
   }
 
   async deserialize(serializedState: IGlobalSerializedState): Promise<void> {
-    this._randomSeed = serializedState.randomSeed;
-    this.setRandomShift(serializedState.randomShift);
+    this._random.seed = BigInt(serializedState.randomSeed);
+    this._random.y = BigInt(serializedState.randomShift);
+
+    this._runId = serializedState.runId;
     this._gameSpeed = serializedState.gameSpeed;
+
     await this._scenarioState.deserialize(serializedState.scenario);
     await this._factionState.deserialize(serializedState.faction);
     await this._moneyState.deserialize(serializedState.money);
@@ -188,12 +192,15 @@ export class GlobalState implements IGlobalState {
     await this._multipliersState.deserialize(serializedState.multipliers);
     await this._availableItemsState.deserialize(serializedState.availableItems);
     await this._unlockedFeaturesState.deserialize(serializedState.unlockedFeatures);
+
+    this._synchronization.requestRecalculation();
   }
 
   serialize(): IGlobalSerializedState {
     return {
-      randomSeed: this.randomSeed,
-      randomShift: this.randomShift.toString(),
+      randomSeed: this._random.seed.toString(),
+      randomShift: this._random.y.toString(),
+      runId: this._runId,
       gameSpeed: this.gameSpeed,
       scenario: this._scenarioState.serialize(),
       faction: this._factionState.serialize(),

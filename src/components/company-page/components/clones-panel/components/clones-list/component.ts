@@ -10,7 +10,7 @@ import {
   ConfirmationAlertOpenEvent,
   ConfirmationAlertSubmitEvent,
 } from '@components/game-screen/components/confirmation-alert/events';
-import { AUTOUPGRADE_VALUES, DELETE_VALUES, UPGRADE_MAX_VALUES } from '@shared/styles';
+import { AUTOUPGRADE_VALUES, DELETE_VALUES } from '@shared/styles';
 import { IClone } from '@state/company-state/states/clone-factory/interfaces/clone';
 import { ClonesListController } from './controller';
 import { CLONE_LIST_ITEMS_GAP } from './constants';
@@ -94,13 +94,7 @@ export class ClonesList extends BaseComponent {
 
     return html`
       <div class="header-row with-border">
-        <sl-button-group>
-          <sl-button variant=${UPGRADE_MAX_VALUES.buttonVariant} @click=${this.handleUpgradeMaxAllLevels}>
-            <sl-icon slot="prefix" name=${UPGRADE_MAX_VALUES.icon}></sl-icon>
-
-            ${msg('Upgrade all levels')}
-          </sl-button>
-        </sl-button-group>
+        <ca-clones-list-upgrade-buttons></ca-clones-list-upgrade-buttons>
       </div>
 
       <div class="header-row">
@@ -168,9 +162,5 @@ export class ClonesList extends BaseComponent {
     }
 
     this._controller.deleteAllClones();
-  };
-
-  private handleUpgradeMaxAllLevels = () => {
-    this._controller.upgradeMaxAllLevels();
   };
 }

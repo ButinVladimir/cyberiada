@@ -165,17 +165,8 @@ export class RenameCloneDialog extends BaseComponent {
   };
 
   private handleGenerateName = () => {
-    this.generateName();
+    this._newName = this._controller.generateName();
   };
-
-  private generateName(): void {
-    this._controller
-      .generateName()
-      .then((name) => {
-        this._newName = name;
-      })
-      .catch((e) => console.error(e));
-  }
 
   private handleSubmit = () => {
     if (!this._newName) {

@@ -84,9 +84,7 @@ Upgrades on top have higher priority.`)}
       </p>
 
       <div class="buttons-block">
-        <sl-button variant="default" type="button" size="medium" @click=${this.handleBuyMax}>
-          ${msg('Buy all upgrades')}
-        </sl-button>
+        <ca-mainframe-hardware-panel-buttons></ca-mainframe-hardware-panel-buttons>
       </div>
 
       <ca-sortable-list gap=${GAP} @sortable-element-moved=${this.handleMoveElement}>
@@ -126,10 +124,6 @@ Upgrades on top have higher priority.`)}
 
     return maxIncrease;
   }
-
-  private handleBuyMax = () => {
-    this._controller.purchaseMax();
-  };
 
   private handleMoveElement = (event: SortableElementMovedEvent) => {
     this._controller.moveParameter(event.keyName as MainframeHardwareParameterType, event.position);

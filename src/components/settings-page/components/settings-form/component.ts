@@ -1,6 +1,6 @@
 import { html, css } from 'lit';
 import { msg, localized } from '@lit/localize';
-import { customElement } from 'lit/decorators.js';
+import { customElement, state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { BaseComponent } from '@shared/base-component';
 import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.component.js';
@@ -12,6 +12,7 @@ import { SCREEN_WIDTH_POINTS, inputLabelStyle } from '@shared/styles';
 import { Language, LongNumberFormat, Theme } from '@shared/types';
 import { SettingsFormController } from './controller';
 import * as constants from './constants';
+import { cache } from 'lit/directives/cache.js';
 
 @localized()
 @customElement('ca-settings-form')
@@ -20,6 +21,19 @@ export class SettingsForm extends BaseComponent {
     inputLabelStyle,
     css`
       :host {
+        width: 100%;
+      }
+
+      div.spinner-container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: var(--sl-spacing-3x-large);
+        font-size: var(--sl-font-size-3x-large);
+      }
+
+      div.settings-form {
         width: 100%;
         display: grid;
         row-gap: var(--sl-spacing-2x-large);
@@ -30,7 +44,7 @@ export class SettingsForm extends BaseComponent {
       }
 
       @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
-        :host {
+        div.settings-form {
           row-gap: var(--sl-spacing-large);
           column-gap: var(--sl-spacing-3x-large);
           grid-template-columns: repeat(2, 1fr);
@@ -61,6 +75,9 @@ export class SettingsForm extends BaseComponent {
 
   private _longNumberFormatInputRef = createRef<SlSelect>();
 
+  @state()
+  private _spinnerVisible = false;
+
   constructor() {
     super();
 
@@ -68,142 +85,148 @@ export class SettingsForm extends BaseComponent {
   }
 
   render() {
-    return html`
-      <sl-select
-        ${ref(this._languageInputRef)}
-        name="language"
-        value=${this._controller.language}
-        @sl-change=${this.handleChangeLanguage}
-      >
-        <span class="input-label" slot="label"> ${msg('Language')} </span>
+    if (this._spinnerVisible) {
+      return html`<div class="spinner-container"><sl-spinner></sl-spinner></div>`;
+    }
 
-        ${constants.LANGUAGE_OPTIONS.map(this.renderLanguageOption)}
-      </sl-select>
+    return cache(html`
+      <div class="settings-form">
+        <sl-select
+          ${ref(this._languageInputRef)}
+          name="language"
+          value=${this._controller.language}
+          @sl-change=${this.handleChangeLanguage}
+        >
+          <span class="input-label" slot="label"> ${msg('Language')} </span>
 
-      <sl-select
-        ${ref(this._themeInputRef)}
-        name="theme"
-        value=${this._controller.theme}
-        @sl-change=${this.handleChangeTheme}
-      >
-        <span class="input-label" slot="label"> ${msg('Theme')} </span>
+          ${constants.LANGUAGE_OPTIONS.map(this.renderLanguageOption)}
+        </sl-select>
 
-        ${THEMES.map(this.renderThemeOption)}
-      </sl-select>
+        <sl-select
+          ${ref(this._themeInputRef)}
+          name="theme"
+          value=${this._controller.theme}
+          @sl-change=${this.handleChangeTheme}
+        >
+          <span class="input-label" slot="label"> ${msg('Theme')} </span>
 
-      <sl-input
-        ${ref(this._messageLogSizeInputRef)}
-        name="messageLogSize"
-        value=${this._controller.messageLogSize}
-        type="number"
-        inputmode="decimal"
-        min=${constants.MESSAGE_LOG_SIZE_MIN}
-        max=${constants.MESSAGE_LOG_SIZE_MAX}
-        step=${constants.MESSAGE_LOG_SIZE_STEP}
-        @sl-change=${this.handleChangeMessageLogSize}
-      >
-        <span class="input-label" slot="label"> ${msg('Maximum amount of messages in log')} </span>
+          ${THEMES.map(this.renderThemeOption)}
+        </sl-select>
 
-        <span slot="help-text">
-          ${msg("Excessive messages in log won't be removed until new message is received")}
-        </span>
-      </sl-input>
+        <sl-input
+          ${ref(this._messageLogSizeInputRef)}
+          name="messageLogSize"
+          value=${this._controller.messageLogSize}
+          type="number"
+          inputmode="decimal"
+          min=${constants.MESSAGE_LOG_SIZE_MIN}
+          max=${constants.MESSAGE_LOG_SIZE_MAX}
+          step=${constants.MESSAGE_LOG_SIZE_STEP}
+          @sl-change=${this.handleChangeMessageLogSize}
+        >
+          <span class="input-label" slot="label"> ${msg('Maximum amount of messages in log')} </span>
 
-      <sl-range
-        ${ref(this._toastDurationInputRef)}
-        min=${constants.TOAST_DURATION_MIN}
-        max=${constants.TOAST_DURATION_MAX}
-        step=${constants.TOAST_DURATION_STEP}
-        name="toastDuration"
-        value=${this._controller.toastDuration}
-        @sl-change=${this.handleChangeToastDuration}
-      >
-        <span class="input-label" slot="label"> ${msg('Message popup duration (s)')} </span>
+          <span slot="help-text">
+            ${msg("Excessive messages in log won't be removed until new message is received")}
+          </span>
+        </sl-input>
 
-        <span slot="help-text"> ${msg('Set 0 to disable message popups')} </span>
-      </sl-range>
+        <sl-range
+          ${ref(this._toastDurationInputRef)}
+          min=${constants.TOAST_DURATION_MIN}
+          max=${constants.TOAST_DURATION_MAX}
+          step=${constants.TOAST_DURATION_STEP}
+          name="toastDuration"
+          value=${this._controller.toastDuration}
+          @sl-change=${this.handleChangeToastDuration}
+        >
+          <span class="input-label" slot="label"> ${msg('Message popup duration (s)')} </span>
 
-      <sl-range
-        ${ref(this._updateFPSInputRef)}
-        min=${constants.FPS_MIN}
-        max=${constants.FPS_MAX}
-        step=${constants.FPS_STEP}
-        name="fps"
-        value=${this._controller.fps}
-        @sl-change=${this.handleChangeUpdateFPS}
-      >
-        <span class="input-label" slot="label"> ${msg('Frames per second')} </span>
+          <span slot="help-text"> ${msg('Set 0 to disable message popups')} </span>
+        </sl-range>
 
-        <span slot="help-text"> ${msg('Too high number can cause strain on CPU')} </span>
-      </sl-range>
+        <sl-range
+          ${ref(this._updateFPSInputRef)}
+          min=${constants.FPS_MIN}
+          max=${constants.FPS_MAX}
+          step=${constants.FPS_STEP}
+          name="fps"
+          value=${this._controller.fps}
+          @sl-change=${this.handleChangeUpdateFPS}
+        >
+          <span class="input-label" slot="label"> ${msg('Frames per second')} </span>
 
-      <sl-range
-        ${ref(this._fastSpeedMultiplierInputRef)}
-        min=${constants.FAST_SPEED_MULTIPLIER_MIN}
-        max=${constants.FAST_SPEED_MULTIPLIER_MAX}
-        step=${constants.FAST_SPEED_MULTIPLIER_STEP}
-        name="fastSpeedMultiplier"
-        value=${this._controller.fastSpeedMultiplier}
-        @sl-change=${this.handleChangeFastSpeedMultiplier}
-      >
-        <span class="input-label" slot="label"> ${msg('Speed multiplier when game speed is fast')} </span>
+          <span slot="help-text"> ${msg('Too high number can cause strain on CPU')} </span>
+        </sl-range>
 
-        <span slot="help-text"> ${msg('Too high number can cause strain on CPU')} </span>
-      </sl-range>
+        <sl-range
+          ${ref(this._fastSpeedMultiplierInputRef)}
+          min=${constants.FAST_SPEED_MULTIPLIER_MIN}
+          max=${constants.FAST_SPEED_MULTIPLIER_MAX}
+          step=${constants.FAST_SPEED_MULTIPLIER_STEP}
+          name="fastSpeedMultiplier"
+          value=${this._controller.fastSpeedMultiplier}
+          @sl-change=${this.handleChangeFastSpeedMultiplier}
+        >
+          <span class="input-label" slot="label"> ${msg('Speed multiplier when game speed is fast')} </span>
 
-      <sl-input
-        ${ref(this._maxUpdatesPerTickInputRef)}
-        name="maxUpdatesPerTick"
-        value=${this._controller.maxUpdatesPerTick}
-        type="number"
-        inputmode="decimal"
-        min=${constants.MAX_UPDATES_PER_FRAME_MIN}
-        max=${constants.MAX_UPDATES_PER_FRAME_MAX}
-        step=${constants.MAX_UPDATES_PER_FRAME_STEP}
-        @sl-change=${this.handleChangeMaxUpdatesPerTick}
-      >
-        <span class="input-label" slot="label"> ${msg('Maximum amount of updates per frame')} </span>
+          <span slot="help-text"> ${msg('Too high number can cause strain on CPU')} </span>
+        </sl-range>
 
-        <span slot="help-text"> ${msg('Too high number can cause strain on CPU')} </span>
-      </sl-input>
+        <sl-input
+          ${ref(this._maxUpdatesPerTickInputRef)}
+          name="maxUpdatesPerTick"
+          value=${this._controller.maxUpdatesPerTick}
+          type="number"
+          inputmode="decimal"
+          min=${constants.MAX_UPDATES_PER_FRAME_MIN}
+          max=${constants.MAX_UPDATES_PER_FRAME_MAX}
+          step=${constants.MAX_UPDATES_PER_FRAME_STEP}
+          @sl-change=${this.handleChangeMaxUpdatesPerTick}
+        >
+          <span class="input-label" slot="label"> ${msg('Maximum amount of updates per frame')} </span>
 
-      <sl-select
-        ${ref(this._longNumberFormatInputRef)}
-        name="longNumberFormat"
-        value=${this._controller.longNumberFormat}
-        @sl-change=${this.handleChangeLongNumberFormat}
-      >
-        <span class="input-label" slot="label"> ${msg('Long number format')} </span>
+          <span slot="help-text"> ${msg('Too high number can cause strain on CPU')} </span>
+        </sl-input>
 
-        ${LONG_NUMBER_FORMATS.map(this.renderLongNumberFormatOption)}
-      </sl-select>
+        <sl-select
+          ${ref(this._longNumberFormatInputRef)}
+          name="longNumberFormat"
+          value=${this._controller.longNumberFormat}
+          @sl-change=${this.handleChangeLongNumberFormat}
+        >
+          <span class="input-label" slot="label"> ${msg('Long number format')} </span>
 
-      <sl-switch
-        ${ref(this._autosaveEnabledOnHideSwitchRef)}
-        size="medium"
-        name="autosaveEnabledOnHide"
-        ?checked=${this._controller.autosaveEnabledOnHide}
-        @sl-change=${this.handleChangeAutosaveEnabledOnHide}
-      >
-        <span class="input-label"> ${msg('Enable autosave when game tab hides or closes')} </span>
-      </sl-switch>
+          ${LONG_NUMBER_FORMATS.map(this.renderLongNumberFormatOption)}
+        </sl-select>
 
-      <sl-range
-        ${ref(this._autosaveIntervalInputRef)}
-        min=${constants.AUTOSAVE_INTERVAL_MIN}
-        max=${constants.AUTOSAVE_INTERVAL_MAX}
-        step=${constants.AUTOSAVE_INTERVAL_STEP}
-        name="autosaveInterval"
-        value=${this._controller.autosaveInterval}
-        @sl-change=${this.handleChangeAutosaveInterval}
-      >
-        <span class="input-label" slot="label"> ${msg('Autosave interval (s)')} </span>
+        <sl-switch
+          ${ref(this._autosaveEnabledOnHideSwitchRef)}
+          size="medium"
+          name="autosaveEnabledOnHide"
+          ?checked=${this._controller.autosaveEnabledOnHide}
+          @sl-change=${this.handleChangeAutosaveEnabledOnHide}
+        >
+          <span class="input-label"> ${msg('Enable autosave when game tab hides or closes')} </span>
+        </sl-switch>
 
-        <span slot="help-text">
-          ${msg('Too low number can cause strain on CPU. Select 0 to disable regular autosave')}
-        </span>
-      </sl-range>
-    `;
+        <sl-range
+          ${ref(this._autosaveIntervalInputRef)}
+          min=${constants.AUTOSAVE_INTERVAL_MIN}
+          max=${constants.AUTOSAVE_INTERVAL_MAX}
+          step=${constants.AUTOSAVE_INTERVAL_STEP}
+          name="autosaveInterval"
+          value=${this._controller.autosaveInterval}
+          @sl-change=${this.handleChangeAutosaveInterval}
+        >
+          <span class="input-label" slot="label"> ${msg('Autosave interval (s)')} </span>
+
+          <span slot="help-text">
+            ${msg('Too low number can cause strain on CPU. Select 0 to disable regular autosave')}
+          </span>
+        </sl-range>
+      </div>
+    `);
   }
 
   updated(_changedProperties: Map<string, any>) {
@@ -246,7 +269,9 @@ export class SettingsForm extends BaseComponent {
     }
 
     try {
+      this._spinnerVisible = true;
       await this._controller.setLanguage(this._languageInputRef.value.value as Language);
+      this._spinnerVisible = false;
     } catch (e) {
       console.error(e);
     }

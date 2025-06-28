@@ -136,7 +136,7 @@ export class PurchaseCloneDialogButtons extends BaseComponent {
     if (moneyDiff < 0 || moneyGrowth < 0) {
       this._availableTimeRef.value.textContent = '';
     } else {
-      const formattedTime = this._controller.formatter.formatTimeShort(moneyDiff / moneyGrowth);
+      const formattedTime = this._controller.formatter.formatTimeLong(moneyDiff / moneyGrowth);
       this._availableTimeRef.value.textContent = formattedTime;
     }
   }

@@ -12,8 +12,4 @@ export class OwnedProgramsListItemController extends BaseController {
 
     return this._ownedProgram;
   }
-
-  upgradeMaxProgram(programName: ProgramName) {
-    this.mainframeState.programs.upgradeMaxProgram(programName);
-  }
 }
