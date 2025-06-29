@@ -11,7 +11,7 @@ export class CityPage extends BaseComponent {
   @state()
   private _selectedDistrictIndex?: number;
 
-  render() {
+  protected renderDesktop() {
     const renderedTemplate = this._selectedDistrictIndex === undefined ? this.renderMap() : this.renderDistrict();
 
     return cache(renderedTemplate);

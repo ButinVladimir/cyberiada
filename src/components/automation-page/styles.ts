@@ -1,11 +1,15 @@
 import { css } from 'lit';
-import { hintStyle, sectionTitleStyle, SCREEN_WIDTH_POINTS } from '@shared/styles';
+import { hintStyle, sectionTitleStyle, pageTitleStyle } from '@shared/index';
 
 export const autobuyerStyles = [
   hintStyle,
   sectionTitleStyle,
   css`
     :host {
+      display: contents;
+    }
+
+    .host-content {
       width: 100%;
       background-color: var(--sl-panel-background-color);
       padding: var(--sl-spacing-large);
@@ -13,44 +17,45 @@ export const autobuyerStyles = [
       border: var(--ca-border);
       border-radius: var(--sl-border-radius-small);
       display: grid;
+      row-gap: var(--sl-spacing-small);
+      column-gap: var(--sl-spacing-small);
+
+      & h4.title {
+        grid-area: title;
+        margin: 0;
+      }
+  
+      & p.hint {
+        grid-area: hint;
+        margin: 0;
+      }
+  
+      div.input-container {
+        grid-area: input;
+        width: 100%;
+        display: flex;
+        
+        & sl-input {
+          width: 100%;
+        }
+      }
+    }
+
+    .host-content.mobile {
       grid-template-areas:
         'title'
         'input'
         'hint';
-      row-gap: var(--sl-spacing-small);
-      column-gap: var(--sl-spacing-small);
     }
 
-    h4.title {
-      grid-area: title;
-      margin: 0;
-    }
+    .host-content.desktop {
+      grid-template-areas:
+        'title input'
+        'hint input';
+      grid-template-rows: auto auto;
+      grid-template-columns: 1fr auto;
 
-    p.hint {
-      grid-area: hint;
-      margin: 0;
-    }
-
-    div.input-container {
-      grid-area: input;
-      width: 100%;
-      display: flex;
-    }
-
-    div.input-container sl-input {
-      width: 100%;
-    }
-
-    @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
-      :host {
-        grid-template-areas:
-          'title input'
-          'hint input';
-        grid-template-rows: auto auto;
-        grid-template-columns: 1fr auto;
-      }
-
-      div.input-container {
+      & div.input-container {
         grid-area: input;
         width: 15rem;
         align-items: center;
@@ -59,3 +64,18 @@ export const autobuyerStyles = [
     }
   `,
 ];
+
+const styles = [
+  pageTitleStyle,
+  css`
+    :host {
+      display: block;
+    }
+
+    h3.title {
+      margin-bottom: var(--sl-spacing-2x-small);
+    }
+  `,
+];
+
+export default styles;
