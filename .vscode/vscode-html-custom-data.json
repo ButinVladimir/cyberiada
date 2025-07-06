@@ -3,7 +3,7 @@
   "tags": [
     {
       "name": "ca-app-root",
-      "description": "Properties:\n\n  * `_controller` {`AppRootController`} - ",
+      "description": "Properties:\n\n  * `_layoutContextProvider` - \n\n  * `handleSwitchToMobile` - \n\n  * `handleSwitchToTablet` - \n\n  * `handleSwitchToDesktop` - \n\n  * `_controller` {`AppRootController`} - \n\n  * `matchMobile` {`MediaQueryList`} - \n\n  * `matchTablet` {`MediaQueryList`} - \n\n  * `matchDesktop` {`MediaQueryList`} - ",
       "attributes": []
     },
     {
@@ -18,17 +18,17 @@
     },
     {
       "name": "ca-automation-clone-level-autoupgrader",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_moneyShareRef` {`Ref<SlInput>`} - \n\n  * `handleChangeMoneyShare` - \n\n  * `_controller` {`AutomationCloneLevelAutoupgraderController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `_moneyShareRef` {`Ref<SlInput>`} - \n\n  * `renderContent` - \n\n  * `handleChangeMoneyShare` - \n\n  * `_controller` {`AutomationCloneLevelAutoupgraderController`} - ",
       "attributes": []
     },
     {
       "name": "ca-automation-mainframe-hardware-autobuyer",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_moneyShareRef` {`Ref<SlInput>`} - \n\n  * `handleChangeMoneyShare` - \n\n  * `_controller` {`AutomationMainframeHardwareAutobuyerController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `_moneyShareRef` {`Ref<SlInput>`} - \n\n  * `renderContent` - \n\n  * `handleChangeMoneyShare` - \n\n  * `_controller` {`AutomationMainframeHardwareAutobuyerController`} - ",
       "attributes": []
     },
     {
       "name": "ca-automation-mainframe-programs-autobuyer",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_moneyShareRef` {`Ref<SlInput>`} - \n\n  * `handleChangeMoneyShare` - \n\n  * `_controller` {`AutomationMainframeProgramsAutobuyerController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `_moneyShareRef` {`Ref<SlInput>`} - \n\n  * `renderContent` - \n\n  * `handleChangeMoneyShare` - \n\n  * `_controller` {`AutomationMainframeProgramsAutobuyerController`} - ",
       "attributes": []
     },
     {
@@ -43,7 +43,7 @@
     },
     {
       "name": "ca-city-map",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_size` {`number`} - \n\n  * `_selectedDistrictIndex` {`number | undefined`} - \n\n  * `_contentRef` {`Ref<HTMLDivElement>`} - \n\n  * `renderBackgroundDistrict` - \n\n  * `renderSelectedDistrict` - \n\n  * `handleMouseMove` - \n\n  * `handleMouseLeave` - \n\n  * `handleResize` - \n\n  * `handleMapClick` - \n\n  * `_controller` {`CityMapController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `_size` {`number`} - \n\n  * `_selectedDistrictIndex` {`number | undefined`} - \n\n  * `_contentRef` {`Ref<HTMLDivElement>`} - \n\n  * `renderContent` - \n\n  * `renderBackgroundDistrict` - \n\n  * `renderSelectedDistrict` - \n\n  * `handleMouseMove` - \n\n  * `handleMouseLeave` - \n\n  * `handleResize` - \n\n  * `handleMapClick` - \n\n  * `_controller` {`CityMapController`} - ",
       "attributes": []
     },
     {
@@ -96,7 +96,7 @@
     },
     {
       "name": "ca-city-district-overview-panel",
-      "description": "Properties:\n\n  * `styles` {`CSSResult[]`} - \n\n  * `_controller` {`CityDistrictOverviewPanelController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_controller` {`CityDistrictOverviewPanelController`} - ",
       "attributes": []
     },
     {
@@ -111,7 +111,7 @@
     },
     {
       "name": "ca-city-district-sidejobs-panel",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `renderEmptyListNotification` - \n\n  * `renderList` - \n\n  * `renderSidejob` - \n\n  * `_controller` {`CityDistrictSidejobsPanelController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `renderContent` - \n\n  * `renderHeader` - \n\n  * `renderEmptyListNotification` - \n\n  * `renderList` - \n\n  * `renderSidejob` - \n\n  * `_controller` {`CityDistrictSidejobsPanelController`} - ",
       "attributes": []
     },
     {
@@ -121,7 +121,7 @@
     },
     {
       "name": "ca-city-district-sidejobs-list-item",
-      "description": "Attributes:\n\n  * `sidejob-name` - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `sidejobName` - \n\n  * `_districtIndex` {`number | undefined`} - ",
+      "description": "Attributes:\n\n  * `sidejob-name` - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `sidejobName` - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `_districtIndex` {`number | undefined`} - \n\n  * `renderContent` - ",
       "attributes": [
         {
           "name": "sidejob-name",
@@ -136,7 +136,7 @@
     },
     {
       "name": "ca-company-clones-panel",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_isPurchaseCloneDialogOpen` {`boolean`} - \n\n  * `_cloneListItemDialogOpen` {`boolean`} - \n\n  * `_cloneListItemDialog` {`\"rename-clone\" | undefined`} - \n\n  * `_modalClone` - \n\n  * `handlePurchaseCloneDialogOpen` - \n\n  * `handlePurchaseCloneDialogClose` - \n\n  * `handleCloneListItemDialogOpen` - \n\n  * `handleCloneListItemDialogClose` - \n\n  * `_controller` {`ClonesPanelController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `_isPurchaseCloneDialogOpen` {`boolean`} - \n\n  * `_cloneListItemDialogOpen` {`boolean`} - \n\n  * `_cloneListItemDialog` {`\"rename-clone\" | undefined`} - \n\n  * `_modalClone` - \n\n  * `renderContent` - \n\n  * `handlePurchaseCloneDialogOpen` - \n\n  * `handlePurchaseCloneDialogClose` - \n\n  * `handleCloneListItemDialogOpen` - \n\n  * `handleCloneListItemDialogClose` - \n\n  * `_controller` {`ClonesPanelController`} - ",
       "attributes": []
     },
     {
@@ -146,7 +146,7 @@
     },
     {
       "name": "ca-clones-list-item-buttons",
-      "description": "Attributes:\n\n  * `details-visible` {`boolean`} - \n\nProperties:\n\n  * `styles` {`CSSResult[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `detailsVisible` {`boolean`} - \n\n  * `_clone` - \n\n  * `_upgradeLevelMaxButton` {`Ref<SlButton>`} - \n\n  * `handleToggleDetails` - \n\n  * `handleUpgradeLevelMax` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`ClonesListItemButtonsController`} - ",
+      "description": "Attributes:\n\n  * `details-visible` {`boolean`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `detailsVisible` {`boolean`} - \n\n  * `_clone` - \n\n  * `_upgradeLevelMaxButton` {`Ref<SlButton>`} - \n\n  * `handleToggleDetails` - \n\n  * `handleUpgradeLevelMax` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`ClonesListItemButtonsController`} - ",
       "attributes": [
         {
           "name": "details-visible",
@@ -157,7 +157,7 @@
     },
     {
       "name": "ca-clones-list-item-description",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_clone` - \n\n  * `renderAttribute` - \n\n  * `renderSkill` - \n\n  * `_controller` {`ClonesListItemDescriptionController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `_clone` - \n\n  * `renderAttribute` - \n\n  * `renderSkill` - \n\n  * `_controller` {`ClonesListItemDescriptionController`} - ",
       "attributes": []
     },
     {

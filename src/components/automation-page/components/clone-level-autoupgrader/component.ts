@@ -55,7 +55,7 @@ export class AutomationCloneLevelAutoupgrader extends BaseComponent {
         </sl-input>
       </div>
     `;
-  }
+  };
 
   private handleChangeMoneyShare = () => {
     if (!this._moneyShareRef.value) {

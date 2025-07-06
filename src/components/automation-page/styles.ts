@@ -24,17 +24,17 @@ export const autobuyerStyles = [
         grid-area: title;
         margin: 0;
       }
-  
+
       & p.hint {
         grid-area: hint;
         margin: 0;
       }
-  
+
       div.input-container {
         grid-area: input;
         width: 100%;
         display: flex;
-        
+
         & sl-input {
           width: 100%;
         }

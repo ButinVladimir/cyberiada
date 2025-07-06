@@ -1,36 +1,19 @@
-import { css, html, nothing } from 'lit';
+import { html, nothing } from 'lit';
 import { localized, msg } from '@lit/localize';
 import { consume } from '@lit/context';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { customElement } from 'lit/decorators.js';
 import SlProgressBar from '@shoelace-style/shoelace/dist/components/progress-bar/progress-bar.component.js';
 import { type IClone } from '@state/company-state';
-import { BaseComponent, hintStyle, calculateLevelProgressPercentage, progressBarHintStyle } from '@shared/index';
+import { BaseComponent, calculateLevelProgressPercentage } from '@shared/index';
 import { cloneContext } from '../item/contexts';
 import { ClonesListItemExperienceController } from './controller';
+import styles from './styles';
 
 @localized()
 @customElement('ca-clones-list-item-experience')
 export class ClonesListItemExperience extends BaseComponent {
-  static styles = [
-    hintStyle,
-    progressBarHintStyle,
-    css`
-      div.title {
-        font-size: var(--sl-font-size-small);
-        line-height: var(--sl-line-height-dense);
-        margin-bottom: var(--sl-spacing-2x-small);
-      }
-
-      sl-progress-bar {
-        --height: var(--sl-spacing-large);
-      }
-
-      sl-progress-bar::part(label) {
-        font-size: var(--sl-font-size-small);
-      }
-    `,
-  ];
+  static styles = styles;
 
   hasPartialUpdate = true;
 
@@ -49,7 +32,7 @@ export class ClonesListItemExperience extends BaseComponent {
     this._controller = new ClonesListItemExperienceController(this);
   }
 
-  render() {
+  protected renderDesktop() {
     if (!this._clone) {
       return nothing;
     }

@@ -1,4 +1,4 @@
-import { css, html, nothing } from 'lit';
+import { html, nothing } from 'lit';
 import { consume } from '@lit/context';
 import { localized, msg } from '@lit/localize';
 import { customElement, property } from 'lit/decorators.js';
@@ -10,20 +10,12 @@ import { BaseComponent, TOGGLE_DETAILS_VALUES, UPGRADE_MAX_VALUES } from '@share
 import { ClonesListItemButtonsController } from './controller';
 import { cloneContext } from '../item/contexts';
 import { ToggleDetailsEvent } from './events';
+import styles from './styles';
 
 @localized()
 @customElement('ca-clones-list-item-buttons')
 export class ClonesListItemButtons extends BaseComponent {
-  static styles = [
-    css`
-      :host {
-        display: flex;
-        align-items: flex-start;
-        gap: var(--sl-spacing-small);
-        flex-wrap: wrap;
-      }
-    `,
-  ];
+  static styles = styles;
 
   hasPartialUpdate = true;
 
@@ -46,7 +38,7 @@ export class ClonesListItemButtons extends BaseComponent {
     this._controller = new ClonesListItemButtonsController(this);
   }
 
-  render() {
+  protected renderDesktop() {
     if (!this._clone) {
       return nothing;
     }

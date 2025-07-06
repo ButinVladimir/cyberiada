@@ -1,24 +1,16 @@
-import { css, html, nothing } from 'lit';
+import { html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { localized, msg } from '@lit/localize';
 import { BaseComponent } from '@shared/base-component';
 import { COMMON_TEXTS, DISTRICT_NAMES, DISTRICT_TYPE_TEXTS } from '@texts/index';
 import { DISTRICT_STATE_TEXTS } from '../../../../constants';
 import { CityMapDistrictDescriptionController } from './controller';
+import styles from './styles';
 
 @localized()
 @customElement('ca-city-map-district-description')
 export class CityMapDistrictDescription extends BaseComponent {
-  static styles = css`
-    :host {
-      display: block;
-    }
-
-    p {
-      margin: 0;
-      padding: 0;
-    }
-  `;
+  static styles = styles;
 
   @property({
     attribute: 'district',
@@ -34,7 +26,7 @@ export class CityMapDistrictDescription extends BaseComponent {
     this._controller = new CityMapDistrictDescriptionController(this);
   }
 
-  render() {
+  protected renderDesktop() {
     if (this.district === undefined || this.district === null) {
       return nothing;
     }

@@ -9,7 +9,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { BaseComponent } from '@shared/index';
 import { DistrictUnlockState } from '@state/city-state';
 import { CityMapController } from './controller';
-import { BOTTOM_GAP } from './constants';
+import { BOTTOM_GAP, DESKTOP_MAP_WIDTH_RATIO } from './constants';
 import { CityMapClickEvent } from './events';
 import styles from './styles';
 
@@ -36,13 +36,21 @@ export class CityMap extends BaseComponent {
     this._controller = new CityMapController(this);
   }
 
-  protected renderMobile = () => {
-    return html`<div class="host-content mobile">${this.renderContent()}</div>`;
-  };
+  protected renderMobile() {
+    return html`
+      <sl-resize-observer @sl-resize=${this.handleResize}>
+        <div class="host-content mobile">${this.renderContent()}</div>
+      </sl-resize-observer>
+    `;
+  }
 
-  protected renderDesktop = () => {
-    return html`<div class="host-content desktop">${this.renderContent()}</div>`;
-  };
+  protected renderDesktop() {
+    return html`
+      <sl-resize-observer @sl-resize=${this.handleResize}>
+        <div class="host-content desktop">${this.renderContent()}</div>
+      </sl-resize-observer>
+    `;
+  }
 
   private renderContent = () => {
     let unlocked = false;
@@ -59,19 +67,15 @@ export class CityMap extends BaseComponent {
     });
 
     return html`
-      <div class="content-wrapper">
-        <sl-resize-observer @sl-resize=${this.handleResize}>
-          <div
-            ${ref(this._contentRef)}
-            class=${contentClasses}
-            @mousemove=${this.handleMouseMove}
-            @mouseleave=${this.handleMouseLeave}
-            @click=${this.handleMapClick}
-          >
-            ${map(range(this._controller.districtsCount), this.renderBackgroundDistrict)}
-            ${map(range(this._controller.districtsCount), this.renderSelectedDistrict)}
-          </div>
-        </sl-resize-observer>
+      <div
+        ${ref(this._contentRef)}
+        class=${contentClasses}
+        @mousemove=${this.handleMouseMove}
+        @mouseleave=${this.handleMouseLeave}
+        @click=${this.handleMapClick}
+      >
+        ${map(range(this._controller.districtsCount), this.renderBackgroundDistrict)}
+        ${map(range(this._controller.districtsCount), this.renderSelectedDistrict)}
       </div>
       <ca-city-map-district-description district=${ifDefined(this._selectedDistrictIndex)}>
       </ca-city-map-district-description>
@@ -132,7 +136,12 @@ export class CityMap extends BaseComponent {
 
   private handleResize = (event: { detail: { entries: ResizeObserverEntry[] } }) => {
     const containerBoundingClientRect = this.getBoundingClientRect();
-    const width = event.detail.entries[0].contentRect.width;
+    let width = event.detail.entries[0].contentRect.width;
+
+    if (this.layoutContext !== 'mobile') {
+      width *= DESKTOP_MAP_WIDTH_RATIO;
+    }
+
     const height = window.innerHeight - containerBoundingClientRect.y - BOTTOM_GAP;
     this._size = Math.min(width, height);
 

@@ -1,4 +1,4 @@
-import { css, html, nothing } from 'lit';
+import { html, nothing } from 'lit';
 import { provide } from '@lit/context';
 import { localized, msg, str } from '@lit/localize';
 import { customElement, property, state } from 'lit/decorators.js';
@@ -9,84 +9,16 @@ import {
 } from '@components/game-screen/components/confirmation-alert/events';
 import { CLONE_TEMPLATE_TEXTS } from '@texts/clone-templates';
 import { type IClone } from '@state/company-state';
-import {
-  BaseComponent,
-  CloneAlert,
-  AUTOUPGRADE_VALUES,
-  dragIconStyle,
-  hintStyle,
-  sectionTitleStyle,
-} from '@shared/index';
+import { BaseComponent, CloneAlert, AUTOUPGRADE_VALUES } from '@shared/index';
 import { ClonesListItemController } from './controller';
 import { OpenCloneListItemDialogEvent } from '../../../../events/open-clone-list-item-dialog';
 import { cloneContext } from './contexts';
+import styles from './styles';
 
 @localized()
 @customElement('ca-clones-list-item')
 export class ClonesListItem extends BaseComponent {
-  static styles = [
-    sectionTitleStyle,
-    hintStyle,
-    dragIconStyle,
-    css`
-      sl-card {
-        width: 100%;
-      }
-
-      :host(.dragged) sl-card::part(base) {
-        background-color: var(--ca-dragged-color);
-      }
-
-      div.header {
-        display: grid;
-        grid-template-areas:
-          'name menu'
-          'description description';
-        grid-template-columns: 1fr auto;
-        grid-template-rows: repeat(auto);
-      }
-
-      h4.title {
-        cursor: grab;
-        margin: 0;
-      }
-
-      h4.name {
-        grid-area: name;
-      }
-
-      p.hint {
-        margin: 0;
-      }
-
-      p.description {
-        grid-area: description;
-      }
-
-      sl-icon-button.menu-button {
-        grid-area: menu;
-        align-self: center;
-      }
-
-      ca-clones-list-item-description {
-        margin-top: var(--sl-spacing-small);
-      }
-
-      sl-icon[name='grip-vertical'] {
-        top: 0.15em;
-        left: -0.2em;
-      }
-
-      #toggle-autoupgrade-btn {
-        position: relative;
-        top: 0.15em;
-      }
-
-      sl-popup {
-        --arrow-color: var(--sl-color-neutral-200);
-      }
-    `,
-  ];
+  static styles = styles;
 
   @property({
     attribute: 'clone-id',
@@ -131,7 +63,7 @@ export class ClonesListItem extends BaseComponent {
     super.performUpdate();
   }
 
-  render() {
+  protected renderDesktop() {
     if (!this._clone) {
       return nothing;
     }

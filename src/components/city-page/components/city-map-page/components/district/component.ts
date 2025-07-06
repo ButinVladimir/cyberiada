@@ -1,4 +1,4 @@
-import { css, html, PropertyValues } from 'lit';
+import { html, PropertyValues } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { localized } from '@lit/localize';
@@ -7,18 +7,12 @@ import { DistrictUnlockState } from '@state/city-state';
 import { IDistrictRendererResult } from '@workers/district-renderer/interfaces';
 import { CityMapHighlightedDistrictController } from './controller';
 import { CELL_SIZE } from '../../constants';
+import styles from './styles';
 
 @localized()
 @customElement('ca-city-map-district')
 export class CityMapDistrict extends BaseComponent {
-  static styles = css`
-    :host {
-      display: block;
-      position: absolute;
-      top: 0;
-      left: 0;
-    }
-  `;
+  static styles = styles;
 
   private static _districtRendererWorker: Worker;
 
@@ -72,7 +66,7 @@ export class CityMapDistrict extends BaseComponent {
     this.renderCanvas();
   }
 
-  render() {
+  protected renderDesktop() {
     return html` <canvas ${ref(this._canvasRef)} width=${this.size} height=${this.size}></canvas> `;
   }
 

@@ -1,23 +1,16 @@
-import { css, html } from 'lit';
+import { html } from 'lit';
 import { msg, localized } from '@lit/localize';
 import { customElement } from 'lit/decorators.js';
-import { BaseComponent } from '@shared/base-component';
-import { pageTitleStyle } from '@shared/styles';
+import { BaseComponent } from '@shared/index';
 import { CompanyPageController } from './controller';
 import { CompanyPageTabs } from './types';
 import { COMPANY_PAGE_TABS_LIST, COMPANY_PAGE_TAB_TITLES } from './constants';
+import styles from './styles';
 
 @localized()
 @customElement('ca-company-page')
 export class CompanyPage extends BaseComponent {
-  static styles = [
-    pageTitleStyle,
-    css`
-      h3.title {
-        margin-bottom: var(--sl-spacing-2x-small);
-      }
-    `,
-  ];
+  static styles = styles;
 
   private _controller: CompanyPageController;
 
@@ -27,7 +20,7 @@ export class CompanyPage extends BaseComponent {
     this._controller = new CompanyPageController(this);
   }
 
-  render() {
+  renderDesktop() {
     return html`
       <h3 class="title">${msg('Company')}</h3>
 
