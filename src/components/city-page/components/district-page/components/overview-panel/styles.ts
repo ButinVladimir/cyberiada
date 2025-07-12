@@ -1,6 +1,6 @@
 import { css } from 'lit';
 
-const styles = css`
+const cityDistrictPageOverviewPanelStyles = css`
   :host {
     display: flex;
     flex-direction: column;
@@ -9,4 +9,4 @@ const styles = css`
   }
 `;
 
-export default styles;
+export default cityDistrictPageOverviewPanelStyles;

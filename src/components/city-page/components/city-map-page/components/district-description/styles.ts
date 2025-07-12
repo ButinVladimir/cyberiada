@@ -1,6 +1,6 @@
 import { css } from 'lit';
 
-const styles = css`
+const cityPageDistrictDescriptionStyles = css`
   :host {
     display: block;
   }
@@ -11,4 +11,4 @@ const styles = css`
   }
 `;
 
-export default styles;
+export default cityPageDistrictDescriptionStyles;

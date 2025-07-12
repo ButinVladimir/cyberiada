@@ -65,7 +65,7 @@ export const autobuyerStyles = [
   `,
 ];
 
-const styles = [
+const automationPageStyles = [
   pageTitleStyle,
   css`
     :host {
@@ -78,4 +78,4 @@ const styles = [
   `,
 ];
 
-export default styles;
+export default automationPageStyles;

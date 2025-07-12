@@ -1,23 +1,30 @@
 import { html, nothing } from 'lit';
-import { customElement, queryAll } from 'lit/decorators.js';
+import { customElement, property, queryAll } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { msg, localized, str } from '@lit/localize';
 import { consume } from '@lit/context';
 import SlButton from '@shoelace-style/shoelace/dist/components/button/button.component.js';
-import { BaseComponent, dialogButtonsStyle, warningStyle } from '@shared/index';
+import { BaseComponent } from '@shared/index';
 import { COMMON_TEXTS, DISTRICT_NAMES, SIDEJOB_TEXTS } from '@texts/index';
 import { type ISidejob } from '@state/company-state';
 import { AssignCloneSidejobDialogButtonsController } from './controller';
 import { AssignCloneEvent, CancelEvent } from './events';
 import { existingSidejobContext, temporarySidejobContext } from '../../contexts';
 import { AssignCloneSidejobDialogWarning } from './types';
+import styles from './styles';
 
 @localized()
 @customElement('ca-assign-clone-sidejob-dialog-buttons')
 export class AssignCloneSidejobDialogButtons extends BaseComponent {
-  static styles = [warningStyle, dialogButtonsStyle];
+  static styles = styles;
 
   hasPartialUpdate = true;
+
+  @property({
+    attribute: 'disabled',
+    type: Boolean,
+  })
+  disabled = false;
 
   private _controller: AssignCloneSidejobDialogButtonsController;
 
@@ -40,7 +47,7 @@ export class AssignCloneSidejobDialogButtons extends BaseComponent {
     this._controller = new AssignCloneSidejobDialogButtonsController(this);
   }
 
-  render() {
+  protected renderDesktop() {
     return html`
       ${this.renderWarnings()}
 
@@ -53,7 +60,7 @@ export class AssignCloneSidejobDialogButtons extends BaseComponent {
           ${ref(this._assignButtonRef)}
           size="medium"
           variant="primary"
-          disabled
+          ?disabled=${this.disabled}
           @click=${this.handleAssignClone}
         >
           ${msg('Assign clone')}
@@ -73,10 +80,6 @@ export class AssignCloneSidejobDialogButtons extends BaseComponent {
     });
 
     this.updateAvailabilityTimer();
-
-    if (this._assignButtonRef.value) {
-      this.updateAssignButton();
-    }
   };
 
   private renderWarnings = () => {
@@ -155,22 +158,6 @@ export class AssignCloneSidejobDialogButtons extends BaseComponent {
       const formattedTime = this._controller.formatter.formatTimeLong(pointsDiff / connectivityGrowth);
       this._availableTimeRef.value.textContent = formattedTime;
     }
-  }
-
-  private updateAssignButton(): void {
-    const totalConnectivity = this._sidejob ? this._controller.getTotalConnectivity(this._sidejob.district.index) : 0;
-    const requiredConnectivity = this._sidejob
-      ? this._controller.getRequiredConnectivity(this._sidejob.sidejobName)
-      : 0;
-
-    const purchaseButtonDisabled = !(
-      this._sidejob &&
-      this._sidejob.assignedClone &&
-      this._sidejob.checkRequirements() &&
-      totalConnectivity >= requiredConnectivity
-    );
-
-    this._assignButtonRef.value!.disabled = purchaseButtonDisabled;
   }
 
   private handleCancel = () => {

@@ -1,105 +1,22 @@
-import { css, html } from 'lit';
+import { html } from 'lit';
 import { localized, msg } from '@lit/localize';
 import { customElement } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
-import { BaseComponent, DELETE_VALUES, SCREEN_WIDTH_POINTS, SidejobAlert } from '@shared/index';
+import { BaseComponent, DELETE_VALUES, SidejobAlert } from '@shared/index';
 import {
   ConfirmationAlertOpenEvent,
   ConfirmationAlertSubmitEvent,
 } from '@components/game-screen/components/confirmation-alert/events';
-import { SidejobsListController } from './controller';
 import { ISidejob } from '@state/company-state';
+import { SidejobsListController } from './controller';
+import styles from './styles';
 
 @localized()
 @customElement('ca-sidejobs-list')
 export class SidejobsList extends BaseComponent {
-  static styles = css`
-    :host {
-      width: 100%;
-      align-self: stretch;
-      display: block;
-      border-top: var(--ca-border);
-    }
+  static styles = styles;
 
-    .header {
-      display: grid;
-      grid-template-columns: auto;
-      grid-template-rows: repeat(auto);
-      gap: var(--sl-spacing-small);
-      align-items: center;
-      border-bottom: var(--ca-border);
-      padding: var(--sl-spacing-medium) 0;
-    }
-
-    .header-column {
-      display: none;
-      font-weight: var(--sl-font-weight-bold);
-    }
-
-    .buttons {
-      align-items: center;
-      flex-direction: row;
-      gap: var(--sl-spacing-small);
-    }
-
-    .buttons.desktop {
-      display: none;
-      justify-content: flex-end;
-      font-size: var(--sl-font-size-large);
-    }
-
-    .buttons.mobile {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: flex-start;
-    }
-
-    .notification {
-      padding: var(--sl-spacing-3x-large);
-      text-align: center;
-      border-bottom: var(--ca-border);
-    }
-
-    ca-sortable-list {
-      width: 100%;
-    }
-
-    ca-sortable-list::part(list) {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-      justify-content: center;
-    }
-
-    ca-sidejobs-list-item {
-      border-bottom: var(--ca-border);
-    }
-
-    ca-sidejobs-list-item:nth-child(2n) {
-      background-color: var(--ca-table-row-odd-color);
-    }
-
-    @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
-      .header {
-        grid-template-columns: 2fr 1fr 1fr auto;
-        grid-template-rows: auto;
-        padding: var(--sl-spacing-small);
-      }
-
-      .header-column {
-        display: block;
-      }
-
-      .buttons.desktop {
-        display: flex;
-      }
-
-      .buttons.mobile {
-        display: none;
-      }
-    }
-  `;
+  protected hasMobileRender = true;
 
   private _controller: SidejobsListController;
 
@@ -121,17 +38,15 @@ export class SidejobsList extends BaseComponent {
     document.removeEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmDeleteAllProcessesDialog);
   }
 
-  render() {
-    const sidejobs = this._controller.listSidejobs();
-
+  protected renderDesktop() {
     const cancelAllSidejobs = msg('Cancel all sidejobs');
 
     return html`
-      <div class="header">
+      <div class="header desktop">
         <div class="header-column">${msg('Sidejob')}</div>
         <div class="header-column">${msg('District')}</div>
         <div class="header-column">${msg('Assigned clone')}</div>
-        <div class="buttons desktop">
+        <div class="buttons">
           <sl-tooltip>
             <span slot="content"> ${cancelAllSidejobs} </span>
 
@@ -144,23 +59,37 @@ export class SidejobsList extends BaseComponent {
             </sl-icon-button>
           </sl-tooltip>
         </div>
+      </div>
 
-        <div class="buttons mobile">
+      ${this.renderSidejobsList()}
+    `;
+  }
+
+  protected renderMobile() {
+    return html`
+      <div class="header mobile">
+        <div class="buttons">
           <sl-button
             variant=${DELETE_VALUES.buttonVariant}
             size="medium"
             @click=${this.handleOpenDeleteAllProcessesDialog}
           >
             <sl-icon slot="prefix" name=${DELETE_VALUES.icon}> </sl-icon>
-            ${cancelAllSidejobs}
+            ${msg('Cancel all sidejobs')}
           </sl-button>
         </div>
       </div>
 
-      ${sidejobs.length > 0
-        ? repeat(sidejobs, (sidejob) => sidejob.id, this.renderSidejob)
-        : this.renderEmptyListNotification()}
+      ${this.renderSidejobsList()}
     `;
+  }
+
+  private renderSidejobsList = () => {
+    const sidejobs = this._controller.listSidejobs();
+
+    return sidejobs.length > 0
+      ? html`${repeat(sidejobs, (sidejob) => sidejob.id, this.renderSidejob)}`
+      : this.renderEmptyListNotification()
   }
 
   private renderEmptyListNotification = () => {

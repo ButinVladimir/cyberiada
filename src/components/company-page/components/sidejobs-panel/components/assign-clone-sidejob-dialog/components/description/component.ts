@@ -1,4 +1,4 @@
-import { css, html, nothing } from 'lit';
+import { html, nothing } from 'lit';
 import { localized } from '@lit/localize';
 import { consume } from '@lit/context';
 import { customElement, state } from 'lit/decorators.js';
@@ -8,8 +8,6 @@ import SlRadioGroup from '@shoelace-style/shoelace/dist/components/radio-group/r
 import {
   BaseComponent,
   getHighlightValueClass,
-  highlightedValuesStyle,
-  hintStyle,
   RewardParameter,
 } from '@shared/index';
 import { COMMON_TEXTS, REWARD_PARAMETER_NAMES, SIDEJOB_TEXTS } from '@texts/index';
@@ -18,30 +16,12 @@ import { temporarySidejobContext } from '../../contexts';
 import { AssignCloneSidejobDialogDescriptionMode } from './types';
 import { DESCRIPTION_MODE_TEXTS, DESCRIPTION_MODES } from './constants';
 import { AssignCloneSidejobDialogDescriptionController } from './controller';
+import styles from './styles';
 
 @localized()
 @customElement('ca-assign-clone-sidejob-dialog-description')
 export class AssignCloneSidejobDialogDescription extends BaseComponent {
-  static styles = [
-    highlightedValuesStyle,
-    hintStyle,
-    css`
-      :host {
-        display: flex;
-        align-items: stretch;
-        gap: var(--sl-spacing-medium);
-        flex-direction: column;
-      }
-
-      p.hint {
-        margin: 0;
-      }
-
-      p.text {
-        margin: 0;
-      }
-    `,
-  ];
+  static styles = styles;
 
   hasPartialUpdate = true;
 
@@ -65,7 +45,7 @@ export class AssignCloneSidejobDialogDescription extends BaseComponent {
     this._controller = new AssignCloneSidejobDialogDescriptionController(this);
   }
 
-  render() {
+  protected renderDesktop() {
     if (!this._sidejob) {
       return nothing;
     }

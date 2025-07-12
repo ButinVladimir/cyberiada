@@ -1,7 +1,7 @@
 import { css } from 'lit';
 import { hintStyle, pageTitleStyle } from '@shared/index';
 
-const styles = [
+const cityMapPageStyles = [
   pageTitleStyle,
   hintStyle,
   css`
@@ -26,4 +26,4 @@ const styles = [
   `,
 ];
 
-export default styles;
+export default cityMapPageStyles;

@@ -3,12 +3,12 @@ import { customElement } from 'lit/decorators.js';
 import { localized } from '@lit/localize';
 import { BaseComponent } from '@shared/base-component';
 import { CityDistrictOverviewPanelController } from './controller';
-import styles from './styles';
+import cityDistrictPageOverviewPanelStyles from './styles';
 
 @localized()
 @customElement('ca-city-district-overview-panel')
 export class CityDistrictOverviewPanel extends BaseComponent {
-  static styles = styles;
+  static styles = cityDistrictPageOverviewPanelStyles;
 
   private _controller: CityDistrictOverviewPanelController;
 

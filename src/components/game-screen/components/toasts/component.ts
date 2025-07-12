@@ -19,7 +19,7 @@ export class Toasts extends BaseComponent {
     this._controller = new ToastsController(this);
   }
 
-  render() {
+  protected renderDesktop() {
     const toastDuration = this._controller.getToastDuration();
 
     const toasts = this._controller.getToasts();

@@ -7,12 +7,12 @@ import { DistrictUnlockState } from '@state/city-state';
 import { IDistrictRendererResult } from '@workers/district-renderer/interfaces';
 import { CityMapHighlightedDistrictController } from './controller';
 import { CELL_SIZE } from '../../constants';
-import styles from './styles';
+import cityMapPageDistrictStyles from './styles';
 
 @localized()
 @customElement('ca-city-map-district')
 export class CityMapDistrict extends BaseComponent {
-  static styles = styles;
+  static styles = cityMapPageDistrictStyles;
 
   private static _districtRendererWorker: Worker;
 

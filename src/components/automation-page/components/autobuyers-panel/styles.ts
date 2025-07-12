@@ -1,6 +1,6 @@
 import { css } from 'lit';
 
-const styles = css`
+const automationPageAutobuyersPanelStyles = css`
   :host {
     width: 100%;
     display: flex;
@@ -10,4 +10,4 @@ const styles = css`
   }
 `;
 
-export default styles;
+export default automationPageAutobuyersPanelStyles;

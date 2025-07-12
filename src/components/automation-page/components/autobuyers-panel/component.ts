@@ -2,11 +2,11 @@ import { html, nothing } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { BaseComponent, Feature } from '@shared/index';
 import { AutomationAutobuyersPanelController } from './controller';
-import styles from './styles';
+import automationPageAutobuyersPanelStyles from './styles';
 
 @customElement('ca-automation-autobuyers-panel')
 export class AutomationAutobuyersPanel extends BaseComponent {
-  static styles = styles;
+  static styles = automationPageAutobuyersPanelStyles;
 
   private _controller: AutomationAutobuyersPanelController;
 

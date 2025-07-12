@@ -9,12 +9,12 @@ import { CityDistrictPageTabs } from './types';
 import { CityDistrictPageController } from './controller';
 import { ReturnCityMapPageEvent } from './events';
 import { districtIndexContext } from './contexts';
-import styles from './styles';
+import cityDistrictPageStyles from './styles';
 
 @localized()
 @customElement('ca-city-district-page')
 export class CityDistrictPage extends BaseComponent {
-  static styles = styles;
+  static styles = cityDistrictPageStyles;
 
   @provide({ context: districtIndexContext })
   @property({

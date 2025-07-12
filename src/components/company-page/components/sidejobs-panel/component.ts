@@ -1,36 +1,18 @@
-import { css, html } from 'lit';
+import { html } from 'lit';
 import { msg, localized } from '@lit/localize';
 import { customElement, state } from 'lit/decorators.js';
-import { BaseComponent } from '@shared/base-component';
-import { hintStyle } from '@shared/styles';
+import { BaseComponent } from '@shared/index';
+import styles from './styles';
 
 @localized()
 @customElement('ca-company-sidejobs-panel')
 export class CompanySidejobsPanel extends BaseComponent {
-  static styles = [
-    hintStyle,
-    css`
-      :host {
-        display: flex;
-        align-items: flex-start;
-        flex-direction: column;
-      }
-
-      p.hint {
-        margin: 0;
-        margin-bottom: var(--sl-spacing-large);
-      }
-
-      div.top-container {
-        margin-bottom: var(--sl-spacing-large);
-      }
-    `,
-  ];
+  static styles = styles;
 
   @state()
   private _assignCloneDialogOpened = false;
 
-  render() {
+  protected renderDesktop() {
     return html`
       <p class="hint">
         ${msg(`Sidejobs provide passive income when assigned clones are not working on primary jobs.`)}

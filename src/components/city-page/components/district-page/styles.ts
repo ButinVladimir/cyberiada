@@ -1,7 +1,7 @@
 import { css } from 'lit';
 import { pageTitleStyle } from '@shared/index';
 
-const styles = [
+const cityDistrictPageStyles = [
   pageTitleStyle,
   css`
     :host {
@@ -30,4 +30,4 @@ const styles = [
   `,
 ];
 
-export default styles;
+export default cityDistrictPageStyles;

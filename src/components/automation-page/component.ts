@@ -2,12 +2,12 @@ import { html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { localized, msg } from '@lit/localize';
 import { BaseComponent } from '@shared/index';
-import styles from './styles';
+import automationPageStyles from './styles';
 
 @localized()
 @customElement('ca-automation-page')
 export class AutomationPage extends BaseComponent {
-  static styles = styles;
+  static styles = automationPageStyles;
 
   protected renderDesktop() {
     return html`

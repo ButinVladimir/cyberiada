@@ -1,21 +1,22 @@
 import { html, nothing } from 'lit';
-import { customElement, queryAll } from 'lit/decorators.js';
+import { customElement, property, queryAll } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { msg, localized } from '@lit/localize';
 import { consume } from '@lit/context';
 import SlButton from '@shoelace-style/shoelace/dist/components/button/button.component.js';
-import { BaseComponent, dialogButtonsStyle, warningStyle } from '@shared/index';
+import { BaseComponent } from '@shared/index';
 import { COMMON_TEXTS } from '@texts/index';
 import { type IClone } from '@state/company-state';
 import { PurchaseCloneDialogButtonsController } from './controller';
-import { PurchaseCloneEvent, CancelEvent } from './events';
+import { CancelEvent, PurchaseCloneEvent } from './events';
 import { temporaryCloneContext } from '../../contexts';
 import { PurchaseCloneDialogWarning } from './types';
+import styles from './styles';
 
 @localized()
 @customElement('ca-purchase-clone-dialog-buttons')
 export class PurchaseCloneDialogButtons extends BaseComponent {
-  static styles = [warningStyle, dialogButtonsStyle];
+  static styles = styles;
 
   hasPartialUpdate = true;
 
@@ -27,6 +28,12 @@ export class PurchaseCloneDialogButtons extends BaseComponent {
   @queryAll('p[data-warning]')
   private _warningElements!: NodeListOf<HTMLParagraphElement>;
 
+  @property({
+    attribute: 'disabled',
+    type: Boolean,
+  })
+  disabled = false;
+
   private _purchaseButtonRef = createRef<SlButton>();
 
   private _availableTimeRef = createRef<HTMLSpanElement>();
@@ -37,7 +44,7 @@ export class PurchaseCloneDialogButtons extends BaseComponent {
     this._controller = new PurchaseCloneDialogButtonsController(this);
   }
 
-  render() {
+  protected renderDesktop() {
     return html`
       ${this.renderWarnings()}
 
@@ -50,7 +57,7 @@ export class PurchaseCloneDialogButtons extends BaseComponent {
           ${ref(this._purchaseButtonRef)}
           size="medium"
           variant="primary"
-          disabled
+          ?disabled=${this.disabled}
           @click=${this.handlePurchaseClone}
         >
           ${COMMON_TEXTS.purchase()}
@@ -70,7 +77,6 @@ export class PurchaseCloneDialogButtons extends BaseComponent {
     });
 
     this.updateAvailabilityTimer();
-    this.updatePurchaseButton();
   };
 
   private renderWarnings = () => {
@@ -139,37 +145,6 @@ export class PurchaseCloneDialogButtons extends BaseComponent {
       const formattedTime = this._controller.formatter.formatTimeLong(moneyDiff / moneyGrowth);
       this._availableTimeRef.value.textContent = formattedTime;
     }
-  }
-
-  private updatePurchaseButton(): void {
-    if (!this._purchaseButtonRef.value) {
-      return;
-    }
-
-    if (!this._clone) {
-      this._purchaseButtonRef.value.disabled = true;
-      return;
-    }
-
-    const { money } = this._controller;
-
-    const cost = this._controller.getCloneCost(this._clone.templateName, this._clone.tier, this._clone.level);
-    const synchronization = this._controller.getCloneSynchronization(this._clone.templateName, this._clone.tier);
-    const cloneAvailable = this._controller.isCloneAvailable(
-      this._clone.templateName,
-      this._clone.tier,
-      this._clone.level,
-    );
-
-    const purchaseButtonDisabled = !(
-      this._clone &&
-      this._clone.name &&
-      cloneAvailable &&
-      synchronization <= this._controller.availableSynchronization &&
-      cost <= money
-    );
-
-    this._purchaseButtonRef.value.disabled = purchaseButtonDisabled;
   }
 
   private handleCancel = () => {

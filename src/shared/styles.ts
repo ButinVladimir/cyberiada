@@ -190,18 +190,32 @@ export const attributesSkillsTablesStyle = css`
   div.attributes-skills-tables {
     width: 100%;
     display: flex;
+    color: var(--ca-hint-color);
+    font-size: var(--ca-hint-font-size);
+    line-height: var(--ca-hint-line-height);
 
     div.attributes-skills-table {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      grid-template-rows: repeat(auto);
-      grid-column-gap: var(--sl-spacing-medium);
-      color: var(--ca-hint-color);
-      font-size: var(--ca-hint-font-size);
-      line-height: var(--ca-hint-line-height);
+      display: flex;
+      flex-direction: column;
 
       h5.title {
         margin: 0;
+      }
+
+      .row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        width: 100%;
+        gap: var(--sl-spacing-medium);
+
+        .name-column {
+          flex: 1;
+        }
+
+        .value-column {
+          flex: 0 0 auto;
+        }
       }
     }
 
@@ -264,5 +278,11 @@ export const progressBarHintStyle = css`
 
   p.progress-bar-hint.visible {
     display: block;
+  }
+`;
+
+export const formStyle = css`
+  form {
+    display: contents;
   }
 `;

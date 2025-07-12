@@ -11,12 +11,12 @@ import { DistrictUnlockState } from '@state/city-state';
 import { CityMapController } from './controller';
 import { BOTTOM_GAP, DESKTOP_MAP_WIDTH_RATIO } from './constants';
 import { CityMapClickEvent } from './events';
-import styles from './styles';
+import cityMapStyles from './styles';
 
 @localized()
 @customElement('ca-city-map')
 export class CityMap extends BaseComponent {
-  static styles = styles;
+  static styles = cityMapStyles;
 
   protected hasMobileRender = true;
 

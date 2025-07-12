@@ -1,6 +1,6 @@
 import { css } from 'lit';
 
-const styles = css`
+const cityMapPageDistrictStyles = css`
   :host {
     display: block;
     position: absolute;
@@ -9,4 +9,4 @@ const styles = css`
   }
 `;
 
-export default styles;
+export default cityMapPageDistrictStyles;

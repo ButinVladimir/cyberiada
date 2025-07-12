@@ -5,12 +5,12 @@ import { BaseComponent } from '@shared/base-component';
 import { COMMON_TEXTS, DISTRICT_NAMES, DISTRICT_TYPE_TEXTS } from '@texts/index';
 import { DISTRICT_STATE_TEXTS } from '../../../../constants';
 import { CityMapDistrictDescriptionController } from './controller';
-import styles from './styles';
+import cityPageDistrictDescriptionStyles from './styles';
 
 @localized()
 @customElement('ca-city-map-district-description')
 export class CityMapDistrictDescription extends BaseComponent {
-  static styles = styles;
+  static styles = cityPageDistrictDescriptionStyles;
 
   @property({
     attribute: 'district',

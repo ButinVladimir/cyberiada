@@ -1,35 +1,16 @@
-import { css, html, nothing } from 'lit';
+import { html, nothing } from 'lit';
 import { msg, localized } from '@lit/localize';
 import { customElement, state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import SlCheckbox from '@shoelace-style/shoelace/dist/components/checkbox/checkbox.component.js';
-import { BaseComponent } from '@shared/base-component';
-import { FORCE_NOTIFICATION_TYPES } from '@shared/constants';
-import { modalBodyScrollStyle, smallModalStyle } from '@shared/styles';
+import { BaseComponent, FORCE_NOTIFICATION_TYPES } from '@shared/index';
 import { NotificationModalController } from './controller';
+import styles from './styles';
 
 @localized()
 @customElement('ca-notification-modal')
 export class NotificationModal extends BaseComponent {
-  static styles = [
-    smallModalStyle,
-    modalBodyScrollStyle,
-    css`
-      sl-dialog::part(footer) {
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: flex-end;
-        gap: var(--sl-spacing-small);
-      }
-
-      p {
-        margin-top: 0;
-        margin-bottom: var(--sl-spacing-large);
-      }
-    `,
-  ];
+  static styles = styles;
 
   private _controller: NotificationModalController;
 
@@ -44,28 +25,30 @@ export class NotificationModal extends BaseComponent {
     this._controller = new NotificationModalController(this);
   }
 
-  render() {
+  protected renderDesktop() {
     const hasNotifications = this._controller.hasUnreadNotifications();
     const hasNextNotification = this._controller.hasNextNotification();
 
     return html`
-      <sl-dialog no-header ?open=${hasNotifications} @sl-request-close=${this.handleCloseAllNotifications}>
-        ${this.renderModalContent()}
+      <form id="notification-modal" @submit=${this.handleSubmit}>
+        <sl-dialog no-header ?open=${hasNotifications} @sl-request-close=${this.handleCloseAllNotifications}>
+          ${this.renderModalContent()}
 
-        <sl-button
-          slot="footer"
-          ?disabled=${!hasNextNotification}
-          size="medium"
-          variant="primary"
-          @click=${this.handleCloseCurrentNotification}
-        >
-          ${msg('Read next notification')}
-        </sl-button>
+          <sl-button
+            slot="footer"
+            ?disabled=${!hasNextNotification}
+            size="medium"
+            variant="primary"
+            type="submit"
+          >
+            ${msg('Read next notification')}
+          </sl-button>
 
-        <sl-button slot="footer" size="medium" variant="danger" @click=${this.handleCloseAllNotifications}>
-          ${msg('Close all notifications')}
-        </sl-button>
-      </sl-dialog>
+          <sl-button slot="footer" size="medium" variant="danger" @click=${this.handleCloseAllNotifications}>
+            ${msg('Close all notifications')}
+          </sl-button>
+        </sl-dialog>
+      </form>
     `;
   }
 
@@ -97,7 +80,9 @@ export class NotificationModal extends BaseComponent {
     `;
   };
 
-  private handleCloseCurrentNotification = () => {
+  private handleSubmit = (event: Event) => {
+    event.preventDefault();
+
     this.closeCurrentNotification();
   };
 

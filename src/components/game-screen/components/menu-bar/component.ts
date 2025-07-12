@@ -1,42 +1,15 @@
-import { html, css, nothing } from 'lit';
+import { html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import constants from '@configs/constants.json';
 import { BaseComponent } from '@shared/base-component';
 import { OVERVIEW_MENU_ITEMS, MISC_MENU_ITEMS } from '@shared/constants';
 import { Feature } from '@shared/types';
 import { MenuBarController } from './controller';
+import styles from './styles';
 
 @customElement('ca-menu-bar')
 export class MenuBar extends BaseComponent {
-  static styles = css`
-    :host {
-      display: block;
-      width: 100%;
-      height: 100%;
-      scrollbar-width: thin;
-      overflow: auto;
-    }
-
-    aside {
-      box-sizing: border-box;
-      padding: var(--sl-spacing-large) var(--sl-spacing-2x-small);
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-    }
-
-    nav {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-    }
-
-    sl-divider {
-      --spacing: var(--sl-spacing-2x-small);
-    }
-  `;
+  static styles = styles;
 
   @property({ attribute: 'selected-menu-item', type: String })
   selectedMenuItem?: string;
@@ -49,7 +22,7 @@ export class MenuBar extends BaseComponent {
     this._controller = new MenuBarController(this);
   }
 
-  render() {
+  protected renderDesktop() {
     return html`
       <aside>
         <ca-menu-bar-values></ca-menu-bar-values>

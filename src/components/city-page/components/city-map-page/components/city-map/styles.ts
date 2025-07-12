@@ -1,6 +1,6 @@
 import { css } from 'lit';
 
-const styles = css`
+const cityMapStyles = css`
   :host {
     display: block;
     width: 100%;
@@ -38,4 +38,4 @@ const styles = css`
   }
 `;
 
-export default styles;
+export default cityMapStyles;

@@ -2,12 +2,12 @@ import { html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { localized, msg } from '@lit/localize';
 import { BaseComponent } from '@shared/base-component';
-import styles from './styles';
+import cityMapPageStyles from './styles';
 
 @localized()
 @customElement('ca-city-map-page')
 export class CityMapPage extends BaseComponent {
-  static styles = styles;
+  static styles = cityMapPageStyles;
 
   protected renderDesktop() {
     return html`
