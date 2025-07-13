@@ -24,7 +24,7 @@ const styles = [
         'name menu'
         'description description';
       grid-template-columns: 1fr auto;
-      grid-template-rows: repeat(auto);
+      grid-template-rows: auto;
 
       h4.title {
         cursor: grab;

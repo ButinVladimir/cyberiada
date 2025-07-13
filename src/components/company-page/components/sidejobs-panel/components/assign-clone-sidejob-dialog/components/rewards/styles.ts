@@ -1,11 +1,5 @@
-import { css, html, nothing } from 'lit';
+import { css } from 'lit';
 import {
-  BaseComponent,
-  diffFormatterParameters,
-  Feature,
-  getHighlightDifferenceClass,
-  MS_IN_SECOND,
-  RewardParameter,
   highlightedValuesStyle,
 } from '@shared/index';
 

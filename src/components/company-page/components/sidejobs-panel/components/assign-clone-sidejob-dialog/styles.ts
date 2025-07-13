@@ -52,7 +52,7 @@ const styles = [
 
         &.mobile {
           grid-template-columns: auto;
-          grid-template-rows: repeat(auto);
+          grid-template-rows: auto;
         }
 
         &.desktop {

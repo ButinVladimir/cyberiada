@@ -24,7 +24,7 @@ const styles = css`
 
       &.mobile {
         grid-template-columns: auto;
-        grid-template-rows: repeat(auto);
+        grid-template-rows: auto;
         padding: var(--sl-spacing-medium) 0;
 
         .buttons {

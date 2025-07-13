@@ -194,29 +194,16 @@ export const attributesSkillsTablesStyle = css`
     font-size: var(--ca-hint-font-size);
     line-height: var(--ca-hint-line-height);
 
+    h5.title {
+      margin: 0;
+    }
+
     div.attributes-skills-table {
-      display: flex;
-      flex-direction: column;
-
-      h5.title {
-        margin: 0;
-      }
-
-      .row {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: flex-start;
-        width: 100%;
-        gap: var(--sl-spacing-medium);
-
-        .name-column {
-          flex: 1;
-        }
-
-        .value-column {
-          flex: 0 0 auto;
-        }
-      }
+      display: grid;
+      grid-template-columns: 1fr auto;
+      grid-template-rows: ;
+      width: 100%;
+      grid-column-gap: var(--sl-spacing-medium);
     }
 
     &.desktop {

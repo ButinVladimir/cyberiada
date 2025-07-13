@@ -1,55 +1,41 @@
-import { css, html, nothing } from 'lit';
+import { html, nothing } from 'lit';
 import { customElement, property, queryAll } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { consume } from '@lit/context';
 import SlButton from '@shoelace-style/shoelace/dist/components/button/button.component.js';
 import { type IMainframeHardwareParameter } from '@state/mainframe-state';
-import { BaseComponent, SCREEN_WIDTH_POINTS, warningStyle } from '@shared/index';
-import { COMMON_TEXTS } from '@texts/common';
+import { BaseComponent } from '@shared/index';
+import { COMMON_TEXTS } from '@texts/index';
 import { MainframeHardwarePanelArticleButtonsController } from './controller';
 import { BuyHardwareEvent, BuyMaxHardwareEvent } from './events';
 import { MainframeHardwarePanelArticleWarning } from './types';
 import { mainframeHardwareParameterContext } from '../../contexts';
+import styles from './styles';
 
 @customElement('ca-mainframe-hardware-panel-article-buttons')
 export class MainframeHardwarePanelArticleButtons extends BaseComponent {
-  static styles = [
-    warningStyle,
-    css`
-      p.warning {
-        margin-top: var(--sl-spacing-3x-small);
-        margin-bottom: 0;
-        display: none;
-      }
-
-      p.warning.visible {
-        display: block;
-      }
-
-      div.buttons {
-        display: flex;
-        gap: var(--sl-spacing-medium);
-      }
-
-      @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
-        p.warning {
-          text-align: right;
-        }
-
-        div.buttons {
-          justify-content: flex-end;
-        }
-      }
-    `,
-  ];
+  static styles = styles;
 
   hasPartialUpdate = true;
+  protected hasMobileRender = true;
 
   @property({
     attribute: 'increase',
     type: Number,
   })
   increase!: number;
+
+  @property({
+    attribute: 'disabled',
+    type: Boolean,
+  })
+  disabled = false;
+
+  @property({
+    attribute: 'disabled-buy-all',
+    type: Boolean,
+  })
+  disabledBuyAll = false;
 
   private _controller: MainframeHardwarePanelArticleButtonsController;
 
@@ -69,7 +55,15 @@ export class MainframeHardwarePanelArticleButtons extends BaseComponent {
     this._controller = new MainframeHardwarePanelArticleButtonsController(this);
   }
 
-  render() {
+  protected renderDesktop() {
+    return html`<div class="host-content desktop">${this.renderContent()}</div>`;
+  }
+
+  protected renderMobile() {
+    return html`<div class="host-content mobile">${this.renderContent()}</div>`;
+  }
+
+  private renderContent = () => {
     if (!this._parameter) {
       return nothing;
     }
@@ -80,7 +74,7 @@ export class MainframeHardwarePanelArticleButtons extends BaseComponent {
       <div class="buttons">
         <sl-button
           ${ref(this._buyMaxButtonRef)}
-          disabled
+          ?disabled=${this.disabledBuyAll}
           variant="default"
           type="button"
           size="medium"
@@ -91,7 +85,7 @@ export class MainframeHardwarePanelArticleButtons extends BaseComponent {
 
         <sl-button
           ${ref(this._buyButtonRef)}
-          disabled
+          ?disabled=${this.disabled}
           variant="primary"
           type="button"
           size="medium"
@@ -179,17 +173,5 @@ export class MainframeHardwarePanelArticleButtons extends BaseComponent {
     });
 
     this.updateAvailabilityTimer();
-
-    if (this._buyButtonRef.value) {
-      const buttonDisabled = !this._parameter?.checkCanPurchase(this.increase);
-
-      this._buyButtonRef.value.disabled = buttonDisabled;
-    }
-
-    if (this._buyMaxButtonRef.value) {
-      const buttonDisabled = !this._parameter?.checkCanPurchase(1);
-
-      this._buyMaxButtonRef.value.disabled = buttonDisabled;
-    }
   };
 }

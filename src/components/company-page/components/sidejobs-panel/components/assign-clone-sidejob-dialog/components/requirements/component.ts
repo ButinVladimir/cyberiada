@@ -75,10 +75,8 @@ export class AssignCloneSidejobDialogRequirements extends BaseComponent {
     const classes = getHighlightValueClassMap(valid);
 
     return html`
-      <div class="row">
-        <div class="name-column">${ATTRIBUTE_TEXTS[attribute]()}</div>
-        <div class="value-column ${classes}">${formattedAvailableValue} / ${formattedRequiredValue}</div>
-      </div>
+        <div >${ATTRIBUTE_TEXTS[attribute]()}</div>
+        <div ${classes}>${formattedAvailableValue} / ${formattedRequiredValue}</div>
     `;
   };
 
@@ -96,10 +94,8 @@ export class AssignCloneSidejobDialogRequirements extends BaseComponent {
     const classes = getHighlightValueClassMap(valid);
 
     return html`
-      <div class="row">
-        <div class="name-column">${SKILL_TEXTS[skill]()}</div>
-        <div class="value-column ${classes}">${formattedAvailableValue} / ${formattedRequiredValue}</div>
-      </div>
+      <div >${SKILL_TEXTS[skill]()}</div>
+      <div class=${classes}>${formattedAvailableValue} / ${formattedRequiredValue}</div>
     `;
   };
 }

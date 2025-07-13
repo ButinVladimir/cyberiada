@@ -87,10 +87,8 @@ export class AssignCloneSidejobDialogRewardsMultipliers extends BaseComponent {
     const diffElement = html`<span class=${classes}>${formattedDiff}</span>`;
 
     return html`
-      <div class="row">
-        <div class="name-column">${ATTRIBUTE_TEXTS[attribute]()}</div>
-        <div class="value-column">${msg(html`× ${formattedValue} (${diffElement})`)}</div>
-      </div>
+        <div >${ATTRIBUTE_TEXTS[attribute]()}</div>
+        <div >${msg(html`× ${formattedValue} (${diffElement})`)}</div>
     `;
   };
 
@@ -108,10 +106,8 @@ export class AssignCloneSidejobDialogRewardsMultipliers extends BaseComponent {
     const diffElement = html`<span class=${classes}>${formattedDiff}</span>`;
 
     return html`
-      <div class="row">
-        <div class="name-column">${SKILL_TEXTS[skill]()}</div>
-        <div class="value-column">${msg(html`× ${formattedValue} (${diffElement})`)}</div>
-      </div>
+        <div >${SKILL_TEXTS[skill]()}</div>
+        <div >${msg(html`× ${formattedValue} (${diffElement})`)}</div>
     `;
   };
 }
