@@ -19,9 +19,7 @@ export class CreditsPage extends BaseComponent {
       </div>
 
       <div class="contributors">
-        <p>
-          Vladimir Butin (OmniLRenegadE) - ${msg('Idea, coding, design, balance')}
-        </p>
+        <p>Vladimir Butin (OmniLRenegadE) - ${msg('Idea, coding, design, balance')}</p>
       </div>
     `;
   }

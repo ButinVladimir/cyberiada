@@ -5,10 +5,7 @@ import { createRef, ref } from 'lit/directives/ref.js';
 import { provide } from '@lit/context';
 import { classMap } from 'lit/directives/class-map.js';
 import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.component.js';
-import {
-  BaseComponent,
-  SidejobAlert,
-} from '@shared/index';
+import { BaseComponent, SidejobAlert } from '@shared/index';
 import { IDistrictState } from '@state/city-state';
 import { SIDEJOB_TEXTS, DISTRICT_NAMES } from '@texts/index';
 import { IClone, type ISidejob, SidejobName } from '@state/company-state';
@@ -278,7 +275,7 @@ export class AssignCloneSidejobDialog extends BaseComponent {
     if (this._buttonsRef.value) {
       this._buttonsRef.value.disabled = !this.checkAvailability();
     }
-  }
+  };
 
   private checkAvailability(): boolean {
     if (!this._sidejob) {

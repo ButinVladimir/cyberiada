@@ -16,10 +16,10 @@ export class StatisticsMoneyIncome extends BaseComponent {
 
   private _controller: StatisticsMoneyIncomeController;
 
-  @queryAll('span[data-name]')
-  private _incomeSourceElements!: NodeListOf<HTMLSpanElement>;
+  @queryAll('div[data-name]')
+  private _incomeSourceElements!: NodeListOf<HTMLDivElement>;
 
-  private _totalIncomeRef = createRef<HTMLSpanElement>();
+  private _totalIncomeRef = createRef<HTMLDivElement>();
 
   constructor() {
     super();
@@ -27,7 +27,7 @@ export class StatisticsMoneyIncome extends BaseComponent {
     this._controller = new StatisticsMoneyIncomeController(this);
   }
 
-  render() {
+  protected renderDesktop() {
     return html`
       <sl-details>
         <h4 class="title" slot="summary">${msg('Money')}</h4>
@@ -38,8 +38,8 @@ export class StatisticsMoneyIncome extends BaseComponent {
             ? this.renderIncomeSource(IncomeSource.sidejob)
             : nothing}
 
-          <span> ${STATISTIC_PAGE_TEXTS.total()} </span>
-          <span ${ref(this._totalIncomeRef)}> </span>
+          <div>${STATISTIC_PAGE_TEXTS.total()}</div>
+          <div ${ref(this._totalIncomeRef)}></div>
         </div>
       </sl-details>
     `;
@@ -47,8 +47,8 @@ export class StatisticsMoneyIncome extends BaseComponent {
 
   private renderIncomeSource = (incomeSource: IncomeSource) => {
     return html`
-      <span> ${INCOME_SOURCE_NAMES[incomeSource]()} </span>
-      <span data-name=${incomeSource}> </span>
+      <div>${INCOME_SOURCE_NAMES[incomeSource]()}</div>
+      <div data-name=${incomeSource}></div>
     `;
   };
 

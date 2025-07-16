@@ -5,11 +5,7 @@ import { customElement, state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { choose } from 'lit/directives/choose.js';
 import SlRadioGroup from '@shoelace-style/shoelace/dist/components/radio-group/radio-group.component.js';
-import {
-  BaseComponent,
-  getHighlightValueClass,
-  RewardParameter,
-} from '@shared/index';
+import { BaseComponent, getHighlightValueClass, RewardParameter } from '@shared/index';
 import { COMMON_TEXTS, REWARD_PARAMETER_NAMES, SIDEJOB_TEXTS } from '@texts/index';
 import { type ISidejob } from '@state/company-state';
 import { temporarySidejobContext } from '../../contexts';

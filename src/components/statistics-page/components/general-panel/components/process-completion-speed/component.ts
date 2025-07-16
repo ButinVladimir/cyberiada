@@ -1,8 +1,7 @@
 import { html } from 'lit';
 import { msg, localized } from '@lit/localize';
 import { customElement } from 'lit/decorators.js';
-import { BaseComponent } from '@shared/base-component';
-import { IncomeSource } from '@shared/types';
+import { BaseComponent, IncomeSource } from '@shared/index';
 import { INCOME_SOURCE_NAMES, STATISTIC_PAGE_TEXTS } from '@components/statistics-page/constants';
 import { StatisticsProcessCompletionSpeedController } from './controller';
 import { statisticsPanelContentStyle } from '../../../../styles';
@@ -20,7 +19,7 @@ export class StatisticsProcessCompletionSpeed extends BaseComponent {
     this._controller = new StatisticsProcessCompletionSpeedController(this);
   }
 
-  render() {
+  protected renderDesktop() {
     const formatter = this._controller.formatter;
 
     const { totalMultiplier, multiplierByHardware, multiplierByProgram } = this._controller;
@@ -30,14 +29,14 @@ export class StatisticsProcessCompletionSpeed extends BaseComponent {
         <h4 class="title" slot="summary">${msg('Process completion speed multipliers')}</h4>
 
         <div class="parameters-table">
-          <span> ${msg('By hardware')} </span>
-          <span> ${formatter.formatNumberFloat(multiplierByHardware)} </span>
+          <div>${msg('By hardware')}</div>
+          <div>${formatter.formatNumberFloat(multiplierByHardware)}</div>
 
-          <span> ${INCOME_SOURCE_NAMES[IncomeSource.program]()} </span>
-          <span> ${formatter.formatNumberFloat(multiplierByProgram)} </span>
+          <div>${INCOME_SOURCE_NAMES[IncomeSource.program]()}</div>
+          <div>${formatter.formatNumberFloat(multiplierByProgram)}</div>
 
-          <span> ${STATISTIC_PAGE_TEXTS.total()} </span>
-          <span> ${formatter.formatNumberFloat(totalMultiplier)} </span>
+          <div>${STATISTIC_PAGE_TEXTS.total()}</div>
+          <div>${formatter.formatNumberFloat(totalMultiplier)}</div>
         </div>
       </sl-details>
     `;

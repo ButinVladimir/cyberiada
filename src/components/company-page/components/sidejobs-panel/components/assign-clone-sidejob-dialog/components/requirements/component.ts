@@ -2,12 +2,20 @@ import { html, nothing } from 'lit';
 import { localized } from '@lit/localize';
 import { consume } from '@lit/context';
 import { customElement } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
 import { ATTRIBUTE_TEXTS, COMMON_TEXTS, SKILL_TEXTS } from '@texts/index';
 import { type ISidejob } from '@state/company-state';
-import { BaseComponent, Attribute, ATTRIBUTES, BaseController, getHighlightValueClassMap, Skill, SKILLS } from '@shared/index';
+import {
+  BaseComponent,
+  Attribute,
+  ATTRIBUTES,
+  BaseController,
+  getHighlightValueClassMap,
+  Skill,
+  SKILLS,
+} from '@shared/index';
 import { temporarySidejobContext } from '../../contexts';
 import styles from './styles';
-import { classMap } from 'lit/directives/class-map.js';
 
 @localized()
 @customElement('ca-assign-clone-sidejob-dialog-requirements')
@@ -75,8 +83,8 @@ export class AssignCloneSidejobDialogRequirements extends BaseComponent {
     const classes = getHighlightValueClassMap(valid);
 
     return html`
-        <div >${ATTRIBUTE_TEXTS[attribute]()}</div>
-        <div ${classes}>${formattedAvailableValue} / ${formattedRequiredValue}</div>
+      <div>${ATTRIBUTE_TEXTS[attribute]()}</div>
+      <div class=${classes}>${formattedAvailableValue} / ${formattedRequiredValue}</div>
     `;
   };
 
@@ -94,7 +102,7 @@ export class AssignCloneSidejobDialogRequirements extends BaseComponent {
     const classes = getHighlightValueClassMap(valid);
 
     return html`
-      <div >${SKILL_TEXTS[skill]()}</div>
+      <div>${SKILL_TEXTS[skill]()}</div>
       <div class=${classes}>${formattedAvailableValue} / ${formattedRequiredValue}</div>
     `;
   };

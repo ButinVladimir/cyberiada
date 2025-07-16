@@ -89,8 +89,8 @@ export class SidejobsList extends BaseComponent {
 
     return sidejobs.length > 0
       ? html`${repeat(sidejobs, (sidejob) => sidejob.id, this.renderSidejob)}`
-      : this.renderEmptyListNotification()
-  }
+      : this.renderEmptyListNotification();
+  };
 
   private renderEmptyListNotification = () => {
     return html` <div class="notification">${msg("You don't have any assigned sidejobs")}</div> `;

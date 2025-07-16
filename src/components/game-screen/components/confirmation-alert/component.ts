@@ -3,7 +3,7 @@ import { localized, msg } from '@lit/localize';
 import { customElement, state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import SlCheckbox from '@shoelace-style/shoelace/dist/components/checkbox/checkbox.component.js';
-import { BaseComponent, type  GameAlert } from '@shared/index';
+import { BaseComponent, type GameAlert } from '@shared/index';
 import { COMMON_TEXTS } from '@texts/common';
 import { ConfirmationAlertOpenEvent, ConfirmationAlertCloseEvent, ConfirmationAlertSubmitEvent } from './events';
 import { ConfirmationAlertController } from './controller';
@@ -71,9 +71,7 @@ export class ConfirmationAlert extends BaseComponent {
             ${COMMON_TEXTS.cancel()}
           </sl-button>
 
-          <sl-button slot="footer" size="medium" variant="danger" type="submit">
-            ${COMMON_TEXTS.continue()}
-          </sl-button>
+          <sl-button slot="footer" size="medium" variant="danger" type="submit"> ${COMMON_TEXTS.continue()} </sl-button>
         </sl-dialog>
       </form>
     `;

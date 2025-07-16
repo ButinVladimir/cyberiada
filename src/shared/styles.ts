@@ -201,9 +201,14 @@ export const attributesSkillsTablesStyle = css`
     div.attributes-skills-table {
       display: grid;
       grid-template-columns: 1fr auto;
-      grid-template-rows: ;
+      grid-template-rows: auto;
       width: 100%;
       grid-column-gap: var(--sl-spacing-medium);
+
+      & > div:nth-child(even) {
+        text-align: end;
+        white-space: nowrap;
+      }
     }
 
     &.desktop {

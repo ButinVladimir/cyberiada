@@ -20,7 +20,7 @@ export class StatisticsExperienceShare extends BaseComponent {
     this._controller = new StatisticsExperienceShareController(this);
   }
 
-  render() {
+  protected renderDesktop() {
     const formatter = this._controller.formatter;
 
     const { baseMultiplier, totalMultiplier, multiplierBySynchronization, multiplierByProgram } = this._controller;
@@ -30,17 +30,17 @@ export class StatisticsExperienceShare extends BaseComponent {
         <h4 class="title" slot="summary">${msg('Shared experience multipliers')}</h4>
 
         <div class="parameters-table">
-          <span> ${STATISTIC_PAGE_TEXTS.baseValue()} </span>
-          <span> ${formatter.formatNumberFloat(baseMultiplier)} </span>
+          <div>${STATISTIC_PAGE_TEXTS.baseValue()}</div>
+          <div>${formatter.formatNumberFloat(baseMultiplier)}</div>
 
-          <span> ${msg('By synchronization')} </span>
-          <span> ${formatter.formatNumberFloat(multiplierBySynchronization)} </span>
+          <div>${msg('By synchronization')}</div>
+          <div>${formatter.formatNumberFloat(multiplierBySynchronization)}</div>
 
-          <span> ${INCOME_SOURCE_NAMES[IncomeSource.program]()} </span>
-          <span> ${formatter.formatNumberFloat(multiplierByProgram)} </span>
+          <div>${INCOME_SOURCE_NAMES[IncomeSource.program]()}</div>
+          <div>${formatter.formatNumberFloat(multiplierByProgram)}</div>
 
-          <span> ${STATISTIC_PAGE_TEXTS.total()} </span>
-          <span> ${formatter.formatNumberFloat(totalMultiplier)} </span>
+          <div>${STATISTIC_PAGE_TEXTS.total()}</div>
+          <div>${formatter.formatNumberFloat(totalMultiplier)}</div>
         </div>
       </sl-details>
     `;

@@ -71,7 +71,12 @@ export class RenameCloneDialog extends BaseComponent {
             >
               <span class="input-label" slot="label"> ${msg('New name')} </span>
 
-              <sl-icon-button slot="suffix" label=${msg('Generate name')} name="dice-4" @click=${this.handleGenerateName}>
+              <sl-icon-button
+                slot="suffix"
+                label=${msg('Generate name')}
+                name="dice-4"
+                @click=${this.handleGenerateName}
+              >
               </sl-icon-button>
             </sl-input>
           </div>

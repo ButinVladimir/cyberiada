@@ -22,7 +22,7 @@ export class StatisticsSynchronization extends BaseComponent {
     this._controller = new StatisticsSynchronizationController(this);
   }
 
-  render() {
+  protected renderDesktop() {
     const formatter = this._controller.formatter;
 
     const formattedBaseValue = formatter.formatNumberDecimal(this._controller.baseValue);
@@ -41,13 +41,13 @@ export class StatisticsSynchronization extends BaseComponent {
         </h4>
 
         <div class="parameters-table">
-          <span>${STATISTIC_PAGE_TEXTS.baseValue()}</span>
-          <span>${formattedBaseValue}</span>
+          <div>${STATISTIC_PAGE_TEXTS.baseValue()}</div>
+          <div>${formattedBaseValue}</div>
 
           ${map(this._controller.listAvailableDistricts(), this.renderDistrict)}
 
-          <span>${STATISTIC_PAGE_TEXTS.total()}</span>
-          <span>${formattedTotalValue}</span>
+          <div>${STATISTIC_PAGE_TEXTS.total()}</div>
+          <div>${formattedTotalValue}</div>
         </div>
       </sl-details>
     `;
@@ -59,8 +59,8 @@ export class StatisticsSynchronization extends BaseComponent {
     );
 
     return html`
-      <span> ${STATISTIC_PAGE_TEXTS.byDistrict(districtState.name)}</span>
-      <span>${formattedValue}</span>
+      <div>${STATISTIC_PAGE_TEXTS.byDistrict(districtState.name)}</div>
+      <div>${formattedValue}</div>
     `;
   };
 }

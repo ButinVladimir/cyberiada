@@ -103,9 +103,9 @@ export class PurchaseCloneDialog extends BaseComponent {
 
     const inputsContainerClasses = classMap({
       'inputs-container': true,
-      'mobile': !desktop,
-      'desktop': desktop,
-    })
+      mobile: !desktop,
+      desktop: desktop,
+    });
 
     return html`
       <form id="purchase-clone-form" @submit=${this.handleSubmit}>
@@ -307,5 +307,5 @@ export class PurchaseCloneDialog extends BaseComponent {
       synchronization <= this._controller.availableSynchronization &&
       cost <= money
     );
-  };
+  }
 }

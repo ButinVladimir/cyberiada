@@ -2,14 +2,15 @@ import { css } from 'lit';
 
 const styles = css`
   :host {
-    height: 100%;
     display: flex;
-    box-sizing: border-box;
     align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: var(--sl-spacing-large);
   }
 
-  sl-icon-button::part(base) {
-    padding: var(--sl-spacing-small);
+  input#import-file {
+    display: none;
   }
 `;
 

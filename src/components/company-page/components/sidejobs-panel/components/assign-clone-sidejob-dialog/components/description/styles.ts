@@ -1,8 +1,5 @@
 import { css } from 'lit';
-import {
-  highlightedValuesStyle,
-  hintStyle,
-} from '@shared/index';
+import { highlightedValuesStyle, hintStyle } from '@shared/index';
 
 const styles = [
   highlightedValuesStyle,

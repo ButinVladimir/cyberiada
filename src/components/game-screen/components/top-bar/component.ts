@@ -37,7 +37,7 @@ export class TopBar extends BaseComponent {
 
       ${this.renderButtons()}
     `;
-  }
+  };
 
   private renderButtons = () => {
     return html`
@@ -45,7 +45,7 @@ export class TopBar extends BaseComponent {
         <ca-game-speed-buttons></ca-game-speed-buttons>
       </div>
     `;
-  }
+  };
 
   private handleMenuClick = () => {
     this.dispatchEvent(new MenuToggledEvent());

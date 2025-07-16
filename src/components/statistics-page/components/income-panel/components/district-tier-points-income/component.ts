@@ -2,7 +2,7 @@ import { html } from 'lit';
 import { localized, msg } from '@lit/localize';
 import { map } from 'lit/directives/map.js';
 import { customElement, queryAll } from 'lit/decorators.js';
-import { BaseComponent } from '@shared/base-component';
+import { BaseComponent } from '@shared/index';
 import { STATISTIC_PAGE_TEXTS } from '@components/statistics-page/constants';
 import { IDistrictState } from '@state/city-state';
 import { StatisticsDistrictTierPointsIncomeController } from './controller';
@@ -17,8 +17,8 @@ export class StatisticsDistrictTierPointsIncome extends BaseComponent {
 
   private _controller: StatisticsDistrictTierPointsIncomeController;
 
-  @queryAll('span[data-district]')
-  private _districtValueNodes!: NodeListOf<HTMLSpanElement>;
+  @queryAll('div[data-district]')
+  private _districtValueNodes!: NodeListOf<HTMLDivElement>;
 
   constructor() {
     super();
@@ -26,7 +26,7 @@ export class StatisticsDistrictTierPointsIncome extends BaseComponent {
     this._controller = new StatisticsDistrictTierPointsIncomeController(this);
   }
 
-  render() {
+  protected renderDesktop() {
     return html`
       <sl-details>
         <h4 class="title" slot="summary">${msg('District tier points')}</h4>
@@ -38,8 +38,8 @@ export class StatisticsDistrictTierPointsIncome extends BaseComponent {
 
   private renderDistrict = (districtState: IDistrictState) => {
     return html`
-      <span> ${STATISTIC_PAGE_TEXTS.byDistrict(districtState.name)}</span>
-      <span data-district=${districtState.index}></span>
+      <div>${STATISTIC_PAGE_TEXTS.byDistrict(districtState.name)}</div>
+      <div data-district=${districtState.index}></div>
     `;
   };
 

@@ -87,8 +87,8 @@ export class ClonesListItemAttributes extends BaseComponent {
     const formattedValue = this._controller.formatter.formatNumberDecimal(value);
 
     return html`
-        <div>${SKILL_TEXTS[skill]()}</div>
-        <div>${formattedValue}</div>
-     `;
+      <div>${SKILL_TEXTS[skill]()}</div>
+      <div>${formattedValue}</div>
+    `;
   };
 }

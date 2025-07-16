@@ -3,16 +3,14 @@ import { localized, msg } from '@lit/localize';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { customElement } from 'lit/decorators.js';
 import SlProgressBar from '@shoelace-style/shoelace/dist/components/progress-bar/progress-bar.component.js';
-import { BaseComponent } from '@shared/base-component';
-import { progressBarHintStyle } from '@shared/styles';
-import { calculateLevelProgressPercentage } from '@shared/helpers';
+import { BaseComponent, calculateLevelProgressPercentage } from '@shared/index';
 import { OverviewDevelopmentLevelProgressController } from './controller';
-import { progressBlockStyle } from '../../styles';
+import styles from './styles';
 
 @localized()
 @customElement('ca-overview-development-level-progress')
 export class OverviewDevelopmentLevelProgress extends BaseComponent {
-  static styles = [progressBlockStyle, progressBarHintStyle];
+  static styles = styles;
 
   hasPartialUpdate = true;
 
@@ -28,7 +26,7 @@ export class OverviewDevelopmentLevelProgress extends BaseComponent {
     this._controller = new OverviewDevelopmentLevelProgressController(this);
   }
 
-  render() {
+  protected renderDesktop() {
     return html`
       <div class="block">
         <div class="title">${msg('Next development level progress')}</div>

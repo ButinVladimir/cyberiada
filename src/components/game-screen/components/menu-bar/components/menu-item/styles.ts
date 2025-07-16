@@ -33,7 +33,7 @@ const styles = css`
     &.selected {
       background-color: var(--sl-panel-background-color);
       border-left-width: var(--sl-spacing-2x-small);
-      font-weight: var(--sl-font-weight-bold);  
+      font-weight: var(--sl-font-weight-bold);
     }
   }
 `;

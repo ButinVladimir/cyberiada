@@ -97,7 +97,7 @@ export class MainframeHardwarePanelArticleButtons extends BaseComponent {
 
       ${this.renderWarnings()}
     `;
-  }
+  };
 
   private renderWarnings = () => {
     return html`

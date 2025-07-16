@@ -1,20 +1,13 @@
-import { html, css } from 'lit';
+import { html } from 'lit';
 import { localized, msg } from '@lit/localize';
 import { customElement, state } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
+import styles from './styles';
 
 @localized()
 @customElement('ca-events-filter-panel')
 export class EventsFilterPanel extends BaseComponent {
-  static styles = css`
-    div.buttons-list {
-      display: flex;
-      align-items: center;
-      flex-direction: row;
-      flex-wrap: wrap;
-      gap: var(--sl-spacing-large);
-    }
-  `;
+  static styles = styles;
 
   @state()
   private _isMessageFilterOpen = false;
@@ -25,7 +18,7 @@ export class EventsFilterPanel extends BaseComponent {
   @state()
   private _isNotificationTypeFilterOpen = false;
 
-  render() {
+  protected renderDesktop() {
     return html`
       <div class="buttons-list">
         <sl-button variant="default" size="medium" @click=${this.handleMessageFilterDialogOpen}>

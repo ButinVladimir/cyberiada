@@ -11,7 +11,7 @@ import styles from '../../styles';
 @customElement('ca-mainframe-hardware-panel-buttons')
 export class MainframeHardwarePanelButtons extends BaseComponent {
   static style = styles;
-  
+
   hasPartialUpdate = true;
 
   private _controller: MainframeHardwarePanelButtonsController;

@@ -1,5 +1,5 @@
 import { css } from 'lit';
-import { sectionTitleStyle, detailsStyle, hintIconStyle, SCREEN_WIDTH_POINTS } from '@shared/styles';
+import { sectionTitleStyle, detailsStyle, hintIconStyle, hintStyle, SCREEN_WIDTH_POINTS } from '@shared/index';
 
 export const unlockedItemsCategoryStyles = [
   sectionTitleStyle,
@@ -44,3 +44,28 @@ export const unlockedItemsCategoryStyles = [
     }
   `,
 ];
+
+const styles = [
+  hintStyle,
+  css`
+    :host {
+      display: block;
+    }
+
+    p.hint {
+      margin-top: 0;
+      margin-bottom: var(--sl-spacing-large);
+    }
+
+    div.categories {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: center;
+      gap: var(--sl-spacing-large);
+    }
+  `,
+];
+
+export default styles;

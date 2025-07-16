@@ -34,13 +34,7 @@ export class NotificationModal extends BaseComponent {
         <sl-dialog no-header ?open=${hasNotifications} @sl-request-close=${this.handleCloseAllNotifications}>
           ${this.renderModalContent()}
 
-          <sl-button
-            slot="footer"
-            ?disabled=${!hasNextNotification}
-            size="medium"
-            variant="primary"
-            type="submit"
-          >
+          <sl-button slot="footer" ?disabled=${!hasNextNotification} size="medium" variant="primary" type="submit">
             ${msg('Read next notification')}
           </sl-button>
 

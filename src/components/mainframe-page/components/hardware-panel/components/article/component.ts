@@ -4,11 +4,7 @@ import { createRef, ref } from 'lit/directives/ref.js';
 import { customElement, property } from 'lit/decorators.js';
 import { provide } from '@lit/context';
 import { COMMON_TEXTS } from '@texts/index';
-import {
-  BaseComponent,
-  AUTOUPGRADE_VALUES,
-  getHighlightValueClass,
-} from '@shared/index';
+import { BaseComponent, AUTOUPGRADE_VALUES, getHighlightValueClass } from '@shared/index';
 import { type IMainframeHardwareParameter, type MainframeHardwareParameterType } from '@state/mainframe-state';
 import { MainframeHardwarePanelArticleController } from './controller';
 import { MAINFRAME_HARDWARE_TEXTS } from './constants';
@@ -22,7 +18,7 @@ export class MainframeHardwarePanelArticle extends BaseComponent {
   static styles = styles;
 
   hasPartialUpdate = true;
-  
+
   protected hasMobileRender = true;
 
   @property({
@@ -59,11 +55,11 @@ export class MainframeHardwarePanelArticle extends BaseComponent {
   }
 
   protected renderDesktop() {
-    return html`<div class="host-content desktop">${this.renderContent()}</div>`
+    return html`<div class="host-content desktop">${this.renderContent()}</div>`;
   }
 
   protected renderMobile() {
-    return html`<div class="host-content mobile">${this.renderContent()}</div>`
+    return html`<div class="host-content mobile">${this.renderContent()}</div>`;
   }
 
   private renderContent = () => {
@@ -86,44 +82,44 @@ export class MainframeHardwarePanelArticle extends BaseComponent {
 
     return html`
       <form id="hardware-panel-article-${this.type}" @submit=${this.handleSubmit}>
-      <div class="title-row">
-        <h4 class="title" draggable="true" @dragstart=${this.handleDragStart}>
-          <sl-icon id="drag-icon" name="grip-vertical"> </sl-icon>
+        <div class="title-row">
+          <h4 class="title" draggable="true" @dragstart=${this.handleDragStart}>
+            <sl-icon id="drag-icon" name="grip-vertical"> </sl-icon>
 
-          ${COMMON_TEXTS.parameterValue(MAINFRAME_HARDWARE_TEXTS[this.type].title(), formatter.formatLevel(level))}
+            ${COMMON_TEXTS.parameterValue(MAINFRAME_HARDWARE_TEXTS[this.type].title(), formatter.formatLevel(level))}
 
-          <sl-tooltip>
-            <span slot="content"> ${autoupgradeLabel} </span>
+            <sl-tooltip>
+              <span slot="content"> ${autoupgradeLabel} </span>
 
-            <sl-icon-button
-              id="toggle-autoupgrade-btn"
-              name=${autoupgradeIcon}
-              label=${autoupgradeLabel}
-              @click=${this.handleToggleAutoUpgrade}
-            >
-            </sl-icon-button>
-          </sl-tooltip>
-        </h4>
-      </div>
+              <sl-icon-button
+                id="toggle-autoupgrade-btn"
+                name=${autoupgradeIcon}
+                label=${autoupgradeLabel}
+                @click=${this.handleToggleAutoUpgrade}
+              >
+              </sl-icon-button>
+            </sl-tooltip>
+          </h4>
+        </div>
 
-      <p class="cost">
-        ${COMMON_TEXTS.parameterValue(COMMON_TEXTS.cost(), html`<span ${ref(this._costElRef)}></span>`)}
-      </p>
+        <p class="cost">
+          ${COMMON_TEXTS.parameterValue(COMMON_TEXTS.cost(), html`<span ${ref(this._costElRef)}></span>`)}
+        </p>
 
-      <p class="hint">${MAINFRAME_HARDWARE_TEXTS[this.type].hint()}</p>
+        <p class="hint">${MAINFRAME_HARDWARE_TEXTS[this.type].hint()}</p>
 
-      <div class="button-container">
-        <ca-mainframe-hardware-panel-article-buttons
-          ${ref(this._buttonsRef)}
-          increase=${increase}
-          @buy-hardware=${this.handleSubmit}
-          @buy-max-hardware=${this.handleBuyMax}
-        >
-        </ca-mainframe-hardware-panel-article-buttons>
-      </div>
+        <div class="button-container">
+          <ca-mainframe-hardware-panel-article-buttons
+            ${ref(this._buttonsRef)}
+            increase=${increase}
+            @buy-hardware=${this.handleSubmit}
+            @buy-max-hardware=${this.handleBuyMax}
+          >
+          </ca-mainframe-hardware-panel-article-buttons>
+        </div>
       </form>
     `;
-  }
+  };
 
   private updateContext() {
     this._parameter = this._controller.getParameter(this.type);
