@@ -1,4 +1,4 @@
-import { css, html, nothing } from 'lit';
+import { html, nothing } from 'lit';
 import { localized } from '@lit/localize';
 import { customElement, queryAll } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
@@ -8,7 +8,6 @@ import {
   BaseComponent,
   getHighlightValueClass,
   diffFormatterParameters,
-  highlightedValuesStyle,
   getHighlightDifferenceClassMap,
 } from '@shared/index';
 import { COMMON_TEXTS, PROGRAM_DESCRIPTION_TEXTS, PROGRAM_TEXTS } from '@texts/index';
@@ -27,27 +26,12 @@ import {
 import { IDescriptionEffectRenderer, IDescriptionParameters } from './interfaces';
 import { ProgramDiffTextController } from './controller';
 import { existingProgramContext, temporaryProgramContext } from '../../contexts';
+import styles from './styles';
 
 @localized()
 @customElement('ca-purchase-program-dialog-description')
 export class PurchaseProgramDialogDescription extends BaseComponent {
-  static styles = [
-    highlightedValuesStyle,
-    css`
-      :host {
-        margin-top: var(--sl-spacing-medium);
-        margin-bottom: 0;
-      }
-
-      p {
-        margin: 0;
-      }
-
-      p.line-break {
-        height: var(--sl-spacing-medium);
-      }
-    `,
-  ];
+  static styles = styles;
 
   hasPartialUpdate = true;
 
@@ -75,7 +59,7 @@ export class PurchaseProgramDialogDescription extends BaseComponent {
     this._controller = new ProgramDiffTextController(this);
   }
 
-  render() {
+  protected renderDesktop() {
     this.updateRenderer();
 
     if (!this._program) {

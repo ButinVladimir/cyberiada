@@ -1,4 +1,4 @@
-import { css, html, nothing } from 'lit';
+import { html, nothing } from 'lit';
 import { localized } from '@lit/localize';
 import { customElement, queryAll } from 'lit/decorators.js';
 import { consume } from '@lit/context';
@@ -20,23 +20,12 @@ import {
 import { IDescriptionEffectRenderer, IDescriptionParameters } from './interfaces';
 import { ProgramDescriptionTextController } from './controller';
 import { programContext } from '../item/contexts';
+import styles from './styles';
 
 @localized()
 @customElement('ca-owned-programs-list-item-description')
 export class ProgramDescriptionText extends BaseComponent {
-  static styles = css`
-    :host {
-      white-space: normal;
-    }
-
-    p {
-      margin: 0;
-    }
-
-    p.line-break {
-      height: var(--sl-spacing-medium);
-    }
-  `;
+  static styles = styles;
 
   hasPartialUpdate = true;
 
@@ -56,7 +45,7 @@ export class ProgramDescriptionText extends BaseComponent {
     this._controller = new ProgramDescriptionTextController(this);
   }
 
-  render() {
+  protected renderDesktop() {
     this.updateRenderer();
 
     if (!this._program) {

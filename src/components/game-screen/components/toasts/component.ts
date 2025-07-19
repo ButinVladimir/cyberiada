@@ -2,12 +2,15 @@ import { nothing } from 'lit';
 import { localized } from '@lit/localize';
 import { customElement, property } from 'lit/decorators.js';
 import SlAlert from '@shoelace-style/shoelace/dist/components/alert/alert.component.js';
-import { BaseComponent } from '@shared/base-component';
+import { BaseComponent } from '@shared/index';
 import { ToastsController } from './controller';
+import styles from './styles';
 
 @localized()
 @customElement('ca-toasts')
 export class Toasts extends BaseComponent {
+  static styles = styles;
+
   @property({ attribute: 'selected-menu-item', type: String })
   selectedMenuItem?: string;
 

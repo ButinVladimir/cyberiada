@@ -1,19 +1,20 @@
 import { html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { msg, localized, str } from '@lit/localize';
-import { BaseComponent, dialogButtonsStyle, warningStyle } from '@shared/index';
+import { classMap } from 'lit/directives/class-map.js';
+import { consume } from '@lit/context';
+import { BaseComponent } from '@shared/index';
+import { type IProcess, type IProgram } from '@state/mainframe-state';
+import { COMMON_TEXTS, PROGRAM_TEXTS } from '@texts/index';
 import { StartProcessDialogButtonsController } from './controller';
 import { StartProcessEvent, CancelEvent } from './events';
-import { COMMON_TEXTS, PROGRAM_TEXTS } from '@texts/index';
-import { type IProcess, type IProgram } from '@state/mainframe-state';
-import { consume } from '@lit/context';
 import { existingProcessContext, programContext } from '../../contexts';
-import { classMap } from 'lit/directives/class-map.js';
+import styles from './styles';
 
 @localized()
 @customElement('ca-start-process-dialog-buttons')
 export class StartProcessDialogButtons extends BaseComponent {
-  static styles = [warningStyle, dialogButtonsStyle];
+  static styles = styles;
 
   @property({
     attribute: 'threads',
@@ -41,7 +42,7 @@ export class StartProcessDialogButtons extends BaseComponent {
     this._controller = new StartProcessDialogButtonsController(this);
   }
 
-  render() {
+  protected renderDesktop() {
     const submitButtonDisabled = !(this._program && this.hasEnoughRam());
 
     const warning = this.getWarning();

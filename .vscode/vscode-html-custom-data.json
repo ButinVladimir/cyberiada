@@ -3,7 +3,7 @@
   "tags": [
     {
       "name": "ca-app-root",
-      "description": "Properties:\n\n  * `_layoutContextProvider` - \n\n  * `handleSwitchToMobile` - \n\n  * `handleSwitchToTablet` - \n\n  * `handleSwitchToDesktop` - \n\n  * `_controller` {`AppRootController`} - \n\n  * `matchMobile` {`MediaQueryList`} - \n\n  * `matchTablet` {`MediaQueryList`} - \n\n  * `matchDesktop` {`MediaQueryList`} - ",
+      "description": "Properties:\n\n  * `_layoutContextProvider` - \n\n  * `handleSwitchToTablet` - \n\n  * `handleSwitchToDesktop` - \n\n  * `_controller` {`AppRootController`} - \n\n  * `_matchTablet` {`MediaQueryList`} - \n\n  * `_matchDesktop` {`MediaQueryList`} - \n\n  * `_matchesDesktop` {`boolean`} - \n\n  * `_matchesTablet` {`boolean`} - ",
       "attributes": []
     },
     {
@@ -297,7 +297,7 @@
     },
     {
       "name": "ca-game-screen",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `handleMenuToggle` - \n\n  * `handleMenuItemSelect` - \n\n  * `_menuOpened` - \n\n  * `_selectedMenuItem` - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `hasTabletRender` {`boolean`} - \n\n  * `handleMenuToggle` - \n\n  * `handleMenuItemSelect` - \n\n  * `_menuOpened` - \n\n  * `_selectedMenuItem` - ",
       "attributes": []
     },
     {
@@ -343,7 +343,7 @@
     },
     {
       "name": "ca-toasts",
-      "description": "Attributes:\n\n  * `selected-menu-item` {`string | undefined`} - \n\nProperties:\n\n  * `selectedMenuItem` {`string | undefined`} - \n\n  * `_controller` {`ToastsController`} - ",
+      "description": "Attributes:\n\n  * `selected-menu-item` {`string | undefined`} - \n\nProperties:\n\n  * `styles` {`CSSResult`} - \n\n  * `selectedMenuItem` {`string | undefined`} - \n\n  * `_controller` {`ToastsController`} - ",
       "attributes": [
         {
           "name": "selected-menu-item",
@@ -428,7 +428,7 @@
     },
     {
       "name": "ca-mainframe-processes-panel",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_isStartProcessDialogOpen` {`boolean`} - \n\n  * `handleStartProcessDialogOpen` - \n\n  * `handleStartProcessDialogClose` - \n\n  * `_controller` {`ProcessesPanelController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `_isStartProcessDialogOpen` {`boolean`} - \n\n  * `handleStartProcessDialogOpen` - \n\n  * `handleStartProcessDialogClose` - \n\n  * `_controller` {`ProcessesPanelController`} - ",
       "attributes": []
     },
     {
@@ -579,7 +579,7 @@
     },
     {
       "name": "ca-overview-story-panel",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_stateFilterInputRef` {`Ref<SlSelect>`} - \n\n  * `_stateFilter` - \n\n  * `renderGoalsList` - \n\n  * `renderGoal` - \n\n  * `handleStateFilterChange` - \n\n  * `_controller` {`OverviewStoryPanelController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `_stateFilterInputRef` {`Ref<SlSelect>`} - \n\n  * `_stateFilter` - \n\n  * `renderGoalsList` - \n\n  * `renderGoal` - \n\n  * `handleStateFilterChange` - \n\n  * `_controller` {`OverviewStoryPanelController`} - ",
       "attributes": []
     },
     {
@@ -634,7 +634,7 @@
     },
     {
       "name": "ca-alert-filter-dialog",
-      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `renderGameAlertCheckbox` - \n\n  * `handleClose` - \n\n  * `handleToggleAlert` - \n\n  * `_controller` {`AlertFilterDialogController`} - ",
+      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `renderGameAlertCheckbox` - \n\n  * `handleClose` - \n\n  * `handleToggleAlert` - \n\n  * `handleSubmit` - \n\n  * `_controller` {`AlertFilterDialogController`} - ",
       "attributes": [
         {
           "name": "is-open",
@@ -650,7 +650,7 @@
     },
     {
       "name": "ca-message-filter-dialog",
-      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `renderEventCheckbox` - \n\n  * `handleClose` - \n\n  * `handleToggleEvent` - \n\n  * `_controller` {`MessageFilterDialogController`} - ",
+      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `renderEventCheckbox` - \n\n  * `handleClose` - \n\n  * `handleToggleEvent` - \n\n  * `handleSubmit` - \n\n  * `_controller` {`MessageFilterDialogController`} - ",
       "attributes": [
         {
           "name": "is-open",
@@ -661,7 +661,7 @@
     },
     {
       "name": "ca-notification-type-filter-dialog",
-      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `renderGameAlertCheckbox` - \n\n  * `handleClose` - \n\n  * `handleToggleAlert` - \n\n  * `_controller` {`NotificationTypeFilterDialogController`} - ",
+      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `renderGameAlertCheckbox` - \n\n  * `handleClose` - \n\n  * `handleToggleAlert` - \n\n  * `handleSubmit` - \n\n  * `_controller` {`NotificationTypeFilterDialogController`} - ",
       "attributes": [
         {
           "name": "is-open",
@@ -677,7 +677,7 @@
     },
     {
       "name": "ca-settings-form",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_languageInputRef` {`Ref<SlSelect>`} - \n\n  * `_themeInputRef` {`Ref<SlSelect>`} - \n\n  * `_messageLogSizeInputRef` {`Ref<SlInput>`} - \n\n  * `_toastDurationInputRef` {`Ref<SlRange>`} - \n\n  * `_updateFPSInputRef` {`Ref<SlRange>`} - \n\n  * `_autosaveEnabledOnHideSwitchRef` {`Ref<SlSwitch>`} - \n\n  * `_autosaveIntervalInputRef` {`Ref<SlRange>`} - \n\n  * `_fastSpeedMultiplierInputRef` {`Ref<SlRange>`} - \n\n  * `_maxUpdatesPerTickInputRef` {`Ref<SlInput>`} - \n\n  * `_longNumberFormatInputRef` {`Ref<SlSelect>`} - \n\n  * `_spinnerVisible` {`boolean`} - \n\n  * `renderLanguageOption` - \n\n  * `renderThemeOption` - \n\n  * `renderLongNumberFormatOption` - \n\n  * `handleChangeLanguage` - \n\n  * `handleChangeTheme` - \n\n  * `handleChangeMessageLogSize` - \n\n  * `handleChangeToastDuration` - \n\n  * `handleChangeUpdateFPS` - \n\n  * `handleChangeAutosaveEnabledOnHide` - \n\n  * `handleChangeAutosaveInterval` - \n\n  * `handleChangeFastSpeedMultiplier` - \n\n  * `handleChangeMaxUpdatesPerTick` - \n\n  * `handleChangeLongNumberFormat` - \n\n  * `timeSecondsFormatter` - \n\n  * `decimalNumberFormatter` - \n\n  * `_controller` {`SettingsFormController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `_languageInputRef` {`Ref<SlSelect>`} - \n\n  * `_themeInputRef` {`Ref<SlSelect>`} - \n\n  * `_messageLogSizeInputRef` {`Ref<SlInput>`} - \n\n  * `_toastDurationInputRef` {`Ref<SlRange>`} - \n\n  * `_updateFPSInputRef` {`Ref<SlRange>`} - \n\n  * `_autosaveEnabledOnHideSwitchRef` {`Ref<SlSwitch>`} - \n\n  * `_autosaveIntervalInputRef` {`Ref<SlRange>`} - \n\n  * `_fastSpeedMultiplierInputRef` {`Ref<SlRange>`} - \n\n  * `_maxUpdatesPerTickInputRef` {`Ref<SlInput>`} - \n\n  * `_longNumberFormatInputRef` {`Ref<SlSelect>`} - \n\n  * `_spinnerVisible` {`boolean`} - \n\n  * `renderLanguageOption` - \n\n  * `renderThemeOption` - \n\n  * `renderLongNumberFormatOption` - \n\n  * `handleChangeLanguage` - \n\n  * `handleChangeTheme` - \n\n  * `handleChangeMessageLogSize` - \n\n  * `handleChangeToastDuration` - \n\n  * `handleChangeUpdateFPS` - \n\n  * `handleChangeAutosaveEnabledOnHide` - \n\n  * `handleChangeAutosaveInterval` - \n\n  * `handleChangeFastSpeedMultiplier` - \n\n  * `handleChangeMaxUpdatesPerTick` - \n\n  * `handleChangeLongNumberFormat` - \n\n  * `timeSecondsFormatter` - \n\n  * `decimalNumberFormatter` - \n\n  * `handleSubmit` - \n\n  * `_controller` {`SettingsFormController`} - ",
       "attributes": []
     },
     {

@@ -12,42 +12,41 @@ export class AppRoot extends BaseComponent {
   @provide({ context: layoutContext })
   private _layoutContextProvider: Layout = 'desktop';
 
-  private matchMobile: MediaQueryList;
-  private matchTablet: MediaQueryList;
-  private matchDesktop: MediaQueryList;
+  private _matchTablet: MediaQueryList;
+  private _matchDesktop: MediaQueryList;
+
+  private _matchesTablet: boolean;
+  private _matchesDesktop: boolean;
 
   constructor() {
     super();
 
     this._controller = new AppRootController(this);
+    const pixelRatio = window.devicePixelRatio;
+    const tabletThreshold = Math.floor(LAYOUT_WIDTH_THRESHOLDS.TABLET * pixelRatio);
+    const desktopThreshold = Math.floor(LAYOUT_WIDTH_THRESHOLDS.DESKTOP * pixelRatio);
 
-    this.matchMobile = window.matchMedia(`(max-width: ${LAYOUT_WIDTH_THRESHOLDS.TABLET}px)`);
-    this.matchTablet = window.matchMedia(`(min-width: ${LAYOUT_WIDTH_THRESHOLDS.TABLET}px)`);
-    this.matchDesktop = window.matchMedia(`(min-width: ${LAYOUT_WIDTH_THRESHOLDS.DESKTOP}px)`);
+    this._matchTablet = window.matchMedia(`(min-width: ${tabletThreshold}px)`);
+    this._matchDesktop = window.matchMedia(`(min-width: ${desktopThreshold}px)`);
 
-    if (this.matchDesktop.matches) {
-      this._layoutContextProvider = 'desktop';
-    } else if (this.matchTablet.matches) {
-      this._layoutContextProvider = 'tablet';
-    } else {
-      this._layoutContextProvider = 'mobile';
-    }
+    this._matchesDesktop = this._matchDesktop.matches;
+    this._matchesTablet = this._matchTablet.matches;
+
+    this.updateLayout();
   }
 
   connectedCallback() {
     super.connectedCallback();
 
-    this.matchMobile.addEventListener('change', this.handleSwitchToMobile);
-    this.matchTablet.addEventListener('change', this.handleSwitchToTablet);
-    this.matchDesktop.addEventListener('change', this.handleSwitchToDesktop);
+    this._matchTablet.addEventListener('change', this.handleSwitchToTablet);
+    this._matchDesktop.addEventListener('change', this.handleSwitchToDesktop);
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
 
-    this.matchMobile.removeEventListener('change', this.handleSwitchToMobile);
-    this.matchTablet.removeEventListener('change', this.handleSwitchToTablet);
-    this.matchDesktop.removeEventListener('change', this.handleSwitchToDesktop);
+    this._matchTablet.removeEventListener('change', this.handleSwitchToTablet);
+    this._matchDesktop.removeEventListener('change', this.handleSwitchToDesktop);
   }
 
   protected renderDesktop() {
@@ -66,21 +65,25 @@ export class AppRoot extends BaseComponent {
     }
   }
 
-  handleSwitchToMobile = (event: MediaQueryListEvent) => {
-    if (event.matches) {
+  private handleSwitchToTablet = (event: MediaQueryListEvent) => {
+    this._matchesTablet = event.matches;
+
+    this.updateLayout();
+  };
+
+  private handleSwitchToDesktop = (event: MediaQueryListEvent) => {
+    this._matchesDesktop = event.matches;
+
+    this.updateLayout();
+  };
+
+  private updateLayout() {
+    if (this._matchesDesktop) {
+      this._layoutContextProvider = 'desktop';
+    } else if (this._matchesTablet) {
+      this._layoutContextProvider = 'tablet';
+    } else {
       this._layoutContextProvider = 'mobile';
     }
-  };
-
-  handleSwitchToTablet = (event: MediaQueryListEvent) => {
-    if (event.matches) {
-      this._layoutContextProvider = 'tablet';
-    }
-  };
-
-  handleSwitchToDesktop = (event: MediaQueryListEvent) => {
-    if (event.matches) {
-      this._layoutContextProvider = 'desktop';
-    }
-  };
+  }
 }

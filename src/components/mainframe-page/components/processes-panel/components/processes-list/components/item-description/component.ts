@@ -1,4 +1,4 @@
-import { css, html, nothing } from 'lit';
+import { html, nothing } from 'lit';
 import { localized } from '@lit/localize';
 import { customElement, queryAll } from 'lit/decorators.js';
 import { consume } from '@lit/context';
@@ -20,23 +20,12 @@ import { IDescriptionEffectRenderer, IDescriptionParameters } from './interfaces
 import { ProcessDescriptionTextController } from './controller';
 import { processContext } from '../item/contexts';
 import { PeerReviewerDescriptionEffectRenderer } from './description-effect-renderers/peer-reviewer-description-effect-renderer';
+import styles from './styles';
 
 @localized()
 @customElement('ca-processes-list-item-description')
 export class ProcessDescriptionText extends BaseComponent {
-  static styles = css`
-    :host {
-      white-space: normal;
-    }
-
-    p {
-      margin: 0;
-    }
-
-    p.line-break {
-      height: var(--sl-spacing-medium);
-    }
-  `;
+  static styles = styles;
 
   hasPartialUpdate = true;
 
@@ -56,7 +45,7 @@ export class ProcessDescriptionText extends BaseComponent {
     this._controller = new ProcessDescriptionTextController(this);
   }
 
-  render() {
+  protected renderDesktop() {
     this.updateRenderer();
 
     if (!this._process) {

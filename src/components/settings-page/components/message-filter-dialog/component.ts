@@ -1,71 +1,30 @@
-import { TemplateResult, css, html } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { msg, localized } from '@lit/localize';
 import { customElement, property } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
-import { BaseComponent } from '@shared/base-component';
+import { classMap } from 'lit/directives/class-map.js';
 import SlCheckbox from '@shoelace-style/shoelace/dist/components/checkbox/checkbox.component.js';
-import { GAME_STATE_EVENTS, PROGRAM_EVENTS, CLONE_EVENTS, SIDEJOB_EVENTS, CITY_EVENTS } from '@shared/constants';
-import { MessageEvent } from '@shared/types';
 import {
-  hintStyle,
-  sectionTitleStyle,
-  mediumModalStyle,
-  modalBodyScrollStyle,
-  SCREEN_WIDTH_POINTS,
-} from '@shared/styles';
-import { COMMON_TEXTS } from '@texts/common';
+  BaseComponent,
+  GAME_STATE_EVENTS,
+  PROGRAM_EVENTS,
+  CLONE_EVENTS,
+  SIDEJOB_EVENTS,
+  CITY_EVENTS,
+  MessageEvent,
+} from '@shared/index';
+import { COMMON_TEXTS } from '@texts/index';
 import { MessageFilterDialogCloseEvent } from './events';
 import { MessageFilterDialogController } from './controller';
 import { MESSAGE_EVENT_NAMES } from './constants';
+import styles from './styles';
 
 @localized()
 @customElement('ca-message-filter-dialog')
 export class MessageFilterDialog extends BaseComponent {
-  static styles = [
-    hintStyle,
-    sectionTitleStyle,
-    mediumModalStyle,
-    modalBodyScrollStyle,
-    css`
-      sl-dialog::part(body) {
-        padding-top: 0;
-        padding-bottom: 0;
-      }
+  static styles = styles;
 
-      h4.title {
-        margin: 0;
-      }
-
-      div.body {
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      p.hint {
-        margin-top: 0;
-        margin-bottom: var(--sl-spacing-small);
-      }
-
-      div.events-container {
-        display: grid;
-        column-gap: var(--sl-spacing-3x-small);
-        row-gap: var(--sl-spacing-3x-small);
-        grid-template-columns: auto;
-        grid-auto-rows: auto;
-      }
-
-      sl-divider {
-        --spacing: var(--sl-spacing-medium);
-      }
-
-      @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
-        div.events-container {
-          grid-template-columns: repeat(2, 1fr);
-        }
-      }
-    `,
-  ];
+  protected hasMobileRender = true;
 
   private _controller: MessageFilterDialogController;
 
@@ -81,37 +40,55 @@ export class MessageFilterDialog extends BaseComponent {
     this._controller = new MessageFilterDialogController(this);
   }
 
-  render() {
+  protected renderDesktop() {
+    return this.renderContent(true);
+  }
+
+  protected renderMobile() {
+    return this.renderContent(false);
+  }
+
+  private renderContent(desktop: boolean) {
+    const bodyClasses = classMap({
+      body: true,
+      desktop: desktop,
+      mobile: !desktop,
+    });
+
     return html`
-      <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
-        <h4 slot="label" class="title">${msg('Message filter')}</h4>
+      <form id="message-filter-dialog" @submit=${this.handleSubmit}>
+        <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
+          <h4 slot="label" class="title">${msg('Message filter')}</h4>
 
-        <div class="body">
-          <p class="hint">${msg('Enable events in filter to receive messages about them in the log and as popups')}</p>
+          <div class=${bodyClasses}>
+            <p class="hint">
+              ${msg('Enable events in filter to receive messages about them in the log and as popups')}
+            </p>
 
-          <div class="events-container">${repeat(GAME_STATE_EVENTS, (event) => event, this.renderEventCheckbox)}</div>
+            <div class="events-container">${repeat(GAME_STATE_EVENTS, (event) => event, this.renderEventCheckbox)}</div>
 
-          <sl-divider></sl-divider>
+            <sl-divider></sl-divider>
 
-          <div class="events-container">${repeat(PROGRAM_EVENTS, (event) => event, this.renderEventCheckbox)}</div>
+            <div class="events-container">${repeat(PROGRAM_EVENTS, (event) => event, this.renderEventCheckbox)}</div>
 
-          <sl-divider></sl-divider>
+            <sl-divider></sl-divider>
 
-          <div class="events-container">${repeat(CITY_EVENTS, (event) => event, this.renderEventCheckbox)}</div>
+            <div class="events-container">${repeat(CITY_EVENTS, (event) => event, this.renderEventCheckbox)}</div>
 
-          <sl-divider></sl-divider>
+            <sl-divider></sl-divider>
 
-          <div class="events-container">${repeat(CLONE_EVENTS, (event) => event, this.renderEventCheckbox)}</div>
+            <div class="events-container">${repeat(CLONE_EVENTS, (event) => event, this.renderEventCheckbox)}</div>
 
-          <sl-divider></sl-divider>
+            <sl-divider></sl-divider>
 
-          <div class="events-container">${repeat(SIDEJOB_EVENTS, (event) => event, this.renderEventCheckbox)}</div>
-        </div>
+            <div class="events-container">${repeat(SIDEJOB_EVENTS, (event) => event, this.renderEventCheckbox)}</div>
+          </div>
 
-        <sl-button slot="footer" size="medium" variant="default" outline @click=${this.handleClose}>
-          ${COMMON_TEXTS.close()}
-        </sl-button>
-      </sl-dialog>
+          <sl-button slot="footer" size="medium" variant="default" outline @click=${this.handleClose}>
+            ${COMMON_TEXTS.close()}
+          </sl-button>
+        </sl-dialog>
+      </form>
     `;
   }
 
@@ -137,5 +114,9 @@ export class MessageFilterDialog extends BaseComponent {
     const target = event.target as SlCheckbox;
 
     this._controller.toggleMessageEvent(target.value as MessageEvent, target.checked);
+  };
+
+  private handleSubmit = (event: Event) => {
+    event.preventDefault();
   };
 }

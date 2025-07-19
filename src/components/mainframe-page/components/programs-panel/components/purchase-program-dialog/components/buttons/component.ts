@@ -4,18 +4,19 @@ import { customElement, queryAll } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { consume } from '@lit/context';
 import SlButton from '@shoelace-style/shoelace/dist/components/button/button.component.js';
-import { BaseComponent, dialogButtonsStyle, warningStyle } from '@shared/index';
+import { BaseComponent } from '@shared/index';
 import { COMMON_TEXTS } from '@texts/index';
 import { type IProgram } from '@state/mainframe-state';
 import { PurchaseProgramDialogButtonsController } from './controller';
 import { BuyProgramEvent, CancelEvent } from './events';
 import { PurchaseProgramDialogWarning } from './types';
 import { existingProgramContext, temporaryProgramContext } from '../../contexts';
+import styles from './styles';
 
 @localized()
 @customElement('ca-purchase-program-dialog-buttons')
 export class PurchaseProgramDialogButtons extends BaseComponent {
-  static styles = [warningStyle, dialogButtonsStyle];
+  static styles = styles;
 
   hasPartialUpdate = true;
 
@@ -39,7 +40,7 @@ export class PurchaseProgramDialogButtons extends BaseComponent {
     this._controller = new PurchaseProgramDialogButtonsController(this);
   }
 
-  render() {
+  protected renderDesktop() {
     return html`
       ${this.renderWarnings()}
 

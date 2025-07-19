@@ -21,7 +21,7 @@ export class OverviewUnlockedPrograms extends BaseComponent {
     this._controller = new OverviewUnlockedProgramsController(this);
   }
 
-  render() {
+  protected renderDesktop() {
     const programsCategory = CATEGORY_TEXTS.programs();
 
     return html`

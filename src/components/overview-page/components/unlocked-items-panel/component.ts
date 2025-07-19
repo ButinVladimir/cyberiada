@@ -18,7 +18,7 @@ export class OverviewUnlockedItemsPanel extends BaseComponent {
     this._controller = new OverviewUnlockedItemsPanelController(this);
   }
 
-  render() {
+  protected renderDesktop() {
     const programsUnlocked = this._controller.areProgramsUnlocked();
     const noItemsUnlocked = !programsUnlocked;
 
