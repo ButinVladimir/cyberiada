@@ -2,10 +2,9 @@ import { html } from 'lit';
 import { map } from 'lit/directives/map.js';
 import { localized, msg } from '@lit/localize';
 import { customElement, queryAll } from 'lit/decorators.js';
-import { BaseComponent } from '@shared/base-component';
+import { BaseComponent, HINT_ICON } from '@shared/index';
 import { STATISTIC_HINTS, STATISTIC_PAGE_TEXTS } from '@components/statistics-page/constants';
 import { IDistrictState } from '@state/city-state';
-import { HINT_ICON } from '@shared/styles';
 import { StatisticsConnectivityController } from './controller';
 import { statisticsPanelContentStyle } from '../../../../styles';
 
@@ -18,8 +17,8 @@ export class StatisticsConnectivity extends BaseComponent {
 
   private _controller: StatisticsConnectivityController;
 
-  @queryAll('span[data-district]')
-  private _districtValueNodes!: NodeListOf<HTMLSpanElement>;
+  @queryAll('div[data-district]')
+  private _districtValueNodes!: NodeListOf<HTMLDivElement>;
 
   constructor() {
     super();
@@ -27,7 +26,7 @@ export class StatisticsConnectivity extends BaseComponent {
     this._controller = new StatisticsConnectivityController(this);
   }
 
-  render() {
+  protected renderDesktop() {
     return html`
       <sl-details>
         <h4 class="title" slot="summary">
@@ -47,8 +46,8 @@ export class StatisticsConnectivity extends BaseComponent {
 
   private renderDistrict = (districtState: IDistrictState) => {
     return html`
-      <span> ${STATISTIC_PAGE_TEXTS.byDistrict(districtState.name)}</span>
-      <span data-district=${districtState.index}></span>
+      <div>${STATISTIC_PAGE_TEXTS.byDistrict(districtState.name)}</div>
+      <div data-district=${districtState.index}></div>
     `;
   };
 

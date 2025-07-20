@@ -1,30 +1,19 @@
-import { css, html, nothing } from 'lit';
+import { html, nothing } from 'lit';
 import { consume } from '@lit/context';
 import { customElement } from 'lit/decorators.js';
 import { localized, msg } from '@lit/localize';
-import { BaseComponent } from '@shared/base-component';
-import { HINT_ICON, hintIconStyle } from '@shared/styles';
+import { BaseComponent, HINT_ICON } from '@shared/index';
 import { COMMON_TEXTS, DISTRICT_TYPE_TEXTS } from '@texts/index';
 import { DISTRICT_STATE_TEXTS } from '../../../../../../constants';
 import { CityDistrictOverviewPanelValuesController } from './controller';
 import { districtIndexContext } from '../../../../contexts';
 import { DISTRICT_TIER_HINT } from '../../../../constants';
+import styles from './styles';
 
 @localized()
 @customElement('ca-city-district-overview-panel-values')
 export class CityDistrictOverviewPanelValues extends BaseComponent {
-  static styles = [
-    hintIconStyle,
-    css`
-      :host {
-        display: block;
-      }
-
-      p.text {
-        margin: 0;
-      }
-    `,
-  ];
+  static styles = styles;
 
   @consume({ context: districtIndexContext, subscribe: true })
   private _districtIndex?: number;
@@ -37,7 +26,7 @@ export class CityDistrictOverviewPanelValues extends BaseComponent {
     this._controller = new CityDistrictOverviewPanelValuesController(this);
   }
 
-  render() {
+  protected renderDesktop() {
     if (this._districtIndex === undefined) {
       return nothing;
     }

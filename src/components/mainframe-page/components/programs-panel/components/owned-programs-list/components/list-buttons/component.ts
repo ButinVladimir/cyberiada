@@ -1,55 +1,24 @@
-import { css, html } from 'lit';
+import { html } from 'lit';
 import { localized } from '@lit/localize';
 import { customElement } from 'lit/decorators.js';
 import { ref, createRef } from 'lit/directives/ref.js';
 import SlButton from '@shoelace-style/shoelace/dist/components/button/button.component.js';
-import { BaseComponent, AUTOUPGRADE_VALUES, SCREEN_WIDTH_POINTS, UPGRADE_MAX_VALUES } from '@shared/index';
+import { BaseComponent, AUTOUPGRADE_VALUES, UPGRADE_MAX_VALUES } from '@shared/index';
 import { COMMON_TEXTS } from '@texts/common';
 import { OwnedProgramsListButtonsController } from './controller';
+import styles from './styles';
 
 @localized()
 @customElement('ca-owned-programs-list-buttons')
 export class OwnedProgramsListButtons extends BaseComponent {
-  static styles = css`
-    :host {
-      display: contents;
-    }
-
-    .buttons {
-      align-items: center;
-      flex-direction: row;
-      gap: var(--sl-spacing-small);
-    }
-
-    .buttons.desktop {
-      display: none;
-      justify-content: flex-end;
-      font-size: var(--sl-font-size-large);
-    }
-
-    .buttons.mobile {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: flex-start;
-    }
-
-    @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
-      .buttons.desktop {
-        display: flex;
-      }
-
-      .buttons.mobile {
-        display: none;
-      }
-    }
-  `;
+  static styles = styles;
 
   hasPartialUpdate = true;
+  protected hasMobileRender = true;
 
   private _controller: OwnedProgramsListButtonsController;
 
-  private _upgradeMaxDesktopButton = createRef<SlButton>();
-  private _upgradeMaxMobileButton = createRef<SlButton>();
+  private _upgradeMaxButton = createRef<SlButton>();
 
   constructor() {
     super();
@@ -57,16 +26,13 @@ export class OwnedProgramsListButtons extends BaseComponent {
     this._controller = new OwnedProgramsListButtonsController(this);
   }
 
-  render() {
+  protected renderDesktop() {
     const isAutoupgradeActive = this.checkSomeProgramsAutoupgradeActive();
 
     const autoupgradeIcon = isAutoupgradeActive ? AUTOUPGRADE_VALUES.icon.enabled : AUTOUPGRADE_VALUES.icon.disabled;
     const autoupgradeLabel = isAutoupgradeActive
       ? COMMON_TEXTS.disableAutoupgradeAll()
       : COMMON_TEXTS.enableAutoupgradeAll();
-    const autoupgradeVariant = isAutoupgradeActive
-      ? AUTOUPGRADE_VALUES.buttonVariant.enabled
-      : AUTOUPGRADE_VALUES.buttonVariant.disabled;
 
     const upgradeAllProgramsLabel = COMMON_TEXTS.upgradeAll();
 
@@ -76,7 +42,7 @@ export class OwnedProgramsListButtons extends BaseComponent {
           <span slot="content"> ${upgradeAllProgramsLabel} </span>
 
           <sl-icon-button
-            ${ref(this._upgradeMaxDesktopButton)}
+            ${ref(this._upgradeMaxButton)}
             disabled
             name=${UPGRADE_MAX_VALUES.icon}
             label=${upgradeAllProgramsLabel}
@@ -92,10 +58,26 @@ export class OwnedProgramsListButtons extends BaseComponent {
           </sl-icon-button>
         </sl-tooltip>
       </div>
+    `;
+  }
 
+  protected renderMobile() {
+    const isAutoupgradeActive = this.checkSomeProgramsAutoupgradeActive();
+
+    const autoupgradeIcon = isAutoupgradeActive ? AUTOUPGRADE_VALUES.icon.enabled : AUTOUPGRADE_VALUES.icon.disabled;
+    const autoupgradeLabel = isAutoupgradeActive
+      ? COMMON_TEXTS.disableAutoupgradeAll()
+      : COMMON_TEXTS.enableAutoupgradeAll();
+    const autoupgradeVariant = isAutoupgradeActive
+      ? AUTOUPGRADE_VALUES.buttonVariant.enabled
+      : AUTOUPGRADE_VALUES.buttonVariant.disabled;
+
+    const upgradeAllProgramsLabel = COMMON_TEXTS.upgradeAll();
+
+    return html`
       <div class="buttons mobile">
         <sl-button
-          ${ref(this._upgradeMaxMobileButton)}
+          ${ref(this._upgradeMaxButton)}
           disabled
           variant=${UPGRADE_MAX_VALUES.buttonVariant}
           size="medium"
@@ -134,12 +116,8 @@ export class OwnedProgramsListButtons extends BaseComponent {
   handlePartialUpdate = () => {
     const upgradeMaxButtonDisabled = !this._controller.checkCanUpgradeMax();
 
-    if (this._upgradeMaxDesktopButton.value) {
-      this._upgradeMaxDesktopButton.value.disabled = upgradeMaxButtonDisabled;
-    }
-
-    if (this._upgradeMaxMobileButton.value) {
-      this._upgradeMaxMobileButton.value.disabled = upgradeMaxButtonDisabled;
+    if (this._upgradeMaxButton.value) {
+      this._upgradeMaxButton.value.disabled = upgradeMaxButtonDisabled;
     }
   };
 }

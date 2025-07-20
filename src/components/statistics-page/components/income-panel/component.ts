@@ -17,7 +17,7 @@ export class StatisticsIncomePanel extends BaseComponent {
     this._controller = new StatisticsIncomePanelController(this);
   }
 
-  render() {
+  protected renderDesktop() {
     return html`
       <ca-statistics-money-income></ca-statistics-money-income>
 

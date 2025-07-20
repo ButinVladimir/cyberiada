@@ -19,10 +19,10 @@ export class StatisticsConnectivityPointsIncome extends BaseComponent {
 
   private _controller: StatisticsConnectivityPointsIncomeController;
 
-  private _programPointsRef = createRef<HTMLSpanElement>();
+  private _programPointsRef = createRef<HTMLDivElement>();
 
-  @queryAll('span[data-district]')
-  private _districtValueNodes!: NodeListOf<HTMLSpanElement>;
+  @queryAll('div[data-district]')
+  private _districtValueNodes!: NodeListOf<HTMLDivElement>;
 
   constructor() {
     super();
@@ -30,7 +30,7 @@ export class StatisticsConnectivityPointsIncome extends BaseComponent {
     this._controller = new StatisticsConnectivityPointsIncomeController(this);
   }
 
-  render() {
+  protected renderDesktop() {
     return html`
       <sl-details>
         <h4 class="title" slot="summary">
@@ -44,8 +44,8 @@ export class StatisticsConnectivityPointsIncome extends BaseComponent {
         </h4>
 
         <div class="parameters-table">
-          <span> ${STATISTIC_PAGE_TEXTS.byPrograms()} </span>
-          <span ${ref(this._programPointsRef)}> </span>
+          <div>${STATISTIC_PAGE_TEXTS.byPrograms()}</div>
+          <div ${ref(this._programPointsRef)}></div>
 
           ${map(this._controller.listAvailableDistricts(), this.renderDistrict)}
         </div>
@@ -55,8 +55,8 @@ export class StatisticsConnectivityPointsIncome extends BaseComponent {
 
   private renderDistrict = (districtState: IDistrictState) => {
     return html`
-      <span> ${STATISTIC_PAGE_TEXTS.byDistrict(districtState.name)}</span>
-      <span data-district=${districtState.index}></span>
+      <div>${STATISTIC_PAGE_TEXTS.byDistrict(districtState.name)}</div>
+      <div data-district=${districtState.index}></div>
     `;
   };
 

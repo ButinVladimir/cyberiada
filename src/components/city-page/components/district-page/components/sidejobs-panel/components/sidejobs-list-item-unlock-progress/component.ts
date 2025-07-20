@@ -1,34 +1,20 @@
-import { css, html, nothing } from 'lit';
+import { html, nothing } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { localized, msg } from '@lit/localize';
+import { consume } from '@lit/context';
 import SlProgressBar from '@shoelace-style/shoelace/dist/components/progress-bar/progress-bar.component.js';
-import { BaseComponent, calculateLevelProgressPercentage, progressBarHintStyle } from '@shared/index';
+import { BaseComponent, calculateLevelProgressPercentage } from '@shared/index';
 import { type SidejobName } from '@state/company-state';
 import { CityDistrictSidejobsListItemUnlockProgressController } from './controller';
-import { consume } from '@lit/context';
 import { sidejobNameContext } from '../sidejobs-list-item/contexts';
 import { districtIndexContext } from '../../../../contexts';
+import styles from './styles';
 
 @localized()
 @customElement('ca-city-district-sidejobs-list-item-unlock-progress')
 export class CityDistrictSidejobsListItemUnlockProgress extends BaseComponent {
-  static styles = [
-    progressBarHintStyle,
-    css`
-      :host {
-        flex: 1 1 auto;
-      }
-
-      .progress-bar-content {
-        display: none;
-      }
-
-      .progress-bar-content.visible {
-        display: block;
-      }
-    `,
-  ];
+  static styles = styles;
 
   readonly hasPartialUpdate = true;
 
@@ -51,7 +37,7 @@ export class CityDistrictSidejobsListItemUnlockProgress extends BaseComponent {
     this._controller = new CityDistrictSidejobsListItemUnlockProgressController(this);
   }
 
-  render() {
+  protected renderDesktop() {
     if (this._districtIndex === undefined || this._sidejobName === undefined) {
       return nothing;
     }

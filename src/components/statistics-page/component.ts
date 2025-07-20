@@ -1,24 +1,17 @@
-import { css, html } from 'lit';
+import { html } from 'lit';
 import { msg, localized } from '@lit/localize';
 import { customElement } from 'lit/decorators.js';
-import { BaseComponent } from '@shared/base-component';
-import { pageTitleStyle } from '@shared/styles';
+import { BaseComponent } from '@shared/index';
 import { StatisticsPageTabs } from './types';
 import { STATISTICS_PAGE_TAB_NAMES, STATISTICS_PAGE_TABS_LIST } from './constants';
+import styles from './styles';
 
 @localized()
 @customElement('ca-statistics-page')
 export class StatisticsPage extends BaseComponent {
-  static styles = [
-    pageTitleStyle,
-    css`
-      h3.title {
-        margin-bottom: var(--sl-spacing-2x-small);
-      }
-    `,
-  ];
+  static styles = styles;
 
-  render() {
+  protected renderDesktop() {
     return html`
       <h3 class="title">${msg('Statistics')}</h3>
 

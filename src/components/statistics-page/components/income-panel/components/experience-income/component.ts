@@ -16,8 +16,8 @@ export class StatisticsExperienceIncome extends BaseComponent {
 
   private _controller: StatisticsExperienceIncomeController;
 
-  @queryAll('span[data-clone]')
-  private _cloneValueNodes!: NodeListOf<HTMLSpanElement>;
+  @queryAll('div[data-clone]')
+  private _cloneValueNodes!: NodeListOf<HTMLDivElement>;
 
   constructor() {
     super();
@@ -25,7 +25,7 @@ export class StatisticsExperienceIncome extends BaseComponent {
     this._controller = new StatisticsExperienceIncomeController(this);
   }
 
-  render() {
+  protected renderDesktop() {
     return html`
       <sl-details>
         <h4 class="title" slot="summary">${msg('Experience')}</h4>
@@ -37,8 +37,8 @@ export class StatisticsExperienceIncome extends BaseComponent {
 
   private renderClone = (clone: IClone) => {
     return html`
-      <span> ${clone.name}</span>
-      <span data-clone=${clone.id}></span>
+      <div>${clone.name}</div>
+      <div data-clone=${clone.id}></div>
     `;
   };
 

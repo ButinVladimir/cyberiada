@@ -5,10 +5,13 @@ import { createRef, ref } from 'lit/directives/ref.js';
 import SlButton from '@shoelace-style/shoelace/dist/components/button/button.component.js';
 import { BaseComponent } from '@shared/index';
 import { MainframeHardwarePanelButtonsController } from './controller';
+import styles from '../../styles';
 
 @localized()
 @customElement('ca-mainframe-hardware-panel-buttons')
 export class MainframeHardwarePanelButtons extends BaseComponent {
+  static style = styles;
+
   hasPartialUpdate = true;
 
   private _controller: MainframeHardwarePanelButtonsController;
@@ -21,7 +24,7 @@ export class MainframeHardwarePanelButtons extends BaseComponent {
     this._controller = new MainframeHardwarePanelButtonsController(this);
   }
 
-  render() {
+  protected renderDesktop() {
     return html`
       <sl-button
         ${ref(this._buyMaxButtonRef)}

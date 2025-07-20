@@ -1,32 +1,21 @@
-import { html, css, TemplateResult } from 'lit';
+import { html, TemplateResult } from 'lit';
 import { localized, msg } from '@lit/localize';
 import { customElement } from 'lit/decorators.js';
-import { BaseComponent } from '@shared/base-component';
-import { GameSpeed } from '@state/global-state/types';
+import { GameSpeed } from '@state/global-state';
 import {
   ConfirmationAlertOpenEvent,
   ConfirmationAlertSubmitEvent,
 } from '@components/game-screen/components/confirmation-alert/events';
-import { GameStateAlert } from '@shared/types';
+import { BaseComponent, GameStateAlert } from '@shared/index';
 import { GameSpeedButtonsController } from './controller';
 import { GameSpeedButtonProps } from './interfaces';
 import { GAME_SPEED_TEXTS } from './constants';
+import styles from './styles';
 
 @localized()
 @customElement('ca-game-speed-buttons')
 export class GameSpeedButtons extends BaseComponent {
-  static styles = css`
-    :host {
-      height: 100%;
-      display: flex;
-      box-sizing: border-box;
-      align-items: center;
-    }
-
-    sl-icon-button::part(base) {
-      padding: var(--sl-spacing-small);
-    }
-  `;
+  static styles = styles;
 
   private _controller: GameSpeedButtonsController;
 
@@ -48,7 +37,7 @@ export class GameSpeedButtons extends BaseComponent {
     document.removeEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmFastForwardDialog);
   }
 
-  render() {
+  protected renderDesktop() {
     const gameSpeed = this._controller.gameSpeed;
 
     return html`
@@ -77,7 +66,7 @@ export class GameSpeedButtons extends BaseComponent {
     `;
   }
 
-  renderButton = (props: GameSpeedButtonProps): TemplateResult => {
+  private renderButton = (props: GameSpeedButtonProps): TemplateResult => {
     const { gameSpeed, icon } = props;
 
     return html`

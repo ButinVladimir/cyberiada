@@ -15,3 +15,15 @@ export const progressBlockStyle = css`
     font-size: var(--sl-font-size-medium);
   }
 `;
+
+const styles = css`
+  :host {
+    display: flex;
+    align-items: stretch;
+    flex-direction: column;
+    gap: var(--sl-spacing-2x-large);
+    padding-top: var(--sl-spacing-large);
+  }
+`;
+
+export default styles;

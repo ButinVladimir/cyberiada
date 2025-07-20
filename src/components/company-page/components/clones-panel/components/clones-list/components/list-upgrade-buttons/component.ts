@@ -1,19 +1,16 @@
-import { css, html } from 'lit';
+import { html } from 'lit';
 import { localized, msg } from '@lit/localize';
 import { customElement } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import SlButton from '@shoelace-style/shoelace/dist/components/button/button.component.js';
 import { BaseComponent, UPGRADE_MAX_VALUES } from '@shared/index';
 import { ClonesListUpgradeButtonsController } from './controller';
+import styles from './styles';
 
 @localized()
 @customElement('ca-clones-list-upgrade-buttons')
 export class ClonesListUpgradeButtons extends BaseComponent {
-  static styles = css`
-    :host {
-      display: contents;
-    }
-  `;
+  static styles = styles;
 
   hasPartialUpdate = true;
 
@@ -27,7 +24,7 @@ export class ClonesListUpgradeButtons extends BaseComponent {
     this._controller = new ClonesListUpgradeButtonsController(this);
   }
 
-  render() {
+  protected renderDesktop() {
     return html`
       <sl-button-group>
         <sl-button

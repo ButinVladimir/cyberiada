@@ -3,7 +3,7 @@ import { createRef, ref } from 'lit/directives/ref.js';
 import { customElement } from 'lit/decorators.js';
 import { msg, localized } from '@lit/localize';
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.component.js';
-import { BaseComponent } from '@shared/index';
+import { BaseComponent, normalizePercentage } from '@shared/index';
 import { AutomationCloneLevelAutoupgraderController } from './controller';
 import { autobuyerStyles } from '../../styles';
 
@@ -11,6 +11,8 @@ import { autobuyerStyles } from '../../styles';
 @customElement('ca-automation-clone-level-autoupgrader')
 export class AutomationCloneLevelAutoupgrader extends BaseComponent {
   static styles = autobuyerStyles;
+
+  protected hasMobileRender = true;
 
   private _controller: AutomationCloneLevelAutoupgraderController;
 
@@ -22,7 +24,15 @@ export class AutomationCloneLevelAutoupgrader extends BaseComponent {
     this._controller = new AutomationCloneLevelAutoupgraderController(this);
   }
 
-  render() {
+  protected renderMobile() {
+    return html`<div class="host-content mobile">${this.renderContent()}</div>`;
+  }
+
+  protected renderDesktop() {
+    return html`<div class="host-content desktop">${this.renderContent()}</div>`;
+  }
+
+  private renderContent = () => {
     const { moneyShare } = this._controller;
 
     return html`
@@ -45,28 +55,16 @@ export class AutomationCloneLevelAutoupgrader extends BaseComponent {
         </sl-input>
       </div>
     `;
-  }
+  };
 
   private handleChangeMoneyShare = () => {
     if (!this._moneyShareRef.value) {
       return;
     }
 
-    const value = this.normalizeValue(this._moneyShareRef.value.valueAsNumber);
+    const value = normalizePercentage(this._moneyShareRef.value.valueAsNumber);
 
     this._controller.moneyShare = value;
     this._moneyShareRef.value.valueAsNumber = value;
   };
-
-  private normalizeValue(value: number): number {
-    if (value < 0) {
-      return 0;
-    }
-
-    if (value > 100) {
-      return 100;
-    }
-
-    return value;
-  }
 }

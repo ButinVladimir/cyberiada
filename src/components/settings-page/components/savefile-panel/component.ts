@@ -1,31 +1,19 @@
-import { css, html } from 'lit';
+import { html } from 'lit';
 import { localized, msg } from '@lit/localize';
 import { customElement } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
-import { BaseComponent } from '@shared/base-component';
-import { GameStateAlert } from '@shared/types';
+import { BaseComponent, GameStateAlert } from '@shared/index';
 import {
   ConfirmationAlertOpenEvent,
   ConfirmationAlertSubmitEvent,
 } from '@components/game-screen/components/confirmation-alert/events';
 import { SavefilePanelController } from './controller';
+import styles from './styles';
 
 @localized()
 @customElement('ca-savefile-panel')
 export class SavefilePanel extends BaseComponent {
-  static styles = css`
-    :host {
-      display: flex;
-      align-items: center;
-      flex-direction: row;
-      flex-wrap: wrap;
-      gap: var(--sl-spacing-large);
-    }
-
-    input#import-file {
-      display: none;
-    }
-  `;
+  static styles = styles;
 
   private _controller: SavefilePanelController;
 
@@ -51,7 +39,7 @@ export class SavefilePanel extends BaseComponent {
     document.removeEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmDeleteSaveDataDialog);
   }
 
-  render() {
+  protected renderDesktop() {
     return html`
       <input ${ref(this._importInputRef)} type="file" id="import-file" @change=${this.handleChangeImportSavefile} />
 

@@ -1,27 +1,28 @@
-import { css, html, nothing } from 'lit';
+import { html, nothing } from 'lit';
 import { localized } from '@lit/localize';
 import { consume } from '@lit/context';
 import { customElement } from 'lit/decorators.js';
-import { BaseComponent } from '@shared/base-component';
+import { classMap } from 'lit/directives/class-map.js';
 import { ATTRIBUTE_TEXTS, COMMON_TEXTS, SKILL_TEXTS } from '@texts/index';
-import { attributesSkillsTablesStyle, highlightedValuesStyle, subSectionTitleStyle } from '@shared/styles';
 import { type ISidejob } from '@state/company-state';
-import { Attribute, ATTRIBUTES, BaseController, getHighlightValueClassMap, Skill, SKILLS } from '@shared/index';
+import {
+  BaseComponent,
+  Attribute,
+  ATTRIBUTES,
+  BaseController,
+  getHighlightValueClassMap,
+  Skill,
+  SKILLS,
+} from '@shared/index';
 import { temporarySidejobContext } from '../../contexts';
+import styles from './styles';
 
 @localized()
 @customElement('ca-assign-clone-sidejob-dialog-requirements')
 export class AssignCloneSidejobDialogRequirements extends BaseComponent {
-  static styles = [
-    subSectionTitleStyle,
-    attributesSkillsTablesStyle,
-    highlightedValuesStyle,
-    css`
-      :host {
-        display: block;
-      }
-    `,
-  ];
+  static styles = styles;
+
+  hasMobileRender = true;
 
   private _controller: BaseController;
 
@@ -34,13 +35,27 @@ export class AssignCloneSidejobDialogRequirements extends BaseComponent {
     this._controller = new BaseController(this);
   }
 
-  render() {
+  protected renderDesktop() {
+    return this.renderContent(true);
+  }
+
+  protected renderMobile() {
+    return this.renderContent(false);
+  }
+
+  private renderContent(desktop: boolean) {
     if (!this._sidejob) {
       return nothing;
     }
 
+    const attributesSkillsTablesClasses = classMap({
+      'attributes-skills-tables': true,
+      desktop: desktop,
+      mobile: !desktop,
+    });
+
     return html`
-      <div class="attributes-skills-tables">
+      <div class=${attributesSkillsTablesClasses}>
         <div>
           <h5 class="title">${COMMON_TEXTS.attributes()}</h5>
           <div class="attributes-skills-table">${ATTRIBUTES.map(this.renderRequirementAttribute)}</div>
@@ -68,8 +83,8 @@ export class AssignCloneSidejobDialogRequirements extends BaseComponent {
     const classes = getHighlightValueClassMap(valid);
 
     return html`
-      <span>${ATTRIBUTE_TEXTS[attribute]()}</span>
-      <span class=${classes}>${formattedAvailableValue} / ${formattedRequiredValue}</span>
+      <div>${ATTRIBUTE_TEXTS[attribute]()}</div>
+      <div class=${classes}>${formattedAvailableValue} / ${formattedRequiredValue}</div>
     `;
   };
 
@@ -87,8 +102,8 @@ export class AssignCloneSidejobDialogRequirements extends BaseComponent {
     const classes = getHighlightValueClassMap(valid);
 
     return html`
-      <span>${SKILL_TEXTS[skill]()}</span>
-      <span class=${classes}>${formattedAvailableValue} / ${formattedRequiredValue}</span>
+      <div>${SKILL_TEXTS[skill]()}</div>
+      <div class=${classes}>${formattedAvailableValue} / ${formattedRequiredValue}</div>
     `;
   };
 }

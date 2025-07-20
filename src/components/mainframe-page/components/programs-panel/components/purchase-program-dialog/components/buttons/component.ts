@@ -1,23 +1,29 @@
 import { html, nothing } from 'lit';
 import { localized, msg, str } from '@lit/localize';
-import { customElement, queryAll } from 'lit/decorators.js';
+import { customElement, property, queryAll } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { consume } from '@lit/context';
-import SlButton from '@shoelace-style/shoelace/dist/components/button/button.component.js';
-import { BaseComponent, dialogButtonsStyle, warningStyle } from '@shared/index';
+import { BaseComponent } from '@shared/index';
 import { COMMON_TEXTS } from '@texts/index';
 import { type IProgram } from '@state/mainframe-state';
 import { PurchaseProgramDialogButtonsController } from './controller';
 import { BuyProgramEvent, CancelEvent } from './events';
 import { PurchaseProgramDialogWarning } from './types';
 import { existingProgramContext, temporaryProgramContext } from '../../contexts';
+import styles from './styles';
 
 @localized()
 @customElement('ca-purchase-program-dialog-buttons')
 export class PurchaseProgramDialogButtons extends BaseComponent {
-  static styles = [warningStyle, dialogButtonsStyle];
+  static styles = styles;
 
   hasPartialUpdate = true;
+
+  @property({
+    attribute: 'disabled',
+    type: Boolean,
+  })
+  disabled = false;
 
   @consume({ context: temporaryProgramContext, subscribe: true })
   private _program?: IProgram;
@@ -30,7 +36,6 @@ export class PurchaseProgramDialogButtons extends BaseComponent {
   @queryAll('p[data-warning]')
   private _warningElements!: NodeListOf<HTMLParagraphElement>;
 
-  private _purchaseButtonRef = createRef<SlButton>();
   private _availableTimeRef = createRef<HTMLSpanElement>();
 
   constructor() {
@@ -39,7 +44,7 @@ export class PurchaseProgramDialogButtons extends BaseComponent {
     this._controller = new PurchaseProgramDialogButtonsController(this);
   }
 
-  render() {
+  protected renderDesktop() {
     return html`
       ${this.renderWarnings()}
 
@@ -48,13 +53,7 @@ export class PurchaseProgramDialogButtons extends BaseComponent {
           ${COMMON_TEXTS.close()}
         </sl-button>
 
-        <sl-button
-          ${ref(this._purchaseButtonRef)}
-          size="medium"
-          variant="primary"
-          disabled
-          @click=${this.handlePurchase}
-        >
+        <sl-button size="medium" variant="primary" ?disabled=${this.disabled} @click=${this.handlePurchase}>
           ${COMMON_TEXTS.purchase()}
         </sl-button>
       </div>
@@ -72,10 +71,6 @@ export class PurchaseProgramDialogButtons extends BaseComponent {
     });
 
     this.updateAvailabilityTimer();
-
-    if (this._purchaseButtonRef.value) {
-      this.updatePurchaseButton();
-    }
   };
 
   private renderWarnings = () => {
@@ -142,23 +137,6 @@ export class PurchaseProgramDialogButtons extends BaseComponent {
       const formattedTime = this._controller.formatter.formatTimeLong(moneyDiff / moneyGrowth);
       this._availableTimeRef.value.textContent = formattedTime;
     }
-  }
-
-  private updatePurchaseButton(): void {
-    let purchaseButtonDisabled = true;
-
-    if (this._program) {
-      const { money } = this._controller;
-
-      const cost = this._controller.getProgramCost(this._program.name, this._program.tier, this._program.level);
-
-      purchaseButtonDisabled = !(
-        cost <= money &&
-        this._controller.isProgramAvailable(this._program.name, this._program.tier, this._program.level)
-      );
-    }
-
-    this._purchaseButtonRef.value!.disabled = purchaseButtonDisabled;
   }
 
   private handleCancel = () => {

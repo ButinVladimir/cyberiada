@@ -1,55 +1,32 @@
-import { css, html, nothing } from 'lit';
+import { html, nothing } from 'lit';
 import { localized } from '@lit/localize';
 import { customElement } from 'lit/decorators.js';
 import { consume } from '@lit/context';
 import { createRef, ref } from 'lit/directives/ref.js';
-import { BaseComponent } from '@shared/base-component';
-import { type IClone } from '@state/company-state/states/clone-factory/interfaces/clone';
+import { classMap } from 'lit/directives/class-map.js';
+import { type IClone } from '@state/company-state';
 import { ATTRIBUTE_TEXTS, CLONE_TEMPLATE_TEXTS, COMMON_TEXTS, SKILL_TEXTS } from '@texts/index';
 import {
+  BaseComponent,
   ATTRIBUTES,
   SKILLS,
   Attribute,
   Skill,
-  attributesSkillsTablesStyle,
-  highlightedValuesStyle,
-  subSectionTitleStyle,
   getHighlightValueClass,
   getHighlightValueClassMap,
 } from '@shared/index';
 import { PurchaseCloneDialogDescriptionTextController } from './controller';
 import { temporaryCloneContext } from '../../contexts';
+import styles from './styles';
 
 @localized()
 @customElement('ca-purchase-clone-dialog-description')
 export class PurchaseCloneDialogDescription extends BaseComponent {
-  static styles = [
-    subSectionTitleStyle,
-    attributesSkillsTablesStyle,
-    highlightedValuesStyle,
-    css`
-      :host {
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-      }
+  static styles = styles;
 
-      p.overview {
-        margin-top: 0;
-        margin-bottom: var(--sl-spacing-medium);
-      }
+  hasMobileRender = true;
 
-      p.text {
-        margin: 0;
-      }
-
-      .attributes-skills-tables {
-        margin-top: var(--sl-spacing-medium);
-      }
-    `,
-  ];
-
-  hasPartialUpdate = true;
+  protectedhasPartialUpdate = true;
 
   @consume({ context: temporaryCloneContext, subscribe: true })
   private _clone?: IClone;
@@ -64,7 +41,15 @@ export class PurchaseCloneDialogDescription extends BaseComponent {
     this._controller = new PurchaseCloneDialogDescriptionTextController(this);
   }
 
-  render() {
+  protected renderDesktop() {
+    return this.renderContent(true);
+  }
+
+  protected renderMobile() {
+    return this.renderContent(false);
+  }
+
+  private renderContent(desktop: boolean) {
     if (!this._clone) {
       return nothing;
     }
@@ -75,7 +60,7 @@ export class PurchaseCloneDialogDescription extends BaseComponent {
       <p class="text">
         ${COMMON_TEXTS.parameterValue(COMMON_TEXTS.cost(), html`<span ${ref(this._costElRef)}></span>`)}
       </p>
-      ${this.renderSynchronization()} ${this.renderExperienceMultiplier()} ${this.renderParameters()}
+      ${this.renderSynchronization()} ${this.renderExperienceMultiplier()} ${this.renderParameters(desktop)}
     `;
   }
 
@@ -100,9 +85,15 @@ export class PurchaseCloneDialogDescription extends BaseComponent {
     </p>`;
   };
 
-  private renderParameters = () => {
+  private renderParameters = (desktop: boolean) => {
+    const attributesSkillsTablesClasses = classMap({
+      'attributes-skills-tables': true,
+      desktop: desktop,
+      mobile: !desktop,
+    });
+
     return html`
-      <div class="attributes-skills-tables">
+      <div class=${attributesSkillsTablesClasses}>
         <div>
           <h5 class="title">${COMMON_TEXTS.attributes()}</h5>
           <div class="attributes-skills-table">${ATTRIBUTES.map(this.renderAttribute)}</div>

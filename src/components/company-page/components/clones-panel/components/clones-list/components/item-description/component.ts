@@ -1,38 +1,21 @@
-import { css, html, nothing } from 'lit';
+import { html, nothing } from 'lit';
 import { localized } from '@lit/localize';
 import { customElement } from 'lit/decorators.js';
 import { consume } from '@lit/context';
-import { BaseComponent } from '@shared/base-component';
-import { ATTRIBUTE_TEXTS, COMMON_TEXTS, SKILL_TEXTS } from '@texts/common';
-import { Attribute, Skill } from '@shared/types';
-import { attributesSkillsTablesStyle, subSectionTitleStyle } from '@shared/styles';
-import { ATTRIBUTES, SKILLS } from '@shared/constants';
+import { ATTRIBUTE_TEXTS, COMMON_TEXTS, SKILL_TEXTS } from '@texts/index';
+import { Attribute, Skill, ATTRIBUTES, SKILLS, BaseComponent } from '@shared/index';
 import { type IClone } from '@state/company-state';
 import { ClonesListItemDescriptionController } from './controller';
 import { cloneContext } from '../item/contexts';
+import styles from './styles';
+import { classMap } from 'lit/directives/class-map.js';
 
 @localized()
 @customElement('ca-clones-list-item-description')
 export class ClonesListItemAttributes extends BaseComponent {
-  static styles = [
-    subSectionTitleStyle,
-    attributesSkillsTablesStyle,
-    css`
-      :host {
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-      }
+  static styles = styles;
 
-      h5.title {
-        margin: 0;
-      }
-
-      .attributes-skills-tables {
-        margin-top: var(--sl-spacing-small);
-      }
-    `,
-  ];
+  protected hasMobileRender = true;
 
   private _controller: ClonesListItemDescriptionController;
 
@@ -45,7 +28,15 @@ export class ClonesListItemAttributes extends BaseComponent {
     this._controller = new ClonesListItemDescriptionController(this);
   }
 
-  render() {
+  protected renderMobile() {
+    return this.renderContent(false);
+  }
+
+  protected renderDesktop() {
+    return this.renderContent(true);
+  }
+
+  private renderContent(desktop: boolean) {
     if (!this._clone) {
       return nothing;
     }
@@ -57,11 +48,17 @@ export class ClonesListItemAttributes extends BaseComponent {
 
     const formattedExperienceMultiplier = formatter.formatNumberFloat(this._clone.experienceMultiplier);
 
+    const attributesSkillsTablesClasses = classMap({
+      'attributes-skills-tables': true,
+      desktop: desktop,
+      mobile: !desktop,
+    });
+
     return html`
       <div>${COMMON_TEXTS.parameterValue(COMMON_TEXTS.synchronization(), formattedSynchronization)}</div>
       <div>${COMMON_TEXTS.parameterValue(COMMON_TEXTS.experienceMultiplier(), formattedExperienceMultiplier)}</div>
 
-      <div class="attributes-skills-tables">
+      <div class=${attributesSkillsTablesClasses}>
         <div>
           <h5 class="title">${COMMON_TEXTS.attributes()}</h5>
           <div class="attributes-skills-table">${ATTRIBUTES.map(this.renderAttribute)}</div>

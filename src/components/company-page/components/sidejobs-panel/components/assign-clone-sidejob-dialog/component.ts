@@ -1,19 +1,11 @@
-import { css, html, PropertyValues } from 'lit';
+import { html, PropertyValues } from 'lit';
 import { localized, msg, str } from '@lit/localize';
 import { customElement, property, state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { provide } from '@lit/context';
+import { classMap } from 'lit/directives/class-map.js';
 import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.component.js';
-import {
-  inputLabelStyle,
-  hintStyle,
-  sectionTitleStyle,
-  mediumModalStyle,
-  modalBodyScrollStyle,
-  SCREEN_WIDTH_POINTS,
-  BaseComponent,
-  SidejobAlert,
-} from '@shared/index';
+import { BaseComponent, SidejobAlert } from '@shared/index';
 import { IDistrictState } from '@state/city-state';
 import { SIDEJOB_TEXTS, DISTRICT_NAMES } from '@texts/index';
 import { IClone, type ISidejob, SidejobName } from '@state/company-state';
@@ -24,66 +16,16 @@ import {
 import { AssignCloneSidejobDialogCloseEvent } from './events';
 import { AssignCloneSidejobDialogController } from './controller';
 import { existingSidejobContext, temporarySidejobContext } from './contexts';
+import styles from './styles';
+import { AssignCloneSidejobDialogButtons } from './components/buttons/component';
 
 @localized()
 @customElement('ca-assign-clone-sidejob-dialog')
 export class AssignCloneSidejobDialog extends BaseComponent {
-  static styles = [
-    inputLabelStyle,
-    hintStyle,
-    sectionTitleStyle,
-    mediumModalStyle,
-    modalBodyScrollStyle,
-    css`
-      sl-dialog::part(body) {
-        padding-top: 0;
-        padding-bottom: 0;
-      }
+  static styles = styles;
 
-      sl-dialog::part(footer) {
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: flex-end;
-        gap: var(--sl-spacing-small);
-      }
-
-      h4.title {
-        margin: 0;
-      }
-
-      div.body {
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      div.inputs-container {
-        display: grid;
-        column-gap: var(--sl-spacing-medium);
-        row-gap: var(--sl-spacing-medium);
-        grid-template-columns: auto;
-        grid-template-rows: auto;
-        margin-bottom: var(--sl-spacing-medium);
-      }
-
-      p.hint {
-        margin-top: 0;
-        margin-bottom: var(--sl-spacing-medium);
-      }
-
-      div.footer {
-        display: flex;
-      }
-
-      @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
-        div.inputs-container {
-          grid-template-columns: 1fr 1fr 1fr;
-        }
-      }
-    `,
-  ];
+  hasMobileRender = true;
+  hasPartialUpdate = true;
 
   private _controller: AssignCloneSidejobDialogController;
 
@@ -113,6 +55,8 @@ export class AssignCloneSidejobDialog extends BaseComponent {
 
   @provide({ context: existingSidejobContext })
   private _existingSidejob?: ISidejob;
+
+  private _buttonsRef = createRef<AssignCloneSidejobDialogButtons>();
 
   constructor() {
     super();
@@ -160,65 +104,82 @@ export class AssignCloneSidejobDialog extends BaseComponent {
     }
   }
 
-  render() {
+  protected renderDesktop() {
+    return this.renderContent(true);
+  }
+
+  protected renderMobile() {
+    return this.renderContent(false);
+  }
+
+  private renderContent(desktop: boolean) {
+    const inputsContainerClasses = classMap({
+      'inputs-container': true,
+      desktop: desktop,
+      mobile: !desktop,
+    });
+
     return html`
-      <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
-        <h4 slot="label" class="title">${msg('Assign clone to sidejob')}</h4>
+      <form id="assign-clone-sidejob-dialog" @submit=${this.handleSubmit}>
+        <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
+          <h4 slot="label" class="title">${msg('Assign clone to sidejob')}</h4>
 
-        <div class="body">
-          <p class="hint">
-            ${msg(`Select clone, district and sidejob name to assign clone.
-Clone can be assigned only to one sidejob.
-Sidejobs availability depends on unlocked features and district connectivity.`)}
-          </p>
+          <div class="body">
+            <p class="hint">
+              ${msg(`Select clone, district and sidejob name to assign clone.
+  Clone can be assigned only to one sidejob.
+  Sidejobs availability depends on unlocked features and district connectivity.`)}
+            </p>
 
-          <div class="inputs-container">
-            <sl-select
-              ${ref(this._cloneIdInputRef)}
-              name="cloneId"
-              value=${this._cloneId ?? ''}
-              hoist
-              @sl-change=${this.handleCloneIdChange}
-            >
-              <span class="input-label" slot="label"> ${msg('Clone')} </span>
+            <div class=${inputsContainerClasses}>
+              <sl-select
+                ${ref(this._cloneIdInputRef)}
+                name="cloneId"
+                value=${this._cloneId ?? ''}
+                hoist
+                @sl-change=${this.handleCloneIdChange}
+              >
+                <span class="input-label" slot="label"> ${msg('Clone')} </span>
 
-              ${this._controller.listClones().map(this.renderCloneOption)}
-            </sl-select>
+                ${this._controller.listClones().map(this.renderCloneOption)}
+              </sl-select>
 
-            <sl-select
-              ${ref(this._districtIndexInputRef)}
-              name="districtIndex"
-              value=${this._districtIndex ?? ''}
-              hoist
-              @sl-change=${this.handleDistrictIndexChange}
-            >
-              <span class="input-label" slot="label"> ${msg('District')} </span>
+              <sl-select
+                ${ref(this._districtIndexInputRef)}
+                name="districtIndex"
+                value=${this._districtIndex ?? ''}
+                hoist
+                @sl-change=${this.handleDistrictIndexChange}
+              >
+                <span class="input-label" slot="label"> ${msg('District')} </span>
 
-              ${this._controller.listAvailableDistricts().map(this.renderDistrictOption)}
-            </sl-select>
+                ${this._controller.listAvailableDistricts().map(this.renderDistrictOption)}
+              </sl-select>
 
-            <sl-select
-              ${ref(this._sidejobNameInputRef)}
-              name="sidejobName"
-              value=${this._sidejobName ?? ''}
-              hoist
-              @sl-change=${this.handleSidejobNameChange}
-            >
-              <span class="input-label" slot="label"> ${msg('Sidejob')} </span>
+              <sl-select
+                ${ref(this._sidejobNameInputRef)}
+                name="sidejobName"
+                value=${this._sidejobName ?? ''}
+                hoist
+                @sl-change=${this.handleSidejobNameChange}
+              >
+                <span class="input-label" slot="label"> ${msg('Sidejob')} </span>
 
-              ${this._controller.listAvailableSidejobs().map(this.renderSidejobName)}
-            </sl-select>
+                ${this._controller.listAvailableSidejobs().map(this.renderSidejobName)}
+              </sl-select>
+            </div>
           </div>
-        </div>
 
-        <ca-assign-clone-sidejob-dialog-description></ca-assign-clone-sidejob-dialog-description>
+          <ca-assign-clone-sidejob-dialog-description></ca-assign-clone-sidejob-dialog-description>
 
-        <ca-assign-clone-sidejob-dialog-buttons
-          slot="footer"
-          @assign-clone=${this.handleOpenConfirmationAlert}
-          @cancel=${this.handleClose}
-        ></ca-assign-clone-sidejob-dialog-buttons>
-      </sl-dialog>
+          <ca-assign-clone-sidejob-dialog-buttons
+            ${ref(this._buttonsRef)}
+            slot="footer"
+            @assign-clone=${this.handleSubmit}
+            @cancel=${this.handleClose}
+          ></ca-assign-clone-sidejob-dialog-buttons>
+        </sl-dialog>
+      </form>
     `;
   }
 
@@ -265,8 +226,10 @@ Sidejobs availability depends on unlocked features and district connectivity.`)}
     this._districtIndex = districtIndex;
   };
 
-  private handleOpenConfirmationAlert = () => {
-    if (!this._sidejob) {
+  private handleSubmit = (event: Event) => {
+    event.preventDefault();
+
+    if (!this.checkAvailability()) {
       return;
     }
 
@@ -306,5 +269,27 @@ Sidejobs availability depends on unlocked features and district connectivity.`)}
     });
 
     this.dispatchEvent(new AssignCloneSidejobDialogCloseEvent());
+  }
+
+  handlePartialUpdate = () => {
+    if (this._buttonsRef.value) {
+      this._buttonsRef.value.disabled = !this.checkAvailability();
+    }
+  };
+
+  private checkAvailability(): boolean {
+    if (!this._sidejob) {
+      return false;
+    }
+
+    const totalConnectivity = this._controller.getTotalConnectivity(this._sidejob.district.index);
+    const requiredConnectivity = this._controller.getRequiredConnectivity(this._sidejob.sidejobName);
+
+    return !!(
+      this._sidejob &&
+      this._sidejob.assignedClone &&
+      this._sidejob.checkRequirements() &&
+      totalConnectivity >= requiredConnectivity
+    );
   }
 }

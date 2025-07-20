@@ -1,4 +1,4 @@
-import { css, html } from 'lit';
+import { html } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { localized } from '@lit/localize';
@@ -6,57 +6,19 @@ import { range } from 'lit/directives/range.js';
 import { map } from 'lit/directives/map.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { BaseComponent, SCREEN_WIDTH_POINTS } from '@shared/index';
+import { BaseComponent } from '@shared/index';
 import { DistrictUnlockState } from '@state/city-state';
 import { CityMapController } from './controller';
-import { BOTTOM_GAP } from './constants';
+import { BOTTOM_GAP, DESKTOP_MAP_WIDTH_RATIO } from './constants';
 import { CityMapClickEvent } from './events';
+import cityMapStyles from './styles';
 
 @localized()
 @customElement('ca-city-map')
 export class CityMap extends BaseComponent {
-  static styles = css`
-    :host {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: stretch;
-      flex-direction: column;
-      gap: var(--sl-spacing-medium);
-      width: 100%;
-    }
+  static styles = cityMapStyles;
 
-    div.content {
-      position: relative;
-      cursor: not-allowed;
-    }
-
-    div.content.unlocked {
-      cursor: pointer;
-    }
-
-    ca-city-map-district {
-      opacity: 0;
-    }
-
-    ca-city-map-district.visible {
-      opacity: 1;
-    }
-
-    @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
-      :host {
-        flex-direction: row;
-        flex-wrap: wrap;
-      }
-
-      div.content {
-        flex: 1.5;
-      }
-
-      ca-city-map-district-description {
-        flex: 1;
-      }
-    }
-  `;
+  protected hasMobileRender = true;
 
   private _controller: CityMapController;
 
@@ -74,7 +36,23 @@ export class CityMap extends BaseComponent {
     this._controller = new CityMapController(this);
   }
 
-  render() {
+  protected renderMobile() {
+    return html`
+      <sl-resize-observer @sl-resize=${this.handleResize}>
+        <div class="host-content mobile">${this.renderContent()}</div>
+      </sl-resize-observer>
+    `;
+  }
+
+  protected renderDesktop() {
+    return html`
+      <sl-resize-observer @sl-resize=${this.handleResize}>
+        <div class="host-content desktop">${this.renderContent()}</div>
+      </sl-resize-observer>
+    `;
+  }
+
+  private renderContent = () => {
     let unlocked = false;
 
     if (this._selectedDistrictIndex !== undefined) {
@@ -89,22 +67,20 @@ export class CityMap extends BaseComponent {
     });
 
     return html`
-      <sl-resize-observer @sl-resize=${this.handleResize}>
-        <div
-          ${ref(this._contentRef)}
-          class=${contentClasses}
-          @mousemove=${this.handleMouseMove}
-          @mouseleave=${this.handleMouseLeave}
-          @click=${this.handleMapClick}
-        >
-          ${map(range(this._controller.districtsCount), this.renderBackgroundDistrict)}
-          ${map(range(this._controller.districtsCount), this.renderSelectedDistrict)}
-        </div>
-      </sl-resize-observer>
+      <div
+        ${ref(this._contentRef)}
+        class=${contentClasses}
+        @mousemove=${this.handleMouseMove}
+        @mouseleave=${this.handleMouseLeave}
+        @click=${this.handleMapClick}
+      >
+        ${map(range(this._controller.districtsCount), this.renderBackgroundDistrict)}
+        ${map(range(this._controller.districtsCount), this.renderSelectedDistrict)}
+      </div>
       <ca-city-map-district-description district=${ifDefined(this._selectedDistrictIndex)}>
       </ca-city-map-district-description>
     `;
-  }
+  };
 
   private renderBackgroundDistrict = (districtNum: number) => {
     const district = this._controller.getDistrict(districtNum);
@@ -160,7 +136,12 @@ export class CityMap extends BaseComponent {
 
   private handleResize = (event: { detail: { entries: ResizeObserverEntry[] } }) => {
     const containerBoundingClientRect = this.getBoundingClientRect();
-    const width = event.detail.entries[0].contentRect.width;
+    let width = event.detail.entries[0].contentRect.width;
+
+    if (this.layoutContext !== 'mobile') {
+      width *= DESKTOP_MAP_WIDTH_RATIO;
+    }
+
     const height = window.innerHeight - containerBoundingClientRect.y - BOTTOM_GAP;
     this._size = Math.min(width, height);
 

@@ -1,63 +1,23 @@
-import { css, html } from 'lit';
+import { html } from 'lit';
 import { localized, msg } from '@lit/localize';
 import { customElement } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
-import { BaseComponent } from '@shared/base-component';
 import { SortableElementMovedEvent } from '@components/shared/sortable-list/events/sortable-element-moved';
-import { COMMON_TEXTS } from '@texts/common';
-import { CloneAlert } from '@shared/types';
 import {
   ConfirmationAlertOpenEvent,
   ConfirmationAlertSubmitEvent,
 } from '@components/game-screen/components/confirmation-alert/events';
-import { AUTOUPGRADE_VALUES, DELETE_VALUES } from '@shared/styles';
+import { COMMON_TEXTS } from '@texts/index';
+import { BaseComponent, CloneAlert, AUTOUPGRADE_VALUES, DELETE_VALUES } from '@shared/index';
 import { IClone } from '@state/company-state/states/clone-factory/interfaces/clone';
 import { ClonesListController } from './controller';
 import { CLONE_LIST_ITEMS_GAP } from './constants';
+import styles from './styles';
 
 @localized()
 @customElement('ca-clones-list')
 export class ClonesList extends BaseComponent {
-  static styles = css`
-    :host {
-      width: 100%;
-      align-self: stretch;
-      display: block;
-      border-top: var(--ca-border);
-    }
-
-    .header-row {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: flex-start;
-      padding: var(--sl-spacing-medium) 0;
-      gap: var(--sl-spacing-small);
-    }
-
-    .header-row.with-border {
-      border-bottom: var(--ca-border);
-    }
-
-    .notification {
-      padding: var(--sl-spacing-3x-large);
-      text-align: center;
-      border-top: var(--ca-border);
-      border-bottom: var(--ca-border);
-    }
-
-    ca-sortable-list {
-      width: 100%;
-    }
-
-    ca-sortable-list::part(list) {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-      justify-content: center;
-      gap: var(--sl-spacing-medium);
-    }
-  `;
+  static styles = styles;
 
   private _controller: ClonesListController;
 
@@ -79,7 +39,7 @@ export class ClonesList extends BaseComponent {
     document.removeEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmDeleteAllClonesDialog);
   }
 
-  render() {
+  protected renderDesktop() {
     const isAutoupgradeActive = this.checkSomeClonesAutoupgradeActive();
 
     const autoupgradeLabel = isAutoupgradeActive

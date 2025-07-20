@@ -185,3 +185,5 @@ export enum RewardParameter {
   actions = 'actions',
   sharedExperienceMultiplier = 'shared-experience-multiplier',
 }
+
+export type Layout = 'mobile' | 'tablet' | 'desktop';

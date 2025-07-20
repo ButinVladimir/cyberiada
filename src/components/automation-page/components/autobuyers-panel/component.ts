@@ -1,20 +1,12 @@
-import { css, html, nothing } from 'lit';
+import { html, nothing } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import { BaseComponent } from '@shared/base-component';
-import { Feature } from '@shared/types';
+import { BaseComponent, Feature } from '@shared/index';
 import { AutomationAutobuyersPanelController } from './controller';
+import automationPageAutobuyersPanelStyles from './styles';
 
 @customElement('ca-automation-autobuyers-panel')
 export class AutomationAutobuyersPanel extends BaseComponent {
-  static styles = css`
-    :host {
-      width: 100%;
-      display: flex;
-      align-items: stretch;
-      flex-direction: column;
-      gap: var(--sl-spacing-large);
-    }
-  `;
+  static styles = automationPageAutobuyersPanelStyles;
 
   private _controller: AutomationAutobuyersPanelController;
 
@@ -24,7 +16,7 @@ export class AutomationAutobuyersPanel extends BaseComponent {
     this._controller = new AutomationAutobuyersPanelController(this);
   }
 
-  render() {
+  protected renderDesktop() {
     return html`
       ${this._controller.isFeatureUnlocked(Feature.companyManagement)
         ? html`<ca-automation-clone-level-autoupgrader></ca-automation-clone-level-autoupgrader>`

@@ -1,35 +1,15 @@
-import { html, css } from 'lit';
+import { html } from 'lit';
 import { localized, msg } from '@lit/localize';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { customElement } from 'lit/decorators.js';
 import { BaseComponent } from '@shared/base-component';
 import { MenuBarValuesController } from './controller';
+import styles from './styles';
 
 @localized()
 @customElement('ca-menu-bar-values')
 export class MenuBarValues extends BaseComponent {
-  static styles = css`
-    :host {
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-    }
-
-    div.block {
-      display: flex;
-      align-items: center;
-      padding: var(--sl-spacing-small);
-      font-size: var(--sl-font-size-medium);
-      line-height: var(--sl-line-height-normal);
-    }
-
-    sl-icon {
-      color: var(--ca-hint-color);
-      width: 1rem;
-      font-size: var(--sl-font-size-medium);
-      margin-right: var(--sl-spacing-small);
-    }
-  `;
+  static styles = styles;
 
   hasPartialUpdate = true;
 
@@ -44,7 +24,7 @@ export class MenuBarValues extends BaseComponent {
     this._controller = new MenuBarValuesController(this);
   }
 
-  render() {
+  protected renderDesktop() {
     const formatter = this._controller.formatter;
     const developmentLevelFormatted = formatter.formatLevel(this._controller.developmentLevel);
 

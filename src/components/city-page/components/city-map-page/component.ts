@@ -1,38 +1,15 @@
-import { css, html } from 'lit';
+import { html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { localized, msg } from '@lit/localize';
 import { BaseComponent } from '@shared/base-component';
-import { hintStyle, pageTitleStyle } from '@shared/styles';
+import cityMapPageStyles from './styles';
 
 @localized()
 @customElement('ca-city-map-page')
 export class CityMapPage extends BaseComponent {
-  static styles = [
-    pageTitleStyle,
-    hintStyle,
-    css`
-      :host {
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-        position: relative;
-      }
+  static styles = cityMapPageStyles;
 
-      h3.title {
-        margin-bottom: var(--sl-spacing-large);
-      }
-
-      p.hint {
-        margin-bottom: var(--sl-spacing-large);
-      }
-
-      div.content {
-        width: 100%;
-      }
-    `,
-  ];
-
-  render() {
+  protected renderDesktop() {
     return html`
       <h3 class="title">${msg('City')}</h3>
 

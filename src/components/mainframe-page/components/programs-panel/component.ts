@@ -1,32 +1,18 @@
-import { css, html } from 'lit';
+import { html } from 'lit';
 import { localized, msg } from '@lit/localize';
 import { customElement, state } from 'lit/decorators.js';
-import { BaseComponent } from '@shared/base-component';
-import { hintStyle } from '@shared/styles';
+import { BaseComponent } from '@shared/index';
+import styles from './styles';
 
 @localized()
 @customElement('ca-mainframe-programs-panel')
 export class MainframeProgramsPanel extends BaseComponent {
-  static styles = [
-    hintStyle,
-    css`
-      :host {
-        display: flex;
-        align-items: flex-start;
-        flex-direction: column;
-        gap: var(--sl-spacing-large);
-      }
-
-      p.hint {
-        margin: 0;
-      }
-    `,
-  ];
+  static styles = styles;
 
   @state()
   private _isPurchaseProgramDialogOpen = false;
 
-  render() {
+  protected renderDesktop() {
     return html`
       <p class="hint">
         ${msg(`Program autoupgrade priority can be changed by dragging it by the title.

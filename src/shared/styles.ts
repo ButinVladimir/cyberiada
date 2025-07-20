@@ -1,8 +1,8 @@
-import { css, unsafeCSS } from 'lit';
+import { css } from 'lit';
 
-export const SCREEN_WIDTH_POINTS = {
-  TABLET: unsafeCSS`768px`,
-  WIDE_SCREEN: unsafeCSS`1440px`,
+export const LAYOUT_WIDTH_THRESHOLDS = {
+  TABLET: 768,
+  DESKTOP: 1440,
 };
 
 export const pageTitleStyle = css`
@@ -183,30 +183,44 @@ export const TOGGLE_DETAILS_VALUES: {
 
 export const attributesSkillsTablesStyle = css`
   div.attributes-skills-tables {
-    display: grid;
-    grid-template-columns: auto;
-    grid-template-rows: repeat(auto);
-    grid-row-gap: var(--sl-spacing-medium);
-    grid-column-gap: var(--sl-spacing-3x-large);
-  }
-
-  div.attributes-skills-tables div.attributes-skills-table {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    grid-template-rows: repeat(auto);
-    grid-column-gap: var(--sl-spacing-medium);
+    width: 100%;
+    display: flex;
     color: var(--ca-hint-color);
     font-size: var(--ca-hint-font-size);
     line-height: var(--ca-hint-line-height);
-  }
 
-  div.attributes-skills-tables h5.title {
-    margin: 0;
-  }
+    h5.title {
+      margin: 0;
+    }
 
-  @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
-    div.attributes-skills-tables {
-      grid-template-columns: 1fr 1fr;
+    div.attributes-skills-table {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      grid-template-rows: auto;
+      width: 100%;
+      grid-column-gap: var(--sl-spacing-medium);
+
+      & > div:nth-child(even) {
+        text-align: end;
+        white-space: nowrap;
+      }
+    }
+
+    &.desktop {
+      flex-direction: row;
+      justify-content: flex;
+      gap: var(--sl-spacing-3x-large);
+
+      & > div {
+        flex: 1;
+      }
+    }
+
+    &.mobile {
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: stretch;
+      gap: var(--sl-spacing-medium);
     }
   }
 `;
@@ -251,5 +265,11 @@ export const progressBarHintStyle = css`
 
   p.progress-bar-hint.visible {
     display: block;
+  }
+`;
+
+export const formStyle = css`
+  form {
+    display: contents;
   }
 `;

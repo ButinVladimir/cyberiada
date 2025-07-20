@@ -1,4 +1,4 @@
-import { css, html, nothing } from 'lit';
+import { html, nothing } from 'lit';
 import { provide } from '@lit/context';
 import { localized, msg, str } from '@lit/localize';
 import { customElement, property, state } from 'lit/decorators.js';
@@ -11,76 +11,22 @@ import {
   ConfirmationAlertOpenEvent,
   ConfirmationAlertSubmitEvent,
 } from '@components/game-screen/components/confirmation-alert/events';
-import {
-  BaseComponent,
-  ProgramAlert,
-  inputLabelStyle,
-  hintStyle,
-  sectionTitleStyle,
-  mediumModalStyle,
-  modalBodyScrollStyle,
-  SCREEN_WIDTH_POINTS,
-} from '@shared/index';
+import { BaseComponent, ProgramAlert } from '@shared/index';
 import { PROGRAM_TEXTS, COMMON_TEXTS } from '@texts/index';
 import { PurchaseProgramDialogCloseEvent } from './events';
 import { PurchaseProgramDialogController } from './controller';
 import { existingProgramContext, temporaryProgramContext } from './contexts';
+import styles from './styles';
+import { classMap } from 'lit/directives/class-map.js';
+import { PurchaseProgramDialogButtons } from './components/buttons/component';
 
 @localized()
 @customElement('ca-purchase-program-dialog')
 export class PurchaseProgramDialog extends BaseComponent {
-  static styles = [
-    inputLabelStyle,
-    hintStyle,
-    sectionTitleStyle,
-    mediumModalStyle,
-    modalBodyScrollStyle,
-    css`
-      sl-dialog::part(body) {
-        padding-top: 0;
-        padding-bottom: 0;
-      }
+  static styles = styles;
 
-      sl-dialog::part(footer) {
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: flex-end;
-        gap: var(--sl-spacing-small);
-      }
-
-      h4.title {
-        margin: 0;
-      }
-
-      div.body {
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      div.inputs-container {
-        display: grid;
-        column-gap: var(--sl-spacing-medium);
-        row-gap: var(--sl-spacing-medium);
-        grid-template-columns: auto;
-        grid-template-rows: auto;
-      }
-
-      p.hint {
-        margin-top: 0;
-        margin-bottom: var(--sl-spacing-medium);
-      }
-
-      @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
-        div.inputs-container {
-          grid-template-rows: auto;
-          grid-template-columns: 2fr 1fr 1fr;
-        }
-      }
-    `,
-  ];
+  hasPartialUpdate = true;
+  protected hasMobileRender = true;
 
   private _controller: PurchaseProgramDialogController;
 
@@ -89,6 +35,8 @@ export class PurchaseProgramDialog extends BaseComponent {
   private _tierInputRef = createRef<SlSelect>();
 
   private _levelInputRef = createRef<SlInput>();
+
+  private _buttonsRef = createRef<PurchaseProgramDialogButtons>();
 
   @property({
     attribute: 'is-open',
@@ -145,73 +93,89 @@ export class PurchaseProgramDialog extends BaseComponent {
     }
   }
 
-  render() {
+  protected renderDesktop() {
+    return this.renderContent(true);
+  }
+
+  protected renderMobile() {
+    return this.renderContent(false);
+  }
+
+  private renderContent(desktop: boolean) {
     const { developmentLevel } = this._controller;
+    const inputsContainerClasses = classMap({
+      'inputs-container': true,
+      desktop: desktop,
+      mobile: !desktop,
+    });
 
     return html`
-      <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
-        <h4 slot="label" class="title">${msg('Purchase program')}</h4>
+      <form id="purchase-program-dialog" @submit=${this.handleSubmit}>
+        <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
+          <h4 slot="label" class="title">${msg('Purchase program')}</h4>
 
-        <div class="body">
-          <p class="hint">
-            ${msg(`Select program type, tier and level to purchase it.
+          <div class="body">
+            <p class="hint">
+              ${msg(`Select program type, tier and level to purchase it.
 Level cannot be above current development level.
 Tier is limited depending on gained favors.
 If you already have program with same name, old one will be replaced with new one.`)}
-          </p>
+            </p>
 
-          <div class="inputs-container">
-            <sl-select
-              ${ref(this._programInputRef)}
-              name="program"
-              value=${this._programName ?? ''}
-              hoist
-              @sl-change=${this.handleProgramChange}
-            >
-              <span class="input-label" slot="label"> ${msg('Program')} </span>
+            <div class=${inputsContainerClasses}>
+              <sl-select
+                ${ref(this._programInputRef)}
+                name="program"
+                value=${this._programName ?? ''}
+                hoist
+                @sl-change=${this.handleProgramChange}
+              >
+                <span class="input-label" slot="label"> ${msg('Program')} </span>
 
-              ${this._controller.listAvailablePrograms().map(this.renderProgramOption)}
-            </sl-select>
+                ${this._controller.listAvailablePrograms().map(this.renderProgramOption)}
+              </sl-select>
 
-            <sl-select
-              ${ref(this._tierInputRef)}
-              name="tier"
-              value=${this._tier}
-              hoist
-              @sl-change=${this.handleTierChange}
-            >
-              <span class="input-label" slot="label"> ${COMMON_TEXTS.tier()} </span>
+              <sl-select
+                ${ref(this._tierInputRef)}
+                name="tier"
+                value=${this._tier}
+                hoist
+                @sl-change=${this.handleTierChange}
+              >
+                <span class="input-label" slot="label"> ${COMMON_TEXTS.tier()} </span>
 
-              ${this.renderTierOptions()}
-            </sl-select>
+                ${this.renderTierOptions()}
+              </sl-select>
 
-            <sl-input
-              ${ref(this._levelInputRef)}
-              name="level"
-              value=${this._level + 1}
-              type="number"
-              inputmode="decimal"
-              min="1"
-              max=${developmentLevel + 1}
-              step="1"
-              @sl-change=${this.handleLevelChange}
-            >
-              <span class="input-label" slot="label"> ${COMMON_TEXTS.level()} </span>
-            </sl-input>
+              <sl-input
+                ${ref(this._levelInputRef)}
+                name="level"
+                value=${this._level + 1}
+                type="number"
+                inputmode="decimal"
+                min="1"
+                max=${developmentLevel + 1}
+                step="1"
+                @sl-change=${this.handleLevelChange}
+              >
+                <span class="input-label" slot="label"> ${COMMON_TEXTS.level()} </span>
+              </sl-input>
+            </div>
+
+            ${this._programName
+              ? html`<ca-purchase-program-dialog-description> </ca-purchase-program-dialog-description>`
+              : nothing}
           </div>
 
-          ${this._programName
-            ? html`<ca-purchase-program-dialog-description> </ca-purchase-program-dialog-description>`
-            : nothing}
-        </div>
-
-        <ca-purchase-program-dialog-buttons
-          slot="footer"
-          @buy-program=${this.handleOpenConfirmationAlert}
-          @cancel=${this.handleClose}
-        >
-        </ca-purchase-program-dialog-buttons>
-      </sl-dialog>
+          <ca-purchase-program-dialog-buttons
+            ${ref(this._buttonsRef)}
+            slot="footer"
+            @buy-program=${this.handleSubmit}
+            @cancel=${this.handleClose}
+          >
+          </ca-purchase-program-dialog-buttons>
+        </sl-dialog>
+      </form>
     `;
   }
 
@@ -273,17 +237,19 @@ If you already have program with same name, old one will be replaced with new on
     this._levelInputRef.value.valueAsNumber = level + 1;
   };
 
-  private handleOpenConfirmationAlert = () => {
-    if (!this._programName) {
+  private handleSubmit = (event: Event) => {
+    event.preventDefault();
+
+    if (!this.checkAvailability()) {
       return;
     }
 
-    const ownedProgram = this._controller.getOwnedProgram(this._programName);
+    const ownedProgram = this._controller.getOwnedProgram(this._programName!);
 
     if (ownedProgram) {
       const formatter = this._controller.formatter;
 
-      const programTitle = PROGRAM_TEXTS[this._programName].title();
+      const programTitle = PROGRAM_TEXTS[this._programName!].title();
       const formattedLevel = formatter.formatLevel(ownedProgram.level);
       const formattedTier = formatter.formatTier(ownedProgram.tier);
 
@@ -319,6 +285,26 @@ If you already have program with same name, old one will be replaced with new on
 
     if (isBought) {
       this.dispatchEvent(new PurchaseProgramDialogCloseEvent());
+    }
+  };
+
+  private checkAvailability = (): boolean => {
+    if (!this._program || !this._programName) {
+      return false;
+    }
+
+    const { money } = this._controller;
+
+    const cost = this._controller.getProgramCost(this._program.name, this._program.tier, this._program.level);
+
+    return (
+      cost <= money && this._controller.isProgramAvailable(this._program.name, this._program.tier, this._program.level)
+    );
+  };
+
+  handlePartialUpdate = () => {
+    if (this._buttonsRef.value) {
+      this._buttonsRef.value.disabled = !this.checkAvailability();
     }
   };
 }

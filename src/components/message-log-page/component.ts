@@ -1,37 +1,18 @@
-import { html, css } from 'lit';
+import { html } from 'lit';
 import { localized, msg } from '@lit/localize';
 import { customElement } from 'lit/decorators.js';
-import { BaseComponent } from '@shared/base-component';
 import {
   ConfirmationAlertOpenEvent,
   ConfirmationAlertSubmitEvent,
 } from '@components/game-screen/components/confirmation-alert/events';
-import { GameStateAlert } from '@shared/types';
-import { DELETE_VALUES, pageTitleStyle } from '@shared/styles';
+import { DELETE_VALUES, GameStateAlert, BaseComponent } from '@shared/index';
 import { MessageLogBarController } from './controller';
+import styles from './styles';
 
 @localized()
 @customElement('ca-message-log-page')
 export class MessageLogPage extends BaseComponent {
-  static styles = [
-    pageTitleStyle,
-    css`
-      :host {
-        width: 100%;
-        box-sizing: border-box;
-        display: flex;
-        flex-direction: column;
-      }
-
-      h3.title {
-        margin-bottom: var(--sl-spacing-large);
-      }
-
-      sl-divider {
-        --spacing: var(--sl-spacing-large);
-      }
-    `,
-  ];
+  static styles = styles;
 
   private _controller: MessageLogBarController;
 
@@ -53,7 +34,7 @@ export class MessageLogPage extends BaseComponent {
     document.removeEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmClearMessagesDialog);
   }
 
-  render() {
+  protected renderDesktop() {
     return html`
       <h3 class="title">${msg('Message log')}</h3>
 

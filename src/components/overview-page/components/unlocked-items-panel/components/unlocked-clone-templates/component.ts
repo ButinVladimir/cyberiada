@@ -6,7 +6,7 @@ import { CATEGORY_TEXTS, CLONE_TEMPLATE_TEXTS } from '@texts/index';
 import { CloneTemplateName } from '@state/company-state/states/clone-factory/types';
 import { HINT_ICON } from '@shared/styles';
 import { OverviewUnlockedCloneTemplatesController } from './controller';
-import { unlockedItemsCategoryStyles } from '../../constants';
+import { unlockedItemsCategoryStyles } from '../../styles';
 
 @localized()
 @customElement('ca-overview-unlocked-clone-templates')
@@ -21,7 +21,7 @@ export class OverviewUnlockedCloneTemplates extends BaseComponent {
     this._controller = new OverviewUnlockedCloneTemplatesController(this);
   }
 
-  render() {
+  renderDesktop() {
     const cloneTemplatesCategory = CATEGORY_TEXTS.cloneTemplates();
 
     return html`
