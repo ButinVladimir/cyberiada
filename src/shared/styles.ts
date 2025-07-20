@@ -1,13 +1,8 @@
-import { css, unsafeCSS } from 'lit';
+import { css } from 'lit';
 
 export const LAYOUT_WIDTH_THRESHOLDS = {
   TABLET: 768,
   DESKTOP: 1440,
-};
-
-export const SCREEN_WIDTH_POINTS = {
-  TABLET: unsafeCSS`768px`,
-  WIDE_SCREEN: unsafeCSS`1440px`,
 };
 
 export const pageTitleStyle = css`

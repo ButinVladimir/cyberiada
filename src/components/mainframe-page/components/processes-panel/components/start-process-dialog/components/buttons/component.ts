@@ -28,6 +28,12 @@ export class StartProcessDialogButtons extends BaseComponent {
   })
   maxThreads!: number;
 
+  @property({
+    attribute: 'disabled',
+    type: Boolean,
+  })
+  disabled = false;
+
   private _controller: StartProcessDialogButtonsController;
 
   @consume({ context: programContext, subscribe: true })
@@ -43,8 +49,6 @@ export class StartProcessDialogButtons extends BaseComponent {
   }
 
   protected renderDesktop() {
-    const submitButtonDisabled = !(this._program && this.hasEnoughRam());
-
     const warning = this.getWarning();
 
     const warningClasses = classMap({
@@ -60,7 +64,7 @@ export class StartProcessDialogButtons extends BaseComponent {
           ${COMMON_TEXTS.close()}
         </sl-button>
 
-        <sl-button size="medium" variant="primary" ?disabled=${submitButtonDisabled} @click=${this.handleStart}>
+        <sl-button size="medium" variant="primary" ?disabled=${this.disabled} @click=${this.handleStart}>
           ${msg('Start process')}
         </sl-button>
       </div>

@@ -1,4 +1,4 @@
-import { css, html } from 'lit';
+import { html } from 'lit';
 import { localized, msg } from '@lit/localize';
 import { customElement } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
@@ -7,108 +7,17 @@ import {
   ConfirmationAlertSubmitEvent,
 } from '@components/game-screen/components/confirmation-alert/events';
 import { IProcess, ProgramName } from '@state/mainframe-state';
-import { BaseComponent, ProgramAlert, DELETE_VALUES, ENTITY_ACTIVE_VALUES, SCREEN_WIDTH_POINTS } from '@shared/index';
+import { BaseComponent, ProgramAlert, DELETE_VALUES, ENTITY_ACTIVE_VALUES } from '@shared/index';
 import { SortableElementMovedEvent } from '@components/shared/sortable-list/events/sortable-element-moved';
 import { ProcessesListController } from './controller';
+import styles from './styles';
 
 @localized()
 @customElement('ca-processes-list')
 export class ProcessesList extends BaseComponent {
-  static styles = css`
-    :host {
-      width: 100%;
-      align-self: stretch;
-      display: block;
-      border-top: var(--ca-border);
-    }
+  static styles = styles;
 
-    .header {
-      display: grid;
-      grid-template-columns: auto;
-      grid-template-rows: auto;
-      gap: var(--sl-spacing-small);
-      align-items: center;
-      border-bottom: var(--ca-border);
-      padding: var(--sl-spacing-medium) 0;
-    }
-
-    .header-column {
-      display: none;
-      font-weight: var(--sl-font-weight-bold);
-    }
-
-    .buttons {
-      align-items: center;
-      flex-direction: row;
-      gap: var(--sl-spacing-small);
-    }
-
-    .buttons.desktop {
-      display: none;
-      justify-content: flex-end;
-      font-size: var(--sl-font-size-large);
-    }
-
-    .buttons.mobile {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: flex-start;
-    }
-
-    .notification {
-      padding: var(--sl-spacing-3x-large);
-      text-align: center;
-      border-bottom: var(--ca-border);
-    }
-
-    ca-sortable-list {
-      width: 100%;
-    }
-
-    ca-sortable-list::part(list) {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-      justify-content: center;
-    }
-
-    ca-sortable-list ca-processes-list-item {
-      border-bottom: var(--ca-border);
-    }
-
-    ca-sortable-list ca-processes-list-item:nth-child(2n + 1) {
-      background-color: var(--ca-table-row-odd-color);
-    }
-
-    ca-sortable-list ca-processes-list-item.dragged {
-      background-color: var(--ca-dragged-color);
-    }
-
-    #delete-btn::part(base):hover {
-      color: var(--sl-color-danger-600);
-    }
-
-    @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
-      .header {
-        grid-template-columns: 3fr 1fr 2fr auto;
-        grid-template-rows: auto;
-        padding: var(--sl-spacing-small);
-      }
-
-      .header-column {
-        display: block;
-      }
-
-      .buttons.desktop {
-        display: flex;
-      }
-
-      .buttons.mobile {
-        display: none;
-      }
-    }
-  `;
+  protected hasMobileRender = true;
 
   private _controller: ProcessesListController;
 
@@ -130,25 +39,22 @@ export class ProcessesList extends BaseComponent {
     document.removeEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmDeleteAllProcessesDialog);
   }
 
-  render() {
+  protected renderDesktop() {
     const processesActive = this.checkSomeProcessesActive();
 
     const toggleProcessesIcon = processesActive ? ENTITY_ACTIVE_VALUES.icon.active : ENTITY_ACTIVE_VALUES.icon.stopped;
     const toggleProcessesLabel = processesActive ? msg('Disable all processes') : msg('Enable all processes');
-    const toggleProcessesVariant = processesActive
-      ? ENTITY_ACTIVE_VALUES.buttonVariant.active
-      : ENTITY_ACTIVE_VALUES.buttonVariant.stopped;
 
     const deleteAllProcessLabel = msg('Delete all processes');
 
     const processes = this._controller.listProcesses();
 
     return html`
-      <div class="header">
+      <div class="header desktop">
         <div class="header-column">${msg('Program')}</div>
         <div class="header-column">${msg('Cores')}</div>
         <div class="header-column">${msg('Progress')}</div>
-        <div class="buttons desktop">
+        <div class="buttons">
           <sl-tooltip>
             <span slot="content"> ${toggleProcessesLabel} </span>
 
@@ -172,8 +78,34 @@ export class ProcessesList extends BaseComponent {
             </sl-icon-button>
           </sl-tooltip>
         </div>
+      </div>
 
-        <div class="buttons mobile">
+      ${processes.length > 0
+        ? html`
+            <ca-sortable-list @sortable-element-moved=${this.handleMoveProcess}>
+              ${repeat(processes, (process) => process.program.name, this.renderProcess)}
+            </ca-sortable-list>
+          `
+        : this.renderEmptyListNotification()}
+    `;
+  }
+
+  protected renderMobile() {
+    const processesActive = this.checkSomeProcessesActive();
+
+    const toggleProcessesIcon = processesActive ? ENTITY_ACTIVE_VALUES.icon.active : ENTITY_ACTIVE_VALUES.icon.stopped;
+    const toggleProcessesLabel = processesActive ? msg('Disable all processes') : msg('Enable all processes');
+    const toggleProcessesVariant = processesActive
+      ? ENTITY_ACTIVE_VALUES.buttonVariant.active
+      : ENTITY_ACTIVE_VALUES.buttonVariant.stopped;
+
+    const deleteAllProcessLabel = msg('Delete all processes');
+
+    const processes = this._controller.listProcesses();
+
+    return html`
+      <div class="header mobile">
+        <div class="buttons">
           <sl-button variant=${toggleProcessesVariant} size="medium" @click=${this.handleToggleAllProcesses}>
             <sl-icon slot="prefix" name=${toggleProcessesIcon}></sl-icon>
 

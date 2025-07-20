@@ -433,7 +433,7 @@
     },
     {
       "name": "ca-processes-list",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderEmptyListNotification` - \n\n  * `renderProcess` - \n\n  * `handleToggleAllProcesses` - \n\n  * `handleOpenDeleteAllProcessesDialog` - \n\n  * `handleConfirmDeleteAllProcessesDialog` - \n\n  * `handleMoveProcess` - \n\n  * `_controller` {`ProcessesListController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `renderEmptyListNotification` - \n\n  * `renderProcess` - \n\n  * `handleToggleAllProcesses` - \n\n  * `handleOpenDeleteAllProcessesDialog` - \n\n  * `handleConfirmDeleteAllProcessesDialog` - \n\n  * `handleMoveProcess` - \n\n  * `_controller` {`ProcessesListController`} - ",
       "attributes": []
     },
     {
@@ -448,7 +448,7 @@
     },
     {
       "name": "ca-processes-list-item",
-      "description": "Attributes:\n\n  * `program-name` - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `programName` - \n\n  * `_descriptionVisible` {`boolean`} - \n\n  * `_process` - \n\n  * `handleToggleDescription` - \n\n  * `handleToggleProcess` - \n\n  * `handleOpenDeleteProcessDialog` - \n\n  * `handleConfirmDeleteProcessDialog` - \n\n  * `handleDragStart` - \n\n  * `_controller` {`ProcessesListItemController`} - ",
+      "description": "Attributes:\n\n  * `program-name` - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `programName` - \n\n  * `_descriptionVisible` {`boolean`} - \n\n  * `_process` - \n\n  * `handleToggleDescription` - \n\n  * `handleToggleProcess` - \n\n  * `handleOpenDeleteProcessDialog` - \n\n  * `handleConfirmDeleteProcessDialog` - \n\n  * `handleDragStart` - \n\n  * `_controller` {`ProcessesListItemController`} - ",
       "attributes": [
         {
           "name": "program-name",
@@ -458,7 +458,7 @@
     },
     {
       "name": "ca-start-process-dialog",
-      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `_programInputRef` {`Ref<SlSelect>`} - \n\n  * `_threadsInputRef` {`Ref<SlInput>`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `_programName` - \n\n  * `_threads` {`number`} - \n\n  * `_program` - \n\n  * `_existingProcess` - \n\n  * `handleClose` - \n\n  * `handleProgramChange` - \n\n  * `handleThreadsChange` - \n\n  * `handleOpenConfirmationAlert` - \n\n  * `handleConfirmConfirmationAlert` - \n\n  * `startProcess` - \n\n  * `formatProgramSelectItem` - \n\n  * `calculateMaxThreads` - \n\n  * `_controller` {`StartProcessDialogController`} - ",
+      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `_programInputRef` {`Ref<SlSelect>`} - \n\n  * `_threadsInputRef` {`Ref<SlInput>`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `_programName` - \n\n  * `_threads` {`number`} - \n\n  * `_program` - \n\n  * `_existingProcess` - \n\n  * `handleClose` - \n\n  * `handleProgramChange` - \n\n  * `handleThreadsChange` - \n\n  * `handleSubmit` - \n\n  * `handleConfirmConfirmationAlert` - \n\n  * `startProcess` - \n\n  * `formatProgramSelectItem` - \n\n  * `calculateMaxThreads` - \n\n  * `checkAvailability` - \n\n  * `_controller` {`StartProcessDialogController`} - ",
       "attributes": [
         {
           "name": "is-open",
@@ -469,7 +469,7 @@
     },
     {
       "name": "ca-start-process-dialog-buttons",
-      "description": "Attributes:\n\n  * `threads` {`number`} - \n\n  * `max-threads` {`number`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `threads` {`number`} - \n\n  * `maxThreads` {`number`} - \n\n  * `_program` - \n\n  * `_existingProcess` - \n\n  * `handleCancel` - \n\n  * `handleStart` - \n\n  * `_controller` {`StartProcessDialogButtonsController`} - ",
+      "description": "Attributes:\n\n  * `threads` {`number`} - \n\n  * `max-threads` {`number`} - \n\n  * `disabled` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `threads` {`number`} - \n\n  * `maxThreads` {`number`} - \n\n  * `disabled` {`boolean`} - \n\n  * `_program` - \n\n  * `_existingProcess` - \n\n  * `handleCancel` - \n\n  * `handleStart` - \n\n  * `_controller` {`StartProcessDialogButtonsController`} - ",
       "attributes": [
         {
           "name": "threads",
@@ -478,6 +478,11 @@
         {
           "name": "max-threads",
           "description": "`max-threads` {`number`} - \n\nProperty: maxThreads"
+        },
+        {
+          "name": "disabled",
+          "description": "`disabled` {`boolean`} - \n\nProperty: disabled\n\nDefault: false",
+          "valueSet": "v"
         }
       ]
     },
@@ -498,12 +503,12 @@
     },
     {
       "name": "ca-owned-programs-list",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderEmptyListNotification` - \n\n  * `renderProgram` - \n\n  * `handleMoveProgram` - \n\n  * `_controller` {`OwnedProgramsListController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `renderEmptyListNotification` - \n\n  * `renderProgram` - \n\n  * `handleMoveProgram` - \n\n  * `_controller` {`OwnedProgramsListController`} - ",
       "attributes": []
     },
     {
       "name": "ca-owned-programs-list-item-buttons",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_program` - \n\n  * `_upgradeMaxDesktopButton` {`Ref<SlButton>`} - \n\n  * `_upgradeMaxMobileButton` {`Ref<SlButton>`} - \n\n  * `handleToggleAutoUpgrade` - \n\n  * `handleUpgradeMax` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`OwnedProgramsListItemButtonsController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `_program` - \n\n  * `_upgradeMaxButton` {`Ref<SlButton>`} - \n\n  * `handleToggleAutoUpgrade` - \n\n  * `handleUpgradeMax` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`OwnedProgramsListItemButtonsController`} - ",
       "attributes": []
     },
     {
@@ -513,7 +518,7 @@
     },
     {
       "name": "ca-owned-programs-list-item",
-      "description": "Attributes:\n\n  * `program-name` - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `programName` - \n\n  * `_descriptionVisible` {`boolean`} - \n\n  * `_program` - \n\n  * `handleToggleDescription` - \n\n  * `handleDragStart` - \n\n  * `_controller` {`OwnedProgramsListItemController`} - ",
+      "description": "Attributes:\n\n  * `program-name` - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `programName` - \n\n  * `_descriptionVisible` {`boolean`} - \n\n  * `_program` - \n\n  * `handleToggleDescription` - \n\n  * `handleDragStart` - \n\n  * `_controller` {`OwnedProgramsListItemController`} - ",
       "attributes": [
         {
           "name": "program-name",
@@ -523,12 +528,12 @@
     },
     {
       "name": "ca-owned-programs-list-buttons",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_upgradeMaxDesktopButton` {`Ref<SlButton>`} - \n\n  * `_upgradeMaxMobileButton` {`Ref<SlButton>`} - \n\n  * `handleToggleAutoupgrade` - \n\n  * `handleUpgradeMaxAllPrograms` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`OwnedProgramsListButtonsController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `_upgradeMaxButton` {`Ref<SlButton>`} - \n\n  * `handleToggleAutoupgrade` - \n\n  * `handleUpgradeMaxAllPrograms` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`OwnedProgramsListButtonsController`} - ",
       "attributes": []
     },
     {
       "name": "ca-purchase-program-dialog",
-      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `_programInputRef` {`Ref<SlSelect>`} - \n\n  * `_tierInputRef` {`Ref<SlSelect>`} - \n\n  * `_levelInputRef` {`Ref<SlInput>`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `_programName` - \n\n  * `_tier` {`number`} - \n\n  * `_level` {`number`} - \n\n  * `_program` - \n\n  * `_existingProgram` - \n\n  * `renderProgramOption` - \n\n  * `renderTierOptions` - \n\n  * `handleClose` - \n\n  * `handleProgramChange` - \n\n  * `handleTierChange` - \n\n  * `handleLevelChange` - \n\n  * `handleOpenConfirmationAlert` - \n\n  * `handleConfirmConfirmationAlert` - \n\n  * `purchase` - \n\n  * `_controller` {`PurchaseProgramDialogController`} - ",
+      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `_programInputRef` {`Ref<SlSelect>`} - \n\n  * `_tierInputRef` {`Ref<SlSelect>`} - \n\n  * `_levelInputRef` {`Ref<SlInput>`} - \n\n  * `_buttonsRef` {`Ref<PurchaseProgramDialogButtons>`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `_programName` - \n\n  * `_tier` {`number`} - \n\n  * `_level` {`number`} - \n\n  * `_program` - \n\n  * `_existingProgram` - \n\n  * `renderProgramOption` - \n\n  * `renderTierOptions` - \n\n  * `handleClose` - \n\n  * `handleProgramChange` - \n\n  * `handleTierChange` - \n\n  * `handleLevelChange` - \n\n  * `handleSubmit` - \n\n  * `handleConfirmConfirmationAlert` - \n\n  * `purchase` - \n\n  * `checkAvailability` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`PurchaseProgramDialogController`} - ",
       "attributes": [
         {
           "name": "is-open",
@@ -539,8 +544,14 @@
     },
     {
       "name": "ca-purchase-program-dialog-buttons",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_program` - \n\n  * `_ownedProgram` - \n\n  * `_warningElements` {`NodeListOf<HTMLParagraphElement>`} - \n\n  * `_purchaseButtonRef` {`Ref<SlButton>`} - \n\n  * `_availableTimeRef` {`Ref<HTMLSpanElement>`} - \n\n  * `handlePartialUpdate` - \n\n  * `renderWarnings` - \n\n  * `renderOtherWarnings` - \n\n  * `handleCancel` - \n\n  * `handlePurchase` - \n\n  * `_controller` {`PurchaseProgramDialogButtonsController`} - ",
-      "attributes": []
+      "description": "Attributes:\n\n  * `disabled` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `disabled` {`boolean`} - \n\n  * `_program` - \n\n  * `_ownedProgram` - \n\n  * `_warningElements` {`NodeListOf<HTMLParagraphElement>`} - \n\n  * `_availableTimeRef` {`Ref<HTMLSpanElement>`} - \n\n  * `handlePartialUpdate` - \n\n  * `renderWarnings` - \n\n  * `renderOtherWarnings` - \n\n  * `handleCancel` - \n\n  * `handlePurchase` - \n\n  * `_controller` {`PurchaseProgramDialogButtonsController`} - ",
+      "attributes": [
+        {
+          "name": "disabled",
+          "description": "`disabled` {`boolean`} - \n\nProperty: disabled\n\nDefault: false",
+          "valueSet": "v"
+        }
+      ]
     },
     {
       "name": "ca-purchase-program-dialog-description",
