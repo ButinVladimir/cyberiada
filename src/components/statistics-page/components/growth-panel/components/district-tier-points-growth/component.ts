@@ -17,8 +17,8 @@ export class StatisticsDistrictTierPointsGrowth extends BaseComponent {
 
   private _controller: StatisticsDistrictTierPointsGrowthController;
 
-  @queryAll('span[data-district]')
-  private _districtValueNodes!: NodeListOf<HTMLSpanElement>;
+  @queryAll('div[data-district]')
+  private _districtValueNodes!: NodeListOf<HTMLDivElement>;
 
   constructor() {
     super();
@@ -26,7 +26,7 @@ export class StatisticsDistrictTierPointsGrowth extends BaseComponent {
     this._controller = new StatisticsDistrictTierPointsGrowthController(this);
   }
 
-  render() {
+  protected renderDesktop() {
     return html`
       <sl-details>
         <h4 class="title" slot="summary">${msg('District tier points per second')}</h4>
@@ -38,8 +38,8 @@ export class StatisticsDistrictTierPointsGrowth extends BaseComponent {
 
   private renderDistrict = (districtState: IDistrictState) => {
     return html`
-      <span> ${STATISTIC_PAGE_TEXTS.byDistrict(districtState.name)}</span>
-      <span data-district=${districtState.index}></span>
+      <div>${STATISTIC_PAGE_TEXTS.byDistrict(districtState.name)}</div>
+      <div data-district=${districtState.index}></div>
     `;
   };
 

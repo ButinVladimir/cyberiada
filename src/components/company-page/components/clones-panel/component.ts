@@ -1,51 +1,23 @@
-import { css, html, nothing } from 'lit';
+import { html, nothing } from 'lit';
 import { choose } from 'lit/directives/choose.js';
 import { provide } from '@lit/context';
 import { msg, localized } from '@lit/localize';
 import { customElement, state } from 'lit/decorators.js';
-import { BaseComponent, hintStyle, SCREEN_WIDTH_POINTS } from '@shared/index';
+import { BaseComponent } from '@shared/index';
 import { type IClone } from '@state/company-state';
 import { COMMON_TEXTS } from '@texts/index';
 import { ClonesPanelController } from './controller';
 import { type CloneListItemDialog } from './type';
 import { OpenCloneListItemDialogEvent } from './events';
 import { modalCloneContext } from './contexts';
+import styles from './styles';
 
 @localized()
 @customElement('ca-company-clones-panel')
 export class CompanyClonesPanel extends BaseComponent {
-  static styles = [
-    hintStyle,
-    css`
-      :host {
-        display: flex;
-        align-items: flex-start;
-        flex-direction: column;
-      }
+  static styles = styles;
 
-      p.hint {
-        margin: 0;
-        margin-bottom: var(--sl-spacing-large);
-      }
-
-      div.top-container {
-        display: flex;
-        align-items: flex-start;
-        flex-direction: column;
-        gap: var(--sl-spacing-medium);
-        margin-bottom: var(--sl-spacing-large);
-      }
-
-      @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
-        div.top-container {
-          flex-direction: row;
-          grid-template-areas: 'purchase-clone synchronization';
-          align-items: center;
-          gap: var(--sl-spacing-3x-large);
-        }
-      }
-    `,
-  ];
+  protected hasMobileRender = true;
 
   @state()
   private _isPurchaseCloneDialogOpen = false;
@@ -67,7 +39,15 @@ export class CompanyClonesPanel extends BaseComponent {
     this._controller = new ClonesPanelController(this);
   }
 
-  render() {
+  renderMobile() {
+    return html`<div class="host-content mobile">${this.renderContent()}</div>`;
+  }
+
+  renderDesktop() {
+    return html`<div class="host-content desktop">${this.renderContent()}</div>`;
+  }
+
+  renderContent = () => {
     const formatter = this._controller.formatter;
 
     const formattedAvailableSynchronization = formatter.formatNumberDecimal(this._controller.availableSynchronization);
@@ -123,7 +103,7 @@ Clones cannot have level above current development level but they can store exce
         ],
       ])}
     `;
-  }
+  };
 
   private handlePurchaseCloneDialogOpen = () => {
     this._isPurchaseCloneDialogOpen = true;

@@ -1,23 +1,16 @@
-import { css, html, nothing } from 'lit';
+import { html, nothing } from 'lit';
 import { msg, localized } from '@lit/localize';
 import { customElement } from 'lit/decorators.js';
-import { BaseComponent } from '@shared/base-component';
-import { pageTitleStyle } from '@shared/styles';
+import { BaseComponent } from '@shared/index';
 import { MainframePageController } from './controller';
 import { MainframePageTabs } from './types';
 import { MAINFRAME_PAGE_TABS_LIST, MAINFRAMGE_PAGE_TAB_TITLES as MAINFRAME_PAGE_TAB_TITLES } from './constants';
+import styles from './styles';
 
 @localized()
 @customElement('ca-mainframe-page')
 export class MainframePage extends BaseComponent {
-  static styles = [
-    pageTitleStyle,
-    css`
-      h3.title {
-        margin-bottom: var(--sl-spacing-2x-small);
-      }
-    `,
-  ];
+  static styles = styles;
 
   private _controller: MainframePageController;
 
@@ -27,7 +20,7 @@ export class MainframePage extends BaseComponent {
     this._controller = new MainframePageController(this);
   }
 
-  render() {
+  protected renderDesktop() {
     return html`
       <h3 class="title">${msg('Mainframe')}</h3>
 

@@ -15,8 +15,8 @@ export class StatisticsGameTime extends BaseComponent {
 
   private _controller: StatisticsGameTimeController;
 
-  private _gameTimeRef = createRef<HTMLSpanElement>();
-  private _gameTotalTimeRef = createRef<HTMLSpanElement>();
+  private _gameTimeRef = createRef<HTMLDivElement>();
+  private _gameTotalTimeRef = createRef<HTMLDivElement>();
 
   constructor() {
     super();
@@ -24,17 +24,17 @@ export class StatisticsGameTime extends BaseComponent {
     this._controller = new StatisticsGameTimeController(this);
   }
 
-  render() {
+  protected renderDesktop() {
     return html`
       <sl-details>
         <h4 class="title" slot="summary">${msg('In-game passed time')}</h4>
 
         <div class="parameters-table">
-          <span> ${msg('Since arrival to the city')} </span>
-          <span ${ref(this._gameTimeRef)}> </span>
+          <div>${msg('Since arrival to the city')}</div>
+          <div ${ref(this._gameTimeRef)}></div>
 
-          <span> ${msg('Total time')} </span>
-          <span ${ref(this._gameTotalTimeRef)}> </span>
+          <div>${msg('Total time')}</div>
+          <div ${ref(this._gameTotalTimeRef)}></div>
         </div>
       </sl-details>
     `;

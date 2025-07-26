@@ -1,55 +1,18 @@
-import { css, html, nothing } from 'lit';
+import { html, nothing } from 'lit';
 import { localized } from '@lit/localize';
 import { consume, provide } from '@lit/context';
 import { customElement, property } from 'lit/decorators.js';
-import { BaseComponent } from '@shared/base-component';
-import { HINT_ICON, SCREEN_WIDTH_POINTS, dragIconStyle, hintIconStyle } from '@shared/styles';
+import { BaseComponent, HINT_ICON } from '@shared/index';
 import { SIDEJOB_TEXTS } from '@texts/index';
 import { SidejobName } from '@state/company-state';
 import { sidejobNameContext } from './contexts';
 import { districtIndexContext } from '../../../../contexts';
+import styles from './styles';
 
 @localized()
 @customElement('ca-city-district-sidejobs-list-item')
 export class CityDistrictSidejobsListItem extends BaseComponent {
-  static styles = [
-    hintIconStyle,
-    dragIconStyle,
-    css`
-      :host {
-        display: grid;
-        grid-template-areas:
-          'description'
-          'progress-bar';
-        grid-template-columns: auto;
-        grid-template-rows: repeat(1fr);
-        gap: var(--sl-spacing-small);
-        padding: var(--sl-spacing-small);
-        box-sizing: border-box;
-      }
-
-      div.description {
-        grid-area: description;
-      }
-
-      p.title {
-        margin: 0;
-      }
-
-      .progress-bar {
-        grid-area: progress-bar;
-      }
-
-      @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
-        :host {
-          grid-template-areas: 'title progress-bar';
-          grid-template-columns: 1fr 2fr;
-          grid-template-rows: auto;
-          align-items: center;
-        }
-      }
-    `,
-  ];
+  static styles = styles;
 
   @provide({ context: sidejobNameContext })
   @property({
@@ -58,10 +21,20 @@ export class CityDistrictSidejobsListItem extends BaseComponent {
   })
   sidejobName!: SidejobName;
 
+  protected hasMobileRender = true;
+
   @consume({ context: districtIndexContext, subscribe: true })
   private _districtIndex?: number;
 
-  render() {
+  protected renderMobile() {
+    return html`<div class="host-content mobile">${this.renderContent()}</div>`;
+  }
+
+  protected renderDesktop() {
+    return html`<div class="host-content desktop">${this.renderContent()}</div>`;
+  }
+
+  private renderContent = () => {
     if (this._districtIndex === undefined) {
       return nothing;
     }
@@ -85,5 +58,5 @@ export class CityDistrictSidejobsListItem extends BaseComponent {
         <ca-city-district-sidejobs-list-item-unlock-progress> </ca-city-district-sidejobs-list-item-unlock-progress>
       </div>
     `;
-  }
+  };
 }

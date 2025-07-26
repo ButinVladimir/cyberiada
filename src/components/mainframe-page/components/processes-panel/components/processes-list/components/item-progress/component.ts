@@ -1,24 +1,18 @@
-import { css, html, nothing } from 'lit';
+import { html, nothing } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { localized, msg } from '@lit/localize';
 import { consume } from '@lit/context';
 import SlProgressBar from '@shoelace-style/shoelace/dist/components/progress-bar/progress-bar.component.js';
-import { BaseController, BaseComponent, calculateLevelProgressPercentage, progressBarHintStyle } from '@shared/index';
+import { BaseController, BaseComponent, calculateLevelProgressPercentage } from '@shared/index';
 import { type IProcess } from '@state/mainframe-state';
 import { processContext } from '../item/contexts';
+import styles from './styles';
 
 @localized()
 @customElement('ca-processes-list-item-progress')
 export class ProcessesListItemProgressColumn extends BaseComponent {
-  static styles = [
-    progressBarHintStyle,
-    css`
-      :host {
-        flex: 1 1 auto;
-      }
-    `,
-  ];
+  static styles = styles;
 
   hasPartialUpdate = true;
 
@@ -37,7 +31,7 @@ export class ProcessesListItemProgressColumn extends BaseComponent {
     this._controller = new BaseController(this);
   }
 
-  render() {
+  protected renderDesktop() {
     if (!this._process) {
       return nothing;
     }
@@ -82,7 +76,7 @@ export class ProcessesListItemProgressColumn extends BaseComponent {
     }
 
     if (this._timerRef.value && processCompletionDelta > 0) {
-      const hintTime = formatter.formatTimeShort(
+      const hintTime = formatter.formatTimeLong(
         (this._process.maxCompletionPoints - this._process.currentCompletionPoints) / processCompletionDelta,
       );
 

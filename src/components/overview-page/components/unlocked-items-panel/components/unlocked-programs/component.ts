@@ -6,7 +6,7 @@ import { CATEGORY_TEXTS, PROGRAM_TEXTS } from '@texts/index';
 import { ProgramName } from '@state/mainframe-state/states/progam-factory/types';
 import { HINT_ICON } from '@shared/styles';
 import { OverviewUnlockedProgramsController } from './controller';
-import { unlockedItemsCategoryStyles } from '../../constants';
+import { unlockedItemsCategoryStyles } from '../../styles';
 
 @localized()
 @customElement('ca-overview-unlocked-programs')
@@ -21,7 +21,7 @@ export class OverviewUnlockedPrograms extends BaseComponent {
     this._controller = new OverviewUnlockedProgramsController(this);
   }
 
-  render() {
+  protected renderDesktop() {
     const programsCategory = CATEGORY_TEXTS.programs();
 
     return html`

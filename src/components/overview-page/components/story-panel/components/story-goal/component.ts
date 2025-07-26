@@ -1,39 +1,16 @@
-import { css, html, nothing } from 'lit';
+import { html, nothing } from 'lit';
 import { localized, msg, str } from '@lit/localize';
 import { customElement, property } from 'lit/decorators.js';
-import { BaseComponent } from '@shared/base-component';
-import { capitalizeFirstLetter } from '@shared/helpers';
-import { StoryGoalState } from '@state/global-state/types';
-import { sectionTitleStyle, detailsStyle } from '@shared/styles';
-import { UNLOCKED_FEATURE_TEXTS } from '@texts/unlocked-features';
-import { STORY_MESSAGES } from '@texts/story';
-import { Feature } from '@shared/types';
+import { BaseComponent, capitalizeFirstLetter, Feature, BaseController } from '@shared/index';
+import { StoryGoalState } from '@state/global-state';
+import { UNLOCKED_FEATURE_TEXTS, STORY_MESSAGES } from '@texts/index';
 import { KEYS_SEPARATOR } from '../../../../constants';
-import { BaseController } from '@/shared';
+import styles from './styles';
 
 @localized()
 @customElement('ca-overview-story-goal')
 export class OverviewStoryPanel extends BaseComponent {
-  static styles = [
-    sectionTitleStyle,
-    detailsStyle,
-    css`
-      h4.title {
-        margin-bottom: 0;
-      }
-
-      article {
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-        gap: var(--sl-spacing-medium);
-      }
-
-      article p {
-        margin: 0;
-      }
-    `,
-  ];
+  static styles = styles;
 
   @property({
     attribute: 'level',
@@ -67,7 +44,7 @@ export class OverviewStoryPanel extends BaseComponent {
     this._controller = new BaseController(this);
   }
 
-  render() {
+  protected renderDesktop() {
     return html`
       <sl-details ?disabled=${this.state !== StoryGoalState.passed}>
         <h4 class="title" slot="summary">${this.renderSummary()}</h4>

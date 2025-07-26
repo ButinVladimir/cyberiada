@@ -1,45 +1,31 @@
-import { html, css } from 'lit';
+import { html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { localized, msg } from '@lit/localize';
-import { BaseComponent } from '@shared/base-component';
-import { SCREEN_WIDTH_POINTS } from '@shared/styles';
+import { BaseComponent } from '@shared/index';
 import { MenuToggledEvent } from './events';
+import styles from './styles';
 
 @localized()
 @customElement('ca-top-bar')
 export class TopBar extends BaseComponent {
-  static styles = css`
-    :host {
-      display: flex;
-      align-items: stretch;
-      box-sizing: border-box;
-      width: 100%;
-    }
+  static styles = styles;
 
-    .group {
-      flex: 0 0 auto;
-      font-size: var(--sl-font-size-large);
-      line-height: var(--sl-line-height-denser);
-      display: flex;
-      align-items: center;
-    }
+  protected hasMobileRender = true;
+  protected hasTabletRender = true;
 
-    .menu-group {
-      margin-right: var(--sl-spacing-large);
-    }
+  protected renderDesktop() {
+    return this.renderButtons();
+  }
 
-    @media (min-width: ${SCREEN_WIDTH_POINTS.WIDE_SCREEN}) {
-      .menu-group {
-        display: none;
-      }
-    }
+  protected renderMobile() {
+    return this.renderBarWithMenu();
+  }
 
-    sl-icon-button::part(base) {
-      padding: var(--sl-spacing-small);
-    }
-  `;
+  protected renderTablet() {
+    return this.renderBarWithMenu();
+  }
 
-  render() {
+  private renderBarWithMenu = () => {
     return html`
       <div class="group menu-group">
         <sl-tooltip>
@@ -49,11 +35,17 @@ export class TopBar extends BaseComponent {
         </sl-tooltip>
       </div>
 
+      ${this.renderButtons()}
+    `;
+  };
+
+  private renderButtons = () => {
+    return html`
       <div class="group">
         <ca-game-speed-buttons></ca-game-speed-buttons>
       </div>
     `;
-  }
+  };
 
   private handleMenuClick = () => {
     this.dispatchEvent(new MenuToggledEvent());

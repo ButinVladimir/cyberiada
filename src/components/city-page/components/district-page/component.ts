@@ -1,46 +1,20 @@
-import { css, html } from 'lit';
+import { html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { localized, msg } from '@lit/localize';
-import { BaseComponent } from '@shared/base-component';
-import { pageTitleStyle } from '@shared/styles';
-import { DISTRICT_NAMES } from '@texts/names';
+import { provide } from '@lit/context';
+import { BaseComponent } from '@shared/index';
+import { DISTRICT_NAMES } from '@texts/index';
 import { CITY_DISTRICT_PAGE_TAB_LIST, CITY_DISTRICT_PAGE_TAB_TITLES } from './constants';
 import { CityDistrictPageTabs } from './types';
 import { CityDistrictPageController } from './controller';
 import { ReturnCityMapPageEvent } from './events';
-import { provide } from '@lit/context';
 import { districtIndexContext } from './contexts';
+import cityDistrictPageStyles from './styles';
 
 @localized()
 @customElement('ca-city-district-page')
 export class CityDistrictPage extends BaseComponent {
-  static styles = [
-    pageTitleStyle,
-    css`
-      :host {
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-        position: relative;
-      }
-
-      h3.title {
-        margin-bottom: 0;
-      }
-
-      div.title {
-        display: flex;
-        align-items: center;
-        margin-bottom: var(--sl-spacing-2x-small);
-      }
-
-      sl-icon-button.go-back-btn {
-        font-size: var(--sl-font-size-2x-large);
-        position: relative;
-        margin-left: -1rem;
-      }
-    `,
-  ];
+  static styles = cityDistrictPageStyles;
 
   @provide({ context: districtIndexContext })
   @property({
@@ -57,7 +31,7 @@ export class CityDistrictPage extends BaseComponent {
     this._controller = new CityDistrictPageController(this);
   }
 
-  render() {
+  protected renderDesktop() {
     const districtState = this._controller.getDistrictState(this.districtIndex);
 
     const goBackLabel = msg('Go back to the map');

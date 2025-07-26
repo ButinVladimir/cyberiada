@@ -105,7 +105,7 @@ export class CityState implements ICityState {
       const worker = new Worker(new URL('@workers/map-generator/index.js', import.meta.url), { type: 'module' });
 
       worker.addEventListener('message', (event: MessageEvent<IMapGeneratorResult>) => {
-        this._globalState.setRandomShift(event.data.randomShift);
+        this._globalState.random.y = event.data.randomShift;
 
         this._layout = event.data.layout;
 
@@ -140,7 +140,8 @@ export class CityState implements ICityState {
 
       worker.postMessage({
         scenario: this._globalState.scenario.scenario,
-        randomSeed: this._globalState.randomSeed,
+        randomSeed: this._globalState.random.seed,
+        randomShift: this._globalState.random.y,
       });
     });
   }

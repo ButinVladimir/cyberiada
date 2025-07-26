@@ -50,11 +50,13 @@ export class AvailableItemsState implements IAvailableItemsState {
   async startNewState(): Promise<void> {
     await this._availableProgramsState.startNewState();
     await this._availableCloneTemplatesState.startNewState();
+    this.requestRecalculation();
   }
 
   async deserialize(serializedState: IAvailableItemsSerializedState): Promise<void> {
     await this._availableProgramsState.deserialize(serializedState.programs);
     await this._availableCloneTemplatesState.deserialize(serializedState.cloneTemplates);
+    this.requestRecalculation();
   }
 
   serialize(): IAvailableItemsSerializedState {

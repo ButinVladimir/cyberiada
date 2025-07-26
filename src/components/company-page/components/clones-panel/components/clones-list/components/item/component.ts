@@ -1,4 +1,4 @@
-import { css, html, nothing } from 'lit';
+import { html, nothing } from 'lit';
 import { provide } from '@lit/context';
 import { localized, msg, str } from '@lit/localize';
 import { customElement, property, state } from 'lit/decorators.js';
@@ -9,93 +9,16 @@ import {
 } from '@components/game-screen/components/confirmation-alert/events';
 import { CLONE_TEMPLATE_TEXTS } from '@texts/clone-templates';
 import { type IClone } from '@state/company-state';
-import {
-  BaseComponent,
-  CloneAlert,
-  AUTOUPGRADE_VALUES,
-  dragIconStyle,
-  hintStyle,
-  sectionTitleStyle,
-  TOGGLE_DETAILS_VALUES,
-  UPGRADE_MAX_VALUES,
-} from '@shared/index';
+import { BaseComponent, CloneAlert, AUTOUPGRADE_VALUES } from '@shared/index';
 import { ClonesListItemController } from './controller';
 import { OpenCloneListItemDialogEvent } from '../../../../events/open-clone-list-item-dialog';
 import { cloneContext } from './contexts';
+import styles from './styles';
 
 @localized()
 @customElement('ca-clones-list-item')
 export class ClonesListItem extends BaseComponent {
-  static styles = [
-    sectionTitleStyle,
-    hintStyle,
-    dragIconStyle,
-    css`
-      sl-card {
-        width: 100%;
-      }
-
-      :host(.dragged) sl-card::part(base) {
-        background-color: var(--ca-dragged-color);
-      }
-
-      div.header {
-        display: grid;
-        grid-template-areas:
-          'name menu'
-          'description description';
-        grid-template-columns: 1fr auto;
-        grid-template-rows: repeat(auto);
-      }
-
-      h4.title {
-        cursor: grab;
-        margin: 0;
-      }
-
-      h4.name {
-        grid-area: name;
-      }
-
-      p.hint {
-        margin: 0;
-      }
-
-      p.description {
-        grid-area: description;
-      }
-
-      sl-icon-button.menu-button {
-        grid-area: menu;
-        align-self: center;
-      }
-
-      ca-clones-list-item-description {
-        margin-top: var(--sl-spacing-small);
-      }
-
-      sl-icon[name='grip-vertical'] {
-        top: 0.15em;
-        left: -0.2em;
-      }
-
-      #toggle-autoupgrade-btn {
-        position: relative;
-        top: 0.15em;
-      }
-
-      sl-popup {
-        --arrow-color: var(--sl-color-neutral-200);
-      }
-
-      div.footer {
-        display: flex;
-        align-items: flex-start;
-        gap: var(--sl-spacing-small);
-        flex-wrap: wrap;
-      }
-    `,
-  ];
+  static styles = styles;
 
   @property({
     attribute: 'clone-id',
@@ -140,7 +63,7 @@ export class ClonesListItem extends BaseComponent {
     super.performUpdate();
   }
 
-  render() {
+  protected renderDesktop() {
     if (!this._clone) {
       return nothing;
     }
@@ -151,14 +74,6 @@ export class ClonesListItem extends BaseComponent {
     const autoupgradeLabel = this._clone.autoUpgradeEnabled
       ? COMMON_TEXTS.disableAutoupgrade()
       : COMMON_TEXTS.enableAutoupgrade();
-
-    const toggleDetailsLabel = this._detailsVisible ? COMMON_TEXTS.hideDetails() : COMMON_TEXTS.showDetails();
-    const toggleDetailsIcon = this._detailsVisible
-      ? TOGGLE_DETAILS_VALUES.icon.enabled
-      : TOGGLE_DETAILS_VALUES.icon.disabled;
-    const toggleDetailsVariant = this._detailsVisible
-      ? TOGGLE_DETAILS_VALUES.buttonVariant.enabled
-      : TOGGLE_DETAILS_VALUES.buttonVariant.disabled;
 
     const formatter = this._controller.formatter;
 
@@ -225,21 +140,11 @@ export class ClonesListItem extends BaseComponent {
             : nothing}
         </div>
 
-        <div class="footer" slot="footer">
-          <sl-button variant=${toggleDetailsVariant} size="medium" @click=${this.handleToggleDetails}>
-            <sl-icon slot="prefix" name=${toggleDetailsIcon}></sl-icon>
-
-            ${toggleDetailsLabel}
-          </sl-button>
-
-          <sl-button-group>
-            <sl-button variant=${UPGRADE_MAX_VALUES.buttonVariant} size="medium" @click=${this.handleUpgradeLevelMax}>
-              <sl-icon slot="prefix" name=${UPGRADE_MAX_VALUES.icon}></sl-icon>
-
-              ${msg('Upgrade level')}
-            </sl-button>
-          </sl-button-group>
-        </div>
+        <ca-clones-list-item-buttons
+          slot="footer"
+          ?details-visible=${this._detailsVisible}
+          @toggle-details=${this.handleToggleDetails}
+        ></ca-clones-list-item-buttons>
       </sl-card>
     `;
   }
@@ -318,13 +223,5 @@ export class ClonesListItem extends BaseComponent {
 
   private handleToggleDetails = () => {
     this._detailsVisible = !this._detailsVisible;
-  };
-
-  private handleUpgradeLevelMax = () => {
-    if (!this._clone) {
-      return;
-    }
-
-    this._clone.upgradeMaxLevel();
   };
 }

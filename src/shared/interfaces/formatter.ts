@@ -2,6 +2,7 @@ import { IFormatterParameters } from './formatter-parameters';
 
 export interface IFormatter {
   formatTimeShort(time: number, parameters?: IFormatterParameters): string;
+  formatTimeLong(time: number, parameters?: IFormatterParameters): string;
   formatNumberFloat(value: number, parameters?: IFormatterParameters): string;
   formatNumberDecimal(value: number, parameters?: IFormatterParameters): string;
   formatLevel(value: number, parameters?: IFormatterParameters): string;

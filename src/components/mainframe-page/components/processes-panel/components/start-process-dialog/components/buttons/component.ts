@@ -1,19 +1,20 @@
 import { html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { msg, localized, str } from '@lit/localize';
-import { BaseComponent, dialogButtonsStyle, warningStyle } from '@shared/index';
+import { classMap } from 'lit/directives/class-map.js';
+import { consume } from '@lit/context';
+import { BaseComponent } from '@shared/index';
+import { type IProcess, type IProgram } from '@state/mainframe-state';
+import { COMMON_TEXTS, PROGRAM_TEXTS } from '@texts/index';
 import { StartProcessDialogButtonsController } from './controller';
 import { StartProcessEvent, CancelEvent } from './events';
-import { COMMON_TEXTS, PROGRAM_TEXTS } from '@texts/index';
-import { type IProcess, type IProgram } from '@state/mainframe-state';
-import { consume } from '@lit/context';
 import { existingProcessContext, programContext } from '../../contexts';
-import { classMap } from 'lit/directives/class-map.js';
+import styles from './styles';
 
 @localized()
 @customElement('ca-start-process-dialog-buttons')
 export class StartProcessDialogButtons extends BaseComponent {
-  static styles = [warningStyle, dialogButtonsStyle];
+  static styles = styles;
 
   @property({
     attribute: 'threads',
@@ -26,6 +27,12 @@ export class StartProcessDialogButtons extends BaseComponent {
     type: Number,
   })
   maxThreads!: number;
+
+  @property({
+    attribute: 'disabled',
+    type: Boolean,
+  })
+  disabled = false;
 
   private _controller: StartProcessDialogButtonsController;
 
@@ -41,9 +48,7 @@ export class StartProcessDialogButtons extends BaseComponent {
     this._controller = new StartProcessDialogButtonsController(this);
   }
 
-  render() {
-    const submitButtonDisabled = !(this._program && this.hasEnoughRam());
-
+  protected renderDesktop() {
     const warning = this.getWarning();
 
     const warningClasses = classMap({
@@ -59,7 +64,7 @@ export class StartProcessDialogButtons extends BaseComponent {
           ${COMMON_TEXTS.close()}
         </sl-button>
 
-        <sl-button size="medium" variant="primary" ?disabled=${submitButtonDisabled} @click=${this.handleStart}>
+        <sl-button size="medium" variant="primary" ?disabled=${this.disabled} @click=${this.handleStart}>
           ${msg('Start process')}
         </sl-button>
       </div>

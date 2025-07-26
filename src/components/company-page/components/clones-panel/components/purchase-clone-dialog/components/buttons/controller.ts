@@ -21,8 +21,4 @@ export class PurchaseCloneDialogButtonsController extends BaseController {
   getCloneSynchronization(cloneTemplateName: CloneTemplateName, tier: number): number {
     return this.companyState.clones.getCloneSynchronization(cloneTemplateName, tier);
   }
-
-  isCloneAvailable(cloneTemplate: CloneTemplateName, tier: number, level: number): boolean {
-    return this.globalState.availableItems.cloneTemplates.isItemAvailable(cloneTemplate, tier, level);
-  }
 }

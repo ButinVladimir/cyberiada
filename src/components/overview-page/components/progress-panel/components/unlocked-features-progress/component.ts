@@ -10,7 +10,7 @@ import { progressBlockStyle } from '../../styles';
 @localized()
 @customElement('ca-overview-unlocked-features-progress')
 export class OverviewUnlockedFeaturesProgress extends BaseComponent {
-  static styles = [progressBlockStyle];
+  static styles = progressBlockStyle;
 
   private _controller: OverviewUnlockedFeaturesProgressController;
 
@@ -20,7 +20,7 @@ export class OverviewUnlockedFeaturesProgress extends BaseComponent {
     this._controller = new OverviewUnlockedFeaturesProgressController(this);
   }
 
-  render() {
+  protected renderDesktop() {
     const formatter = this._controller.formatter;
 
     const unlockedFeaturesCount = this._controller.getUnlockedFeaturesCount();

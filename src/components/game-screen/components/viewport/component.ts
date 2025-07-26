@@ -1,22 +1,14 @@
-import { css, html, nothing } from 'lit';
+import { html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { BaseComponent } from '@shared/base-component';
-import { OverviewMenuItem, MiscMenuItem } from '@shared/types';
-import constants from '@configs/constants.json';
-import { Feature } from '@shared/types';
-import { ViewportController } from './controller';
 import { cache } from 'lit/directives/cache.js';
+import constants from '@configs/constants.json';
+import { BaseComponent, Feature, OverviewMenuItem, MiscMenuItem } from '@shared/index';
+import { ViewportController } from './controller';
+import styles from './styles';
 
 @customElement('ca-viewport')
 export class Viewport extends BaseComponent {
-  static styles = css`
-    div.content-wrapper {
-      width: 100%;
-      max-width: var(--ca-width-widescreen-content);
-      padding: var(--sl-spacing-2x-large);
-      box-sizing: border-box;
-    }
-  `;
+  static styles = styles;
 
   @property({
     attribute: 'selected-menu-item',
@@ -32,7 +24,7 @@ export class Viewport extends BaseComponent {
     this._controller = new ViewportController(this);
   }
 
-  render() {
+  protected renderDesktop() {
     return html` <div class="content-wrapper">${cache(this.renderPage())}</div> `;
   }
 

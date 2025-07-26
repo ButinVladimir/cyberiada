@@ -72,6 +72,10 @@ export class MainframeProgramsState implements IMainframeProgramsState {
   }
 
   upgradeMaxProgram(name: ProgramName): boolean {
+    if (!this._globalState.unlockedFeatures.isFeatureUnlocked(Feature.mainframePrograms)) {
+      return false;
+    }
+
     const existingProgram = this.getOwnedProgramByName(name);
 
     if (!existingProgram) {

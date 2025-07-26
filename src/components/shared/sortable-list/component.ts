@@ -1,20 +1,14 @@
-import { css, html } from 'lit';
+import { html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { BaseComponent } from '@shared/base-component';
 import { EMPTY_IMAGE } from './constants';
 import { SortableElementMovedEvent } from './events';
+import styles from './styles';
 
 @customElement('ca-sortable-list')
 export class SortableList extends BaseComponent {
-  static styles = css`
-    div.list {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-    }
-  `;
+  static styles = styles;
 
   @property({
     attribute: 'gap',
@@ -44,7 +38,7 @@ export class SortableList extends BaseComponent {
     this.removeEventListener('dragend', this.handleDragEnd);
   }
 
-  render() {
+  protected renderDesktop() {
     return html`
       <div ${ref(this._listRef)} part="list" class="list" @dragover=${this.handleDragOver}>
         <slot @slotchange=${this.handleChildrenUpdate}></slot>
@@ -87,6 +81,8 @@ export class SortableList extends BaseComponent {
       if (!this._elementBoundingRect) {
         this._elementBoundingRect = this._draggedElement.getBoundingClientRect();
       }
+
+      console.log(this._elementBoundingRect);
 
       const increase = this.calculatePositionIncrease(eventY) - this.calculatePositionDecrease(eventY);
 

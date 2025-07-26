@@ -1,36 +1,18 @@
-import { html, css, nothing } from 'lit';
+import { html, nothing } from 'lit';
 import { localized, msg } from '@lit/localize';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { customElement } from 'lit/decorators.js';
 import { consume } from '@lit/context';
 import SlProgressBar from '@shoelace-style/shoelace/dist/components/progress-bar/progress-bar.component.js';
-import { BaseComponent } from '@shared/base-component';
-import { progressBarHintStyle } from '@shared/styles';
-import { calculateLevelProgressPercentage } from '@shared/helpers';
+import { BaseComponent, calculateLevelProgressPercentage } from '@shared/index';
 import { CityDistrictOverviewPanelNextTierProgressController } from './controller';
 import { districtIndexContext } from '../../../../contexts';
+import styles from './styles';
 
 @localized()
 @customElement('ca-city-district-overview-panel-next-tier-progress')
 export class CityDistrictOverviewPanelNextTierProgress extends BaseComponent {
-  static styles = [
-    progressBarHintStyle,
-    css`
-      :host {
-        display: block;
-      }
-
-      div.title {
-        font-size: var(--sl-font-size-small);
-        line-height: var(--sl-line-height-dense);
-        margin-bottom: var(--sl-spacing-2x-small);
-      }
-
-      sl-progress-bar {
-        --height: var(--sl-spacing-2x-large);
-      }
-    `,
-  ];
+  static styles = styles;
 
   hasPartialUpdate = true;
 
@@ -49,7 +31,7 @@ export class CityDistrictOverviewPanelNextTierProgress extends BaseComponent {
     this._controller = new CityDistrictOverviewPanelNextTierProgressController(this);
   }
 
-  render() {
+  protected renderDesktop() {
     if (this._districtIndex === undefined) {
       return nothing;
     }
@@ -95,7 +77,7 @@ export class CityDistrictOverviewPanelNextTierProgress extends BaseComponent {
     }
 
     if (this._timerRef.value && developmentGrowth > 0) {
-      const formattedTime = formatter.formatTimeShort((nexTierRequirements - currentPoints) / developmentGrowth);
+      const formattedTime = formatter.formatTimeLong((nexTierRequirements - currentPoints) / developmentGrowth);
 
       this._timerRef.value.textContent = formattedTime;
     }

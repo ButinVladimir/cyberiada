@@ -1,109 +1,20 @@
-import { css, html } from 'lit';
+import { html } from 'lit';
 import { localized, msg } from '@lit/localize';
 import { customElement } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
-import { BaseComponent } from '@shared/base-component';
-import { IProgram } from '@state/mainframe-state/states/progam-factory/interfaces/program';
-import { ProgramName } from '@state/mainframe-state/states/progam-factory/types';
+import { BaseComponent } from '@shared/index';
+import { IProgram, ProgramName } from '@state/mainframe-state';
 import { SortableElementMovedEvent } from '@components/shared/sortable-list/events/sortable-element-moved';
-import { AUTOUPGRADE_VALUES, SCREEN_WIDTH_POINTS, UPGRADE_MAX_VALUES } from '@shared/styles';
-import { COMMON_TEXTS } from '@texts/common';
+import { COMMON_TEXTS } from '@texts/index';
 import { OwnedProgramsListController } from './controller';
+import styles from './styles';
 
 @localized()
 @customElement('ca-owned-programs-list')
 export class OwnedProgramsList extends BaseComponent {
-  static styles = css`
-    :host {
-      width: 100%;
-      align-self: stretch;
-      display: block;
-      border-top: var(--ca-border);
-    }
+  static styles = styles;
 
-    .header {
-      display: grid;
-      grid-template-columns: auto;
-      grid-template-rows: repeat(auto);
-      gap: var(--sl-spacing-small);
-      align-items: center;
-      border-bottom: var(--ca-border);
-      padding: var(--sl-spacing-medium) 0;
-    }
-
-    .header-column {
-      display: none;
-      font-weight: var(--sl-font-weight-bold);
-    }
-
-    .buttons {
-      align-items: center;
-      flex-direction: row;
-      gap: var(--sl-spacing-small);
-    }
-
-    .buttons.desktop {
-      display: none;
-      justify-content: flex-end;
-      font-size: var(--sl-font-size-large);
-    }
-
-    .buttons.mobile {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: flex-start;
-    }
-
-    .notification {
-      padding: var(--sl-spacing-3x-large);
-      text-align: center;
-      border-bottom: var(--ca-border);
-    }
-
-    ca-sortable-list {
-      width: 100%;
-    }
-
-    ca-sortable-list::part(list) {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-      justify-content: center;
-    }
-
-    ca-sortable-list ca-owned-programs-list-item {
-      border-bottom: var(--ca-border);
-    }
-
-    ca-sortable-list ca-owned-programs-list-item:nth-child(2n + 1) {
-      background-color: var(--ca-table-row-odd-color);
-    }
-
-    ca-sortable-list ca-owned-programs-list-item.dragged {
-      background-color: var(--ca-dragged-color);
-    }
-
-    @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
-      .header {
-        grid-template-columns: 2fr 1fr 1fr auto;
-        grid-template-rows: auto;
-        padding: var(--sl-spacing-small);
-      }
-
-      .header-column {
-        display: block;
-      }
-
-      .buttons.desktop {
-        display: flex;
-      }
-
-      .buttons.mobile {
-        display: none;
-      }
-    }
-  `;
+  protected hasMobileRender = true;
 
   private _controller: OwnedProgramsListController;
 
@@ -113,63 +24,33 @@ export class OwnedProgramsList extends BaseComponent {
     this._controller = new OwnedProgramsListController(this);
   }
 
-  render() {
-    const isAutoupgradeActive = this.checkSomeProgramsAutoupgradeActive();
-
-    const autoupgradeIcon = isAutoupgradeActive ? AUTOUPGRADE_VALUES.icon.enabled : AUTOUPGRADE_VALUES.icon.disabled;
-    const autoupgradeLabel = isAutoupgradeActive
-      ? COMMON_TEXTS.disableAutoupgradeAll()
-      : COMMON_TEXTS.enableAutoupgradeAll();
-    const autoupgradeVariant = isAutoupgradeActive
-      ? AUTOUPGRADE_VALUES.buttonVariant.enabled
-      : AUTOUPGRADE_VALUES.buttonVariant.disabled;
-
+  protected renderDesktop() {
     const ownedPrograms = this._controller.listOwnedPrograms();
 
-    const upgradeAllProgramsLabel = COMMON_TEXTS.upgradeAll();
-
     return html`
-      <div class="header">
+      <div class="header desktop">
         <div class="header-column">${msg('Program')}</div>
         <div class="header-column">${COMMON_TEXTS.tier()}</div>
         <div class="header-column">${COMMON_TEXTS.level()}</div>
-        <div class="buttons desktop">
-          <sl-tooltip>
-            <span slot="content"> ${upgradeAllProgramsLabel} </span>
+        <ca-owned-programs-list-buttons></ca-owned-programs-list-buttons>
+      </div>
 
-            <sl-icon-button
-              name=${UPGRADE_MAX_VALUES.icon}
-              label=${upgradeAllProgramsLabel}
-              @click=${this.handleUpgradeMaxAllPrograms}
-            >
-            </sl-icon-button>
-          </sl-tooltip>
+      ${ownedPrograms.length > 0
+        ? html`
+            <ca-sortable-list @sortable-element-moved=${this.handleMoveProgram}>
+              ${repeat(ownedPrograms, (program) => program.name, this.renderProgram)}
+            </ca-sortable-list>
+          `
+        : this.renderEmptyListNotification()}
+    `;
+  }
 
-          <sl-tooltip>
-            <span slot="content"> ${autoupgradeLabel} </span>
+  protected renderMobile() {
+    const ownedPrograms = this._controller.listOwnedPrograms();
 
-            <sl-icon-button name=${autoupgradeIcon} label=${autoupgradeLabel} @click=${this.handleToggleAutoupgrade}>
-            </sl-icon-button>
-          </sl-tooltip>
-        </div>
-
-        <div class="buttons mobile">
-          <sl-button
-            variant=${UPGRADE_MAX_VALUES.buttonVariant}
-            size="medium"
-            @click=${this.handleUpgradeMaxAllPrograms}
-          >
-            <sl-icon slot="prefix" name=${UPGRADE_MAX_VALUES.icon}> </sl-icon>
-
-            ${upgradeAllProgramsLabel}
-          </sl-button>
-
-          <sl-button variant=${autoupgradeVariant} size="medium" @click=${this.handleToggleAutoupgrade}>
-            <sl-icon slot="prefix" name=${autoupgradeIcon}> </sl-icon>
-
-            ${autoupgradeLabel}
-          </sl-button>
-        </div>
+    return html`
+      <div class="header mobile">
+        <ca-owned-programs-list-buttons></ca-owned-programs-list-buttons>
       </div>
 
       ${ownedPrograms.length > 0
@@ -199,17 +80,7 @@ export class OwnedProgramsList extends BaseComponent {
     return programs.some((program) => program.autoUpgradeEnabled);
   }
 
-  private handleToggleAutoupgrade = () => {
-    const active = this.checkSomeProgramsAutoupgradeActive();
-
-    this._controller.toggleAutoupgrade(!active);
-  };
-
   private handleMoveProgram = (event: SortableElementMovedEvent) => {
     this._controller.moveProgram(event.keyName as ProgramName, event.position);
-  };
-
-  private handleUpgradeMaxAllPrograms = () => {
-    this._controller.upgradeMaxAllPrograms();
   };
 }

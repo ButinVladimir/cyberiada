@@ -1,87 +1,30 @@
-import { css, html } from 'lit';
+import { html } from 'lit';
 import { localized, msg } from '@lit/localize';
 import { customElement, property, state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
+import { classMap } from 'lit/directives/class-map.js';
 import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.component.js';
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.component.js';
 import clamp from 'lodash/clamp';
 import { provide } from '@lit/context';
-import { BaseComponent } from '@shared/base-component';
+import { BaseComponent } from '@shared/index';
 import { CloneTemplateName } from '@state/company-state/states/clone-factory/types';
-import {
-  inputLabelStyle,
-  hintStyle,
-  sectionTitleStyle,
-  mediumModalStyle,
-  modalBodyScrollStyle,
-  SCREEN_WIDTH_POINTS,
-} from '@shared/styles';
 import { COMMON_TEXTS, CLONE_TEMPLATE_TEXTS } from '@texts/index';
 import { type IClone } from '@state/company-state';
 import { PurchaseCloneDialogCloseEvent } from './events';
 import { PurchaseCloneDialogController } from './controller';
 import { temporaryCloneContext } from './contexts';
+import styles from './styles';
+import { PurchaseCloneDialogButtons } from './components/buttons/component';
 
 @localized()
 @customElement('ca-purchase-clone-dialog')
 export class PurchaseCloneDialog extends BaseComponent {
-  static styles = [
-    inputLabelStyle,
-    hintStyle,
-    sectionTitleStyle,
-    mediumModalStyle,
-    modalBodyScrollStyle,
-    css`
-      sl-dialog::part(body) {
-        padding-top: 0;
-        padding-bottom: 0;
-      }
+  static styles = styles;
 
-      sl-dialog::part(footer) {
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: flex-end;
-        gap: var(--sl-spacing-small);
-      }
+  hasPartialUpdate = true;
 
-      h4.title {
-        margin: 0;
-      }
-
-      div.body {
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      div.inputs-container {
-        display: grid;
-        column-gap: var(--sl-spacing-medium);
-        row-gap: var(--sl-spacing-medium);
-        grid-template-columns: auto;
-        grid-template-rows: auto;
-        margin-bottom: var(--sl-spacing-medium);
-      }
-
-      p.hint {
-        margin-top: 0;
-        margin-bottom: var(--sl-spacing-medium);
-      }
-
-      div.footer {
-        display: flex;
-      }
-
-      @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
-        div.inputs-container {
-          grid-template-rows: 1fr 1fr;
-          grid-template-columns: 1fr 1fr;
-        }
-      }
-    `,
-  ];
+  protected hasMobileRender = true;
 
   private _controller: PurchaseCloneDialogController;
 
@@ -114,6 +57,8 @@ export class PurchaseCloneDialog extends BaseComponent {
   @provide({ context: temporaryCloneContext })
   private _clone?: IClone;
 
+  private _buttonsRef = createRef<PurchaseCloneDialogButtons>();
+
   constructor() {
     super();
 
@@ -140,99 +85,123 @@ export class PurchaseCloneDialog extends BaseComponent {
       this._level = this._controller.developmentLevel;
 
       if (this.isOpen) {
-        this.generateName();
+        this._name = this._controller.generateName();
       }
     }
   }
 
-  render() {
+  protected renderDesktop() {
+    return this.renderContent(true);
+  }
+
+  protected renderMobile() {
+    return this.renderContent(false);
+  }
+
+  private renderContent(desktop: boolean) {
     const { developmentLevel } = this._controller;
 
-    return html`
-      <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
-        <h4 slot="label" class="title">${msg('Purchase clone')}</h4>
+    const inputsContainerClasses = classMap({
+      'inputs-container': true,
+      mobile: !desktop,
+      desktop: desktop,
+    });
 
-        <div class="body">
-          <p class="hint">
-            ${msg(`Select clone name, template, tier and level to purchase it.
+    return html`
+      <form id="purchase-clone-form" @submit=${this.handleSubmit}>
+        <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
+          <h4 slot="label" class="title">${msg('Purchase clone')}</h4>
+
+          <div class="body">
+            <p class="hint">
+              ${msg(`Select clone name, template, tier and level to purchase it.
 Level cannot be above current development level.
 Tier is limited depending on gained favors.
 Synchronization is earned by capturing districts and gaining certain favors.`)}
-          </p>
+            </p>
 
-          <div class="inputs-container">
-            <sl-input
-              ${ref(this._nameInputRef)}
-              name="name"
-              value=${this._name}
-              autocomplete="off"
-              @sl-change=${this.handleNameChange}
-            >
-              <span class="input-label" slot="label"> ${msg('Name')} </span>
-
-              <sl-icon-button
-                slot="suffix"
-                label=${msg('Generate name')}
-                name="dice-4"
-                @click=${this.handleGenerateName}
+            <div class=${inputsContainerClasses}>
+              <sl-input
+                ${ref(this._nameInputRef)}
+                name="name"
+                value=${this._name}
+                autocomplete="off"
+                @sl-change=${this.handleNameChange}
               >
-              </sl-icon-button>
-            </sl-input>
+                <span class="input-label" slot="label"> ${msg('Name')} </span>
 
-            <sl-select
-              ${ref(this._cloneTemplateInputRef)}
-              name="cloneTemplate"
-              value=${this._cloneTemplateName ?? ''}
-              hoist
-              @sl-change=${this.handleCloneTemplateChange}
-            >
-              <span class="input-label" slot="label"> ${msg('Clone template')} </span>
+                <sl-icon-button
+                  slot="suffix"
+                  label=${msg('Generate name')}
+                  name="dice-4"
+                  @click=${this.handleGenerateName}
+                >
+                </sl-icon-button>
+              </sl-input>
 
-              ${this._controller.listAvailableCloneTemplates().map(this.renderCloneTemplateOption)}
-            </sl-select>
+              <sl-select
+                ${ref(this._cloneTemplateInputRef)}
+                name="cloneTemplate"
+                value=${this._cloneTemplateName ?? ''}
+                hoist
+                @sl-change=${this.handleCloneTemplateChange}
+              >
+                <span class="input-label" slot="label"> ${msg('Clone template')} </span>
 
-            <sl-select
-              ${ref(this._tierInputRef)}
-              name="tier"
-              value=${this._tier}
-              hoist
-              @sl-change=${this.handleTierChange}
-            >
-              <span class="input-label" slot="label"> ${COMMON_TEXTS.tier()} </span>
+                ${this._controller.listAvailableCloneTemplates().map(this.renderCloneTemplateOption)}
+              </sl-select>
 
-              ${this.renderTierOptions()}
-            </sl-select>
+              <sl-select
+                ${ref(this._tierInputRef)}
+                name="tier"
+                value=${this._tier}
+                hoist
+                @sl-change=${this.handleTierChange}
+              >
+                <span class="input-label" slot="label"> ${COMMON_TEXTS.tier()} </span>
 
-            <sl-input
-              ${ref(this._levelInputRef)}
-              name="level"
-              value=${this._level + 1}
-              type="number"
-              inputmode="decimal"
-              min="1"
-              max=${developmentLevel + 1}
-              step="1"
-              @sl-change=${this.handleLevelChange}
-            >
-              <span class="input-label" slot="label"> ${COMMON_TEXTS.level()} </span>
-            </sl-input>
+                ${this.renderTierOptions()}
+              </sl-select>
+
+              <sl-input
+                ${ref(this._levelInputRef)}
+                name="level"
+                value=${this._level + 1}
+                type="number"
+                inputmode="decimal"
+                min="1"
+                max=${developmentLevel + 1}
+                step="1"
+                @sl-change=${this.handleLevelChange}
+              >
+                <span class="input-label" slot="label"> ${COMMON_TEXTS.level()} </span>
+              </sl-input>
+            </div>
+
+            <ca-purchase-clone-dialog-description></ca-purchase-clone-dialog-description>
           </div>
 
-          <ca-purchase-clone-dialog-description></ca-purchase-clone-dialog-description>
-        </div>
-
-        <ca-purchase-clone-dialog-buttons
-          slot="footer"
-          level=${this._level}
-          tier=${this._tier}
-          name=${this._name}
-          @purchase-clone=${this.handlePurchaseClone}
-          @cancel=${this.handleClose}
-        >
-        </ca-purchase-clone-dialog-buttons>
-      </sl-dialog>
+          <ca-purchase-clone-dialog-buttons
+            slot="footer"
+            ${ref(this._buttonsRef)}
+            disabled
+            level=${this._level}
+            tier=${this._tier}
+            name=${this._name}
+            @cancel=${this.handleClose}
+            @purchase-clone=${this.handleSubmit}
+          >
+          </ca-purchase-clone-dialog-buttons>
+        </sl-dialog>
+      </form>
     `;
   }
+
+  handlePartialUpdate = () => {
+    if (this._buttonsRef.value) {
+      this._buttonsRef.value.disabled = !this.checkSubmitAvailability();
+    }
+  };
 
   private renderCloneTemplateOption = (cloneTemplate: CloneTemplateName) => {
     return html`<sl-option value=${cloneTemplate}> ${CLONE_TEMPLATE_TEXTS[cloneTemplate].title()} </sl-option>`;
@@ -293,18 +262,16 @@ Synchronization is earned by capturing districts and gaining certain favors.`)}
     this._levelInputRef.value.valueAsNumber = level + 1;
   };
 
-  private handlePurchaseClone = () => {
-    if (!this._cloneTemplateName) {
-      return;
-    }
+  private handleSubmit = (event: Event) => {
+    event.preventDefault();
 
-    if (!this._name) {
+    if (!this.checkSubmitAvailability()) {
       return;
     }
 
     const isBought = this._controller.purchaseClone({
       name: this._name,
-      templateName: this._cloneTemplateName,
+      templateName: this._cloneTemplateName!,
       tier: this._tier,
       level: this._level,
     });
@@ -315,15 +282,30 @@ Synchronization is earned by capturing districts and gaining certain favors.`)}
   };
 
   private handleGenerateName = () => {
-    this.generateName();
+    this._name = this._controller.generateName();
   };
 
-  private generateName(): void {
-    this._controller
-      .generateName()
-      .then((name) => {
-        this._name = name;
-      })
-      .catch((e) => console.error(e));
+  private checkSubmitAvailability(): boolean {
+    if (!this._clone) {
+      return false;
+    }
+
+    const { money } = this._controller;
+
+    const cost = this._controller.getCloneCost(this._clone.templateName, this._clone.tier, this._clone.level);
+    const synchronization = this._controller.getCloneSynchronization(this._clone.templateName, this._clone.tier);
+    const cloneAvailable = this._controller.isCloneAvailable(
+      this._clone.templateName,
+      this._clone.tier,
+      this._clone.level,
+    );
+
+    return !!(
+      this._clone &&
+      this._clone.name &&
+      cloneAvailable &&
+      synchronization <= this._controller.availableSynchronization &&
+      cost <= money
+    );
   }
 }

@@ -1,1 +1,2 @@
-import './hardware-panel-article';
+import './article';
+import './buttons';

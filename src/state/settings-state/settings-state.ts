@@ -20,6 +20,7 @@ import constants from '@configs/constants.json';
 import { type IFormatter } from '@shared/interfaces/formatter';
 import { getLocale, setLocale } from '@/configure-localization';
 import { ISettingsState, ISettingsSerializedState } from './interfaces';
+import { SettingsHotkeys } from './settings-hotkeys';
 
 const { lazyInject } = decorators;
 
@@ -45,6 +46,7 @@ export class SettingsState implements ISettingsState {
   private _enabledMessageEvents: Set<MessageEvent>;
   private _enabledGameAlerts: Set<GameAlert>;
   private _enabledNotificationTypes: Set<NotificationType>;
+  private _hotkeys: SettingsHotkeys;
 
   constructor() {
     this._language = getLocale() as Language;
@@ -61,6 +63,7 @@ export class SettingsState implements ISettingsState {
     this._enabledMessageEvents = new Set<MessageEvent>();
     this._enabledGameAlerts = new Set<GameAlert>();
     this._enabledNotificationTypes = new Set<NotificationType>();
+    this._hotkeys = new SettingsHotkeys();
   }
 
   get language() {
@@ -105,6 +108,10 @@ export class SettingsState implements ISettingsState {
 
   get mapCellSize() {
     return this._mapCellSize;
+  }
+
+  get hotkeys() {
+    return this._hotkeys;
   }
 
   isMessageEventEnabled(event: MessageEvent): boolean {

@@ -1,51 +1,18 @@
-import { css, html } from 'lit';
+import { html } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { msg, localized } from '@lit/localize';
 import { IMainframeHardwareParameter, type MainframeHardwareParameterType } from '@state/mainframe-state';
 import { SortableElementMovedEvent } from '@components/shared/sortable-list/events/sortable-element-moved';
-import { BaseComponent, hintStyle } from '@shared/index';
+import { BaseComponent } from '@shared/index';
 import { MainframeHardwarePanelController } from './controller';
 import { GAP } from './constants';
+import styles from './styles';
 
 @localized()
 @customElement('ca-mainframe-hardware-panel')
 export class MainframeHardwarePanel extends BaseComponent {
-  static styles = [
-    hintStyle,
-    css`
-      :host {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-      }
-
-      p.hint {
-        margin: 0 0 var(--sl-spacing-large);
-      }
-
-      ca-sortable-list {
-        width: 100%;
-      }
-
-      ca-sortable-list::part(list) {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-        justify-content: center;
-        gap: var(--sl-spacing-large);
-      }
-
-      ca-sortable-list ca-mainframe-hardware-panel-article.dragged {
-        background-color: var(--ca-dragged-color);
-      }
-
-      div.buttons-block {
-        margin: 0 0 var(--sl-spacing-large) 0;
-      }
-    `,
-  ];
+  static styles = styles;
 
   private _controller: MainframeHardwarePanelController;
 
@@ -75,7 +42,7 @@ export class MainframeHardwarePanel extends BaseComponent {
     window.removeEventListener('keyup', this.handleKeypress);
   }
 
-  render() {
+  protected renderDesktop() {
     return html`
       <p class="hint">
         ${msg(`Press either Ctrl or Shift to buy 10 levels. Press both Ctrl and Shift to buy 100 levels.
@@ -84,9 +51,7 @@ Upgrades on top have higher priority.`)}
       </p>
 
       <div class="buttons-block">
-        <sl-button variant="default" type="button" size="medium" @click=${this.handleBuyMax}>
-          ${msg('Buy all upgrades')}
-        </sl-button>
+        <ca-mainframe-hardware-panel-buttons></ca-mainframe-hardware-panel-buttons>
       </div>
 
       <ca-sortable-list gap=${GAP} @sortable-element-moved=${this.handleMoveElement}>
@@ -126,10 +91,6 @@ Upgrades on top have higher priority.`)}
 
     return maxIncrease;
   }
-
-  private handleBuyMax = () => {
-    this._controller.purchaseMax();
-  };
 
   private handleMoveElement = (event: SortableElementMovedEvent) => {
     this._controller.moveParameter(event.keyName as MainframeHardwareParameterType, event.position);

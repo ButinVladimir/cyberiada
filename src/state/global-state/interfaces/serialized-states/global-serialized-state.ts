@@ -10,8 +10,9 @@ import { IAvailableItemsSerializedState } from './available-items-serialized-sta
 import { IConnectivitySerializedState } from './connectivity-serialized-state';
 
 export interface IGlobalSerializedState {
-  randomSeed: number;
+  randomSeed: string;
   randomShift: string;
+  runId: string;
   scenario: IScenarioSerializedState;
   faction: IFactionSerializedState;
   gameSpeed: GameSpeed;

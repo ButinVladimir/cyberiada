@@ -1,45 +1,24 @@
-import { css, html } from 'lit';
+import { html } from 'lit';
 import { localized, msg } from '@lit/localize';
 import { customElement, state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.component.js';
-import { BaseComponent } from '@shared/base-component';
-import { inputLabelStyle, SCREEN_WIDTH_POINTS } from '@shared/styles';
-import { IStoryGoal } from '@state/global-state/interfaces/story-goal';
-import { STORY_GOAL_STATES } from '@state/global-state/constants';
-import { StoryGoalState } from '@state/global-state/types';
+import { BaseComponent } from '@shared/index';
+import { IStoryGoal, STORY_GOAL_STATES, StoryGoalState } from '@state/global-state';
 import { OverviewStoryPanelController } from './controller';
 import { KEYS_SEPARATOR } from '../../constants';
 import { STORY_GOAL_STATE_FILTER_TITLES } from './constants';
 import { type StoryGoalStateFilter } from './types';
+import styles from './styles';
+import { classMap } from 'lit/directives/class-map.js';
 
 @localized()
 @customElement('ca-overview-story-panel')
 export class OverviewStoryPanel extends BaseComponent {
-  static styles = [
-    inputLabelStyle,
-    css`
-      div.state-filter-container {
-        width: 100%;
-        margin-bottom: var(--sl-spacing-2x-large);
-      }
+  static styles = styles;
 
-      div.goals-list {
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-        gap: var(--sl-spacing-large);
-      }
-
-      @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
-        div.state-filter-container {
-          width: 30rem;
-          max-width: 100%;
-        }
-      }
-    `,
-  ];
+  protected hasMobileRender = true;
 
   private _controller: OverviewStoryPanelController;
 
@@ -54,11 +33,24 @@ export class OverviewStoryPanel extends BaseComponent {
     this._controller = new OverviewStoryPanelController(this);
   }
 
-  render() {
+  protected renderDesktop() {
+    return this.renderContent(true);
+  }
+
+  protected renderMobile() {
+    return this.renderContent(false);
+  }
+
+  private renderContent(desktop: boolean) {
     const goals = this._controller.listGoals();
+    const stateFilterContainerClasses = classMap({
+      'state-filter-container': true,
+      desktop: desktop,
+      mobile: !desktop,
+    });
 
     return html`
-      <div class="state-filter-container">
+      <div class=${stateFilterContainerClasses}>
         <sl-select
           ${ref(this._stateFilterInputRef)}
           name="state-filter"

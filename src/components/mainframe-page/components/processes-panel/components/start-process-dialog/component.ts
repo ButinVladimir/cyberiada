@@ -1,7 +1,8 @@
-import { css, html, nothing } from 'lit';
+import { html, nothing } from 'lit';
 import { localized, msg, str } from '@lit/localize';
 import { customElement, property, state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
+import { classMap } from 'lit/directives/class-map.js';
 import { provide } from '@lit/context';
 import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.component.js';
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.component.js';
@@ -11,76 +12,19 @@ import {
   ConfirmationAlertSubmitEvent,
 } from '@components/game-screen/components/confirmation-alert/events';
 import { type ProgramName, type IProgram, type IProcess } from '@state/mainframe-state';
-import {
-  BaseComponent,
-  ProgramAlert,
-  inputLabelStyle,
-  hintStyle,
-  sectionTitleStyle,
-  mediumModalStyle,
-  modalBodyScrollStyle,
-  SCREEN_WIDTH_POINTS,
-} from '@shared/index';
-import { PROGRAM_TEXTS } from '@texts/programs';
+import { BaseComponent, ProgramAlert } from '@shared/index';
+import { PROGRAM_TEXTS } from '@texts/index';
 import { StartProcessDialogCloseEvent } from './events';
 import { StartProcessDialogController } from './controller';
 import { programContext, existingProcessContext } from './contexts';
+import styles from './styles';
 
 @localized()
 @customElement('ca-start-process-dialog')
 export class StartProcessDialog extends BaseComponent {
-  static styles = [
-    inputLabelStyle,
-    hintStyle,
-    sectionTitleStyle,
-    mediumModalStyle,
-    modalBodyScrollStyle,
-    css`
-      sl-dialog::part(body) {
-        padding-top: 0;
-        padding-bottom: 0;
-      }
+  static styles = styles;
 
-      sl-dialog::part(footer) {
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: flex-end;
-        gap: var(--sl-spacing-small);
-      }
-
-      h4.title {
-        margin: 0;
-      }
-
-      div.body {
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      div.inputs-container {
-        display: grid;
-        column-gap: var(--sl-spacing-medium);
-        row-gap: var(--sl-spacing-medium);
-        grid-template-columns: auto;
-        grid-template-rows: auto;
-      }
-
-      p.hint {
-        margin-top: 0;
-        margin-bottom: var(--sl-spacing-medium);
-      }
-
-      @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
-        div.inputs-container {
-          grid-template-rows: auto;
-          grid-template-columns: 2fr 1fr;
-        }
-      }
-    `,
-  ];
+  protected hasMobileRender = true;
 
   private _controller: StartProcessDialogController;
 
@@ -139,66 +83,85 @@ export class StartProcessDialog extends BaseComponent {
     }
   }
 
-  render() {
+  protected renderDesktop() {
+    return this.renderContent(true);
+  }
+
+  protected renderMobile() {
+    return this.renderContent(false);
+  }
+
+  private renderContent(desktop: boolean) {
     const maxThreads = this.calculateMaxThreads();
 
     const threadsInputDisabled = !(this._program && !this._program.isAutoscalable);
 
-    return html`
-      <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
-        <h4 slot="label" class="title">${msg('Start process')}</h4>
+    const inputsContainerClasses = classMap({
+      'inputs-container': true,
+      desktop: desktop,
+      mobile: !desktop,
+    });
 
-        <div class="body">
-          <p class="hint">
-            ${msg(`Select one of owned programs to start process for it.
+    const buttonsDisabled = !this.checkAvailability();
+
+    return html`
+      <form id="start-process-dialog" @submit=${this.handleSubmit}>
+        <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
+          <h4 slot="label" class="title">${msg('Start process')}</h4>
+
+          <div class="body">
+            <p class="hint">
+              ${msg(`Select one of owned programs to start process for it.
 If you already have process for same program, old process will be replaced with new one.
 Threads allow to run multiple instances of same program at same time, but additional threads require additional memory.`)}
-          </p>
+            </p>
 
-          <div class="inputs-container">
-            <sl-select
-              ${ref(this._programInputRef)}
-              name="program"
-              value=${this._programName ?? ''}
-              hoist
-              @sl-change=${this.handleProgramChange}
-            >
-              <span class="input-label" slot="label"> ${msg('Program')} </span>
+            <div class=${inputsContainerClasses}>
+              <sl-select
+                ${ref(this._programInputRef)}
+                name="program"
+                value=${this._programName ?? ''}
+                hoist
+                @sl-change=${this.handleProgramChange}
+              >
+                <span class="input-label" slot="label"> ${msg('Program')} </span>
 
-              ${this._controller.listPrograms().map(this.formatProgramSelectItem)}
-            </sl-select>
+                ${this._controller.listPrograms().map(this.formatProgramSelectItem)}
+              </sl-select>
 
-            <sl-input
-              ${ref(this._threadsInputRef)}
-              name="threads"
-              value=${this._threads}
-              type="number"
-              inputmode="decimal"
-              min="1"
-              max=${Math.max(maxThreads, 1)}
-              step="1"
-              ?disabled=${threadsInputDisabled}
-              @sl-change=${this.handleThreadsChange}
-            >
-              <span class="input-label" slot="label"> ${msg('Threads')} </span>
-            </sl-input>
+              <sl-input
+                ${ref(this._threadsInputRef)}
+                name="threads"
+                value=${this._threads}
+                type="number"
+                inputmode="decimal"
+                min="1"
+                max=${Math.max(maxThreads, 1)}
+                step="1"
+                ?disabled=${threadsInputDisabled}
+                @sl-change=${this.handleThreadsChange}
+              >
+                <span class="input-label" slot="label"> ${msg('Threads')} </span>
+              </sl-input>
+            </div>
+
+            ${this._programName
+              ? html`<ca-start-process-dialog-description threads=${this._threads}>
+                </ca-start-process-dialog-description>`
+              : nothing}
           </div>
 
-          ${this._programName
-            ? html`<ca-start-process-dialog-description threads=${this._threads}>
-              </ca-start-process-dialog-description>`
-            : nothing}
-        </div>
-
-        <ca-start-process-dialog-buttons
-          slot="footer"
-          threads=${this._threads}
-          max-threads=${this.calculateMaxThreads()}
-          @start-process=${this.handleOpenConfirmationAlert}
-          @cancel=${this.handleClose}
-        >
-        </ca-start-process-dialog-buttons>
-      </sl-dialog>
+          <ca-start-process-dialog-buttons
+            slot="footer"
+            ?disabled=${buttonsDisabled}
+            threads=${this._threads}
+            max-threads=${this.calculateMaxThreads()}
+            @start-process=${this.handleSubmit}
+            @cancel=${this.handleClose}
+          >
+          </ca-start-process-dialog-buttons>
+        </sl-dialog>
+      </form>
     `;
   }
 
@@ -236,17 +199,19 @@ Threads allow to run multiple instances of same program at same time, but additi
     this._threadsInputRef.value.valueAsNumber = threads;
   };
 
-  private handleOpenConfirmationAlert = () => {
-    if (!this._programName || !this._program) {
+  private handleSubmit = (event: Event) => {
+    event.preventDefault();
+
+    if (!this.checkAvailability()) {
       return;
     }
 
-    const programIsAutoscalable = this._program.isAutoscalable;
+    const programIsAutoscalable = this._program!.isAutoscalable;
     const runningScalableProgram = this._controller.getRunningScalableProgram();
 
     const formatter = this._controller.formatter;
 
-    const programTitle = PROGRAM_TEXTS[this._programName].title();
+    const programTitle = PROGRAM_TEXTS[this._programName!].title();
 
     if (this._existingProcess && !programIsAutoscalable) {
       const threads = formatter.formatNumberDecimal(this._existingProcess.threads);
@@ -330,5 +295,19 @@ Threads allow to run multiple instances of same program at same time, but additi
     }
 
     return 0;
+  };
+
+  private checkAvailability = (): boolean => {
+    if (!this._programName || !this._program) {
+      return false;
+    }
+
+    const maxThreads = this.calculateMaxThreads();
+
+    if (!this._program.isAutoscalable) {
+      return this._threads > 0 && this._threads <= maxThreads;
+    }
+
+    return maxThreads > 0;
   };
 }
