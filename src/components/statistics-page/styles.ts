@@ -1,5 +1,5 @@
 import { css } from 'lit';
-import { sectionTitleStyle, detailsStyle, hintIconStyle, SCREEN_WIDTH_POINTS } from '@shared/styles';
+import { sectionTitleStyle, detailsStyle, hintIconStyle, pageTitleStyle } from '@shared/index';
 
 export const statisticsPanelStyle = css`
   :host {
@@ -29,28 +29,32 @@ export const statisticsPanelContentStyle = [
     }
 
     .parameters-table {
+      width: 100%;
       display: grid;
-      column-gap: var(--sl-spacing-3x-small);
+      column-gap: var(--sl-spacing-medium);
       row-gap: var(--sl-spacing-3x-small);
-      grid-template-columns: auto;
+      grid-template-columns: 1fr auto;
       grid-auto-rows: auto;
-    }
 
-    .parameters-table > span:nth-child(even) {
-      text-align: start;
-      white-space: nowrap;
-      margin-bottom: var(--sl-spacing-medium);
-    }
-
-    @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
-      .parameters-table {
-        grid-template-columns: auto auto;
-      }
-
-      .parameters-table > span:nth-child(even) {
+      & > div:nth-child(even) {
         text-align: end;
-        margin-bottom: 0;
+        white-space: nowrap;
       }
     }
   `,
 ];
+
+const styles = [
+  pageTitleStyle,
+  css`
+    :host {
+      display: block;
+    }
+
+    h3.title {
+      margin-bottom: var(--sl-spacing-2x-small);
+    }
+  `,
+];
+
+export default styles;

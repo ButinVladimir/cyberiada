@@ -73,7 +73,7 @@ export class TimeState implements ITimeState {
     this._lastUpdateTime = updateTime;
 
     if (showNotification && earnedTime > 0) {
-      const formattedTime = this._formatter.formatTimeShort(earnedTime);
+      const formattedTime = this._formatter.formatTimeLong(earnedTime);
       this._notificationsState.pushNotification(
         NotificationType.timeAccumulated,
         msg(str`While you were away, you've earned ${formattedTime} accumulated time`),

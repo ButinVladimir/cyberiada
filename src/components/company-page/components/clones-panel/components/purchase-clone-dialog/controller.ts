@@ -10,6 +10,14 @@ export class PurchaseCloneDialogController extends BaseController {
     this.deleteTemporaryClone();
   }
 
+  get money(): number {
+    return this.globalState.money.money;
+  }
+
+  get availableSynchronization(): number {
+    return this.companyState.clones.availableSynchronization;
+  }
+
   get developmentLevel(): number {
     return this.globalState.development.level;
   }
@@ -26,8 +34,20 @@ export class PurchaseCloneDialogController extends BaseController {
     return this.companyState.clones.purchaseClone(args);
   }
 
-  generateName(): Promise<string> {
+  generateName(): string {
     return this.companyState.clones.generateCloneName();
+  }
+
+  getCloneCost(cloneTemplateName: CloneTemplateName, tier: number, level: number): number {
+    return this.companyState.clones.getCloneCost(cloneTemplateName, tier, level);
+  }
+
+  getCloneSynchronization(cloneTemplateName: CloneTemplateName, tier: number): number {
+    return this.companyState.clones.getCloneSynchronization(cloneTemplateName, tier);
+  }
+
+  isCloneAvailable(cloneTemplate: CloneTemplateName, tier: number, level: number): boolean {
+    return this.globalState.availableItems.cloneTemplates.isItemAvailable(cloneTemplate, tier, level);
   }
 
   getClone(name: string, cloneTemplateName: CloneTemplateName, tier: number, level: number): IClone {

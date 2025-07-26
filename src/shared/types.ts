@@ -3,6 +3,7 @@ export enum GameVersion {
   '0.1.2' = '0.1.2',
   '0.1.3' = '0.1.3',
   '0.2.0' = '0.2.0',
+  '0.2.1' = '0.2.1',
 }
 
 export enum Language {
@@ -184,4 +185,18 @@ export enum RewardParameter {
   processCompletionSpeedMultiplier = 'process-completion-speed-multiplier',
   actions = 'actions',
   sharedExperienceMultiplier = 'shared-experience-multiplier',
+}
+
+export type Layout = 'mobile' | 'tablet' | 'desktop';
+
+export enum Hotkey {
+  pause = 'pause',
+  playNormalSpeed = 'playNormalSpeed',
+  playFastSpeed = 'playFastSpeed',
+  upgradeMainframeHardware = 'upgradeMainframeHardware',
+  upgradeMainframePerformance = 'upgradeMainframePerformance',
+  upgradeMainframeRam = 'upgradeMainframeRam',
+  upgradeMainframeCores = 'upgradeMainframeCores',
+  upgradeMainframePrograms = 'upgradeMainframePrograms',
+  upgradeClonesLevel = 'upgradeClonesLevel',
 }

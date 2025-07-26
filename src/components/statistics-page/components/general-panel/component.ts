@@ -17,7 +17,7 @@ export class StatisticsGeneralPanel extends BaseComponent {
     this._controller = new StatisticsGeneralPanelController(this);
   }
 
-  render() {
+  protected renderDesktop() {
     return html`
       <ca-statistics-game-time></ca-statistics-game-time>
 

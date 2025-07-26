@@ -20,7 +20,7 @@ export class RenameCloneDialogController extends BaseController {
     }
   }
 
-  generateName(): Promise<string> {
+  generateName(): string {
     return this.companyState.clones.generateCloneName();
   }
 }

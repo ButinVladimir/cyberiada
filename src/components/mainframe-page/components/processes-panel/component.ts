@@ -1,62 +1,18 @@
-import { css, html } from 'lit';
+import { html } from 'lit';
 import { localized, msg } from '@lit/localize';
 import { customElement, state } from 'lit/decorators.js';
-import { BaseComponent } from '@shared/base-component';
-import { hintStyle, SCREEN_WIDTH_POINTS } from '@shared/styles';
+import { classMap } from 'lit/directives/class-map.js';
+import { BaseComponent } from '@shared/index';
+import { COMMON_TEXTS } from '@texts/index';
 import { ProcessesPanelController } from './controller';
-import { COMMON_TEXTS } from '@/texts';
+import styles from './styles';
 
 @localized()
 @customElement('ca-mainframe-processes-panel')
 export class MainframeProcessesPanel extends BaseComponent {
-  static styles = [
-    hintStyle,
-    css`
-      :host {
-        display: flex;
-        align-items: flex-start;
-        flex-direction: column;
-      }
+  static styles = styles;
 
-      p.hint {
-        margin-top: 0;
-        margin-bottom: var(--sl-spacing-large);
-      }
-
-      div.top-container {
-        display: grid;
-        grid-template-areas:
-          'ram'
-          'cores'
-          'start-process';
-        gap: var(--sl-spacing-medium);
-      }
-
-      .start-process {
-        grid-area: start-process;
-      }
-
-      .cores {
-        grid-area: cores;
-      }
-
-      .ram {
-        grid-area: ram;
-      }
-
-      ca-processes-list {
-        margin-top: var(--sl-spacing-large);
-      }
-
-      @media (min-width: ${SCREEN_WIDTH_POINTS.TABLET}) {
-        div.top-container {
-          grid-template-areas: 'start-process ram cores';
-          align-items: center;
-          gap: var(--sl-spacing-3x-large);
-        }
-      }
-    `,
-  ];
+  hasMobileRender = true;
 
   private _controller: ProcessesPanelController;
 
@@ -69,7 +25,15 @@ export class MainframeProcessesPanel extends BaseComponent {
     this._controller = new ProcessesPanelController(this);
   }
 
-  render() {
+  protected renderDesktop() {
+    return this.renderContent(true);
+  }
+
+  protected renderMobile() {
+    return this.renderContent(false);
+  }
+
+  private renderContent(desktop: boolean) {
     const formatter = this._controller.formatter;
 
     const formattedAvailableRam = formatter.formatNumberDecimal(this._controller.availableRam);
@@ -78,17 +42,24 @@ export class MainframeProcessesPanel extends BaseComponent {
     const formattedAvailableCores = formatter.formatNumberDecimal(this._controller.availableCores);
     const formattedMaxCores = formatter.formatNumberDecimal(this._controller.maxCores);
 
+    const topContainerClasses = classMap({
+      'top-container': true,
+      desktop: desktop,
+      mobile: !desktop,
+    });
+
     return html`
       <p class="hint">
         ${msg(`To make a program run, a process has to be start for it.
+1 core is always assigned to autoscalable program if process for it is active.
 Topmost processes for non-autoscalable programs have more priority when cores are assigned to processes.
-Process for autoscalable program has cores and RAM assigned last.
+After that, process for autoscalable program has remaining cores and RAM assigned.
 Only one process for autoscalable program can run at same time.
 Process minimal completion time is limited.
 Processes can be rearranged by dragging them by their title.`)}
       </p>
 
-      <div class="top-container">
+      <div class=${topContainerClasses}>
         <sl-button class="start-process" variant="primary" size="medium" @click=${this.handleStartProcessDialogOpen}>
           ${msg('Start process')}
         </sl-button>

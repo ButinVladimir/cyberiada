@@ -3,7 +3,7 @@ import { createRef, ref } from 'lit/directives/ref.js';
 import { map } from 'lit/directives/map.js';
 import { localized } from '@lit/localize';
 import { customElement, property, queryAll } from 'lit/decorators.js';
-import { BaseComponent } from '@shared/base-component';
+import { BaseComponent } from '@shared/index';
 import { STATISTIC_PAGE_TEXTS } from '@components/statistics-page/constants';
 import { IDistrictState } from '@state/city-state';
 import { StatisticsMultipliersController } from './controller';
@@ -25,11 +25,11 @@ export class StatisticsMultipliers extends BaseComponent {
 
   private _controller: StatisticsMultipliersController;
 
-  private _programMultiplierRef = createRef<HTMLSpanElement>();
-  private _totalMultiplierRef = createRef<HTMLSpanElement>();
+  private _programMultiplierRef = createRef<HTMLDivElement>();
+  private _totalMultiplierRef = createRef<HTMLDivElement>();
 
-  @queryAll('span[data-district]')
-  private _districtValueNodes!: NodeListOf<HTMLSpanElement>;
+  @queryAll('div[data-district]')
+  private _districtValueNodes!: NodeListOf<HTMLDivElement>;
 
   constructor() {
     super();
@@ -37,19 +37,19 @@ export class StatisticsMultipliers extends BaseComponent {
     this._controller = new StatisticsMultipliersController(this);
   }
 
-  render() {
+  protected renderDesktop() {
     return html`
       <sl-details>
         <h4 class="title" slot="summary">${STATISTIC_MULTIPLIER_TITLES[this.type]()}</h4>
 
         <div class="parameters-table">
-          <span> ${STATISTIC_PAGE_TEXTS.byPrograms()} </span>
-          <span ${ref(this._programMultiplierRef)}> </span>
+          <div>${STATISTIC_PAGE_TEXTS.byPrograms()}</div>
+          <div ${ref(this._programMultiplierRef)}></div>
 
           ${map(this._controller.listAvailableDistricts(), this.renderDistrict)}
 
-          <span> ${STATISTIC_PAGE_TEXTS.total()} </span>
-          <span ${ref(this._totalMultiplierRef)}> </span>
+          <div>${STATISTIC_PAGE_TEXTS.total()}</div>
+          <div ${ref(this._totalMultiplierRef)}></div>
         </div>
       </sl-details>
     `;
@@ -57,8 +57,8 @@ export class StatisticsMultipliers extends BaseComponent {
 
   private renderDistrict = (districtState: IDistrictState) => {
     return html`
-      <span> ${STATISTIC_PAGE_TEXTS.byDistrict(districtState.name)}</span>
-      <span data-district=${districtState.index}></span>
+      <div>${STATISTIC_PAGE_TEXTS.byDistrict(districtState.name)}</div>
+      <div data-district=${districtState.index}></div>
     `;
   };
 

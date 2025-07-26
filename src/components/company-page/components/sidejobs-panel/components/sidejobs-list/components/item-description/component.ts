@@ -1,36 +1,18 @@
-import { css, html, nothing } from 'lit';
+import { html, nothing } from 'lit';
 import { localized } from '@lit/localize';
 import { consume } from '@lit/context';
 import { customElement, queryAll } from 'lit/decorators.js';
-import { BaseComponent, Feature, MS_IN_SECOND, RewardParameter, highlightedValuesStyle } from '@shared/index';
+import { BaseComponent, Feature, MS_IN_SECOND, RewardParameter } from '@shared/index';
 import { type ISidejob } from '@state/company-state';
 import { COMMON_TEXTS, REWARD_PARAMETER_NAMES, SIDEJOB_TEXTS } from '@texts/index';
 import { SidejobsListItemDescriptionController } from './controller';
 import { sidejobContext } from '../item/contexts';
+import styles from './styles';
 
 @localized()
 @customElement('ca-sidejobs-list-item-description')
 export class SidejobsListItemDescription extends BaseComponent {
-  static styles = [
-    highlightedValuesStyle,
-    css`
-      :host {
-        display: block;
-        color: var(--ca-hint-color);
-        font-size: var(--ca-hint-font-size);
-        line-height: var(--ca-hint-line-height);
-      }
-
-      p.overview {
-        margin-top: 0;
-        margin-bottom: var(--sl-spacing-small);
-      }
-
-      p.text {
-        margin: 0;
-      }
-    `,
-  ];
+  static styles = styles;
 
   hasPartialUpdate = true;
 
@@ -62,7 +44,7 @@ export class SidejobsListItemDescription extends BaseComponent {
     this._controller = new SidejobsListItemDescriptionController(this);
   }
 
-  render() {
+  protected renderDesktop() {
     if (!this._sidejob) {
       return nothing;
     }

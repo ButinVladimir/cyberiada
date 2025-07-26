@@ -3,8 +3,7 @@ import { createRef, ref } from 'lit/directives/ref.js';
 import { customElement } from 'lit/decorators.js';
 import { msg, localized } from '@lit/localize';
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.component.js';
-import { BaseComponent } from '@shared/base-component';
-import { normalizePercentage } from '@shared/helpers';
+import { BaseComponent, normalizePercentage } from '@shared/index';
 import { AutomationMainframeHardwareAutobuyerController } from './controller';
 import { autobuyerStyles } from '../../styles';
 
@@ -12,6 +11,8 @@ import { autobuyerStyles } from '../../styles';
 @customElement('ca-automation-mainframe-hardware-autobuyer')
 export class AutomationMainframeHardwareAutobuyer extends BaseComponent {
   static styles = autobuyerStyles;
+
+  protected hasMobileRender = true;
 
   private _controller: AutomationMainframeHardwareAutobuyerController;
 
@@ -23,7 +24,15 @@ export class AutomationMainframeHardwareAutobuyer extends BaseComponent {
     this._controller = new AutomationMainframeHardwareAutobuyerController(this);
   }
 
-  render() {
+  protected renderMobile() {
+    return html`<div class="host-content mobile">${this.renderContent()}</div>`;
+  }
+
+  protected renderDesktop() {
+    return html`<div class="host-content desktop">${this.renderContent()}</div>`;
+  }
+
+  private renderContent = () => {
     const { moneyShare } = this._controller;
 
     return html`
@@ -46,7 +55,7 @@ export class AutomationMainframeHardwareAutobuyer extends BaseComponent {
         </sl-input>
       </div>
     `;
-  }
+  };
 
   private handleChangeMoneyShare = () => {
     if (!this._moneyShareRef.value) {

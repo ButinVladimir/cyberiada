@@ -68,10 +68,8 @@ export class DevelopmentState implements IDevelopmentState {
   }
 
   recalculateLevel() {
-    const { base, multiplier } = this._globalState.scenario.currentValues.developmentLevelRequirements;
-
     const prevLevel = this._level;
-    const newLevel = reverseGeometricProgressionSum(this._points, multiplier, base);
+    const newLevel = this.calculateLevelFromPoints();
 
     if (newLevel > prevLevel) {
       this._level = newLevel;
@@ -93,7 +91,7 @@ export class DevelopmentState implements IDevelopmentState {
 
   async deserialize(serializedState: IDevelopmentSerializedState): Promise<void> {
     this._points = serializedState.points;
-    this._level = serializedState.level;
+    this._level = this.calculateLevelFromPoints();
 
     this._income.clear();
     Object.entries(serializedState.income).forEach(([incomeSource, value]) => {
@@ -104,8 +102,13 @@ export class DevelopmentState implements IDevelopmentState {
   serialize(): IDevelopmentSerializedState {
     return {
       points: this._points,
-      level: this._level,
       income: Object.fromEntries(this._income.entries()) as Record<IncomeSource, number>,
     };
+  }
+
+  private calculateLevelFromPoints(): number {
+    const { base, multiplier } = this._globalState.scenario.currentValues.developmentLevelRequirements;
+
+    return reverseGeometricProgressionSum(this._points, multiplier, base);
   }
 }

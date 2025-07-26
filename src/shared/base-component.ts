@@ -1,10 +1,19 @@
 import { LitElement, PropertyValues } from 'lit';
+import { consume } from '@lit/context';
 import { IStateUIConnector } from '@state/state-ui-connector';
 import { container } from '@state/container';
 import { TYPES } from '@state/types';
+import { type Layout } from './types';
+import { layoutContext } from './contexts';
 
 export abstract class BaseComponent extends LitElement {
   public readonly hasPartialUpdate: boolean = false;
+
+  @consume({ context: layoutContext, subscribe: true })
+  protected layoutContext?: Layout;
+
+  protected hasMobileRender = false;
+  protected hasTabletRender = false;
 
   private _stateUIConnector: IStateUIConnector = container.get<IStateUIConnector>(TYPES.StateUIConnector);
 
@@ -40,6 +49,24 @@ export abstract class BaseComponent extends LitElement {
       this._stateUIConnector.stopRendering();
     }
   }
+
+  render() {
+    if (this.layoutContext === 'mobile' && this.hasMobileRender) {
+      return this.renderMobile();
+    }
+
+    if (this.layoutContext === 'tablet' && this.hasTabletRender) {
+      return this.renderTablet();
+    }
+
+    return this.renderDesktop();
+  }
+
+  protected renderMobile(): any {}
+
+  protected renderTablet(): any {}
+
+  protected renderDesktop(): any {}
 
   handlePartialUpdate = () => {};
 }

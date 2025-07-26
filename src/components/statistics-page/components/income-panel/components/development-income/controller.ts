@@ -1,8 +1,11 @@
-import { BaseController } from '@shared/base-controller';
-import { IncomeSource } from '@shared/types';
+import { BaseController, Feature, IncomeSource } from '@shared/index';
 
 export class StatisticsDevelopmentIncomeController extends BaseController {
   getDevelopmentIncome = (incomeSource: IncomeSource) => {
     return this.globalState.development.getIncome(incomeSource);
   };
+
+  isFeatureUnlocked(feature: Feature): boolean {
+    return this.globalState.unlockedFeatures.isFeatureUnlocked(feature);
+  }
 }

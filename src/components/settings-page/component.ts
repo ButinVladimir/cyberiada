@@ -1,31 +1,14 @@
-import { css, html } from 'lit';
+import { html } from 'lit';
 import { msg } from '@lit/localize';
 import { customElement } from 'lit/decorators.js';
-import { BaseComponent } from '@shared/base-component';
-import { pageTitleStyle } from '@shared/styles';
+import { BaseComponent } from '@shared/index';
+import styles from './styles';
 
 @customElement('ca-settings-page')
 export class SettingsPage extends BaseComponent {
-  static styles = [
-    pageTitleStyle,
-    css`
-      :host {
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-      }
+  static styles = styles;
 
-      h3.title {
-        margin-bottom: var(--sl-spacing-large);
-      }
-
-      sl-divider {
-        --spacing: var(--sl-spacing-large);
-      }
-    `,
-  ];
-
-  render() {
+  protected renderDesktop() {
     return html`
       <h3 class="title">${msg('Settings')}</h3>
 

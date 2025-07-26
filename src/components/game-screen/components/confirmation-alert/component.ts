@@ -1,37 +1,18 @@
-import { css, html } from 'lit';
+import { html } from 'lit';
 import { localized, msg } from '@lit/localize';
 import { customElement, state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import SlCheckbox from '@shoelace-style/shoelace/dist/components/checkbox/checkbox.component.js';
-import { BaseComponent } from '@shared/base-component';
-import type { GameAlert } from '@shared/types';
-import { smallModalStyle, modalBodyScrollStyle } from '@shared/styles';
+import { BaseComponent, type GameAlert } from '@shared/index';
 import { COMMON_TEXTS } from '@texts/common';
 import { ConfirmationAlertOpenEvent, ConfirmationAlertCloseEvent, ConfirmationAlertSubmitEvent } from './events';
 import { ConfirmationAlertController } from './controller';
+import styles from './styles';
 
 @localized()
 @customElement('ca-confirmation-alert')
 export class ConfirmationAlert extends BaseComponent {
-  static styles = [
-    smallModalStyle,
-    modalBodyScrollStyle,
-    css`
-      sl-dialog::part(footer) {
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: flex-end;
-        gap: var(--sl-spacing-small);
-      }
-
-      p {
-        margin-top: 0;
-        margin-bottom: var(--sl-spacing-large);
-      }
-    `,
-  ];
+  static styles = styles;
 
   private _controller: ConfirmationAlertController;
 
@@ -70,29 +51,29 @@ export class ConfirmationAlert extends BaseComponent {
     document.removeEventListener(ConfirmationAlertOpenEvent.type, this.handleOpen);
   }
 
-  render() {
+  protected renderDesktop() {
     return html`
-      <sl-dialog no-header ?open=${this._isOpen} @sl-request-close=${this.handleClose}>
-        <p>${this._message}</p>
+      <form id="confirmation-dialog" @submit=${this.handleSubmit}>
+        <sl-dialog no-header ?open=${this._isOpen} @sl-request-close=${this.handleClose}>
+          <p>${this._message}</p>
 
-        <sl-checkbox
-          ref=${ref(this._gameAlertToggleRef)}
-          size="small"
-          name="game-alert"
-          ?checked=${this._alertToggled}
-          @sl-change=${this.handleToggleAlert}
-        >
-          ${msg('Show alerts like this in the future')}
-        </sl-checkbox>
+          <sl-checkbox
+            ref=${ref(this._gameAlertToggleRef)}
+            size="small"
+            name="game-alert"
+            ?checked=${this._alertToggled}
+            @sl-change=${this.handleToggleAlert}
+          >
+            ${msg('Show alerts like this in the future')}
+          </sl-checkbox>
 
-        <sl-button slot="footer" size="medium" variant="default" outline @click=${this.handleClose}>
-          ${COMMON_TEXTS.cancel()}
-        </sl-button>
+          <sl-button slot="footer" size="medium" variant="default" outline @click=${this.handleClose}>
+            ${COMMON_TEXTS.cancel()}
+          </sl-button>
 
-        <sl-button slot="footer" size="medium" variant="danger" @click=${this.handleSubmit}>
-          ${COMMON_TEXTS.continue()}
-        </sl-button>
-      </sl-dialog>
+          <sl-button slot="footer" size="medium" variant="danger" type="submit"> ${COMMON_TEXTS.continue()} </sl-button>
+        </sl-dialog>
+      </form>
     `;
   }
 
@@ -121,7 +102,9 @@ export class ConfirmationAlert extends BaseComponent {
     }
   };
 
-  private handleSubmit = () => {
+  private handleSubmit = (event: Event) => {
+    event.preventDefault();
+
     if (this._gameAlert) {
       this._isOpen = false;
 

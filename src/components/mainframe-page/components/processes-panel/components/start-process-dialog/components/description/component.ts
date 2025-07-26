@@ -1,4 +1,4 @@
-import { css, html, nothing } from 'lit';
+import { html, nothing } from 'lit';
 import { msg, localized } from '@lit/localize';
 import { customElement, property, queryAll } from 'lit/decorators.js';
 import { consume } from '@lit/context';
@@ -14,45 +14,18 @@ import {
   diffFormatterParameters,
   getHighlightDifferenceClassMap,
   getHighlightValueClassMap,
-  highlightedValuesStyle,
 } from '@shared/index';
 import { COMMON_TEXTS, PROGRAM_DESCRIPTION_TEXTS, PROGRAM_TEXTS } from '@texts/index';
-import {
-  CodeGeneratorDescriptionEffectRenderer,
-  CircuitDesignerDescriptionEffectRenderer,
-  InformationCollectorDescriptionEffectRenderer,
-  DealMakerDescriptionEffectRenderer,
-  MainframeHardwareAutobuyerDescriptionEffectRenderer,
-  PredictiveComputatorDescriptionEffectRenderer,
-  ShareServerDescriptionEffectRenderer,
-  MainframeProgramsAutobuyerDescriptionEffectRenderer,
-  CloneLevelAutoupgraderDescriptionEffectRenderer,
-} from './description-effect-renderers';
+import * as renderers from './description-effect-renderers';
 import { IDescriptionEffectRenderer, IDescriptionParameters } from './interfaces';
 import { ProcessDiffTextController } from './controller';
 import { existingProcessContext, programContext } from '../../contexts';
-import { PeerReviewerDescriptionEffectRenderer } from './description-effect-renderers/peer-reviewer-description-effect-renderer';
+import styles from './styles';
 
 @localized()
 @customElement('ca-start-process-dialog-description')
 export class StartProcessDialogDescription extends BaseComponent {
-  static styles = [
-    highlightedValuesStyle,
-    css`
-      :host {
-        margin-top: var(--sl-spacing-medium);
-        margin-bottom: 0;
-      }
-
-      p {
-        margin: 0;
-      }
-
-      p.line-break {
-        height: var(--sl-spacing-medium);
-      }
-    `,
-  ];
+  static styles = styles;
 
   hasPartialUpdate = true;
 
@@ -84,7 +57,7 @@ export class StartProcessDialogDescription extends BaseComponent {
     this._controller = new ProcessDiffTextController(this);
   }
 
-  render() {
+  protected renderDesktop() {
     this.updateRenderer();
 
     if (!this._program) {
@@ -265,43 +238,43 @@ export class StartProcessDialogDescription extends BaseComponent {
 
     switch (this._program!.name) {
       case MultiplierProgramName.codeGenerator:
-        this._renderer = new CodeGeneratorDescriptionEffectRenderer(parameters);
+        this._renderer = new renderers.CodeGeneratorDescriptionEffectRenderer(parameters);
         break;
 
       case MultiplierProgramName.circuitDesigner:
-        this._renderer = new CircuitDesignerDescriptionEffectRenderer(parameters);
+        this._renderer = new renderers.CircuitDesignerDescriptionEffectRenderer(parameters);
         break;
 
       case MultiplierProgramName.dealMaker:
-        this._renderer = new DealMakerDescriptionEffectRenderer(parameters);
+        this._renderer = new renderers.DealMakerDescriptionEffectRenderer(parameters);
         break;
 
       case MultiplierProgramName.informationCollector:
-        this._renderer = new InformationCollectorDescriptionEffectRenderer(parameters);
+        this._renderer = new renderers.InformationCollectorDescriptionEffectRenderer(parameters);
         break;
 
       case AutobuyerProgramName.mainframeHardwareAutobuyer:
-        this._renderer = new MainframeHardwareAutobuyerDescriptionEffectRenderer(parameters);
+        this._renderer = new renderers.MainframeHardwareAutobuyerDescriptionEffectRenderer(parameters);
         break;
 
       case AutobuyerProgramName.mainframeProgramsAutobuyer:
-        this._renderer = new MainframeProgramsAutobuyerDescriptionEffectRenderer(parameters);
+        this._renderer = new renderers.MainframeProgramsAutobuyerDescriptionEffectRenderer(parameters);
         break;
 
       case AutobuyerProgramName.cloneLevelAutoupgrader:
-        this._renderer = new CloneLevelAutoupgraderDescriptionEffectRenderer(parameters);
+        this._renderer = new renderers.CloneLevelAutoupgraderDescriptionEffectRenderer(parameters);
         break;
 
       case OtherProgramName.shareServer:
-        this._renderer = new ShareServerDescriptionEffectRenderer(parameters);
+        this._renderer = new renderers.ShareServerDescriptionEffectRenderer(parameters);
         break;
 
       case OtherProgramName.predictiveComputator:
-        this._renderer = new PredictiveComputatorDescriptionEffectRenderer(parameters);
+        this._renderer = new renderers.PredictiveComputatorDescriptionEffectRenderer(parameters);
         break;
 
       case OtherProgramName.peerReviewer:
-        this._renderer = new PeerReviewerDescriptionEffectRenderer(parameters);
+        this._renderer = new renderers.PeerReviewerDescriptionEffectRenderer(parameters);
         break;
 
       default:

@@ -61,10 +61,10 @@ export class DistrictTierParameter implements IDistrictTierParameter {
   }
 
   recalculate(): void {
-    const newLevel = this.calculateNewLevel();
+    const newTier = this.calculateTierFromPoints();
 
-    if (newLevel > this._tier) {
-      this._tier = newLevel;
+    if (newTier > this._tier) {
+      this._tier = newTier;
 
       const formattedTier = this._formatter.formatTier(this._tier);
       this._messageLogState.postMessage(
@@ -87,7 +87,7 @@ export class DistrictTierParameter implements IDistrictTierParameter {
 
   async deserialize(serializedState: IDistrictTierSerializedParameter): Promise<void> {
     this._points = serializedState.points;
-    this._tier = this.calculateNewLevel();
+    this._tier = this.calculateTierFromPoints();
   }
 
   serialize(): IDistrictTierSerializedParameter {
@@ -100,7 +100,7 @@ export class DistrictTierParameter implements IDistrictTierParameter {
     this._stateUIConnector.unregisterEventEmitter(this);
   }
 
-  private calculateNewLevel(): number {
+  private calculateTierFromPoints(): number {
     const districtTypeInfo = this._district.template;
     const { base, multiplier } = districtTypeInfo.parameters.districtTierPoints.requirements;
 
