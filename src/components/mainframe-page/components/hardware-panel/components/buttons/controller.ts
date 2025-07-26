@@ -1,4 +1,4 @@
-import { BaseController } from '@shared/index';
+import { BaseController, Hotkey } from '@shared/index';
 
 export class MainframeHardwarePanelButtonsController extends BaseController {
   checkCanPurchaseMax(): boolean {
@@ -9,5 +9,9 @@ export class MainframeHardwarePanelButtonsController extends BaseController {
 
   purchaseMax() {
     this.mainframeState.hardware.purchaseMax();
+  }
+
+  getHotkey(): string | undefined {
+    return this.settingsState.hotkeys.getKeyByHotkey(Hotkey.upgradeMainframeHardware);
   }
 }

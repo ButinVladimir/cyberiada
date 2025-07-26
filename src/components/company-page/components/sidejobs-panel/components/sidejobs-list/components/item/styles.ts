@@ -3,7 +3,7 @@ import { css } from 'lit';
 const styles = [
   css`
     :host {
-      display: contents;
+      display: block;
     }
 
     .host-content {
@@ -11,6 +11,7 @@ const styles = [
       gap: var(--sl-spacing-small);
       padding: var(--sl-spacing-small);
       box-sizing: border-box;
+      border-bottom: var(--ca-border);
 
       .sidejob-title sl-icon-button.description-button {
         position: relative;

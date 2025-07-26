@@ -297,7 +297,7 @@
     },
     {
       "name": "ca-game-screen",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `hasTabletRender` {`boolean`} - \n\n  * `handleMenuToggle` - \n\n  * `handleMenuItemSelect` - \n\n  * `_menuOpened` - \n\n  * `_selectedMenuItem` - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `hasTabletRender` {`boolean`} - \n\n  * `handleMenuToggle` - \n\n  * `handleMenuItemSelect` - \n\n  * `_menuOpened` - \n\n  * `_selectedMenuItem` - \n\n  * `_controller` {`GameScreenController`} - ",
       "attributes": []
     },
     {

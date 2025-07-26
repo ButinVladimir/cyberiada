@@ -1,5 +1,5 @@
-import { BaseController } from '@shared/index';
-import { IProgram } from '@state/mainframe-state/';
+import { BaseController, Hotkey } from '@shared/index';
+import { IProgram } from '@state/mainframe-state';
 
 export class OwnedProgramsListButtonsController extends BaseController {
   listOwnedPrograms(): IProgram[] {
@@ -16,6 +16,10 @@ export class OwnedProgramsListButtonsController extends BaseController {
 
   upgradeMaxAllPrograms() {
     this.mainframeState.programs.upgradeMaxAllPrograms();
+  }
+
+  getHotkey(): string | undefined {
+    return this.settingsState.hotkeys.getKeyByHotkey(Hotkey.upgradeMainframePrograms);
   }
 
   private checkCanUpgradeMaxProgram = (program: IProgram) => {

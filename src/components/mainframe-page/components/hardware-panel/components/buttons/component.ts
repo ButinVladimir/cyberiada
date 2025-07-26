@@ -4,6 +4,7 @@ import { msg, localized } from '@lit/localize';
 import { createRef, ref } from 'lit/directives/ref.js';
 import SlButton from '@shoelace-style/shoelace/dist/components/button/button.component.js';
 import { BaseComponent } from '@shared/index';
+import { COMMON_TEXTS } from '@texts/index';
 import { MainframeHardwarePanelButtonsController } from './controller';
 import styles from '../../styles';
 
@@ -25,16 +26,21 @@ export class MainframeHardwarePanelButtons extends BaseComponent {
   }
 
   protected renderDesktop() {
+    const hotkey = this._controller.getHotkey();
+
     return html`
-      <sl-button
-        ${ref(this._buyMaxButtonRef)}
-        variant="default"
-        type="button"
-        size="medium"
-        @click=${this.handleBuyMax}
-      >
-        ${msg('Buy all upgrades')}
-      </sl-button>
+      <sl-tooltip>
+        <span slot="content">${COMMON_TEXTS.hotkey(hotkey)}</span>
+        <sl-button
+          ${ref(this._buyMaxButtonRef)}
+          variant="default"
+          type="button"
+          size="medium"
+          @click=${this.handleBuyMax}
+        >
+          ${msg('Buy all upgrades')}
+        </sl-button>
+      </sl-tooltip>
     `;
   }
 

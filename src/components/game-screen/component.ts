@@ -5,6 +5,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import { BaseComponent, MiscMenuItem, OverviewMenuItem } from '@shared/index';
 import { MenuItemSelectedEvent } from './components/menu-bar/events';
 import styles from './styles';
+import { GameScreenController } from './controller';
 
 @customElement('ca-game-screen')
 export class GameScreen extends BaseComponent {
@@ -19,11 +20,14 @@ export class GameScreen extends BaseComponent {
   @state()
   private _selectedMenuItem?: OverviewMenuItem | MiscMenuItem = OverviewMenuItem.overview;
 
+  private _controller: GameScreenController;
+
   constructor() {
     super();
 
     this._menuOpened = false;
     this._selectedMenuItem = OverviewMenuItem.overview;
+    this._controller = new GameScreenController(this);
   }
 
   connectedCallback() {

@@ -36,10 +36,15 @@ export class OwnedProgramsListButtons extends BaseComponent {
 
     const upgradeAllProgramsLabel = COMMON_TEXTS.upgradeAll();
 
+    const hotkey = this._controller.getHotkey();
+
     return html`
       <div class="buttons desktop">
         <sl-tooltip>
-          <span slot="content"> ${upgradeAllProgramsLabel} </span>
+          <div class="tooltip-content" slot="content">
+            <p>${upgradeAllProgramsLabel}</p>
+            <p>${COMMON_TEXTS.hotkey(hotkey)}</p>
+          </div>
 
           <sl-icon-button
             ${ref(this._upgradeMaxButton)}
@@ -74,19 +79,25 @@ export class OwnedProgramsListButtons extends BaseComponent {
 
     const upgradeAllProgramsLabel = COMMON_TEXTS.upgradeAll();
 
+    const hotkey = this._controller.getHotkey();
+
     return html`
       <div class="buttons mobile">
-        <sl-button
-          ${ref(this._upgradeMaxButton)}
-          disabled
-          variant=${UPGRADE_MAX_VALUES.buttonVariant}
-          size="medium"
-          @click=${this.handleUpgradeMaxAllPrograms}
-        >
-          <sl-icon slot="prefix" name=${UPGRADE_MAX_VALUES.icon}> </sl-icon>
+        <sl-tooltip>
+          <span slot="content">${COMMON_TEXTS.hotkey(hotkey)}</span>
 
-          ${upgradeAllProgramsLabel}
-        </sl-button>
+          <sl-button
+            ${ref(this._upgradeMaxButton)}
+            disabled
+            variant=${UPGRADE_MAX_VALUES.buttonVariant}
+            size="medium"
+            @click=${this.handleUpgradeMaxAllPrograms}
+          >
+            <sl-icon slot="prefix" name=${UPGRADE_MAX_VALUES.icon}> </sl-icon>
+
+            ${upgradeAllProgramsLabel}
+          </sl-button>
+        </sl-tooltip>
 
         <sl-button variant=${autoupgradeVariant} size="medium" @click=${this.handleToggleAutoupgrade}>
           <sl-icon slot="prefix" name=${autoupgradeIcon}> </sl-icon>

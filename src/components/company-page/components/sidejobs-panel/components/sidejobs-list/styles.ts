@@ -4,7 +4,9 @@ const styles = css`
   :host {
     width: 100%;
     align-self: stretch;
-    display: block;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
     border-top: var(--ca-border);
   }
 
@@ -54,23 +56,9 @@ const styles = css`
     border-bottom: var(--ca-border);
   }
 
-  ca-sortable-list {
-    width: 100%;
-
-    &::part(list) {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-      justify-content: center;
-    }
-
-    ca-sidejobs-list-item {
-      border-bottom: var(--ca-border);
-
-      &:nth-child(2n) {
-        background-color: var(--ca-table-row-odd-color);
-      }
+  ca-sidejobs-list-item {
+    &:nth-child(2n) {
+      background-color: var(--ca-table-row-odd-color);
     }
   }
 `;

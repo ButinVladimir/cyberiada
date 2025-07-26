@@ -21,7 +21,7 @@ import { type IGlobalState } from '@state/global-state';
 import { type IMessageLogState } from '@state/message-log-state';
 import { decorators } from '@state/container';
 import { TYPES } from '@state/types';
-import { IClone, IMakeCloneParameters, ICloneParameterValues } from './interfaces';
+import { IClone, IMakeCloneParameters } from './interfaces';
 import { CloneTemplateName } from './types';
 import { ICloneTemplate } from './interfaces/clone-template';
 
@@ -54,8 +54,8 @@ export class Clone implements IClone {
   private _autoUpgradeEnabled: boolean;
   private _experienceMultiplier: number;
 
-  private _attributes!: Map<Attribute, ICloneParameterValues>;
-  private _skills!: Map<Skill, ICloneParameterValues>;
+  private _attributes!: Map<Attribute, number>;
+  private _skills!: Map<Skill, number>;
 
   constructor(parameters: IMakeCloneParameters) {
     this._id = parameters.id;
@@ -68,6 +68,13 @@ export class Clone implements IClone {
     this._autoUpgradeEnabled = parameters.autoUpgradeEnabled;
     this._experienceMultiplier = 1;
 
+    this.initSynchronization();
+    this.initExperience();
+    this.initAttributes();
+    this.initSkills();
+
+    this.recalculateParameters();
+
     this._stateUiConnector.registerEventEmitter(this, [
       '_name',
       '_level',
@@ -77,13 +84,6 @@ export class Clone implements IClone {
       '_skills',
       '_experienceMultiplier',
     ]);
-
-    this.initSynchronization();
-    this.initExperience();
-    this.initAttributes();
-    this.initSkills();
-
-    this.recalculateParameters();
   }
 
   get id() {
@@ -157,6 +157,10 @@ export class Clone implements IClone {
   }
 
   upgradeMaxLevel() {
+    if (!this._globalState.unlockedFeatures.isFeatureUnlocked(Feature.companyManagement)) {
+      return false;
+    }
+
     const level = binarySearchDecimal(this._level, this._globalState.development.level, this.handleCheckLevelUpgrade);
 
     if (level <= this._level) {
@@ -178,20 +182,12 @@ export class Clone implements IClone {
     );
   }
 
-  getBaseAttributeValue(attribute: Attribute): number {
-    return this._attributes.get(attribute)!.baseValue;
-  }
-
   getTotalAttributeValue(attribute: Attribute): number {
-    return this._attributes.get(attribute)!.totalValue;
-  }
-
-  getBaseSkillValue(skill: Skill): number {
-    return this._skills.get(skill)!.baseValue;
+    return this._attributes.get(attribute)!;
   }
 
   getTotalSkillValue(skill: Skill): number {
-    return this._skills.get(skill)!.totalValue;
+    return this._skills.get(skill)!;
   }
 
   recalculate(): void {
@@ -226,27 +222,15 @@ export class Clone implements IClone {
   }
 
   private initAttributes() {
-    this._attributes = new Map<Attribute, ICloneParameterValues>();
+    this._attributes = new Map<Attribute, number>();
 
-    ATTRIBUTES.forEach((attribute) =>
-      this._attributes.set(attribute, {
-        baseValue: 0,
-        totalValue: 0,
-      }),
-    );
-
-    this._skills = new Map<Skill, ICloneParameterValues>();
+    ATTRIBUTES.forEach((attribute) => this._attributes.set(attribute, 0));
   }
 
   private initSkills() {
-    this._skills = new Map<Skill, ICloneParameterValues>();
+    this._skills = new Map<Skill, number>();
 
-    SKILLS.forEach((skill) =>
-      this._skills.set(skill, {
-        baseValue: 0,
-        totalValue: 0,
-      }),
-    );
+    SKILLS.forEach((skill) => this._skills.set(skill, 0));
   }
 
   private recalculateLevel(): void {
@@ -277,10 +261,7 @@ export class Clone implements IClone {
       const baseValue = calculateTierLinear(this._level, this._tier, templateValues);
       const totalValue = Math.floor(baseValue);
 
-      this._attributes.set(attribute, {
-        baseValue,
-        totalValue,
-      });
+      this._attributes.set(attribute, totalValue);
     });
   }
 
@@ -291,10 +272,7 @@ export class Clone implements IClone {
       const baseValue = calculateTierLinear(this._level, this._tier, templateValues);
       const totalValue = Math.floor(baseValue);
 
-      this._skills.set(skill, {
-        baseValue,
-        totalValue,
-      });
+      this._skills.set(skill, totalValue);
     });
   }
 

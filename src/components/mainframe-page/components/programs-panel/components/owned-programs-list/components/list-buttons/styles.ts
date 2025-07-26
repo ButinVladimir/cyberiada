@@ -21,6 +21,10 @@ const styles = css`
       justify-content: flex-start;
     }
   }
+
+  .tooltip-content p {
+    margin: 0;
+  }
 `;
 
 export default styles;

@@ -115,9 +115,9 @@ export class PurchaseCloneDialog extends BaseComponent {
           <div class="body">
             <p class="hint">
               ${msg(`Select clone name, template, tier and level to purchase it.
-  Level cannot be above current development level.
-  Tier is limited depending on gained favors.
-  Synchronization is earned by capturing districts and gaining certain favors.`)}
+Level cannot be above current development level.
+Tier is limited depending on gained favors.
+Synchronization is earned by capturing districts and gaining certain favors.`)}
             </p>
 
             <div class=${inputsContainerClasses}>

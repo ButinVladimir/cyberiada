@@ -69,19 +69,24 @@ export class MainframeHardwarePanelArticleButtons extends BaseComponent {
     }
 
     const formattedIncrease = this._controller.formatter.formatNumberDecimal(this.increase);
+    const hotkey = this._controller.getHotkey(this._parameter.type);
 
     return html`
       <div class="buttons">
-        <sl-button
-          ${ref(this._buyMaxButtonRef)}
-          ?disabled=${this.disabledBuyAll}
-          variant="default"
-          type="button"
-          size="medium"
-          @click=${this.handleBuyMax}
-        >
-          ${COMMON_TEXTS.buyMax()}
-        </sl-button>
+        <sl-tooltip>
+          <span slot="content">${COMMON_TEXTS.hotkey(hotkey)}</span>
+
+          <sl-button
+            ${ref(this._buyMaxButtonRef)}
+            ?disabled=${this.disabledBuyAll}
+            variant="default"
+            type="button"
+            size="medium"
+            @click=${this.handleBuyMax}
+          >
+            ${COMMON_TEXTS.buyMax()}
+          </sl-button>
+        </sl-tooltip>
 
         <sl-button
           ${ref(this._buyButtonRef)}

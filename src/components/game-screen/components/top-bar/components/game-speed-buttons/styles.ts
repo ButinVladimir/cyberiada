@@ -11,6 +11,10 @@ const styles = css`
   sl-icon-button::part(base) {
     padding: var(--sl-spacing-small);
   }
+
+  div.tooltip-content p {
+    margin: 0;
+  }
 `;
 
 export default styles;

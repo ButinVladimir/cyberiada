@@ -15,9 +15,7 @@ export interface IClone {
   upgradeMaxLevel(): boolean;
   increaseExperience(delta: number): void;
   getLevelRequirements(level: number): number;
-  getBaseAttributeValue(attribute: Attribute): number;
   getTotalAttributeValue(attribute: Attribute): number;
-  getBaseSkillValue(skill: Skill): number;
   getTotalSkillValue(skill: Skill): number;
   recalculate(): void;
   removeAllEventListeners(): void;

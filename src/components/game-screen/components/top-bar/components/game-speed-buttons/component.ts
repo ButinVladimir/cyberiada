@@ -7,6 +7,7 @@ import {
   ConfirmationAlertSubmitEvent,
 } from '@components/game-screen/components/confirmation-alert/events';
 import { BaseComponent, GameStateAlert } from '@shared/index';
+import { COMMON_TEXTS } from '@texts/index';
 import { GameSpeedButtonsController } from './controller';
 import { GameSpeedButtonProps } from './interfaces';
 import { GAME_SPEED_TEXTS } from './constants';
@@ -71,7 +72,10 @@ export class GameSpeedButtons extends BaseComponent {
 
     return html`
       <sl-tooltip>
-        <span slot="content"> ${GAME_SPEED_TEXTS[gameSpeed]()} </span>
+        <div class="tooltip-content" slot="content">
+          <p>${GAME_SPEED_TEXTS[gameSpeed]()}</p>
+          <p>${COMMON_TEXTS.hotkey(this._controller.getGameSpeedHotkey(gameSpeed))}</p>
+        </div>
 
         <sl-icon-button
           name=${icon}

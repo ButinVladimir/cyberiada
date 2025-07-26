@@ -1,6 +1,7 @@
 import { ISerializeable } from '@shared/interfaces';
 import { Language, Theme, MessageEvent, LongNumberFormat, GameAlert, NotificationType } from '@shared/types';
 import { ISettingsSerializedState } from './settings-serialized-state';
+import { ISettingsHotkeys } from './settings-hotkeys';
 
 export interface ISettingsState extends ISerializeable<ISettingsSerializedState> {
   language: Language;
@@ -14,6 +15,7 @@ export interface ISettingsState extends ISerializeable<ISettingsSerializedState>
   maxUpdatesPerTick: number;
   longNumberFormat: LongNumberFormat;
   mapCellSize: number;
+  hotkeys: ISettingsHotkeys;
   isMessageEventEnabled(event: MessageEvent): boolean;
   isGameAlertEnabled(gameAlert: GameAlert): boolean;
   isNotificationTypeEnabled(notificationType: NotificationType): boolean;
