@@ -1512,16 +1512,6 @@ Clones could be assigned to sidejobs on company page under sidejobs tab.</source
   <source>Purchase clone</source>
   <target state="translated">Приобрести клона</target>
 </trans-unit>
-<trans-unit id="s9d4779a53f502213">
-  <source>Select clone name, template, tier and level to purchase it.
-Level cannot be above current development level.
-Tier is limited depending on gained favors.
-Synchronization is earned by capturing districts and gaining certain favors.</source>
-  <target state="translated">Выберите имя клона, шаблон, ранг и уровень, чтобы приобрести его.
-Уровень не может быть выше текущего уровня разработки.
-Ранг ограничен и зависит от полученных услуг.
-Синхронизацию можно получить, захватывая районы и получая определенные услуги.</target>
-</trans-unit>
 <trans-unit id="sef49aec68fd1dc66">
   <source>Name</source>
   <target state="translated">Имя</target>
@@ -1633,14 +1623,6 @@ Clones cannot have level above current development level but they can store exce
 <trans-unit id="sd2fe9960345d5698">
   <source>Assign clone to sidejob</source>
   <target state="translated">Назначить клона на подработку</target>
-</trans-unit>
-<trans-unit id="sc9c2d0feca00bc58">
-  <source>Select clone, district and sidejob name to assign clone.
-Clone can be assigned only to one sidejob.
-Sidejobs availability depends on unlocked features and district connectivity.</source>
-  <target state="translated">Выберите клона, района и подработку, чтобы назначить клона на нее.
-Клон может быть назначен только на одну подработку.
-Доступность подработок зависит от разблокированных возможностей и связности района.</target>
 </trans-unit>
 <trans-unit id="s5e2654fb8587f442">
   <source>Clone</source>
@@ -1795,20 +1777,6 @@ After making district captured, one more distict will become contested.
 Programs on top have higher priority. Autoupgrade for programs won't change their tier but will attempt to increase level.</source>
   <target state="translated">Приоритет автоулучшения программы может быть изменен перетаскиванием ее за название.
 Программы наверху списка имеют больший приоритет. Автоулучшение программ пытается улучшить их уровень и не меняет их ранг.</target>
-</trans-unit>
-<trans-unit id="s6b55b3cdd4573ecd">
-  <source>To make a program run, a process has to be start for it.
-Topmost processes for non-autoscalable programs have more priority when cores are assigned to processes.
-Process for autoscalable program has cores and RAM assigned last.
-Only one process for autoscalable program can run at same time.
-Process minimal completion time is limited.
-Processes can be rearranged by dragging them by their title.</source>
-  <target state="translated">Чтобы программа выполнялась, для нее должен быть начат процесс.
-Процессы наверху списка для неавтомасштабируемых программ имеют больший приоритет, когда ядра распределяются по процессам.
-Для процесса для автомасштабируемой программы ядра и память назначаются в последнюю очередь.
-Только один процесс для автомасштабируемой программы может выполняться одновременно.
-Минимальное время выполнения программы ограничено.
-Порядок процессов можно поменять, перетаскивая их за названия.</target>
 </trans-unit>
 <trans-unit id="s05de05972d9e6bf5">
   <source>Uses cores</source>
@@ -1971,6 +1939,68 @@ New program is available.
 <trans-unit id="s3aedc9febeb0eb79">
   <source>Assign clone</source>
   <target state="translated">Назначить клона</target>
+</trans-unit>
+<trans-unit id="sf944b762ff1afa9f">
+  <source><x id="0" equiv-text="${value}"/> years</source>
+  <target state="translated"><x id="0" equiv-text="${value}"/> лет</target>
+</trans-unit>
+<trans-unit id="s9976b5befb314c64">
+  <source><x id="0" equiv-text="${value}"/> days</source>
+  <target state="translated"><x id="0" equiv-text="${value}"/> дней</target>
+</trans-unit>
+<trans-unit id="sb97bc1bc5aac2eba">
+  <source><x id="0" equiv-text="${value}"/> hours</source>
+  <target state="translated"><x id="0" equiv-text="${value}"/> часов</target>
+</trans-unit>
+<trans-unit id="s59762eaa69a60688">
+  <source><x id="0" equiv-text="${value}"/> minutes</source>
+  <target state="translated"><x id="0" equiv-text="${value}"/> минут</target>
+</trans-unit>
+<trans-unit id="se7e1ababbc4868b8">
+  <source><x id="0" equiv-text="${value}"/> seconds</source>
+  <target state="translated"><x id="0" equiv-text="${value}"/> секунд</target>
+</trans-unit>
+<trans-unit id="sacbb1ccb24f8f136">
+  <source><x id="0" equiv-text="${biggerText}"/> and <x id="1" equiv-text="${smallerText}"/></source>
+  <target state="translated"><x id="0" equiv-text="${biggerText}"/> и <x id="1" equiv-text="${smallerText}"/></target>
+</trans-unit>
+<trans-unit id="s2c823a8ef5270a9d">
+  <source>Hotkey: <x id="0" equiv-text="${hotkey?.toUpperCase()}"/></source>
+  <target state="translated">Горячая клавиша: <x id="0" equiv-text="${hotkey?.toUpperCase()}"/></target>
+</trans-unit>
+<trans-unit id="sec67c035f124318c">
+  <source>To make a program run, a process has to be start for it.
+1 core is always assigned to autoscalable program if process for it is active.
+Topmost processes for non-autoscalable programs have more priority when cores are assigned to processes.
+After that, process for autoscalable program has remaining cores and RAM assigned.
+Only one process for autoscalable program can run at same time.
+Process minimal completion time is limited.
+Processes can be rearranged by dragging them by their title.</source>
+  <target state="translated">Чтобы программа выполнялась, для нее должен быть начат процесс.
+Для автомасштабируемых активных программ всегда назначается хотя бы 1 ядро.
+Процессы наверху списка для неавтомасштабируемых программ имеют больший приоритет, когда ядра распределяются по процессам.
+Для процесса для автомасштабируемой программы ядра и память назначаются в последнюю очередь.
+Только один процесс для автомасштабируемой программы может выполняться одновременно.
+Минимальное время выполнения программы ограничено.
+Порядок процессов можно поменять, перетаскивая их за названия.</target>
+</trans-unit>
+<trans-unit id="s9d4779a53f502213">
+  <source>Select clone name, template, tier and level to purchase it.
+Level cannot be above current development level.
+Tier is limited depending on gained favors.
+Synchronization is earned by capturing districts and gaining certain favors.</source>
+  <target state="translated">Выберите имя клона, шаблон, ранг и уровень, чтобы приобрести его.
+Уровень не может быть выше текущего уровня разработки.
+Ранг ограничен и зависит от полученных услуг.
+Синхронизацию можно получить, захватывая районы и получая определенные услуги.</target>
+</trans-unit>
+<trans-unit id="sc9c2d0feca00bc58">
+  <source>Select clone, district and sidejob name to assign clone.
+Clone can be assigned only to one sidejob.
+Sidejobs availability depends on unlocked features and district connectivity.</source>
+  <target state="translated">Выберите клона, района и подработку, чтобы назначить клона на нее.
+Клон может быть назначен только на одну подработку.
+Доступность подработок зависит от разблокированных возможностей и связности района.</target>
 </trans-unit>
 </body>
 </file>

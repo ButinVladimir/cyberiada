@@ -127,8 +127,8 @@ export class AssignCloneSidejobDialog extends BaseComponent {
           <div class="body">
             <p class="hint">
               ${msg(`Select clone, district and sidejob name to assign clone.
-  Clone can be assigned only to one sidejob.
-  Sidejobs availability depends on unlocked features and district connectivity.`)}
+Clone can be assigned only to one sidejob.
+Sidejobs availability depends on unlocked features and district connectivity.`)}
             </p>
 
             <div class=${inputsContainerClasses}>

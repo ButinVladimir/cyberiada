@@ -2,7 +2,9 @@ import { XORShift128Plus } from 'random-seedable';
 import { injectable, inject } from 'inversify';
 import { v4 as uuid } from 'uuid';
 import { TYPES } from '@state/types';
-import { IGlobalSerializedState } from './interfaces/serialized-states/global-serialized-state';
+import { decorators } from '@state/container';
+import { type IStateUIConnector } from '@state/state-ui-connector';
+import { IGlobalSerializedState, IGlobalState } from './interfaces';
 import type {
   ITimeState,
   IScenarioState,
@@ -18,14 +20,18 @@ import type {
   ISynchronizationParameter,
   IAvailableActivities,
 } from './interfaces';
-import { IGlobalState } from './interfaces/global-state';
 import { GameSpeed } from './types';
 import { ConnectivityState, ThreatState } from './parameters';
 import { SynchronizationParameter } from './parameters/synchronization-parameter';
 import { AvailableActivities } from './parameters/available-activities-state';
 
+const { lazyInject } = decorators;
+
 @injectable()
 export class GlobalState implements IGlobalState {
+  @lazyInject(TYPES.StateUIConnector)
+  private _stateUiConnector!: IStateUIConnector;
+
   private _scenarioState: IScenarioState;
   private _factionState: IFactionState;
   private _timeState: ITimeState;
@@ -72,6 +78,8 @@ export class GlobalState implements IGlobalState {
     this._random = new XORShift128Plus(0, 0n);
     this._gameSpeed = GameSpeed.normal;
     this._runId = uuid();
+
+    this._stateUiConnector.registerEventEmitter(this, ['_gameSpeed']);
   }
 
   get random() {

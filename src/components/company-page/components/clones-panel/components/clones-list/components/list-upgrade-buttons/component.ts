@@ -4,6 +4,7 @@ import { customElement } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import SlButton from '@shoelace-style/shoelace/dist/components/button/button.component.js';
 import { BaseComponent, UPGRADE_MAX_VALUES } from '@shared/index';
+import { COMMON_TEXTS } from '@texts/index';
 import { ClonesListUpgradeButtonsController } from './controller';
 import styles from './styles';
 
@@ -25,18 +26,24 @@ export class ClonesListUpgradeButtons extends BaseComponent {
   }
 
   protected renderDesktop() {
+    const upgradeLevelHotkey = this._controller.getUpgradeLevelHotkey();
+
     return html`
       <sl-button-group>
-        <sl-button
-          ${ref(this._upgradeLevelMaxButton)}
-          disabled
-          variant=${UPGRADE_MAX_VALUES.buttonVariant}
-          @click=${this.handleUpgradeMaxAllLevels}
-        >
-          <sl-icon slot="prefix" name=${UPGRADE_MAX_VALUES.icon}></sl-icon>
+        <sl-tooltip>
+          <span slot="content">${COMMON_TEXTS.hotkey(upgradeLevelHotkey)}</span>
 
-          ${msg('Upgrade all levels')}
-        </sl-button>
+          <sl-button
+            ${ref(this._upgradeLevelMaxButton)}
+            disabled
+            variant=${UPGRADE_MAX_VALUES.buttonVariant}
+            @click=${this.handleUpgradeMaxAllLevels}
+          >
+            <sl-icon slot="prefix" name=${UPGRADE_MAX_VALUES.icon}></sl-icon>
+
+            ${msg('Upgrade all levels')}
+          </sl-button>
+        </sl-tooltip>
       </sl-button-group>
     `;
   }

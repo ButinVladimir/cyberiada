@@ -1,5 +1,5 @@
-import { IClone } from '@state/company-state/states/clone-factory/interfaces/clone';
-import { BaseController } from '@shared/base-controller';
+import { IClone } from '@state/company-state';
+import { BaseController, Hotkey } from '@shared/index';
 
 export class ClonesListUpgradeButtonsController extends BaseController {
   checkCanUpgradeMaxAllLevels(): boolean {
@@ -8,6 +8,10 @@ export class ClonesListUpgradeButtonsController extends BaseController {
 
   upgradeMaxAllLevels() {
     this.companyState.clones.upgradeMaxAllLevels();
+  }
+
+  getUpgradeLevelHotkey(): string | undefined {
+    return this.settingsState.hotkeys.getKeyByHotkey(Hotkey.upgradeClonesLevel);
   }
 
   private checkCanUpgradeMaxLevel = (clone: IClone) => {

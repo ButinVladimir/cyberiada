@@ -24,7 +24,7 @@ import {
   SidejobAlert,
 } from './types';
 
-export const CURRENT_VERSION = GameVersion['0.2.0'];
+export const CURRENT_VERSION = GameVersion['0.2.1'];
 
 export const LANGUAGES: Language[] = Object.values(Language);
 
