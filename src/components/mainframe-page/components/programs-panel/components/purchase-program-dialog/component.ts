@@ -39,10 +39,10 @@ export class PurchaseProgramDialog extends BaseComponent {
   private _buttonsRef = createRef<PurchaseProgramDialogButtons>();
 
   @property({
-    attribute: 'is-open',
+    attribute: 'open',
     type: Boolean,
   })
-  isOpen = false;
+  open = false;
 
   @state()
   private _programName?: ProgramName = undefined;
@@ -86,7 +86,7 @@ export class PurchaseProgramDialog extends BaseComponent {
   updated(_changedProperties: Map<string, any>) {
     super.updated(_changedProperties);
 
-    if (_changedProperties.has('isOpen')) {
+    if (_changedProperties.has('open')) {
       this._programName = undefined;
       this._tier = 0;
       this._level = this._controller.developmentLevel;
@@ -111,7 +111,7 @@ export class PurchaseProgramDialog extends BaseComponent {
 
     return html`
       <form id="purchase-program-dialog" @submit=${this.handleSubmit}>
-        <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
+        <sl-dialog ?open=${this.open} @sl-request-close=${this.handleClose}>
           <h4 slot="label" class="title">${msg('Purchase program')}</h4>
 
           <div class="body">

@@ -36,10 +36,10 @@ export class AssignCloneSidejobDialog extends BaseComponent {
   private _sidejobNameInputRef = createRef<SlSelect>();
 
   @property({
-    attribute: 'is-open',
+    attribute: 'open',
     type: Boolean,
   })
-  isOpen = false;
+  open = false;
 
   @state()
   private _cloneId?: string;
@@ -97,7 +97,7 @@ export class AssignCloneSidejobDialog extends BaseComponent {
   updated(_changedProperties: PropertyValues) {
     super.updated(_changedProperties);
 
-    if (_changedProperties.has('isOpen')) {
+    if (_changedProperties.has('open')) {
       this._cloneId = undefined;
       this._districtIndex = undefined;
       this._sidejobName = undefined;
@@ -121,7 +121,7 @@ export class AssignCloneSidejobDialog extends BaseComponent {
 
     return html`
       <form id="assign-clone-sidejob-dialog" @submit=${this.handleSubmit}>
-        <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
+        <sl-dialog ?open=${this.open} @sl-request-close=${this.handleClose}>
           <h4 slot="label" class="title">${msg('Assign clone to sidejob')}</h4>
 
           <div class="body">

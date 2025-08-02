@@ -86,7 +86,7 @@ Clones cannot have level above current development level but they can store exce
       <ca-clones-list @open-clone-list-item-dialog=${this.handleCloneListItemDialogOpen}></ca-clones-list>
 
       <ca-purchase-clone-dialog
-        ?is-open=${this._isPurchaseCloneDialogOpen}
+        ?open=${this._isPurchaseCloneDialogOpen}
         @purchase-clone-dialog-close=${this.handlePurchaseCloneDialogClose}
       ></ca-purchase-clone-dialog>
 
@@ -96,7 +96,7 @@ Clones cannot have level above current development level but they can store exce
           'rename-clone',
           () => html`
             <ca-rename-clone-dialog
-              ?is-open=${this._cloneListItemDialogOpen}
+              ?open=${this._cloneListItemDialogOpen}
               @close-clone-list-item-dialog=${this.handleCloneListItemDialogClose}
             ></ca-rename-clone-dialog>
           `,

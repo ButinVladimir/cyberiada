@@ -182,11 +182,11 @@
     },
     {
       "name": "ca-purchase-clone-dialog",
-      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `_nameInputRef` {`Ref<SlInput>`} - \n\n  * `_cloneTemplateInputRef` {`Ref<SlSelect>`} - \n\n  * `_tierInputRef` {`Ref<SlSelect>`} - \n\n  * `_levelInputRef` {`Ref<SlInput>`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `_name` {`string`} - \n\n  * `_cloneTemplateName` - \n\n  * `_tier` {`number`} - \n\n  * `_level` {`number`} - \n\n  * `_clone` - \n\n  * `_buttonsRef` {`Ref<PurchaseCloneDialogButtons>`} - \n\n  * `handlePartialUpdate` - \n\n  * `renderCloneTemplateOption` - \n\n  * `renderTierOptions` - \n\n  * `handleClose` - \n\n  * `handleNameChange` - \n\n  * `handleCloneTemplateChange` - \n\n  * `handleTierChange` - \n\n  * `handleLevelChange` - \n\n  * `handleSubmit` - \n\n  * `handleGenerateName` - \n\n  * `_controller` {`PurchaseCloneDialogController`} - ",
+      "description": "Attributes:\n\n  * `open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `_nameInputRef` {`Ref<SlInput>`} - \n\n  * `_cloneTemplateInputRef` {`Ref<SlSelect>`} - \n\n  * `_tierInputRef` {`Ref<SlSelect>`} - \n\n  * `_levelInputRef` {`Ref<SlInput>`} - \n\n  * `open` {`boolean`} - \n\n  * `_name` {`string`} - \n\n  * `_cloneTemplateName` - \n\n  * `_tier` {`number`} - \n\n  * `_level` {`number`} - \n\n  * `_clone` - \n\n  * `_buttonsRef` {`Ref<PurchaseCloneDialogButtons>`} - \n\n  * `handlePartialUpdate` - \n\n  * `renderCloneTemplateOption` - \n\n  * `renderTierOptions` - \n\n  * `handleClose` - \n\n  * `handleNameChange` - \n\n  * `handleCloneTemplateChange` - \n\n  * `handleTierChange` - \n\n  * `handleLevelChange` - \n\n  * `handleSubmit` - \n\n  * `handleGenerateName` - \n\n  * `_controller` {`PurchaseCloneDialogController`} - ",
       "attributes": [
         {
-          "name": "is-open",
-          "description": "`is-open` {`boolean`} - \n\nProperty: isOpen\n\nDefault: false",
+          "name": "open",
+          "description": "`open` {`boolean`} - \n\nProperty: open\n\nDefault: false",
           "valueSet": "v"
         }
       ]
@@ -204,16 +204,16 @@
     },
     {
       "name": "ca-purchase-clone-dialog-description",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `protectedhasPartialUpdate` {`boolean`} - \n\n  * `_clone` - \n\n  * `_costElRef` {`Ref<HTMLSpanElement>`} - \n\n  * `renderSynchronization` - \n\n  * `renderParameters` - \n\n  * `renderAttribute` - \n\n  * `renderSkill` - \n\n  * `renderExperienceMultiplier` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`PurchaseCloneDialogDescriptionTextController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_clone` - \n\n  * `_costElRef` {`Ref<HTMLSpanElement>`} - \n\n  * `renderSynchronization` - \n\n  * `renderParameters` - \n\n  * `renderAttribute` - \n\n  * `renderSkill` - \n\n  * `renderExperienceMultiplier` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`PurchaseCloneDialogDescriptionTextController`} - ",
       "attributes": []
     },
     {
       "name": "ca-rename-clone-dialog",
-      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `_newName` {`string`} - \n\n  * `_clone` - \n\n  * `_newNameInputRef` {`Ref<SlInput>`} - \n\n  * `handleClose` - \n\n  * `handleNewNameChange` - \n\n  * `handleGenerateName` - \n\n  * `handleSubmit` - \n\n  * `_controller` {`RenameCloneDialogController`} - ",
+      "description": "Attributes:\n\n  * `open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `open` {`boolean`} - \n\n  * `_newName` {`string`} - \n\n  * `_clone` - \n\n  * `_newNameInputRef` {`Ref<SlInput>`} - \n\n  * `handleClose` - \n\n  * `handleNewNameChange` - \n\n  * `handleGenerateName` - \n\n  * `handleSubmit` - \n\n  * `_controller` {`RenameCloneDialogController`} - ",
       "attributes": [
         {
-          "name": "is-open",
-          "description": "`is-open` {`boolean`} - \n\nProperty: isOpen\n\nDefault: false",
+          "name": "open",
+          "description": "`open` {`boolean`} - \n\nProperty: open\n\nDefault: false",
           "valueSet": "v"
         }
       ]
@@ -225,11 +225,11 @@
     },
     {
       "name": "ca-assign-clone-sidejob-dialog",
-      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_cloneIdInputRef` {`Ref<SlSelect>`} - \n\n  * `_districtIndexInputRef` {`Ref<SlSelect>`} - \n\n  * `_sidejobNameInputRef` {`Ref<SlSelect>`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `_cloneId` {`string | undefined`} - \n\n  * `_districtIndex` {`number | undefined`} - \n\n  * `_sidejobName` - \n\n  * `_sidejob` - \n\n  * `_existingSidejob` - \n\n  * `_buttonsRef` {`Ref<AssignCloneSidejobDialogButtons>`} - \n\n  * `renderCloneOption` - \n\n  * `renderDistrictOption` - \n\n  * `renderSidejobName` - \n\n  * `handleClose` - \n\n  * `handleCloneIdChange` - \n\n  * `handleSidejobNameChange` - \n\n  * `handleDistrictIndexChange` - \n\n  * `handleSubmit` - \n\n  * `handleConfirmConfirmationAlert` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`AssignCloneSidejobDialogController`} - ",
+      "description": "Attributes:\n\n  * `open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_cloneIdInputRef` {`Ref<SlSelect>`} - \n\n  * `_districtIndexInputRef` {`Ref<SlSelect>`} - \n\n  * `_sidejobNameInputRef` {`Ref<SlSelect>`} - \n\n  * `open` {`boolean`} - \n\n  * `_cloneId` {`string | undefined`} - \n\n  * `_districtIndex` {`number | undefined`} - \n\n  * `_sidejobName` - \n\n  * `_sidejob` - \n\n  * `_existingSidejob` - \n\n  * `_buttonsRef` {`Ref<AssignCloneSidejobDialogButtons>`} - \n\n  * `renderCloneOption` - \n\n  * `renderDistrictOption` - \n\n  * `renderSidejobName` - \n\n  * `handleClose` - \n\n  * `handleCloneIdChange` - \n\n  * `handleSidejobNameChange` - \n\n  * `handleDistrictIndexChange` - \n\n  * `handleSubmit` - \n\n  * `handleConfirmConfirmationAlert` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`AssignCloneSidejobDialogController`} - ",
       "attributes": [
         {
-          "name": "is-open",
-          "description": "`is-open` {`boolean`} - \n\nProperty: isOpen\n\nDefault: false",
+          "name": "open",
+          "description": "`open` {`boolean`} - \n\nProperty: open\n\nDefault: false",
           "valueSet": "v"
         }
       ]
@@ -302,7 +302,7 @@
     },
     {
       "name": "ca-confirmation-alert",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_gameAlertToggleRef` {`Ref<SlCheckbox>`} - \n\n  * `_gameAlert` - \n\n  * `_gameAlertKey` {`string | undefined`} - \n\n  * `_message` {`string`} - \n\n  * `_isOpen` {`boolean`} - \n\n  * `_alertToggled` {`boolean`} - \n\n  * `handleOpen` - \n\n  * `handleClose` - \n\n  * `handleSubmit` - \n\n  * `handleToggleAlert` - \n\n  * `_controller` {`ConfirmationAlertController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_gameAlertToggleRef` {`Ref<SlCheckbox>`} - \n\n  * `_gameAlert` - \n\n  * `_gameAlertKey` {`string | undefined`} - \n\n  * `_message` {`string`} - \n\n  * `_open` {`boolean`} - \n\n  * `_alertToggled` {`boolean`} - \n\n  * `handleOpen` - \n\n  * `handleClose` - \n\n  * `handleSubmit` - \n\n  * `handleToggleAlert` - \n\n  * `_controller` {`ConfirmationAlertController`} - ",
       "attributes": []
     },
     {
@@ -458,11 +458,11 @@
     },
     {
       "name": "ca-start-process-dialog",
-      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `_programInputRef` {`Ref<SlSelect>`} - \n\n  * `_threadsInputRef` {`Ref<SlInput>`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `_programName` - \n\n  * `_threads` {`number`} - \n\n  * `_program` - \n\n  * `_existingProcess` - \n\n  * `handleClose` - \n\n  * `handleProgramChange` - \n\n  * `handleThreadsChange` - \n\n  * `handleSubmit` - \n\n  * `handleConfirmConfirmationAlert` - \n\n  * `startProcess` - \n\n  * `formatProgramSelectItem` - \n\n  * `calculateMaxThreads` - \n\n  * `checkAvailability` - \n\n  * `_controller` {`StartProcessDialogController`} - ",
+      "description": "Attributes:\n\n  * `open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `_programInputRef` {`Ref<SlSelect>`} - \n\n  * `_threadsInputRef` {`Ref<SlInput>`} - \n\n  * `open` {`boolean`} - \n\n  * `_programName` - \n\n  * `_threads` {`number`} - \n\n  * `_program` - \n\n  * `_existingProcess` - \n\n  * `handleClose` - \n\n  * `handleProgramChange` - \n\n  * `handleThreadsChange` - \n\n  * `handleSubmit` - \n\n  * `handleConfirmConfirmationAlert` - \n\n  * `startProcess` - \n\n  * `formatProgramSelectItem` - \n\n  * `calculateMaxThreads` - \n\n  * `checkAvailability` - \n\n  * `_controller` {`StartProcessDialogController`} - ",
       "attributes": [
         {
-          "name": "is-open",
-          "description": "`is-open` {`boolean`} - \n\nProperty: isOpen\n\nDefault: false",
+          "name": "open",
+          "description": "`open` {`boolean`} - \n\nProperty: open\n\nDefault: false",
           "valueSet": "v"
         }
       ]
@@ -533,11 +533,11 @@
     },
     {
       "name": "ca-purchase-program-dialog",
-      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `_programInputRef` {`Ref<SlSelect>`} - \n\n  * `_tierInputRef` {`Ref<SlSelect>`} - \n\n  * `_levelInputRef` {`Ref<SlInput>`} - \n\n  * `_buttonsRef` {`Ref<PurchaseProgramDialogButtons>`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `_programName` - \n\n  * `_tier` {`number`} - \n\n  * `_level` {`number`} - \n\n  * `_program` - \n\n  * `_existingProgram` - \n\n  * `renderProgramOption` - \n\n  * `renderTierOptions` - \n\n  * `handleClose` - \n\n  * `handleProgramChange` - \n\n  * `handleTierChange` - \n\n  * `handleLevelChange` - \n\n  * `handleSubmit` - \n\n  * `handleConfirmConfirmationAlert` - \n\n  * `purchase` - \n\n  * `checkAvailability` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`PurchaseProgramDialogController`} - ",
+      "description": "Attributes:\n\n  * `open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `_programInputRef` {`Ref<SlSelect>`} - \n\n  * `_tierInputRef` {`Ref<SlSelect>`} - \n\n  * `_levelInputRef` {`Ref<SlInput>`} - \n\n  * `_buttonsRef` {`Ref<PurchaseProgramDialogButtons>`} - \n\n  * `open` {`boolean`} - \n\n  * `_programName` - \n\n  * `_tier` {`number`} - \n\n  * `_level` {`number`} - \n\n  * `_program` - \n\n  * `_existingProgram` - \n\n  * `renderProgramOption` - \n\n  * `renderTierOptions` - \n\n  * `handleClose` - \n\n  * `handleProgramChange` - \n\n  * `handleTierChange` - \n\n  * `handleLevelChange` - \n\n  * `handleSubmit` - \n\n  * `handleConfirmConfirmationAlert` - \n\n  * `purchase` - \n\n  * `checkAvailability` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`PurchaseProgramDialogController`} - ",
       "attributes": [
         {
-          "name": "is-open",
-          "description": "`is-open` {`boolean`} - \n\nProperty: isOpen\n\nDefault: false",
+          "name": "open",
+          "description": "`open` {`boolean`} - \n\nProperty: open\n\nDefault: false",
           "valueSet": "v"
         }
       ]
@@ -645,38 +645,49 @@
     },
     {
       "name": "ca-alert-filter-dialog",
-      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `renderGameAlertCheckbox` - \n\n  * `handleClose` - \n\n  * `handleToggleAlert` - \n\n  * `handleSubmit` - \n\n  * `_controller` {`AlertFilterDialogController`} - ",
+      "description": "Attributes:\n\n  * `open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `open` {`boolean`} - \n\n  * `renderGroup` - \n\n  * `renderGameAlertCheckbox` - \n\n  * `handleClose` - \n\n  * `handleToggleAlert` - \n\n  * `handleToggleGroup` - \n\n  * `handleToggleAll` - \n\n  * `handleSubmit` - \n\n  * `_controller` {`AlertFilterDialogController`} - ",
       "attributes": [
         {
-          "name": "is-open",
-          "description": "`is-open` {`boolean`} - \n\nProperty: isOpen\n\nDefault: false",
+          "name": "open",
+          "description": "`open` {`boolean`} - \n\nProperty: open\n\nDefault: false",
           "valueSet": "v"
         }
       ]
     },
     {
       "name": "ca-events-filter-panel",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_isMessageFilterOpen` {`boolean`} - \n\n  * `_isAlertFilterOpen` {`boolean`} - \n\n  * `_isNotificationTypeFilterOpen` {`boolean`} - \n\n  * `handleMessageFilterDialogOpen` - \n\n  * `handleMessageFilterDialogClose` - \n\n  * `handleAlertFilterDialogOpen` - \n\n  * `handleAlertFilterDialogClose` - \n\n  * `handleNotificationTypeFilterDialogOpen` - \n\n  * `handleNotificationTypeFilterDialogClose` - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_messageFilterOpen` {`boolean`} - \n\n  * `_alertFilterOpen` {`boolean`} - \n\n  * `_notificationTypeFilterOpen` {`boolean`} - \n\n  * `_hotkeysDialogOpen` {`boolean`} - \n\n  * `handleMessageFilterDialogOpen` - \n\n  * `handleMessageFilterDialogClose` - \n\n  * `handleAlertFilterDialogOpen` - \n\n  * `handleAlertFilterDialogClose` - \n\n  * `handleNotificationTypeFilterDialogOpen` - \n\n  * `handleNotificationTypeFilterDialogClose` - \n\n  * `handleHotkeysDialogOpen` - \n\n  * `handleHotkeysDialogClose` - ",
       "attributes": []
     },
     {
-      "name": "ca-message-filter-dialog",
-      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `renderEventCheckbox` - \n\n  * `handleClose` - \n\n  * `handleToggleEvent` - \n\n  * `handleSubmit` - \n\n  * `_controller` {`MessageFilterDialogController`} - ",
+      "name": "ca-hotkeys-dialog",
+      "description": "Attributes:\n\n  * `open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `open` {`boolean`} - \n\n  * `_currentHotkey` - \n\n  * `renderHotkeyRow` - \n\n  * `handleClose` - \n\n  * `handleClear` - \n\n  * `handleStartAssigningHotkey` - \n\n  * `handleKeyPress` - \n\n  * `handleSubmit` - \n\n  * `_controller` {`HotkeysDialogController`} - ",
       "attributes": [
         {
-          "name": "is-open",
-          "description": "`is-open` {`boolean`} - \n\nProperty: isOpen\n\nDefault: false",
+          "name": "open",
+          "description": "`open` {`boolean`} - \n\nProperty: open\n\nDefault: false",
+          "valueSet": "v"
+        }
+      ]
+    },
+    {
+      "name": "ca-message-filter-dialog",
+      "description": "Attributes:\n\n  * `open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `open` {`boolean`} - \n\n  * `renderGroup` - \n\n  * `renderEventCheckbox` - \n\n  * `handleClose` - \n\n  * `handleToggleEvent` - \n\n  * `handleToggleGroup` - \n\n  * `handleToggleAll` - \n\n  * `handleSubmit` - \n\n  * `_controller` {`MessageFilterDialogController`} - ",
+      "attributes": [
+        {
+          "name": "open",
+          "description": "`open` {`boolean`} - \n\nProperty: open\n\nDefault: false",
           "valueSet": "v"
         }
       ]
     },
     {
       "name": "ca-notification-type-filter-dialog",
-      "description": "Attributes:\n\n  * `is-open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `isOpen` {`boolean`} - \n\n  * `renderGameAlertCheckbox` - \n\n  * `handleClose` - \n\n  * `handleToggleAlert` - \n\n  * `handleSubmit` - \n\n  * `_controller` {`NotificationTypeFilterDialogController`} - ",
+      "description": "Attributes:\n\n  * `open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `open` {`boolean`} - \n\n  * `renderGameAlertCheckbox` - \n\n  * `handleClose` - \n\n  * `handleToggleAlert` - \n\n  * `handleToggleAll` - \n\n  * `handleSubmit` - \n\n  * `_controller` {`NotificationTypeFilterDialogController`} - ",
       "attributes": [
         {
-          "name": "is-open",
-          "description": "`is-open` {`boolean`} - \n\nProperty: isOpen\n\nDefault: false",
+          "name": "open",
+          "description": "`open` {`boolean`} - \n\nProperty: open\n\nDefault: false",
           "valueSet": "v"
         }
       ]

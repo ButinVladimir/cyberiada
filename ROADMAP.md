@@ -309,7 +309,7 @@ Computational base for each district and for programs will affect mainframe hard
 
 ## Programs
 
-Programs allow to perform some actions automatically without player input. Program must be bought, program level and tier can be selected. Program level is capped by development level. Amount of cores assignable to process depends on program tier. 
+Programs allow to perform some actions automatically without player input. Program must be bought, program level and tier can be selected. Program level is capped by development level. Amount of cores assignable to process depends on program tier.
 
 Code base for each district and for programs will affect mainframe programs discount.
 
@@ -521,7 +521,8 @@ Quality oriented, all basic combat options. Some variant with high agility.
 
 # Other names
 
-Cyberiada title is already taken by novel *Cyberiad* by Stanislaw Lem, so name has to be changed at some point. Variants are:
+Cyberiada title is already taken by novel _Cyberiad_ by Stanislaw Lem, so name has to be changed at some point. Variants are:
+
 - Escaping the boundaries
 - Fragile alliances
 - A spark in the circuit

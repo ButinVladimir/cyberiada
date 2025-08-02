@@ -33,10 +33,10 @@ export class StartProcessDialog extends BaseComponent {
   private _threadsInputRef = createRef<SlInput>();
 
   @property({
-    attribute: 'is-open',
+    attribute: 'open',
     type: Boolean,
   })
-  isOpen = false;
+  open = false;
 
   @state()
   private _programName?: ProgramName = undefined;
@@ -77,7 +77,7 @@ export class StartProcessDialog extends BaseComponent {
   updated(_changedProperties: Map<string, any>) {
     super.updated(_changedProperties);
 
-    if (_changedProperties.has('isOpen')) {
+    if (_changedProperties.has('open')) {
       this._programName = undefined;
       this._threads = 1;
     }
@@ -106,7 +106,7 @@ export class StartProcessDialog extends BaseComponent {
 
     return html`
       <form id="start-process-dialog" @submit=${this.handleSubmit}>
-        <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
+        <sl-dialog ?open=${this.open} @sl-request-close=${this.handleClose}>
           <h4 slot="label" class="title">${msg('Start process')}</h4>
 
           <div class="body">

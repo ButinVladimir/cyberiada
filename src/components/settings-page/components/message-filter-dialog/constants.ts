@@ -1,5 +1,13 @@
 import { msg } from '@lit/localize';
-import { GameStateEvent, ProgramsEvent, ClonesEvent, SidejobsEvent, CityEvent } from '@shared/types';
+import { GameStateEvent, ProgramsEvent, ClonesEvent, SidejobsEvent, CityEvent, MessageEventGroup } from '@shared/index';
+
+export const MESSAGE_EVENT_GROUP_NAMES = {
+  [MessageEventGroup.gameState]: () => msg('Game state events'),
+  [MessageEventGroup.programs]: () => msg('Programs events'),
+  [MessageEventGroup.clones]: () => msg('Clones events'),
+  [MessageEventGroup.sidejobs]: () => msg('Sidejobs events'),
+  [MessageEventGroup.city]: () => msg('City events'),
+};
 
 export const MESSAGE_EVENT_NAMES = {
   [GameStateEvent.gameStarted]: () => msg('Game started'),

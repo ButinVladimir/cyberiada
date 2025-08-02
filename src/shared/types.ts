@@ -4,6 +4,7 @@ export enum GameVersion {
   '0.1.3' = '0.1.3',
   '0.2.0' = '0.2.0',
   '0.2.1' = '0.2.1',
+  '0.3.0' = '0.3.0',
 }
 
 export enum Language {
@@ -76,6 +77,14 @@ export enum CityEvent {
   districtTierIncreased = 'districtTierIncreased',
 }
 
+export enum MessageEventGroup {
+  gameState = 'gameState',
+  programs = 'programs',
+  clones = 'clones',
+  sidejobs = 'sidejobs',
+  city = 'city',
+}
+
 export type MessageEvent = GameStateEvent | ProgramsEvent | ClonesEvent | SidejobsEvent | CityEvent;
 
 export enum GameStateAlert {
@@ -102,6 +111,13 @@ export enum SidejobAlert {
   sidejobCancel = 'sidejobCancel',
   cancelAllSidejobs = 'cancelAllSidejobs',
   replaceSidejob = 'replaceSidejob',
+}
+
+export enum GameAlertGroup {
+  gameState = 'gameState',
+  programs = 'programs',
+  clones = 'clones',
+  sidejobs = 'sidejobs',
 }
 
 export type GameAlert = GameStateAlert | ProgramAlert | CloneAlert | SidejobAlert;

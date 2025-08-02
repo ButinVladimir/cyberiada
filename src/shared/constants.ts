@@ -22,9 +22,12 @@ import {
   CityEvent,
   SidejobsEvent,
   SidejobAlert,
+  MessageEventGroup,
+  GameAlertGroup,
+  Hotkey,
 } from './types';
 
-export const CURRENT_VERSION = GameVersion['0.2.1'];
+export const CURRENT_VERSION = GameVersion['0.3.0'];
 
 export const LANGUAGES: Language[] = Object.values(Language);
 
@@ -36,23 +39,24 @@ export const MISC_MENU_ITEMS: MiscMenuItem[] = Object.values(MiscMenuItem);
 
 export const SCENARIOS: Scenario[] = Object.values(Scenario);
 
-export const GAME_STATE_EVENTS: GameStateEvent[] = Object.values(GameStateEvent);
+export const MESSAGE_EVENT_GROUP_LIST = Object.values(MessageEventGroup);
 
-export const PROGRAM_EVENTS: ProgramsEvent[] = Object.values(ProgramsEvent);
+export const MESSAGE_EVENT_GROUPS = {
+  [MessageEventGroup.gameState]: Object.values(GameStateEvent),
+  [MessageEventGroup.programs]: Object.values(ProgramsEvent),
+  [MessageEventGroup.clones]: Object.values(ClonesEvent),
+  [MessageEventGroup.sidejobs]: Object.values(SidejobsEvent),
+  [MessageEventGroup.city]: Object.values(CityEvent),
+};
 
-export const CLONE_EVENTS: ClonesEvent[] = Object.values(ClonesEvent);
+export const GAME_ALERT_GROUP_LIST = Object.values(GameAlertGroup);
 
-export const SIDEJOB_EVENTS: SidejobsEvent[] = Object.values(SidejobsEvent);
-
-export const CITY_EVENTS: CityEvent[] = Object.values(CityEvent);
-
-export const GAME_STATE_ALERTS: GameStateAlert[] = Object.values(GameStateAlert);
-
-export const PROGRAM_ALERTS: ProgramAlert[] = Object.values(ProgramAlert);
-
-export const CLONE_ALERTS: CloneAlert[] = Object.values(CloneAlert);
-
-export const SIDEJOB_ALERTS: SidejobAlert[] = Object.values(SidejobAlert);
+export const GAME_ALERT_GROUPS = {
+  [GameAlertGroup.gameState]: Object.values(GameStateAlert),
+  [GameAlertGroup.programs]: Object.values(ProgramAlert),
+  [GameAlertGroup.clones]: Object.values(CloneAlert),
+  [GameAlertGroup.sidejobs]: Object.values(SidejobAlert),
+};
 
 export const FORCE_NOTIFICATION_TYPES: Set<NotificationType> = new Set<NotificationType>([
   NotificationType.gameVersionUpdated,
@@ -81,3 +85,5 @@ export const SKILLS: Skill[] = Object.values(Skill);
 export const DISTRICT_TYPES = Object.values(DistrictType);
 
 export const RANDOM_TYPE = 'random';
+
+export const HOTKEYS = Object.values(Hotkey);

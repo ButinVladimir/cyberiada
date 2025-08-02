@@ -61,7 +61,7 @@ export class GameScreenController extends BaseController {
       return;
     }
 
-    const key = event.key.toLowerCase();
+    const key = event.key;
     const hotkey = this.getHotkeyByKey(key);
 
     if (!hotkey) {

@@ -1,7 +1,14 @@
 import { msg } from '@lit/localize';
-import { GameStateAlert, ProgramAlert, CloneAlert, SidejobAlert } from '@shared/types';
+import { GameStateAlert, ProgramAlert, CloneAlert, SidejobAlert, GameAlertGroup } from '@shared/index';
 
-export const ALERT_NAMES = {
+export const GAME_ALERT_GROUP_NAMES = {
+  [GameAlertGroup.gameState]: () => msg('Game state alerts'),
+  [GameAlertGroup.programs]: () => msg('Programs alerts'),
+  [GameAlertGroup.clones]: () => msg('Clones alerts'),
+  [GameAlertGroup.sidejobs]: () => msg('Sidejobs alerts'),
+};
+
+export const GAME_ALERT_NAMES = {
   [GameStateAlert.saveImport]: () => msg('Import savefile'),
   [GameStateAlert.saveDelete]: () => msg('Delete save data'),
   [GameStateAlert.clearMessages]: () => msg('Clear log messages'),

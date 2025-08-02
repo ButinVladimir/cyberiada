@@ -28,7 +28,7 @@ export class ConfirmationAlert extends BaseComponent {
   private _message = '';
 
   @state()
-  private _isOpen = false;
+  private _open = false;
 
   @state()
   private _alertToggled = true;
@@ -54,7 +54,7 @@ export class ConfirmationAlert extends BaseComponent {
   protected renderDesktop() {
     return html`
       <form id="confirmation-dialog" @submit=${this.handleSubmit}>
-        <sl-dialog no-header ?open=${this._isOpen} @sl-request-close=${this.handleClose}>
+        <sl-dialog no-header ?open=${this._open} @sl-request-close=${this.handleClose}>
           <p>${this._message}</p>
 
           <sl-checkbox
@@ -85,17 +85,17 @@ export class ConfirmationAlert extends BaseComponent {
     this._gameAlertKey = convertedEvent.gameAlertKey;
 
     if (this._controller.isGameAlertEnabled(this._gameAlert)) {
-      this._isOpen = true;
+      this._open = true;
       this._alertToggled = true;
     } else {
-      this._isOpen = false;
+      this._open = false;
 
       this.dispatchEvent(new ConfirmationAlertSubmitEvent(this._gameAlert, this._gameAlertKey));
     }
   };
 
   private handleClose = () => {
-    this._isOpen = false;
+    this._open = false;
 
     if (this._gameAlert) {
       this.dispatchEvent(new ConfirmationAlertCloseEvent(this._gameAlert, this._gameAlertKey));
@@ -106,7 +106,7 @@ export class ConfirmationAlert extends BaseComponent {
     event.preventDefault();
 
     if (this._gameAlert) {
-      this._isOpen = false;
+      this._open = false;
 
       if (this._gameAlertToggleRef.value) {
         this._controller.toggleGameAlert(this._gameAlert, this._alertToggled);

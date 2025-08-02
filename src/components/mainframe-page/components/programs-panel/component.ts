@@ -26,7 +26,7 @@ Programs on top have higher priority. Autoupgrade for programs won't change thei
       <ca-owned-programs-list></ca-owned-programs-list>
 
       <ca-purchase-program-dialog
-        ?is-open=${this._isPurchaseProgramDialogOpen}
+        ?open=${this._isPurchaseProgramDialogOpen}
         @purchase-program-dialog-close=${this.handlePurchaseProgramDialogClose}
       >
       </ca-purchase-program-dialog>
