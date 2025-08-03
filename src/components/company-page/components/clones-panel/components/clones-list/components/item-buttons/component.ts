@@ -63,6 +63,7 @@ export class ClonesListItemButtons extends BaseComponent {
           ${ref(this._upgradeLevelMaxButton)}
           disabled
           variant=${UPGRADE_MAX_VALUES.buttonVariant}
+          outline
           size="medium"
           @click=${this.handleUpgradeLevelMax}
         >

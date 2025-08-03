@@ -5,13 +5,13 @@ export class GameScreenController extends BaseController {
   hostConnected() {
     super.hostConnected();
 
-    document.addEventListener('keypress', this.handleKeyPress);
+    document.addEventListener('keydown', this.handleKeyDown);
   }
 
   hostDisconnected() {
     super.hostDisconnected();
 
-    document.removeEventListener('keypress', this.handleKeyPress);
+    document.removeEventListener('keydown', this.handleKeyDown);
   }
 
   private pause() {
@@ -54,15 +54,21 @@ export class GameScreenController extends BaseController {
     return this.settingsState.hotkeys.getHotkeyByKey(key);
   }
 
-  private handleKeyPress = (event: KeyboardEvent) => {
+  private saveGame() {
+    this.app.saveGame();
+  }
+
+  private handleKeyDown = (event: KeyboardEvent) => {
     const target = event.composedPath()[0];
 
     if (target instanceof HTMLInputElement) {
       return;
     }
 
-    const key = event.key.toLowerCase();
+    const key = event.key;
     const hotkey = this.getHotkeyByKey(key);
+
+    console.log(event);
 
     if (!hotkey) {
       return;
@@ -77,6 +83,9 @@ export class GameScreenController extends BaseController {
         break;
       case Hotkey.playFastSpeed:
         this.playFast();
+        break;
+      case Hotkey.saveGame:
+        this.saveGame();
         break;
       case Hotkey.upgradeMainframeHardware:
         this.upgradeMainframeHardware();

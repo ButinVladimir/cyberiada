@@ -80,6 +80,7 @@ export class MainframeHardwarePanelArticleButtons extends BaseComponent {
             ${ref(this._buyMaxButtonRef)}
             ?disabled=${this.disabledBuyAll}
             variant="default"
+            outline
             type="button"
             size="medium"
             @click=${this.handleBuyMax}

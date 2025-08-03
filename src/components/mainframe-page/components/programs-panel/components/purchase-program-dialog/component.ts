@@ -7,10 +7,7 @@ import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.com
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.component.js';
 import clamp from 'lodash/clamp';
 import { type ProgramName, type IProgram } from '@state/mainframe-state';
-import {
-  ConfirmationAlertOpenEvent,
-  ConfirmationAlertSubmitEvent,
-} from '@components/game-screen/components/confirmation-alert/events';
+import { ConfirmationAlertOpenEvent } from '@components/game-screen/components/confirmation-alert/events';
 import { BaseComponent, ProgramAlert } from '@shared/index';
 import { PROGRAM_TEXTS, COMMON_TEXTS } from '@texts/index';
 import { PurchaseProgramDialogCloseEvent } from './events';
@@ -39,10 +36,10 @@ export class PurchaseProgramDialog extends BaseComponent {
   private _buttonsRef = createRef<PurchaseProgramDialogButtons>();
 
   @property({
-    attribute: 'is-open',
+    attribute: 'open',
     type: Boolean,
   })
-  isOpen = false;
+  open = false;
 
   @state()
   private _programName?: ProgramName = undefined;
@@ -65,18 +62,6 @@ export class PurchaseProgramDialog extends BaseComponent {
     this._controller = new PurchaseProgramDialogController(this);
   }
 
-  connectedCallback() {
-    super.connectedCallback();
-
-    document.addEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmConfirmationAlert);
-  }
-
-  disconnectedCallback() {
-    super.disconnectedCallback();
-
-    document.removeEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmConfirmationAlert);
-  }
-
   performUpdate() {
     this.updateContext();
 
@@ -86,7 +71,7 @@ export class PurchaseProgramDialog extends BaseComponent {
   updated(_changedProperties: Map<string, any>) {
     super.updated(_changedProperties);
 
-    if (_changedProperties.has('isOpen')) {
+    if (_changedProperties.has('open')) {
       this._programName = undefined;
       this._tier = 0;
       this._level = this._controller.developmentLevel;
@@ -111,7 +96,7 @@ export class PurchaseProgramDialog extends BaseComponent {
 
     return html`
       <form id="purchase-program-dialog" @submit=${this.handleSubmit}>
-        <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
+        <sl-dialog ?open=${this.open} @sl-request-close=${this.handleClose}>
           <h4 slot="label" class="title">${msg('Purchase program')}</h4>
 
           <div class="body">
@@ -259,24 +244,15 @@ If you already have program with same name, old one will be replaced with new on
           msg(
             str`Are you sure want to purchase program "${programTitle}"? This will replace your current program with tier ${formattedTier} and level ${formattedLevel}.`,
           ),
+          this.handlePurchaseProgram,
         ),
       );
     } else {
-      this.purchase();
+      this.handlePurchaseProgram();
     }
   };
 
-  private handleConfirmConfirmationAlert = (event: Event) => {
-    const convertedEvent = event as ConfirmationAlertSubmitEvent;
-
-    if (convertedEvent.gameAlert !== ProgramAlert.purchaseProgramOverwrite) {
-      return;
-    }
-
-    this.purchase();
-  };
-
-  private purchase = () => {
+  private handlePurchaseProgram = () => {
     if (!this._programName) {
       return;
     }

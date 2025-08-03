@@ -37,10 +37,10 @@ export class PurchaseCloneDialog extends BaseComponent {
   private _levelInputRef = createRef<SlInput>();
 
   @property({
-    attribute: 'is-open',
+    attribute: 'open',
     type: Boolean,
   })
-  isOpen = false;
+  open = false;
 
   @state()
   private _name = '';
@@ -78,13 +78,13 @@ export class PurchaseCloneDialog extends BaseComponent {
   updated(_changedProperties: Map<string, any>) {
     super.updated(_changedProperties);
 
-    if (_changedProperties.has('isOpen')) {
+    if (_changedProperties.has('open')) {
       this._name = '';
       this._cloneTemplateName = undefined;
       this._tier = 0;
       this._level = this._controller.developmentLevel;
 
-      if (this.isOpen) {
+      if (this.open) {
         this._name = this._controller.generateName();
       }
     }
@@ -109,7 +109,7 @@ export class PurchaseCloneDialog extends BaseComponent {
 
     return html`
       <form id="purchase-clone-form" @submit=${this.handleSubmit}>
-        <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
+        <sl-dialog ?open=${this.open} @sl-request-close=${this.handleClose}>
           <h4 slot="label" class="title">${msg('Purchase clone')}</h4>
 
           <div class="body">

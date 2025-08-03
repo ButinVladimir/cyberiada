@@ -76,7 +76,7 @@ Processes can be rearranged by dragging them by their title.`)}
       <ca-processes-list></ca-processes-list>
 
       <ca-start-process-dialog
-        ?is-open=${this._isStartProcessDialogOpen}
+        ?open=${this._isStartProcessDialogOpen}
         @start-process-dialog-close=${this.handleStartProcessDialogClose}
       >
       </ca-start-process-dialog>

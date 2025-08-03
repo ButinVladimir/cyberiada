@@ -3,10 +3,7 @@ import { localized, msg } from '@lit/localize';
 import { customElement } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { BaseComponent, DELETE_VALUES, SidejobAlert } from '@shared/index';
-import {
-  ConfirmationAlertOpenEvent,
-  ConfirmationAlertSubmitEvent,
-} from '@components/game-screen/components/confirmation-alert/events';
+import { ConfirmationAlertOpenEvent } from '@components/game-screen/components/confirmation-alert/events';
 import { ISidejob } from '@state/company-state';
 import { SidejobsListController } from './controller';
 import styles from './styles';
@@ -26,18 +23,6 @@ export class SidejobsList extends BaseComponent {
     this._controller = new SidejobsListController(this);
   }
 
-  connectedCallback() {
-    super.connectedCallback();
-
-    document.addEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmDeleteAllProcessesDialog);
-  }
-
-  disconnectedCallback() {
-    super.disconnectedCallback();
-
-    document.removeEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmDeleteAllProcessesDialog);
-  }
-
   protected renderDesktop() {
     const cancelAllSidejobs = msg('Cancel all sidejobs');
 
@@ -54,7 +39,7 @@ export class SidejobsList extends BaseComponent {
               id="delete-btn"
               name=${DELETE_VALUES.icon}
               label=${cancelAllSidejobs}
-              @click=${this.handleOpenDeleteAllProcessesDialog}
+              @click=${this.handleOpenCancelAllSidejobsDialog}
             >
             </sl-icon-button>
           </sl-tooltip>
@@ -72,7 +57,7 @@ export class SidejobsList extends BaseComponent {
           <sl-button
             variant=${DELETE_VALUES.buttonVariant}
             size="medium"
-            @click=${this.handleOpenDeleteAllProcessesDialog}
+            @click=${this.handleOpenCancelAllSidejobsDialog}
           >
             <sl-icon slot="prefix" name=${DELETE_VALUES.icon}> </sl-icon>
             ${msg('Cancel all sidejobs')}
@@ -100,22 +85,17 @@ export class SidejobsList extends BaseComponent {
     return html`<ca-sidejobs-list-item sidejob-id=${sidejob.id}></ca-sidejobs-list-item>`;
   };
 
-  private handleOpenDeleteAllProcessesDialog = () => {
+  private handleOpenCancelAllSidejobsDialog = () => {
     this.dispatchEvent(
       new ConfirmationAlertOpenEvent(
         SidejobAlert.cancelAllSidejobs,
         msg('Are you sure want to cancel all sidejobs? Their assigned clones will stop performing them.'),
+        this.handleCancelAllSidejobs,
       ),
     );
   };
 
-  private handleConfirmDeleteAllProcessesDialog = (event: Event) => {
-    const convertedEvent = event as ConfirmationAlertSubmitEvent;
-
-    if (convertedEvent.gameAlert !== SidejobAlert.cancelAllSidejobs) {
-      return;
-    }
-
+  private handleCancelAllSidejobs = () => {
     this._controller.cancelAllSidejobs();
   };
 }

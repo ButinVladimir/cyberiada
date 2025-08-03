@@ -23,7 +23,7 @@ export class NotificationModalController extends BaseController {
     const notification = this.getUnreadNotification();
 
     if (notification) {
-      this.settingsState.toggleNotificationType(notification.notificationType, enabled);
+      this.settingsState.notificationTypes.toggleNotificationType(notification.notificationType, enabled);
       this.notificationsState.popUnreadNotification();
       this.host.requestUpdate();
     }

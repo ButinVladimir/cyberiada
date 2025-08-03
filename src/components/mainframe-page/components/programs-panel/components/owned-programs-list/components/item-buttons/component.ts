@@ -90,6 +90,7 @@ export class OwnedProgramsListItemButtons extends BaseComponent {
           ${ref(this._upgradeMaxButton)}
           disabled
           variant=${UPGRADE_MAX_VALUES.buttonVariant}
+          outline
           size="medium"
           @click=${this.handleUpgradeMax}
         >

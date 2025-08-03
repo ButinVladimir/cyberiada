@@ -1,6 +1,6 @@
 import { html } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import { msg, localized } from '@lit/localize';
+import { localized } from '@lit/localize';
 import { createRef, ref } from 'lit/directives/ref.js';
 import SlButton from '@shoelace-style/shoelace/dist/components/button/button.component.js';
 import { BaseComponent } from '@shared/index';
@@ -34,11 +34,12 @@ export class MainframeHardwarePanelButtons extends BaseComponent {
         <sl-button
           ${ref(this._buyMaxButtonRef)}
           variant="default"
+          outline
           type="button"
           size="medium"
           @click=${this.handleBuyMax}
         >
-          ${msg('Buy all upgrades')}
+          ${COMMON_TEXTS.buyMaxAllUpgrades()}
         </sl-button>
       </sl-tooltip>
     `;

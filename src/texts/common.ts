@@ -38,7 +38,7 @@ export const COMMON_TEXTS = {
   parameterValue: (parameterName: string, valueElement: any) => msg(html`${parameterName}: ${valueElement}`),
   parameterSpeed: (value: any) => msg(html`${value} per second`),
   parameterSpeedDiff: (valueElement: any, diffElement: any) => msg(html`${valueElement} (${diffElement}) per second`),
-  hotkey: (hotkey?: string) => msg(str`Hotkey: ${hotkey?.toUpperCase()}`),
+  hotkey: (hotkey?: string) => msg(str`Hotkey: ${hotkey?.toLocaleUpperCase() ?? ''}`),
 };
 
 export const CATEGORY_TEXTS: Record<ItemCategory, () => string> = {

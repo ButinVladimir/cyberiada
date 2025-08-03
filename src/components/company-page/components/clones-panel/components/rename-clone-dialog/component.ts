@@ -20,10 +20,10 @@ export class RenameCloneDialog extends BaseComponent {
   private _controller: RenameCloneDialogController;
 
   @property({
-    attribute: 'is-open',
+    attribute: 'open',
     type: Boolean,
   })
-  isOpen = false;
+  open = false;
 
   @state()
   private _newName = '';
@@ -42,7 +42,7 @@ export class RenameCloneDialog extends BaseComponent {
   updated(_changedProperties: Map<string, any>) {
     super.updated(_changedProperties);
 
-    if (_changedProperties.has('isOpen') && this._clone) {
+    if (_changedProperties.has('open') && this._clone) {
       this._newName = this._clone.name ?? '';
     }
   }
@@ -56,7 +56,7 @@ export class RenameCloneDialog extends BaseComponent {
 
     return html`
       <form id="rename-clone-dialog" @submit=${this.handleSubmit}>
-        <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
+        <sl-dialog ?open=${this.open} @sl-request-close=${this.handleClose}>
           <h4 slot="label" class="title">${msg(str`Rename clone "${this._clone.name}"`)}</h4>
 
           <div class="body">
@@ -85,7 +85,7 @@ export class RenameCloneDialog extends BaseComponent {
             <p class="warning">${warning}</p>
 
             <div class="buttons">
-              <sl-button size="medium" variant="default" outline @click=${this.handleClose}>
+              <sl-button size="medium" variant="default" @click=${this.handleClose}>
                 ${COMMON_TEXTS.cancel()}
               </sl-button>
 

@@ -9,11 +9,11 @@
     "fastSpeedMultiplier": 5,
     "maxUpdatesPerTick": 1000,
     "longNumberFormat": "short",
-    "mapSize": 3,
     "hotkeys": {
       "pause": "q",
       "playNormalSpeed": "w",
       "playFastSpeed": "e",
+      "saveGame": "t",
       "upgradeMainframeHardware": "a",
       "upgradeMainframePerformance": "s",
       "upgradeMainframeRam": "d",

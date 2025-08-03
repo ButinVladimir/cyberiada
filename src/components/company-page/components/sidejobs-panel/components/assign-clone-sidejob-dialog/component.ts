@@ -9,10 +9,7 @@ import { BaseComponent, SidejobAlert } from '@shared/index';
 import { IDistrictState } from '@state/city-state';
 import { SIDEJOB_TEXTS, DISTRICT_NAMES } from '@texts/index';
 import { IClone, type ISidejob, SidejobName } from '@state/company-state';
-import {
-  ConfirmationAlertOpenEvent,
-  ConfirmationAlertSubmitEvent,
-} from '@components/game-screen/components/confirmation-alert/events';
+import { ConfirmationAlertOpenEvent } from '@components/game-screen/components/confirmation-alert/events';
 import { AssignCloneSidejobDialogCloseEvent } from './events';
 import { AssignCloneSidejobDialogController } from './controller';
 import { existingSidejobContext, temporarySidejobContext } from './contexts';
@@ -36,10 +33,10 @@ export class AssignCloneSidejobDialog extends BaseComponent {
   private _sidejobNameInputRef = createRef<SlSelect>();
 
   @property({
-    attribute: 'is-open',
+    attribute: 'open',
     type: Boolean,
   })
-  isOpen = false;
+  open = false;
 
   @state()
   private _cloneId?: string;
@@ -64,18 +61,6 @@ export class AssignCloneSidejobDialog extends BaseComponent {
     this._controller = new AssignCloneSidejobDialogController(this);
   }
 
-  connectedCallback() {
-    super.connectedCallback();
-
-    document.addEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmConfirmationAlert);
-  }
-
-  disconnectedCallback() {
-    super.disconnectedCallback();
-
-    document.removeEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmConfirmationAlert);
-  }
-
   performUpdate() {
     if (this._sidejobName !== undefined && this._districtIndex !== undefined) {
       const sidejob = this._controller.getSidejob({
@@ -97,7 +82,7 @@ export class AssignCloneSidejobDialog extends BaseComponent {
   updated(_changedProperties: PropertyValues) {
     super.updated(_changedProperties);
 
-    if (_changedProperties.has('isOpen')) {
+    if (_changedProperties.has('open')) {
       this._cloneId = undefined;
       this._districtIndex = undefined;
       this._sidejobName = undefined;
@@ -121,7 +106,7 @@ export class AssignCloneSidejobDialog extends BaseComponent {
 
     return html`
       <form id="assign-clone-sidejob-dialog" @submit=${this.handleSubmit}>
-        <sl-dialog ?open=${this.isOpen} @sl-request-close=${this.handleClose}>
+        <sl-dialog ?open=${this.open} @sl-request-close=${this.handleClose}>
           <h4 slot="label" class="title">${msg('Assign clone to sidejob')}</h4>
 
           <div class="body">
@@ -244,24 +229,15 @@ Sidejobs availability depends on unlocked features and district connectivity.`)}
           msg(
             str`Are you sure want to replace sidejob for clone "${cloneName}"? This will cancel their current sidejob "${existingSidejobName}" in district "${districtName}".`,
           ),
+          this.handleAssignClone,
         ),
       );
     } else {
-      this.assignClone();
+      this.handleAssignClone();
     }
   };
 
-  private handleConfirmConfirmationAlert = (event: Event) => {
-    const convertedEvent = event as ConfirmationAlertSubmitEvent;
-
-    if (convertedEvent.gameAlert !== SidejobAlert.replaceSidejob) {
-      return;
-    }
-
-    this.assignClone();
-  };
-
-  private assignClone() {
+  private handleAssignClone = () => {
     this._controller.assignClone({
       districtIndex: this._districtIndex!,
       sidejobName: this._sidejobName!,
@@ -269,7 +245,7 @@ Sidejobs availability depends on unlocked features and district connectivity.`)}
     });
 
     this.dispatchEvent(new AssignCloneSidejobDialogCloseEvent());
-  }
+  };
 
   handlePartialUpdate = () => {
     if (this._buttonsRef.value) {

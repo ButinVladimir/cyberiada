@@ -24,9 +24,9 @@ import styles from './styles';
 export class PurchaseCloneDialogDescription extends BaseComponent {
   static styles = styles;
 
-  hasMobileRender = true;
+  protected hasMobileRender = true;
 
-  protectedhasPartialUpdate = true;
+  hasPartialUpdate = true;
 
   @consume({ context: temporaryCloneContext, subscribe: true })
   private _clone?: IClone;

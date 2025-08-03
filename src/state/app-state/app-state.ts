@@ -116,7 +116,6 @@ export class AppState implements IAppState {
       this._notificationsState.pushNotification(
         NotificationType.gameVersionUpdated,
         msg('Game version has been updated'),
-        true,
       );
     }
 
