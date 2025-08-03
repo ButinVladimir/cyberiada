@@ -2,6 +2,7 @@ import { injectable } from 'inversify';
 import themes from '@configs/themes.json';
 import constants from '@configs/constants.json';
 import { decorators } from '@state/container';
+import { type IStateUIConnector } from '@state/state-ui-connector';
 import { getLocale, setLocale } from '@/configure-localization';
 import { Language, LongNumberFormat, Theme, type IFormatter } from '@shared/index';
 import type { IApp } from '@state/app';
@@ -28,6 +29,9 @@ export class SettingsState implements ISettingsState {
   @lazyInject(TYPES.Formatter)
   private _formatter!: IFormatter;
 
+  @lazyInject(TYPES.StateUIConnector)
+  private _stateUiConnector!: IStateUIConnector;
+
   private _language: Language;
   private _theme: Theme;
   private _messageLogSize: number;
@@ -38,7 +42,6 @@ export class SettingsState implements ISettingsState {
   private _fastSpeedMultiplier: number;
   private _maxUpdatesPerTick: number;
   private _longNumberFormat: LongNumberFormat;
-  private _mapCellSize: number;
   private _messageEvents: ISettingsMessageEvents;
   private _gameAlerts: ISettingsGameAlerts;
   private _notificationTypes: ISettingsNotificationTypes;
@@ -55,11 +58,23 @@ export class SettingsState implements ISettingsState {
     this._fastSpeedMultiplier = constants.defaultSettings.fastSpeedMultiplier;
     this._maxUpdatesPerTick = constants.defaultSettings.maxUpdatesPerTick;
     this._longNumberFormat = constants.defaultSettings.longNumberFormat as LongNumberFormat;
-    this._mapCellSize = constants.defaultSettings.mapSize;
     this._messageEvents = new SettingsMessageEvents();
     this._gameAlerts = new SettingsGameAlerts();
     this._notificationTypes = new SettingsNotificationTypes();
     this._hotkeys = new SettingsHotkeys();
+
+    this._stateUiConnector.registerEventEmitter(this, [
+      '_language',
+      '_theme',
+      '_messageLogSize',
+      '_toastDuration',
+      '_updateInterval',
+      '_autosaveEnabledOnHide',
+      '_autosaveInterval',
+      '_fastSpeedMultiplier',
+      '_maxUpdatesPerTick',
+      '_longNumberFormat',
+    ]);
   }
 
   get language() {
@@ -100,10 +115,6 @@ export class SettingsState implements ISettingsState {
 
   get longNumberFormat() {
     return this._longNumberFormat;
-  }
-
-  get mapCellSize() {
-    return this._mapCellSize;
   }
 
   get messageEvents() {
@@ -172,11 +183,7 @@ export class SettingsState implements ISettingsState {
     this._longNumberFormat = longNumberFormat;
   }
 
-  setMapCellSize(mapCellSize: number) {
-    this._mapCellSize = mapCellSize;
-  }
-
-  async startNewState(): Promise<void> {
+  async restoreDefaultSettings(): Promise<void> {
     await this.setLanguage(getLocale() as Language);
     this.setTheme(window.matchMedia('(prefers-color-scheme:dark)').matches ? Theme.dark : Theme.light);
     this.setMessageLogSize(constants.defaultSettings.messageLogSize);
@@ -187,11 +194,14 @@ export class SettingsState implements ISettingsState {
     this.setFastSpeedMultiplier(constants.defaultSettings.fastSpeedMultiplier);
     this.setMaxUpdatesPerTick(constants.defaultSettings.maxUpdatesPerTick);
     this.setLongNumberFormat(constants.defaultSettings.longNumberFormat as LongNumberFormat);
-    this.setMapCellSize(constants.defaultSettings.mapSize);
     await this._messageEvents.startNewState();
     await this._gameAlerts.startNewState();
     await this._notificationTypes.startNewState();
     await this._hotkeys.startNewState();
+  }
+
+  async startNewState(): Promise<void> {
+    await this.restoreDefaultSettings();
   }
 
   async deserialize(serializedState: ISettingsSerializedState): Promise<void> {
@@ -205,7 +215,6 @@ export class SettingsState implements ISettingsState {
     this.setFastSpeedMultiplier(serializedState.fastSpeedMultiplier);
     this.setMaxUpdatesPerTick(serializedState.maxUpdatesPerTick);
     this.setLongNumberFormat(serializedState.longNumberFormat);
-    this.setMapCellSize(serializedState.mapCellSize);
     await this._messageEvents.deserialize(serializedState.enabledMessageEvents);
     await this._gameAlerts.deserialize(serializedState.enabledGameAlerts);
     await this._notificationTypes.deserialize(serializedState.enabledNotificationTypes);
@@ -224,7 +233,6 @@ export class SettingsState implements ISettingsState {
       fastSpeedMultiplier: this.fastSpeedMultiplier,
       maxUpdatesPerTick: this.maxUpdatesPerTick,
       longNumberFormat: this.longNumberFormat,
-      mapCellSize: this.mapCellSize,
       enabledMessageEvents: this._messageEvents.serialize(),
       enabledGameAlerts: this._gameAlerts.serialize(),
       enabledNotificationTypes: this._notificationTypes.serialize(),

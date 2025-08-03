@@ -10,8 +10,13 @@ export class HotkeysDialogController extends BaseController {
     this.host.requestUpdate();
   }
 
-  clearHotkeys() {
-    this.settingsState.hotkeys.clearHotkeys();
+  unassignHotkeys() {
+    this.settingsState.hotkeys.unassignHotkeys();
+    this.host.requestUpdate();
+  }
+
+  restoreDefaultHotkeys() {
+    this.settingsState.hotkeys.restoreDefaultHotkeys();
     this.host.requestUpdate();
   }
 }

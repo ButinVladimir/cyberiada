@@ -1,12 +1,22 @@
+import { TYPES } from '@state/types';
+import { decorators } from '@state/container';
+import { type IStateUIConnector } from '@state/state-ui-connector';
 import { GAME_ALERT_GROUP_LIST, GAME_ALERT_GROUPS, GameAlert, GameAlertGroup } from '@shared/index';
 import { ISettingsGameAlerts } from './interfaces';
 import { SettingsGameAlertsSerializedState } from './serialized-states';
 
+const { lazyInject } = decorators;
+
 export class SettingsGameAlerts implements ISettingsGameAlerts {
+  @lazyInject(TYPES.StateUIConnector)
+  private _stateUiConnector!: IStateUIConnector;
+
   private _enabledAlerts: Set<GameAlert>;
 
   constructor() {
     this._enabledAlerts = new Set<GameAlert>();
+
+    this._stateUiConnector.registerEventEmitter(this, ['_enabledAlerts']);
   }
 
   isAlertEnabled(event: GameAlert): boolean {

@@ -7,10 +7,7 @@ import { provide } from '@lit/context';
 import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.component.js';
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.component.js';
 import clamp from 'lodash/clamp';
-import {
-  ConfirmationAlertOpenEvent,
-  ConfirmationAlertSubmitEvent,
-} from '@components/game-screen/components/confirmation-alert/events';
+import { ConfirmationAlertOpenEvent } from '@components/game-screen/components/confirmation-alert/events';
 import { type ProgramName, type IProgram, type IProcess } from '@state/mainframe-state';
 import { BaseComponent, ProgramAlert } from '@shared/index';
 import { PROGRAM_TEXTS } from '@texts/index';
@@ -54,18 +51,6 @@ export class StartProcessDialog extends BaseComponent {
     super();
 
     this._controller = new StartProcessDialogController(this);
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-
-    document.addEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmConfirmationAlert);
-  }
-
-  disconnectedCallback() {
-    super.disconnectedCallback();
-
-    document.removeEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmConfirmationAlert);
   }
 
   performUpdate() {
@@ -222,6 +207,7 @@ Threads allow to run multiple instances of same program at same time, but additi
           msg(
             str`Are you sure want to overwrite process for program "${programTitle}"? This will replace your current process with ${threads} threads.`,
           ),
+          this.handleStartProcess,
         ),
       );
     } else if (this._existingProcess && programIsAutoscalable) {
@@ -229,6 +215,7 @@ Threads allow to run multiple instances of same program at same time, but additi
         new ConfirmationAlertOpenEvent(
           ProgramAlert.processReplace,
           msg(str`Are you sure want to overwrite process for program "${programTitle}"?`),
+          this.handleStartProcess,
         ),
       );
     } else if (runningScalableProgram && programIsAutoscalable) {
@@ -238,27 +225,15 @@ Threads allow to run multiple instances of same program at same time, but additi
           msg(
             str`Are you sure want to replace autoscalable process? This will delete your current process for program "${programTitle}".`,
           ),
+          this.handleStartProcess,
         ),
       );
     } else {
-      this.startProcess();
+      this.handleStartProcess();
     }
   };
 
-  private handleConfirmConfirmationAlert = (event: Event) => {
-    const convertedEvent = event as ConfirmationAlertSubmitEvent;
-
-    if (
-      convertedEvent.gameAlert !== ProgramAlert.processReplace &&
-      convertedEvent.gameAlert !== ProgramAlert.scalableProcessReplace
-    ) {
-      return;
-    }
-
-    this.startProcess();
-  };
-
-  private startProcess = () => {
+  private handleStartProcess = () => {
     if (this._programName) {
       const isStarted = this._controller.startProcess(this._programName, this._threads);
 

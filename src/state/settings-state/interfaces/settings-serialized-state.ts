@@ -9,7 +9,6 @@ import {
 export interface ISettingsSerializedState {
   language: Language;
   theme: Theme;
-  mapCellSize: number;
   messageLogSize: number;
   toastDuration: number;
   updateInterval: number;

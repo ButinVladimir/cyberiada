@@ -17,7 +17,6 @@ export interface ISettingsState extends ISerializeable<ISettingsSerializedState>
   fastSpeedMultiplier: number;
   maxUpdatesPerTick: number;
   longNumberFormat: LongNumberFormat;
-  mapCellSize: number;
   messageEvents: ISettingsMessageEvents;
   gameAlerts: ISettingsGameAlerts;
   notificationTypes: ISettingsNotificationTypes;
@@ -32,5 +31,5 @@ export interface ISettingsState extends ISerializeable<ISettingsSerializedState>
   setFastSpeedMultiplier(fastSpeedMultiplier: number): void;
   setMaxUpdatesPerTick(maxUpdatesPerTick: number): void;
   setLongNumberFormat(longNumberFormat: LongNumberFormat): void;
-  setMapCellSize(mapSize: number): void;
+  restoreDefaultSettings(): Promise<void>;
 }

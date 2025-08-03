@@ -85,7 +85,7 @@ export class RenameCloneDialog extends BaseComponent {
             <p class="warning">${warning}</p>
 
             <div class="buttons">
-              <sl-button size="medium" variant="default" outline @click=${this.handleClose}>
+              <sl-button size="medium" variant="default" @click=${this.handleClose}>
                 ${COMMON_TEXTS.cancel()}
               </sl-button>
 

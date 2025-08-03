@@ -141,7 +141,7 @@
     },
     {
       "name": "ca-clones-list",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderEmptyListNotification` - \n\n  * `renderClone` - \n\n  * `handleToggleAutoupgrade` - \n\n  * `handleMoveClone` - \n\n  * `handleOpenDeleteAllClonesDialog` - \n\n  * `handleConfirmDeleteAllClonesDialog` - \n\n  * `_controller` {`ClonesListController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderEmptyListNotification` - \n\n  * `renderClone` - \n\n  * `handleToggleAutoupgrade` - \n\n  * `handleMoveClone` - \n\n  * `handleOpenDeleteAllClonesDialog` - \n\n  * `handleDeleteAllClones` - \n\n  * `_controller` {`ClonesListController`} - ",
       "attributes": []
     },
     {
@@ -167,7 +167,7 @@
     },
     {
       "name": "ca-clones-list-item",
-      "description": "Attributes:\n\n  * `clone-id` {`string`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `cloneId` {`string`} - \n\n  * `_menuVisible` {`boolean`} - \n\n  * `_detailsVisible` {`boolean`} - \n\n  * `_clone` - \n\n  * `handleToggleAutoUpgrade` - \n\n  * `handleDragStart` - \n\n  * `handleToggleMenu` - \n\n  * `handleHideMenu` - \n\n  * `handleOpenDeleteCloneDialog` - \n\n  * `handleConfirmDeleteCloneDialog` - \n\n  * `handleOpenRenameCloneDialog` - \n\n  * `handleToggleDetails` - \n\n  * `_controller` {`ClonesListItemController`} - ",
+      "description": "Attributes:\n\n  * `clone-id` {`string`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `cloneId` {`string`} - \n\n  * `_menuVisible` {`boolean`} - \n\n  * `_detailsVisible` {`boolean`} - \n\n  * `_clone` - \n\n  * `handleToggleAutoUpgrade` - \n\n  * `handleDragStart` - \n\n  * `handleToggleMenu` - \n\n  * `handleHideMenu` - \n\n  * `handleOpenDeleteCloneDialog` - \n\n  * `handleDeleteClone` - \n\n  * `handleOpenRenameCloneDialog` - \n\n  * `handleToggleDetails` - \n\n  * `_controller` {`ClonesListItemController`} - ",
       "attributes": [
         {
           "name": "clone-id",
@@ -225,7 +225,7 @@
     },
     {
       "name": "ca-assign-clone-sidejob-dialog",
-      "description": "Attributes:\n\n  * `open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_cloneIdInputRef` {`Ref<SlSelect>`} - \n\n  * `_districtIndexInputRef` {`Ref<SlSelect>`} - \n\n  * `_sidejobNameInputRef` {`Ref<SlSelect>`} - \n\n  * `open` {`boolean`} - \n\n  * `_cloneId` {`string | undefined`} - \n\n  * `_districtIndex` {`number | undefined`} - \n\n  * `_sidejobName` - \n\n  * `_sidejob` - \n\n  * `_existingSidejob` - \n\n  * `_buttonsRef` {`Ref<AssignCloneSidejobDialogButtons>`} - \n\n  * `renderCloneOption` - \n\n  * `renderDistrictOption` - \n\n  * `renderSidejobName` - \n\n  * `handleClose` - \n\n  * `handleCloneIdChange` - \n\n  * `handleSidejobNameChange` - \n\n  * `handleDistrictIndexChange` - \n\n  * `handleSubmit` - \n\n  * `handleConfirmConfirmationAlert` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`AssignCloneSidejobDialogController`} - ",
+      "description": "Attributes:\n\n  * `open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_cloneIdInputRef` {`Ref<SlSelect>`} - \n\n  * `_districtIndexInputRef` {`Ref<SlSelect>`} - \n\n  * `_sidejobNameInputRef` {`Ref<SlSelect>`} - \n\n  * `open` {`boolean`} - \n\n  * `_cloneId` {`string | undefined`} - \n\n  * `_districtIndex` {`number | undefined`} - \n\n  * `_sidejobName` - \n\n  * `_sidejob` - \n\n  * `_existingSidejob` - \n\n  * `_buttonsRef` {`Ref<AssignCloneSidejobDialogButtons>`} - \n\n  * `renderCloneOption` - \n\n  * `renderDistrictOption` - \n\n  * `renderSidejobName` - \n\n  * `handleClose` - \n\n  * `handleCloneIdChange` - \n\n  * `handleSidejobNameChange` - \n\n  * `handleDistrictIndexChange` - \n\n  * `handleSubmit` - \n\n  * `handleAssignClone` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`AssignCloneSidejobDialogController`} - ",
       "attributes": [
         {
           "name": "open",
@@ -267,7 +267,7 @@
     },
     {
       "name": "ca-sidejobs-list",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `renderSidejobsList` - \n\n  * `renderEmptyListNotification` - \n\n  * `renderSidejob` - \n\n  * `handleOpenDeleteAllProcessesDialog` - \n\n  * `handleConfirmDeleteAllProcessesDialog` - \n\n  * `_controller` {`SidejobsListController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `renderSidejobsList` - \n\n  * `renderEmptyListNotification` - \n\n  * `renderSidejob` - \n\n  * `handleOpenCancelAllSidejobsDialog` - \n\n  * `handleCancelAllSidejobs` - \n\n  * `_controller` {`SidejobsListController`} - ",
       "attributes": []
     },
     {
@@ -277,7 +277,7 @@
     },
     {
       "name": "ca-sidejobs-list-item",
-      "description": "Attributes:\n\n  * `sidejob-id` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult[]`} - \n\n  * `sidejobId` {`string`} - \n\n  * `_descriptionVisible` {`boolean`} - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `_sidejob` - \n\n  * `handleToggleDescription` - \n\n  * `handleOpenCancelSidejobDialog` - \n\n  * `handleConfirmCancelSidejobDialog` - \n\n  * `_controller` {`SidejobsListItemController`} - ",
+      "description": "Attributes:\n\n  * `sidejob-id` {`string`} - \n\nProperties:\n\n  * `styles` {`CSSResult[]`} - \n\n  * `sidejobId` {`string`} - \n\n  * `_descriptionVisible` {`boolean`} - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `_sidejob` - \n\n  * `handleToggleDescription` - \n\n  * `handleOpenCancelSidejobDialog` - \n\n  * `handleCancelSidejob` - \n\n  * `_controller` {`SidejobsListItemController`} - ",
       "attributes": [
         {
           "name": "sidejob-id",
@@ -292,7 +292,7 @@
     },
     {
       "name": "ca-fast-forwarding-screen",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_maxTime` {`number`} - \n\n  * `_progressBarRef` {`Ref<SlProgressBar>`} - \n\n  * `_timerElRef` {`Ref<HTMLSpanElement>`} - \n\n  * `handleStopFastForwarding` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`FastForwardingScreenController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `_maxTime` {`number`} - \n\n  * `_progressBarRef` {`Ref<SlProgressBar>`} - \n\n  * `_timerElRef` {`Ref<HTMLSpanElement>`} - \n\n  * `handleStopFastForwarding` - \n\n  * `handlePartialUpdate` - \n\n  * `hanldeKeyDown` - \n\n  * `_controller` {`FastForwardingScreenController`} - ",
       "attributes": []
     },
     {
@@ -302,7 +302,7 @@
     },
     {
       "name": "ca-confirmation-alert",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_gameAlertToggleRef` {`Ref<SlCheckbox>`} - \n\n  * `_gameAlert` - \n\n  * `_gameAlertKey` {`string | undefined`} - \n\n  * `_message` {`string`} - \n\n  * `_open` {`boolean`} - \n\n  * `_alertToggled` {`boolean`} - \n\n  * `handleOpen` - \n\n  * `handleClose` - \n\n  * `handleSubmit` - \n\n  * `handleToggleAlert` - \n\n  * `_controller` {`ConfirmationAlertController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `_gameAlertToggleRef` {`Ref<SlCheckbox>`} - \n\n  * `_gameAlert` - \n\n  * `_gameAlertKey` {`string | undefined`} - \n\n  * `_message` {`string`} - \n\n  * `_open` {`boolean`} - \n\n  * `_alertToggled` {`boolean`} - \n\n  * `_callback` - \n\n  * `handleOpen` - \n\n  * `handleClose` - \n\n  * `handleSubmit` - \n\n  * `handleToggleAlert` - \n\n  * `_controller` {`ConfirmationAlertController`} - ",
       "attributes": []
     },
     {
@@ -359,7 +359,7 @@
     },
     {
       "name": "ca-game-speed-buttons",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderButton` - \n\n  * `handleChangeGameSpeed` - \n\n  * `handleOpenFastForwardDialog` - \n\n  * `handleConfirmFastForwardDialog` - \n\n  * `_controller` {`GameSpeedButtonsController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `renderButton` - \n\n  * `handleChangeGameSpeed` - \n\n  * `handleOpenFastForwardDialog` - \n\n  * `handleFastForward` - \n\n  * `_controller` {`GameSpeedButtonsController`} - ",
       "attributes": []
     },
     {
@@ -433,7 +433,7 @@
     },
     {
       "name": "ca-processes-list",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `renderEmptyListNotification` - \n\n  * `renderProcess` - \n\n  * `handleToggleAllProcesses` - \n\n  * `handleOpenDeleteAllProcessesDialog` - \n\n  * `handleConfirmDeleteAllProcessesDialog` - \n\n  * `handleMoveProcess` - \n\n  * `_controller` {`ProcessesListController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `renderEmptyListNotification` - \n\n  * `renderProcess` - \n\n  * `handleToggleAllProcesses` - \n\n  * `handleOpenDeleteAllProcessesDialog` - \n\n  * `handleDeleteAllProcesses` - \n\n  * `handleMoveProcess` - \n\n  * `_controller` {`ProcessesListController`} - ",
       "attributes": []
     },
     {
@@ -448,7 +448,7 @@
     },
     {
       "name": "ca-processes-list-item",
-      "description": "Attributes:\n\n  * `program-name` - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `programName` - \n\n  * `_descriptionVisible` {`boolean`} - \n\n  * `_process` - \n\n  * `handleToggleDescription` - \n\n  * `handleToggleProcess` - \n\n  * `handleOpenDeleteProcessDialog` - \n\n  * `handleConfirmDeleteProcessDialog` - \n\n  * `handleDragStart` - \n\n  * `_controller` {`ProcessesListItemController`} - ",
+      "description": "Attributes:\n\n  * `program-name` - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `programName` - \n\n  * `_descriptionVisible` {`boolean`} - \n\n  * `_process` - \n\n  * `handleToggleDescription` - \n\n  * `handleToggleProcess` - \n\n  * `handleOpenDeleteProcessDialog` - \n\n  * `handleDeleteProcess` - \n\n  * `handleDragStart` - \n\n  * `_controller` {`ProcessesListItemController`} - ",
       "attributes": [
         {
           "name": "program-name",
@@ -458,7 +458,7 @@
     },
     {
       "name": "ca-start-process-dialog",
-      "description": "Attributes:\n\n  * `open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `_programInputRef` {`Ref<SlSelect>`} - \n\n  * `_threadsInputRef` {`Ref<SlInput>`} - \n\n  * `open` {`boolean`} - \n\n  * `_programName` - \n\n  * `_threads` {`number`} - \n\n  * `_program` - \n\n  * `_existingProcess` - \n\n  * `handleClose` - \n\n  * `handleProgramChange` - \n\n  * `handleThreadsChange` - \n\n  * `handleSubmit` - \n\n  * `handleConfirmConfirmationAlert` - \n\n  * `startProcess` - \n\n  * `formatProgramSelectItem` - \n\n  * `calculateMaxThreads` - \n\n  * `checkAvailability` - \n\n  * `_controller` {`StartProcessDialogController`} - ",
+      "description": "Attributes:\n\n  * `open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `_programInputRef` {`Ref<SlSelect>`} - \n\n  * `_threadsInputRef` {`Ref<SlInput>`} - \n\n  * `open` {`boolean`} - \n\n  * `_programName` - \n\n  * `_threads` {`number`} - \n\n  * `_program` - \n\n  * `_existingProcess` - \n\n  * `handleClose` - \n\n  * `handleProgramChange` - \n\n  * `handleThreadsChange` - \n\n  * `handleSubmit` - \n\n  * `handleStartProcess` - \n\n  * `formatProgramSelectItem` - \n\n  * `calculateMaxThreads` - \n\n  * `checkAvailability` - \n\n  * `_controller` {`StartProcessDialogController`} - ",
       "attributes": [
         {
           "name": "open",
@@ -533,7 +533,7 @@
     },
     {
       "name": "ca-purchase-program-dialog",
-      "description": "Attributes:\n\n  * `open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `_programInputRef` {`Ref<SlSelect>`} - \n\n  * `_tierInputRef` {`Ref<SlSelect>`} - \n\n  * `_levelInputRef` {`Ref<SlInput>`} - \n\n  * `_buttonsRef` {`Ref<PurchaseProgramDialogButtons>`} - \n\n  * `open` {`boolean`} - \n\n  * `_programName` - \n\n  * `_tier` {`number`} - \n\n  * `_level` {`number`} - \n\n  * `_program` - \n\n  * `_existingProgram` - \n\n  * `renderProgramOption` - \n\n  * `renderTierOptions` - \n\n  * `handleClose` - \n\n  * `handleProgramChange` - \n\n  * `handleTierChange` - \n\n  * `handleLevelChange` - \n\n  * `handleSubmit` - \n\n  * `handleConfirmConfirmationAlert` - \n\n  * `purchase` - \n\n  * `checkAvailability` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`PurchaseProgramDialogController`} - ",
+      "description": "Attributes:\n\n  * `open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `hasPartialUpdate` {`boolean`} - \n\n  * `hasMobileRender` {`boolean`} - \n\n  * `_programInputRef` {`Ref<SlSelect>`} - \n\n  * `_tierInputRef` {`Ref<SlSelect>`} - \n\n  * `_levelInputRef` {`Ref<SlInput>`} - \n\n  * `_buttonsRef` {`Ref<PurchaseProgramDialogButtons>`} - \n\n  * `open` {`boolean`} - \n\n  * `_programName` - \n\n  * `_tier` {`number`} - \n\n  * `_level` {`number`} - \n\n  * `_program` - \n\n  * `_existingProgram` - \n\n  * `renderProgramOption` - \n\n  * `renderTierOptions` - \n\n  * `handleClose` - \n\n  * `handleProgramChange` - \n\n  * `handleTierChange` - \n\n  * `handleLevelChange` - \n\n  * `handleSubmit` - \n\n  * `handlePurchaseProgram` - \n\n  * `checkAvailability` - \n\n  * `handlePartialUpdate` - \n\n  * `_controller` {`PurchaseProgramDialogController`} - ",
       "attributes": [
         {
           "name": "open",
@@ -560,7 +560,7 @@
     },
     {
       "name": "ca-message-log-page",
-      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `handleOpenClearMessagesDialog` - \n\n  * `handleConfirmClearMessagesDialog` - \n\n  * `_controller` {`MessageLogBarController`} - ",
+      "description": "Properties:\n\n  * `styles` {`any[]`} - \n\n  * `handleOpenClearMessagesDialog` - \n\n  * `handleClearMessagesLog` - \n\n  * `_controller` {`MessageLogBarController`} - ",
       "attributes": []
     },
     {
@@ -661,7 +661,7 @@
     },
     {
       "name": "ca-hotkeys-dialog",
-      "description": "Attributes:\n\n  * `open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `open` {`boolean`} - \n\n  * `_currentHotkey` - \n\n  * `renderHotkeyRow` - \n\n  * `handleClose` - \n\n  * `handleClear` - \n\n  * `handleStartAssigningHotkey` - \n\n  * `handleKeyPress` - \n\n  * `handleSubmit` - \n\n  * `_controller` {`HotkeysDialogController`} - ",
+      "description": "Attributes:\n\n  * `open` {`boolean`} - \n\nProperties:\n\n  * `styles` {`any[]`} - \n\n  * `open` {`boolean`} - \n\n  * `_currentHotkey` - \n\n  * `renderHotkeyRow` - \n\n  * `handleClose` - \n\n  * `handleOpenUnassignConfirmationModal` - \n\n  * `handleUnassignHotkeys` - \n\n  * `handleOpenRestoreConfirmationModal` - \n\n  * `handleRestoreHotkeys` - \n\n  * `handleStopAssigningHotkey` - \n\n  * `handleStartAssigningHotkey` - \n\n  * `handleKeyDown` - \n\n  * `handleSubmit` - \n\n  * `_controller` {`HotkeysDialogController`} - ",
       "attributes": [
         {
           "name": "open",
@@ -694,7 +694,7 @@
     },
     {
       "name": "ca-savefile-panel",
-      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_importInputRef` {`Ref<HTMLInputElement>`} - \n\n  * `handleSaveGame` - \n\n  * `handleOpenImportSavefileDialog` - \n\n  * `handleConfirmImportSavefileDialog` - \n\n  * `handleChangeImportSavefile` - \n\n  * `handleExportSavefile` - \n\n  * `handleOpenDeleteSaveDataDialog` - \n\n  * `handleConfirmDeleteSaveDataDialog` - \n\n  * `_controller` {`SavefilePanelController`} - ",
+      "description": "Properties:\n\n  * `styles` {`CSSResult`} - \n\n  * `_importInputRef` {`Ref<HTMLInputElement>`} - \n\n  * `handleSaveGame` - \n\n  * `handleOpenImportSavefileDialog` - \n\n  * `hanldeImportSavefile` - \n\n  * `handleChangeImportSavefile` - \n\n  * `handleExportSavefile` - \n\n  * `handleOpenDeleteSaveDataDialog` - \n\n  * `handleDeleteSaveData` - \n\n  * `handleOpenRestoreDefaultSettingsDialog` - \n\n  * `handleRestoreDefaultSettings` - \n\n  * `_controller` {`SavefilePanelController`} - ",
       "attributes": []
     },
     {

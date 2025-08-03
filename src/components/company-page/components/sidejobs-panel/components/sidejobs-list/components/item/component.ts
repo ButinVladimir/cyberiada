@@ -3,10 +3,7 @@ import { localized, msg, str } from '@lit/localize';
 import { provide } from '@lit/context';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-import {
-  ConfirmationAlertOpenEvent,
-  ConfirmationAlertSubmitEvent,
-} from '@components/game-screen/components/confirmation-alert/events';
+import { ConfirmationAlertOpenEvent } from '@components/game-screen/components/confirmation-alert/events';
 import { BaseComponent, SidejobAlert, DELETE_VALUES, DESCRIPTION_ICONS } from '@shared/index';
 import { COMMON_TEXTS, DISTRICT_NAMES, SIDEJOB_TEXTS } from '@texts/index';
 import { SidejobsListItemController } from './controller';
@@ -39,18 +36,6 @@ export class SidejobsListItem extends BaseComponent {
     super();
 
     this._controller = new SidejobsListItemController(this);
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-
-    document.addEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmCancelSidejobDialog);
-  }
-
-  disconnectedCallback() {
-    super.disconnectedCallback();
-
-    document.removeEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmCancelSidejobDialog);
   }
 
   performUpdate() {
@@ -209,18 +194,12 @@ export class SidejobsListItem extends BaseComponent {
         msg(
           str`Are you sure want to cancel sidejob "${sidejobName}" in district "${districtName}" assigned to clone "${cloneName}"?`,
         ),
-        this.sidejobId,
+        this.handleCancelSidejob,
       ),
     );
   };
 
-  private handleConfirmCancelSidejobDialog = (event: Event) => {
-    const convertedEvent = event as ConfirmationAlertSubmitEvent;
-
-    if (convertedEvent.gameAlert !== SidejobAlert.sidejobCancel || convertedEvent.gameAlertKey !== this.sidejobId) {
-      return;
-    }
-
+  private handleCancelSidejob = () => {
     this._controller.cancelSidejobById(this.sidejobId);
   };
 }

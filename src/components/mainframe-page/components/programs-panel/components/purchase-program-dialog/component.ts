@@ -7,10 +7,7 @@ import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.com
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.component.js';
 import clamp from 'lodash/clamp';
 import { type ProgramName, type IProgram } from '@state/mainframe-state';
-import {
-  ConfirmationAlertOpenEvent,
-  ConfirmationAlertSubmitEvent,
-} from '@components/game-screen/components/confirmation-alert/events';
+import { ConfirmationAlertOpenEvent } from '@components/game-screen/components/confirmation-alert/events';
 import { BaseComponent, ProgramAlert } from '@shared/index';
 import { PROGRAM_TEXTS, COMMON_TEXTS } from '@texts/index';
 import { PurchaseProgramDialogCloseEvent } from './events';
@@ -63,18 +60,6 @@ export class PurchaseProgramDialog extends BaseComponent {
     super();
 
     this._controller = new PurchaseProgramDialogController(this);
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-
-    document.addEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmConfirmationAlert);
-  }
-
-  disconnectedCallback() {
-    super.disconnectedCallback();
-
-    document.removeEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmConfirmationAlert);
   }
 
   performUpdate() {
@@ -259,24 +244,15 @@ If you already have program with same name, old one will be replaced with new on
           msg(
             str`Are you sure want to purchase program "${programTitle}"? This will replace your current program with tier ${formattedTier} and level ${formattedLevel}.`,
           ),
+          this.handlePurchaseProgram,
         ),
       );
     } else {
-      this.purchase();
+      this.handlePurchaseProgram();
     }
   };
 
-  private handleConfirmConfirmationAlert = (event: Event) => {
-    const convertedEvent = event as ConfirmationAlertSubmitEvent;
-
-    if (convertedEvent.gameAlert !== ProgramAlert.purchaseProgramOverwrite) {
-      return;
-    }
-
-    this.purchase();
-  };
-
-  private purchase = () => {
+  private handlePurchaseProgram = () => {
     if (!this._programName) {
       return;
     }

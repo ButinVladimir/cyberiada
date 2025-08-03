@@ -1,12 +1,22 @@
+import { TYPES } from '@state/types';
+import { decorators } from '@state/container';
+import { type IStateUIConnector } from '@state/state-ui-connector';
 import { NOTIFICATION_TYPES, NotificationType } from '@shared/index';
 import { ISettingsNotificationTypes } from './interfaces';
 import { SettingsNotificationTypesSerializedState } from './serialized-states';
 
+const { lazyInject } = decorators;
+
 export class SettingsNotificationTypes implements ISettingsNotificationTypes {
+  @lazyInject(TYPES.StateUIConnector)
+  private _stateUiConnector!: IStateUIConnector;
+
   private _enabledNotificationTypes: Set<NotificationType>;
 
   constructor() {
     this._enabledNotificationTypes = new Set<NotificationType>();
+
+    this._stateUiConnector.registerEventEmitter(this, ['_enabledNotificationTypes']);
   }
 
   isNotificationTypeEnabled(notificationType: NotificationType): boolean {

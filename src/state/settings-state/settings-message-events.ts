@@ -1,12 +1,22 @@
+import { TYPES } from '@state/types';
+import { decorators } from '@state/container';
+import { type IStateUIConnector } from '@state/state-ui-connector';
 import { MESSAGE_EVENT_GROUP_LIST, MESSAGE_EVENT_GROUPS, MessageEvent, MessageEventGroup } from '@shared/index';
 import { ISettingsMessageEvents } from './interfaces';
 import { SettingsMessageEventsSerializedState } from './serialized-states';
 
+const { lazyInject } = decorators;
+
 export class SettingsMessageEvents implements ISettingsMessageEvents {
+  @lazyInject(TYPES.StateUIConnector)
+  private _stateUiConnector!: IStateUIConnector;
+
   private _enabledMessageEvents: Set<MessageEvent>;
 
   constructor() {
     this._enabledMessageEvents = new Set<MessageEvent>();
+
+    this._stateUiConnector.registerEventEmitter(this, ['_enabledMessageEvents']);
   }
 
   isEventEnabled(event: MessageEvent): boolean {

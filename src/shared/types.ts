@@ -92,6 +92,9 @@ export enum GameStateAlert {
   saveDelete = 'saveDelete',
   clearMessages = 'clearMessages',
   fastForward = 'fastForward',
+  unassignHotkeys = 'unassignHotkeys',
+  restoreDefaultHotkeys = 'restoreDefaultHotkeys',
+  restoreDefaultSettings = 'restoreDefaultSettings',
 }
 
 export enum ProgramAlert {
@@ -209,6 +212,7 @@ export enum Hotkey {
   pause = 'pause',
   playNormalSpeed = 'playNormalSpeed',
   playFastSpeed = 'playFastSpeed',
+  saveGame = 'saveGame',
   upgradeMainframeHardware = 'upgradeMainframeHardware',
   upgradeMainframePerformance = 'upgradeMainframePerformance',
   upgradeMainframeRam = 'upgradeMainframeRam',

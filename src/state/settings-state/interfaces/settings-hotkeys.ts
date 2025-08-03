@@ -5,5 +5,6 @@ export interface ISettingsHotkeys extends ISerializeable<SettingsHotkeysSerializ
   getHotkeyByKey(key: string): Hotkey | undefined;
   getKeyByHotkey(hotkey: Hotkey): string | undefined;
   setHotkey(hotkey: Hotkey, key: string): void;
-  clearHotkeys(): void;
+  unassignHotkeys(): void;
+  restoreDefaultHotkeys(): void;
 }

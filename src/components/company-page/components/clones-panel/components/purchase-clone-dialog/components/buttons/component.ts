@@ -49,9 +49,7 @@ export class PurchaseCloneDialogButtons extends BaseComponent {
       ${this.renderWarnings()}
 
       <div class="buttons">
-        <sl-button size="medium" variant="default" outline @click=${this.handleCancel}>
-          ${COMMON_TEXTS.close()}
-        </sl-button>
+        <sl-button size="medium" variant="default" @click=${this.handleCancel}> ${COMMON_TEXTS.close()} </sl-button>
 
         <sl-button
           ${ref(this._purchaseButtonRef)}

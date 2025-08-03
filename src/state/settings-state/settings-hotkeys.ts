@@ -2,9 +2,9 @@ import constants from '@configs/constants.json';
 import { TYPES } from '@state/types';
 import { decorators } from '@state/container';
 import { Hotkey } from '@shared/index';
+import { type IStateUIConnector } from '@state/state-ui-connector';
 import { ISettingsHotkeys } from './interfaces';
 import { SettingsHotkeysSerializedState } from './serialized-states';
-import { type IStateUIConnector } from '../state-ui-connector';
 
 const { lazyInject } = decorators;
 
@@ -50,13 +50,17 @@ export class SettingsHotkeys implements ISettingsHotkeys {
     this._keyMap.set(convertedKey, hotkey);
   }
 
-  clearHotkeys() {
+  unassignHotkeys() {
     this._hotkeyMap.clear();
     this._keyMap.clear();
   }
 
-  async startNewState(): Promise<void> {
+  restoreDefaultHotkeys() {
     this.restoreHotkeys(constants.defaultSettings.hotkeys);
+  }
+
+  async startNewState(): Promise<void> {
+    this.restoreDefaultHotkeys();
   }
 
   async deserialize(serializedState: SettingsHotkeysSerializedState): Promise<void> {
@@ -68,7 +72,7 @@ export class SettingsHotkeys implements ISettingsHotkeys {
   }
 
   private restoreHotkeys(hotkeysState: SettingsHotkeysSerializedState) {
-    this.clearHotkeys();
+    this.unassignHotkeys();
 
     Object.entries(hotkeysState).forEach(([hotkey, key]) => {
       const typedHotkey = hotkey as Hotkey;

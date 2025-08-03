@@ -32,6 +32,12 @@ const styles = [
       margin-bottom: var(--sl-spacing-small);
     }
 
+    div.buttons-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--sl-spacing-medium);
+    }
+
     div.hotkey-table {
       display: grid;
       grid-template-columns: 1fr auto;

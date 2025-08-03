@@ -3,10 +3,7 @@ import { localized, msg, str } from '@lit/localize';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { provide } from '@lit/context';
-import {
-  ConfirmationAlertOpenEvent,
-  ConfirmationAlertSubmitEvent,
-} from '@components/game-screen/components/confirmation-alert/events';
+import { ConfirmationAlertOpenEvent } from '@components/game-screen/components/confirmation-alert/events';
 import { BaseComponent, DELETE_VALUES, DESCRIPTION_ICONS, ENTITY_ACTIVE_VALUES, ProgramAlert } from '@shared/index';
 import { type ProgramName, type IProcess } from '@state/mainframe-state';
 import { COMMON_TEXTS, PROGRAM_TEXTS } from '@texts/index';
@@ -39,18 +36,6 @@ export class ProcessesListItem extends BaseComponent {
     super();
 
     this._controller = new ProcessesListItemController(this);
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-
-    document.addEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmDeleteProcessDialog);
-  }
-
-  disconnectedCallback() {
-    super.disconnectedCallback();
-
-    document.removeEventListener(ConfirmationAlertSubmitEvent.type, this.handleConfirmDeleteProcessDialog);
   }
 
   performUpdate() {
@@ -246,18 +231,12 @@ export class ProcessesListItem extends BaseComponent {
       new ConfirmationAlertOpenEvent(
         ProgramAlert.processDelete,
         msg(str`Are you sure want to delete process for program "${programTitle}"? It's progress will be lost.`),
-        this.programName,
+        this.handleDeleteProcess,
       ),
     );
   };
 
-  private handleConfirmDeleteProcessDialog = (event: Event) => {
-    const convertedEvent = event as ConfirmationAlertSubmitEvent;
-
-    if (convertedEvent.gameAlert !== ProgramAlert.processDelete || convertedEvent.gameAlertKey !== this.programName) {
-      return;
-    }
-
+  private handleDeleteProcess = () => {
     this._controller.deleteProcessByName(this.programName);
   };
 

@@ -3,7 +3,8 @@ import { msg, localized } from '@lit/localize';
 import { customElement, property, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import SlButton from '@shoelace-style/shoelace/dist/components/button/button.component.js';
-import { BaseComponent, Hotkey, HOTKEYS } from '@shared/index';
+import { ConfirmationAlertOpenEvent } from '@/components/game-screen/components/confirmation-alert/events';
+import { BaseComponent, GameStateAlert, Hotkey, HOTKEYS } from '@shared/index';
 import { COMMON_TEXTS } from '@texts/index';
 import { HotkeysDialogCloseEvent } from './events';
 import { HotkeysDialogController } from './controller';
@@ -43,13 +44,13 @@ export class HotkeysDialog extends BaseComponent {
   connectedCallback() {
     super.connectedCallback();
 
-    document.addEventListener('keypress', this.handleKeyPress);
+    this.addEventListener('keydown', this.handleKeyDown);
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
 
-    document.removeEventListener('keypress', this.handleKeyPress);
+    this.removeEventListener('keydown', this.handleKeyDown);
   }
 
   protected renderDesktop() {
@@ -63,8 +64,13 @@ export class HotkeysDialog extends BaseComponent {
               ${msg('Hotkeys for most used actions. Press button on form and then pressed key to assign hotkey.')}
             </p>
 
-            <div>
-              <sl-button variant="danger" size="medium" @click=${this.handleClear}> ${msg('Clear hotkeys')} </sl-button>
+            <div class="buttons-container">
+              <sl-button variant="danger" size="medium" @click=${this.handleOpenUnassignConfirmationModal}>
+                ${msg('Clear hotkeys')}
+              </sl-button>
+              <sl-button variant="default" size="medium" outline @click=${this.handleOpenRestoreConfirmationModal}>
+                ${msg('Restore default hotkeys')}
+              </sl-button>
             </div>
 
             <sl-divider></sl-divider>
@@ -72,7 +78,7 @@ export class HotkeysDialog extends BaseComponent {
             <div class="hotkey-table">${repeat(HOTKEYS, this.renderHotkeyRow)}</div>
           </div>
 
-          <sl-button slot="footer" size="medium" variant="default" outline @click=${this.handleClose}>
+          <sl-button slot="footer" size="medium" variant="default" @click=${this.handleClose}>
             ${COMMON_TEXTS.close()}
           </sl-button>
         </sl-dialog>
@@ -101,6 +107,7 @@ export class HotkeysDialog extends BaseComponent {
           ?outline=${buttonVariant === 'default'}
           value=${hotkey}
           @click=${this.handleStartAssigningHotkey}
+          @sl-blur=${this.handleStopAssigningHotkey}
         >
           ${buttonText}
         </sl-button>
@@ -112,8 +119,36 @@ export class HotkeysDialog extends BaseComponent {
     this.dispatchEvent(new HotkeysDialogCloseEvent());
   };
 
-  private handleClear = () => {
-    this._controller.clearHotkeys();
+  private handleOpenUnassignConfirmationModal = () => {
+    this.dispatchEvent(
+      new ConfirmationAlertOpenEvent(
+        GameStateAlert.unassignHotkeys,
+        msg('Are you sure want to unassign all hotkeys?'),
+        this.handleUnassignHotkeys,
+      ),
+    );
+  };
+
+  private handleUnassignHotkeys = () => {
+    this._controller.unassignHotkeys();
+  };
+
+  private handleOpenRestoreConfirmationModal = () => {
+    this.dispatchEvent(
+      new ConfirmationAlertOpenEvent(
+        GameStateAlert.restoreDefaultHotkeys,
+        msg('Are you sure want to restore default hotkeys?'),
+        this.handleRestoreHotkeys,
+      ),
+    );
+  };
+
+  private handleRestoreHotkeys = () => {
+    this._controller.restoreDefaultHotkeys();
+  };
+
+  private handleStopAssigningHotkey = () => {
+    this._currentHotkey = undefined;
   };
 
   private handleStartAssigningHotkey = (event: Event) => {
@@ -123,10 +158,12 @@ export class HotkeysDialog extends BaseComponent {
     this._currentHotkey = hotkey;
   };
 
-  private handleKeyPress = (event: KeyboardEvent) => {
+  private handleKeyDown = (event: KeyboardEvent) => {
     if (!this._currentHotkey || !event.key) {
       return;
     }
+
+    event.stopPropagation();
 
     const key = event.key;
 

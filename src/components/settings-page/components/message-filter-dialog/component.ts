@@ -79,7 +79,7 @@ export class MessageFilterDialog extends BaseComponent {
             ${repeat(MESSAGE_EVENT_GROUP_LIST, this.renderGroup)}
           </div>
 
-          <sl-button slot="footer" size="medium" variant="default" outline @click=${this.handleClose}>
+          <sl-button slot="footer" size="medium" variant="default" @click=${this.handleClose}>
             ${COMMON_TEXTS.close()}
           </sl-button>
         </sl-dialog>
