@@ -1,11 +1,10 @@
 import { injectable } from 'inversify';
 import { decorators } from '@state/container';
-import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
-import type { IMainframeState } from '@state/mainframe-state/interfaces/mainframe-state';
-import { OtherProgramName } from '@state/mainframe-state/states/progam-factory/types';
-import { PredictiveComputatorProgram } from '@state/mainframe-state/states/progam-factory/programs/predictive-computator';
 import { TYPES } from '@state/types';
-import type { IGlobalState } from '@state/global-state/interfaces/global-state';
+import { type IStateUIConnector } from '@state/state-ui-connector';
+import { type IMainframeState, OtherProgramName, PredictiveComputatorProgram } from '@state/mainframe-state';
+import type { IGlobalState } from '@state/global-state';
+import { calculateLinear } from '@shared/index';
 import { IProcessCompletionSpeedParameter } from './interfaces';
 
 const { lazyInject } = decorators;
@@ -89,9 +88,9 @@ export class ProcessCompletionSpeedParameter implements IProcessCompletionSpeedP
   private updateMultiplierByHardware() {
     const mainframeHardwareState = this._mainframeState.hardware;
 
-    const multiplierByHardware = Math.pow(
-      this._globalState.scenario.currentValues.mainframeSoftware.performanceBoost,
+    const multiplierByHardware = calculateLinear(
       mainframeHardwareState.performance.totalLevel,
+      this._globalState.scenario.currentValues.mainframeSoftware.performanceBoost,
     );
 
     this._multiplierByHardware = multiplierByHardware;

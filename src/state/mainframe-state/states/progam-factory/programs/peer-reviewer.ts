@@ -1,5 +1,5 @@
 import programs from '@configs/programs.json';
-import { calculateTierLinear } from '@shared/helpers';
+import { calculateLinear, calculateTierLinear } from '@shared/index';
 import { decorators } from '@state/container';
 import { TYPES } from '@state/types';
 import { type ICompanyState } from '@state/company-state';
@@ -26,12 +26,13 @@ export class PeerReviewerProgram extends BaseProgram {
 
     return (
       1 +
-      Math.pow(threads * usedRam, programData.autoscalableResourcesPower) *
-        calculateTierLinear(this.level, this.tier, programData.experienceModifier) *
-        Math.pow(
-          this.globalState.scenario.currentValues.mainframeSoftware.performanceBoost,
+      calculateTierLinear(this.level, this.tier, programData.cloneExperience.main) *
+        calculateLinear(
           this.mainframeState.hardware.performance.totalLevel,
-        )
+          this.globalState.scenario.currentValues.mainframeSoftware.performanceBoost,
+        ) *
+        calculateLinear(usedRam, programData.cloneExperience.ram) *
+        calculateLinear(threads, programData.cloneExperience.cores)
     );
   }
 }

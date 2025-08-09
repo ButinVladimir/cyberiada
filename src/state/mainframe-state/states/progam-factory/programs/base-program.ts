@@ -1,6 +1,6 @@
 import programs from '@configs/programs.json';
 import { type IStateUIConnector } from '@state/state-ui-connector';
-import { type IFormatter, calculatePower } from '@shared/index';
+import { type IFormatter, calculateLinear } from '@shared/index';
 import { type IGlobalState } from '@state/global-state';
 import { type IMainframeState } from '@state/mainframe-state';
 import { Feature } from '@shared/types';
@@ -49,9 +49,7 @@ export abstract class BaseProgram implements IProgram {
   }
 
   get completionPoints() {
-    const programData = programs[this.name];
-
-    return calculatePower(this.globalState.development.level - this.level, programData.completionPoints);
+    return programs[this.name].completionPoints;
   }
 
   get autoUpgradeEnabled() {
@@ -89,7 +87,12 @@ export abstract class BaseProgram implements IProgram {
   }
 
   calculateCompletionDelta(threads: number, usedCores: number, passedTime: number): number {
-    const currentSpeed = usedCores * this.mainframeState.processes.processCompletionSpeed.totalMultiplier;
+    const programData = programs[this.name];
+
+    const currentSpeed =
+      usedCores *
+      this.mainframeState.processes.processCompletionSpeed.totalMultiplier *
+      calculateLinear(this.level, programData.speedBoost);
     const allowedSpeed =
       (threads * this.completionPoints) /
       this.globalState.scenario.currentValues.mainframeSoftware.minProcessCompletionTime;

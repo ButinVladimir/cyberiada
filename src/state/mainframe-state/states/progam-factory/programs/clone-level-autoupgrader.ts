@@ -21,7 +21,7 @@ export class CloneLevelAutoupgraderProgram extends BaseProgram {
   handlePerformanceUpdate(): void {}
 
   perform(threads: number): void {
-    let actionsLeft = threads;
+    let actionsLeft = this.calculateActionCount(threads);
     let availableMoney = (this.globalState.money.money * this._automationState.cloneLevel.moneyShare) / 100;
 
     for (const clone of this._companyState.clones.listClones()) {
@@ -46,6 +46,10 @@ export class CloneLevelAutoupgraderProgram extends BaseProgram {
         }
       }
     }
+  }
+
+  calculateActionCount(threads: number): number {
+    return (1 + this.tier) * threads;
   }
 
   private makeCheckParameterFunction = (clone: IClone, availableMoney: number) => (level: number) => {

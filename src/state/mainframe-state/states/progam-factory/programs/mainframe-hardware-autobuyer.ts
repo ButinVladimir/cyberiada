@@ -18,7 +18,7 @@ export class MainframeHardwareAutobuyerProgram extends BaseProgram {
   handlePerformanceUpdate(): void {}
 
   perform(threads: number): void {
-    let actionsLeft = threads;
+    let actionsLeft = this.calculateActionCount(threads);
     let availableMoney = (this.globalState.money.money * this._automationState.mainframeHardware.moneyShare) / 100;
 
     for (const parameter of this.mainframeState.hardware.listParameters()) {
@@ -40,6 +40,10 @@ export class MainframeHardwareAutobuyerProgram extends BaseProgram {
         availableMoney -= cost;
       }
     }
+  }
+
+  calculateActionCount(threads: number): number {
+    return (1 + this.tier) * threads;
   }
 
   private makeCheckParameterFunction =

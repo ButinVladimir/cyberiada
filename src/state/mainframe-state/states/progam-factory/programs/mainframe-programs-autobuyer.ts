@@ -18,7 +18,7 @@ export class MainframeProgramsAutobuyerProgram extends BaseProgram {
   handlePerformanceUpdate(): void {}
 
   perform(threads: number): void {
-    let actionsLeft = threads;
+    let actionsLeft = this.calculateActionCount(threads);
     let availableMoney = (this.globalState.money.money * this._automationState.mainframePrograms.moneyShare) / 100;
 
     for (const existingProgram of this.mainframeState.programs.listOwnedPrograms()) {
@@ -43,6 +43,10 @@ export class MainframeProgramsAutobuyerProgram extends BaseProgram {
         }
       }
     }
+  }
+
+  calculateActionCount(threads: number): number {
+    return (1 + this.tier) * threads;
   }
 
   private makeCheckProgramFunction =

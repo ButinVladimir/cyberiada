@@ -1,5 +1,5 @@
 import programs from '@configs/programs.json';
-import { calculateTierPower } from '@shared/helpers';
+import { calculateTierLinear } from '@shared/helpers';
 import { MultiplierProgramName } from '../types';
 import { BaseProgram } from './base-program';
 
@@ -20,7 +20,7 @@ export class CodeGeneratorProgram extends BaseProgram {
       this.globalState.scenario.currentValues.programMultipliers.codeBase.pointsMultiplier *
       this.globalState.multipliers.rewards.totalMultiplier *
       threads *
-      calculateTierPower(this.level, this.tier, programData.codeBase)
+      calculateTierLinear(this.level, this.tier, programData.codeBase)
     );
   }
 }

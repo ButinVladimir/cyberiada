@@ -22,19 +22,19 @@
     },
     "rewardModifiers": {
       "attributes": {
-        "strength": { "multiplier": 0.1, "base": 1 },
-        "endurance": { "multiplier": 0.1, "base": 1 },
-        "agility": { "multiplier": 0.1, "base": 1 },
-        "perception": { "multiplier": 0.1, "base": 1 },
-        "intellect": { "multiplier": 0.1, "base": 1 },
+        "strength": { "multiplier": 0, "base": 1 },
+        "endurance": { "multiplier": 0, "base": 1 },
+        "agility": { "multiplier": 0, "base": 1 },
+        "perception": { "multiplier": 0, "base": 1 },
+        "intellect": { "multiplier": 0, "base": 1 },
         "charisma": { "multiplier": 0.1, "base": 1 }
       },
       "skills": {
-        "closeCombat": { "multiplier": 0.1, "base": 1 },
-        "rangedCombat": { "multiplier": 0.1, "base": 1 },
-        "engineering": { "multiplier": 0.1, "base": 1 },
-        "hacking": { "multiplier": 0.1, "base": 1 },
-        "stealth": { "multiplier": 0.1, "base": 1 },
+        "closeCombat": { "multiplier": 0, "base": 1 },
+        "rangedCombat": { "multiplier": 0, "base": 1 },
+        "engineering": { "multiplier": 0, "base": 1 },
+        "hacking": { "multiplier": 0, "base": 1 },
+        "stealth": { "multiplier": 0, "base": 1 },
         "diplomacy": { "multiplier": 0.1, "base": 1 }
       }
     },
