@@ -15,7 +15,9 @@
     "cy:open": "cypress open",
     "localize:extract": "lit-localize extract",
     "localize:build": "lit-localize build",
-    "validate": "vite-node ./src/validate.ts"
+    "validate": "vite-node ./src/validate.ts",
+    "unzip-save": "vite-node ./src/tools/unzip-save.ts --",
+    "zip-save": "vite-node ./src/tools/zip-save.ts --"
   },
   "dependencies": {
     "@lit/context": "^1.1.6",

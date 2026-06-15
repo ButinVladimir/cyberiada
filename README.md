@@ -10,11 +10,11 @@ Discord for discussions and feedback is available here: https://discord.gg/CmsTx
 
 ## Troubleshooting
 
-### High memory usage
+#### High memory usage
 
 Disabling popup messages on settings page by setting duration to 0 can reduce memory usage.
 
-### CPU spikes after setting tab active
+#### CPU spikes after setting tab active
 
 After tab is active again, game tries to perform frame updates which didn't happened when tab was inactive. Amount of updates is on settings page, reduce it in case high CPU usage. This parameter is also used by fast forwarding, which runs game at highest speed possible.
 
@@ -42,6 +42,52 @@ npm run prettier
 npm run lint
 ```
 
-### Translations
+#### Build preview
 
-For translactions, game uses [@lit/localize](https://github.com/Lit/Lit/tree/main/packages/localize). To update localization, first run `localize:extract`, then update xlf file under `src/xliff` directory, then run `localize:build`.
+To preview game build, run this to build files:
+
+```
+npm run build
+```
+
+After that, run this to start preview server:
+
+```
+npm run preview
+```
+
+#### Translations
+
+For translactions, game uses [@lit/localize](https://github.com/Lit/Lit/tree/main/packages/localize). To update localization, first run this:
+
+```
+npm run localize:extract
+```
+
+Then update xlf file under `src/xliff` directory and after that run this:
+
+```
+npm run localize:build
+```
+
+### Debugging and balancing CLI tools
+
+#### Unzip save file
+
+To unzip save file, run following command:
+
+```
+npm run unzip-save -- -i <input file name> -o <output file name>
+```
+
+It will unzip save file `<input file name>` from `cli-data/zipped-saves` and save it in `cli-data/unzipped-saves` as `<output file name>`. Output file name can be ommited, in this case it will be saved as `<input file name>`.
+
+#### Zip save file
+
+To zip save file, run following command:
+
+```
+npm run zip-save -- -i <input file name> -o <output file name>
+```
+
+It will unzip save file `<input file name>` from `cli-data/unzipped-saves` and save it in `cli-data/zipped-saves` as `<output file name>`. Output file name can be ommited, in this case it will be saved as `<input file name>`.

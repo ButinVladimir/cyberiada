@@ -157,6 +157,8 @@ export class AppState implements IAppState {
 
     this._globalState.recalculate();
     this._growthState.clearValues();
+
+    this._scenarioState.storyEvents.visitEvents();
   }
 
   private processTicks(maxUpdates: number): number {
