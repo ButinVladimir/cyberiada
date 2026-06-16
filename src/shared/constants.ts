@@ -151,3 +151,5 @@ export const STATE_FILTER_VALUES = Object.values(StateFilterValue);
 export const ACTIVITY_STATUS_FILTER_VALUES = Object.values(ActivityStatusFilterValue);
 
 export const MULTIPLE_SELECT_SEPARATOR = ' ';
+
+export const NEUTRAL_FACTION = 'neutral';

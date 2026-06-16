@@ -86,9 +86,9 @@
               "required": ["name", "startingDistrict", "controlledArea", "canBeJoined"]
             }
           },
-          "neutralFactionIndex": {
+          "unresolvedFactionIndex": {
             "type": "number",
-            "description": "Neutral faction index",
+            "description": "Unresolved faction index",
             "minimum": 0
           },
           "startingDistrict": {
@@ -97,7 +97,7 @@
             "minimum": 0
           }
         },
-        "required": ["width", "height", "districts", "factions", "neutralFactionIndex", "startingDistrict"]
+        "required": ["width", "height", "districts", "factions", "unresolvedFactionIndex", "startingDistrict"]
       },
       "startingValues": {
         "type": "object",

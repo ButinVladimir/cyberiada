@@ -39,9 +39,16 @@ import {
   IStoryEventsValidator,
   IScenariosValidator,
   IContractValidator,
+  ISavefileValidator,
+  ISavefileScenarioValidator,
+  ISavefileValidatorFacade,
+  ISavefileFactionValidator,
 } from './interfaces';
+import { SavefileValidator, SavefileScenarioValidator } from './savefile-validators';
+import { SavefileValidatorFacade } from './savefile-validator-facade';
 import { validatorContainer } from './container';
 import { VALIDATOR_TYPES } from './types';
+import { SavefileFactionValidator } from './savefile-validators/savefile-faction-validator';
 
 validatorContainer
   .bind<IMainValidatorFacade>(VALIDATOR_TYPES.MainValidatorFacade)
@@ -178,5 +185,29 @@ validatorContainer
 validatorContainer
   .bind<IScenariosValidator>(VALIDATOR_TYPES.ScenariosValidator)
   .to(ScenariosValidator)
+  .inSingletonScope()
+  .whenDefault();
+
+validatorContainer
+  .bind<ISavefileScenarioValidator>(VALIDATOR_TYPES.SavefileScenarioValidator)
+  .to(SavefileScenarioValidator)
+  .inSingletonScope()
+  .whenDefault();
+
+validatorContainer
+  .bind<ISavefileFactionValidator>(VALIDATOR_TYPES.SavefileFactionValidator)
+  .to(SavefileFactionValidator)
+  .inSingletonScope()
+  .whenDefault();
+
+validatorContainer
+  .bind<ISavefileValidator>(VALIDATOR_TYPES.SavefileValidator)
+  .to(SavefileValidator)
+  .inSingletonScope()
+  .whenDefault();
+
+validatorContainer
+  .bind<ISavefileValidatorFacade>(VALIDATOR_TYPES.SavefileValidatorFacade)
+  .to(SavefileValidatorFacade)
   .inSingletonScope()
   .whenDefault();

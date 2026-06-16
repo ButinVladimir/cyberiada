@@ -16,8 +16,9 @@
     "localize:extract": "lit-localize extract",
     "localize:build": "lit-localize build",
     "validate": "vite-node ./src/validate.ts",
-    "unzip-save": "vite-node ./src/tools/unzip-save.ts --",
-    "zip-save": "vite-node ./src/tools/zip-save.ts --"
+    "unzip-savefile": "vite-node ./src/tools/unzip-savefile.ts --",
+    "zip-savefile": "vite-node ./src/tools/zip-savefile.ts --",
+    "validate-savefile": "vite-node ./src/tools/validate-savefile.ts --"
   },
   "dependencies": {
     "@lit/context": "^1.1.6",

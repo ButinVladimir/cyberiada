@@ -22,4 +22,8 @@ export const VALIDATOR_TYPES = {
   StoryEventsValidatorFacade: Symbol('StoryEventsValidatorFacade'),
   ScenariosValidator: Symbol('ScenariosValidator'),
   ScenariosValidatorFacade: Symbol('ScenariosValidatorFacade'),
+  SavefileScenarioValidator: Symbol('SavefileScenarioValidator'),
+  SavefileFactionValidator: Symbol('SavefileFactionValidator'),
+  SavefileValidator: Symbol('SavefileValidator'),
+  SavefileValidatorFacade: Symbol('SavefileValidatorFacade'),
 };

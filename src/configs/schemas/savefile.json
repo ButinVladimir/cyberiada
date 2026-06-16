@@ -1,0 +1,74 @@
+{
+  "type": "object",
+  "properties": {
+    "gameVersion": {
+      "type": "string",
+      "description": "Game version",
+      "enum": [
+        "0.4.0"
+      ]
+    },
+    "scenario": {
+      "type": "object",
+      "description": "Scenario state",
+      "properties": {
+        "currentScenario": {
+          "type": "string",
+          "description": "Current scenario"
+        },
+        "storyEvents": {
+          "type": "object",
+          "description": "Story events state",
+          "properties": {
+            "visitedAllEvents": {
+              "type": "array",
+              "description": "All visited events, including those in past replications",
+              "items": {
+                "type": "string",
+                "description": "Visited event",
+                "minLength": 1
+              }
+            },
+            "visitedScenarioEvents": {
+              "type": "array",
+              "description": "All visited events in this replication",
+              "items": {
+                "type": "string",
+                "description": "Visited event",
+                "minLength": 1
+              }
+            }
+          },
+          "required": ["visitedAllEvents", "visitedScenarioEvents"]
+        }
+      },
+      "required": ["currentScenario", "storyEvents"]
+    },
+    "faction": {
+      "type": "object",
+      "description": "Faction state",
+      "properties": {
+        "joiningFactionAvailable": {
+          "type": "boolean",
+          "description": "Are factions available to be joined"
+        },
+        "currentFaction": {
+          "type": "string",
+          "description": "Currently joined faction",
+          "minLength": 1
+        },
+        "factionsList": {
+          "type": "array",
+          "description": "Factions available to join",
+          "items": {
+            "type": "string",
+            "description": "Faction name",
+            "minLength": 1
+          }
+        }
+      },
+      "required": ["joiningFactionAvailable", "currentFaction", "factionsList"]
+    }
+  },
+  "required": ["gameVersion", "scenario", "faction"]
+}

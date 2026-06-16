@@ -72,22 +72,22 @@ npm run localize:build
 
 ### Debugging and balancing CLI tools
 
-#### Unzip save file
+#### Unzip savefile
 
-To unzip save file, run following command:
-
-```
-npm run unzip-save -- -i <input file name> -o <output file name>
-```
-
-It will unzip save file `<input file name>` from `cli-data/zipped-saves` and save it in `cli-data/unzipped-saves` as `<output file name>`. Output file name can be ommited, in this case it will be saved as `<input file name>`.
-
-#### Zip save file
-
-To zip save file, run following command:
+To unzip savefile, run following command:
 
 ```
-npm run zip-save -- -i <input file name> -o <output file name>
+npm run unzip-savefile -- -i <input file name> -o <output file name>
 ```
 
-It will unzip save file `<input file name>` from `cli-data/unzipped-saves` and save it in `cli-data/zipped-saves` as `<output file name>`. Output file name can be ommited, in this case it will be saved as `<input file name>`.
+It will unzip savefile `<input file name>` from `cli-data/zipped-saves` and save it in `cli-data/unzipped-saves` as `<output file name>`. Output file name can be ommited, in this case it will be saved as `<input file name>`.
+
+#### Zip savefile
+
+To zip savefile, run following command:
+
+```
+npm run zip-savefile -- -i <input file name> -o <output file name>
+```
+
+It will unzip savefile `<input file name>` from `cli-data/unzipped-saves` and save it in `cli-data/zipped-saves` as `<output file name>`. Output file name can be ommited, in this case it will be saved as `<input file name>`.

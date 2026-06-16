@@ -2,5 +2,5 @@
 
 !/.gitignore
 !/**/.gitkeep
-!/unzipped-saves
-!/zipped-saves
+!/unzipped-savefiles
+!/zipped-savefiles

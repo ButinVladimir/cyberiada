@@ -9,6 +9,7 @@ import { type IUnlockState } from '@state/unlock-state';
 import { type ICityState } from '../city-state';
 import { TYPES } from '@state/types';
 import { FACTION_TEXTS, SPECIAL_EVENTS_MESSAGES } from '@texts/index';
+import { NEUTRAL_FACTION } from '@shared/index';
 import { IFactionValues, IFactionState, IFactionSerializedState } from './interfaces';
 import { typedFactions } from './constants';
 import { FactionPlaystyle } from './types';
@@ -39,7 +40,7 @@ export class FactionState implements IFactionState {
 
   constructor() {
     this._joiningFactionAvailable = false;
-    this.currentFaction = 'neutral';
+    this.currentFaction = NEUTRAL_FACTION;
     this._allFactionsList = [];
     this._availableFactionsList = [];
 
@@ -134,7 +135,7 @@ export class FactionState implements IFactionState {
 
     this.makeAllFactionsList();
 
-    this.currentFaction = 'neutral';
+    this.currentFaction = NEUTRAL_FACTION;
 
     this.updateAvailableFactions();
   }
