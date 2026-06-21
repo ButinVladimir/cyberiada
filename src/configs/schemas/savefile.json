@@ -4,9 +4,7 @@
     "gameVersion": {
       "type": "string",
       "description": "Game version",
-      "enum": [
-        "0.4.0"
-      ]
+      "enum": ["0.4.0"]
     },
     "scenario": {
       "type": "object",
@@ -68,7 +66,272 @@
         }
       },
       "required": ["joiningFactionAvailable", "currentFaction", "factionsList"]
+    },
+    "unlock": {
+      "type": "object",
+      "description": "Unlock state",
+      "properties": {
+        "milestones": {
+          "type": "object",
+          "description": "Milestones",
+          "properties": {
+            "reachedMilestones": {
+              "type": "array",
+              "description": "Reached milestones",
+              "items": {
+                "$ref": "./common/milestone.json",
+                "description": "Reached milestone"
+              }
+            }
+          },
+          "required": ["reachedMilestones"]
+        },
+        "items": {
+          "type": "object",
+          "description": "Items",
+          "properties": {
+            "programs": {
+              "type": "object",
+              "description": "Programs",
+              "properties": {
+                "designs": {
+                  "type": "object",
+                  "description": "Programs designs",
+                  "additionalProperties": {
+                    "type": "integer",
+                    "description": "Design tier",
+                    "minimum": 0
+                  },
+                  "propertyNames": {
+                    "$ref": "./common/program-name.json"
+                  }
+                }
+              },
+              "required": ["designs"]
+            },
+            "cloneTemplates": {
+              "type": "object",
+              "description": "Clone templates",
+              "properties": {
+                "designs": {
+                  "type": "object",
+                  "description": "Clone templates designs",
+                  "additionalProperties": {
+                    "type": "integer",
+                    "description": "Design tier",
+                    "minimum": 0
+                  }
+                }
+              },
+              "required": ["designs"]
+            }
+          },
+          "required": ["programs", "cloneTemplates"]
+        },
+        "activities": {
+          "type": "object",
+          "description": "Activities",
+          "properties": {
+            "sidejobs": {
+              "type": "object",
+              "description": "Sidejobs",
+              "properties": {
+                "unlockedActivities": {
+                  "type": "array",
+                  "description": "Unlocked sidejobs",
+                  "items": {
+                    "type": "string",
+                    "description": "Sidejob",
+                    "minLength": 1
+                  }
+                }
+              },
+              "required": ["unlockedActivities"]
+            },
+            "contracts": {
+              "type": "object",
+              "description": "Contracts",
+              "properties": {
+                "unlockedActivities": {
+                  "type": "array",
+                  "description": "Unlocked contracts",
+                  "items": {
+                    "type": "string",
+                    "description": "Contracts",
+                    "minLength": 1
+                  }
+                }
+              },
+              "required": ["unlockedActivities"]
+            }
+          },
+          "required": ["sidejobs", "contracts"]
+        }
+      },
+      "required": ["milestones", "items", "activities"]
+    },
+    "global": {
+      "type": "object",
+      "description": "Global state",
+      "properties": {
+        "randomSeed": {
+          "type": "string",
+          "description": "Random seed",
+          "minLength": 1
+        },
+        "randomShift": {
+          "type": "string",
+          "description": "Random shift",
+          "minLength": 1
+        },
+        "runId": {
+          "type": "string",
+          "description": "Run ID",
+          "minLength": 1
+        },
+        "gameSpeed": {
+          "type": "integer",
+          "description": "Game speed state, 0 - pause, 1 - normal, 2 - fast",
+          "minimum": 0,
+          "maximum": 2
+        },
+        "money": {
+          "type": "object",
+          "description": "Money",
+          "properties": {
+            "money": {
+              "type": "number",
+              "description": "Money value",
+              "minimum": 0
+            },
+            "income": {
+              "type": "object",
+              "description": "Money income values",
+              "additionalProperties": {
+                "type": "number",
+                "description": "Income value",
+                "minimum": 0
+              },
+              "propertyNames": { "enum": ["program", "sidejob", "primaryActivity"] }
+            },
+            "expenses": {
+              "type": "object",
+              "description": "Money expenses values",
+              "additionalProperties": {
+                "type": "number",
+                "description": "Expenses value",
+                "minimum": 0
+              },
+              "propertyNames": { "enum": ["mainframePrograms", "mainframeHardware", "clones"] }
+            }
+          },
+          "required": ["money", "income", "expenses"]
+        },
+        "time": {
+          "type": "object",
+          "description": "Time",
+          "properties": {
+            "lastUpdateTime": {
+              "type": "number",
+              "description": "Last update timestamp",
+              "minimum": 0
+            },
+            "accumulatedTime": {
+              "type": "number",
+              "description": "Accumulated time",
+              "minimum": 0
+            },
+            "gameTime": {
+              "type": "number",
+              "description": "Game time after last replication",
+              "minimum": 0
+            },
+            "gameTimeTotal": {
+              "type": "number",
+              "description": "Total game time",
+              "minimum": 0
+            }
+          },
+          "required": ["lastUpdateTime", "accumulatedTime", "gameTime", "gameTimeTotal"]
+        },
+        "development": {
+          "type": "object",
+          "description": "Development",
+          "properties": {
+            "points": {
+              "type": "number",
+              "description": "Development points",
+              "minimum": 0
+            },
+            "income": {
+              "type": "object",
+              "description": "Development income",
+              "additionalProperties": {
+                "type": "number",
+                "description": "Development income value",
+                "minimum": 0
+              },
+              "propertyNames": { "enum": ["program", "sidejob", "primaryActivity"] }
+            }
+          },
+          "required": ["points", "income"]
+        },
+        "connectivity": {
+          "type": "object",
+          "description": "Connectivity",
+          "properties": {
+            "pointsByProgram": {
+              "type": "number",
+              "description": "Points by programs",
+              "minimum": 0
+            }
+          },
+          "required": ["pointsByProgram"]
+        },
+        "multipliers": {
+          "type": "object",
+          "description": "Cost multipliers",
+          "additionalProperties": {
+            "type": "object",
+            "description": "Cost multiplier",
+            "properties": {
+              "pointsByProgram": {
+                "type": "number",
+                "description": "Points by programs",
+                "minimum": 0
+              }
+            },
+            "required": ["pointsByProgram"]
+          },
+          "propertyNames": { "enum": ["codeBase", "computationalBase"] },
+          "required": ["codeBase", "computationalBase"]
+        },
+        "rewards": {
+          "type": "object",
+          "description": "Rewards",
+          "properties": {
+            "pointsByProgram": {
+              "type": "number",
+              "description": "Points by programs",
+              "minimum": 0
+            }
+          },
+          "required": ["pointsByProgram"]
+        }
+      },
+      "required": [
+        "randomSeed",
+        "randomShift",
+        "runId",
+        "gameSpeed",
+        "money",
+        "time",
+        "development",
+        "connectivity",
+        "multipliers",
+        "rewards"
+      ]
     }
   },
-  "required": ["gameVersion", "scenario", "faction"]
+  "required": ["gameVersion", "scenario", "faction", "unlock", "global"]
 }

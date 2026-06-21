@@ -1,6 +1,8 @@
 import { inject, injectable } from 'inversify';
 import { Ajv } from 'ajv';
 import savefileSchema from '@configs/schemas/savefile.json';
+import programNamesSchema from '@configs/schemas/common/program-name.json';
+import milestoneSchema from '@configs/schemas/common/milestone.json';
 import { styleText } from 'node:util';
 import { ISerializedState } from '@state/app-state';
 import { type ISavefileValidator, ISavefileValidatorFacade } from './interfaces';
@@ -35,9 +37,7 @@ export class SavefileValidatorFacade implements ISavefileValidatorFacade {
 
   private prepareAjv(): Ajv {
     return new Ajv({
-      schemas: [
-        savefileSchema,
-      ],
+      schemas: [savefileSchema, programNamesSchema, milestoneSchema],
       allErrors: true,
     });
   }

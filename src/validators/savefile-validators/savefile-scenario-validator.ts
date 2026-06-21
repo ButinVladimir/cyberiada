@@ -16,7 +16,7 @@ export class SavefileScenarioValidator implements ISavefileScenarioValidator {
     this.validateStoryEvents();
   }
 
-  private validateCurrentScenario() {   
+  private validateCurrentScenario() {
     if (!typedScenarios[this._currentState.currentScenario]) {
       console.log(
         `\t\t\tCurrent scenario ${styleText('cyanBright', this._currentState.currentScenario)} is ${styleText('redBright', 'missing')}`,
@@ -30,10 +30,10 @@ export class SavefileScenarioValidator implements ISavefileScenarioValidator {
     });
     this._currentState.storyEvents.visitedScenarioEvents.forEach((storyEvent) => {
       this.validateStoryEvent(storyEvent, 'visited events in current scenario');
-    })
+    });
   }
 
-  private validateStoryEvent(storyEventName: string, category: string) {   
+  private validateStoryEvent(storyEventName: string, category: string) {
     if (!typedStoryEvents[storyEventName]) {
       console.log(
         `\t\t\tStory event ${styleText('cyanBright', storyEventName)} in ${category} is ${styleText('redBright', 'missing')}`,

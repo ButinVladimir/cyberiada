@@ -24,7 +24,10 @@ export class SavefileFactionValidator implements ISavefileFactionValidator {
       );
     }
 
-    if (this._currentState.currentFaction !== NEUTRAL_FACTION && !this._currentState.factionsList.includes(this._currentState.currentFaction)) {
+    if (
+      this._currentState.currentFaction !== NEUTRAL_FACTION &&
+      !this._currentState.factionsList.includes(this._currentState.currentFaction)
+    ) {
       console.log(
         `\t\t\tFaction ${styleText('cyanBright', this._currentState.currentFaction)} is ${styleText('redBright', 'not available')} to join`,
       );
@@ -34,9 +37,7 @@ export class SavefileFactionValidator implements ISavefileFactionValidator {
   validateFactionsList() {
     for (const factionName of this._currentState.factionsList) {
       if (!typedFactions[factionName]) {
-        console.log(
-          `\t\t\tFaction ${styleText('cyanBright', factionName)} is ${styleText('redBright', 'missing')}`,
-        );        
+        console.log(`\t\t\tFaction ${styleText('cyanBright', factionName)} is ${styleText('redBright', 'missing')}`);
       }
     }
   }

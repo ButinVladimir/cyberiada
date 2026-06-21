@@ -26,6 +26,8 @@ const fileContent = await readFile(inputFilePath, { encoding: 'utf8' });
 
 const serializedState = JSON.parse(fileContent) as ISerializedState;
 
-const savefileValidatorFacade: ISavefileValidatorFacade = validatorContainer.get(VALIDATOR_TYPES.SavefileValidatorFacade);
+const savefileValidatorFacade: ISavefileValidatorFacade = validatorContainer.get(
+  VALIDATOR_TYPES.SavefileValidatorFacade,
+);
 
 await savefileValidatorFacade.validate(serializedState);

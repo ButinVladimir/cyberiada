@@ -7,6 +7,7 @@ import {
   type ISavefileValidator,
   type ISavefileScenarioValidator,
   type ISavefileFactionValidator,
+  type ISavefileUnlockValidator,
 } from '../interfaces';
 
 @injectable()
@@ -16,6 +17,9 @@ export class SavefileValidator implements ISavefileValidator {
 
   @inject(VALIDATOR_TYPES.SavefileFactionValidator)
   private _savefileFactionValidator!: ISavefileFactionValidator;
+
+  @inject(VALIDATOR_TYPES.SavefileUnlockValidator)
+  private _savefileUnlockValidator!: ISavefileUnlockValidator;
 
   private _currentState!: ISerializedState;
 
@@ -28,6 +32,7 @@ export class SavefileValidator implements ISavefileValidator {
 
     this._savefileScenarioValidator.validate(state.scenario);
     this._savefileFactionValidator.validate(state.faction);
+    this._savefileUnlockValidator.validate(state.unlock);
   }
 
   private validateGameVersion() {

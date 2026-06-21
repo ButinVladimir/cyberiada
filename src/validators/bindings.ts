@@ -43,12 +43,17 @@ import {
   ISavefileScenarioValidator,
   ISavefileValidatorFacade,
   ISavefileFactionValidator,
+  ISavefileUnlockValidator,
 } from './interfaces';
-import { SavefileValidator, SavefileScenarioValidator } from './savefile-validators';
+import {
+  SavefileValidator,
+  SavefileScenarioValidator,
+  SavefileUnlockValidator,
+  SavefileFactionValidator,
+} from './savefile-validators';
 import { SavefileValidatorFacade } from './savefile-validator-facade';
 import { validatorContainer } from './container';
 import { VALIDATOR_TYPES } from './types';
-import { SavefileFactionValidator } from './savefile-validators/savefile-faction-validator';
 
 validatorContainer
   .bind<IMainValidatorFacade>(VALIDATOR_TYPES.MainValidatorFacade)
@@ -197,6 +202,12 @@ validatorContainer
 validatorContainer
   .bind<ISavefileFactionValidator>(VALIDATOR_TYPES.SavefileFactionValidator)
   .to(SavefileFactionValidator)
+  .inSingletonScope()
+  .whenDefault();
+
+validatorContainer
+  .bind<ISavefileUnlockValidator>(VALIDATOR_TYPES.SavefileUnlockValidator)
+  .to(SavefileUnlockValidator)
   .inSingletonScope()
   .whenDefault();
 
