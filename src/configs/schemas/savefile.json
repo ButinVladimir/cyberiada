@@ -331,7 +331,231 @@
         "multipliers",
         "rewards"
       ]
+    },
+    "settings": {
+      "type": "object",
+      "description": "Settings state",
+      "properties": {
+        "language": {
+          "type": "string",
+          "description": "Language",
+          "enum": ["en", "ru"]
+        },
+        "theme": {
+          "type": "string",
+          "description": "Theme",
+          "enum": ["light", "dark"]
+        },
+        "messageLogSize": {
+          "type": "integer",
+          "description": "Max amount of message log stored messages",
+          "minimum": 1
+        },
+        "toastDuration": {
+          "type": "number",
+          "description": "Duration of toast messages (ms)",
+          "minimum": 0
+        },
+        "updateInterval": {
+          "type": "number",
+          "description": "Interval between ticks (ms)",
+          "minimum": 1
+        },
+        "autosaveEnabledOnHide": {
+          "type": "boolean",
+          "description": "Is autosave enabled on closing or hiding tab"
+        },
+        "autosaveInterval": {
+          "type": "number",
+          "description": "Autosave interval (ms)",
+          "minimum": 1
+        },
+        "fastSpeedMultiplier": {
+          "type": "integer",
+          "description": "Game speed multiplier on fast mode",
+          "minimum": 2
+        },
+        "maxUpdatesPerTick": {
+          "type": "integer",
+          "description": "Max amount of updates per tick",
+          "minimum": 2
+        },
+        "longNumberFormat": {
+          "type": "string",
+          "description": "Long number format",
+          "enum": ["short", "long", "scientific", "engineering"]
+        },
+        "enabledMessageEvents": {
+          "type": "array",
+          "description": "Enabled messages for events",
+          "items": {
+            "type": "string",
+            "description": "Message event",
+            "enum": [
+              "gameStarted",
+              "gameSaved",
+              "fastForwarded",
+              "levelReached",
+              "performanceUpgraded",
+              "coresUpgraded",
+              "ramUpgraded",
+              "programPurchased",
+              "processStarted",
+              "processDeleted",
+              "displayedProcessesDeleted",
+              "clonePurchased",
+              "cloneLevelUpgraded",
+              "cloneDeleted",
+              "displayedClonesDeleted",
+              "cloneLevelReached",
+              "cloneRenamed",
+              "cloneReplaced",
+              "sidejobAssigned",
+              "sidejobCancelled",
+              "displayedSidejobsCancelled",
+              "contractAssigned",
+              "contractAssignmentRemoved",
+              "displayedContractAssignmentsRemoved",
+              "primaryActivityAdded",
+              "primaryActivityFinished",
+              "primaryActivityCancelled",
+              "displayedPrimaryActivitiesCancelled",
+              "districtTierIncreased"
+            ]
+          }
+        },
+        "enabledGameAlerts": {
+          "type": "array",
+          "description": "Enabled game alerts",
+          "items": {
+            "type": "string",
+            "description": "Game alert",
+            "enum": [
+              "saveImport",
+              "saveDelete",
+              "clearMessages",
+              "fastForward",
+              "unassignHotkeys",
+              "restoreDefaultHotkeys",
+              "restoreDefaultSettings",
+              "joinFaction",
+              "purchaseProgramOverwrite",
+              "processDelete",
+              "processReplace",
+              "deleteDisplayedProcesses",
+              "cloneDelete",
+              "cloneReplace",
+              "deleteDisplayedClones",
+              "sidejobCancel",
+              "cancelDisplayedSidejobs",
+              "replaceSidejob",
+              "contractAssignmentCancel",
+              "cancelDisplayedContractAssignments",
+              "replaceContractAssignment",
+              "cancelDisplayedPrimaryActivities",
+              "cancelPrimaryActivity"
+            ]
+          }
+        },
+        "enabledNotificationTypes": {
+          "type": "array",
+          "description": "Enabled notification types",
+          "items": {
+            "type": "string",
+            "description": "Notification type",
+            "enum": [
+              "storyEvent",
+              "milestoneUnlocked",
+              "timeAccumulated",
+              "activityUnlocked",
+              "designUnlocked",
+              "factionsAvailable",
+              "factionJoined",
+              "districtContested",
+              "districtCaptured"
+            ]
+          }
+        },
+        "hotkeys": {
+          "$ref": "./common/hotkeys.json"
+        }
+      },
+      "required": [
+        "language",
+        "theme",
+        "messageLogSize",
+        "toastDuration",
+        "updateInterval",
+        "autosaveEnabledOnHide",
+        "autosaveInterval",
+        "fastSpeedMultiplier",
+        "maxUpdatesPerTick",
+        "longNumberFormat",
+        "enabledMessageEvents",
+        "enabledGameAlerts",
+        "enabledNotificationTypes",
+        "hotkeys"
+      ]
+    },
+    "clones": {
+      "type": "object",
+      "description": "Clones state",
+      "properties": {
+        "ownedClones": {
+          "type": "object",
+          "description": "Owned clones",
+          "properties": {
+            "clones": {
+              "type": "array",
+              "description": "Clones list",
+              "items": {
+                "type": "object",
+                "description": "Clone",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "Clone ID",
+                    "minLength": 1
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "Clone name",
+                    "minLength": 1
+                  },
+                  "templateName": {
+                    "type": "string",
+                    "description": "Clone template name",
+                    "minLength": 1
+                  },
+                  "experience": {
+                    "type": "number",
+                    "description": "Clone experience",
+                    "minimum": 0
+                  },
+                  "level": {
+                    "type": "number",
+                    "description": "Clone level",
+                    "minimum": 0
+                  },
+                  "tier": {
+                    "type": "number",
+                    "description": "Clone tier",
+                    "minimum": 0
+                  },
+                  "autoUpgradeEnabled": {
+                    "type": "boolean",
+                    "description": "Is autoupgrade enabled"
+                  }
+                },
+                "required": ["id", "name", "templateName", "experience", "level", "tier", "autoUpgradeEnabled"]
+              }
+            }
+          },
+          "required": ["clones"]
+        }
+      },
+      "required": ["ownedClones"]
     }
   },
-  "required": ["gameVersion", "scenario", "faction", "unlock", "global"]
+  "required": ["gameVersion", "scenario", "faction", "unlock", "global", "settings", "clones"]
 }

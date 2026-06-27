@@ -6,6 +6,7 @@ import tieredLinearProgressionSchema from '@configs/schemas/common/tiered-linear
 import geometricProgressionSchema from '@configs/schemas/common/geometric-progression.json';
 import tieredGeometricProgressionSchema from '@configs/schemas/common/tiered-geometric-progression.json';
 import milestoneSchema from '@configs/schemas/common/milestone.json';
+import hotkeysSchema from '@configs/schemas/common/hotkeys.json';
 import { type IValidatorFacade, type IMainValidatorFacade } from './interfaces';
 import { VALIDATOR_TYPES } from './types';
 
@@ -73,6 +74,7 @@ export class MainValidatorFacade implements IMainValidatorFacade {
         geometricProgressionSchema,
         tieredGeometricProgressionSchema,
         milestoneSchema,
+        hotkeysSchema,
       ],
       allErrors: true,
     });

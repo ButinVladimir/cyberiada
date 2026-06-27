@@ -44,12 +44,14 @@ import {
   ISavefileValidatorFacade,
   ISavefileFactionValidator,
   ISavefileUnlockValidator,
+  ISavefileClonesValidator,
 } from './interfaces';
 import {
   SavefileValidator,
   SavefileScenarioValidator,
   SavefileUnlockValidator,
   SavefileFactionValidator,
+  SavefileClonesValidator,
 } from './savefile-validators';
 import { SavefileValidatorFacade } from './savefile-validator-facade';
 import { validatorContainer } from './container';
@@ -208,6 +210,12 @@ validatorContainer
 validatorContainer
   .bind<ISavefileUnlockValidator>(VALIDATOR_TYPES.SavefileUnlockValidator)
   .to(SavefileUnlockValidator)
+  .inSingletonScope()
+  .whenDefault();
+
+validatorContainer
+  .bind<ISavefileClonesValidator>(VALIDATOR_TYPES.SavefileClonesValidator)
+  .to(SavefileClonesValidator)
   .inSingletonScope()
   .whenDefault();
 
