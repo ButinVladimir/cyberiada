@@ -26,7 +26,7 @@ export class SavefileValidatorFacade implements ISavefileValidatorFacade {
   }
 
   private async validateSchema(ajv: Ajv, serializedState: ISerializedState): Promise<void> {
-    console.log(`\tValidating ${styleText('cyanBright', 'savefile schema')}`);
+    console.log(`\tValidating savefile schema`);
 
     const validate = await ajv.compile(savefileSchema);
 

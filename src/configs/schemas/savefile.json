@@ -555,7 +555,168 @@
         }
       },
       "required": ["ownedClones"]
+    },
+    "city": {
+      "type": "object",
+      "description": "City state",
+      "properties": {
+        "layout": {
+          "type": "array",
+          "description": "City layout",
+          "items": {
+            "type": "array",
+            "description": "City layout column",
+            "items": {
+              "type": "integer",
+              "description": "District index at point",
+              "minimum": 0
+            },
+            "minItems": 1
+          },
+          "minItems": 1
+        },
+        "districts": {
+          "type": "object",
+          "description": "City districts",
+          "additionalProperties": {
+            "type": "object",
+            "description": "City district",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "District name",
+                "minLength": 1
+              },
+              "startingPoint": {
+                "type": "object",
+                "description": "District starting point",
+                "additionalProperties": {
+                  "type": "integer",
+                  "description": "District starting point coordinate",
+                  "minimum": 0
+                },
+                "required": ["x", "y"]
+              },
+              "districtType": {
+                "type": "string",
+                "description": "District type",
+                "minLength": 1
+              },
+              "faction": {
+                "type": "string",
+                "description": "District faction",
+                "minLength": 1
+              },
+              "state": {
+                "type": "integer",
+                "description": "District state (0 - unavailable, 1 - contested, 2 - captured)",
+                "minimum": 0,
+                "maximum": 2
+              },
+              "parameters": {
+                "type": "object",
+                "description": "District parameters",
+                "properties": {
+                  "tier": {
+                    "type": "object",
+                    "description": "District tier parameter",
+                    "properties": {
+                      "points": {
+                        "type": "number",
+                        "description": "District tier points",
+                        "minimum": 0
+                      },
+                      "tier": {
+                        "type": "integer",
+                        "description": "District tier value",
+                        "minimum": 0
+                      }
+                    },
+                    "required": ["points", "tier"]
+                  },
+                  "connectivtiy": {
+                    "type": "object",
+                    "description": "District connectivtiy parameter",
+                    "properties": {
+                      "points": {
+                        "type": "number",
+                        "description": "District connectivtiy points",
+                        "minimum": 0
+                      }
+                    },
+                    "required": ["points"]
+                  },
+                  "multipliers": {
+                    "type": "object",
+                    "description": "District multipliers",
+                    "additionalProperties": {
+                      "type": "object",
+                      "description": "District multiplier",
+                      "properties": {
+                        "points": {
+                          "type": "number",
+                          "description": "District multiplier points",
+                          "minimum": 0
+                        }
+                      },
+                      "required": ["points"]
+                    },
+                    "required": ["codeBase", "computationalBase"]
+                  },
+                  "rewards": {
+                    "type": "object",
+                    "description": "District rewards parameter",
+                    "properties": {
+                      "points": {
+                        "type": "number",
+                        "description": "District rewards points",
+                        "minimum": 0
+                      }
+                    },
+                    "required": ["points"]
+                  }
+                },
+                "required": ["tier", "connectivtiy", "multipliers", "rewards"]
+              },
+              "counters": {
+                "type": "object",
+                "description": "District counters",
+                "properties": {
+                  "contracts": {
+                    "type": "object",
+                    "description": "District contracts counters",
+                    "properties": {
+                      "passedTimes": {
+                        "type": "object",
+                        "description": "District contracts passed times",
+                        "additionalProperties": {
+                          "type": "number",
+                          "description": "District contract passed time",
+                          "minimum": 0
+                        }
+                      },
+                      "availableAmounts": {
+                        "type": "object",
+                        "description": "District contracts available amounts",
+                        "additionalProperties": {
+                          "type": "integer",
+                          "description": "District contract available amounts",
+                          "minimum": 0
+                        }
+                      }
+                    },
+                    "required": ["passedTimes", "availableAmounts"]
+                  }
+                },
+                "required": ["contracts"]
+              }
+            },
+            "required": ["name", "startingPoint", "districtType", "faction", "state", "parameters", "counters"]
+          }
+        }
+      },
+      "required": ["layout", "districts"]
     }
   },
-  "required": ["gameVersion", "scenario", "faction", "unlock", "global", "settings", "clones"]
+  "required": ["gameVersion", "scenario", "faction", "unlock", "global", "settings", "clones", "city"]
 }

@@ -18,12 +18,6 @@ export class SavefileFactionValidator implements ISavefileFactionValidator {
   }
 
   validateCurrentFaction() {
-    if (this._currentState.currentFaction !== NEUTRAL_FACTION && !this._currentState.joiningFactionAvailable) {
-      console.log(
-        `\t\t\tFaction ${styleText('cyanBright', this._currentState.currentFaction)} has been joined when it's ${styleText('redBright', 'not allowed')}`,
-      );
-    }
-
     if (
       this._currentState.currentFaction !== NEUTRAL_FACTION &&
       !this._currentState.factionsList.includes(this._currentState.currentFaction)
