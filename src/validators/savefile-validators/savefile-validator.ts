@@ -10,6 +10,7 @@ import {
   type ISavefileUnlockValidator,
   type ISavefileClonesValidator,
   type ISavefileCityValidator,
+  type ISavefileMainframeValidator,
 } from '../interfaces';
 
 @injectable()
@@ -29,6 +30,9 @@ export class SavefileValidator implements ISavefileValidator {
   @inject(VALIDATOR_TYPES.SavefileCityValidator)
   private _savefileCityValidator!: ISavefileCityValidator;
 
+  @inject(VALIDATOR_TYPES.SavefileMainframeValidator)
+  private _savefileMainframeValidator!: ISavefileMainframeValidator;
+
   private _currentState!: ISerializedState;
 
   validate(state: ISerializedState): void {
@@ -43,6 +47,7 @@ export class SavefileValidator implements ISavefileValidator {
     this._savefileUnlockValidator.validate(state.unlock);
     this._savefileClonesValidator.validate(state.clones);
     this._savefileCityValidator.validate(state.city);
+    this._savefileMainframeValidator.validate(state.mainframe);
   }
 
   private validateGameVersion() {

@@ -207,22 +207,38 @@
             "income": {
               "type": "object",
               "description": "Money income values",
-              "additionalProperties": {
-                "type": "number",
-                "description": "Income value",
-                "minimum": 0
-              },
-              "propertyNames": { "enum": ["program", "sidejob", "primaryActivity"] }
+              "properties": {
+                "program": {
+                  "$ref": "#/$defs/globalStateIncomeValue",
+                  "description": "Money income value by programs"
+                },
+                "sidejob": {
+                  "$ref": "#/$defs/globalStateIncomeValue",
+                  "description": "Money income value by sidejobs"
+                },
+                "primaryActivity": {
+                  "$ref": "#/$defs/globalStateIncomeValue",
+                  "description": "Money income value by primary activity"
+                }
+              }
             },
             "expenses": {
               "type": "object",
               "description": "Money expenses values",
-              "additionalProperties": {
-                "type": "number",
-                "description": "Expenses value",
-                "minimum": 0
-              },
-              "propertyNames": { "enum": ["mainframePrograms", "mainframeHardware", "clones"] }
+              "properties": {
+                "mainframePrograms": {
+                  "$ref": "#/$defs/globalStateExpenseValue",
+                  "description": "Money expense value by mainframe programs"
+                },
+                "mainframeHardware": {
+                  "$ref": "#/$defs/globalStateExpenseValue",
+                  "description": "Money expense value by mainframe hardware"
+                },
+                "clones": {
+                  "$ref": "#/$defs/globalStateExpenseValue",
+                  "description": "Money expense value by clones"
+                }
+              }
             }
           },
           "required": ["money", "income", "expenses"]
@@ -266,12 +282,20 @@
             "income": {
               "type": "object",
               "description": "Development income",
-              "additionalProperties": {
-                "type": "number",
-                "description": "Development income value",
-                "minimum": 0
-              },
-              "propertyNames": { "enum": ["program", "sidejob", "primaryActivity"] }
+              "properties": {
+                "program": {
+                  "$ref": "#/$defs/globalStateIncomeValue",
+                  "description": "Development income value by programs"
+                },
+                "sidejob": {
+                  "$ref": "#/$defs/globalStateIncomeValue",
+                  "description": "Development income value by sidejobs"
+                },
+                "primaryActivity": {
+                  "$ref": "#/$defs/globalStateIncomeValue",
+                  "description": "Development income value by primary activity"
+                }
+              }
             }
           },
           "required": ["points", "income"]
@@ -291,19 +315,16 @@
         "multipliers": {
           "type": "object",
           "description": "Cost multipliers",
-          "additionalProperties": {
-            "type": "object",
-            "description": "Cost multiplier",
-            "properties": {
-              "pointsByProgram": {
-                "type": "number",
-                "description": "Points by programs",
-                "minimum": 0
-              }
+          "properties": {
+            "codeBase": {
+              "$ref": "#/$defs/globalStateCostMultiplier",
+              "description": "Code base cost multiplier"
             },
-            "required": ["pointsByProgram"]
+            "computationalBase": {
+              "$ref": "#/$defs/globalStateCostMultiplier",
+              "description": "Computational base cost multiplier"
+            }
           },
-          "propertyNames": { "enum": ["codeBase", "computationalBase"] },
           "required": ["codeBase", "computationalBase"]
         },
         "rewards": {
@@ -590,10 +611,15 @@
               "startingPoint": {
                 "type": "object",
                 "description": "District starting point",
-                "additionalProperties": {
-                  "type": "integer",
-                  "description": "District starting point coordinate",
-                  "minimum": 0
+                "properties": {
+                  "x": {
+                    "$ref": "#/$defs/cityStateDistrictCoordinate",
+                    "description": "District starting point X coordinate"
+                  },
+                  "y": {
+                    "$ref": "#/$defs/cityStateDistrictCoordinate",
+                    "description": "District starting point Y coordinate"
+                  }
                 },
                 "required": ["x", "y"]
               },
@@ -649,17 +675,15 @@
                   "multipliers": {
                     "type": "object",
                     "description": "District multipliers",
-                    "additionalProperties": {
-                      "type": "object",
-                      "description": "District multiplier",
-                      "properties": {
-                        "points": {
-                          "type": "number",
-                          "description": "District multiplier points",
-                          "minimum": 0
-                        }
+                    "properties": {
+                      "codeBase": {
+                        "$ref": "#/$defs/cityStateDistrictCostMultiplier",
+                        "description": "District code base multiplier"
                       },
-                      "required": ["points"]
+                      "computationalBase": {
+                        "$ref": "#/$defs/cityStateDistrictCostMultiplier",
+                        "description": "District computational base multiplier"
+                      }
                     },
                     "required": ["codeBase", "computationalBase"]
                   },
@@ -712,11 +736,173 @@
               }
             },
             "required": ["name", "startingPoint", "districtType", "faction", "state", "parameters", "counters"]
-          }
+          },
+          "propertyNames": { "type": "string", "pattern": "^\\d+$" }
         }
       },
       "required": ["layout", "districts"]
+    },
+    "mainframe": {
+      "type": "object",
+      "description": "Mainframe state",
+      "properties": {
+        "hardware": {
+          "type": "object",
+          "description": "Mainframe hardware",
+          "properties": {
+            "performance": {
+              "$ref": "#/$defs/mainframeStateHardwareArtice",
+              "description": "Mainframe hardware performance"
+            },
+            "cores": {
+              "$ref": "#/$defs/mainframeStateHardwareArtice",
+              "description": "Mainframe hardware cores"
+            },
+            "ram": {
+              "$ref": "#/$defs/mainframeStateHardwareArtice",
+              "description": "Mainframe hardware RAM"
+            },
+            "parametersList": {
+              "type": "array",
+              "description": "Priority list of mainframe hardware articles",
+              "items": {
+                "type": "string",
+                "enum": ["performance", "cores", "ram"]
+              }
+            }
+          },
+          "required": ["performance", "cores", "ram", "parametersList"]
+        },
+        "programs": {
+          "type": "object",
+          "description": "Mainframe programs",
+          "properties": {
+            "ownedPrograms": {
+              "type": "array",
+              "description": "Mainframe owned programs",
+              "items": {
+                "type": "object",
+                "description": "Mainframe owned program",
+                "properties": {
+                  "name": {
+                    "$ref": "./common/program-name.json"
+                  },
+                  "level": {
+                    "type": "integer",
+                    "description": "Mainframe program level",
+                    "minimum": 0
+                  },
+                  "tier": {
+                    "type": "integer",
+                    "description": "Mainframe program tier",
+                    "minimum": 0
+                  },
+                  "autoUpgradeEnabled": {
+                    "type": "boolean",
+                    "description": "Is mainframe program autoupgrade enabled"
+                  }
+                },
+                "required": ["name", "level", "tier", "autoUpgradeEnabled"]
+              }
+            }
+          },
+          "required": ["ownedPrograms"]
+        },
+        "processes": {
+          "type": "object",
+          "description": "Mainframe processes",
+          "properties": {
+            "processes": {
+              "type": "array",
+              "description": "Mainframe processes list",
+              "items": {
+                "type": "object",
+                "description": "Mainframe process",
+                "properties": {
+                  "programName": {
+                    "$ref": "./common/program-name.json"
+                  },
+                  "enabled": {
+                    "type": "boolean",
+                    "description": "Is mainframe process enabled"
+                  },
+                  "threads": {
+                    "type": "integer",
+                    "description": "Mainframe process threads",
+                    "minimum": 0
+                  },
+                  "currentCompletionPoints": {
+                    "type": "number",
+                    "description": "Mainframe process completion points",
+                    "minimum": 0
+                  }
+                },
+                "required": ["programName", "enabled", "threads", "currentCompletionPoints"]
+              }
+            }
+          },
+          "required": ["processes"]
+        }
+      },
+      "required": ["hardware", "programs", "processes"]
     }
   },
-  "required": ["gameVersion", "scenario", "faction", "unlock", "global", "settings", "clones", "city"]
+  "required": ["gameVersion", "scenario", "faction", "unlock", "global", "settings", "clones", "city"],
+  "$defs": {
+    "globalStateIncomeValue": {
+      "type": "number",
+      "description": "Income value",
+      "minimum": 0
+    },
+    "globalStateExpenseValue": {
+      "type": "number",
+      "description": "Expense value",
+      "minimum": 0
+    },
+    "globalStateCostMultiplier": {
+      "type": "object",
+      "description": "Cost multiplier",
+      "properties": {
+        "pointsByProgram": {
+          "type": "number",
+          "description": "Points by programs",
+          "minimum": 0
+        }
+      },
+      "required": ["pointsByProgram"]
+    },
+    "cityStateDistrictCoordinate": {
+      "type": "integer",
+      "description": "District starting point coordinate",
+      "minimum": 0
+    },
+    "cityStateDistrictCostMultiplier": {
+      "type": "object",
+      "description": "District multiplier",
+      "properties": {
+        "points": {
+          "type": "number",
+          "description": "District multiplier points",
+          "minimum": 0
+        }
+      },
+      "required": ["points"]
+    },
+    "mainframeStateHardwareArtice": {
+      "type": "object",
+      "description": "Mainframe hardware article",
+      "properties": {
+        "level": {
+          "type": "integer",
+          "description": "Mainframe article level",
+          "minimum": 0
+        },
+        "autoUpgradeEnabled": {
+          "type": "boolean",
+          "description": "Is mainframe article autoupgrade enabled"
+        }
+      },
+      "required": ["level", "autoUpgradeEnabled"]
+    }
+  }
 }
