@@ -25,7 +25,8 @@
                 "type": "string",
                 "description": "Visited event",
                 "minLength": 1
-              }
+              },
+              "uniqueItems": true
             },
             "visitedScenarioEvents": {
               "type": "array",
@@ -34,7 +35,8 @@
                 "type": "string",
                 "description": "Visited event",
                 "minLength": 1
-              }
+              },
+              "uniqueItems": true
             }
           },
           "required": ["visitedAllEvents", "visitedScenarioEvents"]
@@ -62,7 +64,8 @@
             "type": "string",
             "description": "Faction name",
             "minLength": 1
-          }
+          },
+          "uniqueItems": true
         }
       },
       "required": ["joiningFactionAvailable", "currentFaction", "factionsList"]
@@ -81,7 +84,8 @@
               "items": {
                 "$ref": "./common/milestone.json",
                 "description": "Reached milestone"
-              }
+              },
+              "uniqueItems": true
             }
           },
           "required": ["reachedMilestones"]
@@ -143,7 +147,8 @@
                     "type": "string",
                     "description": "Sidejob",
                     "minLength": 1
-                  }
+                  },
+                  "uniqueItems": true
                 }
               },
               "required": ["unlockedActivities"]
@@ -159,7 +164,8 @@
                     "type": "string",
                     "description": "Contracts",
                     "minLength": 1
-                  }
+                  },
+                  "uniqueItems": true
                 }
               },
               "required": ["unlockedActivities"]
@@ -443,7 +449,8 @@
               "displayedPrimaryActivitiesCancelled",
               "districtTierIncreased"
             ]
-          }
+          },
+          "uniqueItems": true
         },
         "enabledGameAlerts": {
           "type": "array",
@@ -476,7 +483,8 @@
               "cancelDisplayedPrimaryActivities",
               "cancelPrimaryActivity"
             ]
-          }
+          },
+          "uniqueItems": true
         },
         "enabledNotificationTypes": {
           "type": "array",
@@ -495,7 +503,8 @@
               "districtContested",
               "districtCaptured"
             ]
-          }
+          },
+          "uniqueItems": true
         },
         "hotkeys": {
           "$ref": "./common/hotkeys.json"
@@ -751,15 +760,15 @@
           "description": "Mainframe hardware",
           "properties": {
             "performance": {
-              "$ref": "#/$defs/mainframeStateHardwareArtice",
+              "$ref": "#/$defs/mainframeStateHardwareArticle",
               "description": "Mainframe hardware performance"
             },
             "cores": {
-              "$ref": "#/$defs/mainframeStateHardwareArtice",
+              "$ref": "#/$defs/mainframeStateHardwareArticle",
               "description": "Mainframe hardware cores"
             },
             "ram": {
-              "$ref": "#/$defs/mainframeStateHardwareArtice",
+              "$ref": "#/$defs/mainframeStateHardwareArticle",
               "description": "Mainframe hardware RAM"
             },
             "parametersList": {
@@ -768,7 +777,8 @@
               "items": {
                 "type": "string",
                 "enum": ["performance", "cores", "ram"]
-              }
+              },
+              "uniqueItems": true
             }
           },
           "required": ["performance", "cores", "ram", "parametersList"]
@@ -845,6 +855,79 @@
         }
       },
       "required": ["hardware", "programs", "processes"]
+    },
+    "automation": {
+      "type": "object",
+      "description": "Automation state",
+      "properties": {
+        "mainframeHardware": {
+          "$ref": "#/$defs/automationStateArticle",
+          "description": "Available money for mainframe hardware automation"
+        },
+        "mainframePrograms": {
+          "$ref": "#/$defs/automationStateArticle",
+          "description": "Available money for mainframe hardware automation"
+        },
+        "cloneLevel": {
+          "$ref": "#/$defs/automationStateArticle",
+          "description": "Available money for mainframe hardware automation"
+        },
+        "contracts": {
+          "type": "object",
+          "description": "Contracts automation",
+          "properties": {
+            "contractAssignments": {
+              "type": "array",
+              "description": "Contract assignments",
+              "items": {
+                "type": "object",
+                "description": "Contract assigment",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "Contract assignment ID",
+                    "minLength": 1
+                  },
+                  "contract": {
+                    "type": "object",
+                    "description": "Contract assigment contract",
+                    "properties": {
+                      "contractName": {
+                        "type": "string",
+                        "description": "Contract name",
+                        "minLength": 1
+                      },
+                      "districtIndex": {
+                        "type": "integer",
+                        "description": "Contract district index",
+                        "minimum": 0
+                      },
+                      "assignedCloneIds": {
+                        "type": "array",
+                        "description": "Contract district assigned clones",
+                        "items": {
+                          "type": "string",
+                          "description": "Contract district assigned clone ID",
+                          "minLength": 1
+                        },
+                        "uniqueItems": true
+                      }
+                    },
+                    "required": ["contractName", "districtIndex", "assignedCloneIds"]
+                  },
+                  "enabled": {
+                    "type": "boolean",
+                    "description": "Is contract assignment enabled"
+                  }
+                },
+                "required": ["id", "contract", "enabled"]
+              }
+            }
+          },
+          "required": ["contractAssignments"]
+        }
+      },
+      "required": ["mainframeHardware", "mainframePrograms", "cloneLevel"]
     }
   },
   "required": ["gameVersion", "scenario", "faction", "unlock", "global", "settings", "clones", "city"],
@@ -888,7 +971,7 @@
       },
       "required": ["points"]
     },
-    "mainframeStateHardwareArtice": {
+    "mainframeStateHardwareArticle": {
       "type": "object",
       "description": "Mainframe hardware article",
       "properties": {
@@ -903,6 +986,19 @@
         }
       },
       "required": ["level", "autoUpgradeEnabled"]
+    },
+    "automationStateArticle": {
+      "type": "object",
+      "description": "Automation article",
+      "properties": {
+        "moneyShare": {
+          "type": "number",
+          "description": "Percentage of money available for automation",
+          "minimum": 0,
+          "maximum": 100
+        }
+      },
+      "required": ["moneyShare"]
     }
   }
 }

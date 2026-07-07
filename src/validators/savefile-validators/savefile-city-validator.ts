@@ -39,26 +39,34 @@ export class SavefileCityValidator implements ISavefileCityValidator {
     }
   }
 
-  private validateDistrict(state: IDistrictSerializedState, index: string) {
-    if (DISTRICT_NAMES[state.name] === undefined) {
+  private validateDistrict(district: IDistrictSerializedState, index: string) {
+    if (DISTRICT_NAMES[district.name] === undefined) {
       console.log(
-        `\t\t\tDistrict name ${styleText('cyanBright', state.name)} for district index ${styleText('cyanBright', index)} is ${styleText('redBright', 'missing')}`,
+        `\t\t\tDistrict name ${styleText('cyanBright', district.name)} for district index ${styleText('cyanBright', index)} is ${styleText('redBright', 'missing')}`,
       );
     }
 
-    if (typedDistrictTypes[state.districtType] === undefined) {
+    if (typedDistrictTypes[district.districtType] === undefined) {
       console.log(
-        `\t\t\tDistrict type ${styleText('cyanBright', state.districtType)} for district index ${styleText('cyanBright', index)} is ${styleText('redBright', 'missing')}`,
+        `\t\t\tDistrict type ${styleText('cyanBright', district.districtType)} for district index ${styleText('cyanBright', index)} is ${styleText('redBright', 'missing')}`,
       );
     }
 
-    if (typedFactions[state.faction] === undefined) {
+    if (typedFactions[district.faction] === undefined) {
       console.log(
-        `\t\t\tDistrict faction ${styleText('cyanBright', state.faction)} for district index ${styleText('cyanBright', index)} is ${styleText('redBright', 'missing')}`,
+        `\t\t\tDistrict faction ${styleText('cyanBright', district.faction)} for district index ${styleText('cyanBright', index)} is ${styleText('redBright', 'missing')}`,
       );
     }
 
-    for (const contract of Object.keys(state.counters.contracts.availableAmounts)) {
+    this.validateDistrictCounters(district, index);
+  }
+
+  private validateDistrictCounters(district: IDistrictSerializedState, index: string) {
+    this.validateDistrictContractsCounters(district, index);
+  }
+
+  private validateDistrictContractsCounters(district: IDistrictSerializedState, index: string) {
+    for (const contract of Object.keys(district.counters.contracts.availableAmounts)) {
       if (typedContracts[contract] === undefined) {
         console.log(
           `\t\t\tContract ${styleText('cyanBright', contract)} in available amounts for district index ${styleText('cyanBright', index)} is ${styleText('redBright', 'missing')}`,
@@ -66,7 +74,7 @@ export class SavefileCityValidator implements ISavefileCityValidator {
       }
     }
 
-    for (const contract of Object.keys(state.counters.contracts.passedTimes)) {
+    for (const contract of Object.keys(district.counters.contracts.passedTimes)) {
       if (typedContracts[contract] === undefined) {
         console.log(
           `\t\t\tContract ${styleText('cyanBright', contract)} in passed times for district index ${styleText('cyanBright', index)} is ${styleText('redBright', 'missing')}`,

@@ -19,6 +19,8 @@ export class SavefileClonesValidator implements ISavefileClonesValidator {
     for (const clone of this._currentState.ownedClones.clones) {
       this.validateClone(clone);
     }
+
+    this.validateOwnedCloneIdUniqueness();
   }
 
   private validateClone(cloneParameters: IMakeCloneParameters) {
@@ -29,6 +31,18 @@ export class SavefileClonesValidator implements ISavefileClonesValidator {
       console.log(
         `\t\t\tClone template ${styleText('cyanBright', cloneTemplate)} design for clone ${styleText('cyanBright', cloneId)} is ${styleText('redBright', 'missing')}`,
       );
+    }
+  }
+
+  private validateOwnedCloneIdUniqueness() {
+    const ids = new Set<string>();
+
+    for (const clone of this._currentState.ownedClones.clones) {
+      if (ids.has(clone.id)) {
+        console.log(`\t\t\tClone id ${styleText('cyanBright', clone.id)} is ${styleText('redBright', 'not unique')}`);
+      }
+
+      ids.add(clone.id);
     }
   }
 }
