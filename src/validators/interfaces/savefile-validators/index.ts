@@ -6,3 +6,4 @@ export * from './savefile-clones-validator';
 export * from './savefile-city-validator';
 export * from './savefile-mainframe-validator';
 export * from './savefile-automation-validator';
+export * from './savefile-activity-validator';

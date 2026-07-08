@@ -928,9 +928,151 @@
         }
       },
       "required": ["mainframeHardware", "mainframePrograms", "cloneLevel"]
+    },
+    "activity": {
+      "type": "object",
+      "description": "Activity state",
+      "properties": {
+        "sidejobs": {
+          "type": "object",
+          "description": "Activity state sidejobs",
+          "properties": {
+            "activities": {
+              "type": "array",
+              "description": "Activity state sidejobs activity list",
+              "items": {
+                "type": "object",
+                "description": "Sidejob activity",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "Sidejob activity ID",
+                    "minLength": 1
+                  },
+                  "enabled": {
+                    "type": "boolean",
+                    "description": "Is sidejob activity enabled"
+                  },
+                  "sidejob": {
+                    "type": "object",
+                    "description": "Sidejob",
+                    "properties": {
+                      "sidejobName": {
+                        "type": "string",
+                        "description": "Sidejob name",
+                        "minLength": 1
+                      },
+                      "districtIndex": {
+                        "type": "integer",
+                        "description": "Sidejob district index",
+                        "minimum": 0
+                      },
+                      "assignedCloneId": {
+                        "type": "string",
+                        "description": "Sidejob assigned clone",
+                        "minLength": 1
+                      }
+                    },
+                    "required": ["sidejobName", "districtIndex", "assignedCloneId"]
+                  }
+                },
+                "required": ["id", "enabled", "sidejob"]
+              }
+            }
+          },
+          "required": ["activities"]
+        },
+        "primaryActivityQueue": {
+          "type": "object",
+          "description": "Primary activity queue",
+          "properties": {
+            "activities": {
+              "type": "array",
+              "description": "Primary activity queue activity list",
+              "items": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "description": "Contract activity",
+                    "properties": {
+                      "activityId": {
+                        "type": "string",
+                        "description": "Primary activity ID",
+                        "minLength": 1
+                      },
+                      "type": {
+                        "type": "string",
+                        "enum": ["contract"]
+                      },
+                      "state": {
+                        "type": "string",
+                        "enum": ["active", "inactive", "finishedPerforming", "toBeRemoved"]
+                      },
+                      "parameterRewards": {
+                        "type": "object",
+                        "description": "Primary activity rewards",
+                        "additionalProperties": {
+                          "type": "number",
+                          "minimum": 0
+                        },
+                        "propertyNames": {
+                          "type": "string",
+                          "enum": [
+                            "money",
+                            "developmentPoints",
+                            "experience",
+                            "influence",
+                            "connectivity",
+                            "codeBase",
+                            "computationalBase",
+                            "rewards",
+                            "processCompletionSpeed",
+                            "experienceShareMultiplier"
+                          ]
+                        }
+                      },
+                      "contractAssignmentId": {
+                        "type": "string",
+                        "description": "Contract assignment ID",
+                        "minLength": 1
+                      },
+                      "passedTime": {
+                        "type": "number",
+                        "description": "Contract activity passed time",
+                        "minimum": 0
+                      }
+                    },
+                    "required": [
+                      "activityId",
+                      "type",
+                      "state",
+                      "parameterRewards",
+                      "contractAssignmentId",
+                      "passedTime"
+                    ]
+                  }
+                ]
+              }
+            }
+          },
+          "required": ["activities"]
+        }
+      },
+      "required": ["sidejobs", "primaryActivityQueue"]
     }
   },
-  "required": ["gameVersion", "scenario", "faction", "unlock", "global", "settings", "clones", "city"],
+  "required": [
+    "gameVersion",
+    "scenario",
+    "faction",
+    "unlock",
+    "global",
+    "settings",
+    "clones",
+    "city",
+    "mainframe",
+    "activity"
+  ],
   "$defs": {
     "globalStateIncomeValue": {
       "type": "number",

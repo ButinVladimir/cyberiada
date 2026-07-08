@@ -29,6 +29,7 @@ export const VALIDATOR_TYPES = {
   SavefileCityValidator: Symbol('SavefileCityValidator'),
   SavefileMainframeValidator: Symbol('SavefileMainframeValidator'),
   SavefileAutomationValidator: Symbol('SavefileAutomationValidator'),
+  SavefileActivityValidator: Symbol('SavefileActivityValidator'),
   SavefileValidator: Symbol('SavefileValidator'),
   SavefileValidatorFacade: Symbol('SavefileValidatorFacade'),
 };

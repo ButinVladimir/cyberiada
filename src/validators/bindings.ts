@@ -48,6 +48,7 @@ import {
   ISavefileCityValidator,
   ISavefileMainframeValidator,
   ISavefileAutomationValidator,
+  ISavefileActivityValidator,
 } from './interfaces';
 import {
   SavefileValidator,
@@ -58,6 +59,7 @@ import {
   SavefileCityValidator,
   SavefileMainframeValidator,
   SavefileAutomationValidator,
+  SavefileActivityValidator,
 } from './savefile-validators';
 import { SavefileValidatorFacade } from './savefile-validator-facade';
 import { validatorContainer } from './container';
@@ -240,6 +242,12 @@ validatorContainer
 validatorContainer
   .bind<ISavefileAutomationValidator>(VALIDATOR_TYPES.SavefileAutomationValidator)
   .to(SavefileAutomationValidator)
+  .inSingletonScope()
+  .whenDefault();
+
+validatorContainer
+  .bind<ISavefileActivityValidator>(VALIDATOR_TYPES.SavefileActivityValidator)
+  .to(SavefileActivityValidator)
   .inSingletonScope()
   .whenDefault();
 
