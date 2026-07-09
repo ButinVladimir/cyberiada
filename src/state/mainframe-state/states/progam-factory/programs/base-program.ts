@@ -7,7 +7,7 @@ import { type IUnlockState } from '@state/unlock-state';
 import { decorators } from '@state/container';
 import { TYPES } from '@state/types';
 import { ProgramName } from '../types';
-import { IBaseProgramParameters, IMakeProgramParameters } from '../interfaces';
+import { IBaseProgramParameters, IMakeProgramParameters, IProgramSnapshot } from '../interfaces';
 import { IProgram } from '../interfaces';
 
 const { lazyInject } = decorators;
@@ -127,9 +127,17 @@ export abstract class BaseProgram implements IProgram {
   serialize(): IMakeProgramParameters {
     return {
       name: this.name,
-      level: this.level,
-      tier: this.tier,
+      level: this._level,
+      tier: this._tier,
       autoUpgradeEnabled: this.autoUpgradeEnabled,
+    };
+  }
+
+  makeSnapshot(): IProgramSnapshot {
+    return {
+      name: this.name,
+      level: this._level,
+      tier: this._tier,
     };
   }
 

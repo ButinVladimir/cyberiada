@@ -1,5 +1,5 @@
 import { XORShift128Plus } from 'random-seedable';
-import { ISerializeable } from '@shared/interfaces';
+import { ISerializeable, ISnapshotable } from '@shared/index';
 import { IGlobalSerializedState } from './serialized-states';
 import { GameSpeed } from '../types';
 import {
@@ -14,8 +14,9 @@ import {
   IProcessCompletionSpeedState,
   IRewardsState,
 } from './parameters';
+import { IGlobalSnapshotState } from './snapshot-states';
 
-export interface IGlobalState extends ISerializeable<IGlobalSerializedState> {
+export interface IGlobalState extends ISerializeable<IGlobalSerializedState>, ISnapshotable<IGlobalSnapshotState> {
   random: XORShift128Plus;
   runId: string;
   gameSpeed: GameSpeed;

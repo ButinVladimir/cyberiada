@@ -1,5 +1,6 @@
 import { ProgramName } from '../types';
 import { IMakeProgramParameters } from './make-program-parameters';
+import { IProgramSnapshot } from './program-snapshot';
 
 export interface IProgram {
   name: ProgramName;
@@ -18,4 +19,5 @@ export interface IProgram {
   calculateCompletionMinTime(threads: number): number;
   calculateCompletionMaxTime(threads: number): number;
   serialize(): IMakeProgramParameters;
+  makeSnapshot(): IProgramSnapshot;
 }

@@ -21,7 +21,7 @@ if (!args.input) {
   throw new Error('Input argument is not provided');
 }
 
-const inputFilePath = path.join(__dirname, '../../cli-data/unzipped-savefiles', args.input);
+const inputFilePath = path.join(__dirname, '../../../cli-data/unzipped-savefiles', args.input);
 const fileContent = await readFile(inputFilePath, { encoding: 'utf8' });
 
 const serializedState = JSON.parse(fileContent) as ISerializedState;
@@ -31,3 +31,5 @@ const savefileValidatorFacade: ISavefileValidatorFacade = validatorContainer.get
 );
 
 await savefileValidatorFacade.validate(serializedState);
+
+process.exit();

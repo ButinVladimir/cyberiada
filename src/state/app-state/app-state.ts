@@ -18,6 +18,7 @@ import { NotificationType } from '@shared/types';
 import { CURRENT_VERSION } from '@shared/constants';
 import { IAppState, ISerializedState } from './interfaces';
 import { Migrator } from './migrator';
+import { ISnapshotState } from './interfaces/snapshot-state';
 
 @injectable()
 export class AppState implements IAppState {
@@ -57,11 +58,11 @@ export class AppState implements IAppState {
   @inject(TYPES.ActivityState)
   private _activityState!: IActivityState;
 
-  updateState() {
+  updateState(updateTime: number) {
     if (this._globalState.gameSpeed === GameSpeed.paused) {
-      this._globalState.time.updateAccumulatedTime(false);
+      this._globalState.time.updateAccumulatedTime(updateTime, false);
     } else {
-      this._globalState.time.updateActiveTime();
+      this._globalState.time.updateActiveTime(updateTime);
     }
 
     let maxUpdates = Math.floor(this._globalState.time.activeTime / this._settingsState.updateInterval);
@@ -82,14 +83,18 @@ export class AppState implements IAppState {
     this.processTicks(maxUpdates);
   }
 
-  fastForwardState(): boolean {
-    this._globalState.time.updateActiveTime();
+  fastForwardState(updateTime: number): boolean {
+    this._globalState.time.updateActiveTime(updateTime);
 
     const maxUpdates = this._settingsState.maxUpdatesPerTick;
 
     const ticksProcessed = this.processTicks(maxUpdates);
 
     return ticksProcessed === maxUpdates;
+  }
+
+  simulate(): void {
+    this.processSingleTick();
   }
 
   async startNewState(): Promise<void> {
@@ -155,10 +160,18 @@ export class AppState implements IAppState {
     await this._automationState.deserialize(migratedSaveData.automation);
     await this._activityState.deserialize(migratedSaveData.activity);
 
+    this._globalState.time.updateAccumulatedTime(Date.now(), true);
     this._globalState.recalculate();
     this._growthState.clearValues();
 
     this._scenarioState.storyEvents.visitEvents();
+  }
+
+  makeSnapshot(): ISnapshotState {
+    return {
+      global: this._globalState.makeSnapshot(),
+      mainframe: this._mainframeState.makeSnapshot(),
+    };
   }
 
   private processTicks(maxUpdates: number): number {

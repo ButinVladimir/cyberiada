@@ -4,3 +4,7 @@
 !/**/.gitkeep
 !/unzipped-savefiles
 !/zipped-savefiles
+!/simulation-requests
+!/snapshots
+!/csv-requests
+!/csv-output

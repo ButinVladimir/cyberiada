@@ -1,5 +1,5 @@
 import { injectable } from 'inversify';
-import { IConnectivityState, IConnectivitySerializedState } from '../interfaces';
+import { IConnectivityState, IConnectivitySerializedState, IConnectivitySnapshotState } from '../interfaces';
 
 @injectable()
 export class ConnectivityState implements IConnectivityState {
@@ -26,6 +26,12 @@ export class ConnectivityState implements IConnectivityState {
   }
 
   serialize(): IConnectivitySerializedState {
+    return {
+      pointsByProgram: this._pointsByProgram,
+    };
+  }
+
+  makeSnapshot(): IConnectivitySnapshotState {
     return {
       pointsByProgram: this._pointsByProgram,
     };

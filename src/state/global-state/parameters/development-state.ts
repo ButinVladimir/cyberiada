@@ -12,7 +12,7 @@ import {
   GameStateEvent,
   IncomeSource,
 } from '@shared/index';
-import { IDevelopmentState, IDevelopmentSerializedState } from '../interfaces';
+import { IDevelopmentState, IDevelopmentSerializedState, IDevelopmentSnapshotState } from '../interfaces';
 
 const { lazyInject } = decorators;
 
@@ -105,6 +105,14 @@ export class DevelopmentState implements IDevelopmentState {
   serialize(): IDevelopmentSerializedState {
     return {
       points: this._points,
+      income: Object.fromEntries(this._income.entries()) as Record<IncomeSource, number>,
+    };
+  }
+
+  makeSnapshot(): IDevelopmentSnapshotState {
+    return {
+      points: this._points,
+      level: this._level,
       income: Object.fromEntries(this._income.entries()) as Record<IncomeSource, number>,
     };
   }

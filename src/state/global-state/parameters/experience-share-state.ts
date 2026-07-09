@@ -7,7 +7,7 @@ import { OtherProgramName, PeerReviewerProgram, type IMainframeState } from '@st
 import { type IScenarioState } from '@state/scenario-state';
 import { type IUnlockState } from '@state/unlock-state';
 import { Milestone } from '@shared/index';
-import { IExperienceShareState } from '../interfaces';
+import { IExperienceShareSnapshotState, IExperienceShareState } from '../interfaces';
 
 const { lazyInject } = decorators;
 
@@ -82,6 +82,15 @@ export class ExperienceShareState implements IExperienceShareState {
     this.updateSynchronizationMultiplier();
     this.updateProgramMultiplier();
     this.updateDistrictMultipliers();
+  }
+
+  makeSnapshot(): IExperienceShareSnapshotState {
+    return {
+      baseMultiplier: this.baseMultiplier,
+      synchronizationMultiplier: this._synchronizationMultiplier,
+      programMultiplier: this._programMultiplier,
+      totalMultiplier: this._totalMultiplier,
+    };
   }
 
   private isMilestoneReached(): boolean {

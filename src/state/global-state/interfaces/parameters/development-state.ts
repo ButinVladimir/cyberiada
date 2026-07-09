@@ -1,8 +1,9 @@
-import { ISerializeable } from '@shared/interfaces/serializable';
-import { IncomeSource } from '@shared/types';
-import { IDevelopmentSerializedState } from '../serialized-states/development-serialized-state';
+import { ISerializeable, ISnapshotable, IncomeSource } from '@shared/index';
+import { IDevelopmentSerializedState } from '../serialized-states';
+import { IDevelopmentSnapshotState } from '../snapshot-states';
 
-export interface IDevelopmentState extends ISerializeable<IDevelopmentSerializedState> {
+export interface IDevelopmentState
+  extends ISerializeable<IDevelopmentSerializedState>, ISnapshotable<IDevelopmentSnapshotState> {
   points: number;
   level: number;
   increase(pointsDelta: number, incomeSource: IncomeSource): void;

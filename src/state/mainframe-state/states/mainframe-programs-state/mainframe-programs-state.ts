@@ -14,8 +14,9 @@ import {
   IMainframeProgramsSerializedState,
   type IMainframeProgramsUpgrader,
   type IMainframeProgramsValidator,
+  IMainframeProgramsSnapshotState,
 } from './interfaces';
-import { ProgramName, IMakeProgramParameters, IProgram } from '../progam-factory';
+import { ProgramName, IMakeProgramParameters, IProgram, IProgramSnapshot } from '../progam-factory';
 import { ProgramsBatchValidationResult } from './types';
 
 const { lazyInject } = decorators;
@@ -133,8 +134,18 @@ export class MainframeProgramsState implements IMainframeProgramsState {
     };
   }
 
+  makeSnapshot(): IMainframeProgramsSnapshotState {
+    return {
+      ownedPrograms: this._programsList.map(this.snapshotProgram),
+    };
+  }
+
   private serializeProgram = (program: IProgram): IMakeProgramParameters => {
     return program.serialize();
+  };
+
+  private snapshotProgram = (program: IProgram): IProgramSnapshot => {
+    return program.makeSnapshot();
   };
 
   private addProgram(name: ProgramName, tier: number, level: number): void {

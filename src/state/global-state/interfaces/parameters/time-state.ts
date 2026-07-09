@@ -7,8 +7,8 @@ export interface ITimeState extends ISerializeable<ITimeSerializedState> {
   activeTime: number;
   gameTime: number;
   gameTimeTotal: number;
-  updateAccumulatedTime(showNotification: boolean): void;
-  updateActiveTime(): void;
+  updateAccumulatedTime(updateTime: number, showNotification: boolean): void;
+  updateActiveTime(updateTime: number): void;
   checkTimeForNextTick(): boolean;
   makeNextTick(): void;
 }

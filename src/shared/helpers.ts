@@ -177,3 +177,7 @@ export function compareTieredOptions<V = string>(
 export function checkIntersection<T>(arrayA: T[], arrayB: T[]): boolean {
   return arrayA.some((value) => arrayB.includes(value));
 }
+
+export function isNode(): boolean {
+  return typeof process !== 'undefined' && !!process.version;
+}

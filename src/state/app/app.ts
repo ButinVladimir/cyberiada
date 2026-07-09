@@ -1,13 +1,12 @@
 import { inject, injectable } from 'inversify';
 import { msg } from '@lit/localize';
 import { compressToUTF16, decompressFromUTF16 } from 'lz-string';
-import type { IAppState } from '@state/app-state/interfaces/app-state';
-import { ISerializedState } from '@state/app-state/interfaces/serialized-state';
-import type { IMessageLogState } from '@state/message-log-state/interfaces/message-log-state';
-import type { ISettingsState } from '@state/settings-state/interfaces/settings-state';
-import type { IStateUIConnector } from '@state/state-ui-connector/interfaces/state-ui-connector';
+import { type IAppState, ISerializedState } from '@state/app-state';
+import { type IMessageLogState } from '@state/message-log-state';
+import { type ISettingsState } from '@state/settings-state';
+import { type IStateUIConnector } from '@state/state-ui-connector';
 import { TYPES } from '@state/types';
-import { GameStateEvent } from '@shared/types';
+import { isNode, GameStateEvent } from '@shared/index';
 import { IApp } from './interfaces';
 import { LOCAL_STORAGE_KEY, REFRESH_UI_TIME } from './constants';
 import { AppStage } from './types';
@@ -42,7 +41,9 @@ export class App implements IApp {
 
     this._stateUIConnector.registerEventEmitter(this, ['_appStage']);
 
-    document.addEventListener('visibilitychange', this.handleVisibilityChange);
+    if (!isNode) {
+      document.addEventListener('visibilitychange', this.handleVisibilityChange);
+    }
   }
 
   get appStage() {
@@ -218,11 +219,11 @@ export class App implements IApp {
   private updateGame = (): void => {
     switch (this.appStage) {
       case AppStage.running:
-        this._appState.updateState();
+        this._appState.updateState(Date.now());
         break;
 
       case AppStage.fastForward:
-        if (!this._appState.fastForwardState()) {
+        if (!this._appState.fastForwardState(Date.now())) {
           this._appStage = AppStage.running;
           this._messageLogState.postMessage(GameStateEvent.fastForwared, msg('Accumulated time has been spent'));
           this.emitChangedAppStageEvent();

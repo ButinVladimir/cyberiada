@@ -1,8 +1,8 @@
-import { ISerializeable } from '@shared/interfaces/serializable';
-import { IncomeSource, PurchaseType } from '@shared/types';
-import { IMoneySerializedState } from '../serialized-states/money-serialized-state';
+import { ISerializeable, ISnapshotable, IncomeSource, PurchaseType } from '@shared/index';
+import { IMoneySerializedState } from '../serialized-states';
+import { IMoneySnapshotState } from '../snapshot-states';
 
-export interface IMoneyState extends ISerializeable<IMoneySerializedState> {
+export interface IMoneyState extends ISerializeable<IMoneySerializedState>, ISnapshotable<IMoneySnapshotState> {
   money: number;
   getIncome(incomeSource: IncomeSource): number;
   getExpenses(purchaseType: PurchaseType): number;

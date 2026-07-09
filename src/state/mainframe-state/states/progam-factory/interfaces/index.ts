@@ -3,3 +3,4 @@ export * from './make-program-parameters';
 export * from './program-factory';
 export * from './base-program-parameters';
 export * from './programs';
+export * from './program-snapshot';

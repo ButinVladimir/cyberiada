@@ -6,7 +6,7 @@ import { type IMainframeState, OtherProgramName, PredictiveComputatorProgram } f
 import { type ICityState } from '@state/city-state';
 import { type IScenarioState } from '@state/scenario-state';
 import { calculateLinear } from '@shared/index';
-import { IProcessCompletionSpeedState } from '../interfaces';
+import { IProcessCompletionSpeedSnapshotState, IProcessCompletionSpeedState } from '../interfaces';
 
 const { lazyInject } = decorators;
 
@@ -54,6 +54,14 @@ export class ProcessCompletionSpeedState implements IProcessCompletionSpeedState
     this.updateMultiplierByProgram();
     this.updateMultiplierByHardware();
     this.updateDistrictMultipliers();
+  }
+
+  makeSnapshot(): IProcessCompletionSpeedSnapshotState {
+    return {
+      multiplierByHardware: this._multiplierByHardware,
+      multiplierByProgram: this._multiplierByProgram,
+      totalMultiplier: this._totalMultiplier,
+    };
   }
 
   private updateMultiplierByProgram() {
