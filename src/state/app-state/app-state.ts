@@ -168,9 +168,13 @@ export class AppState implements IAppState {
   }
 
   makeSnapshot(): ISnapshotState {
+    this._growthState.resetValues();
+
     return {
       global: this._globalState.makeSnapshot(),
+      growth: this._growthState.makeSnapshot(),
       mainframe: this._mainframeState.makeSnapshot(),
+      clones: this._clonesState.makeSnapshot(),
     };
   }
 

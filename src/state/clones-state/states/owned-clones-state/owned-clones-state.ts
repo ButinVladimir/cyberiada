@@ -23,11 +23,12 @@ import { IClone } from '../clone-factory/interfaces/clone';
 import {
   type IOwnedClonesLevelUpgrader,
   IOwnedClonesSerializedState,
+  IOwnedClonesSnapshotState,
   IOwnedClonesState,
   type IOwnedClonesValidator,
   IPurchaseCloneArgs,
 } from './interfaces';
-import { IMakeCloneParameters } from '../clone-factory';
+import { ICloneSnapshot, IMakeCloneParameters } from '../clone-factory';
 import { CloneValidationResult } from './types';
 
 const { lazyInject } = decorators;
@@ -177,8 +178,18 @@ export class OwnedClonesState implements IOwnedClonesState {
     };
   }
 
+  makeSnapshot(): IOwnedClonesSnapshotState {
+    return {
+      clones: this._clonesList.map(this.snapshotClone),
+    };
+  }
+
   private serializeClone = (clone: IClone): IMakeCloneParameters => {
     return clone.serialize();
+  };
+
+  private snapshotClone = (clone: IClone): ICloneSnapshot => {
+    return clone.makeSnapshot();
   };
 
   private clearState() {

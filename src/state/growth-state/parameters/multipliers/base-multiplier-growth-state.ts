@@ -4,7 +4,7 @@ import { TYPES } from '@state/types';
 import { ProgramName, IProcess, type IMainframeState } from '@state/mainframe-state';
 import { type ICityState } from '@state/city-state';
 import { IPrimaryActivity, ISidejobActivity, type IActivityState } from '@state/activity-state';
-import { IMultiplierGrowthState } from '../../interfaces/parameters/multiplier-growth-state';
+import { IMultiplierGrowthState, IMultiplierGrowthSnapshotState } from '../../interfaces';
 
 const { lazyInject } = decorators;
 
@@ -47,6 +47,15 @@ export abstract class BaseMultiplierGrowthState implements IMultiplierGrowthStat
     this.recalculate();
 
     return this._growthByDistrict.get(districtIndex) ?? 0;
+  }
+
+  makeSnapshot(): IMultiplierGrowthSnapshotState {
+    this.recalculate();
+
+    return {
+      growthByProgram: this.growthByProgram,
+      growthByDistrict: Object.fromEntries(this._growthByDistrict.entries()),
+    };
   }
 
   private recalculate(): void {

@@ -2,6 +2,7 @@ import { inject, injectable } from 'inversify';
 import { TYPES } from '@state/types';
 import { IMultipliersGrowthState } from '../interfaces/parameters/multipliers-growth-state';
 import type { IMultiplierGrowthState } from '../interfaces/parameters/multiplier-growth-state';
+import { IMultipliersGrowthSnapshotState } from '../interfaces';
 
 @injectable()
 export class MultipliersGrowthState implements IMultipliersGrowthState {
@@ -27,5 +28,12 @@ export class MultipliersGrowthState implements IMultipliersGrowthState {
   clearValues() {
     this._codeBaseGrowthState.clearValues();
     this._computationalBaseGrowthState.clearValues();
+  }
+
+  makeSnapshot(): IMultipliersGrowthSnapshotState {
+    return {
+      codeBase: this._codeBaseGrowthState.makeSnapshot(),
+      computationalBase: this._computationalBaseGrowthState.makeSnapshot(),
+    };
   }
 }

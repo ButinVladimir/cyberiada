@@ -4,7 +4,6 @@ import path from 'path';
 import { type IAppState, ISerializedState } from '@state/app-state';
 import { decorators } from '@state/container';
 import { TYPES } from '@state/types';
-import { type IGrowthState } from '@state/growth-state';
 import { type ISettingsState } from '@state/settings-state';
 import { type IMainframeState } from '@state/mainframe-state';
 import { type IFormatter } from '@shared/index';
@@ -19,9 +18,6 @@ export class SimulationTool implements ISimulationTool {
 
   @lazyInject(TYPES.AppState)
   private _appState!: IAppState;
-
-  @lazyInject(TYPES.GrowthState)
-  private _growthState!: IGrowthState;
 
   @lazyInject(TYPES.MainframeState)
   private _mainframeState!: IMainframeState;
@@ -162,8 +158,6 @@ export class SimulationTool implements ISimulationTool {
   }
 
   private takeSnapshot(): void {
-    this._growthState.resetValues();
-
     this._snapshots.push({
       timestamp: this._passedTime,
       state: this._appState.makeSnapshot(),

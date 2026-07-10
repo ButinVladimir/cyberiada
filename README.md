@@ -117,9 +117,9 @@ It will run simulation request from file `<request file name>` from `cli-data/si
   "inputSavefile": "<input savefile name>",
   "outputSavefile": "<output savefile name>",
   "snapshotsFile": "<snapshots file name>",
-  "time": "<time to simulate>",
-  "updatesPerTick": "<updates per tick>",
-  "cooldownTime": "<cooldown time>",
+  "time": <time to simulate>,
+  "updatesPerTick": <updates per tick>,
+  "cooldownTime": <cooldown time>,
   "automation": [
     {
       "type": "<automation type>",
