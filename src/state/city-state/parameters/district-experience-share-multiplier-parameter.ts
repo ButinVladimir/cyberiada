@@ -3,7 +3,11 @@ import { type IStateUIConnector } from '@state/state-ui-connector';
 import { TYPES } from '@state/types';
 import { type IActivityState } from '@state/activity-state';
 import { DistrictTypeRewardParameter } from '@shared/index';
-import { IDistrictExperienceShareMultiplierParameter, IDistrictState } from '../interfaces';
+import {
+  IDistrictExperienceShareMultiplierParameter,
+  IDistrictExperienceShareMultiplierParameterSnapshot,
+  IDistrictState,
+} from '../interfaces';
 
 const { lazyInject } = decorators;
 
@@ -43,5 +47,11 @@ export class DistrictExperienceShareMultiplierParameter implements IDistrictExpe
 
   removeAllEventListeners(): void {
     this._stateUIConnector.unregisterEventEmitter(this);
+  }
+
+  makeSnapshot(): IDistrictExperienceShareMultiplierParameterSnapshot {
+    return {
+      value: this._value,
+    };
   }
 }

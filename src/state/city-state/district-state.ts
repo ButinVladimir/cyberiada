@@ -9,6 +9,7 @@ import {
   IDistrictArguments,
   IMapGeneratorDistrict,
   IDistrictCountersState,
+  IDistrictSnapshotState,
 } from './interfaces';
 import { DistrictUnlockState } from './types';
 import { DistrictParameters } from './parameters';
@@ -130,5 +131,15 @@ export class DistrictState implements IDistrictState {
   removeAllEventListeners(): void {
     this._parameters.removeAllEventListeners();
     this._counters.removeAllEventListeners();
+  }
+
+  makeSnapshot(): IDistrictSnapshotState {
+    return {
+      counters: this._counters.makeSnapshot(),
+      districtType: this._districtType,
+      name: this._name,
+      parameters: this._parameters.makeSnapshot(),
+      state: this._state,
+    };
   }
 }

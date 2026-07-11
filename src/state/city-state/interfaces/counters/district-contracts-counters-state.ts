@@ -1,6 +1,8 @@
+import { ISnapshotable } from '@shared/index';
 import { IDistrictContractsCountersSerializedState } from '../serialized-states';
+import { IDistrictContractsCountersSnapshotState } from '../snapshot-states';
 
-export interface IDistrictContractsCountersState {
+export interface IDistrictContractsCountersState extends ISnapshotable<IDistrictContractsCountersSnapshotState> {
   getPassedGenerationTime(contractName: string): number;
   getRequiredGenerationTime(contractName: string): number;
   getAvailableAmount(contractName: string): number;

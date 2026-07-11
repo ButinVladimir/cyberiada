@@ -1,7 +1,12 @@
 import { decorators } from '@state/container';
 import { TYPES } from '@state/types';
 import type { IGlobalState } from '@state/global-state';
-import { IDistrictRewardsParameter, IDistrictState, IDistrictRewardsSerializedParameter } from '../interfaces';
+import {
+  IDistrictRewardsParameter,
+  IDistrictState,
+  IDistrictRewardsSerializedParameter,
+  IDistrictRewardsParameterSnapshot,
+} from '../interfaces';
 
 const { lazyInject } = decorators;
 
@@ -46,6 +51,13 @@ export class DistrictRewardsParameter implements IDistrictRewardsParameter {
   serialize(): IDistrictRewardsSerializedParameter {
     return {
       points: this._points,
+    };
+  }
+
+  makeSnapshot(): IDistrictRewardsParameterSnapshot {
+    return {
+      points: this._points,
+      totalMultiplier: this._totalMultiplier,
     };
   }
 }

@@ -1,7 +1,7 @@
 import { IPoint } from '@shared/index';
 import { DistrictUnlockState } from '../../types';
 import { IDistrictSerializedParameters } from './parameters/district-serialized-parameters';
-import { IDistrictCountersSerializedState } from './contracts';
+import { IDistrictCountersSerializedState } from './counters';
 
 export interface IDistrictSerializedState {
   name: string;

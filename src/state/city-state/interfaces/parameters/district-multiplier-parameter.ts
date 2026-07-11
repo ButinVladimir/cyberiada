@@ -1,6 +1,8 @@
-import { IDistrictMultiplierSerializedParameter } from '../serialized-states/parameters/district-multiplier-serialized-parameter';
+import { ISnapshotable } from '@shared/index';
+import { IDistrictMultiplierSerializedParameter } from '../serialized-states';
+import { IDistrictMultiplierParameterSnapshot } from '../snapshot-states';
 
-export interface IDistrictMultiplierParameter {
+export interface IDistrictMultiplierParameter extends ISnapshotable<IDistrictMultiplierParameterSnapshot> {
   points: number;
   multiplier: number;
   increasePoints(delta: number): void;

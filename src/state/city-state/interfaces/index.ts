@@ -6,3 +6,4 @@ export * from './district-state';
 export * from './district-type-template';
 export * from './district-arguments';
 export * from './counters';
+export * from './snapshot-states';

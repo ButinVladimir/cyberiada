@@ -1,3 +1,4 @@
+import { ISnapshotable } from '@shared/index';
 import { IDistrictSerializedParameters } from '../serialized-states';
 import { IDistrictConnectivityParameter } from './district-connectivity-parameter';
 import { IDistrictExperienceShareMultiplierParameter } from './district-experience-share-multiplier-parameter';
@@ -6,8 +7,9 @@ import { IDistrictRewardsParameter } from './district-rewards-parameter';
 import { IDistrictSynchronizationParameter } from './district-synchronization-parameter';
 import { IDistrictInfluenceParameter } from './district-influence-parameter';
 import { IDistrictMultipliers } from './district-multipliers';
+import { IDistrictParametersSnapshot } from '../snapshot-states';
 
-export interface IDistrictParameters {
+export interface IDistrictParameters extends ISnapshotable<IDistrictParametersSnapshot> {
   influence: IDistrictInfluenceParameter;
   synchronization: IDistrictSynchronizationParameter;
   connectivity: IDistrictConnectivityParameter;

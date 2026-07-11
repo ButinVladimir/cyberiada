@@ -1,4 +1,9 @@
-import { IDistrictMultiplierParameter, IDistrictState, IDistrictMultiplierSerializedParameter } from '../../interfaces';
+import {
+  IDistrictMultiplierParameter,
+  IDistrictState,
+  IDistrictMultiplierSerializedParameter,
+  IDistrictMultiplierParameterSnapshot,
+} from '../../interfaces';
 
 export abstract class DistrictBaseMultiplierParameter implements IDistrictMultiplierParameter {
   protected _district: IDistrictState;
@@ -36,6 +41,13 @@ export abstract class DistrictBaseMultiplierParameter implements IDistrictMultip
 
   serialize(): IDistrictMultiplierSerializedParameter {
     return {
+      points: this._points,
+    };
+  }
+
+  makeSnapshot(): IDistrictMultiplierParameterSnapshot {
+    return {
+      multiplier: this._multiplier,
       points: this._points,
     };
   }
