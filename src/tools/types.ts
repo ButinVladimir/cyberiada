@@ -5,4 +5,6 @@ export enum SimulationAutomationType {
   upgradeMainframePerformance = 'upgradeMainframePerformance',
   upgradeMainframeRam = 'upgradeMainframeRam',
   upgradeMainframeCores = 'upgradeMainframeCores',
+  upgradeClonesLevel = 'upgradeClonesLevel',
+  startContracts = 'startContracts',
 }

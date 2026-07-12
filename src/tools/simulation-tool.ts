@@ -6,6 +6,8 @@ import { decorators } from '@state/container';
 import { TYPES } from '@state/types';
 import { type ISettingsState } from '@state/settings-state';
 import { type IMainframeState } from '@state/mainframe-state';
+import { type IClonesState } from '@state/clones-state';
+import { type IAutomationState } from '@state/automation-state';
 import { type IFormatter } from '@shared/index';
 import { ISimulationRequest, ISimulationTool, ISnapshot } from './interfaces';
 import { SimulationAutomationType } from './types';
@@ -24,6 +26,12 @@ export class SimulationTool implements ISimulationTool {
 
   @lazyInject(TYPES.SettingsState)
   private _settingsState!: ISettingsState;
+
+  @lazyInject(TYPES.ClonesState)
+  private _clonesState!: IClonesState;
+
+  @lazyInject(TYPES.AutomationState)
+  private _automationState!: IAutomationState;
 
   private _simulationRequest: ISimulationRequest;
   private _timeouts: number[];
@@ -154,6 +162,14 @@ export class SimulationTool implements ISimulationTool {
       case SimulationAutomationType.upgradeMainframeCores:
         this.upgradeMainframeCores();
         break;
+
+      case SimulationAutomationType.upgradeClonesLevel:
+        this.upgradeClonesLevel();
+        break;
+
+      case SimulationAutomationType.startContracts:
+        this.startContracts();
+        break;
     }
   }
 
@@ -184,5 +200,17 @@ export class SimulationTool implements ISimulationTool {
 
   private upgradeMainframeCores() {
     this._mainframeState.hardware.upgrader.upgradeMaxParameter('cores');
+  }
+
+  private upgradeClonesLevel() {
+    const allClones = this._clonesState.ownedClones.listClones();
+
+    this._clonesState.ownedClones.levelUpgrader.upgradeMaxClones(allClones.map((clone) => clone.id));
+  }
+
+  private startContracts() {
+    const allContracts = this._automationState.contracts.listContractAssignments();
+
+    this._automationState.contracts.starter.startAssignments(allContracts.map((contract) => contract.id));
   }
 }

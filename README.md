@@ -102,6 +102,16 @@ npm run validate-savefile -- -i <input file name>
 
 It will validate savefile `<input file name>` from `cli-data/unzipped-saves`. Savefile data should match schema and all named entities should exist in configs.
 
+#### Migrate savefile
+
+To migrate a savefile, run following command:
+
+```
+npm run migrate-savefile -- -i <input file name> -o <output file name>
+```
+
+It will migrate savefile `<input file name>` from `cli-data/unzipped-saves` and save result to `<output file name>` in `cli-data/unzipped-saves`. If migrator cannot update data from save, an empty string will be saved.
+
 #### Simulation tool
 
 To run a simulation, run following command:
@@ -138,7 +148,7 @@ Perameters:
 - `<time to simulate>` - Time to run a simulation in milliseconds
 - `<updates per tick>` - Max amount of updates per tick
 - `<cooldown time>` - Cooldown time between ticks in milliseconds
-- `<automation type>` - Type of automation. Currently supported: `takeSnapshot`, `upgradeMainframePrograms`, `upgradeMainframeHardware`, `upgradeMainframePerformance`, `upgradeMainframeRam`, `upgradeMainframeCores`
+- `<automation type>` - Type of automation. Currently supported: `takeSnapshot`, `upgradeMainframePrograms`, `upgradeMainframeHardware`, `upgradeMainframePerformance`, `upgradeMainframeRam`, `upgradeMainframeCores`, `upgradeClonesLevel`, `startContracts`
 - `<automation timeout>` - Timeout between automation usage in milliseconds
 - `<startImmediately>` - If `true`, automation will run immediately after starting simulation. Otherwise `false` should be set
 

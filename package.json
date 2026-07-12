@@ -1,7 +1,7 @@
 {
   "name": "project-idle-takeover",
   "private": true,
-  "version": "0.3.1",
+  "version": "0.4.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -19,6 +19,7 @@
     "unzip-savefile": "vite-node ./src/tools/scripts/unzip-savefile.ts --",
     "zip-savefile": "vite-node ./src/tools/scripts/zip-savefile.ts --",
     "validate-savefile": "vite-node ./src/tools/scripts/validate-savefile.ts --",
+    "migrate-savefile": "vite-node ./src/tools/scripts/migrate-savefile.ts --",
     "simulate": "vite-node ./src/tools/scripts/simulate.ts --",
     "write-csv": "vite-node ./src/tools/scripts/write-csv.ts --"
   },
