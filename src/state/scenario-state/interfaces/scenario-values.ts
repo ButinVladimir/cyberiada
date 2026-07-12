@@ -23,7 +23,7 @@ export interface IScenarioValues {
     height: number;
     districts: IDistrictValues[];
     factions: IFactionValues[];
-    neutralFactionIndex: number;
+    unresolvedFactionIndex: number;
     startingDistrict: number;
   };
   startingValues: {

@@ -2,7 +2,11 @@ import { calculateLinear } from '@shared/index';
 import { decorators } from '@state/container';
 import { type IStateUIConnector } from '@state/state-ui-connector';
 import { TYPES } from '@state/types';
-import { IDistrictState, IDistrictSynchronizationParameter } from '../interfaces';
+import {
+  IDistrictState,
+  IDistrictSynchronizationParameter,
+  IDistrictSynchronizationParameterSnapshot,
+} from '../interfaces';
 
 const { lazyInject } = decorators;
 
@@ -34,5 +38,11 @@ export class DistrictSynchronizationParameter implements IDistrictSynchronizatio
 
   removeAllEventListeners(): void {
     this._stateUIConnector.unregisterEventEmitter(this);
+  }
+
+  makeSnapshot(): IDistrictSynchronizationParameterSnapshot {
+    return {
+      value: this._value,
+    };
   }
 }

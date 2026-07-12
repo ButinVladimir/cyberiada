@@ -5,6 +5,7 @@ import { type IMainframeState, OtherProgramName, ShareServerProgram } from '@sta
 import { type IActivityState } from '@state/activity-state';
 import { DistrictTypeRewardParameter, INCOME_SOURCES, IncomeSource } from '@shared/index';
 import { IMoneyGrowthState } from '../interfaces/parameters/money-growth-state';
+import { IMoneyGrowthSnapshotState } from '../interfaces';
 
 const { lazyInject } = decorators;
 
@@ -40,6 +41,15 @@ export class MoneyGrowthState implements IMoneyGrowthState {
 
   resetValues() {
     this._recalculated = false;
+  }
+
+  makeSnapshot(): IMoneyGrowthSnapshotState {
+    this.recalculate();
+
+    return {
+      growths: Object.fromEntries(this._growth.entries()) as Record<IncomeSource, number>,
+      totalGrowth: this.totalGrowth,
+    };
   }
 
   private recalculate() {

@@ -90,7 +90,7 @@
           "canBeJoined": true
         }
       ],
-      "neutralFactionIndex": 0,
+      "unresolvedFactionIndex": 0,
       "startingDistrict": 0
     },
     "startingValues": {

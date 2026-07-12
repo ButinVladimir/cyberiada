@@ -5,7 +5,7 @@ import { type IStateUIConnector } from '@state/state-ui-connector';
 import { type ICityState } from '@state/city-state';
 import { type IScenarioState } from '@state/scenario-state';
 import { type IClonesState } from '@state/clones-state';
-import { type IGlobalState, ISynchronizationState } from '../interfaces';
+import { type IGlobalState, ISynchronizationSnapshotState, ISynchronizationState } from '../interfaces';
 
 const { lazyInject } = decorators;
 
@@ -54,6 +54,14 @@ export class SynchronizationState implements ISynchronizationState {
     this.calculateBaseValue();
     this.calculateDistrictValues();
     this.calculateAvailableValue();
+  }
+
+  makeSnapshot(): ISynchronizationSnapshotState {
+    return {
+      availableValue: this._availableValue,
+      baseValue: this._baseValue,
+      totalValue: this._totalValue,
+    };
   }
 
   private calculateBaseValue() {

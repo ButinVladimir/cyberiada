@@ -6,7 +6,11 @@ import { decorators } from '@state/container';
 import { type IScenarioState } from '@state/scenario-state';
 import { type IUnlockState } from '@state/unlock-state';
 import { TYPES } from '@state/types';
-import { IMainframeHardwareParameter, IMainframeHardwareParameterSerializedState } from './interfaces';
+import {
+  IMainframeHardwareParameter,
+  IMainframeHardwareParameterSerializedState,
+  IMainframeHardwareParameterSnapshotState,
+} from './interfaces';
 import { MainframeHardwareParameterType, MainframeHardwareValidationResult } from './types';
 import { type IMainframeState } from '../../interfaces';
 
@@ -101,6 +105,13 @@ export abstract class MainframeHardwareParameter implements IMainframeHardwarePa
     return {
       level: this._level,
       autoUpgradeEnabled: this._autoUpgradeEnabled,
+    };
+  }
+
+  makeSnapshot(): IMainframeHardwareParameterSnapshotState {
+    return {
+      level: this._level,
+      totalLevel: this.totalLevel,
     };
   }
 

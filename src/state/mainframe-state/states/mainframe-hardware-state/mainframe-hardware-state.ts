@@ -9,6 +9,7 @@ import {
   IMainframeHardwareParameter,
   type IMainframeHardwareUpgrader,
   type IMainframeHardwareValidator,
+  IMainframeHardwareSnapshotState,
 } from './interfaces';
 import { MainframeHardwarePerformance } from './mainframe-hardware-performance';
 import { MainframeHardwareCores } from './mainframe-hardware-cores';
@@ -103,6 +104,14 @@ export class MainframeHardwareState implements IMainframeHardwareState {
       cores: this._cores.serialize(),
       ram: this._ram.serialize(),
       parametersList: this._parametersList.map(this.serializeParameterType),
+    };
+  }
+
+  makeSnapshot(): IMainframeHardwareSnapshotState {
+    return {
+      performance: this._performance.makeSnapshot(),
+      cores: this._cores.makeSnapshot(),
+      ram: this._ram.makeSnapshot(),
     };
   }
 

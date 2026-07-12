@@ -1,6 +1,6 @@
 import { injectable, inject } from 'inversify';
 import { TYPES } from '@state/types';
-import { IMainframeSerializedState, IMainframeState } from './interfaces';
+import { IMainframeSerializedState, IMainframeSnapshotState, IMainframeState } from './interfaces';
 import type { IMainframeHardwareState } from './states/mainframe-hardware-state';
 import type { IMainframeProgramsState } from './states/mainframe-programs-state';
 import type { IMainframeProcessesState } from './states/mainframe-processes-state';
@@ -53,6 +53,13 @@ export class MainframeState implements IMainframeState {
       hardware: this._mainframeHardwareState.serialize(),
       programs: this._mainframeProgramsState.serialize(),
       processes: this._mainframeProcessesState.serialize(),
+    };
+  }
+
+  makeSnapshot(): IMainframeSnapshotState {
+    return {
+      hardware: this._mainframeHardwareState.makeSnapshot(),
+      programs: this._mainframeProgramsState.makeSnapshot(),
     };
   }
 }

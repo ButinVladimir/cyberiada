@@ -2,7 +2,7 @@ import { injectable } from 'inversify';
 import { decorators } from '@state/container';
 import { type IStateUIConnector } from '@state/state-ui-connector';
 import { getLocale, setLocale } from '@/configure-localization';
-import { Language, LongNumberFormat, Theme, type IFormatter, typedConstants } from '@shared/index';
+import { Language, LongNumberFormat, Theme, type IFormatter, typedConstants, isNode } from '@shared/index';
 import type { IApp } from '@state/app';
 import { TYPES } from '@state/types';
 import {
@@ -136,7 +136,9 @@ export class SettingsState implements ISettingsState {
     this._language = language;
 
     await setLocale(language);
-    document.documentElement.lang = language;
+    if (!isNode()) {
+      document.documentElement.lang = language;
+    }
 
     this._formatter.updateBuiltInFormatters();
   }
@@ -144,7 +146,9 @@ export class SettingsState implements ISettingsState {
   setTheme(theme: Theme) {
     this._theme = theme;
 
-    document.body.className = typedThemes[theme].classes;
+    if (!isNode()) {
+      document.body.className = typedThemes[theme].classes;
+    }
   }
 
   setMessageLogSize(messageLogSize: number) {

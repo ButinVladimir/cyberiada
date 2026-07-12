@@ -19,6 +19,8 @@ import {
   IDistrictConnectionGraphGeneratorResult,
   type IDistrictConnectionGraphGenerator,
   type IDistrictFactionsGenerator,
+  ICitySnapshotState,
+  IDistrictSnapshotState,
 } from './interfaces';
 import { DistrictState } from './district-state';
 import { DistrictUnlockState } from './types';
@@ -181,12 +183,23 @@ export class CityState implements ICityState {
     const layout: number[][] = this.getLayout();
 
     const districts: Record<number, IDistrictSerializedState> = {};
-    this._districts.forEach((districtState, districtNum) => {
-      districts[districtNum] = districtState.serialize();
+    this._districts.forEach((districtState, districtIndex) => {
+      districts[districtIndex] = districtState.serialize();
     });
 
     return {
       layout,
+      districts,
+    };
+  }
+
+  makeSnapshot(): ICitySnapshotState {
+    const districts: Record<number, IDistrictSnapshotState> = {};
+    this._districts.forEach((districtState, districtIndex) => {
+      districts[districtIndex] = districtState.makeSnapshot();
+    });
+
+    return {
       districts,
     };
   }

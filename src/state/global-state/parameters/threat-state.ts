@@ -1,5 +1,5 @@
 import { injectable } from 'inversify';
-import { IThreatSerializedState, IThreatState } from '../interfaces';
+import { IThreatSerializedState, IThreatSnapshotState, IThreatState } from '../interfaces';
 
 @injectable()
 export class ThreatState implements IThreatState {
@@ -32,6 +32,13 @@ export class ThreatState implements IThreatState {
   serialize(): IThreatSerializedState {
     return {
       notoriery: this._notoriety,
+      level: this._level,
+    };
+  }
+
+  makeSnapshot(): IThreatSnapshotState {
+    return {
+      notoriety: this._notoriety,
       level: this._level,
     };
   }

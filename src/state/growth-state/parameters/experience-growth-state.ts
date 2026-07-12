@@ -5,7 +5,7 @@ import { type IGlobalState } from '@state/global-state';
 import { type IActivityState } from '@state/activity-state';
 import { type IClonesState } from '@state/clones-state';
 import { DistrictTypeRewardParameter } from '@shared/index';
-import { IExperienceGrowthState } from '../interfaces';
+import { IExperienceGrowthSnapshotState, IExperienceGrowthState } from '../interfaces';
 
 const { lazyInject } = decorators;
 
@@ -40,6 +40,14 @@ export class ExperienceGrowthState implements IExperienceGrowthState {
     this.recalculate();
 
     return this._growthByCloneId.get(cloneId) ?? 0;
+  }
+
+  makeSnapshot(): IExperienceGrowthSnapshotState {
+    this.recalculate();
+
+    return {
+      growthByClone: Object.fromEntries(this._growthByCloneId.entries()),
+    };
   }
 
   private recalculate() {

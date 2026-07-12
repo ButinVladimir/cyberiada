@@ -4,7 +4,7 @@ import { type IGrowthState } from '@state/growth-state';
 import { TYPES } from '@state/types';
 import { type ICityState, IDistrictMultipliers, IDistrictMultiplierParameter } from '@state/city-state';
 import { type IScenarioState } from '@state/scenario-state';
-import { IMultiplierState, IMultiplierSerializedState } from '../../interfaces';
+import { IMultiplierState, IMultiplierSerializedState, IMultiplierSnapshotState } from '../../interfaces';
 
 const { lazyInject } = decorators;
 
@@ -60,6 +60,14 @@ export abstract class BaseMultiplierState implements IMultiplierState {
   serialize(): IMultiplierSerializedState {
     return {
       pointsByProgram: this._pointsByProgram,
+    };
+  }
+
+  makeSnapshot(): IMultiplierSnapshotState {
+    return {
+      pointsByProgram: this._pointsByProgram,
+      programMultiplier: this._multiplierByProgram,
+      totalMultiplier: this._totalMultiplier,
     };
   }
 

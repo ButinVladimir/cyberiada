@@ -1,4 +1,4 @@
-import { IncomeSource, PurchaseType } from '@shared/types';
+import { IncomeSource, PurchaseType } from '@shared/index';
 
 export interface IMoneySerializedState {
   money: number;

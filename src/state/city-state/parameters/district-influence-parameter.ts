@@ -20,6 +20,7 @@ import {
   IDistrictInfluenceParameter,
   IDistrictInfluenceSerializedParameter,
   type ICityState,
+  IDistrictInfluenceParameterSnapshot,
 } from '../interfaces';
 import { DistrictUnlockState } from '../types';
 
@@ -118,6 +119,13 @@ export class DistrictInfluenceParameter implements IDistrictInfluenceParameter {
 
   removeAllEventListeners(): void {
     this._stateUIConnector.unregisterEventEmitter(this);
+  }
+
+  makeSnapshot(): IDistrictInfluenceParameterSnapshot {
+    return {
+      points: this._points,
+      tier: this._tier,
+    };
   }
 
   private calculateTierFromPoints(): number {

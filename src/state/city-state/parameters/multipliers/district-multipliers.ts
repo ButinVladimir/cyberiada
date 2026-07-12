@@ -3,6 +3,7 @@ import {
   IDistrictMultipliers,
   IDistrictMultiplierParameter,
   IDistrictSerializedMultipliers,
+  IDistrictMultipliersSnapshot,
 } from '../../interfaces';
 import { DistrictCodeBaseParameter } from './district-code-base-parameter';
 import { DistrictComputationalBaseParameter } from './district-computational-base-parameter';
@@ -34,5 +35,12 @@ export class DistrictMultipliers implements IDistrictMultipliers {
   deserialize(serializedParameters: IDistrictSerializedMultipliers): void {
     this._codeBase.deserialize(serializedParameters.codeBase);
     this._computationalBase.deserialize(serializedParameters.computationalBase);
+  }
+
+  makeSnapshot(): IDistrictMultipliersSnapshot {
+    return {
+      codeBase: this._codeBase.makeSnapshot(),
+      computationalBase: this._computationalBase.makeSnapshot(),
+    };
   }
 }

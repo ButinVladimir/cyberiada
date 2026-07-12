@@ -1,6 +1,11 @@
 import { injectable, inject } from 'inversify';
 import { TYPES } from '@state/types';
-import { IMultipliersSerializedState, type IMultiplierState, type IMultipliersState } from '../interfaces';
+import {
+  IMultipliersSerializedState,
+  IMultipliersSnapshotState,
+  type IMultiplierState,
+  type IMultipliersState,
+} from '../interfaces';
 
 @injectable()
 export class MultipliersState implements IMultipliersState {
@@ -37,6 +42,13 @@ export class MultipliersState implements IMultipliersState {
     return {
       codeBase: this._codeBaseState.serialize(),
       computationalBase: this._computationalBaseState.serialize(),
+    };
+  }
+
+  makeSnapshot(): IMultipliersSnapshotState {
+    return {
+      codeBase: this._codeBaseState.makeSnapshot(),
+      computationalBase: this._computationalBaseState.makeSnapshot(),
     };
   }
 }

@@ -1,8 +1,9 @@
-import { Attribute, Skill } from '@shared/index';
+import { Attribute, ISnapshotable, Skill } from '@shared/index';
 import { IMakeCloneParameters } from './make-clone-parameters';
 import { ICloneTemplate } from './clone-template';
+import { ICloneSnapshot } from './clone-snapshot';
 
-export interface IClone {
+export interface IClone extends ISnapshotable<ICloneSnapshot> {
   id: string;
   name: string;
   templateName: string;

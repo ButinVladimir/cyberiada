@@ -1,4 +1,4 @@
-import { IncomeSource } from '@shared/types';
+import { IncomeSource } from '@shared/index';
 
 export interface IDevelopmentSerializedState {
   points: number;

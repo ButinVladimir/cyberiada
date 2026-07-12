@@ -10,6 +10,7 @@ import {
   IDistrictProcessCompletionSpeedParameter,
   IDistrictRewardsParameter,
   IDistrictExperienceShareMultiplierParameter,
+  IDistrictParametersSnapshot,
 } from '../interfaces';
 import { DistrictConnectivityParameter } from './district-connectivity-parameter';
 import { DistrictInfluenceParameter } from './district-influence-parameter';
@@ -98,5 +99,17 @@ export class DistrictParameters implements IDistrictParameters {
     this._synchronization.removeAllEventListeners();
     this._processCompletionSpeed.removeAllEventListeners();
     this._experienceShareMultiplier.removeAllEventListeners();
+  }
+
+  makeSnapshot(): IDistrictParametersSnapshot {
+    return {
+      connectivity: this._connectivity.makeSnapshot(),
+      experienceShareMultiplier: this._experienceShareMultiplier.makeSnapshot(),
+      influence: this._influence.makeSnapshot(),
+      multipliers: this._multipliers.makeSnapshot(),
+      processCompletionSpeed: this._processCompletionSpeed.makeSnapshot(),
+      rewards: this._rewards.makeSnapshot(),
+      synchronization: this._synchronization.makeSnapshot(),
+    };
   }
 }

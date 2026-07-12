@@ -3,7 +3,11 @@ import { type IStateUIConnector } from '@state/state-ui-connector';
 import { TYPES } from '@state/types';
 import { type IActivityState } from '@state/activity-state';
 import { DistrictTypeRewardParameter } from '@shared/index';
-import { IDistrictProcessCompletionSpeedParameter, IDistrictState } from '../interfaces';
+import {
+  IDistrictProcessCompletionSpeedParameter,
+  IDistrictProcessCompletionSpeedParameterSnapshot,
+  IDistrictState,
+} from '../interfaces';
 
 const { lazyInject } = decorators;
 
@@ -43,5 +47,11 @@ export class DistrictProcessCompletionSpeedParameter implements IDistrictProcess
 
   removeAllEventListeners(): void {
     this._stateUIConnector.unregisterEventEmitter(this);
+  }
+
+  makeSnapshot(): IDistrictProcessCompletionSpeedParameterSnapshot {
+    return {
+      value: this._value,
+    };
   }
 }

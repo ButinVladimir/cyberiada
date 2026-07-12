@@ -1,0 +1,64 @@
+{
+  "$id": "common/hotkeys.json",
+  "type": "object",
+  "description": "Hotkeys",
+  "properties": {
+    "pause": {
+      "type": "string",
+      "description": "Pause"
+    },
+    "playNormalSpeed": {
+      "type": "string",
+      "description": "Play on normal speed"
+    },
+    "playFastSpeed": {
+      "type": "string",
+      "description": "Play on fast speed"
+    },
+    "saveGame": {
+      "type": "string",
+      "description": "Save the game"
+    },
+    "upgradeMainframeHardware": {
+      "type": "string",
+      "description": "Upgrade mainframe hardware"
+    },
+    "upgradeMainframePerformance": {
+      "type": "string",
+      "description": "Upgrade mainframe performance"
+    },
+    "upgradeMainframeRam": {
+      "type": "string",
+      "description": "Upgrade mainframe ram"
+    },
+    "upgradeMainframeCores": {
+      "type": "string",
+      "description": "Upgrade mainframe cores"
+    },
+    "upgradeMainframePrograms": {
+      "type": "string",
+      "description": "Upgrade mainframe programs"
+    },
+    "upgradeClonesLevel": {
+      "type": "string",
+      "description": "Upgrade clones level"
+    },
+    "addContractAssignments": {
+      "type": "string",
+      "description": "Add contract assignments to the primary activity queue"
+    }
+  },
+  "required": [
+    "pause",
+    "playNormalSpeed",
+    "playFastSpeed",
+    "saveGame",
+    "upgradeMainframeHardware",
+    "upgradeMainframePerformance",
+    "upgradeMainframeRam",
+    "upgradeMainframeCores",
+    "upgradeMainframePrograms",
+    "upgradeClonesLevel",
+    "addContractAssignments"
+  ]
+}

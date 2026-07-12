@@ -1,8 +1,8 @@
 import { injectable } from 'inversify';
 import { decorators } from '@state/container';
 import { TYPES } from '@state/types';
-import { IRewardsSerializedState, IRewardsState } from '../interfaces';
 import { type IScenarioState } from '@state/scenario-state';
+import { IMultiplierSerializedState, IRewardsSnapshotState, IRewardsState } from '../interfaces';
 
 const { lazyInject } = decorators;
 
@@ -45,8 +45,15 @@ export class RewardsState implements IRewardsState {
     this._pointsByProgram = serializedState.pointsByProgram;
   }
 
-  serialize(): IRewardsSerializedState {
+  serialize(): IMultiplierSerializedState {
     return {
+      pointsByProgram: this._pointsByProgram,
+    };
+  }
+
+  makeSnapshot(): IRewardsSnapshotState {
+    return {
+      multiplierByProgram: this._multiplierByProgram,
       pointsByProgram: this._pointsByProgram,
     };
   }

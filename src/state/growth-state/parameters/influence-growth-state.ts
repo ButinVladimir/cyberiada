@@ -4,7 +4,7 @@ import { TYPES } from '@state/types';
 import { type ICityState } from '@state/city-state';
 import { type IActivityState } from '@state/activity-state';
 import { DistrictTypeRewardParameter } from '@shared/index';
-import { IInfluenceGrowthState } from '../interfaces';
+import { IInfluenceGrowthSnapshotState, IInfluenceGrowthState } from '../interfaces';
 
 const { lazyInject } = decorators;
 
@@ -36,6 +36,14 @@ export class InfluenceGrowthState implements IInfluenceGrowthState {
     this.recalculate();
 
     return this._growthByDistrict.get(districtIndex) ?? 0;
+  }
+
+  makeSnapshot(): IInfluenceGrowthSnapshotState {
+    this.recalculate();
+
+    return {
+      growthByDistrict: Object.fromEntries(this._growthByDistrict.entries()) as any as Record<number, string>,
+    };
   }
 
   private recalculate() {

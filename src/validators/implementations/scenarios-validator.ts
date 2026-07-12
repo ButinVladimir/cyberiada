@@ -22,7 +22,7 @@ export class ScenariosValidator implements IScenariosValidator {
     this.validateMapDistrictTypes(name, scenario);
     this.validateMapFactionsDistrict(name, scenario);
     this.validateMapFactionNames(name, scenario);
-    this.validateMapNeutralFactionIndex(name, scenario);
+    this.validateMapUnresolvedFactionIndex(name, scenario);
     this.validateMapStartingDistrict(name, scenario);
   }
 
@@ -75,12 +75,12 @@ export class ScenariosValidator implements IScenariosValidator {
     });
   }
 
-  private validateMapNeutralFactionIndex(name: string, scenario: IScenarioValues) {
+  private validateMapUnresolvedFactionIndex(name: string, scenario: IScenarioValues) {
     const startingFactions = scenario.map.factions;
 
-    if (scenario.map.neutralFactionIndex >= startingFactions.length) {
+    if (scenario.map.unresolvedFactionIndex >= startingFactions.length) {
       console.log(
-        `\t\tScenario ${styleText('cyanBright', name)} has ${styleText('redBright', 'incorrect')} neutral faction index ${scenario.map.neutralFactionIndex}`,
+        `\t\tScenario ${styleText('cyanBright', name)} has ${styleText('redBright', 'incorrect')} unresolved faction index ${scenario.map.unresolvedFactionIndex}`,
       );
     }
   }
@@ -90,7 +90,7 @@ export class ScenariosValidator implements IScenariosValidator {
 
     if (scenario.map.startingDistrict >= districts.length) {
       console.log(
-        `\t\tScenario ${styleText('cyanBright', name)} has ${styleText('redBright', 'incorrect')} starting district index ${scenario.map.neutralFactionIndex}`,
+        `\t\tScenario ${styleText('cyanBright', name)} has ${styleText('redBright', 'incorrect')} starting district index ${scenario.map.startingDistrict}`,
       );
     }
   }

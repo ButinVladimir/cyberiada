@@ -16,7 +16,7 @@ import { type IGlobalState } from '@state/global-state';
 import { type IMessageLogState } from '@state/message-log-state';
 import { decorators } from '@state/container';
 import { TYPES } from '@state/types';
-import { IClone, IMakeCloneParameters } from './interfaces';
+import { IClone, ICloneSnapshot, IMakeCloneParameters } from './interfaces';
 import { typedCloneTemplates } from './constants';
 
 const { lazyInject } = decorators;
@@ -201,6 +201,20 @@ export class Clone implements IClone {
 
   removeAllEventListeners() {
     this._stateUiConnector.unregisterEventEmitter(this);
+  }
+
+  makeSnapshot(): ICloneSnapshot {
+    return {
+      id: this._id,
+      name: this._name,
+      templateName: this._templateName,
+      experience: this._experience,
+      level: this._level,
+      tier: this._tier,
+      experienceMultiplier: this._experienceMultiplier,
+      attributes: Object.fromEntries(this._attributes.entries()) as Record<Attribute, number>,
+      skills: Object.fromEntries(this._skills.entries()) as Record<Skill, number>,
+    };
   }
 
   private initSynchronization() {

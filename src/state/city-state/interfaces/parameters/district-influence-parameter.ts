@@ -1,6 +1,8 @@
-import { IDistrictInfluenceSerializedParameter } from '../serialized-states/parameters/district-influence-serialized-parameter';
+import { ISnapshotable } from '@shared/index';
+import { IDistrictInfluenceSerializedParameter } from '../serialized-states';
+import { IDistrictInfluenceParameterSnapshot } from '../snapshot-states';
 
-export interface IDistrictInfluenceParameter {
+export interface IDistrictInfluenceParameter extends ISnapshotable<IDistrictInfluenceParameterSnapshot> {
   tier: number;
   points: number;
   increasePoints(delta: number): void;

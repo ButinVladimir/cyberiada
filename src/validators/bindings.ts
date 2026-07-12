@@ -39,7 +39,29 @@ import {
   IStoryEventsValidator,
   IScenariosValidator,
   IContractValidator,
+  ISavefileValidator,
+  ISavefileScenarioValidator,
+  ISavefileValidatorFacade,
+  ISavefileFactionValidator,
+  ISavefileUnlockValidator,
+  ISavefileClonesValidator,
+  ISavefileCityValidator,
+  ISavefileMainframeValidator,
+  ISavefileAutomationValidator,
+  ISavefileActivityValidator,
 } from './interfaces';
+import {
+  SavefileValidator,
+  SavefileScenarioValidator,
+  SavefileUnlockValidator,
+  SavefileFactionValidator,
+  SavefileClonesValidator,
+  SavefileCityValidator,
+  SavefileMainframeValidator,
+  SavefileAutomationValidator,
+  SavefileActivityValidator,
+} from './savefile-validators';
+import { SavefileValidatorFacade } from './savefile-validator-facade';
 import { validatorContainer } from './container';
 import { VALIDATOR_TYPES } from './types';
 
@@ -178,5 +200,65 @@ validatorContainer
 validatorContainer
   .bind<IScenariosValidator>(VALIDATOR_TYPES.ScenariosValidator)
   .to(ScenariosValidator)
+  .inSingletonScope()
+  .whenDefault();
+
+validatorContainer
+  .bind<ISavefileScenarioValidator>(VALIDATOR_TYPES.SavefileScenarioValidator)
+  .to(SavefileScenarioValidator)
+  .inSingletonScope()
+  .whenDefault();
+
+validatorContainer
+  .bind<ISavefileFactionValidator>(VALIDATOR_TYPES.SavefileFactionValidator)
+  .to(SavefileFactionValidator)
+  .inSingletonScope()
+  .whenDefault();
+
+validatorContainer
+  .bind<ISavefileUnlockValidator>(VALIDATOR_TYPES.SavefileUnlockValidator)
+  .to(SavefileUnlockValidator)
+  .inSingletonScope()
+  .whenDefault();
+
+validatorContainer
+  .bind<ISavefileClonesValidator>(VALIDATOR_TYPES.SavefileClonesValidator)
+  .to(SavefileClonesValidator)
+  .inSingletonScope()
+  .whenDefault();
+
+validatorContainer
+  .bind<ISavefileCityValidator>(VALIDATOR_TYPES.SavefileCityValidator)
+  .to(SavefileCityValidator)
+  .inSingletonScope()
+  .whenDefault();
+
+validatorContainer
+  .bind<ISavefileMainframeValidator>(VALIDATOR_TYPES.SavefileMainframeValidator)
+  .to(SavefileMainframeValidator)
+  .inSingletonScope()
+  .whenDefault();
+
+validatorContainer
+  .bind<ISavefileAutomationValidator>(VALIDATOR_TYPES.SavefileAutomationValidator)
+  .to(SavefileAutomationValidator)
+  .inSingletonScope()
+  .whenDefault();
+
+validatorContainer
+  .bind<ISavefileActivityValidator>(VALIDATOR_TYPES.SavefileActivityValidator)
+  .to(SavefileActivityValidator)
+  .inSingletonScope()
+  .whenDefault();
+
+validatorContainer
+  .bind<ISavefileValidator>(VALIDATOR_TYPES.SavefileValidator)
+  .to(SavefileValidator)
+  .inSingletonScope()
+  .whenDefault();
+
+validatorContainer
+  .bind<ISavefileValidatorFacade>(VALIDATOR_TYPES.SavefileValidatorFacade)
+  .to(SavefileValidatorFacade)
   .inSingletonScope()
   .whenDefault();

@@ -1,11 +1,13 @@
-import { ISerializeable } from '@shared/interfaces';
+import { ISerializeable, ISnapshotable } from '@shared/index';
 import { IOwnedClonesSerializedState } from './owned-clones-serialized-state';
 import { IClone } from '../../clone-factory/interfaces/clone';
 import { IPurchaseCloneArgs } from './purchase-clone-args';
 import { IOwnedClonesLevelUpgrader } from './owned-clones-level-upgrader';
 import { IOwnedClonesValidator } from './owned-clones-validator';
+import { IOwnedClonesSnapshotState } from './owned-clones-snapshot-state';
 
-export interface IOwnedClonesState extends ISerializeable<IOwnedClonesSerializedState> {
+export interface IOwnedClonesState
+  extends ISerializeable<IOwnedClonesSerializedState>, ISnapshotable<IOwnedClonesSnapshotState> {
   levelUpgrader: IOwnedClonesLevelUpgrader;
   validator: IOwnedClonesValidator;
   listClones(): IClone[];

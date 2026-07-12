@@ -6,7 +6,7 @@ import { type ICityState } from '@state/city-state';
 import { type IActivityState } from '@state/activity-state';
 import { type IGlobalState } from '@state/global-state';
 import { DistrictTypeRewardParameter } from '@shared/index';
-import { IConnectivityGrowthState } from '../interfaces';
+import { IConnectivityGrowthSnapshotState, IConnectivityGrowthState } from '../interfaces';
 
 const { lazyInject } = decorators;
 
@@ -61,6 +61,16 @@ export class ConnectivityGrowthState implements IConnectivityGrowthState {
     this.recalculate();
 
     return this._totalGrowthByDistrict.get(districtIndex) ?? 0;
+  }
+
+  makeSnapshot(): IConnectivityGrowthSnapshotState {
+    this.recalculate();
+
+    return {
+      growthByProgram: this.growthByProgram,
+      baseGrowthByDistrict: Object.fromEntries(this._baseGrowthByDistrict.entries()),
+      totalGrowthByDistrict: Object.fromEntries(this._totalGrowthByDistrict.entries()),
+    };
   }
 
   private recalculate() {

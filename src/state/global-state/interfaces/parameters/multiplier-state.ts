@@ -1,7 +1,9 @@
-import { ISerializeable } from '@shared/interfaces/serializable';
-import { IMultiplierSerializedState } from '../serialized-states/multiplier-serialized-state';
+import { ISerializeable, ISnapshotable } from '@shared/index';
+import { IMultiplierSerializedState } from '../serialized-states';
+import { IMultiplierSnapshotState } from '../snapshot-states';
 
-export interface IMultiplierState extends ISerializeable<IMultiplierSerializedState> {
+export interface IMultiplierState
+  extends ISerializeable<IMultiplierSerializedState>, ISnapshotable<IMultiplierSnapshotState> {
   pointsByProgram: number;
   programMultiplier: number;
   totalMultiplier: number;

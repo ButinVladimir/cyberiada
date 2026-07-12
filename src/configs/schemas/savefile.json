@@ -1,0 +1,1146 @@
+{
+  "type": "object",
+  "properties": {
+    "gameVersion": {
+      "type": "string",
+      "description": "Game version",
+      "enum": ["0.4.0"]
+    },
+    "scenario": {
+      "type": "object",
+      "description": "Scenario state",
+      "properties": {
+        "currentScenario": {
+          "type": "string",
+          "description": "Current scenario"
+        },
+        "storyEvents": {
+          "type": "object",
+          "description": "Story events state",
+          "properties": {
+            "visitedAllEvents": {
+              "type": "array",
+              "description": "All visited events, including those in past replications",
+              "items": {
+                "type": "string",
+                "description": "Visited event",
+                "minLength": 1
+              },
+              "uniqueItems": true
+            },
+            "visitedScenarioEvents": {
+              "type": "array",
+              "description": "All visited events in this replication",
+              "items": {
+                "type": "string",
+                "description": "Visited event",
+                "minLength": 1
+              },
+              "uniqueItems": true
+            }
+          },
+          "required": ["visitedAllEvents", "visitedScenarioEvents"]
+        }
+      },
+      "required": ["currentScenario", "storyEvents"]
+    },
+    "faction": {
+      "type": "object",
+      "description": "Faction state",
+      "properties": {
+        "joiningFactionAvailable": {
+          "type": "boolean",
+          "description": "Are factions available to be joined"
+        },
+        "currentFaction": {
+          "type": "string",
+          "description": "Currently joined faction",
+          "minLength": 1
+        },
+        "factionsList": {
+          "type": "array",
+          "description": "Factions available to join",
+          "items": {
+            "type": "string",
+            "description": "Faction name",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": ["joiningFactionAvailable", "currentFaction", "factionsList"]
+    },
+    "unlock": {
+      "type": "object",
+      "description": "Unlock state",
+      "properties": {
+        "milestones": {
+          "type": "object",
+          "description": "Milestones",
+          "properties": {
+            "reachedMilestones": {
+              "type": "array",
+              "description": "Reached milestones",
+              "items": {
+                "$ref": "./common/milestone.json",
+                "description": "Reached milestone"
+              },
+              "uniqueItems": true
+            }
+          },
+          "required": ["reachedMilestones"]
+        },
+        "items": {
+          "type": "object",
+          "description": "Items",
+          "properties": {
+            "programs": {
+              "type": "object",
+              "description": "Programs",
+              "properties": {
+                "designs": {
+                  "type": "object",
+                  "description": "Programs designs",
+                  "additionalProperties": {
+                    "type": "integer",
+                    "description": "Design tier",
+                    "minimum": 0
+                  },
+                  "propertyNames": {
+                    "$ref": "./common/program-name.json"
+                  }
+                }
+              },
+              "required": ["designs"]
+            },
+            "cloneTemplates": {
+              "type": "object",
+              "description": "Clone templates",
+              "properties": {
+                "designs": {
+                  "type": "object",
+                  "description": "Clone templates designs",
+                  "additionalProperties": {
+                    "type": "integer",
+                    "description": "Design tier",
+                    "minimum": 0
+                  }
+                }
+              },
+              "required": ["designs"]
+            }
+          },
+          "required": ["programs", "cloneTemplates"]
+        },
+        "activities": {
+          "type": "object",
+          "description": "Activities",
+          "properties": {
+            "sidejobs": {
+              "type": "object",
+              "description": "Sidejobs",
+              "properties": {
+                "unlockedActivities": {
+                  "type": "array",
+                  "description": "Unlocked sidejobs",
+                  "items": {
+                    "type": "string",
+                    "description": "Sidejob",
+                    "minLength": 1
+                  },
+                  "uniqueItems": true
+                }
+              },
+              "required": ["unlockedActivities"]
+            },
+            "contracts": {
+              "type": "object",
+              "description": "Contracts",
+              "properties": {
+                "unlockedActivities": {
+                  "type": "array",
+                  "description": "Unlocked contracts",
+                  "items": {
+                    "type": "string",
+                    "description": "Contracts",
+                    "minLength": 1
+                  },
+                  "uniqueItems": true
+                }
+              },
+              "required": ["unlockedActivities"]
+            }
+          },
+          "required": ["sidejobs", "contracts"]
+        }
+      },
+      "required": ["milestones", "items", "activities"]
+    },
+    "global": {
+      "type": "object",
+      "description": "Global state",
+      "properties": {
+        "randomSeed": {
+          "type": "string",
+          "description": "Random seed",
+          "minLength": 1
+        },
+        "randomShift": {
+          "type": "string",
+          "description": "Random shift",
+          "minLength": 1
+        },
+        "runId": {
+          "type": "string",
+          "description": "Run ID",
+          "minLength": 1
+        },
+        "gameSpeed": {
+          "type": "integer",
+          "description": "Game speed state, 0 - pause, 1 - normal, 2 - fast",
+          "minimum": 0,
+          "maximum": 2
+        },
+        "money": {
+          "type": "object",
+          "description": "Money",
+          "properties": {
+            "money": {
+              "type": "number",
+              "description": "Money value",
+              "minimum": 0
+            },
+            "income": {
+              "type": "object",
+              "description": "Money income values",
+              "properties": {
+                "program": {
+                  "$ref": "#/$defs/globalStateIncomeValue",
+                  "description": "Money income value by programs"
+                },
+                "sidejob": {
+                  "$ref": "#/$defs/globalStateIncomeValue",
+                  "description": "Money income value by sidejobs"
+                },
+                "primaryActivity": {
+                  "$ref": "#/$defs/globalStateIncomeValue",
+                  "description": "Money income value by primary activity"
+                }
+              }
+            },
+            "expenses": {
+              "type": "object",
+              "description": "Money expenses values",
+              "properties": {
+                "mainframePrograms": {
+                  "$ref": "#/$defs/globalStateExpenseValue",
+                  "description": "Money expense value by mainframe programs"
+                },
+                "mainframeHardware": {
+                  "$ref": "#/$defs/globalStateExpenseValue",
+                  "description": "Money expense value by mainframe hardware"
+                },
+                "clones": {
+                  "$ref": "#/$defs/globalStateExpenseValue",
+                  "description": "Money expense value by clones"
+                }
+              }
+            }
+          },
+          "required": ["money", "income", "expenses"]
+        },
+        "time": {
+          "type": "object",
+          "description": "Time",
+          "properties": {
+            "lastUpdateTime": {
+              "type": "number",
+              "description": "Last update timestamp",
+              "minimum": 0
+            },
+            "accumulatedTime": {
+              "type": "number",
+              "description": "Accumulated time",
+              "minimum": 0
+            },
+            "gameTime": {
+              "type": "number",
+              "description": "Game time after last replication",
+              "minimum": 0
+            },
+            "gameTimeTotal": {
+              "type": "number",
+              "description": "Total game time",
+              "minimum": 0
+            }
+          },
+          "required": ["lastUpdateTime", "accumulatedTime", "gameTime", "gameTimeTotal"]
+        },
+        "development": {
+          "type": "object",
+          "description": "Development",
+          "properties": {
+            "points": {
+              "type": "number",
+              "description": "Development points",
+              "minimum": 0
+            },
+            "income": {
+              "type": "object",
+              "description": "Development income",
+              "properties": {
+                "program": {
+                  "$ref": "#/$defs/globalStateIncomeValue",
+                  "description": "Development income value by programs"
+                },
+                "sidejob": {
+                  "$ref": "#/$defs/globalStateIncomeValue",
+                  "description": "Development income value by sidejobs"
+                },
+                "primaryActivity": {
+                  "$ref": "#/$defs/globalStateIncomeValue",
+                  "description": "Development income value by primary activity"
+                }
+              }
+            }
+          },
+          "required": ["points", "income"]
+        },
+        "connectivity": {
+          "type": "object",
+          "description": "Connectivity",
+          "properties": {
+            "pointsByProgram": {
+              "type": "number",
+              "description": "Points by programs",
+              "minimum": 0
+            }
+          },
+          "required": ["pointsByProgram"]
+        },
+        "multipliers": {
+          "type": "object",
+          "description": "Cost multipliers",
+          "properties": {
+            "codeBase": {
+              "$ref": "#/$defs/globalStateCostMultiplier",
+              "description": "Code base cost multiplier"
+            },
+            "computationalBase": {
+              "$ref": "#/$defs/globalStateCostMultiplier",
+              "description": "Computational base cost multiplier"
+            }
+          },
+          "required": ["codeBase", "computationalBase"]
+        },
+        "rewards": {
+          "type": "object",
+          "description": "Rewards",
+          "properties": {
+            "pointsByProgram": {
+              "type": "number",
+              "description": "Points by programs",
+              "minimum": 0
+            }
+          },
+          "required": ["pointsByProgram"]
+        }
+      },
+      "required": [
+        "randomSeed",
+        "randomShift",
+        "runId",
+        "gameSpeed",
+        "money",
+        "time",
+        "development",
+        "connectivity",
+        "multipliers",
+        "rewards"
+      ]
+    },
+    "settings": {
+      "type": "object",
+      "description": "Settings state",
+      "properties": {
+        "language": {
+          "type": "string",
+          "description": "Language",
+          "enum": ["en", "ru"]
+        },
+        "theme": {
+          "type": "string",
+          "description": "Theme",
+          "enum": ["light", "dark"]
+        },
+        "messageLogSize": {
+          "type": "integer",
+          "description": "Max amount of message log stored messages",
+          "minimum": 1
+        },
+        "toastDuration": {
+          "type": "number",
+          "description": "Duration of toast messages (ms)",
+          "minimum": 0
+        },
+        "updateInterval": {
+          "type": "number",
+          "description": "Interval between ticks (ms)",
+          "minimum": 1
+        },
+        "autosaveEnabledOnHide": {
+          "type": "boolean",
+          "description": "Is autosave enabled on closing or hiding tab"
+        },
+        "autosaveInterval": {
+          "type": "number",
+          "description": "Autosave interval (ms)",
+          "minimum": 1
+        },
+        "fastSpeedMultiplier": {
+          "type": "integer",
+          "description": "Game speed multiplier on fast mode",
+          "minimum": 2
+        },
+        "maxUpdatesPerTick": {
+          "type": "integer",
+          "description": "Max amount of updates per tick",
+          "minimum": 2
+        },
+        "longNumberFormat": {
+          "type": "string",
+          "description": "Long number format",
+          "enum": ["short", "long", "scientific", "engineering"]
+        },
+        "enabledMessageEvents": {
+          "type": "array",
+          "description": "Enabled messages for events",
+          "items": {
+            "type": "string",
+            "description": "Message event",
+            "enum": [
+              "gameStarted",
+              "gameSaved",
+              "fastForwarded",
+              "levelReached",
+              "performanceUpgraded",
+              "coresUpgraded",
+              "ramUpgraded",
+              "programPurchased",
+              "processStarted",
+              "processDeleted",
+              "displayedProcessesDeleted",
+              "clonePurchased",
+              "cloneLevelUpgraded",
+              "cloneDeleted",
+              "displayedClonesDeleted",
+              "cloneLevelReached",
+              "cloneRenamed",
+              "cloneReplaced",
+              "sidejobAssigned",
+              "sidejobCancelled",
+              "displayedSidejobsCancelled",
+              "contractAssigned",
+              "contractAssignmentRemoved",
+              "displayedContractAssignmentsRemoved",
+              "primaryActivityAdded",
+              "primaryActivityFinished",
+              "primaryActivityCancelled",
+              "displayedPrimaryActivitiesCancelled",
+              "districtTierIncreased"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "enabledGameAlerts": {
+          "type": "array",
+          "description": "Enabled game alerts",
+          "items": {
+            "type": "string",
+            "description": "Game alert",
+            "enum": [
+              "saveImport",
+              "saveDelete",
+              "clearMessages",
+              "fastForward",
+              "unassignHotkeys",
+              "restoreDefaultHotkeys",
+              "restoreDefaultSettings",
+              "joinFaction",
+              "purchaseProgramOverwrite",
+              "processDelete",
+              "processReplace",
+              "deleteDisplayedProcesses",
+              "cloneDelete",
+              "cloneReplace",
+              "deleteDisplayedClones",
+              "sidejobCancel",
+              "cancelDisplayedSidejobs",
+              "replaceSidejob",
+              "contractAssignmentCancel",
+              "cancelDisplayedContractAssignments",
+              "replaceContractAssignment",
+              "cancelDisplayedPrimaryActivities",
+              "cancelPrimaryActivity"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "enabledNotificationTypes": {
+          "type": "array",
+          "description": "Enabled notification types",
+          "items": {
+            "type": "string",
+            "description": "Notification type",
+            "enum": [
+              "storyEvent",
+              "milestoneUnlocked",
+              "timeAccumulated",
+              "activityUnlocked",
+              "designUnlocked",
+              "factionsAvailable",
+              "factionJoined",
+              "districtContested",
+              "districtCaptured"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "hotkeys": {
+          "$ref": "./common/hotkeys.json"
+        }
+      },
+      "required": [
+        "language",
+        "theme",
+        "messageLogSize",
+        "toastDuration",
+        "updateInterval",
+        "autosaveEnabledOnHide",
+        "autosaveInterval",
+        "fastSpeedMultiplier",
+        "maxUpdatesPerTick",
+        "longNumberFormat",
+        "enabledMessageEvents",
+        "enabledGameAlerts",
+        "enabledNotificationTypes",
+        "hotkeys"
+      ]
+    },
+    "clones": {
+      "type": "object",
+      "description": "Clones state",
+      "properties": {
+        "ownedClones": {
+          "type": "object",
+          "description": "Owned clones",
+          "properties": {
+            "clones": {
+              "type": "array",
+              "description": "Clones list",
+              "items": {
+                "type": "object",
+                "description": "Clone",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "Clone ID",
+                    "minLength": 1
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "Clone name",
+                    "minLength": 1
+                  },
+                  "templateName": {
+                    "type": "string",
+                    "description": "Clone template name",
+                    "minLength": 1
+                  },
+                  "experience": {
+                    "type": "number",
+                    "description": "Clone experience",
+                    "minimum": 0
+                  },
+                  "level": {
+                    "type": "number",
+                    "description": "Clone level",
+                    "minimum": 0
+                  },
+                  "tier": {
+                    "type": "number",
+                    "description": "Clone tier",
+                    "minimum": 0
+                  },
+                  "autoUpgradeEnabled": {
+                    "type": "boolean",
+                    "description": "Is autoupgrade enabled"
+                  }
+                },
+                "required": ["id", "name", "templateName", "experience", "level", "tier", "autoUpgradeEnabled"]
+              }
+            }
+          },
+          "required": ["clones"]
+        }
+      },
+      "required": ["ownedClones"]
+    },
+    "city": {
+      "type": "object",
+      "description": "City state",
+      "properties": {
+        "layout": {
+          "type": "array",
+          "description": "City layout",
+          "items": {
+            "type": "array",
+            "description": "City layout column",
+            "items": {
+              "type": "integer",
+              "description": "District index at point",
+              "minimum": 0
+            },
+            "minItems": 1
+          },
+          "minItems": 1
+        },
+        "districts": {
+          "type": "object",
+          "description": "City districts",
+          "additionalProperties": {
+            "type": "object",
+            "description": "City district",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "District name",
+                "minLength": 1
+              },
+              "startingPoint": {
+                "type": "object",
+                "description": "District starting point",
+                "properties": {
+                  "x": {
+                    "$ref": "#/$defs/cityStateDistrictCoordinate",
+                    "description": "District starting point X coordinate"
+                  },
+                  "y": {
+                    "$ref": "#/$defs/cityStateDistrictCoordinate",
+                    "description": "District starting point Y coordinate"
+                  }
+                },
+                "required": ["x", "y"]
+              },
+              "districtType": {
+                "type": "string",
+                "description": "District type",
+                "minLength": 1
+              },
+              "faction": {
+                "type": "string",
+                "description": "District faction",
+                "minLength": 1
+              },
+              "state": {
+                "type": "integer",
+                "description": "District state (0 - unavailable, 1 - contested, 2 - captured)",
+                "minimum": 0,
+                "maximum": 2
+              },
+              "parameters": {
+                "type": "object",
+                "description": "District parameters",
+                "properties": {
+                  "tier": {
+                    "type": "object",
+                    "description": "District tier parameter",
+                    "properties": {
+                      "points": {
+                        "type": "number",
+                        "description": "District tier points",
+                        "minimum": 0
+                      },
+                      "tier": {
+                        "type": "integer",
+                        "description": "District tier value",
+                        "minimum": 0
+                      }
+                    },
+                    "required": ["points", "tier"]
+                  },
+                  "connectivtiy": {
+                    "type": "object",
+                    "description": "District connectivtiy parameter",
+                    "properties": {
+                      "points": {
+                        "type": "number",
+                        "description": "District connectivtiy points",
+                        "minimum": 0
+                      }
+                    },
+                    "required": ["points"]
+                  },
+                  "multipliers": {
+                    "type": "object",
+                    "description": "District multipliers",
+                    "properties": {
+                      "codeBase": {
+                        "$ref": "#/$defs/cityStateDistrictCostMultiplier",
+                        "description": "District code base multiplier"
+                      },
+                      "computationalBase": {
+                        "$ref": "#/$defs/cityStateDistrictCostMultiplier",
+                        "description": "District computational base multiplier"
+                      }
+                    },
+                    "required": ["codeBase", "computationalBase"]
+                  },
+                  "rewards": {
+                    "type": "object",
+                    "description": "District rewards parameter",
+                    "properties": {
+                      "points": {
+                        "type": "number",
+                        "description": "District rewards points",
+                        "minimum": 0
+                      }
+                    },
+                    "required": ["points"]
+                  }
+                },
+                "required": ["tier", "connectivtiy", "multipliers", "rewards"]
+              },
+              "counters": {
+                "type": "object",
+                "description": "District counters",
+                "properties": {
+                  "contracts": {
+                    "type": "object",
+                    "description": "District contracts counters",
+                    "properties": {
+                      "passedTimes": {
+                        "type": "object",
+                        "description": "District contracts passed times",
+                        "additionalProperties": {
+                          "type": "number",
+                          "description": "District contract passed time",
+                          "minimum": 0
+                        }
+                      },
+                      "availableAmounts": {
+                        "type": "object",
+                        "description": "District contracts available amounts",
+                        "additionalProperties": {
+                          "type": "integer",
+                          "description": "District contract available amounts",
+                          "minimum": 0
+                        }
+                      }
+                    },
+                    "required": ["passedTimes", "availableAmounts"]
+                  }
+                },
+                "required": ["contracts"]
+              }
+            },
+            "required": ["name", "startingPoint", "districtType", "faction", "state", "parameters", "counters"]
+          },
+          "propertyNames": { "type": "string", "pattern": "^\\d+$" }
+        }
+      },
+      "required": ["layout", "districts"]
+    },
+    "mainframe": {
+      "type": "object",
+      "description": "Mainframe state",
+      "properties": {
+        "hardware": {
+          "type": "object",
+          "description": "Mainframe hardware",
+          "properties": {
+            "performance": {
+              "$ref": "#/$defs/mainframeStateHardwareArticle",
+              "description": "Mainframe hardware performance"
+            },
+            "cores": {
+              "$ref": "#/$defs/mainframeStateHardwareArticle",
+              "description": "Mainframe hardware cores"
+            },
+            "ram": {
+              "$ref": "#/$defs/mainframeStateHardwareArticle",
+              "description": "Mainframe hardware RAM"
+            },
+            "parametersList": {
+              "type": "array",
+              "description": "Priority list of mainframe hardware articles",
+              "items": {
+                "type": "string",
+                "enum": ["performance", "cores", "ram"]
+              },
+              "uniqueItems": true
+            }
+          },
+          "required": ["performance", "cores", "ram", "parametersList"]
+        },
+        "programs": {
+          "type": "object",
+          "description": "Mainframe programs",
+          "properties": {
+            "ownedPrograms": {
+              "type": "array",
+              "description": "Mainframe owned programs",
+              "items": {
+                "type": "object",
+                "description": "Mainframe owned program",
+                "properties": {
+                  "name": {
+                    "$ref": "./common/program-name.json"
+                  },
+                  "level": {
+                    "type": "integer",
+                    "description": "Mainframe program level",
+                    "minimum": 0
+                  },
+                  "tier": {
+                    "type": "integer",
+                    "description": "Mainframe program tier",
+                    "minimum": 0
+                  },
+                  "autoUpgradeEnabled": {
+                    "type": "boolean",
+                    "description": "Is mainframe program autoupgrade enabled"
+                  }
+                },
+                "required": ["name", "level", "tier", "autoUpgradeEnabled"]
+              }
+            }
+          },
+          "required": ["ownedPrograms"]
+        },
+        "processes": {
+          "type": "object",
+          "description": "Mainframe processes",
+          "properties": {
+            "processes": {
+              "type": "array",
+              "description": "Mainframe processes list",
+              "items": {
+                "type": "object",
+                "description": "Mainframe process",
+                "properties": {
+                  "programName": {
+                    "$ref": "./common/program-name.json"
+                  },
+                  "enabled": {
+                    "type": "boolean",
+                    "description": "Is mainframe process enabled"
+                  },
+                  "threads": {
+                    "type": "integer",
+                    "description": "Mainframe process threads",
+                    "minimum": 0
+                  },
+                  "currentCompletionPoints": {
+                    "type": "number",
+                    "description": "Mainframe process completion points",
+                    "minimum": 0
+                  }
+                },
+                "required": ["programName", "enabled", "threads", "currentCompletionPoints"]
+              }
+            }
+          },
+          "required": ["processes"]
+        }
+      },
+      "required": ["hardware", "programs", "processes"]
+    },
+    "automation": {
+      "type": "object",
+      "description": "Automation state",
+      "properties": {
+        "mainframeHardware": {
+          "$ref": "#/$defs/automationStateArticle",
+          "description": "Available money for mainframe hardware automation"
+        },
+        "mainframePrograms": {
+          "$ref": "#/$defs/automationStateArticle",
+          "description": "Available money for mainframe hardware automation"
+        },
+        "cloneLevel": {
+          "$ref": "#/$defs/automationStateArticle",
+          "description": "Available money for mainframe hardware automation"
+        },
+        "contracts": {
+          "type": "object",
+          "description": "Contracts automation",
+          "properties": {
+            "contractAssignments": {
+              "type": "array",
+              "description": "Contract assignments",
+              "items": {
+                "type": "object",
+                "description": "Contract assigment",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "Contract assignment ID",
+                    "minLength": 1
+                  },
+                  "contract": {
+                    "type": "object",
+                    "description": "Contract assigment contract",
+                    "properties": {
+                      "contractName": {
+                        "type": "string",
+                        "description": "Contract name",
+                        "minLength": 1
+                      },
+                      "districtIndex": {
+                        "type": "integer",
+                        "description": "Contract district index",
+                        "minimum": 0
+                      },
+                      "assignedCloneIds": {
+                        "type": "array",
+                        "description": "Contract district assigned clones",
+                        "items": {
+                          "type": "string",
+                          "description": "Contract district assigned clone ID",
+                          "minLength": 1
+                        },
+                        "uniqueItems": true
+                      }
+                    },
+                    "required": ["contractName", "districtIndex", "assignedCloneIds"]
+                  },
+                  "enabled": {
+                    "type": "boolean",
+                    "description": "Is contract assignment enabled"
+                  }
+                },
+                "required": ["id", "contract", "enabled"]
+              }
+            }
+          },
+          "required": ["contractAssignments"]
+        }
+      },
+      "required": ["mainframeHardware", "mainframePrograms", "cloneLevel"]
+    },
+    "activity": {
+      "type": "object",
+      "description": "Activity state",
+      "properties": {
+        "sidejobs": {
+          "type": "object",
+          "description": "Activity state sidejobs",
+          "properties": {
+            "activities": {
+              "type": "array",
+              "description": "Activity state sidejobs activity list",
+              "items": {
+                "type": "object",
+                "description": "Sidejob activity",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "Sidejob activity ID",
+                    "minLength": 1
+                  },
+                  "enabled": {
+                    "type": "boolean",
+                    "description": "Is sidejob activity enabled"
+                  },
+                  "sidejob": {
+                    "type": "object",
+                    "description": "Sidejob",
+                    "properties": {
+                      "sidejobName": {
+                        "type": "string",
+                        "description": "Sidejob name",
+                        "minLength": 1
+                      },
+                      "districtIndex": {
+                        "type": "integer",
+                        "description": "Sidejob district index",
+                        "minimum": 0
+                      },
+                      "assignedCloneId": {
+                        "type": "string",
+                        "description": "Sidejob assigned clone",
+                        "minLength": 1
+                      }
+                    },
+                    "required": ["sidejobName", "districtIndex", "assignedCloneId"]
+                  }
+                },
+                "required": ["id", "enabled", "sidejob"]
+              }
+            }
+          },
+          "required": ["activities"]
+        },
+        "primaryActivityQueue": {
+          "type": "object",
+          "description": "Primary activity queue",
+          "properties": {
+            "activities": {
+              "type": "array",
+              "description": "Primary activity queue activity list",
+              "items": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "description": "Contract activity",
+                    "properties": {
+                      "activityId": {
+                        "type": "string",
+                        "description": "Primary activity ID",
+                        "minLength": 1
+                      },
+                      "type": {
+                        "type": "string",
+                        "enum": ["contract"]
+                      },
+                      "state": {
+                        "type": "string",
+                        "enum": ["active", "inactive", "finishedPerforming", "toBeRemoved"]
+                      },
+                      "parameterRewards": {
+                        "type": "object",
+                        "description": "Primary activity rewards",
+                        "additionalProperties": {
+                          "type": "number",
+                          "minimum": 0
+                        },
+                        "propertyNames": {
+                          "type": "string",
+                          "enum": [
+                            "money",
+                            "developmentPoints",
+                            "experience",
+                            "influence",
+                            "connectivity",
+                            "codeBase",
+                            "computationalBase",
+                            "rewards",
+                            "processCompletionSpeed",
+                            "experienceShareMultiplier"
+                          ]
+                        }
+                      },
+                      "contractAssignmentId": {
+                        "type": "string",
+                        "description": "Contract assignment ID",
+                        "minLength": 1
+                      },
+                      "passedTime": {
+                        "type": "number",
+                        "description": "Contract activity passed time",
+                        "minimum": 0
+                      }
+                    },
+                    "required": [
+                      "activityId",
+                      "type",
+                      "state",
+                      "parameterRewards",
+                      "contractAssignmentId",
+                      "passedTime"
+                    ]
+                  }
+                ]
+              }
+            }
+          },
+          "required": ["activities"]
+        }
+      },
+      "required": ["sidejobs", "primaryActivityQueue"]
+    }
+  },
+  "required": [
+    "gameVersion",
+    "scenario",
+    "faction",
+    "unlock",
+    "global",
+    "settings",
+    "clones",
+    "city",
+    "mainframe",
+    "activity"
+  ],
+  "$defs": {
+    "globalStateIncomeValue": {
+      "type": "number",
+      "description": "Income value",
+      "minimum": 0
+    },
+    "globalStateExpenseValue": {
+      "type": "number",
+      "description": "Expense value",
+      "minimum": 0
+    },
+    "globalStateCostMultiplier": {
+      "type": "object",
+      "description": "Cost multiplier",
+      "properties": {
+        "pointsByProgram": {
+          "type": "number",
+          "description": "Points by programs",
+          "minimum": 0
+        }
+      },
+      "required": ["pointsByProgram"]
+    },
+    "cityStateDistrictCoordinate": {
+      "type": "integer",
+      "description": "District starting point coordinate",
+      "minimum": 0
+    },
+    "cityStateDistrictCostMultiplier": {
+      "type": "object",
+      "description": "District multiplier",
+      "properties": {
+        "points": {
+          "type": "number",
+          "description": "District multiplier points",
+          "minimum": 0
+        }
+      },
+      "required": ["points"]
+    },
+    "mainframeStateHardwareArticle": {
+      "type": "object",
+      "description": "Mainframe hardware article",
+      "properties": {
+        "level": {
+          "type": "integer",
+          "description": "Mainframe article level",
+          "minimum": 0
+        },
+        "autoUpgradeEnabled": {
+          "type": "boolean",
+          "description": "Is mainframe article autoupgrade enabled"
+        }
+      },
+      "required": ["level", "autoUpgradeEnabled"]
+    },
+    "automationStateArticle": {
+      "type": "object",
+      "description": "Automation article",
+      "properties": {
+        "moneyShare": {
+          "type": "number",
+          "description": "Percentage of money available for automation",
+          "minimum": 0,
+          "maximum": 100
+        }
+      },
+      "required": ["moneyShare"]
+    }
+  }
+}

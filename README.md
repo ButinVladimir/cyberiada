@@ -10,11 +10,11 @@ Discord for discussions and feedback is available here: https://discord.gg/CmsTx
 
 ## Troubleshooting
 
-### High memory usage
+#### High memory usage
 
 Disabling popup messages on settings page by setting duration to 0 can reduce memory usage.
 
-### CPU spikes after setting tab active
+#### CPU spikes after setting tab active
 
 After tab is active again, game tries to perform frame updates which didn't happened when tab was inactive. Amount of updates is on settings page, reduce it in case high CPU usage. This parameter is also used by fast forwarding, which runs game at highest speed possible.
 
@@ -42,6 +42,144 @@ npm run prettier
 npm run lint
 ```
 
-### Translations
+#### Build preview
 
-For translactions, game uses [@lit/localize](https://github.com/Lit/Lit/tree/main/packages/localize). To update localization, first run `localize:extract`, then update xlf file under `src/xliff` directory, then run `localize:build`.
+To preview game build, run this to build files:
+
+```
+npm run build
+```
+
+After that, run this to start preview server:
+
+```
+npm run preview
+```
+
+#### Translations
+
+For translactions, game uses [@lit/localize](https://github.com/Lit/Lit/tree/main/packages/localize). To update localization, first run this:
+
+```
+npm run localize:extract
+```
+
+Then update xlf file under `src/xliff` directory and after that run this:
+
+```
+npm run localize:build
+```
+
+### Debugging and balancing CLI tools
+
+#### Unzip savefile
+
+To unzip a savefile, run following command:
+
+```
+npm run unzip-savefile -- -i <input file name> -o <output file name>
+```
+
+It will unzip savefile `<input file name>` from `cli-data/zipped-saves` and save it in `cli-data/unzipped-saves` as `<output file name>`. Output file name can be ommited, in this case it will be saved as `<input file name>`.
+
+#### Zip savefile
+
+To zip a savefile, run following command:
+
+```
+npm run zip-savefile -- -i <input file name> -o <output file name>
+```
+
+It will unzip savefile `<input file name>` from `cli-data/unzipped-saves` and save it in `cli-data/zipped-saves` as `<output file name>`. Output file name can be ommited, in this case it will be saved as `<input file name>`.
+
+#### Validate savefile
+
+To validate a savefile, run following command:
+
+```
+npm run validate-savefile -- -i <input file name>
+```
+
+It will validate savefile `<input file name>` from `cli-data/unzipped-saves`. Savefile data should match schema and all named entities should exist in configs.
+
+#### Migrate savefile
+
+To migrate a savefile, run following command:
+
+```
+npm run migrate-savefile -- -i <input file name> -o <output file name>
+```
+
+It will migrate savefile `<input file name>` from `cli-data/unzipped-saves` and save result to `<output file name>` in `cli-data/unzipped-saves`. If migrator cannot update data from save, an empty string will be saved.
+
+#### Simulation tool
+
+To run a simulation, run following command:
+
+```
+npm run simulate -- -i <request file name>
+```
+
+It will run simulation request from file `<request file name>` from `cli-data/simulation-requests`. Request file schema:
+
+```
+{
+  "inputSavefile": "<input savefile name>",
+  "outputSavefile": "<output savefile name>",
+  "snapshotsFile": "<snapshots file name>",
+  "time": <time to simulate>,
+  "updatesPerTick": <updates per tick>,
+  "cooldownTime": <cooldown time>,
+  "automation": [
+    {
+      "type": "<automation type>",
+      "timeout": <automation timeout>,
+      "startImmediately": <should automation be applied immediately>
+    }
+  ]
+}
+```
+
+Perameters:
+
+- `<input savefile name>` - Name of input savefile. Should be located in `cli-data/unzipped-saves`
+- `<output savefile name>` - Name of output savefile. Will be located in `cli-data/unzipped-saves`
+- `<snapshots file name>` - Name of file with snapshots of game state. Will be located in `cli-data/snapshots`
+- `<time to simulate>` - Time to run a simulation in milliseconds
+- `<updates per tick>` - Max amount of updates per tick
+- `<cooldown time>` - Cooldown time between ticks in milliseconds
+- `<automation type>` - Type of automation. Currently supported: `takeSnapshot`, `upgradeMainframePrograms`, `upgradeMainframeHardware`, `upgradeMainframePerformance`, `upgradeMainframeRam`, `upgradeMainframeCores`, `upgradeClonesLevel`, `startContracts`
+- `<automation timeout>` - Timeout between automation usage in milliseconds
+- `<startImmediately>` - If `true`, automation will run immediately after starting simulation. Otherwise `false` should be set
+
+#### CSV writer tool
+
+To make a CSV file, run following command:
+
+```
+npm run write-csv -- -i <request file name>
+```
+
+It will run CSV writing request from file `<request file name>` from `cli-data/csv-requests`. Request file schema:
+
+```
+{
+  "snapshotsFile": "<snapshots file name>",
+  "outputFile": "<output CSV file name>",
+  "columns": [
+    {
+      "id": "<column ID>",
+      "title": "<column name>",
+      "value": "<column value>"
+    }
+  ]
+}
+```
+
+Perameters:
+
+- `<snapshots file name>` - Name of snapshots file. Should be located in `cli-data/snapshots`
+- `<output CSV file name>` - Name of output CSV file. Will be located in `cli-data/csv-output`
+- `<column ID>` - ID of the column. Each column should have different ID. Cannot be `timestamp`
+- `<column name>` - Name of the column in CSV file header
+- `<column value>` - Value of the column. Should refer to the correct path from snapshot. Examples: `global.development.points`, `mainframe.programs.ownedPrograms[0].level`

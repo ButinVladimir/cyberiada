@@ -1,3 +1,4 @@
+import { ISnapshotable } from '@/shared';
 import {
   IMultipliersGrowthState,
   IDevelopmentGrowthState,
@@ -7,8 +8,9 @@ import {
   IExperienceGrowthState,
   IRewardsGrowthState,
 } from './parameters';
+import { IGrowthSnapshotState } from './snapshot-states';
 
-export interface IGrowthState {
+export interface IGrowthState extends ISnapshotable<IGrowthSnapshotState> {
   money: IMoneyGrowthState;
   development: IDevelopmentGrowthState;
   multipliers: IMultipliersGrowthState;

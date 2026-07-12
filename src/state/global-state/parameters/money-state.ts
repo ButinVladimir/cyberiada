@@ -4,7 +4,7 @@ import { IncomeSource, PurchaseType } from '@shared/index';
 import { type IStateUIConnector } from '@state/state-ui-connector';
 import { type IScenarioState } from '@state/scenario-state';
 import { TYPES } from '@state/types';
-import { IMoneyState, IMoneySerializedState } from '../interfaces';
+import { IMoneyState, IMoneySerializedState, IMoneySnapshotState } from '../interfaces';
 
 const { lazyInject } = decorators;
 
@@ -81,6 +81,14 @@ export class MoneyState implements IMoneyState {
   }
 
   serialize(): IMoneySerializedState {
+    return {
+      money: this._money,
+      income: Object.fromEntries(this._income.entries()) as Record<IncomeSource, number>,
+      expenses: Object.fromEntries(this._expenses.entries()) as Record<PurchaseType, number>,
+    };
+  }
+
+  makeSnapshot(): IMoneySnapshotState {
     return {
       money: this._money,
       income: Object.fromEntries(this._income.entries()) as Record<IncomeSource, number>,

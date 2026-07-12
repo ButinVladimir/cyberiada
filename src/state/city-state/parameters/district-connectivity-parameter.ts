@@ -5,6 +5,7 @@ import {
   IDistrictConnectivityParameter,
   IDistrictState,
   IDistrictConnectivitySerializedParameter,
+  IDistrictConnectivityParameterSnapshot,
 } from '../interfaces';
 
 const { lazyInject } = decorators;
@@ -47,6 +48,13 @@ export class DistrictConnectivityParameter implements IDistrictConnectivityParam
   serialize(): IDistrictConnectivitySerializedParameter {
     return {
       points: this._points,
+    };
+  }
+
+  makeSnapshot(): IDistrictConnectivityParameterSnapshot {
+    return {
+      points: this._points,
+      totalValue: this._totalValue,
     };
   }
 }

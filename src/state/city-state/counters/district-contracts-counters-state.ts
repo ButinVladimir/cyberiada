@@ -9,6 +9,7 @@ import { typedContracts } from '@state/activity-state';
 import { calculatePower } from '@shared/index';
 import {
   IDistrictContractsCountersSerializedState,
+  IDistrictContractsCountersSnapshotState,
   IDistrictContractsCountersState,
   type IDistrictState,
 } from '../interfaces';
@@ -110,6 +111,16 @@ export class DistrictContractsCountersState implements IDistrictContractsCounter
 
   removeAllEventListeners() {
     this._stateUiConnector.unregisterEventEmitter(this);
+  }
+
+  makeSnapshot(): IDistrictContractsCountersSnapshotState {
+    return {
+      availableAmounts: Object.fromEntries(this._availableAmountsMap.entries()),
+      passedTimes: Object.fromEntries(this._passedTimesMap.entries()),
+      chances: Object.fromEntries(
+        Object.keys(this._passedTimesMap).map((contractName) => [contractName, this.getChance(contractName)]),
+      ),
+    };
   }
 
   private processContract(contractName: string) {

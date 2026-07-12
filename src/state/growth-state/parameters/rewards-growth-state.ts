@@ -5,7 +5,7 @@ import { DealMakerProgram, type IMainframeState, MultiplierProgramName } from '@
 import { type ICityState } from '@state/city-state';
 import { type IActivityState } from '@state/activity-state';
 import { DistrictTypeRewardParameter } from '@shared/index';
-import { IRewardsGrowthState } from '../interfaces';
+import { IMultiplierGrowthSnapshotState, IRewardsGrowthState } from '../interfaces';
 
 const { lazyInject } = decorators;
 
@@ -49,6 +49,15 @@ export class RewardsGrowthState implements IRewardsGrowthState {
     this.recalculate();
 
     return this._growthByDistrict.get(districtIndex) ?? 0;
+  }
+
+  makeSnapshot(): IMultiplierGrowthSnapshotState {
+    this.recalculate();
+
+    return {
+      growthByProgram: this.growthByProgram,
+      growthByDistrict: Object.fromEntries(this._growthByDistrict.entries()),
+    };
   }
 
   private recalculate() {

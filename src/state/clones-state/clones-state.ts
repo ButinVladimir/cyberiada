@@ -1,6 +1,6 @@
 import { injectable, inject } from 'inversify';
 import { TYPES } from '@state/types';
-import { IClonesSerializedState, IClonesState } from './interfaces';
+import { IClonesSerializedState, IClonesSnapshotState, IClonesState } from './interfaces';
 import { type IOwnedClonesState, type ICloneFactory } from './states';
 
 @injectable()
@@ -34,6 +34,12 @@ export class ClonesState implements IClonesState {
   serialize(): IClonesSerializedState {
     return {
       ownedClones: this._ownedClones.serialize(),
+    };
+  }
+
+  makeSnapshot(): IClonesSnapshotState {
+    return {
+      ownedClones: this._ownedClones.makeSnapshot(),
     };
   }
 }

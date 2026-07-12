@@ -40,7 +40,7 @@ import { INames, type IConstants } from './interfaces';
 export const typedConstants = constants as IConstants;
 export const typedNames = names as INames;
 
-export const CURRENT_VERSION = GameVersion['0.3.1'];
+export const CURRENT_VERSION = GameVersion['0.4.0'];
 
 export const LANGUAGES: Language[] = Object.values(Language);
 
@@ -151,3 +151,5 @@ export const STATE_FILTER_VALUES = Object.values(StateFilterValue);
 export const ACTIVITY_STATUS_FILTER_VALUES = Object.values(ActivityStatusFilterValue);
 
 export const MULTIPLE_SELECT_SEPARATOR = ' ';
+
+export const NEUTRAL_FACTION = 'neutral';

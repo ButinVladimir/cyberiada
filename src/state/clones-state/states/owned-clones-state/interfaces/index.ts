@@ -3,3 +3,4 @@ export * from './owned-clones-state';
 export * from './purchase-clone-args';
 export * from './owned-clones-level-upgrader';
 export * from './owned-clones-validator';
+export * from './owned-clones-snapshot-state';

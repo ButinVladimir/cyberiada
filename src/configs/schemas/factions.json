@@ -10,7 +10,7 @@
     },
     "scavs": {
       "$ref": "#/$defs/faction",
-      "description": "Map neutral faction"
+      "description": "Fallback faction, if district wasn't assigned a faction during generation"
     }
   },
   "additionalProperties": {

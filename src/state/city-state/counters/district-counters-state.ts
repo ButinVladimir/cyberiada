@@ -1,6 +1,7 @@
 import {
   IDistrictContractsCountersState,
   IDistrictCountersSerializedState,
+  IDistrictCountersSnapshotState,
   IDistrictCountersState,
   IDistrictState,
 } from '../interfaces';
@@ -37,5 +38,11 @@ export class DistrictCountersState implements IDistrictCountersState {
 
   removeAllEventListeners() {
     this._contracts.removeAllEventListeners();
+  }
+
+  makeSnapshot(): IDistrictCountersSnapshotState {
+    return {
+      contracts: this._contracts.makeSnapshot(),
+    };
   }
 }

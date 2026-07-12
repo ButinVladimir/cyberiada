@@ -16,6 +16,7 @@ import type {
   IExperienceShareState,
   IProcessCompletionSpeedState,
   IRewardsState,
+  IGlobalSnapshotState,
 } from './interfaces';
 import { GameSpeed } from './types';
 
@@ -179,6 +180,18 @@ export class GlobalState implements IGlobalState {
       connectivity: this._connectivity.serialize(),
       multipliers: this._multipliersState.serialize(),
       rewards: this._rewardsState.serialize(),
+    };
+  }
+
+  makeSnapshot(): IGlobalSnapshotState {
+    return {
+      connectivity: this._connectivity.makeSnapshot(),
+      development: this._developmentState.makeSnapshot(),
+      experienceShare: this._experienceShare.makeSnapshot(),
+      money: this._moneyState.makeSnapshot(),
+      multipliers: this._multipliersState.makeSnapshot(),
+      rewards: this._rewardsState.makeSnapshot(),
+      synchronization: this._synchronization.makeSnapshot(),
     };
   }
 }

@@ -1,7 +1,9 @@
+import { ISnapshotable } from '@/shared';
 import { ProgramName } from '../types';
 import { IMakeProgramParameters } from './make-program-parameters';
+import { IProgramSnapshot } from './program-snapshot';
 
-export interface IProgram {
+export interface IProgram extends ISnapshotable<IProgramSnapshot> {
   name: ProgramName;
   level: number;
   tier: number;

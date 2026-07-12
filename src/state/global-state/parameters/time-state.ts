@@ -60,9 +60,12 @@ export class TimeState implements ITimeState {
     return this._gameTimeTotal;
   }
 
-  updateAccumulatedTime(showNotification: boolean) {
-    const updateTime = Date.now();
-    const earnedTime = updateTime - this.lastUpdateTime;
+  updateAccumulatedTime(updateTime: number, showNotification: boolean) {
+    if (updateTime <= this._lastUpdateTime) {
+      return;
+    }
+
+    const earnedTime = updateTime - this._lastUpdateTime;
     this._accumulatedTime += earnedTime;
     this._lastUpdateTime = updateTime;
 
@@ -75,8 +78,11 @@ export class TimeState implements ITimeState {
     }
   }
 
-  updateActiveTime() {
-    const updateTime = Date.now();
+  updateActiveTime(updateTime: number) {
+    if (updateTime <= this._lastUpdateTime) {
+      return;
+    }
+
     this._activeTime += updateTime - this.lastUpdateTime;
     this._lastUpdateTime = updateTime;
   }
@@ -117,8 +123,6 @@ export class TimeState implements ITimeState {
     this._accumulatedTime = serializedState.accumulatedTime;
     this._gameTime = serializedState.gameTime;
     this._gameTimeTotal = serializedState.gameTimeTotal;
-
-    this.updateAccumulatedTime(true);
   }
 
   serialize(): ITimeSerializedState {

@@ -1,6 +1,8 @@
-import { IDistrictConnectivitySerializedParameter } from '../serialized-states/parameters/district-connectivity-serialized-parameter';
+import { ISnapshotable } from '@shared/index';
+import { IDistrictConnectivitySerializedParameter } from '../serialized-states';
+import { IDistrictConnectivityParameterSnapshot } from '../snapshot-states';
 
-export interface IDistrictConnectivityParameter {
+export interface IDistrictConnectivityParameter extends ISnapshotable<IDistrictConnectivityParameterSnapshot> {
   points: number;
   totalValue: number;
   increasePoints(delta: number): void;

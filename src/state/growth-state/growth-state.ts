@@ -8,6 +8,7 @@ import type {
   IInfluenceGrowthState,
   IExperienceGrowthState,
   IRewardsGrowthState,
+  IGrowthSnapshotState,
 } from './interfaces';
 import { IGrowthState } from './interfaces/growth-state';
 
@@ -78,5 +79,17 @@ export class GrowthState implements IGrowthState {
     this._rewardsGrowthState.resetValues();
     this._influenceGrowthState.resetValues();
     this._experienceGrowthState.resetValues();
+  }
+
+  makeSnapshot(): IGrowthSnapshotState {
+    return {
+      connectivity: this._connectivityGrowthState.makeSnapshot(),
+      development: this._developmentGrowthState.makeSnapshot(),
+      experience: this._experienceGrowthState.makeSnapshot(),
+      influence: this._influenceGrowthState.makeSnapshot(),
+      money: this._moneyGrowthState.makeSnapshot(),
+      multipliers: this._multipliersGrowthState.makeSnapshot(),
+      rewards: this._rewardsGrowthState.makeSnapshot(),
+    };
   }
 }
