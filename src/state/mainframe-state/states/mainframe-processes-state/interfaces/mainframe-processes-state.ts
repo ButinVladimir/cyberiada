@@ -16,6 +16,6 @@ export interface IMainframeProcessesState extends ISerializeable<IMainframeProce
   deleteProcesses(programName: ProgramName[]): void;
   requestUpdateRunningProcesses(): void;
   recalculateRam(): void;
-  processTick(): void;
+  processUpdate(): void;
   moveProcess(programName: ProgramName, newPosition: number): void;
 }

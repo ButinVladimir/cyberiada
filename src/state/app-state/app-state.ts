@@ -80,7 +80,7 @@ export class AppState implements IAppState {
 
     maxUpdates = Math.min(maxUpdates, this._settingsState.maxUpdatesPerTick);
 
-    this.processTicks(maxUpdates);
+    this.processUpdates(maxUpdates);
   }
 
   fastForwardState(updateTime: number): boolean {
@@ -88,13 +88,13 @@ export class AppState implements IAppState {
 
     const maxUpdates = this._settingsState.maxUpdatesPerTick;
 
-    const ticksProcessed = this.processTicks(maxUpdates);
+    const updatesProcessed = this.processUpdates(maxUpdates);
 
-    return ticksProcessed === maxUpdates;
+    return updatesProcessed === maxUpdates;
   }
 
   simulate(): void {
-    this.processSingleTick();
+    this.processSingleUpdate();
   }
 
   async startNewState(): Promise<void> {
@@ -179,23 +179,23 @@ export class AppState implements IAppState {
     };
   }
 
-  private processTicks(maxUpdates: number): number {
-    let ticksProcessed = 0;
+  private processUpdates(maxUpdates: number): number {
+    let updatesProcessed = 0;
 
-    for (; ticksProcessed < maxUpdates && this._globalState.time.checkTimeForNextTick(); ticksProcessed++) {
-      this.processSingleTick();
+    for (; updatesProcessed < maxUpdates && this._globalState.time.checkTimeForNextUpdate(); updatesProcessed++) {
+      this.processSingleUpdate();
     }
 
     this._growthState.resetValues();
 
-    return ticksProcessed;
+    return updatesProcessed;
   }
 
-  private processSingleTick = () => {
-    this._activityState.processTick();
-    this._mainframeState.processes.processTick();
+  private processSingleUpdate = () => {
+    this._activityState.processUpdate();
+    this._mainframeState.processes.processUpdate();
     this._clonesState.recalculate();
-    this._globalState.makeNextTick();
+    this._globalState.updateTimePerUpdate();
     this._cityState.recalculate();
     this._globalState.recalculate();
   };

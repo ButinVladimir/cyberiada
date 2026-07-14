@@ -22,8 +22,8 @@ export class DistrictCountersState implements IDistrictCountersState {
     return this._contracts;
   }
 
-  processTick(): void {
-    this._contracts.processTick();
+  processUpdate(): void {
+    this._contracts.processUpdate();
   }
 
   serialize(): IDistrictCountersSerializedState {

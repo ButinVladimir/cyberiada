@@ -33,8 +33,6 @@ export class PurchaseCloneDialogController extends BaseController {
       templateName: cloneTemplateName,
       tier,
       level,
-      experience: 0,
-      autoUpgradeEnabled: true,
     });
   }
 }

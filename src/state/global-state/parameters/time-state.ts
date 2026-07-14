@@ -87,7 +87,7 @@ export class TimeState implements ITimeState {
     this._lastUpdateTime = updateTime;
   }
 
-  checkTimeForNextTick(): boolean {
+  checkTimeForNextUpdate(): boolean {
     if (this._activeTime >= this._settingsState.updateInterval) {
       return true;
     }
@@ -99,7 +99,7 @@ export class TimeState implements ITimeState {
     return false;
   }
 
-  makeNextTick(): void {
+  updateTimePerUpdate(): void {
     if (this._activeTime >= this._settingsState.updateInterval) {
       this._activeTime -= this._settingsState.updateInterval;
     } else if (this._accumulatedTime >= this._settingsState.updateInterval) {

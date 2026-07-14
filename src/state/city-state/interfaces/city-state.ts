@@ -5,7 +5,9 @@ import { ICitySnapshotState } from './snapshot-states';
 
 export interface ICityState extends ISerializeable<ICitySerializedState>, ISnapshotable<ICitySnapshotState> {
   districtsCount: number;
-  getLayout(): number[][];
+  width: number;
+  height: number;
+  layout: number[][];
   getDistrictState(districtIndex: number): IDistrictState;
   getDistrictConnections(districtIndex: number): Set<number>;
   getDistrictSize(districtIndex: number): number;

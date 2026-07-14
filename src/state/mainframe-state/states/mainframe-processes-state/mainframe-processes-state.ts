@@ -175,7 +175,7 @@ export class MainframeProcessesState implements IMainframeProcessesState {
     }
   }
 
-  processTick() {
+  processUpdate() {
     if (this._runningProcessesUpdateRequested) {
       this.updateRunningProcesses();
     }

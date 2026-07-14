@@ -31,5 +31,5 @@ export interface IGlobalState extends ISerializeable<IGlobalSerializedState>, IS
   experienceShare: IExperienceShareState;
   processCompletionSpeed: IProcessCompletionSpeedState;
   recalculate(): void;
-  makeNextTick(): void;
+  updateTimePerUpdate(): void;
 }

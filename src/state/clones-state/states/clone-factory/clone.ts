@@ -37,8 +37,8 @@ export class Clone implements IClone {
   private _id: string;
   private _name: string;
   private _templateName: string;
-  private _experience: number;
-  private _level: number;
+  private _experience!: number;
+  private _level!: number;
   private _tier: number;
   private _synchronization: number;
   private _autoUpgradeEnabled: boolean;
@@ -51,17 +51,25 @@ export class Clone implements IClone {
     this._id = parameters.id;
     this._name = parameters.name;
     this._templateName = parameters.templateName;
-    this._experience = parameters.experience;
-    this._level = parameters.level;
+
+    if (parameters.experience !== undefined) {
+      this._experience = parameters.experience;
+      this.initLevel();
+    } else if (parameters.level !== undefined) {
+      this._level = parameters.level;
+      this.initExperience();
+    } else {
+      throw new Error(`Clone ${parameters.id} parameters missing either level or experience`);
+    }
+
     this._tier = parameters.tier;
-    this._autoUpgradeEnabled = parameters.autoUpgradeEnabled;
+    this._autoUpgradeEnabled = parameters.autoUpgradeEnabled ?? true;
     this._experienceMultiplier = 1;
     this._synchronization = 0;
     this._attributes = new Map<Attribute, number>();
     this._skills = new Map<Skill, number>();
 
     this.initSynchronization();
-    this.initExperience();
     this.initAttributes();
     this.initSkills();
 
@@ -193,7 +201,6 @@ export class Clone implements IClone {
       name: this.name,
       templateName: this.templateName,
       experience: this.experience,
-      level: this.level,
       tier: this.tier,
       autoUpgradeEnabled: this.autoUpgradeEnabled,
     };
@@ -226,6 +233,10 @@ export class Clone implements IClone {
 
   private initExperience() {
     this._experience = Math.max(this._experience, this.getLevelRequirements(this._level - 1));
+  }
+
+  private initLevel() {
+    this._level = this.calculateLevelFromExperience();
   }
 
   private initAttributes() {

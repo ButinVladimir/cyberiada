@@ -69,7 +69,7 @@ export class ActivityState implements IActivityState {
     this._assignmentRequested = true;
   }
 
-  processTick() {
+  processUpdate() {
     this.reassign();
     this._primaryActivityQueue.perform();
     this._sidejobsActivity.perform();

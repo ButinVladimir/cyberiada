@@ -133,8 +133,8 @@ export class GlobalState implements IGlobalState {
     this._rewardsState.recalculateMultiplier();
   }
 
-  makeNextTick() {
-    this.time.makeNextTick();
+  updateTimePerUpdate() {
+    this.time.updateTimePerUpdate();
   }
 
   async startNewState(): Promise<void> {

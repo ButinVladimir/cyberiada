@@ -5,7 +5,7 @@ import { IDistrictContractsCountersState } from './district-contracts-counters-s
 
 export interface IDistrictCountersState extends ISnapshotable<IDistrictCountersSnapshotState> {
   contracts: IDistrictContractsCountersState;
-  processTick(): void;
+  processUpdate(): void;
   serialize(): IDistrictCountersSerializedState;
   deserialize(serializedState: IDistrictCountersSerializedState): void;
   removeAllEventListeners(): void;

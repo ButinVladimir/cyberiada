@@ -5,7 +5,7 @@ import { IDistrictInfluenceSerializedParameter } from './district-influence-seri
 
 export interface IDistrictSerializedParameters {
   tier: IDistrictInfluenceSerializedParameter;
-  connectivtiy: IDistrictConnectivitySerializedParameter;
+  connectivity: IDistrictConnectivitySerializedParameter;
   multipliers: IDistrictSerializedMultipliers;
   rewards: IDistrictRewardsSerializedParameter;
 }

@@ -70,11 +70,19 @@ export class CityState implements ICityState {
   }
 
   get districtsCount() {
-    return this._scenarioState.currentValues.map.districts.length;
+    return this._districts.size;
   }
 
-  getLayout(): number[][] {
+  get layout(): number[][] {
     return this._layout;
+  }
+
+  get width(): number {
+    return this._layout.length;
+  }
+
+  get height(): number {
+    return this._layout[0].length;
   }
 
   getDistrictState(districtIndex: number): IDistrictState {
@@ -148,20 +156,16 @@ export class CityState implements ICityState {
   async deserialize(serializedState: ICitySerializedState): Promise<void> {
     this.clearDistricts();
 
-    if (this._scenarioState.currentValues.map.width !== serializedState.layout.length) {
-      throw new Error(`Map width doesn't match scenario`);
-    }
-
     this._layout = [];
-    for (let x = 0; x < this._scenarioState.currentValues.map.width; x++) {
-      if (this._scenarioState.currentValues.map.height !== serializedState.layout[x].length) {
-        throw new Error(`Map height doesn't match scenario`);
+    for (let x = 0; x < serializedState.layout.length; x++) {
+      if (serializedState.layout[0].length !== serializedState.layout[x].length) {
+        throw new Error(`Map height doesn't match at row ${x}`);
       }
 
       const row: number[] = [];
 
-      for (let y = 0; y < this._scenarioState.currentValues.map.height; y++) {
-        row.push(serializedState.layout[x][y]);
+      for (const value of serializedState.layout[x]) {
+        row.push(value);
       }
 
       this._layout.push(row);
@@ -174,13 +178,21 @@ export class CityState implements ICityState {
       this._districts.set(parsedDistrictIndex, districtState);
     });
 
+    for (let x = 0; x < this._layout.length; x++) {
+      for (let y = 0; y < this._layout[x].length; y++) {
+        if (this._districts.get(this._layout[x][y]) === undefined) {
+          throw new Error(`District ${this._layout[x][y]} at position (${x},${y}) is missing`);
+        }
+      }
+    }
+
     this._districtConnections = await this._districtConnectionGraphGenerator.generate();
 
     this.recalculateDistrictsState();
   }
 
   serialize(): ICitySerializedState {
-    const layout: number[][] = this.getLayout();
+    const layout: number[][] = this.layout;
 
     const districts: Record<number, IDistrictSerializedState> = {};
     this._districts.forEach((districtState, districtIndex) => {
@@ -205,7 +217,7 @@ export class CityState implements ICityState {
   }
 
   private checkDistrictIndex(districtIndex: number): boolean {
-    return districtIndex >= 0 && districtIndex < this._scenarioState.currentValues.map.districts.length;
+    return districtIndex >= 0 && districtIndex < this.districtsCount;
   }
 
   private async generateMap(): Promise<void> {

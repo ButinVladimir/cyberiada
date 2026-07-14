@@ -113,7 +113,7 @@ export class DistrictState implements IDistrictState {
 
   recalculate() {
     this._parameters.recalculate();
-    this._counters.processTick();
+    this._counters.processUpdate();
   }
 
   serialize(): IDistrictSerializedState {

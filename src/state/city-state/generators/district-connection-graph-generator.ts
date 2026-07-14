@@ -1,7 +1,6 @@
 import { injectable } from 'inversify';
 import { decorators } from '@state/container';
 import { TYPES } from '@state/types';
-import { type IScenarioState } from '@state/scenario-state';
 import {
   type ICityState,
   IDistrictConnectionGraphGenerator,
@@ -15,22 +14,23 @@ export class DistrictConnectionGraphGenerator implements IDistrictConnectionGrap
   @lazyInject(TYPES.CityState)
   private _cityState!: ICityState;
 
-  @lazyInject(TYPES.ScenarioState)
-  private _scenarioState!: IScenarioState;
-
   private _connections!: Map<number, Set<number>>;
   private _districtSizes!: Map<number, number>;
 
   private get _width() {
-    return this._scenarioState.currentValues.map.width;
+    return this._cityState.width;
   }
 
   private get _height() {
-    return this._scenarioState.currentValues.map.height;
+    return this._cityState.height;
   }
 
   private get _layout() {
-    return this._cityState.getLayout();
+    return this._cityState.layout;
+  }
+
+  private get _districtsCount() {
+    return this._cityState.districtsCount;
   }
 
   async generate(): Promise<IDistrictConnectionGraphGeneratorResult> {
@@ -56,7 +56,7 @@ export class DistrictConnectionGraphGenerator implements IDistrictConnectionGrap
   }
 
   private buildConnections() {
-    const districtsNum = this._scenarioState.currentValues.map.districts.length;
+    const districtsNum = this._districtsCount;
 
     for (let i = 0; i < districtsNum; i++) {
       this._connections.set(i, new Set<number>());
@@ -93,9 +93,9 @@ export class DistrictConnectionGraphGenerator implements IDistrictConnectionGrap
   }
 
   private calculateDistrictSizes() {
-    const districtsNum = this._scenarioState.currentValues.map.districts.length;
+    const districtsCount = this._districtsCount;
 
-    for (let i = 0; i < districtsNum; i++) {
+    for (let i = 0; i < districtsCount; i++) {
       this._districtSizes.set(i, 0);
     }
 

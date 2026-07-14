@@ -8,7 +8,7 @@ export interface IDistrictContractsCountersState extends ISnapshotable<IDistrict
   getAvailableAmount(contractName: string): number;
   getChance(contractName: string): number;
   useContract(contractName: string): boolean;
-  processTick(): void;
+  processUpdate(): void;
   serialize(): IDistrictContractsCountersSerializedState;
   deserialize(serializedState: IDistrictContractsCountersSerializedState): void;
   removeAllEventListeners(): void;

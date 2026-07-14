@@ -81,7 +81,7 @@ export class DistrictParameters implements IDistrictParameters {
   serialize(): IDistrictSerializedParameters {
     return {
       tier: this._influence.serialize(),
-      connectivtiy: this._connectivity.serialize(),
+      connectivity: this._connectivity.serialize(),
       multipliers: this._multipliers.serialize(),
       rewards: this._rewards.serialize(),
     };
@@ -89,7 +89,7 @@ export class DistrictParameters implements IDistrictParameters {
 
   deserialize(serializedParameters: IDistrictSerializedParameters): void {
     this._influence.deserialize(serializedParameters.tier);
-    this._connectivity.deserialize(serializedParameters.connectivtiy);
+    this._connectivity.deserialize(serializedParameters.connectivity);
     this._multipliers.deserialize(serializedParameters.multipliers);
     this._rewards.deserialize(serializedParameters.rewards);
   }

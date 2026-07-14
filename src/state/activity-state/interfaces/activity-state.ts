@@ -17,5 +17,5 @@ export interface IActivityState extends ISerializeable<IActivitySerializedState>
   contractActivityValidator: IContractActivityValidator;
   primaryActivityQueue: IPrimaryActivityQueue;
   requestReassignment(): void;
-  processTick(): void;
+  processUpdate(): void;
 }

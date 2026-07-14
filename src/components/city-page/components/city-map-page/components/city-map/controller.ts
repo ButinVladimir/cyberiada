@@ -7,7 +7,7 @@ export class CityMapController extends BaseController {
   }
 
   get layout() {
-    return this.cityState.getLayout();
+    return this.cityState.layout;
   }
 
   get mapWidth() {

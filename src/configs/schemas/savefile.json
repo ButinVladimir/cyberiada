@@ -562,11 +562,6 @@
                     "description": "Clone experience",
                     "minimum": 0
                   },
-                  "level": {
-                    "type": "number",
-                    "description": "Clone level",
-                    "minimum": 0
-                  },
                   "tier": {
                     "type": "number",
                     "description": "Clone tier",
@@ -577,7 +572,7 @@
                     "description": "Is autoupgrade enabled"
                   }
                 },
-                "required": ["id", "name", "templateName", "experience", "level", "tier", "autoUpgradeEnabled"]
+                "required": ["id", "name", "templateName", "experience", "tier", "autoUpgradeEnabled"]
               }
             }
           },
@@ -669,13 +664,13 @@
                     },
                     "required": ["points", "tier"]
                   },
-                  "connectivtiy": {
+                  "connectivity": {
                     "type": "object",
-                    "description": "District connectivtiy parameter",
+                    "description": "District connectivity parameter",
                     "properties": {
                       "points": {
                         "type": "number",
-                        "description": "District connectivtiy points",
+                        "description": "District connectivity points",
                         "minimum": 0
                       }
                     },

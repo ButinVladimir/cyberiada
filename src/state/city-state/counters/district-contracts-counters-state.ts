@@ -80,7 +80,7 @@ export class DistrictContractsCountersState implements IDistrictContractsCounter
     return true;
   }
 
-  processTick(): void {
+  processUpdate(): void {
     const availableActivities = this._unlockState.activities.contracts.listAvailableActivities();
 
     availableActivities.forEach((contractName) => {
